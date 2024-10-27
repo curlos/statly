@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../Icon';
-import { useNavigate, useParams } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import { TaskObj } from '../../interfaces/interfaces';
 import DropdownCalendar from '../Dropdown/DropdownCalendar/DropdownCalendar';
@@ -26,6 +25,8 @@ import { useGetProjectsQuery } from '../../services/resources/projectsApi';
 import { useGetFocusRecordsQuery } from '../../services/resources/focusRecordsApi';
 import { useGetCommentsQuery } from '../../services/resources/commentsApi';
 import { useGetTagsQuery } from '../../services/resources/tagsApi';
+import { usePageContext } from 'vike-react/usePageContext';
+import { navigate } from 'vike/client/router';
 
 const EmptyTask = () => (
 	<div className="w-full h-full overflow-auto no-scrollbar max-h-screen bg-color-gray-700 flex justify-center items-center text-[18px] text-color-gray-100">
@@ -107,8 +108,8 @@ const TaskDetails = ({
 	const dropdownPrioritiesRef = useRef(null);
 	const dropdownProjectsRef = useRef(null);
 
-	let { taskId: paramsTaskId, projectId: paramsProjectId } = useParams();
-	const navigate = useNavigate();
+	const pageContext = usePageContext();
+	let { taskId: paramsTaskId, projectId: paramsProjectId } = pageContext.routeParams;
 
 	const inSmartListView = paramsProjectId && SMART_LISTS[paramsProjectId];
 

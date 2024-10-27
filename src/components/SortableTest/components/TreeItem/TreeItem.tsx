@@ -5,12 +5,10 @@ import amongUsCompletionSoundMP3 from '/among_us_complete_task.mp3';
 import { Action } from './Action';
 import { Handle } from './Handle';
 import styles from './TreeItem.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
 import Icon from '../../../Icon';
 import { SMART_LISTS } from '../../../../utils/smartLists.utils';
 import { PRIORITIES } from '../../../../utils/priorities.utils';
 import TaskDueDateText from '../../../TaskDueDateText';
-import ContextMenuTaskActions from '../../../ContextMenu/ContextMenuTaskActions';
 import DropdownCalendar from '../../../Dropdown/DropdownCalendar/DropdownCalendar';
 import useAudio from '../../../../hooks/useAudio';
 import TagItemForTask from '../../../TagItemForTask';
@@ -20,6 +18,8 @@ import { useGetProjectsQuery } from '../../../../services/resources/projectsApi'
 import { useGetTagsQuery } from '../../../../services/resources/tagsApi';
 import ContextMenuGeneric from '../../../ContextMenu/ContextMenuGeneric';
 import DropdownTaskActions from '../../../Dropdown/DropdownTaskActions/DropdownTaskActions';
+import { navigate } from 'vike/client/router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 export interface Props extends HTMLAttributes<HTMLLIElement> {
 	childCount?: number;
@@ -63,8 +63,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
 	) => {
 		const { play: playCompletionSound, stop: stopCompletionSound } = useAudio(amongUsCompletionSoundMP3);
 
-		const navigate = useNavigate();
-		const params = useParams();
+		const pageContext = usePageContext();
+		const params = pageContext.routeParams;
 		const { tagId, filterId } = params;
 
 		// RTK Query - Projects

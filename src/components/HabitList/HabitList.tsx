@@ -7,12 +7,13 @@ import { formatCheckedInDayDate, getDayNameAbbreviation, getLast7Days, getMonthA
 import { areDatesEqual } from '../../utils/date.utils';
 import { useGetHabitsQuery } from '../../services/resources/habitsApi';
 import { useGetHabitSectionsQuery } from '../../services/resources/habitSectionsApi';
-import { useNavigate, useParams } from 'react-router';
 import { getStreaks } from '../../utils/habits.util';
 import Dropdown from '../Dropdown/Dropdown';
 import DropdownHabitOptions from '../Dropdown/DropdownHabitOptions/DropdownHabitOptions';
 import ContextMenuGeneric from '../ContextMenu/ContextMenuGeneric';
 import DayCheckCircle from './DayCheckCircle';
+import { navigate } from 'vike/client/router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const HabitList = () => {
 	const lastSevenDays = getLast7Days();
@@ -163,8 +164,8 @@ const HabitListByCategory = ({ habitSection, habitsForThisSection, viewType, for
 };
 
 const HabitCard = ({ habit, viewType, formattedLastSevenDays, selectedDay }) => {
-	const navigate = useNavigate();
-	const { habitId } = useParams();
+	const pageContext = usePageContext();
+	const { habitId } = pageContext.routeParams;
 	const { name, icon, checkedInDays } = habit;
 
 	const [contextMenu, setContextMenu] = useState(null);

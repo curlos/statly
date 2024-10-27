@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from './Icon';
 import { TaskObj } from '../interfaces/interfaces';
-import { useNavigate, useParams } from 'react-router-dom';
+import { navigate } from 'vike/client/router';
 import { PRIORITIES } from '../utils/priorities.utils';
 import classNames from 'classnames';
 import TaskDueDateText from './TaskDueDateText';
@@ -9,6 +9,7 @@ import { useGetTasksQuery } from '../services/resources/tasksApi';
 import { useGetProjectsQuery } from '../services/resources/projectsApi';
 import ContextMenuGeneric from './ContextMenu/ContextMenuGeneric';
 import DropdownTaskDetails from './Dropdown/DropdownTaskDetails';
+import { usePageContext } from 'vike-react/usePageContext';
 
 interface TaskProps {
 	taskId: string;
@@ -35,8 +36,8 @@ const Task: React.FC<TaskProps> = ({
 	const { tasksById, parentOfTasks } = fetchedTasks || {};
 	const { data: fetchedProjects, isLoading: isLoadingProjects, error: errorProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
-	const navigate = useNavigate();
-	let { taskId: taskIdFromUrl } = useParams();
+	const pageContext = usePageContext();
+	let { taskId: taskIdFromUrl } = pageContext.routeParams;
 	const [project, setProject] = useState(null);
 	const [taskContextMenu, setTaskContextMenu] = useState(null);
 

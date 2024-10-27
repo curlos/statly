@@ -1,14 +1,13 @@
 import { useForm } from 'react-hook-form';
 import Icon from './Icon';
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../slices/modalSlice';
 import { useLoginUserMutation, useRegisterUserMutation } from '../services/resources/usersApi';
+import { navigate } from 'vike/client/router';
 
 const UserForm = ({ mode }) => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const {
 		register,

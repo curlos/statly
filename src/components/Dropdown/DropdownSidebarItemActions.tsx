@@ -1,7 +1,6 @@
 import Dropdown from './Dropdown';
 import { DropdownProps } from '../../interfaces/interfaces';
 import classNames from 'classnames';
-import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import useHandleError from '../../hooks/useHandleError';
@@ -26,7 +25,6 @@ const DropdownSidebarItemActions: React.FC<DropdownSidebarItemActionsProps> = ({
 	type,
 }) => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const handleError = useHandleError();
 
 	const [permanentlyDeleteProject] = usePermanentlyDeleteProjectMutation();

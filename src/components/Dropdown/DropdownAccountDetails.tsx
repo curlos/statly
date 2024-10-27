@@ -2,9 +2,9 @@ import Dropdown from './Dropdown';
 import { DropdownProps } from '../../interfaces/interfaces';
 import classNames from 'classnames';
 import { logoutUser } from '../../slices/userSlice';
-import { useNavigate } from 'react-router';
 import { setModalState } from '../../slices/modalSlice';
 import { useDispatch } from 'react-redux';
+import { navigate } from 'vike/client/router';
 
 interface DropdownAccountDetailsProps extends DropdownProps {}
 
@@ -14,7 +14,6 @@ const DropdownAccountDetails: React.FC<DropdownAccountDetailsProps> = ({
 	setIsVisible,
 	customClasses,
 }) => {
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const AccountAction = ({ name, onClick }) => (

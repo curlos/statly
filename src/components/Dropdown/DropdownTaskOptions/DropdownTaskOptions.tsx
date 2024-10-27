@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react';
-import { setModalState } from '../../../slices/modalSlice';
 import Icon from '../../Icon';
 import Dropdown from '../Dropdown';
 import DropdownStartFocus from './DropdownStartFocus';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router';
 import { DropdownProps, TaskObj } from '../../../interfaces/interfaces';
 import { setAlertState } from '../../../slices/alertSlice';
 import { useFlagTaskMutation, useGetTasksQuery } from '../../../services/resources/tasksApi';
 import DropdownAddTaskForm from '../DropdownAddTaskForm';
+import { navigate } from 'vike/client/router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 interface DropdownTaskOptionsProps extends DropdownProps {
 	setIsModalTaskActivitiesOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,8 +27,8 @@ const DropdownTaskOptions: React.FC<DropdownTaskOptionsProps> = ({
 	setIsDropdownTaskDetailsVisible,
 }) => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const { projectId } = useParams();
+	const pageContext = usePageContext();
+	const { projectId } = pageContext.routeParams;
 	const { data: fetchedTasks, isLoading: isLoadingTasks, error: errorTasks } = useGetTasksQuery();
 	const { parentOfTasks } = fetchedTasks || {};
 	const [flagTask] = useFlagTaskMutation();

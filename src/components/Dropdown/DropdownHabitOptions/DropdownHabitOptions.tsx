@@ -3,7 +3,6 @@ import { setModalState } from '../../../slices/modalSlice';
 import Icon from '../../Icon';
 import Dropdown from '../Dropdown';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router';
 import { DropdownProps, TaskObj } from '../../../interfaces/interfaces';
 import { setAlertState } from '../../../slices/alertSlice';
 import {
@@ -14,6 +13,7 @@ import {
 import DropdownStartFocus from '../DropdownTaskOptions/DropdownStartFocus';
 import useHandleError from '../../../hooks/useHandleError';
 import classNames from 'classnames';
+import { usePageContext } from 'vike-react/usePageContext';
 
 interface DropdownHabitOptionsProps extends DropdownProps {
 	habit: Object;
@@ -32,8 +32,8 @@ const DropdownHabitOptions: React.FC<DropdownHabitOptionsProps> = ({
 }) => {
 	const handleError = useHandleError();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const { habitId } = useParams();
+	const pageContext = usePageContext();
+	const { habitId } = pageContext.routeParams;
 
 	// RTK Query - Habits
 	const { data: fetchedHabits, isLoading: isLoadingGetHabits, error: errorGetHabits } = useGetHabitsQuery();

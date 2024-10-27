@@ -1,22 +1,19 @@
 import { useEffect, useState } from 'react';
 import Icon from '../components/Icon';
-import TaskList from '../components/TaskList';
-import { useSelector } from 'react-redux';
-import { TaskObj } from '../interfaces/interfaces';
 import AddTaskForm from '../components/AddTaskForm';
-import TaskListByCategory from '../components/TaskListByGroup';
 import { SortableTree } from '../components/SortableTest/SortableTree';
-import { fillInChildren, getTasksWithNoParent } from '../utils/helpers.utils';
-import { useParams } from 'react-router';
+import { getTasksWithNoParent } from '../utils/helpers.utils';
 import { SMART_LISTS } from '../utils/smartLists.utils';
 import { filterTasksByFilter } from '../utils/filters.util';
 import { useGetTasksQuery } from '../services/resources/tasksApi';
 import { useGetProjectsQuery } from '../services/resources/projectsApi';
 import { useGetTagsQuery } from '../services/resources/tagsApi';
 import { useGetFiltersQuery } from '../services/resources/filtersApi';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const TaskListPage = () => {
-	const { projectId, tagId, filterId } = useParams();
+	const pageContext = usePageContext();
+	const { projectId, tagId, filterId } = pageContext.routeParams;
 
 	// RTK Query - Projects
 	const { data: fetchedProjects, isLoading: isLoadingProjects, error: errorProjects } = useGetProjectsQuery();

@@ -1,5 +1,5 @@
 import Icon from './Icon';
-import { useNavigate } from 'react-router';
+import { navigate } from 'vike/client/router';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../slices/modalSlice';
@@ -7,7 +7,6 @@ import DropdownAccountDetails from './Dropdown/DropdownAccountDetails';
 
 const ActionSidebar = () => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const iconCustomClass = 'text-white !text-[24px] cursor-pointer';
 
 	const dropdownAccountDetailsToggleRef = useRef(null);

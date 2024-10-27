@@ -4,7 +4,6 @@ import Icon from '../../Icon';
 import { DropdownProps, TaskObj } from '../../../interfaces/interfaces';
 import { PRIORITIES } from '../../../utils/priorities.utils';
 import classNames from 'classnames';
-import { useNavigate, useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../../slices/modalSlice';
 import { setAlertState } from '../../../slices/alertSlice';
@@ -15,6 +14,8 @@ import TaskAction from './TaskAction';
 import { useEditTaskMutation, useFlagTaskMutation, useGetTasksQuery } from '../../../services/resources/tasksApi';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { useGetTagsQuery } from '../../../services/resources/tagsApi';
+import { navigate } from 'vike/client/router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 interface DropdownTaskActionsProps extends DropdownProps {
 	onCloseContextMenu: () => void;
@@ -29,8 +30,8 @@ const DropdownTaskActions: React.FC<DropdownTaskActionsProps> = ({
 	onCloseContextMenu,
 }) => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const { taskId, projectId } = useParams();
+	const pageContext = usePageContext();
+	const { taskId, projectId } = pageContext.routeParams;
 
 	// RTK Query - Tasks
 	const { data: fetchedTasks, isLoading: isTasksLoading, error } = useGetTasksQuery();

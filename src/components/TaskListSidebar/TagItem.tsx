@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router';
+import { navigate } from 'vike/client/router';
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import Icon from '../Icon';
@@ -6,12 +6,11 @@ import { useGetTasksQuery } from '../../services/resources/tasksApi';
 import { useGetTagsQuery } from '../../services/resources/tagsApi';
 import ContextMenuGeneric from '../ContextMenu/ContextMenuGeneric';
 import DropdownSidebarItemActions from '../Dropdown/DropdownSidebarItemActions';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const TagItem = ({ tag, isChild }) => {
-	const navigate = useNavigate();
-	const params = useParams();
-
-	const { tagId } = params;
+	const pageContext = usePageContext();
+	const { tagId } = pageContext.routeParams;
 
 	const { data: fetchedTags, isLoading: isLoadingGetTags, error: errorGetTags } = useGetTagsQuery();
 	const { tags, tagsById } = fetchedTags || {};

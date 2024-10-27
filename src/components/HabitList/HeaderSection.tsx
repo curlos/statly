@@ -2,12 +2,13 @@ import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import Icon from '../Icon';
 import Dropdown from '../Dropdown/Dropdown';
-import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
-import classNames from 'classnames';
+import { useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { usePageContext } from 'vike-react/usePageContext';
+import { navigate } from 'vike/client/router';
 
 const HeaderSection = ({ viewType, setViewType }) => {
-	const location = useLocation();
+	const pageContext = usePageContext();
 	const dispatch = useDispatch();
 
 	const dropdownHabitTypesRef = useRef(null);
@@ -16,7 +17,7 @@ const HeaderSection = ({ viewType, setViewType }) => {
 	const iconClass =
 		'text-color-gray-100 !text-[21px] hover:text-white cursor-pointer rounded hover:bg-color-gray-300 p-1';
 
-	const inArchivedRoute = location.pathname.includes('/habits/archived');
+	const inArchivedRoute = pageContext.urlParsed.pathname.includes('/habits/archived');
 
 	const dropdownSettingsRef = useRef(null);
 	const [isDropdownSettingsVisible, setIsDropdownSettingsVisible] = useState(false);
@@ -110,8 +111,7 @@ const HeaderSection = ({ viewType, setViewType }) => {
 };
 
 const DropdownHabitTypes = ({ toggleRef, isVisible, setIsVisible }) => {
-	const navigate = useNavigate();
-	const location = useLocation();
+	const pageContext = usePageContext();
 
 	const SelectOption = ({ name, isSelected, onClick }) => {
 		return (
@@ -141,7 +141,7 @@ const DropdownHabitTypes = ({ toggleRef, isVisible, setIsVisible }) => {
 			<div className="w-[200px] p-1 rounded text-[13px]" onClick={(e) => e.stopPropagation()}>
 				<SelectOption
 					name="Active"
-					isSelected={!location.pathname.includes('/habits/archived')}
+					isSelected={!pageContext.urlParsed.pathname.includes('/habits/archived')}
 					onClick={() => {
 						navigate('/habits');
 						setIsVisible(false);

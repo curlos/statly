@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { navigate } from 'vike/client/router';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { arrayMove, useSortable } from '@dnd-kit/sortable';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -11,6 +11,7 @@ import { SMART_LISTS } from '../utils/smartLists.utils';
 import { useGetTasksQuery } from '../services/resources/tasksApi';
 import DropdownSidebarItemActions from './Dropdown/DropdownSidebarItemActions';
 import ContextMenuGeneric from './ContextMenu/ContextMenuGeneric';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const DraggableProjects = ({ projects }) => {
 	const [items, setItems] = useState([...projects]);
@@ -67,8 +68,8 @@ export interface ProjectItemProps {
 }
 
 export const ProjectItem: React.FC<ProjectItemProps> = ({ project, projectsWithGroup, insideFolder, isSmartList }) => {
-	const { projectId, taskId } = useParams();
-	const navigate = useNavigate();
+	const pageContext = usePageContext();
+	const { projectId, taskId } = pageContext.routeParams;
 
 	const { data: fetchedTasks, isLoading: isLoadingTasks, error: errorTasks } = useGetTasksQuery();
 	const { tasks, tasksById } = fetchedTasks || {};

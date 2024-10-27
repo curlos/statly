@@ -1,17 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
 import { setModalState } from '../../../slices/modalSlice';
 import ColorList from '../../ColorList';
 import Icon from '../../Icon';
 import Modal from '../Modal';
 import DropdownParentTag from './DropdownParentTag';
 import { useGetTagsQuery, useAddTagMutation, useEditTagMutation } from '../../../services/resources/tagsApi';
+import { navigate } from 'vike/client/router';
 
 const ModalAddTag: React.FC = () => {
 	const modal = useSelector((state) => state.modals.modals['ModalAddTag']);
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const { data: fetchedTags, isLoading: isLoadingGetTags, error: errorGetTags } = useGetTagsQuery();
 	const { tagsById, parentOfTags } = fetchedTags || {};

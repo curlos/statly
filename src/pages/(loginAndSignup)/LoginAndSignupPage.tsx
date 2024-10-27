@@ -3,11 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import UserForm from '../../components/UserForm';
 import { selectUserToken } from '../../slices/userSlice';
 import { useSelector } from 'react-redux';
+import { navigate } from 'vike/client/router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const LoginAndSignupPage = () => {
 	const isLoggedIn = useSelector(selectUserToken);
-	const navigate = useNavigate();
-	const location = useLocation();
+	const pageContext = usePageContext();
 
 	useEffect(() => {
 		if (isLoggedIn) {
@@ -16,7 +17,7 @@ const LoginAndSignupPage = () => {
 	}, []);
 
 	// Determine the mode based on the pathname
-	const isSignupRoute = location.pathname.includes('/signup');
+	const isSignupRoute = pageContext.urlParsed.pathname.includes('/signup');
 	const mode = isSignupRoute ? 'register' : 'login';
 
 	return (

@@ -1,4 +1,3 @@
-import { useParams } from 'react-router';
 import { TaskObj } from '../interfaces/interfaces';
 import Task from './Task';
 
@@ -15,8 +14,6 @@ const TaskList: React.FC<TaskListProps> = ({
 	setSelectedFocusRecordTask,
 	handleTaskClick,
 }) => {
-	const { projectId } = useParams();
-
 	return (
 		<div>
 			{tasks?.map((task) => (

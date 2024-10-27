@@ -6,7 +6,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import DropdownPriorities from './Dropdown/DropdownPriorities';
 import { PRIORITIES } from '../utils/priorities.utils';
 import { SMART_LISTS } from '../utils/smartLists.utils';
-import { useNavigate, useParams } from 'react-router';
+import { navigate } from 'vike/client/router';
 import classNames from 'classnames';
 import TaskDueDateText from './TaskDueDateText';
 import { setModalState } from '../slices/modalSlice';
@@ -15,6 +15,7 @@ import TagItemForTask from './TagItemForTask';
 import { useAddTaskMutation } from '../services/resources/tasksApi';
 import { useGetProjectsQuery } from '../services/resources/projectsApi';
 import { useGetTagsQuery } from '../services/resources/tagsApi';
+import { usePageContext } from 'vike-react/usePageContext';
 
 interface AddTaskFormProps {
 	parentId: string;
@@ -29,9 +30,8 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
 	const fromDropdown = setIsDropdownAddTaskFormVisible;
 
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const params = useParams();
-	const { projectId, tagId } = params;
+	const pageContext = usePageContext();
+	const { projectId, tagId } = pageContext.routeParams;
 
 	// RTK Query - Tasks
 	const [addTask, { isLoading, error }] = useAddTaskMutation();

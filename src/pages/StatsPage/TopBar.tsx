@@ -1,8 +1,9 @@
-import { useLocation, useNavigate } from 'react-router';
+import { usePageContext } from 'vike-react/usePageContext';
+import { navigate } from 'vike/client/router';
 
 const TopBar = () => {
-	const location = useLocation();
-	const navigate = useNavigate();
+	const pageContext = usePageContext();
+	const location = pageContext.urlParsed;
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
 	const selectedButtonStyle = `${sharedButtonStyle} bg-[#222735] text-[#4671F7] font-semibold`;

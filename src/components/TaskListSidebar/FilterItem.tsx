@@ -1,4 +1,3 @@
-import { useNavigate, useParams } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import Icon from '../Icon';
@@ -7,10 +6,12 @@ import { useGetTasksQuery } from '../../services/resources/tasksApi';
 import { useGetFiltersQuery } from '../../services/resources/filtersApi';
 import ContextMenuGeneric from '../ContextMenu/ContextMenuGeneric';
 import DropdownSidebarItemActions from '../Dropdown/DropdownSidebarItemActions';
+import { navigate } from 'vike/client/router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const FilterItem = ({ filter }) => {
-	const navigate = useNavigate();
-	const params = useParams();
+	const pageContext = usePageContext();
+	const params = pageContext.routeParams;
 
 	const { filterId } = params;
 

@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import Icon from '../Icon';
 import { useEffect, useState } from 'react';
 import OverviewStatsSection from './OverviewStatsSection';
@@ -7,11 +6,12 @@ import TitleSection from './TitleSection';
 import HabitLogSection from './HabitLogSection';
 import { useGetHabitSectionsQuery } from '../../services/resources/habitSectionsApi';
 import { useGetHabitsQuery } from '../../services/resources/habitsApi';
-import { useParams } from 'react-router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 // Should kind of be like TaskDetails but for Habits
 const HabitDetails = () => {
-	const { habitId } = useParams();
+	const pageContext = usePageContext();
+	const { habitId } = pageContext.routeParams;
 
 	const [habit, setHabit] = useState(null);
 	const [currentDate, setCurrentDate] = useState(new Date());

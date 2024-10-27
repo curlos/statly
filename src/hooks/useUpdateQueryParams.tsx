@@ -1,10 +1,10 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { usePageContext } from 'vike-react/usePageContext';
+import { navigate } from 'vike/client/router';
 
 export const useUpdateQueryParams = () => {
-    const navigate = useNavigate();
-	const location = useLocation();
-    
-    const updateQueryParams = (newParams) => {
+	const pageContext = usePageContext();
+
+	const updateQueryParams = (newParams) => {
 		// Preserve existing query params
 		const searchParams = new URLSearchParams(location.search);
 
@@ -14,8 +14,8 @@ export const useUpdateQueryParams = () => {
 		});
 
 		// Navigate to the new URL with updated query params
-		navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+		navigate(`${pageContext.urlParsed.pathname}?${searchParams.toString()}`, { replace: true });
 	};
 
-    return updateQueryParams
-}
+	return updateQueryParams;
+};
