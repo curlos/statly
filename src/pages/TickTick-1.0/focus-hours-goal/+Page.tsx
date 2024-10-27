@@ -1,7 +1,9 @@
 import DailyHoursFocusGoal from '../DailyHoursFocusGoal';
+import { useData } from 'vike-react/useData';
+import type { Data } from './+data.js';
 
-const FocusHoursGoalPage = () => {
-	console.log('Hello World');
+const Page = () => {
+	const focusRecords = useData<Data>();
 
 	return (
 		<div className="flex max-w-screen max-h-screen bg-color-gray-700">
@@ -14,4 +16,4 @@ const FocusHoursGoalPage = () => {
 	);
 };
 
-export default FocusHoursGoalPage;
+export default Page;

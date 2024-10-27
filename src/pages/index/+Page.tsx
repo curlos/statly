@@ -1,9 +1,11 @@
-import ActionSidebar from '../components/ActionSidebar';
-import TaskDetails from '../components/TaskDetails/TaskDetails';
-import TaskListSidebar from '../components/TaskListSidebar/TaskListSidebar';
-import TaskListPage from './TaskListPage';
+import ActionSidebar from '../../components/ActionSidebar';
+import TaskDetails from '../../components/TaskDetails/TaskDetails';
+import TaskListSidebar from '../../components/TaskListSidebar/TaskListSidebar';
+import TaskListPage from '../TaskListPage';
 
-const HomePage = () => {
+const Page = () => {
+	console.log('Going to home page');
+
 	return (
 		<div className="flex max-w-screen">
 			<div className="">
@@ -27,4 +29,4 @@ const HomePage = () => {
 	);
 };
 
-export default HomePage;
+export default Page;

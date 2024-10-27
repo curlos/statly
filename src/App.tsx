@@ -1,19 +1,16 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FocusPage from './pages/FocusPage';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/index/+Page';
 import GlobalModalList from './components/Modal/GlobalModalList';
 import GlobalAlertList from './components/Alert/GlobalAlertList';
-import LoginPage from './pages/(loginAndSignup)/login/+Page';
 import EisenhowerMatrixPage from './pages/EisenhowerMatrixPage';
 import HabitsPage from './pages/HabitsPage';
 import FocusStatsPage from './pages/FocusStatsPage';
 import StatsPage from './pages/StatsPage/StatsPage';
 import CalendarPage from './pages/CalendarPage/CalendarPage';
 import { CalendarProvider } from './contexts/useCalendarContext';
-import FocusRecordsPage from './pages/TickTick-1.0/FocusRecordsPage/FocusRecordsPage';
 import { StatsProvider } from './contexts/useStatsContext';
-import FocusHoursGoalPage from './pages/TickTick-1.0/FocusHoursGoalPage/FocusHoursGoalPage';
 
 function App() {
 	return (
@@ -22,15 +19,6 @@ function App() {
 				<StatsProvider>
 					<Router>
 						<Routes>
-							{/* TickTick 1.0 */}
-							<Route path="/focus-hours-goal" element={<FocusHoursGoalPage />}></Route>
-							<Route path="/ticktick-1.0/focus-records" element={<FocusRecordsPage />}></Route>
-
-							{/* Starting Pages */}
-							<Route path="/login" element={<LoginPage />}></Route>
-							<Route path="/signup" element={<LoginPage />}></Route>
-							<Route path="/" element={<HomePage />}></Route>
-
 							{/* Projects */}
 							<Route path="/projects/:projectId/tasks" element={<HomePage />}></Route>
 							<Route path="/projects/:projectId/tasks/:taskId" element={<HomePage />}></Route>
@@ -67,9 +55,6 @@ function App() {
 									</CalendarProvider>
 								}
 							></Route>
-
-							{/* Fallback route for 404 Not Found */}
-							<Route path="*" element={<HomePage />} />
 						</Routes>
 
 						{/* Modals */}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { isFromServer } from '../../utils/helpers.utils';
 
 interface IContextMenuGeneric {
 	xPos: string;
@@ -30,7 +31,9 @@ const ContextMenuGeneric: React.FC<IContextMenuGeneric> = ({
 		}
 	}, [isDropdownVisible]);
 
-	return createPortal(<div ref={toggleRef}>{children}</div>, document.body);
+	if (!isFromServer()) {
+		return createPortal(<div ref={toggleRef}>{children}</div>, document.body);
+	}
 };
 
 export default ContextMenuGeneric;

@@ -7,7 +7,7 @@ import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resou
 import { useLocation } from 'react-router-dom';
 import { tasksApi } from '../../../services/resources/tasksApi';
 
-const FocusRecordsPage = () => {
+const Page = () => {
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
 	const taskIdToFilterBy = queryParams.get('taskId');
@@ -113,4 +113,4 @@ const FocusRecordsPage = () => {
 	);
 };
 
-export default FocusRecordsPage;
+export default Page;
