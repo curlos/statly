@@ -7,8 +7,6 @@ import store from '../store/store';
 import App from '../App';
 
 const Wrapper = () => {
-	console.log(typeof window === 'undefined');
-
 	return (
 		<Provider store={store}>
 			<App />

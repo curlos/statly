@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import UserForm from '../../components/UserForm'; // Ensure the path and name are correct
+import UserForm from '../../components/UserForm';
 import { selectUserToken } from '../../slices/userSlice';
 import { useSelector } from 'react-redux';
 
-const Page = () => {
+const LoginAndSignupPage = () => {
 	const isLoggedIn = useSelector(selectUserToken);
 	const navigate = useNavigate();
-	const location = useLocation(); // Hook to get location object
+	const location = useLocation();
 
 	useEffect(() => {
 		if (isLoggedIn) {
@@ -29,4 +29,4 @@ const Page = () => {
 	);
 };
 
-export default Page;
+export default LoginAndSignupPage;
