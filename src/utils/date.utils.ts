@@ -878,3 +878,27 @@ export const groupDatesByInterval = (dates, interval) => {
 
 	return grouped;
 };
+
+export const getDateMapSinceDay = (startDateStr) => {
+	const startDate = new Date(startDateStr);
+	const currentDate = new Date();
+	const oneDay = 1000 * 60 * 60 * 24; // milliseconds in a day
+	const dateMap = {};
+
+	for (let date = startDate; date <= currentDate; date = new Date(date.getTime() + oneDay)) {
+		const dateString = date.toLocaleDateString('en-US', {
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric',
+		});
+		dateMap[dateString] = 0;
+	}
+
+	return dateMap;
+};
+
+export const getDayString = (date) => {
+	const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	const dayOfWeek = daysOfWeek[date.getDay()];
+	return dayOfWeek;
+};

@@ -7,7 +7,7 @@ import store from '../store/store';
 import App from '../App';
 import { StatsProvider } from '../contexts/useStatsContext';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import StaticRouter from 'react-router-dom/server';
+import { StaticRouter } from 'react-router-dom/server';
 import GlobalAlertList from '../components/Alert/GlobalAlertList';
 import GlobalModalList from '../components/Modal/GlobalModalList';
 import { isFromServer } from '../utils/helpers.utils';
@@ -15,19 +15,18 @@ import { usePageContext } from 'vike-react/usePageContext';
 
 const Wrapper = ({ children }) => {
 	const pageContext = usePageContext();
-
-	console.log(pageContext);
+	const currLocation = pageContext.urlParsed.pathname;
 
 	return (
 		<Provider store={store}>
 			<StatsProvider>
 				{isFromServer() ? (
-					<StaticRouter location="/">
-						<RouterChildren />
+					<StaticRouter basename="/" location={currLocation}>
+						<RouterChildren>{children}</RouterChildren>
 					</StaticRouter>
 				) : (
 					<Router>
-						<RouterChildren />
+						<RouterChildren>{children}</RouterChildren>
 					</Router>
 				)}
 			</StatsProvider>
@@ -35,9 +34,9 @@ const Wrapper = ({ children }) => {
 	);
 };
 
-const RouterChildren = () => {
+const RouterChildren = ({ children }) => {
 	return (
-		<Router>
+		<>
 			<Routes>
 				{/* Projects */}
 
@@ -85,7 +84,7 @@ const RouterChildren = () => {
 			<GlobalAlertList />
 
 			{children}
-		</Router>
+		</>
 	);
 };
 

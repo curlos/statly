@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { isFromServer } from '../utils/helpers.utils';
 
 /**
  * A reusable hook for handling audio playback.
@@ -6,7 +7,7 @@ import { useRef, useEffect } from 'react';
  * @param {string} audioSrc - The source URL of the audio file.
  */
 const useAudio = (audioSrc) => {
-	const audioRef = useRef(new Audio(audioSrc));
+	const audioRef = useRef(isFromServer() ? {} : new Audio(audioSrc));
 
 	// Set initial volume or other audio properties
 	useEffect(() => {

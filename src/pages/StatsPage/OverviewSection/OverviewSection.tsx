@@ -1,5 +1,5 @@
 import { useStatsContext } from '../../../contexts/useStatsContext';
-import DailyHoursFocusGoal from '../../ticktick-1.0/DailyHoursFocusGoal';
+import DailyHoursFocusGoal from '../../ticktick-1.00/DailyHoursFocusGoal';
 import MyAchievementScoreCard from './MyAchievementScoreCard';
 import OverviewCard from './OverviewCard';
 import RecentCompletionCurveCard from './RecentCompletionCurveCard';
