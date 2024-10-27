@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import UserForm from '../components/UserForm'; // Ensure the path and name are correct
-import { selectUserToken } from '../slices/userSlice';
+import UserForm from '../../components/UserForm'; // Ensure the path and name are correct
+import { selectUserToken } from '../../slices/userSlice';
 import { useSelector } from 'react-redux';
 
-const LoginPage = () => {
+const Page = () => {
 	const isLoggedIn = useSelector(selectUserToken);
 	const navigate = useNavigate();
 	const location = useLocation(); // Hook to get location object
@@ -29,4 +29,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default Page;

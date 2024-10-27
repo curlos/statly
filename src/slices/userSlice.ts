@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { isFromServer } from '../utils/helpers.utils';
 
 const initialState = {
 	user: null,
-	token: localStorage.getItem('token') || null,
+	token: isFromServer() ? null : localStorage.getItem('token'),
 	isLoggedIn: false,
 };
 

@@ -1,6 +1,8 @@
+import { isFromServer } from '../utils/helpers.utils';
+
 // src/middleware/audioMiddleware.js
 const iosDarkNoise = '/IOS Dark Noise Background sound 1 Hour.mp3'; // Ensure this path is correct
-const backgroundAudio = new Audio(iosDarkNoise);
+const backgroundAudio = isFromServer() ? {} : new Audio(iosDarkNoise);
 backgroundAudio.loop = true;
 
 const audioMiddleware = (store) => {

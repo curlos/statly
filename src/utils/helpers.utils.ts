@@ -774,3 +774,5 @@ export const getRandomColor = () => {
 	const blue = Math.floor(Math.random() * 256); // Random number between 0-255
 	return `rgb(${red}, ${green}, ${blue})`; // Construct RGB color string
 };
+
+export const isFromServer = () => typeof window === 'undefined';

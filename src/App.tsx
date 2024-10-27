@@ -4,7 +4,7 @@ import FocusPage from './pages/FocusPage';
 import HomePage from './pages/HomePage';
 import GlobalModalList from './components/Modal/GlobalModalList';
 import GlobalAlertList from './components/Alert/GlobalAlertList';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/login/+Page';
 import EisenhowerMatrixPage from './pages/EisenhowerMatrixPage';
 import HabitsPage from './pages/HabitsPage';
 import FocusStatsPage from './pages/FocusStatsPage';
