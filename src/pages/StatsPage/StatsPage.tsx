@@ -1,12 +1,13 @@
-import { useLocation } from 'react-router';
 import ActionSidebar from '../../components/ActionSidebar';
 import FocusSection from './FocusSection/FocusSection';
 import OverviewSection from './OverviewSection/OverviewSection';
 import TaskSection from './TaskSection/TaskSection';
 import TopBar from './TopBar';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const StatsPage = () => {
-	const location = useLocation();
+	const pageContext = usePageContext();
+	const location = pageContext.urlParsed;
 
 	return (
 		<div className="flex max-w-screen max-h-[100vh]">

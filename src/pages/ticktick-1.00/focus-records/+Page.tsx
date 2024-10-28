@@ -4,11 +4,11 @@ import GroupedFocusRecordList from './GroupedFocusRecordList';
 import TopHeader from './TopHeader';
 import useMaxHeight from '../../../hooks/useMaxHeight';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
-import { useLocation } from 'react-router-dom';
-import { tasksApi } from '../../../services/resources/tasksApi';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const Page = () => {
-	const location = useLocation();
+	const pageContext = usePageContext();
+	const location = pageContext.urlParsed;
 	const queryParams = new URLSearchParams(location.search);
 	const taskIdToFilterBy = queryParams.get('taskId');
 	const defaultSortedBy = queryParams.get('sortBy') || 'Newest';

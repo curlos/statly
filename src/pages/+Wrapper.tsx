@@ -38,10 +38,6 @@ const RouterChildren = ({ children }) => {
 	return (
 		<>
 			<Routes>
-				{/* <Route path="/focus" element={<FocusPage />}></Route>
-							<Route path="/focus-stats" element={<FocusStatsPage />}></Route>
-							<Route path="/matrix" element={<EisenhowerMatrixPage />}></Route> */}
-
 				{/* Statistics Page with different views */}
 				{/* <Route path="/stats/overview" element={<StatsPage />}></Route>
 							<Route path="/stats/task" element={<StatsPage />}></Route>

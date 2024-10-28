@@ -3,7 +3,6 @@ import { setModalState } from '../../slices/modalSlice';
 import Icon from '../Icon';
 import Dropdown from '../Dropdown/Dropdown';
 import { useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
 

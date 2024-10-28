@@ -6,7 +6,7 @@ import Pagination from '../../../components/Pagination';
 import Fuse from 'fuse.js';
 import { debounce } from '../../../utils/helpers.utils';
 import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
-import { useLocation } from 'react-router-dom';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const TopHeader = ({
 	topHeaderRef,
@@ -25,7 +25,8 @@ const TopHeader = ({
 	defaultSortedBy,
 }) => {
 	const updateQueryParams = useUpdateQueryParams();
-	const location = useLocation();
+	const pageContext = usePageContext();
+	const location = pageContext.urlParsed;
 	const queryParams = new URLSearchParams(location.search);
 	const taskIdToFilterBy = queryParams.get('taskId');
 
