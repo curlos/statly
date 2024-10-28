@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "vite --host",
     "dev-with-debugger": "NODE_OPTIONS='--inspect' vite --host",
+    "dev-with-vike-debug": "DEBUG=vite:* npm run dev",
     "build": "tsc && vite build",
+    "build-no-ts": "vite build",
     "build:production": "npm run build && npx serve dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

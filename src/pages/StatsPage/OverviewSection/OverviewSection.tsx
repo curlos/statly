@@ -1,12 +1,8 @@
 import { useStatsContext } from '../../../contexts/useStatsContext';
-import DailyHoursFocusGoal from '../../ticktick-1.00/DailyHoursFocusGoal';
-import MyAchievementScoreCard from './MyAchievementScoreCard';
 import OverviewCard from './OverviewCard';
 import RecentCompletionCurveCard from './RecentCompletionCurveCard';
-import RecentCompletionRateCurveCard from './RecentCompletionRateCurveCard';
 import RecentFocusedDurationCurveCard from './RecentFocusedDurationCurveCard';
 import RecentFocusRecordsCurveCard from './RecentFocusRecordsCurveCard';
-import WeeklyHabitStatusCard from './WeeklyHabitStatusCard';
 
 const OverviewSection = () => {
 	const { total } = useStatsContext();
