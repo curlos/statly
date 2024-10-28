@@ -230,3 +230,12 @@
     text-align: left;
     max-width: 100%;
 }
+
+.CircularProgressbar .CircularProgressbar-trail {
+    stroke-linecap: butt;
+  }
+  
+  .CircularProgressbar .CircularProgressbar-path {
+    stroke-linecap: butt;
+  }
+  

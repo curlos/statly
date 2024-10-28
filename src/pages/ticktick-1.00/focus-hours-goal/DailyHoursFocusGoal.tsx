@@ -29,7 +29,7 @@ const DailyHoursFocusGoal = ({
 			</div>
 			<CircularProgressbarWithChildren
 				value={percentageOfFocusedGoalHours}
-				strokeWidth={3}
+				strokeWidth={4}
 				styles={buildStyles({
 					textColor: '#4772F9',
 					pathColor: completedGoalForTheDay ? '#00cc66' : '#34d399', // Red when overtime, otherwise original color
