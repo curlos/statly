@@ -12,13 +12,15 @@ import GlobalModalList from '../components/Modal/GlobalModalList';
 export const Wrapper = ({ children }) => (
 	<Provider store={store}>
 		<StatsProvider>
-			{children}
+			<div className="text-white">
+				{children}
 
-			{/* Modals */}
-			<GlobalModalList />
+				{/* Modals */}
+				<GlobalModalList />
 
-			{/* Alerts */}
-			<GlobalAlertList />
+				{/* Alerts */}
+				<GlobalAlertList />
+			</div>
 		</StatsProvider>
 	</Provider>
 );
