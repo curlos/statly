@@ -38,20 +38,6 @@ const RouterChildren = ({ children }) => {
 	return (
 		<>
 			<Routes>
-				{/* Tags */}
-				{/* <Route path="/tags/:tagId/tasks" element={<HomePage />}></Route>
-				<Route path="/tags/:tagId/tasks/:taskId" element={<HomePage />}></Route> */}
-
-				{/* Filters */}
-				{/* <Route path="/filters/:filterId/tasks" element={<HomePage />}></Route>
-							<Route path="/filters/:filterId/tasks/:taskId" element={<HomePage />}></Route> */}
-
-				{/* Habits */}
-				{/* <Route path="/habits" element={<HabitsPage />}></Route>
-							<Route path="/habits/:habitId" element={<HabitsPage />}></Route>
-							<Route path="/habits/archived" element={<HabitsPage />}></Route>
-							<Route path="/habits/archived/:habitId" element={<HabitsPage />}></Route> */}
-
 				{/* <Route path="/focus" element={<FocusPage />}></Route>
 							<Route path="/focus-stats" element={<FocusStatsPage />}></Route>
 							<Route path="/matrix" element={<EisenhowerMatrixPage />}></Route> */}
