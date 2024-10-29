@@ -4,7 +4,7 @@ import Modal from '../Modal';
 const ModalHabitDetails: React.FC = ({ isOpen, setIsOpen, habitId }) => {
 	return (
 		<Modal isOpen={isOpen} onClose={() => setIsOpen(false)} position="top-center">
-			<div className="rounded-xl shadow-lg">
+			<div className="rounded-xl shadow-lg max-h-[90vh] h-[90vh]">
 				<HabitDetails fromModal={true} habitId={habitId} />
 			</div>
 		</Modal>

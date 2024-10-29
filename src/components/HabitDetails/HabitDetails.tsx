@@ -20,13 +20,6 @@ const HabitDetails = ({ fromModal, habitId: habitIdFromProps }) => {
 	const { data: fetchedHabits, isLoading: isLoadingGetHabits, error: errorGetHabits } = useGetHabitsQuery();
 	const { habits, habitsById } = fetchedHabits || {};
 
-	// Habit Sections
-	const {
-		data: fetchedHabitSections,
-		isLoading: isLoadingGetHabitSections,
-		error: errorGetHabitSections,
-	} = useGetHabitSectionsQuery();
-
 	useEffect(() => {
 		if (!habitId) {
 			setHabit(null);

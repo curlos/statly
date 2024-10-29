@@ -16,6 +16,7 @@ import { useAddHabitMutation, useEditHabitMutation } from '../../../services/res
 import { useGetHabitSectionsQuery } from '../../../services/resources/habitSectionsApi';
 import DropdownHabitIcons from '../../Dropdown/DropdownHabitIcons';
 import { HADES_KEEPSAKE_ICON_URLS } from '../../../utils/hadesIcons/keepsake';
+import { checkIfIsFocusHoursHabit } from '../../../utils/helpers.utils';
 
 const DEFAULT_DAYS_OF_WEEK = [
 	{ fullName: 'Monday', shortName: 'Mon', selected: true },
@@ -171,6 +172,8 @@ const ModalAddHabit: React.FC = () => {
 
 	const editingExistingHabit = habit;
 
+	const isFocusHoursHabit = checkIfIsFocusHoursHabit(modal?.props?.habit?._id);
+
 	return (
 		<Modal isOpen={isOpen} onClose={closeModal} positionClasses="!items-start mt-[150px]" customClasses="my-[2px]">
 			<div className="rounded-xl shadow-lg bg-color-gray-600">
@@ -219,31 +222,39 @@ const ModalAddHabit: React.FC = () => {
 							</div>
 						</div>
 
-						<FrequencySection
-							selectedInterval={selectedInterval}
-							setSelectedInterval={setSelectedInterval}
-							daysOfWeek={daysOfWeek}
-							setDaysOfWeek={setDaysOfWeek}
-							daysPerWeek={daysPerWeek}
-							setDaysPerWeek={setDaysPerWeek}
-							everyXDays={everyXDays}
-							setEveryXDays={setEveryXDays}
-						/>
+						{!isFocusHoursHabit && (
+							<FrequencySection
+								selectedInterval={selectedInterval}
+								setSelectedInterval={setSelectedInterval}
+								daysOfWeek={daysOfWeek}
+								setDaysOfWeek={setDaysOfWeek}
+								daysPerWeek={daysPerWeek}
+								setDaysPerWeek={setDaysPerWeek}
+								everyXDays={everyXDays}
+								setEveryXDays={setEveryXDays}
+							/>
+						)}
 
-						<GoalSection
-							goalType={goalType}
-							setGoalType={setGoalType}
-							dailyValue={dailyValue}
-							setDailyValue={setDailyValue}
-							dailyUnit={dailyUnit}
-							setDailyUnit={setDailyUnit}
-							whenChecking={whenChecking}
-							setWhenChecking={setWhenChecking}
-						/>
+						{!isFocusHoursHabit && (
+							<GoalSection
+								goalType={goalType}
+								setGoalType={setGoalType}
+								dailyValue={dailyValue}
+								setDailyValue={setDailyValue}
+								dailyUnit={dailyUnit}
+								setDailyUnit={setDailyUnit}
+								whenChecking={whenChecking}
+								setWhenChecking={setWhenChecking}
+							/>
+						)}
+
 						<StartDateSection startDate={startDate} setStartDate={setStartDate} />
 						<GoalDaysSection goalDays={goalDays} setGoalDays={setGoalDays} />
-						<HabitSection section={section} setSection={setSection} />
-						<ReminderSection reminderList={reminderList} setReminderList={setReminderList} />
+
+						{!isFocusHoursHabit && <HabitSection section={section} setSection={setSection} />}
+						{!isFocusHoursHabit && (
+							<ReminderSection reminderList={reminderList} setReminderList={setReminderList} />
+						)}
 					</div>
 
 					{/* Close and Save buttons */}
