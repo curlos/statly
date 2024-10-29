@@ -1,6 +1,8 @@
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import Icon from '../../../components/Icon';
 import { getFormattedDuration } from '../../../utils/helpers.utils';
+import ModalHabitDetails from '../../../components/Modal/ModalHabitDetails/ModalHabitDetails';
+import { useState } from 'react';
 
 const DailyHoursFocusGoal = ({
 	focusRecords,
@@ -9,8 +11,7 @@ const DailyHoursFocusGoal = ({
 	totalFocusDurationToday,
 	percentageOfFocusedGoalHours,
 }) => {
-	// 18,000 seconds = 5 Hours, the daily goal for number of focus hours per day.
-	// TODO: GOAL number of seconds should editable in the "/user-settings" endpoint and that should come from there.
+	const [isModalHabitDetailsOpen, setIsModalHabitDetailsOpen] = useState(false);
 
 	if (!focusRecords) {
 		return null;
@@ -19,8 +20,11 @@ const DailyHoursFocusGoal = ({
 	const completedGoalForTheDay = percentageOfFocusedGoalHours >= 100;
 
 	return (
-		<div>
-			<div className="flex justify-end items-center text-orange-500">
+		<div className="select-none">
+			<div
+				className="flex justify-end items-center text-orange-500 cursor-pointer"
+				onClick={() => setIsModalHabitDetailsOpen(true)}
+			>
 				<Icon name="local_fire_department" customClass={'!text-[32px]'} />
 				<span className="text-[20px]">
 					<span className="text-[32px] font-bold">{streaksInfo.currentStreak.days}</span>
@@ -39,7 +43,7 @@ const DailyHoursFocusGoal = ({
 				className={completedGoalForTheDay ? 'animated-progress-path' : ''}
 			>
 				<div
-					className="text-white text-[40px] flex justify-center gap-4 w-[100%] select-none cursor-pointer mb-[-10px]"
+					className="text-white text-[40px] flex justify-center gap-4 w-[100%] select-none mb-[-10px]"
 					onMouseOver={() => {}}
 				>
 					<div data-cy="timer-display" className="text-center text-[32px]">
@@ -57,6 +61,14 @@ const DailyHoursFocusGoal = ({
 					</div>
 				</div>
 			</CircularProgressbarWithChildren>
+
+			{isModalHabitDetailsOpen && (
+				<ModalHabitDetails
+					isOpen={isModalHabitDetailsOpen}
+					setIsOpen={setIsModalHabitDetailsOpen}
+					habitId="6720b857bf51ef83d4ccf86d"
+				/>
+			)}
 		</div>
 	);
 };

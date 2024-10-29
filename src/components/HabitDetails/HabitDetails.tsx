@@ -9,9 +9,9 @@ import { useGetHabitsQuery } from '../../services/resources/habitsApi';
 import { usePageContext } from 'vike-react/usePageContext';
 
 // Should kind of be like TaskDetails but for Habits
-const HabitDetails = () => {
+const HabitDetails = ({ fromModal, habitId: habitIdFromProps }) => {
 	const pageContext = usePageContext();
-	const { habitId } = pageContext.routeParams;
+	const habitId = pageContext.routeParams.habitId || habitIdFromProps;
 
 	const [habit, setHabit] = useState(null);
 	const [currentDate, setCurrentDate] = useState(new Date());
