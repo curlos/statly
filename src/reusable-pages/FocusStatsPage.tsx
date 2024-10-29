@@ -1,10 +1,6 @@
-import { Link } from "react-router-dom";
-import IconsBar from "../components/IconsBar";
 import { FaChevronLeft, FaArrowUpRightFromSquare, FaArrowUp, FaArrowDown, FaPlus, FaClock, FaChevronRight, FaChevronDown } from "react-icons/fa6";
-import TaskList from "../components/TaskList";
-import { useSelector } from "react-redux";
 import { useState } from "react";
-import { Cell, Label, Legend, Pie, PieChart, PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer } from "recharts";
+import { Cell, Label, Pie, PieChart } from "recharts";
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-calendar-heatmap/dist/styles.css';

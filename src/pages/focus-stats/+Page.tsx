@@ -1,4 +1,4 @@
-import FocusStatsPage from '../FocusStatsPage';
+import FocusStatsPage from '../../reusable-pages/FocusStatsPage';
 
 const Page = () => {
 	return <FocusStatsPage />;

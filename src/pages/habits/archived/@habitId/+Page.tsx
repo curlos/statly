@@ -1,4 +1,4 @@
-import HabitsPage from '../../../HabitsPage';
+import HabitsPage from '../../../../reusable-pages/HabitsPage';
 
 const Page = () => {
 	return <HabitsPage />;

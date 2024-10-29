@@ -1,4 +1,4 @@
-import FocusPage from '../FocusPage';
+import FocusPage from '../../reusable-pages/FocusPage';
 
 const Page = () => {
 	return <FocusPage />;

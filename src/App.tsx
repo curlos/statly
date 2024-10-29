@@ -1,12 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import FocusPage from './pages/FocusPage';
+import FocusPage from './reusable-pages/FocusPage';
 import HomePage from './pages/index/+Page';
 import GlobalModalList from './components/Modal/GlobalModalList';
 import GlobalAlertList from './components/Alert/GlobalAlertList';
-import EisenhowerMatrixPage from './pages/EisenhowerMatrixPage';
-import HabitsPage from './pages/HabitsPage';
-import FocusStatsPage from './pages/FocusStatsPage';
+import EisenhowerMatrixPage from './reusable-pages/EisenhowerMatrixPage';
+import HabitsPage from './reusable-pages/HabitsPage';
+import FocusStatsPage from './reusable-pages/FocusStatsPage';
 import StatsPage from './pages/StatsPage/StatsPage';
 import CalendarPage from './pages/CalendarPage/CalendarPage';
 import { CalendarProvider } from './contexts/useCalendarContext';

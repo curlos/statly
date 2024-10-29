@@ -1,7 +1,7 @@
 import ActionSidebar from '../components/ActionSidebar';
 import TaskDetails from '../components/TaskDetails/TaskDetails';
 import TaskListSidebar from '../components/TaskListSidebar/TaskListSidebar';
-import TaskListPage from '../pages/TaskListPage';
+import TaskListPage from './TaskListPage';
 
 const HomePage = () => {
 	return (

@@ -1,4 +1,4 @@
-import EisenhowerMatrixPage from '../EisenhowerMatrixPage';
+import EisenhowerMatrixPage from '../../reusable-pages/EisenhowerMatrixPage';
 
 const Page = () => {
 	return <EisenhowerMatrixPage />;

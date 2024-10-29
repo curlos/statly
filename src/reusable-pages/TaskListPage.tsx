@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import Icon from '../components/Icon';
+import { useState, useEffect } from 'react';
+import { usePageContext } from 'vike-react/usePageContext';
 import AddTaskForm from '../components/AddTaskForm';
+import Icon from '../components/Icon';
 import { SortableTree } from '../components/SortableTest/SortableTree';
-import { getTasksWithNoParent } from '../utils/helpers.utils';
-import { SMART_LISTS } from '../utils/smartLists.utils';
-import { filterTasksByFilter } from '../utils/filters.util';
-import { useGetTasksQuery } from '../services/resources/tasksApi';
+import { useGetFiltersQuery } from '../services/resources/filtersApi';
 import { useGetProjectsQuery } from '../services/resources/projectsApi';
 import { useGetTagsQuery } from '../services/resources/tagsApi';
-import { useGetFiltersQuery } from '../services/resources/filtersApi';
-import { usePageContext } from 'vike-react/usePageContext';
+import { useGetTasksQuery } from '../services/resources/tasksApi';
+import { filterTasksByFilter } from '../utils/filters.util';
+import { getTasksWithNoParent } from '../utils/helpers.utils';
+import { SMART_LISTS } from '../utils/smartLists.utils';
 
 const TaskListPage = () => {
 	const pageContext = usePageContext();

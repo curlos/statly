@@ -36,10 +36,10 @@ const CRUCIAL_PROJECTS = {
 const GOAL_FOR_DAYS = {
 	Sunday: 5400,
 	Monday: 5400,
-	Tuesday: 3600,
-	Wednesday: 3600,
-	Thursday: 3600,
-	Friday: 3600,
+	Tuesday: 5400,
+	Wednesday: 5400,
+	Thursday: 5400,
+	Friday: 5400,
 	Saturday: 5400,
 };
 
