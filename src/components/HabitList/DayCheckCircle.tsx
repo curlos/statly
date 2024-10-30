@@ -9,6 +9,8 @@ import ContextMenuGeneric from '../ContextMenu/ContextMenuGeneric';
 import DropdownHabitDayActions from './DropdownHabitDayActions';
 import { isFutureDate } from '../../utils/date.utils';
 import { checkIfIsFocusHoursHabit } from '../../utils/helpers.utils';
+import { useDispatch } from 'react-redux';
+import { setModalState } from '../../slices/modalSlice';
 
 const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 	const handleError = useHandleError();
@@ -27,12 +29,27 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 	const disableHabitActions = habit.isArchived || dayHasNotHappenedYet;
 	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
 
+	const dispatch = useDispatch();
+
 	const handleClick = () => {
 		if (disableHabitActions) {
 			return;
 		}
 
 		if (isFocusHoursHabit) {
+			dispatch(
+				setModalState({
+					modalId: 'ModalAddHabitLog',
+					isOpen: true,
+					props: {
+						habit,
+						checkedInDay,
+						checkedInDayKey,
+						isReadOnly: true,
+					},
+				})
+			);
+
 			return;
 		}
 
@@ -106,7 +123,7 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 						'rounded-full flex justify-center items-center',
 						isChecked ? 'bg-blue-500' : 'bg-color-gray-100/30',
 						type === 'small' ? 'h-[20px] w-[20px]' : 'h-[30px] w-[30px]',
-						disableHabitActions ? 'cursor-not-allowed' : !isFocusHoursHabit && 'cursor-pointer'
+						disableHabitActions ? 'cursor-not-allowed' : 'cursor-pointer'
 					)}
 					onContextMenu={handleContextMenu}
 					onClick={handleClick}
