@@ -7,6 +7,7 @@ import { useEditHabitMutation } from '../../services/resources/habitsApi';
 import { setModalState } from '../../slices/modalSlice';
 import { useDispatch } from 'react-redux';
 import { checkIfIsFocusHoursHabit } from '../../utils/helpers.utils';
+import { useGetHabitLogsQuery } from '../../services/resources/habitLogsApi';
 
 interface IDropdownHabitDayActions extends DropdownProps {}
 
@@ -22,10 +23,14 @@ const DropdownHabitDayActions: React.FC<IDropdownHabitDayActions> = ({
 	const dispatch = useDispatch();
 	const handleError = useHandleError();
 	const [editHabit] = useEditHabitMutation();
+	const { data: fetchedHabitLogs } = useGetHabitLogsQuery();
+	const { habitLogsById } = fetchedHabitLogs || {};
 
 	const checkedInDay = habit.checkedInDays[checkedInDayKey];
 	const isUnachieved = checkedInDay && checkedInDay.isAchieved === false;
 	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
+	const habitLog = checkedInDay && checkedInDay.habitLogId && habitLogsById[checkedInDay.habitLogId];
+	const habitLogContent = habitLog?.content;
 
 	return (
 		<Dropdown
@@ -64,10 +69,9 @@ const DropdownHabitDayActions: React.FC<IDropdownHabitDayActions> = ({
 					/>
 				)}
 				<ActionItem
-					name="Habit Log"
+					name={habitLogContent ? 'Edit Habit Log' : 'Add Habit Log'}
 					iconName="edit"
 					onClick={() => {
-						// TODO: Open the "Habit Log" modal where the habit's log for that day can be added or edited.
 						setIsVisible(false);
 						dispatch(
 							setModalState({
