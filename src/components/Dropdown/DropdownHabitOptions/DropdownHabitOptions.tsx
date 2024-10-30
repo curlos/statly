@@ -14,6 +14,8 @@ import DropdownStartFocus from '../DropdownTaskOptions/DropdownStartFocus';
 import useHandleError from '../../../hooks/useHandleError';
 import classNames from 'classnames';
 import { usePageContext } from 'vike-react/usePageContext';
+import { navigate } from 'vike/client/router';
+import { checkIfIsFocusHoursHabit } from '../../../utils/helpers.utils';
 
 interface DropdownHabitOptionsProps extends DropdownProps {
 	habit: Object;
@@ -92,7 +94,8 @@ const DropdownHabitOptions: React.FC<DropdownHabitOptionsProps> = ({
 		});
 	};
 
-	const { isArchived } = habit;
+	const { isArchived, _id } = habit;
+	const isFocusHoursHabit = checkIfIsFocusHoursHabit(_id);
 
 	return (
 		<Dropdown
@@ -125,7 +128,7 @@ const DropdownHabitOptions: React.FC<DropdownHabitOptionsProps> = ({
 						<div>Edit</div>
 					</div>
 				)}
-				{!habit.isArchived && (
+				{!habit.isArchived && !isFocusHoursHabit && (
 					<div
 						ref={dropdownStartFocusRef}
 						className="p-1 flex justify-between items-center hover:bg-color-gray-300 cursor-pointer"
@@ -157,33 +160,37 @@ const DropdownHabitOptions: React.FC<DropdownHabitOptionsProps> = ({
 					isVisible={isDropdownStartFocusVisible}
 					setIsVisible={setIsDropdownStartFocusVisible}
 				/>
-				<div
-					className="p-1 flex items-center gap-[2px] hover:bg-color-gray-300 cursor-pointer"
-					onClick={handleArchive}
-				>
-					<Icon
-						name="delete"
-						customClass={
-							'text-color-gray-100 !text-[18px] p-1 rounded hover:bg-color-gray-300 cursor-pointer'
-						}
-						fill={0}
-					/>
-					<div>{isArchived ? 'Pick up habit' : 'Archive'}</div>
-				</div>
+				{!isFocusHoursHabit && (
+					<div
+						className="p-1 flex items-center gap-[2px] hover:bg-color-gray-300 cursor-pointer"
+						onClick={handleArchive}
+					>
+						<Icon
+							name="delete"
+							customClass={
+								'text-color-gray-100 !text-[18px] p-1 rounded hover:bg-color-gray-300 cursor-pointer'
+							}
+							fill={0}
+						/>
+						<div>{isArchived ? 'Pick up habit' : 'Archive'}</div>
+					</div>
+				)}
 
-				<div
-					className="p-1 flex items-center gap-[2px] hover:bg-color-gray-300 cursor-pointer"
-					onClick={handlePermanentlyDelete}
-				>
-					<Icon
-						name="delete"
-						customClass={
-							'text-color-gray-100 !text-[18px] p-1 rounded hover:bg-color-gray-300 cursor-pointer'
-						}
-						fill={0}
-					/>
-					<div>Delete</div>
-				</div>
+				{!isFocusHoursHabit && (
+					<div
+						className="p-1 flex items-center gap-[2px] hover:bg-color-gray-300 cursor-pointer"
+						onClick={handlePermanentlyDelete}
+					>
+						<Icon
+							name="delete"
+							customClass={
+								'text-color-gray-100 !text-[18px] p-1 rounded hover:bg-color-gray-300 cursor-pointer'
+							}
+							fill={0}
+						/>
+						<div>Delete</div>
+					</div>
+				)}
 			</div>
 		</Dropdown>
 	);

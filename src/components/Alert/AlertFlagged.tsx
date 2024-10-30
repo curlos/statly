@@ -6,6 +6,7 @@ import Icon from '../Icon';
 import { useFlagTaskMutation } from '../../services/resources/tasksApi';
 import { useFlagHabitMutation } from '../../services/resources/habitsApi';
 import useHandleError from '../../hooks/useHandleError';
+import { navigate } from 'vike/client/router';
 
 const AlertFlagged = () => {
 	const handleError = useHandleError();
@@ -104,6 +105,7 @@ const AlertFlagged = () => {
 									value: null,
 								}).unwrap();
 							});
+							navigate(`/habits/${habit._id}`);
 						}
 						dispatch(setAlertState({ alertId: 'AlertFlagged', isOpen: false }));
 					}}

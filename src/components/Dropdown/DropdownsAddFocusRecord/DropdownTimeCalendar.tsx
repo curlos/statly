@@ -29,7 +29,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 			toggleRef={toggleRef}
 			isVisible={isVisible}
 			setIsVisible={setIsVisible}
-			customClasses={'w-[250px] p-1 shadow-2xl border border-color-gray-200 rounded-lg'}
+			customClasses={'w-[250px] p-1 shadow-2xl border border-color-gray-200 rounded-lg select-none'}
 		>
 			<div className="pt-2">
 				<SelectCalendar dueDate={selectedDate} setDueDate={setSelectedDate} time={selectedTime} />

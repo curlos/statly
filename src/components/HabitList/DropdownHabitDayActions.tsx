@@ -6,6 +6,7 @@ import useHandleError from '../../hooks/useHandleError';
 import { useEditHabitMutation } from '../../services/resources/habitsApi';
 import { setModalState } from '../../slices/modalSlice';
 import { useDispatch } from 'react-redux';
+import { checkIfIsFocusHoursHabit } from '../../utils/helpers.utils';
 
 interface IDropdownHabitDayActions extends DropdownProps {}
 
@@ -24,6 +25,7 @@ const DropdownHabitDayActions: React.FC<IDropdownHabitDayActions> = ({
 
 	const checkedInDay = habit.checkedInDays[checkedInDayKey];
 	const isUnachieved = checkedInDay && checkedInDay.isAchieved === false;
+	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
 
 	return (
 		<Dropdown
@@ -37,28 +39,30 @@ const DropdownHabitDayActions: React.FC<IDropdownHabitDayActions> = ({
 			customStyling={customStyling ? customStyling : null}
 		>
 			<div className="w-[200px] rounded p-1">
-				<ActionItem
-					name={isUnachieved ? 'Achieved' : 'Unachieved'}
-					iconName={isUnachieved ? 'check' : 'cancel'}
-					onClick={() => {
-						handleError(async () => {
-							setIsVisible(false);
+				{!isFocusHoursHabit && (
+					<ActionItem
+						name={isUnachieved ? 'Achieved' : 'Unachieved'}
+						iconName={isUnachieved ? 'check' : 'cancel'}
+						onClick={() => {
+							handleError(async () => {
+								setIsVisible(false);
 
-							await editHabit({
-								habitId: habit._id,
-								payload: {
-									checkedInDays: {
-										...habit.checkedInDays,
-										[checkedInDayKey]: {
-											...checkedInDay,
-											isAchieved: isUnachieved ? new Date().toISOString() : false,
+								await editHabit({
+									habitId: habit._id,
+									payload: {
+										checkedInDays: {
+											...habit.checkedInDays,
+											[checkedInDayKey]: {
+												...checkedInDay,
+												isAchieved: isUnachieved ? new Date().toISOString() : false,
+											},
 										},
 									},
-								},
-							}).unwrap();
-						});
-					}}
-				/>
+								}).unwrap();
+							});
+						}}
+					/>
+				)}
 				<ActionItem
 					name="Habit Log"
 					iconName="edit"

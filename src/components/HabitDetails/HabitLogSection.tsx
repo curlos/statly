@@ -126,7 +126,7 @@ const HabitLogDay = ({ checkedInDay, isLastInList, habitLogsById, habit }) => {
 					<div>
 						<div className="font-medium">{date}</div>
 
-						<div className="text-color-gray-100 max-w-[350px] break-words">
+						<div className="text-color-gray-100 max-w-[350px] break-words react-markdown">
 							<ReactMarkdown remarkPlugins={[remarkGfm]}>{habitLogContent}</ReactMarkdown>
 						</div>
 					</div>

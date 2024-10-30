@@ -8,6 +8,7 @@ import Icon from '../Icon';
 import ContextMenuGeneric from '../ContextMenu/ContextMenuGeneric';
 import DropdownHabitDayActions from './DropdownHabitDayActions';
 import { isFutureDate } from '../../utils/date.utils';
+import { checkIfIsFocusHoursHabit } from '../../utils/helpers.utils';
 
 const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 	const handleError = useHandleError();
@@ -24,9 +25,14 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 
 	const dayHasNotHappenedYet = isFutureDate(day);
 	const disableHabitActions = habit.isArchived || dayHasNotHappenedYet;
+	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
 
 	const handleClick = () => {
 		if (disableHabitActions) {
+			return;
+		}
+
+		if (isFocusHoursHabit) {
 			return;
 		}
 
@@ -100,7 +106,7 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 						'rounded-full flex justify-center items-center',
 						isChecked ? 'bg-blue-500' : 'bg-color-gray-100/30',
 						type === 'small' ? 'h-[20px] w-[20px]' : 'h-[30px] w-[30px]',
-						disableHabitActions ? 'cursor-not-allowed' : 'cursor-pointer'
+						disableHabitActions ? 'cursor-not-allowed' : !isFocusHoursHabit && 'cursor-pointer'
 					)}
 					onContextMenu={handleContextMenu}
 					onClick={handleClick}

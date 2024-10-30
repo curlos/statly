@@ -64,8 +64,7 @@ const useStats = () => {
 	const [statsForLastSevenWeeks, setStatsForLastSevenWeeks] = useState(null);
 	const [statsForLastSevenMonths, setStatsForLastSevenMonths] = useState(null);
 
-	// TODO: I've set it to September 15, 2024 for now since that's the last date with the most up-to-date data but once I stop getting the local data, I need to set this back to Today's date so remove "September 15, 2024".
-	const todayDate = new Date('September 15, 2024');
+	const todayDate = new Date();
 	const todayDateKey = getFormattedLongDay(todayDate);
 
 	useEffect(() => {

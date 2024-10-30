@@ -248,7 +248,7 @@ const ModalAddHabit: React.FC = () => {
 							/>
 						)}
 
-						<StartDateSection startDate={startDate} setStartDate={setStartDate} />
+						{!isFocusHoursHabit && <StartDateSection startDate={startDate} setStartDate={setStartDate} />}
 						<GoalDaysSection goalDays={goalDays} setGoalDays={setGoalDays} />
 
 						{!isFocusHoursHabit && <HabitSection section={section} setSection={setSection} />}
