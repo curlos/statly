@@ -69,6 +69,25 @@ const DropdownHabitDayActions: React.FC<IDropdownHabitDayActions> = ({
 					/>
 				)}
 				<ActionItem
+					name={'View Habit Log'}
+					iconName="description"
+					onClick={() => {
+						setIsVisible(false);
+						dispatch(
+							setModalState({
+								modalId: 'ModalAddHabitLog',
+								isOpen: true,
+								props: {
+									habit,
+									checkedInDay,
+									checkedInDayKey,
+									isReadOnly: true,
+								},
+							})
+						);
+					}}
+				/>
+				<ActionItem
 					name={habitLogContent ? 'Edit Habit Log' : 'Add Habit Log'}
 					iconName="edit"
 					onClick={() => {
