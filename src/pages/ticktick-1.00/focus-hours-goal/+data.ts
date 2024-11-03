@@ -10,7 +10,7 @@ import { getFocusDurationFilteredByProjects } from '../../../utils/helpers.utils
 export type Data = Awaited<ReturnType<typeof data>>;
 
 export const data = async () => {
-	const response = await fetch('http://localhost:8888/ticktick-1.0/focus-records?last30Days=true');
+	const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/ticktick-1.0/focus-records`);
 	const focusRecords = await response.json();
 
 	const streaksInfo = getStreaksInfo(focusRecords);

@@ -9,7 +9,7 @@ export const buildQueryString = (params) => {
 export const baseAPI = createApi({
 	reducerPath: 'api', // Unique identifier for the reducer
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://localhost:8888',
+		baseUrl: import.meta.env.VITE_SERVER_URL,
 		prepareHeaders: (headers, { getState }) => {
 			const token = getState().user.token;
 			if (token) {
