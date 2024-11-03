@@ -15,15 +15,16 @@ export default async function handler(req, res) {
 	const pageContextInit = { urlOriginal: url };
 	const pageContext = await renderPage(pageContextInit);
 	const { httpResponse } = pageContext;
-	console.log('httpResponse', httpResponse);
 
 	if (!httpResponse) {
-		res.statusCode = 200;
+		res.statusCode = 404;
 		res.end();
 		return;
 	}
 
 	const { body, statusCode, headers } = httpResponse;
+
+	console.log(body);
 	res.statusCode = statusCode;
 	headers.forEach(([name, value]) => res.setHeader(name, value));
 	res.end(body);
