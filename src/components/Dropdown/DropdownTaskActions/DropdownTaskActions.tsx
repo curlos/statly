@@ -16,6 +16,7 @@ import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { useGetTagsQuery } from '../../../services/resources/tagsApi';
 import { navigate } from 'vike/client/router';
 import { usePageContext } from 'vike-react/usePageContext';
+import { isFromServer } from '../../../utils/helpers.utils';
 
 interface DropdownTaskActionsProps extends DropdownProps {
 	onCloseContextMenu: () => void;
@@ -113,14 +114,16 @@ const DropdownTaskActions: React.FC<DropdownTaskActionsProps> = ({
 	}
 
 	function copyTextToClipboard(text) {
-		navigator.clipboard
-			.writeText(text)
-			.then(() => {
-				// console.log('Text copied to clipboard ' + text);
-			})
-			.catch((err) => {
-				console.error('Failed to copy text: ', err);
-			});
+		if (!isFromServer()) {
+			navigator.clipboard
+				.writeText(text)
+				.then(() => {
+					// console.log('Text copied to clipboard ' + text);
+				})
+				.catch((err) => {
+					console.error('Failed to copy text: ', err);
+				});
+		}
 	}
 
 	const PriorityFlag = ({ priorityName }) => {
