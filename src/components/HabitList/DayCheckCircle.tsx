@@ -15,13 +15,12 @@ import { useData } from 'vike-react/useData';
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { getFocusDataForDayInfo } from '../../utils/focus.utils';
 
-const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
+const DayCheckCircle = ({ isChecked, day, habit, type = 'small', isTooltipDayVisible, setIsTooltipDayVisible }) => {
 	const handleError = useHandleError();
 	const [editHabit] = useEditHabitMutation();
 	const checkedInDayKey = day;
 	const checkedInDay = habit.checkedInDays[checkedInDayKey];
 	const [contextMenu, setContextMenu] = useState(null);
-	const [isTooltipDayVisible, setIsTooltipDayVisible] = useState(false);
 	const [isAlertTooltipOpen, setIsAlertTooltipOpen] = useState(false);
 	const [isDropdownHabitDayActionsVisible, setIsDropdownHabitDayActionsVisible] = useState(true);
 
@@ -119,7 +118,7 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 					ref={tooltipDayRef}
 					key={`${habit._id} ${day}`}
 					className="w-[30px] h-[30px]"
-					onMouseOver={() => setIsTooltipDayVisible(true)}
+					onMouseOver={() => setIsTooltipDayVisible(day)}
 					onMouseLeave={() => setIsTooltipDayVisible(false)}
 				>
 					<CircularProgressbarWithChildren
@@ -136,6 +135,8 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 			</>
 		);
 	};
+
+	console.log(day);
 
 	return (
 		<div className={classNames('relative')}>
@@ -163,7 +164,7 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 							)}
 							onContextMenu={handleContextMenu}
 							onClick={handleClick}
-							onMouseOver={() => setIsTooltipDayVisible(true)}
+							onMouseOver={() => setIsTooltipDayVisible(day)}
 							onMouseLeave={() => setIsTooltipDayVisible(false)}
 						>
 							{isChecked && (
@@ -183,7 +184,7 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 
 				<Dropdown
 					toggleRef={tooltipDayRef}
-					isVisible={isTooltipDayVisible}
+					isVisible={isTooltipDayVisible === day}
 					setIsVisible={setIsTooltipDayVisible}
 					customClasses={'!bg-black'}
 				>

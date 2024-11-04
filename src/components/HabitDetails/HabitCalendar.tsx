@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { getCalendarMonth } from '../../utils/date.utils';
 import Icon from '../Icon';
 import DayCircle from './DayCircle';
 
 const HabitCalendar = ({ habit, currentDate, setCurrentDate }) => {
+	const [isTooltipDayVisible, setIsTooltipDayVisible] = useState(false);
+
 	const goToPreviousMonth = () => {
 		setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
 	};
@@ -50,10 +53,14 @@ const HabitCalendar = ({ habit, currentDate, setCurrentDate }) => {
 							{week.map((day, index) => (
 								<DayCircle
 									key={`${day} ${index}`}
-									day={day}
-									index={index}
-									habit={habit}
-									currentDate={currentDate}
+									{...{
+										day,
+										index,
+										habit,
+										currentDate,
+										isTooltipDayVisible,
+										setIsTooltipDayVisible,
+									}}
 								/>
 							))}
 						</div>

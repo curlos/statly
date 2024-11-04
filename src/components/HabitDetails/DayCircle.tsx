@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { formatCheckedInDayDate, areDatesEqual } from '../../utils/date.utils';
 import DayCheckCircle from '../HabitList/DayCheckCircle';
 
-const DayCircle = ({ day, index, habit, currentDate }) => {
+const DayCircle = ({ day, index, habit, currentDate, isTooltipDayVisible, setIsTooltipDayVisible }) => {
 	const checkedInDayKey = formatCheckedInDayDate(day);
 	const checkedInDay = habit.checkedInDays[checkedInDayKey];
 	const isChecked = checkedInDay && checkedInDay.isAchieved ? true : false;
@@ -31,7 +31,16 @@ const DayCircle = ({ day, index, habit, currentDate }) => {
 				{day.getDate()}
 			</div>
 
-			<DayCheckCircle isChecked={isChecked} day={checkedInDayKey} habit={habit} type="medium" />
+			<DayCheckCircle
+				{...{
+					isChecked,
+					day: checkedInDayKey,
+					habit,
+					type: 'medium',
+					isTooltipDayVisible,
+					setIsTooltipDayVisible,
+				}}
+			/>
 		</div>
 	);
 };
