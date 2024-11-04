@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { getCalendarMonth } from '../../utils/date.utils';
 import Icon from '../Icon';
 import DayCircle from './DayCircle';
 
 const HabitCalendar = ({ habit, currentDate, setCurrentDate }) => {
+	const habitCalendarContainerRef = useRef(null);
 	const [isTooltipDayVisible, setIsTooltipDayVisible] = useState(false);
 
 	const goToPreviousMonth = () => {
@@ -18,7 +19,7 @@ const HabitCalendar = ({ habit, currentDate, setCurrentDate }) => {
 	const monthName = currentDate.toLocaleString('default', { month: 'long' });
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg">
+		<div ref={habitCalendarContainerRef} className="bg-color-gray-600 p-3 rounded-lg">
 			<div className="flex justify-between items-center">
 				<Icon
 					name="chevron_left"
@@ -60,6 +61,7 @@ const HabitCalendar = ({ habit, currentDate, setCurrentDate }) => {
 										currentDate,
 										isTooltipDayVisible,
 										setIsTooltipDayVisible,
+										habitCalendarContainerRef,
 									}}
 								/>
 							))}

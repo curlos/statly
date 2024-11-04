@@ -15,7 +15,15 @@ import { useData } from 'vike-react/useData';
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { getFocusDataForDayInfo } from '../../utils/focus.utils';
 
-const DayCheckCircle = ({ isChecked, day, habit, type = 'small', isTooltipDayVisible, setIsTooltipDayVisible }) => {
+const DayCheckCircle = ({
+	isChecked,
+	day,
+	habit,
+	type = 'small',
+	isTooltipDayVisible,
+	setIsTooltipDayVisible,
+	habitCalendarContainerRef,
+}) => {
 	const handleError = useHandleError();
 	const [editHabit] = useEditHabitMutation();
 	const checkedInDayKey = day;
@@ -32,8 +40,9 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small', isTooltipDayVis
 	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
 
 	const { focusRecords, focusRecordsByDate } = useData() || {};
-	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
-		getFocusDataForDayInfo(focusRecordsByDate, new Date(checkedInDayKey)) || {};
+	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } = focusRecordsByDate
+		? getFocusDataForDayInfo(focusRecordsByDate, new Date(checkedInDayKey))
+		: {};
 
 	const dispatch = useDispatch();
 
@@ -136,8 +145,6 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small', isTooltipDayVis
 		);
 	};
 
-	console.log(day);
-
 	return (
 		<div className={classNames('relative')}>
 			<AlertTooltip
@@ -185,8 +192,9 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small', isTooltipDayVis
 				<Dropdown
 					toggleRef={tooltipDayRef}
 					isVisible={isTooltipDayVisible === day}
-					setIsVisible={setIsTooltipDayVisible}
+					setIsVisible={() => {}}
 					customClasses={'!bg-black'}
+					parentElemRef={habitCalendarContainerRef}
 				>
 					<div className="p-2">
 						<div className="text-[12px] text-nowrap">

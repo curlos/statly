@@ -172,6 +172,7 @@ const HabitCard = ({ habit, viewType, formattedLastSevenDays, selectedDay }) => 
 	const [isTooltipLongestStreakVisible, setIsTooltipLongestStreakVisible] = useState(false);
 	const [isTooltipCurrentStreakVisible, setIsTooltipCurrentStreakVisible] = useState(false);
 	const [isDropdownHabitOptionsVisible, setIsDropdownHabitOptionsVisible] = useState(true);
+	const [isTooltipDayVisible, setIsTooltipDayVisible] = useState(false);
 
 	const tooltipLongestStreakRef = useRef(null);
 	const tooltipCurrentStreakRef = useRef(null);
@@ -290,15 +291,30 @@ const HabitCard = ({ habit, viewType, formattedLastSevenDays, selectedDay }) => 
 					>
 						{selectedDay ? (
 							<DayCheckCircle
-								isChecked={checkedInDays[formattedSelectedDay]?.isAchieved}
-								day={formattedSelectedDay}
-								habit={habit}
+								{...{
+									isChecked: checkedInDays[formattedSelectedDay]?.isAchieved,
+									day: formattedSelectedDay,
+									habit: habit,
+									isTooltipDayVisible,
+									setIsTooltipDayVisible,
+								}}
 							/>
 						) : (
 							formattedLastSevenDays.map((day, i) => {
 								const isChecked = checkedInDays[day]?.isAchieved;
 
-								return <DayCheckCircle key={day} isChecked={isChecked} day={day} habit={habit} />;
+								return (
+									<DayCheckCircle
+										key={day}
+										{...{
+											isChecked,
+											day,
+											habit,
+											isTooltipDayVisible,
+											setIsTooltipDayVisible,
+										}}
+									/>
+								);
 							})
 						)}
 					</div>

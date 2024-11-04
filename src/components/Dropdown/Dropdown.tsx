@@ -19,6 +19,7 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	customStyling,
 	innerClickElemRefs,
 	addedAdditionalMargin,
+	parentElemRef,
 }) => {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -56,6 +57,20 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 			if (dropdownRect.right > window.innerWidth) {
 				adjustments.right = '0px'; // Align right edge with the toggle element or adjust as necessary
 				adjustments.left = 'auto'; // Reset left positioning if right adjustment is made
+			} else if (parentElemRef) {
+				// TODO: This is specifically for the Habit Details Calendar Tooltips on the Habit Details Modal. THis needs to work for everything though. Focus Records Add Task Modal should have a similar bug that needs to be fixed where the dropdown is being cut off by the parent container since it's in a modal.
+
+				// Check if the dropdown has a parent container that wraps it and if it exceeds the position of that parent container. Will need to set it to a right value of the parent container I think. Need to test this out. pretty annoying to encounter this for Tooltips.
+				const parentElemRect = parentElemRef?.current.getBoundingClientRect();
+				// console.log(parentElemRect);
+
+				if (dropdownRect.right > parentElemRect.right) {
+					console.log(dropdownRect.right);
+					console.log(parentElemRect.right);
+					console.log(dropdownRect);
+					console.log(parentElemRect);
+					adjustments.left = `-${dropdownRect.width - 32}px`;
+				}
 			}
 
 			// Apply styles directly to adjust the dropdown's positioning
