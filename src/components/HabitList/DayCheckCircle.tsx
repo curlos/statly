@@ -8,9 +8,12 @@ import Icon from '../Icon';
 import ContextMenuGeneric from '../ContextMenu/ContextMenuGeneric';
 import DropdownHabitDayActions from './DropdownHabitDayActions';
 import { isFutureDate } from '../../utils/date.utils';
-import { checkIfIsFocusHoursHabit } from '../../utils/helpers.utils';
+import { checkIfIsFocusHoursHabit, getFormattedDuration } from '../../utils/helpers.utils';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
+import { useData } from 'vike-react/useData';
+import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import { getFocusDataForDayInfo } from '../../utils/focus.utils';
 
 const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 	const handleError = useHandleError();
@@ -28,6 +31,10 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 	const dayHasNotHappenedYet = isFutureDate(day);
 	const disableHabitActions = habit.isArchived || dayHasNotHappenedYet;
 	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
+
+	const { focusRecords, focusRecordsByDate } = useData() || {};
+	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
+		getFocusDataForDayInfo(focusRecordsByDate, new Date(checkedInDayKey)) || {};
 
 	const dispatch = useDispatch();
 
@@ -105,6 +112,31 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 		setContextMenu(null);
 	};
 
+	const FocusHoursGoalDayCircle = () => {
+		return (
+			<>
+				<div
+					ref={tooltipDayRef}
+					key={`${habit._id} ${day}`}
+					className="w-[30px] h-[30px]"
+					onMouseOver={() => setIsTooltipDayVisible(true)}
+					onMouseLeave={() => setIsTooltipDayVisible(false)}
+				>
+					<CircularProgressbarWithChildren
+						value={percentageOfFocusedGoalHours}
+						strokeWidth={13}
+						styles={buildStyles({
+							textColor: '#4772F9',
+							pathColor: '#4772F9', // Red when overtime, otherwise original color
+							trailColor: '#3a3a3a',
+						})}
+						counterClockwise={false}
+					/>
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<div className={classNames('relative')}>
 			<AlertTooltip
@@ -116,26 +148,38 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 			</AlertTooltip>
 
 			<div className="relative">
-				<div
-					ref={tooltipDayRef}
-					key={`${habit._id} ${day}`}
-					className={classNames(
-						'rounded-full flex justify-center items-center',
-						isChecked ? 'bg-blue-500' : 'bg-color-gray-100/30',
-						type === 'small' ? 'h-[20px] w-[20px]' : 'h-[30px] w-[30px]',
-						disableHabitActions ? 'cursor-not-allowed' : 'cursor-pointer'
-					)}
-					onContextMenu={handleContextMenu}
-					onClick={handleClick}
-					onMouseOver={() => setIsTooltipDayVisible(true)}
-					onMouseLeave={() => setIsTooltipDayVisible(false)}
-				>
-					{isChecked && <Icon name="check" fill={1} customClass={classNames('text-white !text-[18px]')} />}
+				{isFocusHoursHabit && focusRecordsByDate ? (
+					<FocusHoursGoalDayCircle />
+				) : (
+					<>
+						<div
+							ref={tooltipDayRef}
+							key={`${habit._id} ${day}`}
+							className={classNames(
+								'rounded-full flex justify-center items-center',
+								isChecked ? 'bg-blue-500' : 'bg-color-gray-100/30',
+								type === 'small' ? 'h-[20px] w-[20px]' : 'h-[30px] w-[30px]',
+								disableHabitActions ? 'cursor-not-allowed' : 'cursor-pointer'
+							)}
+							onContextMenu={handleContextMenu}
+							onClick={handleClick}
+							onMouseOver={() => setIsTooltipDayVisible(true)}
+							onMouseLeave={() => setIsTooltipDayVisible(false)}
+						>
+							{isChecked && (
+								<Icon name="check" fill={1} customClass={classNames('text-white !text-[18px]')} />
+							)}
 
-					{checkedInDay && checkedInDay.isAchieved === false && (
-						<Icon name="close" fill={1} customClass={classNames('text-red-500 !text-[18px] mr-[-1px]')} />
-					)}
-				</div>
+							{checkedInDay && checkedInDay.isAchieved === false && (
+								<Icon
+									name="close"
+									fill={1}
+									customClass={classNames('text-red-500 !text-[18px] mr-[-1px]')}
+								/>
+							)}
+						</div>
+					</>
+				)}
 
 				<Dropdown
 					toggleRef={tooltipDayRef}
@@ -143,12 +187,32 @@ const DayCheckCircle = ({ isChecked, day, habit, type = 'small' }) => {
 					setIsVisible={setIsTooltipDayVisible}
 					customClasses={'!bg-black'}
 				>
-					<div className="p-2 text-[12px] text-nowrap">
-						{new Date(day).toLocaleDateString('en-US', {
-							weekday: 'short', // "Mon" for Monday
-							month: 'long', // "July"
-							day: 'numeric', // "8"
-						})}
+					<div className="p-2">
+						<div className="text-[12px] text-nowrap">
+							{new Date(day).toLocaleDateString('en-US', {
+								weekday: 'short', // "Mon" for Monday
+								month: 'long', // "July"
+								day: 'numeric', // "8"
+							})}
+						</div>
+
+						{isFocusHoursHabit && (
+							<>
+								<div>
+									<span className="text-[18px] font-[600]">
+										{getFormattedDuration(totalFocusDurationForDay, false)}
+									</span>
+									<span className="">/</span>
+									<span className="text-color-gray-50">
+										{getFormattedDuration(goalSeconds, false)}
+									</span>
+								</div>
+
+								<div className="text-[12px] mt-[-5px] text-color-gray-100">
+									{Number(percentageOfFocusedGoalHours).toFixed(2)}%
+								</div>
+							</>
+						)}
 					</div>
 				</Dropdown>
 

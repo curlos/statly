@@ -152,14 +152,12 @@ export const getFocusDurationForDay = (focusRecordsByDate, date) => {
 	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay);
 };
 
-export const getFocusDataForDayInfo = ({ focusRecords, focusRecordsByDate, date }) => {
-	const streaksInfo = getStreaksInfo(focusRecords);
+export const getFocusDataForDayInfo = (focusRecordsByDate, date) => {
 	const goalSeconds = getGoalSeconds(date);
 	const totalFocusDurationForDay = getFocusDurationForDay(focusRecordsByDate, date);
 	const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalSeconds) * 100;
 
 	return {
-		streaksInfo,
 		goalSeconds,
 		totalFocusDurationForDay,
 		percentageOfFocusedGoalHours,
