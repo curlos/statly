@@ -146,27 +146,22 @@ export const getFocusRecordsFromToday = (focusRecords) => {
 	return focusRecordsFromToday;
 };
 
-export const getTotalFocusDurationToday = (focusRecords) => {
-	const focusRecordsFromToday = getFocusRecordsFromToday(focusRecords);
-	return getDurationForFocusRecordsFilteredByProjects(focusRecordsFromToday);
+export const getFocusDurationForDay = (focusRecordsByDate, date) => {
+	const dayKey = getFormattedLongDay(date);
+	const focusRecordsForTheDay = focusRecordsByDate[dayKey];
+	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay);
 };
 
-export const getPercentageOfFocusedGoalHours = (focusRecords) => {
-	const GOAL_SECONDS = getGoalSeconds(new Date());
-	const totalFocusDurationToday = getTotalFocusDurationToday(focusRecords);
-	return (totalFocusDurationToday / GOAL_SECONDS) * 100;
-};
-
-export const getFocusDataForDayInfo = (focusRecords) => {
+export const getFocusDataForDayInfo = ({ focusRecords, focusRecordsByDate, date }) => {
 	const streaksInfo = getStreaksInfo(focusRecords);
-	const goalSeconds = getGoalSeconds(new Date());
-	const totalFocusDurationToday = getTotalFocusDurationToday(focusRecords);
-	const percentageOfFocusedGoalHours = getPercentageOfFocusedGoalHours(focusRecords);
+	const goalSeconds = getGoalSeconds(date);
+	const totalFocusDurationForDay = getFocusDurationForDay(focusRecordsByDate, date);
+	const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalSeconds) * 100;
 
 	return {
 		streaksInfo,
 		goalSeconds,
-		totalFocusDurationToday,
+		totalFocusDurationForDay,
 		percentageOfFocusedGoalHours,
 	};
 };
