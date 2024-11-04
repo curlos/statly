@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { navigate } from 'vike/client/router';
 
 const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -10,6 +11,20 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
+	};
+
+	const LinkLi = ({ name, linkUrl }) => {
+		return (
+			<div
+				className="cursor-pointer hover:underline"
+				onClick={() => {
+					navigate(linkUrl);
+					setIsSidebarModalOpen(false);
+				}}
+			>
+				{name}
+			</div>
+		);
 	};
 
 	return (
@@ -37,7 +52,11 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						className="fixed inset-y-0 right-0 w-[400px] bg-color-gray-700 p-4 text-white"
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
-						<div className="font-bold">Settings</div>
+						<div className="font-bold text-[24px]">
+							<LinkLi name="Focus Hours Goal" linkUrl="/ticktick-1.00/focus-hours-goal" />
+							<LinkLi name="Focus Records" linkUrl="/ticktick-1.00/focus-records" />
+							<LinkLi name="Stats" linkUrl="/stats/overview" />
+						</div>
 					</motion.div>
 				</motion.div>
 			)}

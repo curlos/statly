@@ -15,7 +15,7 @@ const HabitLogSection = ({ currentDate, habit }) => {
 	const { data: fetchedHabitLogs } = useGetHabitLogsQuery();
 	const { habitLogsById } = fetchedHabitLogs || {};
 
-	const monthName = currentDate.toLocaleString('default', { month: 'long' });
+	const monthName = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 	// TODO: Get list of habits from the backend and show that data instead.
 	const { checkedInDays } = habit;
 

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import ActionSidebar from '../../../components/ActionSidebar';
 import GroupedFocusRecordList from './GroupedFocusRecordList';
 import TopHeader from './TopHeader';
 import useMaxHeight from '../../../hooks/useMaxHeight';
@@ -65,10 +64,6 @@ const Page = () => {
 
 	return (
 		<div className="flex max-w-screen max-h-screen bg-color-gray-700">
-			<div className="">
-				<ActionSidebar />
-			</div>
-
 			<div className="w-full flex flex-col">
 				<TopHeader
 					{...{
@@ -95,7 +90,7 @@ const Page = () => {
 					className="flex-1 flex justify-center overflow-scroll gray-scrollbar"
 					style={{ maxHeight }}
 				>
-					<div className="container px-auto p-1">
+					<div className="container mx-auto p-1">
 						<GroupedFocusRecordList
 							{...{
 								filteredFocusRecords,
