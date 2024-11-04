@@ -1,13 +1,9 @@
 import { useData } from 'vike-react/useData';
-import type { Data } from './+data.js';
-import Icon from '../../../components/Icon.jsx';
 import DailyHoursFocusGoal from './DailyHoursFocusGoal.js';
 import { useState } from 'react';
-import SidebarModal from './SidebarModal.js';
 
 export default function Page() {
-	const { focusRecords, streaksInfo, goalSeconds, totalFocusDurationToday, percentageOfFocusedGoalHours } =
-		useData<Data>();
+	const { focusRecords, streaksInfo, goalSeconds, totalFocusDurationToday, percentageOfFocusedGoalHours } = useData();
 
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 
