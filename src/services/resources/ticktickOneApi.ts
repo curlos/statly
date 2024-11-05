@@ -2,6 +2,7 @@ import {
 	arrayToObjectByKey,
 	getAllTasksAndItemsTickTickOne,
 	getGroupedCompletedTasks,
+	getGroupedFocusRecordsByDate,
 } from '../../utils/helpers.utils';
 import { baseAPI, buildQueryString } from '../api';
 
@@ -16,9 +17,11 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 				return queryString ? `/ticktick-1.0/focus-records?${queryString}` : '/ticktick-1.0/focus-records';
 			},
 			transformResponse: (response) => {
-				const focusRecordsById = arrayToObjectByKey(response, 'id');
+				const focusRecords = response;
+				const focusRecordsById = arrayToObjectByKey(focusRecords, 'id');
+				const focusRecordsByDate = getGroupedFocusRecordsByDate(focusRecords);
 
-				return { focusRecords: response, focusRecordsById };
+				return { focusRecords: response, focusRecordsById, focusRecordsByDate };
 			},
 		}),
 		getAllTasks: builder.query({

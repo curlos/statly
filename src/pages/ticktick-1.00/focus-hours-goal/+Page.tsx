@@ -1,13 +1,26 @@
-import { useData } from 'vike-react/useData';
 import DailyHoursFocusGoal from './DailyHoursFocusGoal.js';
 import { useState } from 'react';
 import Icon from '../../../components/Icon.js';
 import SidebarModal from './SidebarModal.js';
+import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi.js';
+import { getStreaksInfo, getFocusDataForDayInfo } from '../../../utils/focus.utils.js';
+import LoaderBlackOpsThreeMedal from '../../../components/LoaderBlackOpsThreeMedal.js';
 
 export default function Page() {
-	const { focusRecords, streaksInfo, goalSeconds, totalFocusDurationToday, percentageOfFocusedGoalHours } = useData();
+	const {
+		data: fetchedFocusRecords,
+		isLoading: isLoadingGetFocusRecords,
+		error: errorGetFocusRecords,
+	} = useGetPomoAndStopwatchFocusRecordsQuery();
+	const { focusRecords, focusRecordsByDate } = fetchedFocusRecords || {};
 
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
+
+	const streaksInfo = focusRecords && getStreaksInfo(focusRecords);
+	const focusDataForTodayInfo = focusRecordsByDate && getFocusDataForDayInfo(focusRecordsByDate, new Date());
+	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } = focusDataForTodayInfo || {};
+
+	const isLoading = !focusRecordsByDate || !streaksInfo || !focusDataForTodayInfo;
 
 	return (
 		<div className="w-screen h-screen bg-color-gray-700 flex justify-center items-center">
@@ -17,15 +30,19 @@ export default function Page() {
 				onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
 			/>
 			<div className="w-[350px]">
-				<DailyHoursFocusGoal
-					{...{
-						focusRecords,
-						streaksInfo,
-						goalSeconds,
-						totalFocusDurationToday,
-						percentageOfFocusedGoalHours,
-					}}
-				/>
+				{isLoading ? (
+					<LoaderBlackOpsThreeMedal />
+				) : (
+					<DailyHoursFocusGoal
+						{...{
+							focusRecords,
+							streaksInfo,
+							goalSeconds,
+							totalFocusDurationToday: totalFocusDurationForDay,
+							percentageOfFocusedGoalHours,
+						}}
+					/>
+				)}
 			</div>
 
 			{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}

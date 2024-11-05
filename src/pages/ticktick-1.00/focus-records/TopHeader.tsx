@@ -163,7 +163,7 @@ const TopHeader = ({
 			</div>
 
 			{/* TODO: Move to the bottom of the focus records when done testing the Pagination and it works. */}
-			{totalPages > 0 && (
+			{/* {totalPages > 0 && (
 				<div className="flex justify-center">
 					<Pagination
 						total={totalPages}
@@ -172,7 +172,7 @@ const TopHeader = ({
 						totalPages={totalPages}
 					/>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };

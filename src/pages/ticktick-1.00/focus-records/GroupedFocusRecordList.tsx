@@ -3,6 +3,7 @@ import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi'
 import { getFocusDuration, getFormattedDuration, getGroupedFocusRecordsByDate } from '../../../utils/helpers.utils';
 import FocusRecord from './FocusRecord';
 import GroupedFocusRecordListByDate from './GroupedFocusRecordListByDate';
+import Pagination from '../../../components/Pagination';
 
 const MAX_SHOWN_FOCUS_RECORDS = 50;
 
@@ -12,6 +13,8 @@ const GroupedFocusRecordList = ({
 	groupedBy,
 	sortedBy,
 	currentPage,
+	setCurrentPage,
+	totalPages,
 	setTotalPages,
 }) => {
 	// RTK Query - TickTick 1.0 - Tasks
@@ -161,14 +164,27 @@ const GroupedFocusRecordList = ({
 							);
 						})
 					) : (
-						<FocusRecordList
-							{...{
-								focusRecords: shownUngroupedFocusRecords,
-								getInfoForGroup,
-								groupedBy,
-								groupKey: null,
-							}}
-						/>
+						<>
+							<FocusRecordList
+								{...{
+									focusRecords: shownUngroupedFocusRecords,
+									getInfoForGroup,
+									groupedBy,
+									groupKey: null,
+								}}
+							/>
+
+							{totalPages > 0 && (
+								<div className="flex justify-center mt-5">
+									<Pagination
+										total={totalPages}
+										currentPage={currentPage}
+										setCurrentPage={setCurrentPage}
+										totalPages={totalPages}
+									/>
+								</div>
+							)}
+						</>
 					)}
 				</>
 			)}

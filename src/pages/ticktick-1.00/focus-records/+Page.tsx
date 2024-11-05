@@ -98,6 +98,8 @@ const Page = () => {
 								groupedBy,
 								sortedBy,
 								currentPage,
+								setCurrentPage,
+								totalPages,
 								setTotalPages,
 							}}
 						/>

@@ -65,10 +65,6 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 				// console.log(parentElemRect);
 
 				if (dropdownRect.right > parentElemRect.right) {
-					console.log(dropdownRect.right);
-					console.log(parentElemRect.right);
-					console.log(dropdownRect);
-					console.log(parentElemRect);
 					adjustments.left = `-${dropdownRect.width - 32}px`;
 				}
 			}

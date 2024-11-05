@@ -11,9 +11,9 @@ import { isFutureDate } from '../../utils/date.utils';
 import { checkIfIsFocusHoursHabit, getFormattedDuration } from '../../utils/helpers.utils';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
-import { useData } from 'vike-react/useData';
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { getFocusDataForDayInfo } from '../../utils/focus.utils';
+import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../services/resources/ticktickOneApi';
 
 const DayCheckCircle = ({
 	isChecked,
@@ -24,27 +24,36 @@ const DayCheckCircle = ({
 	setIsTooltipDayVisible,
 	habitCalendarContainerRef,
 }) => {
+	// RTK Query
 	const handleError = useHandleError();
 	const [editHabit] = useEditHabitMutation();
-	const checkedInDayKey = day;
-	const checkedInDay = habit.checkedInDays[checkedInDayKey];
+	const {
+		data: fetchedFocusRecords,
+		isLoading: isLoadingGetFocusRecords,
+		error: errorGetFocusRecords,
+	} = useGetPomoAndStopwatchFocusRecordsQuery();
+	const { focusRecordsByDate } = fetchedFocusRecords || {};
+
+	// useState
 	const [contextMenu, setContextMenu] = useState(null);
 	const [isAlertTooltipOpen, setIsAlertTooltipOpen] = useState(false);
 	const [isDropdownHabitDayActionsVisible, setIsDropdownHabitDayActionsVisible] = useState(true);
 
+	// useRef
 	const tooltipDayRef = useRef(null);
 	const dropdownHabitDayActionsRef = useRef(null);
 
+	// useDispatch
+	const dispatch = useDispatch();
+
+	const checkedInDayKey = day;
+	const checkedInDay = habit.checkedInDays[checkedInDayKey];
 	const dayHasNotHappenedYet = isFutureDate(day);
 	const disableHabitActions = habit.isArchived || dayHasNotHappenedYet;
 	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
-
-	const { focusRecords, focusRecordsByDate } = useData() || {};
 	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } = focusRecordsByDate
 		? getFocusDataForDayInfo(focusRecordsByDate, new Date(checkedInDayKey))
 		: {};
-
-	const dispatch = useDispatch();
 
 	const handleClick = () => {
 		if (disableHabitActions) {
