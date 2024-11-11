@@ -127,7 +127,7 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 };
 
 const getRangeClass = (hours, minutes): string => {
-	if (hours === 6) {
+	if (hours >= 6) {
 		return 'bg-blue-900';
 	}
 
