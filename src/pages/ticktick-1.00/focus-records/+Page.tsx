@@ -4,6 +4,7 @@ import TopHeader from './TopHeader';
 import useMaxHeight from '../../../hooks/useMaxHeight';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import { usePageContext } from 'vike-react/usePageContext';
+import Pagination from '../../../components/Pagination';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -63,7 +64,7 @@ const Page = () => {
 	}, [focusRecords, taskIdToFilterBy]);
 
 	return (
-		<div className="flex max-w-screen max-h-screen bg-color-gray-700">
+		<div className="flex max-w-screen min-h-screen max-h-screen bg-color-gray-700">
 			<div className="w-full flex flex-col">
 				<TopHeader
 					{...{
@@ -105,6 +106,17 @@ const Page = () => {
 						/>
 					</div>
 				</div>
+
+				{totalPages && totalPages > 0 && (
+					<div className="flex justify-center pt-1 pb-2">
+						<Pagination
+							total={totalPages}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+							totalPages={totalPages}
+						/>
+					</div>
+				)}
 			</div>
 		</div>
 	);

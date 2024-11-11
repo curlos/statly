@@ -173,17 +173,6 @@ const GroupedFocusRecordList = ({
 									groupKey: null,
 								}}
 							/>
-
-							{totalPages > 0 && (
-								<div className="flex justify-center mt-5">
-									<Pagination
-										total={totalPages}
-										currentPage={currentPage}
-										setCurrentPage={setCurrentPage}
-										totalPages={totalPages}
-									/>
-								</div>
-							)}
 						</>
 					)}
 				</>
