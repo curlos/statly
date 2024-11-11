@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { getFocusDuration, getFormattedDuration, getGroupedFocusRecordsByDate } from '../../../utils/helpers.utils';
+import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
+import {
+	getFocusDuration,
+	getFormattedDuration,
+	getGroupedFocusRecordsByDate,
+	getGroupedFocusRecordsByTask,
+} from '../../../utils/helpers.utils';
 import FocusRecord from './FocusRecord';
 import GroupedFocusRecordListByDate from './GroupedFocusRecordListByDate';
-import Pagination from '../../../components/Pagination';
-
-const MAX_SHOWN_FOCUS_RECORDS = 50;
 
 const GroupedFocusRecordList = ({
 	filteredFocusRecords,
@@ -13,28 +15,15 @@ const GroupedFocusRecordList = ({
 	groupedBy,
 	sortedBy,
 	currentPage,
-	setCurrentPage,
-	totalPages,
-	setTotalPages,
 }) => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
 	const { tasksById } = fetchedTasks || {};
 
 	const groupedFocusRecordsByDate = filteredFocusRecords && getGroupedFocusRecordsByDate(filteredFocusRecords);
-	// const groupedFocusRecordsByTask = filteredFocusRecords && getGroupedFocusRecordsByTask(filteredFocusRecords, tasksById);
+	const groupedFocusRecordsByTask =
+		filteredFocusRecords && getGroupedFocusRecordsByTask(filteredFocusRecords, tasksById);
 	const groupedByFocusRecords = groupedFocusRecordsByDate;
-
-	console.log(groupedByFocusRecords);
-
-	useEffect(() => {
-		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
-			return;
-		}
-
-		const newTotalPages = Math.ceil(filteredFocusRecords.length / MAX_SHOWN_FOCUS_RECORDS);
-		setTotalPages(newTotalPages);
-	}, [isLoadingGetFocusRecords, filteredFocusRecords]);
 
 	const getInfoForGroup = (key, focusRecord, index) => {
 		const infoForGroupedByDay = {
@@ -59,7 +48,7 @@ const GroupedFocusRecordList = ({
 		let currentShownFocusRecords = 0;
 		const shownGroupedByFocusRecords = {};
 
-		for (let key of Object.keys(groupedByFocusRecords)) {
+		for (const key of Object.keys(groupedByFocusRecords)) {
 			const focusRecordsForTheDay = groupedByFocusRecords[key];
 
 			if (currentShownFocusRecords >= MAX_SHOWN_FOCUS_RECORDS) {
@@ -109,6 +98,8 @@ const GroupedFocusRecordList = ({
 	const isGrouped = groupedBy !== 'No Group';
 	const shownGroupedFocusRecords = filteredFocusRecords && isGrouped && getShownGroupedFocusRecords();
 	const shownUngroupedFocusRecords = filteredFocusRecords && !isGrouped && getShownUngroupedFocusRecords();
+
+	// console.log(groupedFocusRecordsByTask);
 
 	return (
 		<>

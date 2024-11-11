@@ -5,6 +5,7 @@ import useMaxHeight from '../../../hooks/useMaxHeight';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import { usePageContext } from 'vike-react/usePageContext';
 import Pagination from '../../../components/Pagination';
+import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -43,6 +44,15 @@ const Page = () => {
 	useEffect(() => {
 		setCurrentPage(1);
 	}, [groupedBy, sortedBy]);
+
+	useEffect(() => {
+		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
+			return;
+		}
+
+		const newTotalPages = Math.ceil(filteredFocusRecords.length / MAX_SHOWN_FOCUS_RECORDS);
+		setTotalPages(newTotalPages);
+	}, [isLoadingGetFocusRecords, filteredFocusRecords]);
 
 	useEffect(() => {
 		if (!taskIdToFilterBy) {

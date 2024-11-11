@@ -174,9 +174,15 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							<h4 className="text-[16px] font-bold underline mt-4">Completed Tasks</h4>
 
 							<ul className="list-disc ml-[20px]">
-								{completedTasksDuringFocusSession.map((completedTask) => (
-									<li key={`${focusRecord.id} ${completedTask.id}`}>{completedTask.title}</li>
-								))}
+								{completedTasksDuringFocusSession.map((completedTask, index) => {
+									// console.log(completedTask);
+
+									return (
+										<li key={`${focusRecord.id} ${completedTask.id} ${index}`}>
+											{completedTask.title}
+										</li>
+									);
+								})}
 							</ul>
 						</>
 					)}
