@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import FocusRecordList from '../../../components/FocusRecords/FocusRecordList';
 import Icon from '../../../components/Icon';
 import { setModalState } from '../../../slices/modalSlice';
-import DetailsCard from './DetailsCard';
+import DetailsCard from './DetailsCard/DetailsCard';
 import MostFocusedTimeCard from './MostFocusedTimeCard';
 import OverviewCard from './OverviewCard';
 import TimelineCard from './TimelineCard';
@@ -48,7 +48,7 @@ const FocusSection = () => {
 				{/* TODO: */}
 				<TrendsCard />
 				{/* TODO: */}
-				{/* <TimelineCard /> */}
+				<TimelineCard />
 
 				<MostFocusedTimeCard />
 				<YearGridsCard />

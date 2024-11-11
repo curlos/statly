@@ -99,7 +99,7 @@ const TopHeader = ({
 
 				<div className="flex items-center gap-2">
 					{/* TODO: Bring the "Group By" dropdown back and make the grouping work for the different sections as well as for sorting stuff. */}
-					{/* <div className="relative">
+					<div className="relative">
 						<div
 							className="flex gap-[2px] bg-color-gray-600 py-2 px-4 rounded-md cursor-pointer"
 							onClick={() => setIsDropdownGroupedByVisible(!isDropdownGroupedByVisible)}
@@ -119,7 +119,7 @@ const TopHeader = ({
 							setSelected={setGroupedBy}
 							selectedOptions={['Date', 'Task', 'Project', 'No Group']}
 						/>
-					</div> */}
+					</div>
 
 					<div className="relative">
 						<div

@@ -99,7 +99,7 @@ const GroupedFocusRecordList = ({
 	const shownGroupedFocusRecords = filteredFocusRecords && isGrouped && getShownGroupedFocusRecords();
 	const shownUngroupedFocusRecords = filteredFocusRecords && !isGrouped && getShownUngroupedFocusRecords();
 
-	// console.log(groupedFocusRecordsByTask);
+	console.log(groupedFocusRecordsByDate);
 
 	return (
 		<>
