@@ -1,6 +1,19 @@
 import { getFocusDurationFromArray, getRandomColor, getFormattedDuration } from '../../../../utils/helpers.utils';
 import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
 
+/**
+ * @description Gets the focus record data grouped by project and shows much time has been focused for each project.
+ * @param allFocusRecordsForInterval 
+ * @param focusDurationForInterval 
+ * @param tasksById 
+ * @param projectsById
+ * @returns <Array<Object>> Example: [{
+		"name": "Hello Mobile",
+		"color": "#1F67E2",
+		"value": "714h51m",
+		"percentage": 53.38
+	}, ...]
+ */
 export const getDataByProjects = (allFocusRecordsForInterval, focusDurationForInterval, tasksById, projectsById) => {
 	const focusRecordsGroupedByProject = {};
 
@@ -38,17 +51,9 @@ export const getDataByProjects = (allFocusRecordsForInterval, focusDurationForIn
 		}
 	});
 
-	// console.log(focusRecordsGroupedByProject);
-
-	let sum = 0;
-	// console.log(Object.values(focusRecordsGroupedByProject).forEach((arr) => (sum += arr.length)));
-	// console.log(sum);
-
-	return Object.keys(focusRecordsGroupedByProject).map((projectId) => {
+	const dataByProjects = Object.keys(focusRecordsGroupedByProject).map((projectId) => {
 		const focusRecordsArr = focusRecordsGroupedByProject[projectId];
 		const focusDurationForProject = getFocusDurationFromArray(focusRecordsArr);
-
-		// const numOfFocusRecords = focusRecordsArr.length;
 
 		const percentage = Number(((focusDurationForProject / focusDurationForInterval) * 100).toFixed(2));
 
@@ -76,6 +81,74 @@ export const getDataByProjects = (allFocusRecordsForInterval, focusDurationForIn
 			percentage,
 		};
 	});
+
+	return dataByProjects;
+};
+
+/**
+ * @description Gets the focus record data grouped by tasks and shows much time has been focused for each task.
+ * @param allFocusRecordsForInterval 
+ * @param focusDurationForInterval 
+ * @param tasksById 
+ * @returns <Array<Object>> Example: [{
+		"name": "TickTick 2.0 (Web)",
+		"color": "rgb(168, 73, 61)",
+		"value": "241h9m",
+		"percentage": 18.01
+	}, ...]
+ */
+export const getDataByTasks = (allFocusRecordsForInterval, focusDurationForInterval, tasksById) => {
+	const focusRecordsGroupedByTask = {};
+	const NO_TASK_KEY = 'No Task';
+
+	// Get all the focus records tied to a specific taskId with the taskId being the key and the value being the array of focus records.
+	allFocusRecordsForInterval.forEach((focusRecord) => {
+		const { tasks } = focusRecord;
+
+		if (tasks?.length > 0) {
+			for (const task of tasks) {
+				const taskId = task?.taskId ? task.taskId : NO_TASK_KEY;
+
+				if (!focusRecordsGroupedByTask[taskId]) {
+					focusRecordsGroupedByTask[taskId] = [];
+				}
+
+				focusRecordsGroupedByTask[taskId].push(task);
+			}
+		} else {
+			// If there are no tasks in the focus records, put it in the default "NO TASK" array.
+			if (!focusRecordsGroupedByTask[NO_TASK_KEY]) {
+				focusRecordsGroupedByTask[NO_TASK_KEY] = [];
+			}
+
+			focusRecordsGroupedByTask[NO_TASK_KEY].push(focusRecord);
+		}
+	});
+
+	// Go through all the "taskId" keys and get the name, color, value, and percentage of that taskId.
+	const dataByTasks = Object.keys(focusRecordsGroupedByTask).map((taskId) => {
+		const focusRecordsArr = focusRecordsGroupedByTask[taskId];
+		const focusDurationForProject = getFocusDurationFromArray(focusRecordsArr);
+
+		const percentage = Number(((focusDurationForProject / focusDurationForInterval) * 100).toFixed(2));
+
+		let name = 'No Task';
+		const color = getRandomColor();
+
+		if (taskId !== 'No Task') {
+			const task = tasksById[taskId];
+			name = task.title;
+		}
+
+		return {
+			name,
+			color,
+			value: getFormattedDuration(focusDurationForProject, false),
+			percentage,
+		};
+	});
+
+	return dataByTasks;
 };
 
 const addFocusRecordToUnclassified = (taskFromFocusRecord, focusRecordsGroupedByTag) => {
@@ -110,8 +183,6 @@ export const getDataByTags = (allFocusRecordsForInterval, focusDurationForInterv
 					if (!tags || tags.length === 0) {
 						addFocusRecordToUnclassified(task, focusRecordsGroupedByTag);
 					} else {
-						// console.log(tasksById[taskId]);
-
 						for (let tagName of tags) {
 							if (!focusRecordsGroupedByTag[tagName]) {
 								focusRecordsGroupedByTag[tagName] = [];
@@ -124,8 +195,6 @@ export const getDataByTags = (allFocusRecordsForInterval, focusDurationForInterv
 			}
 		}
 	});
-
-	// console.log(focusRecordsGroupedByTag);
 
 	const taskAlreadyAppearedInAnotherTag = {};
 

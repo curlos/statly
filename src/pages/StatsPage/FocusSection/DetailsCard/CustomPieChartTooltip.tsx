@@ -1,6 +1,4 @@
-const CustomPieChartTooltip = ({ active, payload, label }) => {
-	console.log(payload);
-
+const CustomPieChartTooltip = ({ active, payload }) => {
 	if (active && payload?.length > 0) {
 		const dataItem = payload[0].payload.payload;
 		const { name, value, color, percentage } = dataItem;

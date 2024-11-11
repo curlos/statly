@@ -5,7 +5,9 @@ const ProgressBar = ({ item, fromDropdown = false }) => {
 		<div>
 			<div className="flex justify-between items-center mb-1">
 				<div className="flex-1 w-full">
-					<div className={classNames(!fromDropdown ? 'truncate w-[110px]' : 'w-[180px]')}>{item.name}</div>
+					<div className={classNames(!fromDropdown ? 'truncate w-[200px]' : 'w-[200px] break-words')}>
+						{item.name}
+					</div>
 				</div>
 				<div className="text-[#8C8C8C]">
 					{item.value} • {item.percentage}%

@@ -1,17 +1,14 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../DateRangePicker';
-import DropdownFocusRankingList from '../DropdownFocusRankingList';
 import ModalPickDateRange from '../ModalPickDateRange';
-import ProgressBar from '../ProgressBar';
 import { useStatsContext } from '../../../../contexts/useStatsContext';
-import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
-import { getFocusDurationFromArray, getFormattedDuration, getRandomColor } from '../../../../utils/helpers.utils';
+import { getFocusDurationFromArray, getFormattedDuration } from '../../../../utils/helpers.utils';
 import classNames from 'classnames';
 import CustomPieChartTooltip from './CustomPieChartTooltip';
 import ProgressBarList from './ProgressBarList';
-import { getDataByProjects, getDataByTags } from './getDataBy.util';
+import { getDataByProjects, getDataByTags, getDataByTasks } from './getDataBy.util';
 
 const noData = [
 	{
@@ -55,7 +52,6 @@ const DetailsCard = () => {
 		// Get all the completed tasks from the selected interval of dates
 		const allFocusRecordsForInterval =
 			selectedInterval === 'All' ? focusRecords : getFocusRecordsFromSelectedDates(selectedDates);
-		const newNumOfFocusRecords = allFocusRecordsForInterval.length;
 		const newFocusDurationForInterval = getFocusDurationFromArray(allFocusRecordsForInterval);
 
 		let newProgressBarData = progressBarData;
@@ -69,16 +65,12 @@ const DetailsCard = () => {
 					projectsById
 				);
 				break;
+			case 'Task':
+				newProgressBarData = getDataByTasks(allFocusRecordsForInterval, newFocusDurationForInterval, tasksById);
+				break;
 			case 'Tag':
 				newProgressBarData = getDataByTags(allFocusRecordsForInterval, newFocusDurationForInterval, tasksById);
 				break;
-			default:
-				newProgressBarData = getDataByProjects(
-					allFocusRecordsForInterval,
-					newFocusDurationForInterval,
-					tasksById,
-					projectsById
-				);
 		}
 
 		setProgressBarData(newProgressBarData);
@@ -194,7 +186,7 @@ const DetailsCard = () => {
 							/>
 						</Pie>
 
-						<Tooltip content={<CustomPieChartTooltip active={false} payload={[]} label="" />} />
+						<Tooltip content={<CustomPieChartTooltip active={false} payload={[]} />} />
 					</PieChart>
 				</div>
 
