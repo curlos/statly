@@ -79,7 +79,7 @@ const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, st
 					handleArrowClick('left');
 				}}
 			/>
-			<div>{getFormattedSelectedDates()}</div>
+			<div className="text-[14px] sm:text-[16px]">{getFormattedSelectedDates()}</div>
 			<Icon
 				name="keyboard_arrow_right"
 				customClass="!text-[20px] mt-[2px] cursor-pointer text-color-gray-100"
