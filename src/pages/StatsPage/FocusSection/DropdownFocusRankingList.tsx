@@ -24,7 +24,7 @@ const DropdownFocusRankingList: React.FC<DropdownPrioritiesProps> = ({
 				customClasses
 			)}
 		>
-			<div className="w-[355px] p-3">
+			<div className="w-[250px] sm:w-[355px] p-3">
 				<div className="text-[15px] font-bold mb-4">Focus Ranking</div>
 
 				<div className="space-y-4">
