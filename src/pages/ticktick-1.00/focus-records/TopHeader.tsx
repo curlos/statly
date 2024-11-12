@@ -6,6 +6,8 @@ import Fuse from 'fuse.js';
 import { debounce } from '../../../utils/helpers.utils';
 import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
 import { usePageContext } from 'vike-react/usePageContext';
+import Spinner from '../../../components/Loaders/Spinner';
+import classNames from 'classnames';
 
 const TopHeader = ({
 	topHeaderRef,
@@ -14,13 +16,13 @@ const TopHeader = ({
 	setGroupedBy,
 	sortedBy,
 	setSortedBy,
+	searchText,
+	setSearchText,
+	defaultSortedBy,
 	defaultFocusRecords,
 	filteredFocusRecords,
 	setFilteredFocusRecords,
 	focusRecordListRef,
-	defaultSortedBy,
-	searchText,
-	setSearchText,
 }) => {
 	const updateQueryParams = useUpdateQueryParams();
 	const pageContext = usePageContext();
@@ -30,6 +32,8 @@ const TopHeader = ({
 
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
+
+	const [isSearchLoading, setIsSearchLoading] = useState(false);
 
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
@@ -79,7 +83,11 @@ const TopHeader = ({
 			return;
 		}
 
-		setFilteredFocusRecords(searchedItems.map((result) => result.item));
+		const searchedItemsFocusRecords = searchedItems.map((result) => result.item);
+		console.log(searchedItemsFocusRecords);
+
+		setFilteredFocusRecords(searchedItemsFocusRecords);
+		updateQueryParams({ search: searchText });
 	}, 1000);
 
 	const dropdownGroupedByRef = useRef(null);
@@ -88,6 +96,8 @@ const TopHeader = ({
 	const [isDropdownSortedByVisible, setIsDropdownSortedByVisible] = useState(false);
 
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
+
+	const appliedFilters = () => {};
 
 	return (
 		<div ref={topHeaderRef}>
@@ -144,17 +154,20 @@ const TopHeader = ({
 					</div>
 
 					<div className="flex items-center gap-1 p-1 px-2">
-						<Icon
-							name="search"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-						/>
+						{isSearchLoading ? (
+							<Spinner />
+						) : (
+							<Icon
+								name="search"
+								fill={0}
+								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							/>
+						)}
 						<input
 							placeholder="Search"
 							value={searchText}
 							onChange={(e) => {
 								setSearchText(e.target.value);
-								updateQueryParams({ search: e.target.value });
 							}}
 							className="text-[14px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
 						/>
@@ -162,17 +175,75 @@ const TopHeader = ({
 				</div>
 			</div>
 
-			{/* TODO: Move to the bottom of the focus records when done testing the Pagination and it works. */}
-			{/* {totalPages > 0 && (
-				<div className="flex justify-center">
-					<Pagination
-						total={totalPages}
-						currentPage={currentPage}
-						setCurrentPage={setCurrentPage}
-						totalPages={totalPages}
-					/>
+			<AppliedFilterItemList {...{ groupedBy, setGroupedBy, sortedBy, setSortedBy, searchText, setSearchText }} />
+		</div>
+	);
+};
+
+const AppliedFilterItemList = ({ groupedBy, setGroupedBy, sortedBy, setSortedBy, searchText, setSearchText }) => {
+	const groupByFilter = {
+		name: `Group By`,
+		value: groupedBy,
+		handleRemove: () => {
+			setGroupedBy('No Group');
+		},
+	};
+
+	const sortByFilter = {
+		name: `Sort By`,
+		value: sortedBy,
+		handleRemove: () => {
+			setSortedBy('Newest');
+		},
+	};
+
+	const searchTextFilter = {
+		name: `Search Text`,
+		value: searchText,
+		handleRemove: () => {
+			setSearchText('');
+		},
+	};
+
+	const allFilters = [groupByFilter, sortByFilter, searchTextFilter];
+	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
+		const { value } = focusRecordsFilter;
+		const isDefaultFilter = value === 'No Group' || value === 'Newest' || value === '';
+		return !isDefaultFilter;
+	});
+
+	if (nonDefaultFilterList.length === 0) {
+		return null;
+	}
+
+	return (
+		<div className="container flex">
+			{nonDefaultFilterList.map((nonDefaultFilter) => {
+				const { name, value, handleRemove } = nonDefaultFilter;
+
+				return <AppliedFilterItem {...{ name, value, handleRemove }} />;
+			})}
+		</div>
+	);
+};
+
+const AppliedFilterItem = ({ name, value, handleRemove }) => {
+	return (
+		<div className="flex">
+			<div className="px-2 py-1 text-[14px] text-white rounded-xl cursor-pointer  bg-emerald-600">
+				<div className="overflow-hidden text-nowrap" onClick={() => console.log('Bum')}>
+					<span className="font-bold">{name}: </span>
+					<span>{value}</span>
 				</div>
-			)} */}
+			</div>
+
+			<div onClick={handleRemove} className={classNames('mt-[-12px] ml-[-10px]')}>
+				<Icon
+					name="close"
+					fill={0}
+					customClass={'text-black rounded-full !text-[14px] bg-white cursor-pointer p-[2px]'}
+				/>
+			</div>
 		</div>
 	);
 };
