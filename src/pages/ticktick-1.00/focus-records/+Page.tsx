@@ -14,6 +14,7 @@ const Page = () => {
 	const queryParams = new URLSearchParams(location.search);
 	const taskIdToFilterBy = queryParams.get('taskId');
 	const defaultSortedBy = queryParams.get('sortBy') || 'Newest';
+	const defaultSearchText = queryParams.get('search') || '';
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const {
@@ -29,6 +30,7 @@ const Page = () => {
 	const focusRecordListRef = useRef(null);
 	const [groupedBy, setGroupedBy] = useState('No Group');
 	const [sortedBy, setSortedBy] = useState(defaultSortedBy);
+	const [searchText, setSearchText] = useState(defaultSearchText);
 
 	const maxHeight = useMaxHeight(headerHeight);
 
@@ -40,11 +42,11 @@ const Page = () => {
 	useEffect(() => {
 		// Scroll to the top of the focus records whenever you go to a new page.
 		focusRecordListRef?.current?.scrollTo(0, 0);
-	}, [currentPage, groupedBy, sortedBy]);
+	}, [currentPage, groupedBy, sortedBy, searchText]);
 
 	useEffect(() => {
 		setCurrentPage(1);
-	}, [groupedBy, sortedBy]);
+	}, [groupedBy, sortedBy, searchText]);
 
 	useEffect(() => {
 		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
@@ -94,6 +96,8 @@ const Page = () => {
 						setFilteredFocusRecords,
 						focusRecordListRef,
 						defaultSortedBy,
+						searchText,
+						setSearchText,
 					}}
 				/>
 

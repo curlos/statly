@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import useResizeObserver from '../../../hooks/useResizeObserver';
 import DropdownGeneralSelect from '../../StatsPage/DropdownGeneralSelect';
 import Icon from '../../../components/Icon';
-import Pagination from '../../../components/Pagination';
 import Fuse from 'fuse.js';
 import { debounce } from '../../../utils/helpers.utils';
 import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
@@ -15,14 +14,13 @@ const TopHeader = ({
 	setGroupedBy,
 	sortedBy,
 	setSortedBy,
-	currentPage,
-	setCurrentPage,
-	totalPages,
 	defaultFocusRecords,
 	filteredFocusRecords,
 	setFilteredFocusRecords,
 	focusRecordListRef,
 	defaultSortedBy,
+	searchText,
+	setSearchText,
 }) => {
 	const updateQueryParams = useUpdateQueryParams();
 	const pageContext = usePageContext();
@@ -33,7 +31,6 @@ const TopHeader = ({
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
 
-	const [searchText, setSearchText] = useState('');
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
 		isCaseSensitive: false,
@@ -155,7 +152,10 @@ const TopHeader = ({
 						<input
 							placeholder="Search"
 							value={searchText}
-							onChange={(e) => setSearchText(e.target.value)}
+							onChange={(e) => {
+								setSearchText(e.target.value);
+								updateQueryParams({ search: e.target.value });
+							}}
 							className="text-[14px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
 						/>
 					</div>

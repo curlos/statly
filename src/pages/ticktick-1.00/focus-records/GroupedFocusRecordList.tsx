@@ -99,8 +99,6 @@ const GroupedFocusRecordList = ({
 	const shownGroupedFocusRecords = filteredFocusRecords && isGrouped && getShownGroupedFocusRecords();
 	const shownUngroupedFocusRecords = filteredFocusRecords && !isGrouped && getShownUngroupedFocusRecords();
 
-	console.log(groupedFocusRecordsByDate);
-
 	return (
 		<>
 			{isLoadingGetFocusRecords || !filteredFocusRecords ? (

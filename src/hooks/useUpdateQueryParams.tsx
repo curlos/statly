@@ -10,11 +10,21 @@ export const useUpdateQueryParams = () => {
 
 		// Update or set new parameters
 		Object.keys(newParams).forEach((key) => {
-			searchParams.set(key, newParams[key]);
+			if (newParams[key] === '') {
+				searchParams.delete(key); // Remove the param if the value is an empty string
+			} else {
+				searchParams.set(key, newParams[key]); // Otherwise, update or set the param
+			}
 		});
 
+		// Construct the new URL
+		const queryString = searchParams.toString();
+		const newUrl = queryString
+			? `${pageContext.urlParsed.pathname}?${queryString}`
+			: pageContext.urlParsed.pathname;
+
 		// Navigate to the new URL with updated query params
-		navigate(`${pageContext.urlParsed.pathname}?${searchParams.toString()}`, { replace: true });
+		navigate(newUrl, { replace: true });
 	};
 
 	return updateQueryParams;
