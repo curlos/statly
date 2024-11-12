@@ -8,14 +8,13 @@ import {
 	fillInHourBlocksWithSeconds,
 	getDailyHourBlocks,
 	getFormattedLongDay,
-	getTimeInBlocks,
 } from '../../../utils/date.utils';
 import ModalPickDateRange from './ModalPickDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 
 const MostFocusedTimeCard = () => {
 	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();
-	const [selectedDates, setSelectedDates] = useState([new Date('August 1, 2024')]);
+	const [selectedDates, setSelectedDates] = useState([new Date()]);
 	const [data, setData] = useState([]);
 
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];

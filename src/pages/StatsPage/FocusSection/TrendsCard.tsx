@@ -4,12 +4,7 @@ import { useEffect, useState } from 'react';
 import DateRangePicker from './DateRangePicker';
 import ModalPickDateRange from './ModalPickDateRange';
 import { useStatsContext } from '../../../contexts/useStatsContext';
-import {
-	getFormattedLongDay,
-	getFormattedShortMonthDay,
-	groupDatesByInterval,
-	hasDatePassed,
-} from '../../../utils/date.utils';
+import { getFormattedLongDay, groupDatesByInterval } from '../../../utils/date.utils';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
 import classNames from 'classnames';
 
@@ -31,7 +26,6 @@ const TrendsCard = () => {
 	const [endDate, setEndDate] = useState(new Date());
 
 	useEffect(() => {
-		// TODO: BS BS BS BS BS
 		if (selectedInterval === 'All' && focusRecords) {
 			const allFocusRecordDates = Object.keys(focusRecordsGroupedByDate).map((dateKey) => new Date(dateKey));
 			const newData = getUpdatedData(allFocusRecordDates);
@@ -153,7 +147,9 @@ const TrendsCard = () => {
 						</linearGradient>
 					</defs>
 					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} />
-					<XAxis dataKey="name" />
+
+					<XAxis dataKey="name" dy={7} />
+
 					<YAxis
 						dataKey="seconds"
 						type="number"
