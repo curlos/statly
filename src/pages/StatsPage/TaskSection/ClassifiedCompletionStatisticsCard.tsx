@@ -70,7 +70,7 @@ const ClassifiedCompletionStatisticsCard = ({ selectedTimeInterval, selectedDate
 
 		const sortedProgressBarData = newProgressBarData.sort((a, b) => b.value - a.value);
 		setProgressBarData(sortedProgressBarData);
-	}, [completedTasksGroupedByDate, selectedDates, projectsById, tagsByRawName, selected]);
+	}, [completedTasksGroupedByDate, selectedDates, projectsById, tagsByRawName, selected, selectedTimeInterval]);
 
 	const getDataByProjects = (allCompletedTasksForInterval, newNumOfCompletedTasks) => {
 		const completedTasksGroupedByProject = {};
@@ -172,7 +172,12 @@ const ClassifiedCompletionStatisticsCard = ({ selectedTimeInterval, selectedDate
 				/>
 			</div>
 
-			<div className={classNames('flex-1 mt-2 flex items-center gap-10 px-4', thereIsNoData && 'justify-center')}>
+			<div
+				className={classNames(
+					'flex-1 mt-2 flex items-center gap-3 xl:gap-10 px-4',
+					thereIsNoData && 'justify-center'
+				)}
+			>
 				<div>
 					<PieChart width={170} height={170}>
 						<Pie

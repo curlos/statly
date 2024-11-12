@@ -21,8 +21,6 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 
 		const newData = getCompletedTasksData();
 
-		console.log(newData);
-
 		setData(newData);
 	}, [completedTasksGroupedByDate, selectedDates, selectedTimeInterval]);
 
