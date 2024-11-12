@@ -102,49 +102,54 @@ const DetailsCard = () => {
 		}
 	};
 
+	const getDateRangePicker = () => {
+		return (
+			selectedInterval !== 'All' && (
+				<DateRangePicker
+					selectedDates={selectedDates}
+					setSelectedDates={setSelectedDates}
+					selectedInterval={selectedInterval}
+					startDate={startDate}
+					endDate={endDate}
+				/>
+			)
+		);
+	};
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full">
-			<div className="flex flex-col sm:flex-row justify-between sm:items-center">
-				<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
+			<div className="flex gap-4">
+				<div className="flex justify-between items-center w-full">
+					<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
 
-				<div
-					className={classNames(
-						'flex items-center justify-between sm:justify-start gap-4',
-						selectedInterval === 'All' && 'py-2'
-					)}
-				>
-					<div className="flex gap-4">
-						<GeneralSelectButtonAndDropdown
-							selected={selected}
-							setSelected={setSelected}
-							selectedOptions={selectedOptions}
-						/>
+					<div className={classNames('flex items-center gap-4', selectedInterval === 'All' && 'py-2')}>
+						<div className="flex gap-4">
+							<GeneralSelectButtonAndDropdown
+								selected={selected}
+								setSelected={setSelected}
+								selectedOptions={selectedOptions}
+							/>
 
-						<GeneralSelectButtonAndDropdown
-							selected={selectedInterval}
-							setSelected={setSelectedInterval}
-							selectedOptions={selectedIntervalOptions}
-							onClick={(name) => {
-								if (name?.toLowerCase() !== 'custom') {
-									return;
-								}
+							<GeneralSelectButtonAndDropdown
+								selected={selectedInterval}
+								setSelected={setSelectedInterval}
+								selectedOptions={selectedIntervalOptions}
+								onClick={(name) => {
+									if (name?.toLowerCase() !== 'custom') {
+										return;
+									}
 
-								setIsModalPickDateRangeOpen(true);
-							}}
-						/>
+									setIsModalPickDateRangeOpen(true);
+								}}
+							/>
+						</div>
+
+						<div className="hidden sm:block">{getDateRangePicker()}</div>
 					</div>
-
-					{selectedInterval !== 'All' && (
-						<DateRangePicker
-							selectedDates={selectedDates}
-							setSelectedDates={setSelectedDates}
-							selectedInterval={selectedInterval}
-							startDate={startDate}
-							endDate={endDate}
-						/>
-					)}
 				</div>
 			</div>
+
+			<div className="sm:hidden mt-2">{getDateRangePicker()}</div>
 
 			<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 px-4">
 				<div>

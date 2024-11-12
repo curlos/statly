@@ -137,7 +137,10 @@ export const getDataByTasks = (allFocusRecordsForInterval, focusDurationForInter
 
 		if (taskId !== 'No Task') {
 			const task = tasksById[taskId];
-			name = task.title;
+
+			if (task) {
+				name = task.title;
+			}
 		}
 
 		return {

@@ -10,10 +10,10 @@ const TopBar = () => {
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
 	return (
-		<div className="flex justify-between items-center gap-2">
+		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
 			<h1 className="text-[24px] font-medium">Statistics</h1>
 
-			<div className="flex justify-center gap-1 mr-[110px]">
+			<div className="flex justify-center gap-1 sm:mr-[110px]">
 				<div
 					className={location.pathname.includes('overview') ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => navigate('/stats/overview')}

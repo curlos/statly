@@ -94,7 +94,7 @@ const TopHeader = ({
 
 	return (
 		<div ref={topHeaderRef}>
-			<div className="flex justify-between items-center py-5 container mx-auto">
+			<div className="flex justify-between items-center py-5 container">
 				<h2 className="font-bold text-[24px]">Focus Records</h2>
 
 				<div className="flex items-center gap-2">

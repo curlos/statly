@@ -102,7 +102,7 @@ const Page = () => {
 					className="flex-1 flex justify-center overflow-scroll gray-scrollbar"
 					style={{ maxHeight }}
 				>
-					<div className="container mx-auto p-1">
+					<div className="container p-1">
 						<GroupedFocusRecordList
 							{...{
 								filteredFocusRecords,

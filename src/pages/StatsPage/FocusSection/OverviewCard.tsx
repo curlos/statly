@@ -41,16 +41,19 @@ const OverviewCard = () => {
 	}, [focusRecordsGroupedByDate, today]);
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[16px]">
 			<h3 className="font-bold text-[16px]">Overview</h3>
 
 			<div className="flex-1 flex flex-col justify-center gap-7">
-				<div className="grid grid-cols-4 w-full">
+				<div className="grid grid-cols-2 lg:grid-cols-4 w-full text-center">
+					{/* Today's Focus Records */}
 					<div className="flex flex-col items-center p-2">
 						<div className="text-blue-500 font-bold text-[24px]">{today.numOfFocusRecords}</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus Records</div>
 						<div className="text-color-gray-100 flex items-center gap-1">
-							<div>{diffTodayFromYesterdayFocusRecords.numDiff} from yesterday</div>
+							<div className="text-[10px] sm:text-[16px]">
+								{diffTodayFromYesterdayFocusRecords.numDiff} from yesterday
+							</div>
 							<Icon
 								name={classNames(
 									diffTodayFromYesterdayFocusRecords.lessThanYesterday
@@ -68,20 +71,22 @@ const OverviewCard = () => {
 						</div>
 					</div>
 
-					<div className="flex flex-col items-center p-2 border-l border-color-gray-150">
+					{/* Total Focus Records */}
+					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
 						<div className="text-blue-500 font-bold text-[24px]">
 							{total.numOfFocusRecords.toLocaleString()}
 						</div>
 						<div className="text-color-gray-100 font-medium">Total Focus Records</div>
 					</div>
 
-					<div className="flex flex-col items-center p-2 border-l border-color-gray-150">
+					{/* Today Focus Duration */}
+					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
 						<div className="text-blue-500 font-bold text-[24px]">
 							{getFormattedDuration(today.focusDuration, false)}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus</div>
 						<div className="text-color-gray-100 flex items-center gap-1">
-							<div>
+							<div className="text-[8px] sm:text-[16px]">
 								{getFormattedDuration(diffTodayFromYesterdayFocusDuration.numDiff, false)} from
 								yesterday
 							</div>
@@ -102,7 +107,8 @@ const OverviewCard = () => {
 						</div>
 					</div>
 
-					<div className="flex flex-col items-center p-2 border-l border-color-gray-150">
+					{/* Total Focus Duration */}
+					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
 						<div className="text-blue-500 font-bold text-[24px]">
 							{getFormattedDuration(total.focusDuration, false)}
 						</div>

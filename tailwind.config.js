@@ -21,6 +21,9 @@ export default {
         'color-gray-700': '#1E1E1E',
       },
       screens: {
+        'xs': '400px',
+        // => @media (min-width: 400px) { ... }
+
         'sm': '576px',
         // => @media (min-width: 640px) { ... }
   
@@ -37,6 +40,12 @@ export default {
         // => @media (min-width: 1536px) { ... }
       }
     },
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: '1rem',
+      }
+    }
   },
   plugins: [],
 };
