@@ -80,13 +80,7 @@ const TopHeader = ({
 			setSortedBy(mostRelevantSortByOption);
 		}
 
-		if (searchText.trim() === '' && taskIdToFilterBy) {
-			return;
-		}
-
 		const searchedItemsFocusRecords = searchedItems.map((result) => result.item);
-		console.log(searchedItemsFocusRecords);
-
 		setFilteredFocusRecords(searchedItemsFocusRecords);
 		updateQueryParams({ search: searchText });
 	}, 1000);
@@ -101,7 +95,7 @@ const TopHeader = ({
 	return (
 		<div ref={topHeaderRef}>
 			<div className="flex justify-between items-center py-5 container">
-				<h2 className="font-bold text-[24px]">Focus Records</h2>
+				<h2 className="font-bold text-[24px]">Focus Records ({filteredFocusRecords?.length || 0})</h2>
 
 				<div className="flex items-center gap-2">
 					{/* TODO: Bring the "Group By" dropdown back and make the grouping work for the different sections as well as for sorting stuff. */}
@@ -167,6 +161,7 @@ const TopHeader = ({
 							value={searchText}
 							onChange={(e) => {
 								setSearchText(e.target.value);
+								updateQueryParams({ search: searchText });
 							}}
 							className="text-[14px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
 						/>
@@ -201,6 +196,7 @@ const AppliedFilterItemList = ({
 		value: groupedBy,
 		handleRemove: () => {
 			setGroupedBy('No Group');
+			// TODO: Add query param update once I fix the grouping bugs.
 		},
 	};
 
@@ -209,6 +205,7 @@ const AppliedFilterItemList = ({
 		value: sortedBy,
 		handleRemove: () => {
 			setSortedBy('Newest');
+			updateQueryParams({ sortBy: 'Newest' });
 		},
 	};
 
@@ -217,6 +214,7 @@ const AppliedFilterItemList = ({
 		value: searchText,
 		handleRemove: () => {
 			setSearchText('');
+			updateQueryParams({ search: '' });
 		},
 	};
 

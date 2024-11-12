@@ -122,7 +122,7 @@ const Page = () => {
 					</div>
 				</div>
 
-				{totalPages && totalPages > 0 && (
+				{totalPages && totalPages > 0 ? (
 					<div className="flex justify-center pt-1 pb-2">
 						<Pagination
 							total={totalPages}
@@ -131,7 +131,7 @@ const Page = () => {
 							totalPages={totalPages}
 						/>
 					</div>
-				)}
+				) : null}
 
 				<SidebarButtonAndModal />
 			</div>
