@@ -6,6 +6,7 @@ import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resou
 import { usePageContext } from 'vike-react/usePageContext';
 import Pagination from '../../../components/Pagination';
 import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
+import SidebarButtonAndModal from '../../../components/SidebarModal/SidebarButtonAndModal';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -127,6 +128,8 @@ const Page = () => {
 						/>
 					</div>
 				)}
+
+				<SidebarButtonAndModal />
 			</div>
 		</div>
 	);

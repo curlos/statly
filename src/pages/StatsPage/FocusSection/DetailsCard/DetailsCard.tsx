@@ -104,28 +104,35 @@ const DetailsCard = () => {
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full">
-			<div className="flex justify-between items-center">
-				<h3 className="font-bold text-[16px]">Details</h3>
+			<div className="flex flex-col sm:flex-row justify-between sm:items-center">
+				<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
 
-				<div className={classNames('flex items-center gap-4', selectedInterval === 'All' && 'py-2')}>
-					<GeneralSelectButtonAndDropdown
-						selected={selected}
-						setSelected={setSelected}
-						selectedOptions={selectedOptions}
-					/>
+				<div
+					className={classNames(
+						'flex items-center justify-between sm:justify-start gap-4',
+						selectedInterval === 'All' && 'py-2'
+					)}
+				>
+					<div className="flex gap-4">
+						<GeneralSelectButtonAndDropdown
+							selected={selected}
+							setSelected={setSelected}
+							selectedOptions={selectedOptions}
+						/>
 
-					<GeneralSelectButtonAndDropdown
-						selected={selectedInterval}
-						setSelected={setSelectedInterval}
-						selectedOptions={selectedIntervalOptions}
-						onClick={(name) => {
-							if (name?.toLowerCase() !== 'custom') {
-								return;
-							}
+						<GeneralSelectButtonAndDropdown
+							selected={selectedInterval}
+							setSelected={setSelectedInterval}
+							selectedOptions={selectedIntervalOptions}
+							onClick={(name) => {
+								if (name?.toLowerCase() !== 'custom') {
+									return;
+								}
 
-							setIsModalPickDateRangeOpen(true);
-						}}
-					/>
+								setIsModalPickDateRangeOpen(true);
+							}}
+						/>
+					</div>
 
 					{selectedInterval !== 'All' && (
 						<DateRangePicker
@@ -139,7 +146,7 @@ const DetailsCard = () => {
 				</div>
 			</div>
 
-			<div className="flex-1 mt-2 flex items-center gap-10 px-4">
+			<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 px-4">
 				<div>
 					<PieChart width={220} height={220}>
 						<Pie
@@ -195,7 +202,7 @@ const DetailsCard = () => {
 					</PieChart>
 				</div>
 
-				<div className="mt-3 flex flex-col gap-2 w-full">
+				<div className="sm:mt-3 flex flex-col gap-2 w-full">
 					<ProgressBarList data={progressBarData} />
 				</div>
 			</div>
