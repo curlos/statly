@@ -69,8 +69,6 @@ const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 				return 'last month';
 			case 'Year':
 				return 'last year';
-			default:
-				return 'yesterday';
 		}
 	};
 
@@ -85,7 +83,7 @@ const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 						<div className="text-color-gray-100 font-medium">
 							{numOfCompletedTasksForInterval > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>
-						{selectedTimeInterval !== 'All' && (
+						{selectedTimeInterval !== 'All' && selectedTimeInterval !== 'Custom' && (
 							<div className="text-color-gray-100 flex items-center gap-1">
 								<div>
 									{diffOfCompletedTasksFromPrevInterval.numDiff} from {getPrevIntervalName()}

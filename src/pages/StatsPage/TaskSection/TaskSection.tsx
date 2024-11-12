@@ -5,12 +5,13 @@ import {
 	getAllDaysInMonthFromDate,
 	formatCheckedInDayDate,
 	getAllDaysInYearFromDate,
+	getAllDaysInRange,
 } from '../../../utils/date.utils';
 import DropdownGeneralSelect from '../DropdownGeneralSelect';
 import ClassifiedCompletionStatisticsCard from './ClassifiedCompletionStatisticsCard';
 import CompletionDistributionCard from './CompletionDistributionCard';
-import CompletionRateDistributionCard from './CompletionRateDistributionCard';
 import OverviewCard from './OverviewCard';
+import ModalPickDateRange from '../FocusSection/ModalPickDateRange';
 
 const TaskSection = () => {
 	const dropdownRef = useRef(null);
@@ -18,6 +19,11 @@ const TaskSection = () => {
 	const [selectedTimeInterval, setSelectedTimeInterval] = useState('Day');
 	const selectedTimeIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 	const [selectedDates, setSelectedDates] = useState([new Date()]);
+
+	// Custom
+	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
+	const [startDate, setStartDate] = useState(new Date('January 1, 2024'));
+	const [endDate, setEndDate] = useState(new Date());
 
 	useEffect(() => {
 		switch (selectedTimeInterval) {
@@ -33,8 +39,11 @@ const TaskSection = () => {
 			case 'Year':
 				setSelectedDates(getAllDaysInYearFromDate(selectedDates[0]));
 				break;
+			case 'Custom':
+				setSelectedDates(getAllDaysInRange(startDate, endDate));
+				break;
 		}
-	}, [selectedTimeInterval]);
+	}, [selectedTimeInterval, startDate, endDate]);
 
 	const getFormattedSelectedDates = () => {
 		switch (selectedTimeInterval) {
@@ -46,6 +55,8 @@ const TaskSection = () => {
 				return selectedDates[0].toLocaleString('default', { month: 'long', year: 'numeric' });
 			case 'Year':
 				return selectedDates[0].toLocaleString('default', { year: 'numeric' });
+			case 'Custom':
+				return `${formatCheckedInDayDate(startDate)} - ${formatCheckedInDayDate(endDate)}`;
 		}
 	};
 
@@ -92,10 +103,16 @@ const TaskSection = () => {
 						selected={selectedTimeInterval}
 						setSelected={setSelectedTimeInterval}
 						selectedOptions={selectedTimeIntervalOptions}
+						onClick={(name) => {
+							if (name?.toLowerCase() !== 'custom') {
+								return;
+							}
+
+							setIsModalPickDateRangeOpen(true);
+						}}
 					/>
 				</div>
 
-				{/* TODO: In the future, it might be a good idea to use the DropdownCalendar to select a range of dates from the calendar in a more custom manner. I think the IOS app lets you do it so should do it that way. */}
 				{selectedTimeInterval !== 'All' && (
 					<div className="flex justify-between gap-3 bg-color-gray-600 py-2 px-2 rounded-md">
 						<Icon
@@ -119,6 +136,15 @@ const TaskSection = () => {
 				{/* <CompletionRateDistributionCard /> */}
 				<ClassifiedCompletionStatisticsCard {...{ selectedTimeInterval, selectedDates }} />
 			</div>
+
+			<ModalPickDateRange
+				isModalOpen={isModalPickDateRangeOpen}
+				setIsModalOpen={setIsModalPickDateRangeOpen}
+				startDate={startDate}
+				setStartDate={setStartDate}
+				endDate={endDate}
+				setEndDate={setEndDate}
+			/>
 		</div>
 	);
 };
