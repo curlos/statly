@@ -95,7 +95,9 @@ const TopHeader = ({
 	return (
 		<div ref={topHeaderRef}>
 			<div className="flex justify-between items-center py-5 container">
-				<h2 className="font-bold text-[24px]">Focus Records ({filteredFocusRecords?.length || 0})</h2>
+				<h2 className="font-bold text-[24px]">
+					Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
+				</h2>
 
 				<div className="flex items-center gap-2">
 					{/* TODO: Bring the "Group By" dropdown back and make the grouping work for the different sections as well as for sorting stuff. */}
