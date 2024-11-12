@@ -11,7 +11,7 @@ const OverviewSection = () => {
 		<div>
 			<div className="bg-color-gray-600 p-4 rounded-md">
 				<div className="flex justify-between items-center">
-					<div className="flex gap-6">
+					<div className="grid grid-cols-2 sm:flex gap-6">
 						<div>
 							<span className="font-bold">{total.numOfAllTasks.toLocaleString()}</span> Tasks
 						</div>
@@ -33,20 +33,14 @@ const OverviewSection = () => {
 				</div>
 			</div>
 
-			{/* <div className="flex">
-				<DailyHoursFocusGoal />
-			</div> */}
-
-			<div className="grid grid-cols-2 gap-5 mt-3">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
 				<OverviewCard />
-				{/* I will probably replace this with the medals. Will have to create a design of some sorts first though. */}
-				{/* <MyAchievementScoreCard /> */}
 				<RecentCompletionCurveCard />
-				{/* <RecentCompletionRateCurveCard /> */}
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 				<RecentFocusRecordsCurveCard />
 				<RecentFocusedDurationCurveCard />
-				{/* TODO: Possibly bring back if I go any further with implementing habits on TickTick 2.0. I'll have ot think about it. */}
-				{/* <WeeklyHabitStatusCard /> */}
 			</div>
 		</div>
 	);
