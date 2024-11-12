@@ -8,6 +8,7 @@ import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
 import { usePageContext } from 'vike-react/usePageContext';
 import Spinner from '../../../components/Loaders/Spinner';
 import classNames from 'classnames';
+import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 
 const TopHeader = ({
 	topHeaderRef,
@@ -97,8 +98,6 @@ const TopHeader = ({
 
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 
-	const appliedFilters = () => {};
-
 	return (
 		<div ref={topHeaderRef}>
 			<div className="flex justify-between items-center py-5 container">
@@ -175,12 +174,28 @@ const TopHeader = ({
 				</div>
 			</div>
 
-			<AppliedFilterItemList {...{ groupedBy, setGroupedBy, sortedBy, setSortedBy, searchText, setSearchText }} />
+			<AppliedFilterItemList
+				{...{ groupedBy, setGroupedBy, sortedBy, setSortedBy, searchText, setSearchText, taskIdToFilterBy }}
+			/>
 		</div>
 	);
 };
 
-const AppliedFilterItemList = ({ groupedBy, setGroupedBy, sortedBy, setSortedBy, searchText, setSearchText }) => {
+const AppliedFilterItemList = ({
+	groupedBy,
+	setGroupedBy,
+	sortedBy,
+	setSortedBy,
+	searchText,
+	setSearchText,
+	taskIdToFilterBy,
+}) => {
+	const updateQueryParams = useUpdateQueryParams();
+
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks } = useGetAllTasksQuery();
+	const { tasksById } = fetchedTasks || {};
+
 	const groupByFilter = {
 		name: `Group By`,
 		value: groupedBy,
@@ -205,10 +220,18 @@ const AppliedFilterItemList = ({ groupedBy, setGroupedBy, sortedBy, setSortedBy,
 		},
 	};
 
-	const allFilters = [groupByFilter, sortByFilter, searchTextFilter];
+	const taskIdFilter = {
+		name: `Task`,
+		value: taskIdToFilterBy && tasksById ? tasksById[taskIdToFilterBy]?.title : taskIdToFilterBy,
+		handleRemove: () => {
+			updateQueryParams({ taskId: '' });
+		},
+	};
+
+	const allFilters = [groupByFilter, sortByFilter, searchTextFilter, taskIdFilter];
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
 		const { value } = focusRecordsFilter;
-		const isDefaultFilter = value === 'No Group' || value === 'Newest' || value === '';
+		const isDefaultFilter = !value || value === 'No Group' || value === 'Newest';
 		return !isDefaultFilter;
 	});
 
@@ -217,11 +240,11 @@ const AppliedFilterItemList = ({ groupedBy, setGroupedBy, sortedBy, setSortedBy,
 	}
 
 	return (
-		<div className="container flex">
+		<div className="container flex pb-2">
 			{nonDefaultFilterList.map((nonDefaultFilter) => {
 				const { name, value, handleRemove } = nonDefaultFilter;
 
-				return <AppliedFilterItem {...{ name, value, handleRemove }} />;
+				return <AppliedFilterItem key={name + value} {...{ name, value, handleRemove }} />;
 			})}
 		</div>
 	);
@@ -230,8 +253,8 @@ const AppliedFilterItemList = ({ groupedBy, setGroupedBy, sortedBy, setSortedBy,
 const AppliedFilterItem = ({ name, value, handleRemove }) => {
 	return (
 		<div className="flex">
-			<div className="px-2 py-1 text-[14px] text-white rounded-xl cursor-pointer  bg-emerald-600">
-				<div className="overflow-hidden text-nowrap" onClick={() => console.log('Bum')}>
+			<div className="px-2 py-1 text-[14px] text-white rounded-xl bg-emerald-600">
+				<div className="overflow-hidden text-nowrap">
 					<span className="font-bold">{name}: </span>
 					<span>{value}</span>
 				</div>
