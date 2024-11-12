@@ -16,7 +16,7 @@ const noData = [
 	},
 ];
 
-const ClassifiedCompletionStatisticsCard = ({ selectedTimeInterval, selectedDates }) => {
+const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
 	const {
 		allCompletedTasks,
 		completedTasksGroupedByDate,
@@ -161,9 +161,9 @@ const ClassifiedCompletionStatisticsCard = ({ selectedTimeInterval, selectedDate
 	};
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[280px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[280px]">
 			<div className="flex justify-between items-center">
-				<h3 className="font-bold text-[16px]">Classified Completion Statistics</h3>
+				<h3 className="font-bold text-[16px]">Completion Stats</h3>
 
 				<GeneralSelectButtonAndDropdown
 					selected={selected}
@@ -174,7 +174,7 @@ const ClassifiedCompletionStatisticsCard = ({ selectedTimeInterval, selectedDate
 
 			<div
 				className={classNames(
-					'flex-1 mt-2 flex items-center gap-3 xl:gap-10 px-4',
+					'flex-1 mt-2 flex flex-col flex-row sm:flex-row md:flex-col lg:flex-row items-center gap-3 xl:gap-10 px-4',
 					thereIsNoData && 'justify-center'
 				)}
 			>
@@ -286,4 +286,4 @@ const SmallLabelList = ({ progressBarData }) => {
 	);
 };
 
-export default ClassifiedCompletionStatisticsCard;
+export default CompletionStatsCard;

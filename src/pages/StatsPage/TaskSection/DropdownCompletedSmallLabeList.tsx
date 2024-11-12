@@ -24,8 +24,8 @@ const DropdownCompletedSmallLabeList: React.FC<DropdownPrioritiesProps> = ({
 				customClasses
 			)}
 		>
-			<div className="w-[355px] p-3">
-				<div className="text-[15px] font-bold mb-4">Classified Completion Statistics</div>
+			<div className="w-[250px] sm:w-[355px] p-3">
+				<div className="text-[15px] font-bold mb-4">Completion Stats</div>
 
 				<div className="space-y-2 w-full">
 					{progressBarData.map((data) => (

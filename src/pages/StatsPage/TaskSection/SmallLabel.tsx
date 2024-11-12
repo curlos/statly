@@ -11,7 +11,7 @@ const SmallLabel = ({ data, fromDropdown = false }) => {
 					backgroundColor: color,
 				}}
 			></div>
-			<div className="w-[25px]">{value}</div>
+			<div className="w-[30px]">{value}</div>
 			<div className={classNames('border-l border-color-gray-100 pl-2 w-[200px]', !fromDropdown && 'truncate')}>
 				{name}
 			</div>

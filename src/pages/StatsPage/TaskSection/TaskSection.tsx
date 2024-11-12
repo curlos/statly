@@ -6,9 +6,10 @@ import {
 	formatCheckedInDayDate,
 	getAllDaysInYearFromDate,
 	getAllDaysInRange,
+	getFormattedShortMonthDay,
 } from '../../../utils/date.utils';
 import DropdownGeneralSelect from '../DropdownGeneralSelect';
-import ClassifiedCompletionStatisticsCard from './ClassifiedCompletionStatisticsCard';
+import CompletionStatsCard from './CompletionStatsCard';
 import CompletionDistributionCard from './CompletionDistributionCard';
 import OverviewCard from './OverviewCard';
 import ModalPickDateRange from '../FocusSection/ModalPickDateRange';
@@ -50,13 +51,13 @@ const TaskSection = () => {
 			case 'Day':
 				return formatCheckedInDayDate(selectedDates[0]);
 			case 'Week':
-				return `${formatCheckedInDayDate(selectedDates[0])} - ${formatCheckedInDayDate(selectedDates[selectedDates.length - 1])}`;
+				return `${getFormattedShortMonthDay(selectedDates[0])} - ${getFormattedShortMonthDay(selectedDates[selectedDates.length - 1])}`;
 			case 'Month':
 				return selectedDates[0].toLocaleString('default', { month: 'long', year: 'numeric' });
 			case 'Year':
 				return selectedDates[0].toLocaleString('default', { year: 'numeric' });
 			case 'Custom':
-				return `${formatCheckedInDayDate(startDate)} - ${formatCheckedInDayDate(endDate)}`;
+				return `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`;
 		}
 	};
 
@@ -86,10 +87,10 @@ const TaskSection = () => {
 
 	return (
 		<div>
-			<div className="flex gap-4">
+			<div className="flex flex-col xs:flex-row gap-2 xs:gap-4">
 				<div className="relative">
 					<div
-						className="flex gap-[2px] bg-color-gray-600 py-2 px-4 rounded-md cursor-pointer"
+						className="flex gap-[2px] bg-color-gray-600 py-2 px-4 rounded-md cursor-pointer justify-between items-center"
 						onClick={() => setIsDropdownVisible(!isDropdownVisible)}
 					>
 						<div>{selectedTimeInterval}</div>
@@ -114,7 +115,7 @@ const TaskSection = () => {
 				</div>
 
 				{selectedTimeInterval !== 'All' && (
-					<div className="flex justify-between gap-3 bg-color-gray-600 py-2 px-2 rounded-md">
+					<div className="flex-1 sm:flex-none flex justify-between gap-3 bg-color-gray-600 py-2 px-2 rounded-md">
 						<Icon
 							name="keyboard_arrow_left"
 							customClass="!text-[18px] mt-[2px] cursor-pointer"
@@ -130,11 +131,11 @@ const TaskSection = () => {
 				)}
 			</div>
 
-			<div className="grid grid-cols-2 gap-5 mt-3">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-3">
 				<OverviewCard {...{ selectedTimeInterval, selectedDates }} />
 				<CompletionDistributionCard {...{ selectedTimeInterval, selectedDates }} />
 				{/* <CompletionRateDistributionCard /> */}
-				<ClassifiedCompletionStatisticsCard {...{ selectedTimeInterval, selectedDates }} />
+				<CompletionStatsCard {...{ selectedTimeInterval, selectedDates }} />
 			</div>
 
 			<ModalPickDateRange

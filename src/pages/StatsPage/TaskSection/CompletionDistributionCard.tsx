@@ -65,7 +65,7 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 	};
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[280px]">
 			<div className="flex justify-between items-center mb-6">
 				<h3 className="font-bold text-[16px]">Completion Distribution</h3>
 			</div>
