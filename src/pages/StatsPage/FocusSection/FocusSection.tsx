@@ -1,3 +1,4 @@
+import DailyHoursFocusGoalCard from './DailyFocusHourGoalCard';
 import DetailsCard from './DetailsCard/DetailsCard';
 import MostFocusedTimeCard from './MostFocusedTimeCard';
 import OverviewCard from './OverviewCard';
@@ -15,7 +16,9 @@ const FocusSection = () => {
 					<DetailsCard />
 				</div>
 
-				<div className="flex-[4] w-full"></div>
+				<div className="flex-[4] w-[full] h-[350px]">
+					<DailyHoursFocusGoalCard />
+				</div>
 			</div>
 
 			<div className="grid grid-cols-2 gap-5 mt-5">

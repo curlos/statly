@@ -69,7 +69,9 @@ const OverviewCard = () => {
 					</div>
 
 					<div className="flex flex-col items-center p-2 border-l border-color-gray-150">
-						<div className="text-blue-500 font-bold text-[24px]">{total.numOfFocusRecords}</div>
+						<div className="text-blue-500 font-bold text-[24px]">
+							{total.numOfFocusRecords.toLocaleString()}
+						</div>
 						<div className="text-color-gray-100 font-medium">Total Focus Records</div>
 					</div>
 
