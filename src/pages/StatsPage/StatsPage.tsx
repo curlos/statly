@@ -13,7 +13,7 @@ const StatsPage = () => {
 	const { focusRecords } = useStatsContext();
 
 	return (
-		<div className="flex max-w-screen max-h-[100vh]">
+		<div className="flex max-w-screen max-h-[100vh] overflow-x-hidden">
 			<div className="flex-1 bg-color-gray-700 py-8 h-[100vh] overflow-scroll gray-scrollbar">
 				<div className="container">
 					<TopBar />

@@ -6,8 +6,8 @@ const YearGridsCard = () => {
 	const [selectedDates, setSelectedDates] = useState([new Date()]);
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
-			<div className="flex justify-between items-center mb-6">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col sm:h-[350px]">
+			<div className="flex justify-between items-center mb-2">
 				<h3 className="font-bold text-[16px]">Year Grids</h3>
 
 				<DateRangePicker

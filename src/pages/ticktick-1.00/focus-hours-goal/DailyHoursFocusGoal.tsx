@@ -55,7 +55,6 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					trailColor: '#3d3c3c',
 				})}
 				counterClockwise={false}
-				className={completedGoalForTheDay ? 'animated-progress-path' : ''}
 			>
 				<div
 					className="text-white text-[40px] flex justify-center gap-4 w-[100%] select-none mb-[-10px]"

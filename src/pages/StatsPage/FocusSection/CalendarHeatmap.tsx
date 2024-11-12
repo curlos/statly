@@ -56,25 +56,32 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates }) => {
 	const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 	return (
-		<div className="flex gap-2 justify-between items-end">
-			<div>
-				<div className="flex justify-between text-color-gray-100">
-					{monthsShort.map((month) => (
-						<div key={month}>{month}</div>
-					))}
-				</div>
-				<div className="flex flex-col flex-wrap max-h-[210px]">
-					{allDatesInYear.map((date) => (
-						<CalendarDay
-							key={date.toLocaleDateString()}
-							date={date}
-							focusRecordsGroupedByDate={focusRecordsGroupedByDate}
-						/>
-					))}
+		<div className="flex flex-col sm:flex-row gap-2 justify-between items-center">
+			<div className="flex justify-center w-full sm:w-auto">
+				<div>
+					<div className="hidden sm:flex lg:hidden xl:flex justify-between text-color-gray-100">
+						{monthsShort.map((month) => (
+							<div key={month}>{month}</div>
+						))}
+					</div>
+
+					<div className="flex justify-between text-color-gray-100 sm:hidden lg:flex xl:hidden">
+						{monthsShort.map((month, index) => index % 2 === 0 && <div key={month}>{month}</div>)}
+					</div>
+
+					<div className="flex flex-col flex-wrap max-h-[340px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px]">
+						{allDatesInYear.map((date) => (
+							<CalendarDay
+								key={date.toLocaleDateString()}
+								date={date}
+								focusRecordsGroupedByDate={focusRecordsGroupedByDate}
+							/>
+						))}
+					</div>
 				</div>
 			</div>
 
-			<div className="space-y-1">
+			<div className="flex flex-row sm:flex-col flex-wrap gap-2 mt-2">
 				{durations.map((duration) => (
 					<div key={duration.value} className="flex items-center text-color-gray-100 gap-1">
 						<div
