@@ -6,8 +6,8 @@ const TimelineCard = () => {
 	const [selectedDates, setSelectedDates] = useState([new Date()]);
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
-			<div className="flex justify-between items-center">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] sm:h-[350px]">
+			<div className="flex flex-col sm:flex-row justify-between sm:items-center">
 				<h3 className="font-bold text-[16px]">Timeline</h3>
 
 				<DateRangePicker

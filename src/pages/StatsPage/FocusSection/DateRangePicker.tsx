@@ -66,7 +66,7 @@ const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, st
 			case 'Year':
 				return selectedDates[0].toLocaleString('default', { year: 'numeric' });
 			case 'Custom':
-				return `${formatCheckedInDayDate(startDate)} - ${formatCheckedInDayDate(endDate)}`;
+				return `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`;
 		}
 	};
 

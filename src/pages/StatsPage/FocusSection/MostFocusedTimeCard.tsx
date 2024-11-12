@@ -65,6 +65,20 @@ const MostFocusedTimeCard = () => {
 		setData(newData);
 	};
 
+	const getDateRangePicker = () => {
+		return (
+			selectedInterval !== 'All' && (
+				<DateRangePicker
+					selectedDates={selectedDates}
+					setSelectedDates={setSelectedDates}
+					selectedInterval={selectedInterval}
+					startDate={startDate}
+					endDate={endDate}
+				/>
+			)
+		);
+	};
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
 			<div className="flex justify-between items-center mb-6">
@@ -84,60 +98,56 @@ const MostFocusedTimeCard = () => {
 						}}
 					/>
 
-					{selectedInterval !== 'All' && (
-						<DateRangePicker
-							selectedDates={selectedDates}
-							setSelectedDates={setSelectedDates}
-							selectedInterval={selectedInterval}
-							startDate={startDate}
-							endDate={endDate}
-						/>
-					)}
+					<div className="hidden sm:block">{getDateRangePicker()}</div>
 				</div>
 			</div>
 
-			<ResponsiveContainer width="100%" height="100%">
-				<BarChart
-					width={500}
-					height={300}
-					data={data}
-					margin={{
-						top: 5,
-						right: 30,
-						left: 20,
-						bottom: 5,
-					}}
-					barSize={10}
-				>
-					<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} />
-					<YAxis
-						dataKey="seconds"
-						type="number"
-						domain={['dataMin', 'dataMax']}
-						tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
-					/>
-					<Tooltip
-						content={({ payload }) => {
-							// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
-							if (payload && payload[0]) {
-								const { name, seconds } = payload[0].payload;
-								return (
-									<div className="bg-black text-blue-500 p-2 rounded-md">{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
-								);
-							}
+			<div className="sm:hidden">{getDateRangePicker()}</div>
 
-							return null;
+			<div className="w-full h-full text-[12px] sm:text-[14px] md:text-[16px]">
+				<ResponsiveContainer width="100%" height="100%">
+					<BarChart
+						width={500}
+						height={300}
+						data={data}
+						margin={{
+							top: 5,
+							right: 30,
+							left: 20,
+							bottom: 5,
 						}}
-					/>
-					<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-					<Bar
-						dataKey="seconds"
-						fill="#3b82f6"
-						background={{ fill: '#3a3a3a' }}
-						activeBar={{ fill: '#6ca6fc', cursor: 'pointer' }}
-					/>
-				</BarChart>
-			</ResponsiveContainer>
+						barSize={10}
+					>
+						<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} />
+						<YAxis
+							dataKey="seconds"
+							type="number"
+							domain={['dataMin', 'dataMax']}
+							tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
+						/>
+						<Tooltip
+							content={({ payload }) => {
+								// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
+								if (payload && payload[0]) {
+									const { name, seconds } = payload[0].payload;
+									return (
+										<div className="bg-black text-blue-500 p-2 rounded-md">{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
+									);
+								}
+
+								return null;
+							}}
+						/>
+						<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+						<Bar
+							dataKey="seconds"
+							fill="#3b82f6"
+							background={{ fill: '#3a3a3a' }}
+							activeBar={{ fill: '#6ca6fc', cursor: 'pointer' }}
+						/>
+					</BarChart>
+				</ResponsiveContainer>
+			</div>
 
 			<ModalPickDateRange
 				isModalOpen={isModalPickDateRangeOpen}
