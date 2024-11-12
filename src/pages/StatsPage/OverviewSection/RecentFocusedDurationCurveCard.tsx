@@ -31,7 +31,7 @@ const RecentFocusedDurationCurveCard = () => {
 					}}
 					barSize={10}
 				>
-					<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
+					<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} />
 					<YAxis dataKey="score" tickFormatter={(value) => `${getFormattedDuration(value, false)}`} />
 					<Tooltip
 						content={({ payload }) => {

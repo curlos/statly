@@ -40,7 +40,7 @@ const RecentCompletionCurveCard = () => {
 						</linearGradient>
 					</defs>
 					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} />
-					<XAxis dataKey="name" />
+					<XAxis dataKey="name" dy={7} />
 					<YAxis />
 					<Tooltip
 						offset={10}
