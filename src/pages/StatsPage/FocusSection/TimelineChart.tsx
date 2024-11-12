@@ -13,12 +13,12 @@ import { getFormattedDuration } from '../../../utils/helpers.utils';
 const TimelineChart = ({ selectedDates }) => {
 	const { focusRecordsGroupedByDate } = useStatsContext();
 
-	const [series, setSeries] = useState(
-		Array.from({ length: 24 }, (_, i) => ({
-			name: convertTo12HourFormat(`${i.toString().padStart(2, '0')}:00`),
-			data: generateHourData(),
-		}))
-	);
+	const DEFAULT_SERIES = Array.from({ length: 24 }, (_, i) => ({
+		name: convertTo12HourFormat(`${i.toString().padStart(2, '0')}:00`),
+		data: generateHourData(),
+	}));
+
+	const [series, setSeries] = useState(DEFAULT_SERIES);
 
 	const chartId = 'timeline';
 
@@ -89,7 +89,7 @@ const TimelineChart = ({ selectedDates }) => {
 
 	useEffect(() => {
 		if (focusRecordsGroupedByDate) {
-			const newSeries = [...series];
+			const newSeries = DEFAULT_SERIES;
 
 			// For all 7 days of the week, go through each day and for each day go through each hour block in its 24 hours. Check the focus records for that day and determine how much time was filled up in each hour block out of a potential full hour. For example, 7:00PM could have a maximum of 3,600 seconds (1 hour).
 			for (let dayIndex = 0; dayIndex < selectedDates.length; dayIndex++) {
