@@ -8,6 +8,7 @@ import {
 } from '../../../utils/date.utils';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import apexchart from 'apexcharts';
+import { getFormattedDuration } from '../../../utils/helpers.utils';
 
 const TimelineChart = ({ selectedDates }) => {
 	const { focusRecordsGroupedByDate } = useStatsContext();
@@ -33,12 +34,11 @@ const TimelineChart = ({ selectedDates }) => {
 		},
 		plotOptions: {
 			heatmap: {
-				shadeIntensity: 1,
-				radius: 0,
+				enableShades: false,
 				useFillColorAsStroke: true,
 				colorScale: {
 					ranges: [
-						{ from: 0, to: 0, color: '#2f2f2f', name: '0m' }, // Adjusted for dark mode visibility
+						{ from: 0, to: 0, color: '#2f2f2f', name: '0m' },
 						{ from: 1, to: 600, color: '#dbeafe', name: '0m-10m' },
 						{ from: 601, to: 1200, color: '#7dd3fc', name: '10m-20m' },
 						{ from: 1201, to: 1800, color: '#60a5fa', name: '20m-30m' },
@@ -75,7 +75,12 @@ const TimelineChart = ({ selectedDates }) => {
 			},
 		},
 		tooltip: {
-			theme: 'dark', // Dark theme for tooltips
+			theme: 'dark',
+			y: {
+				formatter: (value, series) => {
+					return getFormattedDuration(value, false);
+				},
+			},
 		},
 		legend: {
 			show: false,
@@ -109,7 +114,7 @@ const TimelineChart = ({ selectedDates }) => {
 
 			setSeries(newSeries);
 		}
-	}, [focusRecordsGroupedByDate]);
+	}, [focusRecordsGroupedByDate, selectedDates]);
 
 	return <ReactApexChart options={options} series={series} type="heatmap" height={310} />;
 };

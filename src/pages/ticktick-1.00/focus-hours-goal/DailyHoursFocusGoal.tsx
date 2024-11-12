@@ -5,18 +5,8 @@ import ModalHabitDetails from '../../../components/Modal/ModalHabitDetails/Modal
 import { useState } from 'react';
 import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants.utils';
 
-const DailyHoursFocusGoal = ({
-	focusRecords,
-	streaksInfo,
-	goalSeconds,
-	totalFocusDurationToday,
-	percentageOfFocusedGoalHours,
-}) => {
+const DailyHoursFocusGoal = ({ streaksInfo, goalSeconds, totalFocusDurationToday, percentageOfFocusedGoalHours }) => {
 	const [isModalHabitDetailsOpen, setIsModalHabitDetailsOpen] = useState(false);
-
-	if (!focusRecords) {
-		return null;
-	}
 
 	const completedGoalForTheDay = percentageOfFocusedGoalHours >= 100;
 
@@ -28,7 +18,7 @@ const DailyHoursFocusGoal = ({
 			>
 				<Icon name="local_fire_department" customClass={'!text-[32px]'} />
 				<span className="text-[20px]">
-					<span className="text-[32px] font-bold">{streaksInfo.currentStreak.days}</span>
+					<span className="text-[32px] font-bold">{streaksInfo?.currentStreak?.days || 0}</span>
 					/90
 				</span>
 			</div>

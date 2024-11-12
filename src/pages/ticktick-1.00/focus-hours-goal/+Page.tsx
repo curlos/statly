@@ -4,7 +4,13 @@ import Icon from '../../../components/Icon.js';
 import SidebarModal from './SidebarModal.js';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi.js';
 import { getStreaksInfo, getFocusDataForDayInfo } from '../../../utils/focus.utils.js';
-import LoaderBlackOpsThreeMedal from '../../../components/LoaderBlackOpsThreeMedal.js';
+import LoaderBottomRightBO3Medal from '../../../components/Loaders/LoaderBottomRightBO3Medal.js';
+
+const defaultFocusData = {
+	goalSeconds: 5400,
+	totalFocusDurationForDay: 0,
+	percentageOfFocusedGoalHours: 0,
+};
 
 export default function Page() {
 	const {
@@ -18,7 +24,8 @@ export default function Page() {
 
 	const streaksInfo = focusRecords && getStreaksInfo(focusRecords);
 	const focusDataForTodayInfo = focusRecordsByDate && getFocusDataForDayInfo(focusRecordsByDate, new Date());
-	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } = focusDataForTodayInfo || {};
+	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
+		focusDataForTodayInfo || defaultFocusData;
 
 	const isLoading = !focusRecordsByDate || !streaksInfo || !focusDataForTodayInfo;
 
@@ -30,20 +37,18 @@ export default function Page() {
 				onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
 			/>
 			<div className="w-[350px]">
-				{isLoading ? (
-					<LoaderBlackOpsThreeMedal />
-				) : (
-					<DailyHoursFocusGoal
-						{...{
-							focusRecords,
-							streaksInfo,
-							goalSeconds,
-							totalFocusDurationToday: totalFocusDurationForDay,
-							percentageOfFocusedGoalHours,
-						}}
-					/>
-				)}
+				<DailyHoursFocusGoal
+					{...{
+						focusRecords,
+						streaksInfo,
+						goalSeconds,
+						totalFocusDurationToday: totalFocusDurationForDay,
+						percentageOfFocusedGoalHours,
+					}}
+				/>
 			</div>
+
+			{isLoading && <LoaderBottomRightBO3Medal />}
 
 			{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
 		</div>

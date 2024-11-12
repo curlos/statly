@@ -73,7 +73,12 @@ const DetailsCard = () => {
 				break;
 		}
 
-		setProgressBarData(newProgressBarData);
+		if (!newFocusDurationForInterval) {
+			setProgressBarData(noData);
+		} else {
+			setProgressBarData(newProgressBarData);
+		}
+
 		setFocusDurationForInterval(newFocusDurationForInterval);
 	}, [
 		focusRecords,

@@ -37,7 +37,6 @@ const TopBar = () => {
 			</div>
 
 			<div></div>
-			{/* <div className="bg-blue-500 px-8 py-[10px] rounded-md">Done</div> */}
 		</div>
 	);
 };
