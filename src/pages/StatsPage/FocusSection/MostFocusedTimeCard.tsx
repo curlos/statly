@@ -5,6 +5,7 @@ import DateRangePicker from './DateRangePicker';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import {
 	convertTo12HourFormat,
+	fillInHourBlocksWithSeconds,
 	getDailyHourBlocks,
 	getFormattedLongDay,
 	getTimeInBlocks,
@@ -63,27 +64,6 @@ const MostFocusedTimeCard = () => {
 		});
 
 		setData(newData);
-	};
-
-	const fillInHourBlocksWithSeconds = (focusRecords, newDailyHourBlocks) => {
-		for (let focusRecord of focusRecords) {
-			const { startTime, endTime, pauseDuration, tasks } = focusRecord;
-
-			if (tasks?.length > 0) {
-				for (let task of tasks) {
-					const { startTime, endTime } = task;
-					const timeInBlocks = getTimeInBlocks(startTime, endTime);
-
-					for (let timeBlock of timeInBlocks) {
-						const { from, to, seconds } = timeBlock;
-
-						newDailyHourBlocks[from].seconds += seconds;
-					}
-				}
-			} else {
-				console.log('TODO:');
-			}
-		}
 	};
 
 	return (

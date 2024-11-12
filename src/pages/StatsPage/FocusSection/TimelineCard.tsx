@@ -18,7 +18,7 @@ const TimelineCard = () => {
 			</div>
 
 			<div className="mt-[-10px]">
-				<TimelineChart />
+				<TimelineChart {...{ selectedDates }} />
 			</div>
 		</div>
 	);

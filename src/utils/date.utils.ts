@@ -813,6 +813,28 @@ export const getDailyHourBlocks = () => {
 	return hourBlocks;
 };
 
+export const fillInHourBlocksWithSeconds = (focusRecords, newDailyHourBlocks) => {
+	for (let focusRecord of focusRecords) {
+		const { startTime, endTime, pauseDuration, tasks } = focusRecord;
+
+		if (tasks?.length > 0) {
+			for (let task of tasks) {
+				const { startTime, endTime } = task;
+				const timeInBlocks = getTimeInBlocks(startTime, endTime);
+
+				for (let timeBlock of timeInBlocks) {
+					const { from, to, seconds } = timeBlock;
+
+					newDailyHourBlocks[from].seconds += seconds;
+				}
+			}
+		} else {
+			// TODO: Handle focus records without tasks?
+			console.log('TODO:');
+		}
+	}
+};
+
 export const convertTo12HourFormat = (hour24) => {
 	// Convert the hour string to an integer
 	const hour = parseInt(hour24.substring(0, 2), 10);

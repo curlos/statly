@@ -12,7 +12,7 @@ import GlobalModalList from '../components/Modal/GlobalModalList';
 export const Wrapper = ({ children }) => (
 	<Provider store={store}>
 		<StatsProvider>
-			<div className="text-white">
+			<div className="text-white select-none">
 				{children}
 
 				{/* Modals */}
