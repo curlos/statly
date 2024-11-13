@@ -7,6 +7,7 @@ import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants.utils';
 import classNames from 'classnames';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import { getStreaksInfo, getFocusDataForDayInfo } from '../../../utils/focus.utils';
+import { useThemeContext } from '../focus-records/useThemeContext';
 
 const defaultFocusData = {
 	goalSeconds: 5400,
@@ -28,6 +29,9 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const completedGoalForTheDay = percentageOfFocusedGoalHours >= 100;
 
 	const isLargeType = type === 'large';
+
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
 
 	return (
 		<div className={classNames(isLargeType ? 'w-[350px]' : 'w-[250px]')}>
@@ -51,7 +55,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				strokeWidth={4}
 				styles={buildStyles({
 					textColor: '#4772F9',
-					pathColor: completedGoalForTheDay ? '#00cc66' : '#34d399', // Red when overtime, otherwise original color
+					pathColor: chosenColorObj.hexColor, // Red when overtime, otherwise original color
 					trailColor: '#3d3c3c',
 				})}
 				counterClockwise={false}
