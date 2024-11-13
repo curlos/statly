@@ -7,6 +7,7 @@ import {
 	getAllDaysInYearFromDate,
 } from '../../../utils/date.utils';
 import classNames from 'classnames';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 	const { allCompletedTasks, completedTasksGroupedByDate, getCompletedTasksFromSelectedDates } =
@@ -72,6 +73,9 @@ const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 		}
 	};
 
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[280px]">
 			<h3 className="font-bold text-[16px]">Overview</h3>
@@ -79,7 +83,9 @@ const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 			<div className="flex-1 flex flex-col justify-center gap-7">
 				<div className="grid grid-cols-1 w-full">
 					<div className="flex flex-col items-center p-2">
-						<div className="text-blue-500 font-bold text-[24px]">{numOfCompletedTasksForInterval}</div>
+						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
+							{numOfCompletedTasksForInterval}
+						</div>
 						<div className="text-color-gray-100 font-medium">
 							{numOfCompletedTasksForInterval > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>

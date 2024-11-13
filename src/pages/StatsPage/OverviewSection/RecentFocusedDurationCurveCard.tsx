@@ -61,7 +61,7 @@ const RecentFocusedDurationCurveCard = () => {
 						dataKey="score"
 						fill={hexColor}
 						background={{ fill: '#3a3a3a' }}
-						activeBar={{ fill: '#6ca6fc', cursor: 'pointer' }}
+						activeBar={{ fill: hexColor, cursor: 'pointer' }}
 					/>
 				</BarChart>
 			</ResponsiveContainer>

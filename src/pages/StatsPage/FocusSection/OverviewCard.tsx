@@ -4,6 +4,7 @@ import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
 import { getFormattedLongDay } from '../../../utils/date.utils';
 import classNames from 'classnames';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 const OverviewCard = () => {
 	const { total, today, focusRecordsGroupedByDate } = useStatsContext();
@@ -40,6 +41,9 @@ const OverviewCard = () => {
 		});
 	}, [focusRecordsGroupedByDate, today]);
 
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[16px]">
 			<h3 className="font-bold text-[16px]">Overview</h3>
@@ -48,7 +52,9 @@ const OverviewCard = () => {
 				<div className="grid grid-cols-2 lg:grid-cols-4 w-full text-center">
 					{/* Today's Focus Records */}
 					<div className="flex flex-col items-center p-2">
-						<div className="text-blue-500 font-bold text-[24px]">{today.numOfFocusRecords}</div>
+						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
+							{today.numOfFocusRecords}
+						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus Records</div>
 						<div className="text-color-gray-100 flex items-center gap-1">
 							<div className="text-[10px] sm:text-[16px]">
@@ -73,7 +79,7 @@ const OverviewCard = () => {
 
 					{/* Total Focus Records */}
 					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
-						<div className="text-blue-500 font-bold text-[24px]">
+						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{total.numOfFocusRecords.toLocaleString()}
 						</div>
 						<div className="text-color-gray-100 font-medium">Total Focus Records</div>
@@ -81,7 +87,7 @@ const OverviewCard = () => {
 
 					{/* Today Focus Duration */}
 					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
-						<div className="text-blue-500 font-bold text-[24px]">
+						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{getFormattedDuration(today.focusDuration, false)}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus</div>
@@ -109,7 +115,7 @@ const OverviewCard = () => {
 
 					{/* Total Focus Duration */}
 					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
-						<div className="text-blue-500 font-bold text-[24px]">
+						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{getFormattedDuration(total.focusDuration, false)}
 						</div>
 						<div className="text-color-gray-100 font-medium">Total Focus Duration</div>

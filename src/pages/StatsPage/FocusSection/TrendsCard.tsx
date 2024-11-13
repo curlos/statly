@@ -7,6 +7,7 @@ import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedLongDay, groupDatesByInterval } from '../../../utils/date.utils';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
 import classNames from 'classnames';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 const TrendsCard = () => {
 	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();
@@ -99,6 +100,9 @@ const TrendsCard = () => {
 		);
 	};
 
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px]">
 			<div className="flex justify-between items-center mb-4">
@@ -150,7 +154,7 @@ const TrendsCard = () => {
 				>
 					<defs>
 						<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="30%" stopColor="#3b82f6" stopOpacity={0.8} />
+							<stop offset="30%" stopColor={chosenColorObj.hexColor} stopOpacity={0.8} />
 							<stop offset="95%" stopColor="black" stopOpacity={0} />
 						</linearGradient>
 					</defs>
@@ -174,14 +178,22 @@ const TrendsCard = () => {
 							if (payload && payload[0]) {
 								const { name, seconds } = payload[0].payload;
 								return (
-									<div className="bg-black text-blue-500 p-2 rounded-md">{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
+									<div
+										className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
+									>{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
 								);
 							}
 
 							return null;
 						}}
 					/>
-					<Area type="monotone" dataKey="seconds" stroke="#3b82f6" strokeWidth={3} fill="url(#colorPv)" />
+					<Area
+						type="monotone"
+						dataKey="seconds"
+						stroke={chosenColorObj.hexColor}
+						strokeWidth={3}
+						fill="url(#colorPv)"
+					/>
 				</AreaChart>
 			</ResponsiveContainer>
 
