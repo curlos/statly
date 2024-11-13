@@ -78,8 +78,8 @@ const AppliedFilterItemList = ({
 
 const AppliedFilterItem = ({ name, value, handleRemove }) => {
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext;
-	const { bgColorHalfOpacity } = cssStyles[themeColorKey];
+	const { chosenColorObj } = themeContext;
+	const { bgColorHalfOpacity } = chosenColorObj;
 
 	return (
 		<div className="flex">

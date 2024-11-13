@@ -8,8 +8,8 @@ const TopBar = () => {
 	const location = pageContext.urlParsed;
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext;
-	const { textColor, bgColorHalfOpacity } = cssStyles[themeColorKey];
+	const { chosenColorObj } = themeContext;
+	const { textColor, bgColorHalfOpacity } = chosenColorObj;
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);

@@ -14,8 +14,8 @@ const DropdownGeneralSelect = ({
 	onClick,
 }) => {
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext;
-	const { textColor } = cssStyles[themeColorKey];
+	const { chosenColorObj } = themeContext;
+	const { textColor } = chosenColorObj;
 
 	const SelectOption = ({ name }) => {
 		return (

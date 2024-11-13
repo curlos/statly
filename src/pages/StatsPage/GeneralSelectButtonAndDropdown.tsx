@@ -9,8 +9,8 @@ const GeneralSelectButtonAndDropdown = ({ selected, setSelected, selectedOptions
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext;
-	const { hover } = cssStyles[themeColorKey];
+	const { chosenColorObj } = themeContext;
+	const { hover } = chosenColorObj;
 
 	return (
 		<div className="relative">

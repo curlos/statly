@@ -1,5 +1,5 @@
 import { getFormattedDuration } from '../../../utils/helpers.utils';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
@@ -9,8 +9,8 @@ const RecentFocusedDurationCurveCard = () => {
 	const { selected, setSelected, selectedOptions, data } = useGetStatsForInterval('focusDuration');
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext;
-	const { textColor, hexColor } = cssStyles[themeColorKey];
+	const { chosenColorObj } = themeContext;
+	const { textColor, hexColor } = chosenColorObj;
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">

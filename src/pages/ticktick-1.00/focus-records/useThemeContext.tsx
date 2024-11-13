@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
-import { TAILWIND_COLORS } from '../../../utils/TAILWIND_COLORS.utils';
+import { TAILWIND_COLORS_OBJ } from '../../../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
+import { generateTailwindColorObjects } from '../../../utils/TAILWIND_COLORS/generateTailwindColorObjects';
 
 const ThemeContext = createContext();
 
@@ -32,9 +33,15 @@ const useTheme = () => {
 		}
 	}, [userSettings]);
 
+	const [colorName] = themeColorKey.split('-');
+	const chosenColorObj = TAILWIND_COLORS_OBJ[colorName][themeColorKey];
+
+	// console.log(generateTailwindColorObjects());
+
 	return {
 		themeColorKey,
 		setThemeColorKey,
-		cssStyles: TAILWIND_COLORS,
+		cssStyles: TAILWIND_COLORS_OBJ,
+		chosenColorObj,
 	};
 };

@@ -8,8 +8,8 @@ const RecentCompletionCurveCard = () => {
 	const { selected, setSelected, selectedOptions, data } = useGetStatsForInterval();
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext;
-	const { textColor, hexColor } = cssStyles[themeColorKey];
+	const { chosenColorObj } = themeContext;
+	const { textColor, hexColor } = chosenColorObj;
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
