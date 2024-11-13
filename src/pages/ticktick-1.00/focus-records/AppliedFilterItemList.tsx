@@ -78,12 +78,12 @@ const AppliedFilterItemList = ({
 
 const AppliedFilterItem = ({ name, value, handleRemove }) => {
 	const themeContext = useThemeContext();
-	const { bgColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
-	const { bgColor } = cssStyles[bgColorKey];
+	const { themeColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { bgColorHalfOpacity } = cssStyles[themeColorKey];
 
 	return (
 		<div className="flex">
-			<div className={classNames('px-2 py-1 text-[14px] text-white rounded-xl', bgColor)}>
+			<div className={classNames('px-2 py-1 text-[14px] text-white rounded-xl', bgColorHalfOpacity)}>
 				<div className="overflow-hidden">
 					<span className="font-bold">{name}: </span>
 					<span>{value}</span>

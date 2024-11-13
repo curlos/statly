@@ -32,8 +32,8 @@ const FocusRecord = ({
 	const duration = focusDuration ? focusDuration : getFocusDuration(focusRecord);
 
 	const themeContext = useThemeContext();
-	const { bgColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
-	const { textColor, bgColor, borderColor } = cssStyles[bgColorKey];
+	const { themeColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { textColor, bgColorHalfOpacity, borderColor } = cssStyles[themeColorKey];
 
 	const getAllCompletedTasksDuringFocusRecord = () => {
 		if (!completedTasksGroupedByDate) {
@@ -127,7 +127,7 @@ const FocusRecord = ({
 					></div>
 				)}
 
-				<div className={classNames(bgColor, 'p-2 rounded-lg w-[95%] sm:w-full')}>
+				<div className={classNames(bgColorHalfOpacity, 'p-2 rounded-lg w-[95%] sm:w-full')}>
 					<div className="hidden sm:block text-gray-200">
 						<span className="font-bold">{getFormattedLongDay(new Date(startTime))}</span> -{' '}
 						{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
