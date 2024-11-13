@@ -94,7 +94,7 @@ const ThemeColorList = () => {
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, setThemeColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { themeColorKey, setThemeColorKey, cssStyles } = themeContext;
 
 	return (
 		<div>

@@ -3,7 +3,8 @@ import Icon from '../../../../components/Icon';
 import { useUpdateQueryParams } from '../../../../hooks/useUpdateQueryParams';
 import CustomRadioButton from '../../../../components/CustomRadioButton';
 import classNames from 'classnames';
-import { useThemeContext } from '../useThemeContext';
+import useHandleError from '../../../../hooks/useHandleError';
+import { useEditUserSettingsMutation } from '../../../../services/resources/userSettingsApi';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -30,6 +31,11 @@ const ModalFilterSidebar = ({
 	};
 
 	const updateQueryParams = useUpdateQueryParams();
+
+	const handleError = useHandleError();
+
+	// RTK Query - User Settings
+	const [editUserSettings] = useEditUserSettingsMutation();
 
 	return (
 		<AnimatePresence>
@@ -168,7 +174,24 @@ const ModalFilterSidebar = ({
 										'!text-[22px] cursor-pointer',
 										'text-blue-500 hover:text-blue-400'
 									)}
-									onClick={() => setShowCompletedTasks(!showCompletedTasks)}
+									onClick={() => {
+										const newShowCompletedTasks = !showCompletedTasks;
+										setShowCompletedTasks(newShowCompletedTasks);
+
+										handleError(async () => {
+											const payload = {
+												tickTickOne: {
+													pages: {
+														focusRecords: {
+															showCompletedTasks: newShowCompletedTasks,
+														},
+													},
+												},
+											};
+
+											await editUserSettings(payload).unwrap();
+										});
+									}}
 								/>
 								<div>Show Completed Tasks</div>
 							</div>

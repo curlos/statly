@@ -32,7 +32,7 @@ const FocusRecord = ({
 	const duration = focusDuration ? focusDuration : getFocusDuration(focusRecord);
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { themeColorKey, cssStyles } = themeContext;
 	const { textColor, bgColorHalfOpacity, borderColor } = cssStyles[themeColorKey];
 
 	const getAllCompletedTasksDuringFocusRecord = () => {

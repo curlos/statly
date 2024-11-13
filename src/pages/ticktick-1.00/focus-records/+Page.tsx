@@ -7,6 +7,7 @@ import Pagination from '../../../components/Pagination';
 import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
 import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
+import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -24,6 +25,10 @@ const Page = () => {
 	} = useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecords } = fetchedFocusRecords || {};
 
+	// RTK Query - User Settings
+	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
+	const { userSettings } = fetchedUserSettings || {};
+
 	const topHeaderRef = useRef(null);
 	const [headerHeight, setHeaderHeight] = useState(0);
 
@@ -39,6 +44,18 @@ const Page = () => {
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+
+	useEffect(() => {
+		if (isLoadingGetUserSettings) {
+			return;
+		}
+
+		const newShowCompletedTasks = userSettings?.tickTickOne?.pages?.focusRecords?.showCompletedTasks;
+
+		if (newShowCompletedTasks !== undefined) {
+			setShowCompletedTasks(newShowCompletedTasks);
+		}
+	}, [userSettings]);
 
 	useEffect(() => {
 		// Scroll to the top of the focus records whenever you go to a new page.

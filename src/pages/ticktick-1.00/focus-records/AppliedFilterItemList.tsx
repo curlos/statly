@@ -78,7 +78,7 @@ const AppliedFilterItemList = ({
 
 const AppliedFilterItem = ({ name, value, handleRemove }) => {
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { themeColorKey, cssStyles } = themeContext;
 	const { bgColorHalfOpacity } = cssStyles[themeColorKey];
 
 	return (
