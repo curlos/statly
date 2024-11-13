@@ -1,15 +1,24 @@
 import { useRef, useState } from 'react';
 import Icon from '../../components/Icon';
 import DropdownGeneralSelect from './DropdownGeneralSelect';
+import { useThemeContext } from '../ticktick-1.00/focus-records/useThemeContext';
+import classNames from 'classnames';
 
 const GeneralSelectButtonAndDropdown = ({ selected, setSelected, selectedOptions, onClick }) => {
 	const dropdownRef = useRef(null);
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
+	const themeContext = useThemeContext();
+	const { themeColorKey, cssStyles } = themeContext;
+	const { hover } = cssStyles[themeColorKey];
+
 	return (
 		<div className="relative">
 			<div
-				className="flex gap-[2px] items-center px-2 py-[2px] pl-3 border border-color-gray-100 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer hover:text-blue-500 hover:border-blue-500"
+				className={classNames(
+					'flex gap-[2px] items-center px-2 py-[2px] pl-3 border border-color-gray-100 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer',
+					`${hover.textColor} ${hover.borderColor}`
+				)}
 				onClick={() => setIsDropdownVisible(!isDropdownVisible)}
 			>
 				<div>{selected}</div>

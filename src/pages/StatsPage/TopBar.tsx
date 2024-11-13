@@ -1,12 +1,18 @@
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
+import { useThemeContext } from '../ticktick-1.00/focus-records/useThemeContext';
+import classNames from 'classnames';
 
 const TopBar = () => {
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;
 
+	const themeContext = useThemeContext();
+	const { themeColorKey, cssStyles } = themeContext;
+	const { textColor, bgColorHalfOpacity } = cssStyles[themeColorKey];
+
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
-	const selectedButtonStyle = `${sharedButtonStyle} bg-[#222735] text-[#4671F7] font-semibold`;
+	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
 	return (

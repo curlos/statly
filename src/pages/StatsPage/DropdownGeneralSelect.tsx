@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Icon from '../../components/Icon';
+import { useThemeContext } from '../ticktick-1.00/focus-records/useThemeContext';
 
 const DropdownGeneralSelect = ({
 	toggleRef,
@@ -12,6 +13,10 @@ const DropdownGeneralSelect = ({
 	selectedOptions,
 	onClick,
 }) => {
+	const themeContext = useThemeContext();
+	const { themeColorKey, cssStyles } = themeContext;
+	const { textColor } = cssStyles[themeColorKey];
+
 	const SelectOption = ({ name }) => {
 		return (
 			<div
@@ -26,12 +31,12 @@ const DropdownGeneralSelect = ({
 					}
 				}}
 			>
-				<div className={selected === name ? 'text-blue-500' : ''}>{name}</div>
+				<div className={selected === name ? textColor : ''}>{name}</div>
 				{selected === name && (
 					<Icon
 						name="check"
 						fill={0}
-						customClass={'text-blue-500 !text-[18px] hover:text-white cursor-pointer'}
+						customClass={classNames(textColor, '!text-[18px] hover:text-white cursor-pointer')}
 					/>
 				)}
 			</div>

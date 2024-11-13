@@ -1,9 +1,15 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
+import classNames from 'classnames';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 const RecentFocusRecordsCurveCard = () => {
 	const { selected, setSelected, selectedOptions, data } = useGetStatsForInterval('focusRecords');
+
+	const themeContext = useThemeContext();
+	const { themeColorKey, cssStyles } = themeContext;
+	const { textColor, hexColor } = cssStyles[themeColorKey];
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
@@ -30,12 +36,8 @@ const RecentFocusRecordsCurveCard = () => {
 					}}
 				>
 					<defs>
-						{/* <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-							<stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-						</linearGradient> */}
 						<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="30%" stopColor="#3b82f6" stopOpacity={0.8} />
+							<stop offset="30%" stopColor={hexColor} stopOpacity={0.8} />
 							<stop offset="95%" stopColor="black" stopOpacity={0} />
 						</linearGradient>
 					</defs>
@@ -54,14 +56,16 @@ const RecentFocusRecordsCurveCard = () => {
 								const nameToUse = fullName ? fullName : name;
 
 								return (
-									<div className="bg-black text-blue-500 p-2 rounded-md">{`${nameToUse}, ${score}`}</div>
+									<div
+										className={classNames(textColor, 'bg-black p-2 rounded-md')}
+									>{`${nameToUse}, ${score}`}</div>
 								);
 							}
 
 							return null;
 						}}
 					/>
-					<Area type="monotone" dataKey="score" stroke="#3b82f6" strokeWidth={3} fill="url(#colorPv)" />
+					<Area type="monotone" dataKey="score" stroke={hexColor} strokeWidth={3} fill="url(#colorPv)" />
 				</AreaChart>
 			</ResponsiveContainer>
 		</div>

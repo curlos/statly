@@ -2,9 +2,15 @@ import { getFormattedDuration } from '../../../utils/helpers.utils';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import classNames from 'classnames';
 
 const RecentFocusedDurationCurveCard = () => {
 	const { selected, setSelected, selectedOptions, data } = useGetStatsForInterval('focusDuration');
+
+	const themeContext = useThemeContext();
+	const { themeColorKey, cssStyles } = themeContext;
+	const { textColor, hexColor } = cssStyles[themeColorKey];
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
@@ -41,7 +47,9 @@ const RecentFocusedDurationCurveCard = () => {
 								const nameToUse = fullName ? fullName : name;
 
 								return (
-									<div className="bg-black text-blue-500 p-2 rounded-md">{`${nameToUse}, ${getFormattedDuration(seconds, false)}`}</div>
+									<div
+										className={classNames(textColor, 'bg-black p-2 rounded-md')}
+									>{`${nameToUse}, ${getFormattedDuration(seconds, false)}`}</div>
 								);
 							}
 
@@ -51,7 +59,7 @@ const RecentFocusedDurationCurveCard = () => {
 					<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
 					<Bar
 						dataKey="score"
-						fill="#3b82f6"
+						fill={hexColor}
 						background={{ fill: '#3a3a3a' }}
 						activeBar={{ fill: '#6ca6fc', cursor: 'pointer' }}
 					/>
