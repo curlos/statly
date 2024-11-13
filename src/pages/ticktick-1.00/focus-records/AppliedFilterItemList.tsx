@@ -79,7 +79,7 @@ const AppliedFilterItem = ({ name, value, handleRemove }) => {
 	return (
 		<div className="flex">
 			<div className="px-2 py-1 text-[14px] text-white rounded-xl bg-emerald-600">
-				<div className="overflow-hidden text-nowrap">
+				<div className="overflow-hidden">
 					<span className="font-bold">{name}: </span>
 					<span>{value}</span>
 				</div>

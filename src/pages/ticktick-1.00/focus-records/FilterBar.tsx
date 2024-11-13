@@ -56,10 +56,10 @@ const FilterBar = ({
 	}, [searchText, defaultFocusRecords]);
 
 	useEffect(() => {
-		focusRecordListRef?.current?.scrollTo(0, 0);
-	}, [filteredFocusRecords]);
+		focusRecordListRef.current.scrollTo(0, 0);
+	}, [filteredFocusRecords, searchText, taskIdToFilterBy, groupedBy, sortedBy]);
 
-	const handleDebouncedSearch = debounce(() => {
+	const filterBySearch = () => {
 		let searchedItems;
 
 		if (searchText.trim() === '') {
@@ -79,7 +79,9 @@ const FilterBar = ({
 		const searchedItemsFocusRecords = searchedItems.map((result) => result.item);
 		setFilteredFocusRecords(searchedItemsFocusRecords);
 		updateQueryParams({ search: searchText });
-	}, 1000);
+	};
+
+	const handleDebouncedSearch = debounce(filterBySearch, 1000);
 
 	const dropdownGroupedByRef = useRef(null);
 	const dropdownSortedByRef = useRef(null);

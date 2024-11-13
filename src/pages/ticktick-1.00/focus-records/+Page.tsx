@@ -80,7 +80,11 @@ const Page = () => {
 		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
 			<Navbar {...{ topHeaderRef, setHeaderHeight }} />
 
-			<div className="w-full flex flex-col overflow-scroll gray-scrollbar" style={{ maxHeight }}>
+			<div
+				ref={focusRecordListRef}
+				className="w-full flex flex-col overflow-scroll gray-scrollbar"
+				style={{ maxHeight }}
+			>
 				<FilterBar
 					{...{
 						groupedBy,
@@ -100,7 +104,7 @@ const Page = () => {
 					}}
 				/>
 
-				<div ref={focusRecordListRef} className="flex-1 flex justify-center">
+				<div className="flex-1 flex justify-center">
 					<div className="container p-1">
 						<GroupedFocusRecordList
 							{...{

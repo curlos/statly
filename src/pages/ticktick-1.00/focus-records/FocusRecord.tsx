@@ -1,5 +1,10 @@
 import ReactMarkdown from 'react-markdown';
-import { formatDateTime, getFormattedLongDay, isTimeBetween } from '../../../utils/date.utils';
+import {
+	formatDateTime,
+	getFormattedLongDay,
+	getFormattedShortMonthDay,
+	isTimeBetween,
+} from '../../../utils/date.utils';
 import { getFocusDuration, getFormattedDuration } from '../../../utils/helpers.utils';
 import Icon from '../../../components/Icon';
 import classNames from 'classnames';
@@ -10,7 +15,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const updateQueryParams = useUpdateQueryParams();
 
 	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
+	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { completedTasksGroupedByDate } = fetchedTasks || {};
 
 	const { note, startTime, endTime, tasks } = focusRecord;
@@ -19,22 +24,22 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const endTimeObj = formatDateTime(endTime);
 	const duration = focusDuration ? focusDuration : getFocusDuration(focusRecord);
 
-	const themeColor = 'emerald-500';
+	const themeColor = 'red-500';
 
 	const cssStyles = {
 		'blue-500': {
 			textColor: 'text-blue-500',
-			bgColor: 'bg-blue-500',
+			bgColor: 'bg-blue-500/50',
 			borderColor: 'border-blue-500',
 		},
 		'emerald-500': {
 			textColor: 'text-emerald-500',
-			bgColor: 'bg-emerald-500',
+			bgColor: 'bg-emerald-500/50',
 			borderColor: 'border-emerald-500',
 		},
 		'red-500': {
 			textColor: 'text-red-500',
-			bgColor: 'bg-red-500',
+			bgColor: 'bg-red-500/50',
 			borderColor: 'border-red-500',
 		},
 	};
@@ -133,10 +138,17 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 					></div>
 				)}
 
-				<div className="bg-emerald-500/50 p-2 rounded-lg w-[95%] sm:w-full">
-					<div className="text-gray-200">
+				<div className={classNames(bgColor, 'p-2 rounded-lg w-[95%] sm:w-full')}>
+					<div className="hidden sm:block text-gray-200">
 						<span className="font-bold">{getFormattedLongDay(new Date(startTime))}</span> -{' '}
 						{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
+					</div>
+
+					<div className="sm:hidden text-gray-200">
+						<div className="font-bold">{getFormattedShortMonthDay(new Date(startTime))}</div>
+						<div>
+							{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
+						</div>
 					</div>
 
 					{tasks.map((task) => {
@@ -146,16 +158,19 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 						const endTimeObj = formatDateTime(endTime);
 
 						return (
-							<div key={`${taskId} - ${startTime}`} className="flex justify-between items-center">
+							<div
+								key={`${taskId} - ${startTime}`}
+								className="mt-2 md:mt-0 sm:flex justify-between items-center"
+							>
 								<h3
 									onClick={() => updateTaskIdQueryParam(task)}
-									className="text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
+									className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
 								>
 									{task?.title}
 								</h3>
 
 								{showSubtaskTime && (
-									<div className="ml-3 text-white">
+									<div className="sm:ml-3 text-white">
 										{startTimeObj.time} - {endTimeObj.time}
 									</div>
 								)}
