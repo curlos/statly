@@ -78,8 +78,8 @@ const AppliedFilterItemList = ({
 
 const AppliedFilterItem = ({ name, value, handleRemove }) => {
 	const themeContext = useThemeContext();
-	const { themeColor, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
-	const { bgColor } = cssStyles[themeColor];
+	const { bgColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { bgColor } = cssStyles[bgColorKey];
 
 	return (
 		<div className="flex">

@@ -3,6 +3,7 @@ import Icon from '../../../../components/Icon';
 import { useUpdateQueryParams } from '../../../../hooks/useUpdateQueryParams';
 import CustomRadioButton from '../../../../components/CustomRadioButton';
 import classNames from 'classnames';
+import { useThemeContext } from '../useThemeContext';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -30,6 +31,12 @@ const ModalFilterSidebar = ({
 
 	const updateQueryParams = useUpdateQueryParams();
 
+	const themeContext = useThemeContext();
+	const { bgColorKey, setBgColorKey, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { bgColor } = cssStyles[bgColorKey];
+
+	console.log(cssStyles);
+
 	return (
 		<AnimatePresence>
 			{isOpen && (
@@ -52,7 +59,7 @@ const ModalFilterSidebar = ({
 						animate="visible"
 						exit="hidden"
 						variants={sidebarVariants}
-						className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] bg-color-gray-700 p-4 text-white"
+						className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar"
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
 						<div className="flex justify-between items-center">
@@ -84,8 +91,8 @@ const ModalFilterSidebar = ({
 							/>
 						</div>
 
+						{/* Sort By */}
 						<hr className="border-color-gray-200 my-4" />
-
 						<div>
 							<div className="flex items-center gap-1 mb-3">
 								<h3 className="text-[16px] font-bold">Sort By</h3>
@@ -100,7 +107,7 @@ const ModalFilterSidebar = ({
 								{sortByOptions.map((sortByOption) => {
 									return (
 										<CustomRadioButton
-											key={sortByOption + "radio"}
+											key={sortByOption + 'radio'}
 											label={sortByOption}
 											name={sortByOption}
 											checked={sortedBy === sortByOption}
@@ -116,8 +123,8 @@ const ModalFilterSidebar = ({
 							</div>
 						</div>
 
+						{/* Group By */}
 						<hr className="border-color-gray-200 my-4" />
-
 						<div>
 							<div className="flex items-center gap-1 mb-3">
 								<h3 className="text-[16px] font-bold">Group By</h3>
@@ -132,7 +139,7 @@ const ModalFilterSidebar = ({
 								{GROUP_BY_OPTIONS.map((groupByOption) => {
 									return (
 										<CustomRadioButton
-											key={groupByOption + "radio"}
+											key={groupByOption + 'radio'}
 											label={groupByOption}
 											name={groupByOption}
 											checked={groupedBy === groupByOption}
@@ -148,8 +155,8 @@ const ModalFilterSidebar = ({
 							</div>
 						</div>
 
+						{/* Other */}
 						<hr className="border-color-gray-200 my-4" />
-
 						<div>
 							<div className="flex items-center gap-1 mb-3">
 								<h3 className="text-[16px] font-bold">Other</h3>
@@ -170,6 +177,39 @@ const ModalFilterSidebar = ({
 									onClick={() => setShowCompletedTasks(!showCompletedTasks)}
 								/>
 								<div>Show Completed Tasks</div>
+							</div>
+						</div>
+
+						{/* Theme Color */}
+						<hr className="border-color-gray-200 my-4" />
+						<div>
+							<div className="flex items-center gap-1 mb-3">
+								<h3 className="text-[16px] font-bold">Theme Color</h3>
+								<Icon
+									name="palette"
+									fill={1}
+									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								/>
+							</div>
+							<div className="space-y-2">
+								{Object.keys(cssStyles).map((colorKey) => {
+									const { borderColor, bgColor, textColor } = cssStyles[colorKey];
+
+									return (
+										<CustomRadioButton
+											key={colorKey + 'radio'}
+											label={colorKey}
+											name={colorKey}
+											checked={bgColorKey === colorKey}
+											onChange={() => {
+												setBgColorKey(colorKey);
+											}}
+											customLabelClass={textColor}
+											customOuterCircleClasses={classNames('!w-[20px] !h-[20px]', borderColor)}
+											customInnerCircleClasses={classNames('!w-[10px] !h-[10px]', bgColor)}
+										/>
+									);
+								})}
 							</div>
 						</div>
 					</motion.div>

@@ -6,6 +6,7 @@ interface CustomRadioButtonProps {
 	name: string;
 	checked: boolean;
 	onChange: (e: any) => void;
+	customLabelClass: string;
 	customOuterCircleClasses: string;
 	customInnerCircleClasses: string;
 }
@@ -15,11 +16,12 @@ const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 	name,
 	checked,
 	onChange,
+	customLabelClass,
 	customOuterCircleClasses,
 	customInnerCircleClasses,
 }) => {
 	return (
-		<label className="flex items-center cursor-pointer">
+		<label className={classNames('flex items-center cursor-pointer', customLabelClass)}>
 			<input
 				type="radio"
 				name={name}
