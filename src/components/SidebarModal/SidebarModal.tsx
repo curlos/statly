@@ -16,16 +16,26 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
 	};
 
-	const LinkLi = ({ name, linkUrl }) => {
+	const LinkLi = ({ name, linkUrl, iconName }) => {
 		return (
-			<div
-				className="cursor-pointer hover:underline"
-				onClick={() => {
-					navigate(linkUrl);
-					setIsSidebarModalOpen(false);
-				}}
-			>
-				{name}
+			<div className="flex items-center gap-2">
+				<div
+					className="cursor-pointer hover:underline"
+					onClick={() => {
+						navigate(linkUrl);
+						setIsSidebarModalOpen(false);
+					}}
+				>
+					{name}
+				</div>
+
+				{iconName && (
+					<Icon
+						name={iconName}
+						fill={1}
+						customClass={'text-color-gray-50 !text-[24px] hover:text-white cursor-pointer'}
+					/>
+				)}
 			</div>
 		);
 	};
@@ -60,9 +70,13 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
 						<div className="font-bold text-[24px]">
-							<LinkLi name="Focus Hours Goal" linkUrl="/ticktick-1.00/focus-hours-goal" />
-							<LinkLi name="Focus Records" linkUrl="/ticktick-1.00/focus-records" />
-							<LinkLi name="Stats" linkUrl="/stats/overview" />
+							<LinkLi
+								name="Focus Hours Goal"
+								linkUrl="/ticktick-1.00/focus-hours-goal"
+								iconName="clock_loader_20"
+							/>
+							<LinkLi name="Focus Records" linkUrl="/ticktick-1.00/focus-records" iconName="timeline" />
+							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="network_intelligence_history" />
 						</div>
 
 						{/* Theme Color */}
