@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import Icon from '../../../components/Icon';
 import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
+import { useThemeContext } from './useThemeContext';
 
 const AppliedFilterItemList = ({
 	groupedBy,
@@ -76,9 +77,13 @@ const AppliedFilterItemList = ({
 };
 
 const AppliedFilterItem = ({ name, value, handleRemove }) => {
+	const themeContext = useThemeContext();
+	const { themeColor, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
+	const { bgColor } = cssStyles[themeColor];
+
 	return (
 		<div className="flex">
-			<div className="px-2 py-1 text-[14px] text-white rounded-xl bg-emerald-600">
+			<div className={classNames('px-2 py-1 text-[14px] text-white rounded-xl', bgColor)}>
 				<div className="overflow-hidden">
 					<span className="font-bold">{name}: </span>
 					<span>{value}</span>

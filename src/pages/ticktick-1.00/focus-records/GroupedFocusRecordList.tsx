@@ -15,6 +15,7 @@ const GroupedFocusRecordList = ({
 	groupedBy,
 	sortedBy,
 	currentPage,
+	showCompletedTasks,
 }) => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
@@ -146,6 +147,7 @@ const GroupedFocusRecordList = ({
 												getInfoForGroup,
 												groupedBy,
 												groupKey,
+												showCompletedTasks,
 											}}
 										/>
 									)}
@@ -160,6 +162,7 @@ const GroupedFocusRecordList = ({
 									getInfoForGroup,
 									groupedBy,
 									groupKey: null,
+									showCompletedTasks,
 								}}
 							/>
 						</>
@@ -170,7 +173,7 @@ const GroupedFocusRecordList = ({
 	);
 };
 
-const FocusRecordList = ({ focusRecords, getInfoForGroup, groupedBy, groupKey }) => {
+const FocusRecordList = ({ focusRecords, getInfoForGroup, groupedBy, groupKey, showCompletedTasks }) => {
 	return (
 		<div className="space-y-3">
 			{focusRecords.map((focusRecord, index) => {
@@ -178,7 +181,14 @@ const FocusRecordList = ({ focusRecords, getInfoForGroup, groupedBy, groupKey })
 				const groupedInfo = groupKey && getInfoForGroup(groupKey, focusRecord, index);
 				const focusRecordKey = groupedInfo?.focusRecordKey || focusRecord.id;
 
-				return <FocusRecord key={focusRecordKey} focusRecord={focusRecord} isLastItemForTheDay={isLastItem} />;
+				return (
+					<FocusRecord
+						key={focusRecordKey}
+						focusRecord={focusRecord}
+						isLastItemForTheDay={isLastItem}
+						showCompletedTasks={showCompletedTasks}
+					/>
+				);
 			})}
 		</div>
 	);

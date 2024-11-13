@@ -38,6 +38,7 @@ const Page = () => {
 	const [totalPages, setTotalPages] = useState(null);
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
+	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
 	useEffect(() => {
 		// Scroll to the top of the focus records whenever you go to a new page.
@@ -101,6 +102,8 @@ const Page = () => {
 						defaultSortedBy,
 						searchText,
 						setSearchText,
+						showCompletedTasks,
+						setShowCompletedTasks,
 					}}
 				/>
 
@@ -116,6 +119,7 @@ const Page = () => {
 								setCurrentPage,
 								totalPages,
 								setTotalPages,
+								showCompletedTasks,
 							}}
 						/>
 					</div>

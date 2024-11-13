@@ -32,23 +32,16 @@ const useStats = () => {
 	} = fetchedTasks || {};
 
 	// RTK Query - TickTick 1.0 - Projects
-	const {
-		data: fetchedProjects,
-		isLoading: isLoadingGetProjects,
-		error: errorGetProjects,
-	} = useGetAllProjectsQuery();
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects, projectsById } = fetchedProjects || {};
 
 	// RTK Query - TickTick 1.0 - Focus Records
-	const {
-		data: fetchedFocusRecords,
-		isLoading: isLoadingGetFocusRecords,
-		error: errorGetFocusRecords,
-	} = useGetPomoAndStopwatchFocusRecordsQuery();
+	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
+		useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecords } = fetchedFocusRecords || {};
 
 	// RTK Query - TickTick 1.0 - Tags
-	const { data: fetchedTags, isLoading: isLoadingGetTags, error: errorGetTags } = useGetAllTagsQuery();
+	const { data: fetchedTags } = useGetAllTagsQuery();
 	const { tags, tagsByRawName } = fetchedTags || {};
 
 	const accountCreatedDate = new Date('November 3, 2020');

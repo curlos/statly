@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../../../../components/Icon';
 import { useUpdateQueryParams } from '../../../../hooks/useUpdateQueryParams';
 import CustomRadioButton from '../../../../components/CustomRadioButton';
+import classNames from 'classnames';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -14,6 +15,8 @@ const ModalFilterSidebar = ({
 	setGroupedBy,
 	sortByOptions,
 	GROUP_BY_OPTIONS,
+	showCompletedTasks,
+	setShowCompletedTasks,
 }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
@@ -84,12 +87,20 @@ const ModalFilterSidebar = ({
 						<hr className="border-color-gray-200 my-4" />
 
 						<div>
-							<h3 className="text-[16px] font-bold mb-3">Sort By</h3>
+							<div className="flex items-center gap-1 mb-3">
+								<h3 className="text-[16px] font-bold">Sort By</h3>
+								<Icon
+									name="swap_vert"
+									fill={0}
+									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								/>
+							</div>
 
 							<div className="space-y-2">
 								{sortByOptions.map((sortByOption) => {
 									return (
 										<CustomRadioButton
+											key={sortByOption + "radio"}
 											label={sortByOption}
 											name={sortByOption}
 											checked={sortedBy === sortByOption}
@@ -108,12 +119,20 @@ const ModalFilterSidebar = ({
 						<hr className="border-color-gray-200 my-4" />
 
 						<div>
-							<h3 className="text-[16px] font-bold mb-3">Group By</h3>
+							<div className="flex items-center gap-1 mb-3">
+								<h3 className="text-[16px] font-bold">Group By</h3>
+								<Icon
+									name="diversity_2"
+									fill={0}
+									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								/>
+							</div>
 
 							<div className="space-y-2">
 								{GROUP_BY_OPTIONS.map((groupByOption) => {
 									return (
 										<CustomRadioButton
+											key={groupByOption + "radio"}
 											label={groupByOption}
 											name={groupByOption}
 											checked={groupedBy === groupByOption}
@@ -126,6 +145,31 @@ const ModalFilterSidebar = ({
 										/>
 									);
 								})}
+							</div>
+						</div>
+
+						<hr className="border-color-gray-200 my-4" />
+
+						<div>
+							<div className="flex items-center gap-1 mb-3">
+								<h3 className="text-[16px] font-bold">Other</h3>
+								<Icon
+									name="diversity_2"
+									fill={0}
+									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								/>
+							</div>
+							<div className="flex items-center gap-1">
+								<Icon
+									name={showCompletedTasks ? 'check_box' : 'check_box_outline_blank'}
+									fill={1}
+									customClass={classNames(
+										'!text-[22px] cursor-pointer',
+										'text-blue-500 hover:text-blue-400'
+									)}
+									onClick={() => setShowCompletedTasks(!showCompletedTasks)}
+								/>
+								<div>Show Completed Tasks</div>
 							</div>
 						</div>
 					</motion.div>

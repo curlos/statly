@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
-import DropdownGeneralSelect from '../../StatsPage/DropdownGeneralSelect';
+import { useEffect, useState } from 'react';
 import Icon from '../../../components/Icon';
 import Fuse from 'fuse.js';
 import { debounce } from '../../../utils/helpers.utils';
@@ -20,6 +19,8 @@ const FilterBar = ({
 	filteredFocusRecords,
 	setFilteredFocusRecords,
 	focusRecordListRef,
+	showCompletedTasks,
+	setShowCompletedTasks,
 }) => {
 	const updateQueryParams = useUpdateQueryParams();
 	const pageContext = usePageContext();
@@ -125,6 +126,8 @@ const FilterBar = ({
 					setGroupedBy,
 					sortByOptions,
 					GROUP_BY_OPTIONS,
+					showCompletedTasks,
+					setShowCompletedTasks,
 				}}
 			/>
 		</div>

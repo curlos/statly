@@ -10,8 +10,15 @@ import Icon from '../../../components/Icon';
 import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
+import { useThemeContext } from './useThemeContext';
 
-const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
+const FocusRecord = ({
+	focusRecord,
+	showSubtaskTime = true,
+	isLastItemForTheDay = false,
+	focusDuration,
+	showCompletedTasks,
+}) => {
 	const updateQueryParams = useUpdateQueryParams();
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -24,26 +31,8 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const endTimeObj = formatDateTime(endTime);
 	const duration = focusDuration ? focusDuration : getFocusDuration(focusRecord);
 
-	const themeColor = 'red-500';
-
-	const cssStyles = {
-		'blue-500': {
-			textColor: 'text-blue-500',
-			bgColor: 'bg-blue-500/50',
-			borderColor: 'border-blue-500',
-		},
-		'emerald-500': {
-			textColor: 'text-emerald-500',
-			bgColor: 'bg-emerald-500/50',
-			borderColor: 'border-emerald-500',
-		},
-		'red-500': {
-			textColor: 'text-red-500',
-			bgColor: 'bg-red-500/50',
-			borderColor: 'border-red-500',
-		},
-	};
-
+	const themeContext = useThemeContext();
+	const { themeColor, cssStyles } = themeContext['/ticktick-1.00/focus-records'];
 	const { textColor, bgColor, borderColor } = cssStyles[themeColor];
 
 	const getAllCompletedTasksDuringFocusRecord = () => {
@@ -184,7 +173,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 						<ReactMarkdown>{note}</ReactMarkdown>
 					</div>
 
-					{thereAreCompletedTasks && (
+					{showCompletedTasks && thereAreCompletedTasks && (
 						<>
 							<h4 className="text-[16px] font-bold underline mt-4">Completed Tasks</h4>
 

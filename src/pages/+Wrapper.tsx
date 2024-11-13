@@ -8,20 +8,23 @@ import store from '../store/store';
 import { StatsProvider } from '../contexts/useStatsContext';
 import GlobalAlertList from '../components/Alert/GlobalAlertList';
 import GlobalModalList from '../components/Modal/GlobalModalList';
+import { ThemeProvider } from './ticktick-1.00/focus-records/useThemeContext';
 
 export const Wrapper = ({ children }) => (
 	<Provider store={store}>
-		<StatsProvider>
-			<div className="text-white select-none">
-				{children}
+		<ThemeProvider>
+			<StatsProvider>
+				<div className="text-white select-none">
+					{children}
 
-				{/* Modals */}
-				<GlobalModalList />
+					{/* Modals */}
+					<GlobalModalList />
 
-				{/* Alerts */}
-				<GlobalAlertList />
-			</div>
-		</StatsProvider>
+					{/* Alerts */}
+					<GlobalAlertList />
+				</div>
+			</StatsProvider>
+		</ThemeProvider>
 	</Provider>
 );
 
