@@ -6,10 +6,8 @@ import Fuse from 'fuse.js';
 import { debounce } from '../../../utils/helpers.utils';
 import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
 import { usePageContext } from 'vike-react/usePageContext';
-import Spinner from '../../../components/Loaders/Spinner';
-import classNames from 'classnames';
-import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import AppliedFilterItemList from './AppliedFilterItemList';
+import ModalFilterSidebar from './ModalFilterSidebar/ModalFilterSidebar';
 
 const TopHeader = ({
 	topHeaderRef,
@@ -35,7 +33,7 @@ const TopHeader = ({
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
 
-	const [isSearchLoading, setIsSearchLoading] = useState(false);
+	const GROUP_BY_OPTIONS = ['Date', 'Task', 'Project', 'No Group'];
 
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
@@ -91,17 +89,38 @@ const TopHeader = ({
 	const [isDropdownGroupedByVisible, setIsDropdownGroupedByVisible] = useState(false);
 	const [isDropdownSortedByVisible, setIsDropdownSortedByVisible] = useState(false);
 
+	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
+
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 
 	return (
 		<div ref={topHeaderRef}>
-			<div className="flex justify-between items-center py-5 container">
-				<h2 className="font-bold text-[24px]">
-					Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
-				</h2>
+			<div className="container pt-4 pb-2">
+				<img src="/gundam-nu-icon.webp" className="h-[40px]" />
+			</div>
 
-				<div className="flex items-center gap-2">
-					{/* TODO: Bring the "Group By" dropdown back and make the grouping work for the different sections as well as for sorting stuff. */}
+			<div className="flex justify-between items-center pb-5 container">
+				<div className="flex items-center gap-3">
+					<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
+						Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
+					</h2>
+
+					<div className="xl:hidden text-[14px]">
+						<div
+							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
+							onClick={() => setShowFilterSidebar(true)}
+						>
+							<div>Filter</div>
+							<Icon
+								name="page_info"
+								fill={0}
+								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div className="hidden xl:flex items-center gap-2">
 					<div className="relative">
 						<div
 							className="flex gap-[2px] bg-color-gray-600 py-2 px-4 rounded-md cursor-pointer"
@@ -120,7 +139,7 @@ const TopHeader = ({
 							setIsVisible={setIsDropdownGroupedByVisible}
 							selected={groupedBy}
 							setSelected={setGroupedBy}
-							selectedOptions={['Date', 'Task', 'Project', 'No Group']}
+							selectedOptions={GROUP_BY_OPTIONS}
 						/>
 					</div>
 
@@ -150,15 +169,11 @@ const TopHeader = ({
 					</div>
 
 					<div className="flex items-center gap-1 p-1 px-2">
-						{isSearchLoading ? (
-							<Spinner />
-						) : (
-							<Icon
-								name="search"
-								fill={0}
-								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-							/>
-						)}
+						<Icon
+							name="search"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						/>
 						<input
 							placeholder="Search"
 							value={searchText}
@@ -174,6 +189,21 @@ const TopHeader = ({
 
 			<AppliedFilterItemList
 				{...{ groupedBy, setGroupedBy, sortedBy, setSortedBy, searchText, setSearchText, taskIdToFilterBy }}
+			/>
+
+			<ModalFilterSidebar
+				{...{
+					isOpen: showFilterSidebar,
+					setIsOpen: setShowFilterSidebar,
+					searchText,
+					setSearchText,
+					sortedBy,
+					setSortedBy,
+					groupedBy,
+					setGroupedBy,
+					sortByOptions,
+					GROUP_BY_OPTIONS,
+				}}
 			/>
 		</div>
 	);

@@ -1,7 +1,7 @@
-import classNames from "classnames";
-import Icon from "../../../components/Icon";
-import { useUpdateQueryParams } from "../../../hooks/useUpdateQueryParams";
-import { useGetAllTasksQuery } from "../../../services/resources/ticktickOneApi";
+import classNames from 'classnames';
+import Icon from '../../../components/Icon';
+import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
+import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 
 const AppliedFilterItemList = ({
 	groupedBy,
@@ -65,7 +65,7 @@ const AppliedFilterItemList = ({
 	}
 
 	return (
-		<div className="container flex pb-2">
+		<div className="container flex flex-wrap pb-4 gap-3">
 			{nonDefaultFilterList.map((nonDefaultFilter) => {
 				const { name, value, handleRemove } = nonDefaultFilter;
 
@@ -85,7 +85,7 @@ const AppliedFilterItem = ({ name, value, handleRemove }) => {
 				</div>
 			</div>
 
-			<div onClick={handleRemove} className={classNames('mt-[-12px] ml-[-10px]')}>
+			<div onClick={handleRemove} className={classNames('mt-[-9px] ml-[-10px]')}>
 				<Icon
 					name="close"
 					fill={0}
@@ -96,4 +96,4 @@ const AppliedFilterItem = ({ name, value, handleRemove }) => {
 	);
 };
 
-export default AppliedFilterItemList
+export default AppliedFilterItemList;

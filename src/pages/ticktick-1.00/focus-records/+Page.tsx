@@ -78,7 +78,7 @@ const Page = () => {
 
 	return (
 		<div className="flex max-w-screen min-h-screen max-h-screen bg-color-gray-700">
-			<div className="w-full flex flex-col">
+			<div className="w-full flex flex-col overflow-scroll gray-scrollbar">
 				<TopHeader
 					{...{
 						topHeaderRef,
@@ -101,11 +101,7 @@ const Page = () => {
 					}}
 				/>
 
-				<div
-					ref={focusRecordListRef}
-					className="flex-1 flex justify-center overflow-scroll gray-scrollbar"
-					style={{ maxHeight }}
-				>
+				<div ref={focusRecordListRef} className="flex-1 flex justify-center" style={{ maxHeight }}>
 					<div className="container p-1">
 						<GroupedFocusRecordList
 							{...{
@@ -132,8 +128,6 @@ const Page = () => {
 						/>
 					</div>
 				) : null}
-
-				<SidebarButtonAndModal />
 			</div>
 		</div>
 	);

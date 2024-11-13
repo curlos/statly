@@ -48,7 +48,7 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						animate="visible"
 						exit="hidden"
 						variants={sidebarVariants}
-						className="fixed inset-y-0 right-0 w-[400px] bg-color-gray-700 p-4 text-white"
+						className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] bg-color-gray-700 p-4 text-white"
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
 						<div className="font-bold text-[24px]">

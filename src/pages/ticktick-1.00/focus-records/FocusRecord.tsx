@@ -122,18 +122,18 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 				></div>
 			)}
 
-			<div className="relative m-0 ml-[40px] break-words" style={{ marginTop: 'unset' }}>
+			<div className="relative m-0 ml-[25px] sm:ml-[40px] break-words" style={{ marginTop: 'unset' }}>
 				{!isLastItemForTheDay && (
 					<div
 						className={classNames(
-							'absolute left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600',
+							'absolute left-[-18px] sm:left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600',
 							borderColor
 						)}
 						style={{ top: '34px' }}
 					></div>
 				)}
 
-				<div className="bg-emerald-500/50 p-2 rounded-lg w-full">
+				<div className="bg-emerald-500/50 p-2 rounded-lg w-[95%] sm:w-full">
 					<div className="text-gray-200">
 						<span className="font-bold">{getFormattedLongDay(new Date(startTime))}</span> -{' '}
 						{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
