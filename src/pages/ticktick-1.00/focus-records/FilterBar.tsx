@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import useResizeObserver from '../../../hooks/useResizeObserver';
 import DropdownGeneralSelect from '../../StatsPage/DropdownGeneralSelect';
 import Icon from '../../../components/Icon';
 import Fuse from 'fuse.js';
@@ -9,9 +8,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import AppliedFilterItemList from './AppliedFilterItemList';
 import ModalFilterSidebar from './ModalFilterSidebar/ModalFilterSidebar';
 
-const TopHeader = ({
-	topHeaderRef,
-	setHeaderHeight,
+const FilterBar = ({
 	groupedBy,
 	setGroupedBy,
 	sortedBy,
@@ -91,14 +88,8 @@ const TopHeader = ({
 
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
-	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
-
 	return (
-		<div ref={topHeaderRef}>
-			<div className="container pt-4 pb-2">
-				<img src="/gundam-nu-icon.webp" className="h-[40px]" />
-			</div>
-
+		<div>
 			<div className="flex justify-between items-center pb-5 container">
 				<div className="flex items-center gap-3">
 					<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
@@ -209,4 +200,4 @@ const TopHeader = ({
 	);
 };
 
-export default TopHeader;
+export default FilterBar;

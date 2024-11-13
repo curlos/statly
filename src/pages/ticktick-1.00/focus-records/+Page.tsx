@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import GroupedFocusRecordList from './GroupedFocusRecordList';
-import TopHeader from './TopHeader';
 import useMaxHeight from '../../../hooks/useMaxHeight';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import { usePageContext } from 'vike-react/usePageContext';
 import Pagination from '../../../components/Pagination';
 import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
-import SidebarButtonAndModal from '../../../components/SidebarModal/SidebarButtonAndModal';
+import Navbar from '../../../components/Navbar/Navbar';
+import FilterBar from './FilterBar';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -77,13 +77,12 @@ const Page = () => {
 	}, [focusRecords, taskIdToFilterBy]);
 
 	return (
-		<div className="flex max-w-screen min-h-screen max-h-screen bg-color-gray-700">
-			<div className="w-full flex flex-col overflow-scroll gray-scrollbar">
-				<TopHeader
+		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
+			<Navbar {...{ topHeaderRef, setHeaderHeight }} />
+
+			<div className="w-full flex flex-col overflow-scroll gray-scrollbar" style={{ maxHeight }}>
+				<FilterBar
 					{...{
-						topHeaderRef,
-						headerHeight,
-						setHeaderHeight,
 						groupedBy,
 						setGroupedBy,
 						sortedBy,
@@ -101,7 +100,7 @@ const Page = () => {
 					}}
 				/>
 
-				<div ref={focusRecordListRef} className="flex-1 flex justify-center" style={{ maxHeight }}>
+				<div ref={focusRecordListRef} className="flex-1 flex justify-center">
 					<div className="container p-1">
 						<GroupedFocusRecordList
 							{...{
