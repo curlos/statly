@@ -83,11 +83,6 @@ const FilterBar = ({
 
 	const handleDebouncedSearch = debounce(filterBySearch, 1000);
 
-	const dropdownGroupedByRef = useRef(null);
-	const dropdownSortedByRef = useRef(null);
-	const [isDropdownGroupedByVisible, setIsDropdownGroupedByVisible] = useState(false);
-	const [isDropdownSortedByVisible, setIsDropdownSortedByVisible] = useState(false);
-
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
 	return (
@@ -98,7 +93,7 @@ const FilterBar = ({
 						Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
 					</h2>
 
-					<div className="xl:hidden text-[14px]">
+					<div className="text-[16px] cursor-pointer">
 						<div
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
 							onClick={() => setShowFilterSidebar(true)}
@@ -110,72 +105,6 @@ const FilterBar = ({
 								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 							/>
 						</div>
-					</div>
-				</div>
-
-				<div className="hidden xl:flex items-center gap-2">
-					<div className="relative">
-						<div
-							className="flex gap-[2px] bg-color-gray-600 py-2 px-4 rounded-md cursor-pointer"
-							onClick={() => setIsDropdownGroupedByVisible(!isDropdownGroupedByVisible)}
-						>
-							<div>
-								<span className="text-color-gray-50">Group By: </span>
-								{groupedBy}
-							</div>
-							<Icon name="keyboard_arrow_down" customClass="!text-[18px] mt-[2px]" />
-						</div>
-
-						<DropdownGeneralSelect
-							toggleRef={dropdownGroupedByRef}
-							isVisible={isDropdownGroupedByVisible}
-							setIsVisible={setIsDropdownGroupedByVisible}
-							selected={groupedBy}
-							setSelected={setGroupedBy}
-							selectedOptions={GROUP_BY_OPTIONS}
-						/>
-					</div>
-
-					<div className="relative">
-						<div
-							className="flex gap-[2px] bg-color-gray-600 py-2 px-4 rounded-md cursor-pointer"
-							onClick={() => setIsDropdownSortedByVisible(!isDropdownGroupedByVisible)}
-						>
-							<div>
-								<span className="text-color-gray-50">Sort By: </span>
-								{sortedBy}
-							</div>
-							<Icon name="keyboard_arrow_down" customClass="!text-[18px] mt-[2px]" />
-						</div>
-
-						<DropdownGeneralSelect
-							toggleRef={dropdownSortedByRef}
-							isVisible={isDropdownSortedByVisible}
-							setIsVisible={setIsDropdownSortedByVisible}
-							selected={sortedBy}
-							setSelected={(newSortedBy) => {
-								setSortedBy(newSortedBy);
-								updateQueryParams({ sortBy: newSortedBy });
-							}}
-							selectedOptions={sortByOptions}
-						/>
-					</div>
-
-					<div className="flex items-center gap-1 p-1 px-2">
-						<Icon
-							name="search"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-						/>
-						<input
-							placeholder="Search"
-							value={searchText}
-							onChange={(e) => {
-								setSearchText(e.target.value);
-								updateQueryParams({ search: searchText });
-							}}
-							className="text-[14px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
-						/>
 					</div>
 				</div>
 			</div>
