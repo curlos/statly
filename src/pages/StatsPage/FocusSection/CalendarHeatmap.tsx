@@ -102,6 +102,7 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const dropdownRef = useRef(null);
 	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
 
 	const dateKey = getFormattedLongDay(date);
 	const focusRecordsFromDate = (focusRecordsGroupedByDate && focusRecordsGroupedByDate[dateKey]) || [];
@@ -116,8 +117,9 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 			<div
 				key={date.toLocaleDateString()}
 				className={classNames(
-					`h-[15px] w-[15px] cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] hover:border-sky-400`,
-					rangeClass
+					`h-[15px] w-[15px] cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px]`,
+					rangeClass,
+					chosenColorObj.hover.borderColor
 				)}
 				onMouseEnter={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}
@@ -129,7 +131,7 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 				setIsVisible={setIsHovering}
 				customClasses={'!bg-black'}
 			>
-				<div className="p-2 text-[12px] text-blue-500 bg-black text-nowrap rounded">
+				<div className={classNames(chosenColorObj.textColor, 'p-2 text-[12px] bg-black text-nowrap rounded')}>
 					{dateKey} - {formattedDurationForTheDay}
 				</div>
 			</Dropdown>
