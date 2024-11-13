@@ -91,7 +91,7 @@ const FilterBar = ({
 	return (
 		<div>
 			<div className="flex justify-between items-center pb-5 container">
-				<div className="flex items-center gap-3">
+				<div className="flex justify-between items-center gap-3 w-full">
 					<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
 						Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
 					</h2>

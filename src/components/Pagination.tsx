@@ -4,6 +4,7 @@ import { DropdownProps } from '../interfaces/interfaces';
 import classNames from 'classnames';
 import CustomInput from './CustomInput';
 import { debounce } from '../utils/helpers.utils';
+import useWindowSize from '../hooks/useWindowSize';
 
 interface PaginationProps {
 	total: number; // Total number of pages
@@ -13,7 +14,23 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentPage, totalPages }) => {
-	const numPagesToShow = 9; // Maximum number of pages to display in the paginator
+	const { width } = useWindowSize();
+
+	const [numPagesToShow, setNumPagesToShow] = useState(9); // Maximum number of pages to display in the paginator
+
+	useEffect(() => {
+		if (width < 400) {
+			setNumPagesToShow(1);
+		} else if (width < 576) {
+			setNumPagesToShow(3);
+		} else if (width < 768) {
+			setNumPagesToShow(5);
+		} else if (width < 992) {
+			setNumPagesToShow(7);
+		} else {
+			setNumPagesToShow(9);
+		}
+	}, [width]);
 
 	// Generate the list of page numbers to display
 	const getPages = (): number[] => {
@@ -42,7 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 	const pages = getPages();
 
 	return (
-		<div className="flex items-center space-x-2">
+		<div className="flex items-center sm:space-x-2">
 			<button
 				className={`p-2 rounded ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-500/50'}`}
 				disabled={currentPage === 1}
@@ -51,7 +68,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				{'<<'}
 			</button>
 			<button
-				className={`p-2 rounded ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-500/50'}`}
+				className={`p-1 sm:p-2 rounded ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-500/50'}`}
 				disabled={currentPage === 1}
 				onClick={() => setCurrentPage(currentPage - 1)}
 			>
