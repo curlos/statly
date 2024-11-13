@@ -34,11 +34,17 @@ const useTheme = () => {
 
 	const [colorName] = themeColorKey.split('-');
 	const chosenColorObj = TAILWIND_COLORS_OBJ[colorName][themeColorKey];
+	const chosenColorVariantsObj = TAILWIND_COLORS_OBJ[colorName];
+
+	console.log(colorName);
+	console.log(chosenColorVariantsObj);
 
 	return {
 		themeColorKey,
 		setThemeColorKey,
 		cssStyles: TAILWIND_COLORS_OBJ,
 		chosenColorObj,
+		chosenColorVariantsObj, // To get all the variants. If a chosen color is red-500, then the variants would be red-50, red-100, red-200, red-300, etc.
+		chosenColorName: colorName,
 	};
 };

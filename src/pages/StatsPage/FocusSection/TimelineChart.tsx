@@ -9,7 +9,7 @@ import {
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import apexchart from 'apexcharts';
 import { getFormattedDuration } from '../../../utils/helpers.utils';
-import useTailwindColors from '../../../hooks/useGetTailwindColors';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 const TimelineChart = ({ selectedDates }) => {
 	const { focusRecordsGroupedByDate } = useStatsContext();
@@ -22,7 +22,7 @@ const TimelineChart = ({ selectedDates }) => {
 	const [series, setSeries] = useState(DEFAULT_SERIES);
 
 	const chartId = 'timeline';
-	const { chosenColorName, chosenColorVariantsObj } = useTailwindColors();
+	const { chosenColorName, chosenColorVariantsObj } = useThemeContext();
 
 	const getColorScaleRanges = () => {
 		return [

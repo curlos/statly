@@ -11,6 +11,8 @@ import {
 } from '../../../utils/date.utils';
 import ModalPickDateRange from './ModalPickDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import classNames from 'classnames';
 
 const MostFocusedTimeCard = () => {
 	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();
@@ -22,8 +24,11 @@ const MostFocusedTimeCard = () => {
 
 	// Custom
 	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
-	const [startDate, setStartDate] = useState(new Date('January 1, 2024'));
+	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(new Date());
+
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
 
 	useEffect(() => {
 		if (selectedInterval === 'All' && focusRecords) {
@@ -131,7 +136,9 @@ const MostFocusedTimeCard = () => {
 								if (payload && payload[0]) {
 									const { name, seconds } = payload[0].payload;
 									return (
-										<div className="bg-black text-blue-500 p-2 rounded-md">{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
+										<div
+											className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
+										>{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
 									);
 								}
 
@@ -141,8 +148,9 @@ const MostFocusedTimeCard = () => {
 						<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
 						<Bar
 							dataKey="seconds"
-							fill="#3b82f6"
+							fill={chosenColorObj.hexColor}
 							background={{ fill: '#3a3a3a' }}
+							// TODO: Write function to get a slightly lighter color to show on hover/active.
 							activeBar={{ fill: '#6ca6fc', cursor: 'pointer' }}
 						/>
 					</BarChart>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedLongDay, getLast7Days } from '../../../utils/date.utils';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => {
 	const { completedTasksGroupedByDate } = useStatsContext();
@@ -13,6 +14,9 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 	}));
 
 	const [data, setData] = useState(defaultData);
+
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
 
 	useEffect(() => {
 		if (!completedTasksGroupedByDate) {
@@ -103,7 +107,7 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 					<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
 					<Bar
 						dataKey="completedTasks"
-						fill="#3b82f6"
+						fill={chosenColorObj.hexColor}
 						background={{ fill: '#3a3a3a' }}
 						activeBar={{ fill: '#6ca6fc', cursor: 'pointer' }}
 					/>

@@ -8,6 +8,7 @@ import {
 	getFormattedDuration,
 	secondsToHoursAndMinutes,
 } from '../../../utils/helpers.utils';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 interface CalendarHeatmapProps {
 	data: number[]; // Array of numbers (0-4)
@@ -18,6 +19,8 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates }) => {
 
 	const allDatesInYear = getAllDatesInYear(selectedDates[0].getFullYear());
 
+	const { chosenColorName, chosenColorVariantsObj } = useThemeContext();
+
 	const durations = [
 		{
 			value: '0m',
@@ -25,31 +28,31 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates }) => {
 		},
 		{
 			value: '0-59m',
-			bgColor: 'bg-blue-200',
+			bgColor: chosenColorVariantsObj[`${chosenColorName}-200`].bgColor,
 		},
 		{
 			value: '1h+',
-			bgColor: 'bg-blue-300',
+			bgColor: chosenColorVariantsObj[`${chosenColorName}-300`].bgColor,
 		},
 		{
 			value: '2h+',
-			bgColor: 'bg-blue-400',
+			bgColor: chosenColorVariantsObj[`${chosenColorName}-400`].bgColor,
 		},
 		{
 			value: '3h+',
-			bgColor: 'bg-blue-500',
+			bgColor: chosenColorVariantsObj[`${chosenColorName}-500`].bgColor,
 		},
 		{
 			value: '4h+',
-			bgColor: 'bg-blue-600',
+			bgColor: chosenColorVariantsObj[`${chosenColorName}-600`].bgColor,
 		},
 		{
 			value: '5h+',
-			bgColor: 'bg-blue-800',
+			bgColor: chosenColorVariantsObj[`${chosenColorName}-800`].bgColor,
 		},
 		{
 			value: '6h+',
-			bgColor: 'bg-blue-900',
+			bgColor: chosenColorVariantsObj[`${chosenColorName}-900`].bgColor,
 		},
 	];
 
@@ -98,12 +101,13 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates }) => {
 const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const dropdownRef = useRef(null);
+	const themeContext = useThemeContext();
 
 	const dateKey = getFormattedLongDay(date);
 	const focusRecordsFromDate = (focusRecordsGroupedByDate && focusRecordsGroupedByDate[dateKey]) || [];
 	const focusDurationForDay = getFocusDurationFromArray(focusRecordsFromDate);
 	const { hours, minutes } = secondsToHoursAndMinutes(focusDurationForDay);
-	const rangeClass = getRangeClass(hours, minutes);
+	const rangeClass = getRangeClass(hours, minutes, themeContext);
 
 	const formattedDurationForTheDay = getFormattedDuration(focusDurationForDay, false);
 
@@ -133,33 +137,35 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 	);
 };
 
-const getRangeClass = (hours, minutes): string => {
+const getRangeClass = (hours, minutes, themeContext): string => {
+	const { chosenColorName, chosenColorVariantsObj } = themeContext;
+
 	if (hours >= 6) {
-		return 'bg-blue-900';
+		return chosenColorVariantsObj[`${chosenColorName}-900`].bgColor;
 	}
 
 	if (hours === 5) {
-		return 'bg-blue-700';
+		return chosenColorVariantsObj[`${chosenColorName}-700`].bgColor;
 	}
 
 	if (hours === 4) {
-		return 'bg-blue-600';
+		return chosenColorVariantsObj[`${chosenColorName}-600`].bgColor;
 	}
 
 	if (hours === 3) {
-		return 'bg-blue-500';
+		return chosenColorVariantsObj[`${chosenColorName}-500`].bgColor;
 	}
 
 	if (hours === 2) {
-		return 'bg-blue-400';
+		return chosenColorVariantsObj[`${chosenColorName}-400`].bgColor;
 	}
 
 	if (hours === 1) {
-		return 'bg-blue-300';
+		return chosenColorVariantsObj[`${chosenColorName}-300`].bgColor;
 	}
 
 	if (minutes > 0) {
-		return 'bg-blue-100';
+		return chosenColorVariantsObj[`${chosenColorName}-100`].bgColor;
 	}
 
 	if (hours === 0 && minutes === 0) {
