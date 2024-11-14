@@ -48,14 +48,8 @@ export const useFilterFocusRecords = ({
 		updateQueryParams({ search: searchTextFromUrl });
 	};
 
-	const handleDebouncedSearch = debounce(filterBySearch, 1000);
-
 	useEffect(() => {
-		handleDebouncedSearch();
-
-		return () => {
-			handleDebouncedSearch.cancel();
-		};
+		filterBySearch();
 	}, [searchTextFromUrl, defaultFocusRecords]);
 
 	const focusRecordContainsTaskId = (focusRecord) => {
