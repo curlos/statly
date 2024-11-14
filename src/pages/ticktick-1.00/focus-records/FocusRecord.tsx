@@ -91,14 +91,14 @@ const FocusRecord = ({
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
 
 	const updateTaskIdQueryParam = (task) => {
+		console.log('click');
 		if (!task || !task.taskId) {
 			return;
 		}
 
 		const { taskId } = task;
 
-		updateQueryParams({ 'task-id': taskId });
-		updateQueryParams({ search: '' });
+		updateQueryParams({ 'task-id': taskId, search: '' });
 	};
 
 	return (
