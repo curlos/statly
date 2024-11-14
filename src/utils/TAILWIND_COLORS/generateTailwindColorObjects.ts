@@ -29,12 +29,14 @@ export const generateTailwindColorObjects = () => {
 					bgColor: `bg-${currentColorGroupName}-${colorNumVal}`,
 					bgColorHalfOpacity: `bg-${currentColorGroupName}-${colorNumVal}/50`,
 					borderColor: `border-${currentColorGroupName}-${colorNumVal}`,
+					outlineColor: `outline-${currentColorGroupName}-${colorNumVal}`,
 					hexColor: null,
 					hover: {
 						textColor: `hover:text-${currentColorGroupName}-${colorNumVal}`,
 						bgColor: `hover:bg-${currentColorGroupName}-${colorNumVal}`,
 						bgColorHalfOpacity: `hover:bg-${currentColorGroupName}-${colorNumVal}/50`,
 						borderColor: `hover:border-${currentColorGroupName}-${colorNumVal}`,
+						outlineColor: `hover:outline-${currentColorGroupName}-${colorNumVal}`,
 					},
 				};
 

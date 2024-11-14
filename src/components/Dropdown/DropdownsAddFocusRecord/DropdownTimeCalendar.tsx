@@ -4,6 +4,9 @@ import SelectCalendar from '../../SelectCalendar';
 import Dropdown from '../Dropdown';
 import DropdownTime from '../DropdownCalendar/DropdownTime';
 import { getTimeString, setTimeOnDateString } from '../../../utils/date.utils';
+import { useThemeContext } from '../../../contexts/useThemeContext';
+import classNames from 'classnames';
+import { generateTailwindColorObjects } from '../../../utils/TAILWIND_COLORS/generateTailwindColorObjects';
 
 interface DropdownTimeCalendarProps extends DropdownProps {
 	date: Date | null;
@@ -18,6 +21,8 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	setDate,
 	showTime = true,
 }) => {
+	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
+
 	// TODO: Get default date of today
 	const [selectedTime, setSelectedTime] = useState(getTimeString(date));
 	const [selectedDate, setSelectedDate] = useState(date);
@@ -35,12 +40,15 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 				<SelectCalendar dueDate={selectedDate} setDueDate={setSelectedDate} time={selectedTime} />
 			</div>
 
-			{showTime && (
+			{(true || showTime) && (
 				<div className="relative">
 					<div className="mb-2 px-2">
 						<div
 							ref={dropdownTimeRef}
-							className="text-center text-[14px] p-1 bg-color-gray-200 placeholder:text-[#7C7C7C] mb-0 w-full resize-none outline-none rounded hover:outline-blue-500 cursor-pointer"
+							className={classNames(
+								chosenColorObj.hover.outlineColor,
+								'text-center text-[14px] p-1 bg-color-gray-200 placeholder:text-[#7C7C7C] mb-0 w-full resize-none outline-none rounded cursor-pointer'
+							)}
 							onClick={() => setIsDropdownTimeVisible(!isDropdownTimeVisible)}
 						>
 							{selectedTime}
@@ -69,7 +77,11 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 					Cancel
 				</button>
 				<button
-					className="bg-blue-500 rounded py-1 cursor-pointer hover:bg-blue-600"
+					className={classNames(
+						chosenColorObj.bgColor,
+						nextDarkestColorObj.hover.bgColor,
+						'rounded py-1 cursor-pointer'
+					)}
 					onClick={() => {
 						let newDueDate = selectedDate ? selectedDate : new Date();
 

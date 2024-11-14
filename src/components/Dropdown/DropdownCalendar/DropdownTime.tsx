@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Dropdown from '../Dropdown';
 import classNames from 'classnames';
 import InfiniteScrollSelector from '../../InfiniteScrollSelector';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSelectedTime, customClasses }) => {
 	const defaultTime = extractTimeDetails(selectedTime);
@@ -44,6 +45,8 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 		setSelectedTime(time);
 	};
 
+	const { chosenColorObj } = useThemeContext();
+
 	return (
 		<Dropdown
 			toggleRef={toggleRef}
@@ -52,10 +55,6 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 			customClasses={classNames('ml-[-5px] shadow-2xl border border-color-gray-200 rounded-[4px]', customClasses)}
 		>
 			<div className="w-[260px] p-1">
-				{/* <div className="overflow-auto gray-scrollbar h-[240px]">
-					
-				</div> */}
-
 				<div className="grid grid-cols-3">
 					<InfiniteScrollSelector
 						items={hours}
@@ -75,7 +74,9 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 								key={period}
 								className={classNames(
 									'text-center py-2 rounded cursor-pointer',
-									selectedPeriod === period ? 'bg-blue-500' : 'bg-transparent hover:bg-color-gray-200'
+									selectedPeriod === period
+										? chosenColorObj.bgColor
+										: `bg-transparent ${chosenColorObj.hover.bgColorHalfOpacity}`
 								)}
 								onClick={() => setSelectedPeriod(period)}
 							>

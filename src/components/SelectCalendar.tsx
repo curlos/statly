@@ -3,6 +3,7 @@ import Icon from './Icon';
 import { areDatesEqual, formatCheckedInDayDate, getAllDaysInWeekFromDate, getCalendarMonth } from '../utils/date.utils';
 import { setTimeOnDateString } from '../utils/date.utils';
 import classNames from 'classnames';
+import { useThemeContext } from '../contexts/useThemeContext';
 
 interface CalendarProps {
 	dueDate: Date | null;
@@ -18,6 +19,8 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 	selectedInterval,
 	outerCurrentDate,
 }) => {
+	const { chosenColorObj } = useThemeContext();
+
 	const [localCurrentDate, setLocalCurrentDate] = useState(new Date());
 	const [allDaysInWeekFromDate, setAllDaysInWeekFromDate] = useState(null);
 
@@ -129,10 +132,10 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 
 									if (isCurrentMonth) {
 										if (isChosenDay && selectedInterval !== 'Week') {
-											appliedStyles.push('bg-blue-500 text-white');
+											appliedStyles.push(`${chosenColorObj.bgColor} text-white`);
 										} else if (isDayToday) {
 											appliedStyles.push(
-												'bg-color-gray-200 hover:bg-color-gray-200 text-blue-500'
+												`bg-color-gray-200 hover:bg-color-gray-200 ${chosenColorObj.textColor}`
 											);
 										} else {
 											appliedStyles.push('text-white bg-transparent hover:bg-color-gray-300');

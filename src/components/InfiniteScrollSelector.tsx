@@ -1,7 +1,10 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef } from 'react';
+import { useThemeContext } from '../contexts/useThemeContext';
 
 const InfiniteScrollSelector = ({ items, unit, selectedValue, setSelectedValue }) => {
+	const { chosenColorObj } = useThemeContext();
+
 	const scrollRef = useRef(null);
 
 	useEffect(() => {
@@ -49,7 +52,9 @@ const InfiniteScrollSelector = ({ items, unit, selectedValue, setSelectedValue }
 						key={`${unit}-${index}`}
 						className={classNames(
 							'text-center py-2 rounded cursor-pointer',
-							selectedValue === item ? 'bg-blue-500' : 'bg-transparent hover:bg-color-gray-200'
+							selectedValue === item
+								? chosenColorObj.bgColor
+								: `bg-transparent ${chosenColorObj.hover.bgColorHalfOpacity}`
 						)}
 						onClick={() => setSelectedValue(item)}
 					>
