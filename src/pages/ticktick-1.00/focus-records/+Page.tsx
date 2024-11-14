@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import GroupedFocusRecordList from './GroupedFocusRecordList';
 import useMaxHeight from '../../../hooks/useMaxHeight';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
-import { usePageContext } from 'vike-react/usePageContext';
 import Pagination from '../../../components/Pagination';
 import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
 import Navbar from '../../../components/Navbar/Navbar';
@@ -33,7 +32,6 @@ const Page = () => {
 	const [headerHeight, setHeaderHeight] = useState(0);
 
 	const focusRecordListRef = useRef(null);
-	const [searchText, setSearchText] = useState(searchTextFromUrl);
 
 	// Filter by Date Range
 	const [startDate, setStartDate] = useState(
@@ -48,11 +46,6 @@ const Page = () => {
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
-
-	// TODO: Should investigate this. Not sure if this is a good idea. Made this to
-	// useEffect(() => {
-	// 	setSearchText(searchTextFromUrl);
-	// }, [searchTextFromUrl]);
 
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
@@ -69,7 +62,7 @@ const Page = () => {
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
 		setCurrentPage(1);
-	}, [filteredFocusRecords, groupBy, sortBy, searchText]);
+	}, [filteredFocusRecords, groupBy, sortBy, searchTextFromUrl]);
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
@@ -104,8 +97,7 @@ const Page = () => {
 						filteredFocusRecords,
 						setFilteredFocusRecords,
 						focusRecordListRef,
-						searchText,
-						setSearchText,
+						searchTextFromUrl,
 						showCompletedTasks,
 						setShowCompletedTasks,
 						startDate,
@@ -128,7 +120,6 @@ const Page = () => {
 								totalPages,
 								setTotalPages,
 								showCompletedTasks,
-								setSearchText,
 							}}
 						/>
 					</div>

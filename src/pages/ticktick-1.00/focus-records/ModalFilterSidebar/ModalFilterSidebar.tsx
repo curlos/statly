@@ -7,12 +7,13 @@ import { useEditUserSettingsMutation } from '../../../../services/resources/user
 import FormPickDateRange from '../../../../components/FormPickDateRange';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
+import { useEffect, useState } from 'react';
+import { debounce } from '../../../../utils/helpers.utils';
 
 const ModalFilterSidebar = ({
 	isOpen,
 	setIsOpen,
-	searchText,
-	setSearchText,
+	searchTextFromUrl,
 	groupBy,
 	sortByOptions,
 	GROUP_BY_OPTIONS,
@@ -56,6 +57,24 @@ const ModalFilterSidebar = ({
 
 		return groupBy === groupByOption;
 	};
+
+	const [localSearchText, setLocalSearchText] = useState(searchTextFromUrl);
+
+	const handleDebouncedSearch = debounce(() => {
+		updateQueryParams({ search: localSearchText });
+	}, 1000);
+
+	useEffect(() => {
+		handleDebouncedSearch();
+
+		return () => {
+			handleDebouncedSearch.cancel();
+		};
+	}, [localSearchText]);
+
+	useEffect(() => {
+		setLocalSearchText(searchTextFromUrl);
+	}, [searchTextFromUrl]);
 
 	return (
 		<AnimatePresence>
@@ -102,9 +121,9 @@ const ModalFilterSidebar = ({
 							/>
 							<input
 								placeholder="Search"
-								value={searchText}
+								value={localSearchText}
 								onChange={(e) => {
-									setSearchText(e.target.value);
+									setLocalSearchText(e.target.value);
 								}}
 								className="text-[16px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
 							/>

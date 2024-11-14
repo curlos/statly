@@ -8,8 +8,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 
 const FilterBar = ({
 	groupBy,
-	searchText,
-	setSearchText,
+	searchTextFromUrl,
 	defaultFocusRecords,
 	filteredFocusRecords,
 	setFilteredFocusRecords,
@@ -34,7 +33,7 @@ const FilterBar = ({
 		endDate,
 		setFilteredFocusRecords,
 		defaultFocusRecords,
-		searchText,
+		searchTextFromUrl,
 		setSortByOptions,
 		DEFAULT_SORT_BY_OPTIONS,
 	});
@@ -66,8 +65,6 @@ const FilterBar = ({
 			<AppliedFilterItemList
 				{...{
 					groupBy,
-					searchText,
-					setSearchText,
 					taskIdToFilterBy,
 					startDate,
 					setStartDate,
@@ -80,8 +77,7 @@ const FilterBar = ({
 				{...{
 					isOpen: showFilterSidebar,
 					setIsOpen: setShowFilterSidebar,
-					searchText,
-					setSearchText,
+					searchTextFromUrl,
 					groupBy,
 					sortByOptions,
 					GROUP_BY_OPTIONS,

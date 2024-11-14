@@ -10,7 +10,7 @@ export const useFilterFocusRecords = ({
 	endDate,
 	setFilteredFocusRecords,
 	defaultFocusRecords,
-	searchText,
+	searchTextFromUrl,
 	setSortByOptions,
 	DEFAULT_SORT_BY_OPTIONS,
 }) => {
@@ -35,7 +35,7 @@ export const useFilterFocusRecords = ({
 	});
 
 	const filterBySearch = () => {
-		if (searchText.trim() === '') {
+		if (searchTextFromUrl.trim() === '') {
 			setSortByOptions(DEFAULT_SORT_BY_OPTIONS);
 			updateQueryParams({ 'sort-by': '' });
 		} else {
@@ -45,7 +45,7 @@ export const useFilterFocusRecords = ({
 		}
 
 		setFilteredFocusRecords(getFilteredFocusRecords());
-		updateQueryParams({ search: searchText });
+		updateQueryParams({ search: searchTextFromUrl });
 	};
 
 	const handleDebouncedSearch = debounce(filterBySearch, 1000);
@@ -56,7 +56,7 @@ export const useFilterFocusRecords = ({
 		return () => {
 			handleDebouncedSearch.cancel();
 		};
-	}, [searchText, defaultFocusRecords]);
+	}, [searchTextFromUrl, defaultFocusRecords]);
 
 	const focusRecordContainsTaskId = (focusRecord) => {
 		if (!taskIdToFilterBy) {
@@ -99,12 +99,12 @@ export const useFilterFocusRecords = ({
 	const getFilteredFocusRecords = () => {
 		let searchedItems;
 
-		if (searchText.trim() === '') {
+		if (searchTextFromUrl.trim() === '') {
 			// If searchText is empty, consider all focus records as the searched result.
 			searchedItems = defaultFocusRecords.map((focusRecord) => ({ item: focusRecord }));
 		} else {
 			// When searchText is not empty, perform the search using Fuse.js
-			searchedItems = fuse.search(searchText);
+			searchedItems = fuse.search(searchTextFromUrl);
 		}
 
 		const searchedItemsFocusRecords = searchedItems.map((result) => result.item);

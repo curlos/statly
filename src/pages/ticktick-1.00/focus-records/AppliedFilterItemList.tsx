@@ -5,18 +5,10 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
-const AppliedFilterItemList = ({
-	groupBy,
-	searchText,
-	setSearchText,
-	taskIdToFilterBy,
-	startDate,
-	setStartDate,
-	endDate,
-	setEndDate,
-}) => {
+const AppliedFilterItemList = ({ groupBy, taskIdToFilterBy, startDate, setStartDate, endDate, setEndDate }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by') || 'Newest';
+	const searchTextFromUrl = searchParams.get('search') || '';
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
@@ -40,9 +32,8 @@ const AppliedFilterItemList = ({
 
 	const searchTextFilter = {
 		name: `Search Text`,
-		value: searchText,
+		value: searchTextFromUrl,
 		handleRemove: () => {
-			setSearchText('');
 			updateQueryParams({ search: '' });
 		},
 	};
