@@ -1,4 +1,4 @@
-const GroupedFocusRecordListByDate = ({ focusRecords, getInfoForGroup, groupedBy, groupKey }) => {
+const GroupedFocusRecordListByDate = ({ focusRecords, getInfoForGroup, groupBy, groupKey }) => {
 	const groupedFocusRecordsByDate = getGroupedFocusRecordsByDate(focusRecords);
 
 	return (
@@ -11,7 +11,7 @@ const GroupedFocusRecordListByDate = ({ focusRecords, getInfoForGroup, groupedBy
 						<h3 className="font-bold text-[18px] underline mb-3">{dateKey}</h3>
 
 						<FocusRecordList
-							{...{ focusRecords: focusRecordsForTheDay, getInfoForGroup, groupedBy, groupKey }}
+							{...{ focusRecords: focusRecordsForTheDay, getInfoForGroup, groupBy, groupKey }}
 						/>
 					</div>
 				);

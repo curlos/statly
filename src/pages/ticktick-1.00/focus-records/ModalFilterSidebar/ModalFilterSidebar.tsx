@@ -13,8 +13,7 @@ const ModalFilterSidebar = ({
 	setIsOpen,
 	searchText,
 	setSearchText,
-	groupedBy,
-	setGroupedBy,
+	groupBy,
 	sortByOptions,
 	GROUP_BY_OPTIONS,
 	showCompletedTasks,
@@ -48,6 +47,14 @@ const ModalFilterSidebar = ({
 		}
 
 		return sortBy === sortByOption;
+	};
+
+	const isGroupByOptionChecked = (groupByOption) => {
+		if (groupByOption === 'No Group' && !groupBy) {
+			return true;
+		}
+
+		return groupBy === groupByOption;
 	};
 
 	return (
@@ -158,10 +165,13 @@ const ModalFilterSidebar = ({
 											key={groupByOption + 'radio'}
 											label={groupByOption}
 											name={groupByOption}
-											checked={groupedBy === groupByOption}
+											checked={isGroupByOptionChecked(groupByOption)}
 											onChange={() => {
-												setGroupedBy(groupByOption);
-												updateQueryParams({ 'group-by': groupByOption });
+												if (groupByOption === 'No Group') {
+													updateQueryParams({ 'group-by': '' });
+												} else {
+													updateQueryParams({ 'group-by': groupByOption });
+												}
 											}}
 											customOuterCircleClasses="!border-blue-500 !w-[20px] !h-[20px]"
 											customInnerCircleClasses="!bg-blue-500 !w-[10px] !h-[10px]"

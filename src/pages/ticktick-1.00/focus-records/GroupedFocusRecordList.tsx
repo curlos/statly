@@ -12,7 +12,7 @@ import GroupedFocusRecordListByDate from './GroupedFocusRecordListByDate';
 const GroupedFocusRecordList = ({
 	filteredFocusRecords,
 	isLoadingGetFocusRecords,
-	groupedBy,
+	groupBy,
 	sortBy,
 	currentPage,
 	showCompletedTasks,
@@ -32,7 +32,7 @@ const GroupedFocusRecordList = ({
 			focusRecordKey: focusRecord?.id,
 		};
 
-		switch (groupedBy) {
+		switch (groupBy) {
 			case 'date':
 				return infoForGroupedByDay;
 			case 'tasks':
@@ -81,8 +81,8 @@ const GroupedFocusRecordList = ({
 							return startTimeOne - startTimeTwo;
 						}
 					} else if (sortBy.startsWith('Focus Hours')) {
-						const durationOne = getFocusDuration(focusRecordOne, groupedBy);
-						const durationTwo = getFocusDuration(focusRecordTwo, groupedBy);
+						const durationOne = getFocusDuration(focusRecordOne, groupBy);
+						const durationTwo = getFocusDuration(focusRecordTwo, groupBy);
 
 						if (sortBy === 'Focus Hours: Most-Least') {
 							return durationTwo - durationOne;
@@ -96,7 +96,7 @@ const GroupedFocusRecordList = ({
 		return sortedFocusRecords.slice(startIndex, endIndex);
 	};
 
-	const isGrouped = groupedBy !== 'No Group';
+	const isGrouped = groupBy;
 	const shownGroupedFocusRecords = filteredFocusRecords && isGrouped && getShownGroupedFocusRecords();
 	const shownUngroupedFocusRecords = filteredFocusRecords && !isGrouped && getShownUngroupedFocusRecords();
 
@@ -115,11 +115,11 @@ const GroupedFocusRecordList = ({
 					) : isGrouped ? (
 						Object.keys(shownGroupedFocusRecords).map((groupKey) => {
 							const focusRecords = groupedByFocusRecords[groupKey];
-							const totalFocusDuration = getTotalFocusDuration(focusRecords, groupedBy);
+							const totalFocusDuration = getTotalFocusDuration(focusRecords, groupBy);
 							const { title } = getInfoForGroup(groupKey);
 
 							// TODO: If grouped by tasks, then we need to group those focus records for that task by date.
-							// if (groupedBy === 'tasks') {
+							// if (groupBy === 'tasks') {
 							// }
 
 							return (
@@ -131,12 +131,12 @@ const GroupedFocusRecordList = ({
 										</div>
 									</div>
 
-									{groupedBy === 'tasks' ? (
+									{groupBy === 'tasks' ? (
 										<GroupedFocusRecordListByDate
 											{...{
 												focusRecords: filteredFocusRecords,
 												getInfoForGroup,
-												groupedBy,
+												groupBy,
 												groupKey,
 											}}
 										/>
@@ -145,7 +145,7 @@ const GroupedFocusRecordList = ({
 											{...{
 												focusRecords: filteredFocusRecords,
 												getInfoForGroup,
-												groupedBy,
+												groupBy,
 												groupKey,
 												showCompletedTasks,
 											}}
@@ -160,7 +160,7 @@ const GroupedFocusRecordList = ({
 								{...{
 									focusRecords: shownUngroupedFocusRecords,
 									getInfoForGroup,
-									groupedBy,
+									groupBy,
 									groupKey: null,
 									showCompletedTasks,
 								}}
@@ -173,7 +173,7 @@ const GroupedFocusRecordList = ({
 	);
 };
 
-const FocusRecordList = ({ focusRecords, getInfoForGroup, groupedBy, groupKey, showCompletedTasks }) => {
+const FocusRecordList = ({ focusRecords, getInfoForGroup, groupBy, groupKey, showCompletedTasks }) => {
 	return (
 		<div className="space-y-3">
 			{focusRecords.map((focusRecord, index) => {
@@ -194,11 +194,11 @@ const FocusRecordList = ({ focusRecords, getInfoForGroup, groupedBy, groupKey, s
 	);
 };
 
-const getTotalFocusDuration = (focusRecords, groupedBy) => {
+const getTotalFocusDuration = (focusRecords, groupBy) => {
 	let durationForTheDay = 0;
 
 	focusRecords.forEach((focusRecord) => {
-		const duration = getFocusDuration(focusRecord, groupedBy);
+		const duration = getFocusDuration(focusRecord, groupBy);
 		durationForTheDay += duration;
 	});
 

@@ -16,6 +16,7 @@ const Page = () => {
 
 	// Query Params
 	const sortBy = queryParams.get('sort-by') || 'Newest';
+	const groupBy = queryParams.get('group-by');
 	const searchTextFromUrl = queryParams.get('search') || '';
 	const startDateUrlStr = queryParams.get('start-date');
 	const endDateUrlStr = queryParams.get('end-date');
@@ -33,7 +34,6 @@ const Page = () => {
 	const [headerHeight, setHeaderHeight] = useState(0);
 
 	const focusRecordListRef = useRef(null);
-	const [groupedBy, setGroupedBy] = useState('No Group');
 	const [searchText, setSearchText] = useState(searchTextFromUrl);
 
 	// Filter by Date Range
@@ -65,7 +65,7 @@ const Page = () => {
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
 		setCurrentPage(1);
-	}, [filteredFocusRecords, groupedBy, sortBy, searchText]);
+	}, [filteredFocusRecords, groupBy, sortBy, searchText]);
 
 	useEffect(() => {
 		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
@@ -87,8 +87,7 @@ const Page = () => {
 			>
 				<FilterBar
 					{...{
-						groupedBy,
-						setGroupedBy,
+						groupBy,
 						sortBy,
 						currentPage,
 						setCurrentPage,
@@ -114,7 +113,7 @@ const Page = () => {
 							{...{
 								filteredFocusRecords,
 								isLoadingGetFocusRecords,
-								groupedBy,
+								groupBy,
 								sortBy,
 								currentPage,
 								setCurrentPage,

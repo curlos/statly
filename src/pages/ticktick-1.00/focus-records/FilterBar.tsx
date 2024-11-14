@@ -9,8 +9,7 @@ import { getFormattedShortMonthDay, isTimeBetween } from '../../../utils/date.ut
 import { useSearchParamsCustom } from '../../../hooks/useSearchParamsCustom';
 
 const FilterBar = ({
-	groupedBy,
-	setGroupedBy,
+	groupBy,
 	searchText,
 	setSearchText,
 	defaultFocusRecords,
@@ -45,7 +44,7 @@ const FilterBar = ({
 		setSortByOptions,
 		DEFAULT_SORT_BY_OPTIONS,
 		focusRecordListRef,
-		groupedBy,
+		groupBy,
 	});
 
 	return (
@@ -74,8 +73,7 @@ const FilterBar = ({
 
 			<AppliedFilterItemList
 				{...{
-					groupedBy,
-					setGroupedBy,
+					groupBy,
 					searchText,
 					setSearchText,
 					taskIdToFilterBy,
@@ -92,8 +90,7 @@ const FilterBar = ({
 					setIsOpen: setShowFilterSidebar,
 					searchText,
 					setSearchText,
-					groupedBy,
-					setGroupedBy,
+					groupBy,
 					sortByOptions,
 					GROUP_BY_OPTIONS,
 					showCompletedTasks,

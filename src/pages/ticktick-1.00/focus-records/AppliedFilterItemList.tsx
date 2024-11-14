@@ -6,8 +6,7 @@ import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsCustom } from '../../../hooks/useSearchParamsCustom';
 
 const AppliedFilterItemList = ({
-	groupedBy,
-	setGroupedBy,
+	groupBy,
 	searchText,
 	setSearchText,
 	taskIdToFilterBy,
@@ -25,10 +24,9 @@ const AppliedFilterItemList = ({
 
 	const groupByFilter = {
 		name: `Group By`,
-		value: groupedBy,
+		value: groupBy,
 		handleRemove: () => {
-			setGroupedBy('No Group');
-			// TODO: Add query param update once I fix the grouping bugs.
+			updateQueryParams({ 'group-by': '' });
 		},
 	};
 
@@ -72,7 +70,7 @@ const AppliedFilterItemList = ({
 
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
 		const { value } = focusRecordsFilter;
-		const isDefaultFilter = !value || value === 'No Group' || value === 'Newest' || firstDayToTodayString === value;
+		const isDefaultFilter = !value || value === 'Newest' || firstDayToTodayString === value;
 		return !isDefaultFilter;
 	});
 
