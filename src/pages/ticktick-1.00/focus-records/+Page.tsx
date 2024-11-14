@@ -63,9 +63,12 @@ const Page = () => {
 	}, [userSettings]);
 
 	useEffect(() => {
-		focusRecordListRef?.current?.scrollTo(0, 0);
 		setCurrentPage(1);
 	}, [filteredFocusRecords, groupBy, sortBy, searchText]);
+
+	useEffect(() => {
+		focusRecordListRef?.current?.scrollTo(0, 0);
+	}, [currentPage]);
 
 	useEffect(() => {
 		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
