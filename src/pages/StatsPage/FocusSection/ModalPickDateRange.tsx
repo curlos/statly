@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import DropdownTimeCalendar from '../../../components/Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
 import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal/Modal';
 import { formatCheckedInDayDate } from '../../../utils/date.utils';
+import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 
 const ModalPickDateRange: React.FC = ({
 	isModalOpen,
@@ -14,14 +14,16 @@ const ModalPickDateRange: React.FC = ({
 	endDate,
 	setEndDate,
 }) => {
-	const dispatch = useDispatch();
-
 	const [localStartDate, setLocalStartDate] = useState(startDate);
 	const [localEndDate, setLocalEndDate] = useState(endDate);
 
 	const closeModal = () => {
 		setIsModalOpen(false);
 	};
+
+	const themeContext = useThemeContext();
+	const { chosenColorObj, getNextLightestOrDarkestColorObj } = themeContext;
+	const nextLightestOrDarkestColorObj = getNextLightestOrDarkestColorObj('next-darkest');
 
 	const DateInput = ({ labelName, date, setDate }) => {
 		const dropdownTimeCalenderRef = useRef(null);
@@ -34,7 +36,10 @@ const ModalPickDateRange: React.FC = ({
 					<div
 						ref={dropdownTimeCalenderRef}
 						onClick={() => setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible)}
-						className="border border-color-gray-300 hover:border-blue-500 cursor-pointer px-3 py-1 rounded w-full bg-color-gray-200"
+						className={classNames(
+							'border border-color-gray-300 cursor-pointer px-3 py-1 rounded w-full bg-color-gray-200',
+							chosenColorObj.hover.borderColor
+						)}
 					>
 						{formatCheckedInDayDate(date)}
 					</div>
@@ -78,7 +83,11 @@ const ModalPickDateRange: React.FC = ({
 							Cancel
 						</button>
 						<button
-							className="bg-blue-500 rounded py-1 cursor-pointer hover:bg-blue-600 min-w-[114px]"
+							className={classNames(
+								chosenColorObj.bgColor,
+								nextLightestOrDarkestColorObj.hover.bgColor,
+								'rounded py-1 cursor-pointer min-w-[114px]'
+							)}
 							onClick={async () => {
 								// TODO: Send the local start and end dates to the parent
 								setStartDate(localStartDate);
