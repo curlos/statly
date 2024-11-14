@@ -91,7 +91,6 @@ const FocusRecord = ({
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
 
 	const updateTaskIdQueryParam = (task) => {
-		console.log('click');
 		if (!task || !task.taskId) {
 			return;
 		}
@@ -130,8 +129,16 @@ const FocusRecord = ({
 
 				<div className={classNames(bgColorHalfOpacity, 'p-2 rounded-lg w-[95%] sm:w-full')}>
 					<div className="hidden sm:block text-gray-200">
-						<span className="font-bold">{getFormattedLongDay(new Date(startTime))}</span> -{' '}
-						{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
+						<span
+							className="font-bold hover:underline cursor-pointer"
+							onClick={() => {
+								const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
+								updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl });
+							}}
+						>
+							{getFormattedLongDay(new Date(startTime))}
+						</span>{' '}
+						- {startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
 					</div>
 
 					<div className="sm:hidden text-gray-200">

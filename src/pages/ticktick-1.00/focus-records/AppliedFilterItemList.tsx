@@ -5,10 +5,12 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
-const AppliedFilterItemList = ({ groupBy, taskIdToFilterBy, startDate, setStartDate, endDate, setEndDate }) => {
+const AppliedFilterItemList = ({ groupBy, taskIdToFilterBy }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const searchTextFromUrl = searchParams.get('search') || '';
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
@@ -51,10 +53,8 @@ const AppliedFilterItemList = ({ groupBy, taskIdToFilterBy, startDate, setStartD
 
 	const dateRangeFilter = {
 		name: `Date Range`,
-		value: `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`,
+		value: `${startDateFromUrl} - ${endDateFromUrl}`,
 		handleRemove: () => {
-			setStartDate(new Date('November 2, 2020'));
-			setEndDate(new Date());
 			updateQueryParams({ 'start-date': '', 'end-date': '' });
 		},
 	};

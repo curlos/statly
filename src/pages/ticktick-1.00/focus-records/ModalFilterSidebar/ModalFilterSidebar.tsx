@@ -20,10 +20,6 @@ const ModalFilterSidebar = ({
 	GROUP_BY_OPTIONS,
 	showCompletedTasks,
 	setShowCompletedTasks,
-	startDate,
-	setStartDate,
-	endDate,
-	setEndDate,
 }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
@@ -37,6 +33,8 @@ const ModalFilterSidebar = ({
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by');
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
@@ -220,10 +218,14 @@ const ModalFilterSidebar = ({
 
 							<FormPickDateRange
 								{...{
-									startDate,
-									setStartDate,
-									endDate,
-									setEndDate,
+									startDate: new Date(startDateFromUrl),
+									setStartDate: (value) => {
+										updateQueryParams({ 'start-date': value });
+									},
+									endDate: new Date(endDateFromUrl),
+									setEndDate: (value) => {
+										updateQueryParams({ 'end-date': value });
+									},
 									confirmBeforeUpdating: true,
 									onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 										if (newStartDate) {

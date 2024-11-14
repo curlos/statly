@@ -16,8 +16,6 @@ const Page = () => {
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const groupBy = searchParams.get('group-by');
 	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateUrlStr = searchParams.get('start-date');
-	const endDateUrlStr = searchParams.get('end-date');
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
@@ -32,12 +30,6 @@ const Page = () => {
 	const [headerHeight, setHeaderHeight] = useState(0);
 
 	const focusRecordListRef = useRef(null);
-
-	// Filter by Date Range
-	const [startDate, setStartDate] = useState(
-		startDateUrlStr ? new Date(startDateUrlStr) : new Date('November 2, 2020')
-	);
-	const [endDate, setEndDate] = useState(endDateUrlStr ? new Date(endDateUrlStr) : new Date());
 
 	const maxHeight = useMaxHeight(headerHeight);
 
@@ -100,10 +92,6 @@ const Page = () => {
 						searchTextFromUrl,
 						showCompletedTasks,
 						setShowCompletedTasks,
-						startDate,
-						setStartDate,
-						endDate,
-						setEndDate,
 					}}
 				/>
 

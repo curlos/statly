@@ -5,8 +5,6 @@ import { getFormattedShortMonthDay, isTimeBetween } from '../../../utils/date.ut
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
-	startDate,
-	endDate,
 	setFilteredFocusRecords,
 	defaultFocusRecords,
 	setSortByOptions,
@@ -14,6 +12,8 @@ export const useFilterFocusRecords = ({
 }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const searchTextFromUrl = searchParams.get('search') || '';
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
@@ -67,7 +67,7 @@ export const useFilterFocusRecords = ({
 	};
 
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
-	const currentDateRangeString = `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`;
+	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
 	const includesAllDates = firstDayToTodayString === currentDateRangeString;
 
 	const focusRecordInDateRange = (focusRecord) => {
@@ -77,8 +77,10 @@ export const useFilterFocusRecords = ({
 
 		const { startTime } = focusRecord;
 		const startTimeDate = new Date(startTime);
+		const startDateFromUrlDate = new Date(startDateFromUrl);
+		const endDateFromUrlDate = new Date(endDateFromUrl);
 
-		return isTimeBetween(startTimeDate, startDate, endDate);
+		return isTimeBetween(startTimeDate, startDateFromUrlDate, endDateFromUrlDate);
 	};
 
 	useEffect(() => {
@@ -86,7 +88,7 @@ export const useFilterFocusRecords = ({
 			const newFilteredFocusRecords = getFilteredFocusRecords();
 			setFilteredFocusRecords(newFilteredFocusRecords);
 		}
-	}, [defaultFocusRecords, taskIdToFilterBy, startDate, endDate]);
+	}, [defaultFocusRecords, taskIdToFilterBy, startDateFromUrl, endDateFromUrl]);
 
 	const getFilteredFocusRecords = () => {
 		let searchedItems;

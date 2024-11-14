@@ -13,10 +13,6 @@ const FilterBar = ({
 	setFilteredFocusRecords,
 	showCompletedTasks,
 	setShowCompletedTasks,
-	startDate,
-	setStartDate,
-	endDate,
-	setEndDate,
 }) => {
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
@@ -28,8 +24,6 @@ const FilterBar = ({
 
 	useFilterFocusRecords({
 		taskIdToFilterBy,
-		startDate,
-		endDate,
 		setFilteredFocusRecords,
 		defaultFocusRecords,
 		setSortByOptions,
@@ -64,10 +58,6 @@ const FilterBar = ({
 				{...{
 					groupBy,
 					taskIdToFilterBy,
-					startDate,
-					setStartDate,
-					endDate,
-					setEndDate,
 				}}
 			/>
 
@@ -81,10 +71,6 @@ const FilterBar = ({
 					GROUP_BY_OPTIONS,
 					showCompletedTasks,
 					setShowCompletedTasks,
-					startDate,
-					setStartDate,
-					endDate,
-					setEndDate,
 				}}
 			/>
 		</div>
