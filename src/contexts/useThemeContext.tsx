@@ -102,7 +102,7 @@ const useTheme = () => {
 		chosenColorObj,
 		chosenColorVariantsObj, // To get all the variants. If a chosen color is red-500, then the variants would be red-50, red-100, red-200, red-300, etc.
 		chosenColorName,
-		getNextLightestAndDarkestColor,
-		getNextLightestOrDarkestColorObj,
+		nextLightestColorObj: getNextLightestOrDarkestColorObj('next-lightest'),
+		nextDarkestColorObj: getNextLightestOrDarkestColorObj('next-darkest'),
 	};
 };

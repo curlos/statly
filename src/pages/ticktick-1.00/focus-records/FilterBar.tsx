@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Icon from '../../../components/Icon';
-import { usePageContext } from 'vike-react/usePageContext';
 import AppliedFilterItemList from './AppliedFilterItemList';
 import ModalFilterSidebar from './ModalFilterSidebar/ModalFilterSidebar';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
@@ -33,7 +32,6 @@ const FilterBar = ({
 		endDate,
 		setFilteredFocusRecords,
 		defaultFocusRecords,
-		searchTextFromUrl,
 		setSortByOptions,
 		DEFAULT_SORT_BY_OPTIONS,
 	});

@@ -9,9 +9,8 @@ const RecentFocusedDurationCurveCard = () => {
 	const { selected, setSelected, selectedOptions, data } = useGetStatsForInterval('focusDuration');
 
 	const themeContext = useThemeContext();
-	const { chosenColorObj, getNextLightestOrDarkestColorObj } = themeContext;
+	const { chosenColorObj, nextLightestColorObj } = themeContext;
 	const { textColor, hexColor } = chosenColorObj;
-	const nextLightestOrDarkestColorObj = getNextLightestOrDarkestColorObj();
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
@@ -62,7 +61,7 @@ const RecentFocusedDurationCurveCard = () => {
 						dataKey="score"
 						fill={hexColor}
 						background={{ fill: '#3a3a3a' }}
-						activeBar={{ fill: nextLightestOrDarkestColorObj.hexColor, cursor: 'pointer' }}
+						activeBar={{ fill: nextLightestColorObj.hexColor, cursor: 'pointer' }}
 					/>
 				</BarChart>
 			</ResponsiveContainer>

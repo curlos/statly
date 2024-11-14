@@ -28,8 +28,7 @@ const MostFocusedTimeCard = () => {
 	const [endDate, setEndDate] = useState(new Date());
 
 	const themeContext = useThemeContext();
-	const { chosenColorObj, getNextLightestOrDarkestColorObj } = themeContext;
-	const nextLightestOrDarkestColorObj = getNextLightestOrDarkestColorObj();
+	const { chosenColorObj, nextLightestColorObj } = themeContext;
 
 	useEffect(() => {
 		if (selectedInterval === 'All' && focusRecords) {
@@ -152,7 +151,7 @@ const MostFocusedTimeCard = () => {
 							fill={chosenColorObj.hexColor}
 							background={{ fill: '#3a3a3a' }}
 							// TODO: Write function to get a slightly lighter color to show on hover/active.
-							activeBar={{ fill: nextLightestOrDarkestColorObj.hexColor, cursor: 'pointer' }}
+							activeBar={{ fill: nextLightestColorObj.hexColor, cursor: 'pointer' }}
 						/>
 					</BarChart>
 				</ResponsiveContainer>

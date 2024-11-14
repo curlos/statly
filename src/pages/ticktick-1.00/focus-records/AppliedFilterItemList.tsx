@@ -72,10 +72,6 @@ const AppliedFilterItemList = ({ groupBy, taskIdToFilterBy, startDate, setStartD
 		return null;
 	}
 
-	console.log(taskIdToFilterBy);
-	console.log(tasksById);
-	console.log(tasksById[taskIdToFilterBy]);
-
 	return (
 		<div className="container flex flex-wrap pb-4 gap-3">
 			{nonDefaultFilterList.map((nonDefaultFilter) => {

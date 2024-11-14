@@ -17,8 +17,7 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 	const [data, setData] = useState(defaultData);
 
 	const themeContext = useThemeContext();
-	const { chosenColorObj, getNextLightestOrDarkestColorObj } = themeContext;
-	const nextLightestOrDarkestColorObj = getNextLightestOrDarkestColorObj();
+	const { chosenColorObj, nextLightestColorObj } = themeContext;
 
 	useEffect(() => {
 		if (!completedTasksGroupedByDate) {
@@ -113,7 +112,7 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 						dataKey="completedTasks"
 						fill={chosenColorObj.hexColor}
 						background={{ fill: '#3a3a3a' }}
-						activeBar={{ fill: nextLightestOrDarkestColorObj.hexColor, cursor: 'pointer' }}
+						activeBar={{ fill: nextLightestColorObj.hexColor, cursor: 'pointer' }}
 					/>
 				</BarChart>
 			</ResponsiveContainer>

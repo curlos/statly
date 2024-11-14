@@ -9,6 +9,8 @@ interface CustomRadioButtonProps {
 	customLabelClass: string;
 	customOuterCircleClasses: string;
 	customInnerCircleClasses: string;
+	customOuterCircleBorderColorClasses: string;
+	customInnerCircleBgColorClasses: string;
 }
 
 const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
@@ -19,6 +21,8 @@ const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 	customLabelClass,
 	customOuterCircleClasses,
 	customInnerCircleClasses,
+	customOuterCircleBorderColorClasses,
+	customInnerCircleBgColorClasses,
 }) => {
 	return (
 		<label className={classNames('flex items-center cursor-pointer', customLabelClass)}>
@@ -32,15 +36,17 @@ const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 			/>
 			<div
 				className={classNames(
-					`border bg-color-gray-600 border-color-gray-100 rounded-full w-[13px] h-[13px] flex items-center justify-center mr-2`,
-					customOuterCircleClasses ? customOuterCircleClasses : ''
+					`border bg-color-gray-600 rounded-full w-[13px] h-[13px] flex items-center justify-center mr-2`,
+					customOuterCircleClasses ? customOuterCircleClasses : '',
+					customOuterCircleBorderColorClasses ? customOuterCircleBorderColorClasses : 'border-color-gray-100'
 				)}
 			>
 				{checked && (
 					<div
 						className={classNames(
-							'bg-color-gray-100 rounded-full w-[7px] h-[7px]',
-							customInnerCircleClasses ? customInnerCircleClasses : ''
+							'rounded-full w-[7px] h-[7px]',
+							customInnerCircleClasses ? customInnerCircleClasses : '',
+							customInnerCircleBgColorClasses ? customInnerCircleBgColorClasses : 'bg-color-gray-100'
 						)}
 					></div>
 				)}

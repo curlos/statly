@@ -17,8 +17,7 @@ const FormPickDateRange = ({
 	const [localStartDate, setLocalStartDate] = useState(startDate);
 	const [localEndDate, setLocalEndDate] = useState(endDate);
 
-	const { chosenColorObj, getNextLightestOrDarkestColorObj } = useThemeContext();
-	const nextLightestOrDarkestColorObj = getNextLightestOrDarkestColorObj('next-darkest');
+	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
 	return (
 		<div>
@@ -70,7 +69,7 @@ const FormPickDateRange = ({
 					<button
 						className={classNames(
 							chosenColorObj.bgColor,
-							nextLightestOrDarkestColorObj.hover.bgColor,
+							nextDarkestColorObj.hover.bgColor,
 							'rounded py-1 cursor-pointer min-w-[114px]'
 						)}
 						onClick={async () => {

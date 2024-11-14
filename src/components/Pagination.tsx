@@ -195,8 +195,7 @@ const DropdownCustomPageNumber: React.FC<DropdownAccountDetailsProps> = ({
 		}
 	};
 
-	const { chosenColorObj, getNextLightestOrDarkestColorObj } = useThemeContext();
-	const nextDarkestColorObj = getNextLightestOrDarkestColorObj('next-darkest');
+	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
 	return (
 		<Dropdown

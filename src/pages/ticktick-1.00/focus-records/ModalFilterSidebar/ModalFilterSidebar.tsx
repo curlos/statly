@@ -9,6 +9,7 @@ import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
 import { debounce } from '../../../../utils/helpers.utils';
+import { useThemeContext } from '../../../../contexts/useThemeContext';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -36,6 +37,8 @@ const ModalFilterSidebar = ({
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by');
+
+	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	const handleError = useHandleError();
 
@@ -156,8 +159,10 @@ const ModalFilterSidebar = ({
 													updateQueryParams({ 'sort-by': sortByOption });
 												}
 											}}
-											customOuterCircleClasses="!border-blue-500 !w-[20px] !h-[20px]"
-											customInnerCircleClasses="!bg-blue-500 !w-[10px] !h-[10px]"
+											customOuterCircleClasses={classNames('!w-[20px] !h-[20px]')}
+											customInnerCircleClasses={classNames('!w-[10px] !h-[10px]')}
+											customOuterCircleBorderColorClasses={chosenColorObj.borderColor}
+											customInnerCircleBgColorClasses={chosenColorObj.bgColor}
 										/>
 									);
 								})}
@@ -191,8 +196,10 @@ const ModalFilterSidebar = ({
 													updateQueryParams({ 'group-by': groupByOption });
 												}
 											}}
-											customOuterCircleClasses="!border-blue-500 !w-[20px] !h-[20px]"
-											customInnerCircleClasses="!bg-blue-500 !w-[10px] !h-[10px]"
+											customOuterCircleClasses="!w-[20px] !h-[20px]"
+											customInnerCircleClasses="!w-[10px] !h-[10px]"
+											customOuterCircleBorderColorClasses={chosenColorObj.borderColor}
+											customInnerCircleBgColorClasses={chosenColorObj.bgColor}
 										/>
 									);
 								})}
@@ -249,7 +256,8 @@ const ModalFilterSidebar = ({
 									fill={1}
 									customClass={classNames(
 										'!text-[22px] cursor-pointer',
-										'text-blue-500 hover:text-blue-400'
+										chosenColorObj.textColor,
+										nextLightestColorObj.hover.textColor
 									)}
 									onClick={() => {
 										const newShowCompletedTasks = !showCompletedTasks;

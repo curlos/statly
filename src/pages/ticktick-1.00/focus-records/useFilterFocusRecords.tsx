@@ -2,7 +2,6 @@ import Fuse from 'fuse.js';
 import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isTimeBetween } from '../../../utils/date.utils';
-import { debounce } from '../../../utils/helpers.utils';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -10,14 +9,11 @@ export const useFilterFocusRecords = ({
 	endDate,
 	setFilteredFocusRecords,
 	defaultFocusRecords,
-	searchTextFromUrl,
 	setSortByOptions,
 	DEFAULT_SORT_BY_OPTIONS,
 }) => {
-	const { updateQueryParams } = useSearchParamsContext();
-
-	// console.log(startDate);
-	// console.log(endDate);
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const searchTextFromUrl = searchParams.get('search') || '';
 
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
@@ -49,7 +45,9 @@ export const useFilterFocusRecords = ({
 	};
 
 	useEffect(() => {
-		filterBySearch();
+		if (defaultFocusRecords) {
+			filterBySearch();
+		}
 	}, [searchTextFromUrl, defaultFocusRecords]);
 
 	const focusRecordContainsTaskId = (focusRecord) => {
