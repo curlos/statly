@@ -13,7 +13,7 @@ const GroupedFocusRecordList = ({
 	filteredFocusRecords,
 	isLoadingGetFocusRecords,
 	groupedBy,
-	sortedBy,
+	sortBy,
 	currentPage,
 	showCompletedTasks,
 }) => {
@@ -67,26 +67,26 @@ const GroupedFocusRecordList = ({
 		const endIndex = currentPage * MAX_SHOWN_FOCUS_RECORDS;
 		const startIndex = endIndex - MAX_SHOWN_FOCUS_RECORDS;
 
-		const noSearchText = sortedBy !== 'Most Relevant';
+		const noSearchText = sortBy !== 'Most Relevant';
 
 		const sortedFocusRecords = noSearchText
 			? filteredFocusRecords.toSorted((focusRecordOne, focusRecordTwo) => {
-					if (sortedBy === 'Newest' || sortedBy === 'Oldest') {
+					if (sortBy === 'Newest' || sortBy === 'Oldest') {
 						const startTimeOne = new Date(focusRecordOne.startTime);
 						const startTimeTwo = new Date(focusRecordTwo.startTime);
 
-						if (sortedBy === 'Newest') {
+						if (sortBy === 'Newest') {
 							return startTimeTwo - startTimeOne;
-						} else if (sortedBy === 'Oldest') {
+						} else if (sortBy === 'Oldest') {
 							return startTimeOne - startTimeTwo;
 						}
-					} else if (sortedBy.startsWith('Focus Hours')) {
+					} else if (sortBy.startsWith('Focus Hours')) {
 						const durationOne = getFocusDuration(focusRecordOne, groupedBy);
 						const durationTwo = getFocusDuration(focusRecordTwo, groupedBy);
 
-						if (sortedBy === 'Focus Hours: Most-Least') {
+						if (sortBy === 'Focus Hours: Most-Least') {
 							return durationTwo - durationOne;
-						} else if (sortedBy === 'Focus Hours: Least-Most') {
+						} else if (sortBy === 'Focus Hours: Least-Most') {
 							return durationOne - durationTwo;
 						}
 					}

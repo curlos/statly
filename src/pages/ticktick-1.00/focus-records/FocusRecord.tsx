@@ -9,8 +9,8 @@ import { getFocusDuration, getFormattedDuration } from '../../../utils/helpers.u
 import Icon from '../../../components/Icon';
 import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
 import { useThemeContext } from './useThemeContext';
+import { useSearchParamsCustom } from '../../../hooks/useSearchParamsCustom';
 
 const FocusRecord = ({
 	focusRecord,
@@ -19,7 +19,7 @@ const FocusRecord = ({
 	focusDuration,
 	showCompletedTasks,
 }) => {
-	const updateQueryParams = useUpdateQueryParams();
+	const { updateQueryParams } = useSearchParamsCustom();
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
@@ -98,6 +98,7 @@ const FocusRecord = ({
 		const { taskId } = task;
 
 		updateQueryParams({ 'task-id': taskId });
+		updateQueryParams({ search: '' });
 	};
 
 	return (

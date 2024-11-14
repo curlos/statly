@@ -8,7 +8,6 @@ import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
 import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
-import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -16,21 +15,14 @@ const Page = () => {
 	const queryParams = new URLSearchParams(location.search);
 
 	// Query Params
-	const taskIdToFilterBy = queryParams.get('task-id');
-	const defaultSortedBy = queryParams.get('sort-by') || 'Newest';
-	const defaultSearchText = queryParams.get('search') || '';
+	const sortBy = queryParams.get('sort-by') || 'Newest';
+	const searchTextFromUrl = queryParams.get('search') || '';
 	const startDateUrlStr = queryParams.get('start-date');
 	const endDateUrlStr = queryParams.get('end-date');
 
-	console.log(startDateUrlStr);
-	console.log(endDateUrlStr);
-
 	// RTK Query - TickTick 1.0 - Focus Records
-	const {
-		data: fetchedFocusRecords,
-		isLoading: isLoadingGetFocusRecords,
-		error: errorGetFocusRecords,
-	} = useGetPomoAndStopwatchFocusRecordsQuery();
+	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
+		useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecords } = fetchedFocusRecords || {};
 
 	// RTK Query - User Settings
@@ -42,8 +34,7 @@ const Page = () => {
 
 	const focusRecordListRef = useRef(null);
 	const [groupedBy, setGroupedBy] = useState('No Group');
-	const [sortedBy, setSortedBy] = useState(defaultSortedBy);
-	const [searchText, setSearchText] = useState(defaultSearchText);
+	const [searchText, setSearchText] = useState(searchTextFromUrl);
 
 	// Filter by Date Range
 	const [startDate, setStartDate] = useState(
@@ -59,8 +50,6 @@ const Page = () => {
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
-	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
-
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
 			return;
@@ -74,13 +63,9 @@ const Page = () => {
 	}, [userSettings]);
 
 	useEffect(() => {
-		// Scroll to the top of the focus records whenever you go to a new page.
 		focusRecordListRef?.current?.scrollTo(0, 0);
-	}, [currentPage, groupedBy, sortedBy, searchText]);
-
-	useEffect(() => {
 		setCurrentPage(1);
-	}, [groupedBy, sortedBy, searchText]);
+	}, [filteredFocusRecords, groupedBy, sortBy, searchText]);
 
 	useEffect(() => {
 		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
@@ -90,42 +75,6 @@ const Page = () => {
 		const newTotalPages = Math.ceil(filteredFocusRecords.length / MAX_SHOWN_FOCUS_RECORDS);
 		setTotalPages(newTotalPages);
 	}, [isLoadingGetFocusRecords, filteredFocusRecords]);
-
-	const focusRecordHasTaskId = (focusRecord, taskIdToFilterBy) => {
-		const taskIdToFilterByStr = String(taskIdToFilterBy);
-
-		if (!focusRecord.tasks || focusRecord.tasks.length === 0) {
-			return false;
-		}
-
-		const { tasks } = focusRecord;
-
-		return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
-	};
-
-	useEffect(() => {
-		if (focusRecords) {
-			let newFilteredFocusRecords = focusRecords;
-
-			newFilteredFocusRecords = newFilteredFocusRecords.filter((focusRecord) => {
-				const containsTaskId = !taskIdToFilterBy ? true : focusRecordHasTaskId(focusRecord, taskIdToFilterBy);
-
-				return containsTaskId;
-			});
-
-			// const currentDateRangeString = `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`;
-			// const doesNotIncludeAllDates = firstDayToTodayString !== currentDateRangeString
-
-			// if (doesNotIncludeAllDates) {
-			// 	// Go through each of the remaining focus records and check the "startTime". If this startTime is in the date range string, then the focus record can be included. If it's not, then filter it out.
-			// 	newFilteredFocusRecords.filter((focusRecord) => {
-
-			// 	})
-			// }
-
-			setFilteredFocusRecords(newFilteredFocusRecords);
-		}
-	}, [focusRecords, taskIdToFilterBy, startDate, endDate]);
 
 	return (
 		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
@@ -140,8 +89,7 @@ const Page = () => {
 					{...{
 						groupedBy,
 						setGroupedBy,
-						sortedBy,
-						setSortedBy,
+						sortBy,
 						currentPage,
 						setCurrentPage,
 						totalPages,
@@ -149,7 +97,6 @@ const Page = () => {
 						filteredFocusRecords,
 						setFilteredFocusRecords,
 						focusRecordListRef,
-						defaultSortedBy,
 						searchText,
 						setSearchText,
 						showCompletedTasks,
@@ -168,7 +115,7 @@ const Page = () => {
 								filteredFocusRecords,
 								isLoadingGetFocusRecords,
 								groupedBy,
-								sortedBy,
+								sortBy,
 								currentPage,
 								setCurrentPage,
 								totalPages,

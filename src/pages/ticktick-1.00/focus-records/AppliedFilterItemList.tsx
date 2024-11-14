@@ -1,15 +1,13 @@
 import classNames from 'classnames';
 import Icon from '../../../components/Icon';
-import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from './useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import { useSearchParamsCustom } from '../../../hooks/useSearchParamsCustom';
 
 const AppliedFilterItemList = ({
 	groupedBy,
 	setGroupedBy,
-	sortedBy,
-	setSortedBy,
 	searchText,
 	setSearchText,
 	taskIdToFilterBy,
@@ -18,7 +16,8 @@ const AppliedFilterItemList = ({
 	endDate,
 	setEndDate,
 }) => {
-	const updateQueryParams = useUpdateQueryParams();
+	const { searchParams, updateQueryParams } = useSearchParamsCustom();
+	const sortBy = searchParams.get('sort-by') || 'Newest';
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
@@ -35,10 +34,9 @@ const AppliedFilterItemList = ({
 
 	const sortByFilter = {
 		name: `Sort By`,
-		value: sortedBy,
+		value: sortBy,
 		handleRemove: () => {
-			setSortedBy('Newest');
-			updateQueryParams({ 'sort-by': 'Newest' });
+			updateQueryParams({ 'sort-by': '' });
 		},
 	};
 

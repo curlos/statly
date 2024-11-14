@@ -1,20 +1,18 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../../../../components/Icon';
-import { useUpdateQueryParams } from '../../../../hooks/useUpdateQueryParams';
 import CustomRadioButton from '../../../../components/CustomRadioButton';
 import classNames from 'classnames';
 import useHandleError from '../../../../hooks/useHandleError';
 import { useEditUserSettingsMutation } from '../../../../services/resources/userSettingsApi';
 import FormPickDateRange from '../../../../components/FormPickDateRange';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
+import { useSearchParamsCustom } from '../../../../hooks/useSearchParamsCustom';
 
 const ModalFilterSidebar = ({
 	isOpen,
 	setIsOpen,
 	searchText,
 	setSearchText,
-	sortedBy,
-	setSortedBy,
 	groupedBy,
 	setGroupedBy,
 	sortByOptions,
@@ -36,12 +34,21 @@ const ModalFilterSidebar = ({
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
 	};
 
-	const updateQueryParams = useUpdateQueryParams();
+	const { searchParams, updateQueryParams } = useSearchParamsCustom();
+	const sortBy = searchParams.get('sort-by');
 
 	const handleError = useHandleError();
 
 	// RTK Query - User Settings
 	const [editUserSettings] = useEditUserSettingsMutation();
+
+	const isSortByOptionChecked = (sortByOption) => {
+		if (sortByOption === 'Newest' && !sortBy) {
+			return true;
+		}
+
+		return sortBy === sortByOption;
+	};
 
 	return (
 		<AnimatePresence>
@@ -116,10 +123,13 @@ const ModalFilterSidebar = ({
 											key={sortByOption + 'radio'}
 											label={sortByOption}
 											name={sortByOption}
-											checked={sortedBy === sortByOption}
+											checked={isSortByOptionChecked(sortByOption)}
 											onChange={() => {
-												setSortedBy(sortByOption);
-												updateQueryParams({ 'sort-by': sortByOption });
+												if (sortByOption === 'Newest') {
+													updateQueryParams({ 'sort-by': '' });
+												} else {
+													updateQueryParams({ 'sort-by': sortByOption });
+												}
 											}}
 											customOuterCircleClasses="!border-blue-500 !w-[20px] !h-[20px]"
 											customInnerCircleClasses="!bg-blue-500 !w-[10px] !h-[10px]"

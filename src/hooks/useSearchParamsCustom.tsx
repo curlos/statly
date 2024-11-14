@@ -1,8 +1,17 @@
+import { useEffect, useState } from 'react';
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
 
-export const useUpdateQueryParams = () => {
+export const useSearchParamsCustom = () => {
 	const pageContext = usePageContext();
+	const location = pageContext.urlParsed;
+	const [searchParams, setSearchParams] = useState(new URLSearchParams(location.search));
+
+	useEffect(() => {
+		// This effect will update the searchParams state whenever the URL search part changes
+		const newSearchParams = new URLSearchParams(location.search);
+		setSearchParams(newSearchParams);
+	}, [location.search]);
 
 	const updateQueryParams = (newParams) => {
 		// Preserve existing query params
@@ -27,5 +36,8 @@ export const useUpdateQueryParams = () => {
 		navigate(newUrl, { replace: true });
 	};
 
-	return updateQueryParams;
+	return {
+		searchParams,
+		updateQueryParams,
+	};
 };
