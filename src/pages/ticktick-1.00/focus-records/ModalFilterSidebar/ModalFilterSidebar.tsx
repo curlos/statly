@@ -6,7 +6,7 @@ import useHandleError from '../../../../hooks/useHandleError';
 import { useEditUserSettingsMutation } from '../../../../services/resources/userSettingsApi';
 import FormPickDateRange from '../../../../components/FormPickDateRange';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
-import { useSearchParamsCustom } from '../../../../hooks/useSearchParamsCustom';
+import { useSearchParamsContext } from '../../../../hooks/useSearchParamsCustom';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -33,7 +33,7 @@ const ModalFilterSidebar = ({
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
 	};
 
-	const { searchParams, updateQueryParams } = useSearchParamsCustom();
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by');
 
 	const handleError = useHandleError();
@@ -198,7 +198,7 @@ const ModalFilterSidebar = ({
 									setStartDate,
 									endDate,
 									setEndDate,
-									useLocalDatesFirst: false,
+									confirmBeforeUpdating: true,
 									onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 										if (newStartDate) {
 											// TODO: Get these up in the filter bar or page components.

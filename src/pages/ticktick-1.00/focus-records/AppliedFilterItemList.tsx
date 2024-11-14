@@ -3,7 +3,7 @@ import Icon from '../../../components/Icon';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from './useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
-import { useSearchParamsCustom } from '../../../hooks/useSearchParamsCustom';
+import { useSearchParamsContext } from '../../../hooks/useSearchParamsCustom';
 
 const AppliedFilterItemList = ({
 	groupBy,
@@ -15,7 +15,7 @@ const AppliedFilterItemList = ({
 	endDate,
 	setEndDate,
 }) => {
-	const { searchParams, updateQueryParams } = useSearchParamsCustom();
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 
 	// RTK Query - TickTick 1.0 - Tasks

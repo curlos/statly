@@ -1,6 +1,17 @@
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
+
+const SearchParamsContext = createContext();
+
+export const useSearchParamsContext = () => {
+	return useContext(SearchParamsContext);
+};
+
+export const SearchParamsProvider = ({ children }) => {
+	const searchParams = useSearchParamsCustom();
+	return <SearchParamsContext.Provider value={searchParams}>{children}</SearchParamsContext.Provider>;
+};
 
 export const useSearchParamsCustom = () => {
 	const pageContext = usePageContext();
@@ -8,6 +19,7 @@ export const useSearchParamsCustom = () => {
 	const [searchParams, setSearchParams] = useState(new URLSearchParams(location.search));
 
 	useEffect(() => {
+		console.log('cahnging');
 		// This effect will update the searchParams state whenever the URL search part changes
 		const newSearchParams = new URLSearchParams(location.search);
 		setSearchParams(newSearchParams);

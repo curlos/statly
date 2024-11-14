@@ -11,8 +11,8 @@ const FormPickDateRange = ({
 	setEndDate,
 	onCancel,
 	onConfirm,
-	useLocalDatesFirst = true,
 	onUpdateStartOrEndDate,
+	confirmBeforeUpdating = true,
 }) => {
 	const [localStartDate, setLocalStartDate] = useState(startDate);
 	const [localEndDate, setLocalEndDate] = useState(endDate);
@@ -29,7 +29,7 @@ const FormPickDateRange = ({
 					setDate={(value) => {
 						setLocalStartDate(value);
 
-						if (!useLocalDatesFirst) {
+						if (confirmBeforeUpdating) {
 							setStartDate(value);
 						}
 
@@ -44,7 +44,7 @@ const FormPickDateRange = ({
 					setDate={(value) => {
 						setLocalEndDate(value);
 
-						if (!useLocalDatesFirst) {
+						if (confirmBeforeUpdating) {
 							setEndDate(value);
 						}
 
@@ -55,7 +55,7 @@ const FormPickDateRange = ({
 				/>
 			</div>
 
-			{useLocalDatesFirst && (
+			{!confirmBeforeUpdating && (
 				<div className="flex justify-end gap-2">
 					<button
 						className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
