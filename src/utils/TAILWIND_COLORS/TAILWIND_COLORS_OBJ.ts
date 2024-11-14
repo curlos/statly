@@ -9,6 +9,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-50',
 				bgColor: 'hover:bg-slate-50',
+				bgColorHalfOpacity: 'hover:bg-slate-50/50',
 				borderColor: 'hover:border-slate-50',
 			},
 		},
@@ -21,6 +22,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-100',
 				bgColor: 'hover:bg-slate-100',
+				bgColorHalfOpacity: 'hover:bg-slate-100/50',
 				borderColor: 'hover:border-slate-100',
 			},
 		},
@@ -33,6 +35,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-200',
 				bgColor: 'hover:bg-slate-200',
+				bgColorHalfOpacity: 'hover:bg-slate-200/50',
 				borderColor: 'hover:border-slate-200',
 			},
 		},
@@ -45,6 +48,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-300',
 				bgColor: 'hover:bg-slate-300',
+				bgColorHalfOpacity: 'hover:bg-slate-300/50',
 				borderColor: 'hover:border-slate-300',
 			},
 		},
@@ -57,6 +61,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-400',
 				bgColor: 'hover:bg-slate-400',
+				bgColorHalfOpacity: 'hover:bg-slate-400/50',
 				borderColor: 'hover:border-slate-400',
 			},
 		},
@@ -69,6 +74,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-500',
 				bgColor: 'hover:bg-slate-500',
+				bgColorHalfOpacity: 'hover:bg-slate-500/50',
 				borderColor: 'hover:border-slate-500',
 			},
 		},
@@ -81,6 +87,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-600',
 				bgColor: 'hover:bg-slate-600',
+				bgColorHalfOpacity: 'hover:bg-slate-600/50',
 				borderColor: 'hover:border-slate-600',
 			},
 		},
@@ -93,6 +100,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-700',
 				bgColor: 'hover:bg-slate-700',
+				bgColorHalfOpacity: 'hover:bg-slate-700/50',
 				borderColor: 'hover:border-slate-700',
 			},
 		},
@@ -105,6 +113,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-800',
 				bgColor: 'hover:bg-slate-800',
+				bgColorHalfOpacity: 'hover:bg-slate-800/50',
 				borderColor: 'hover:border-slate-800',
 			},
 		},
@@ -117,6 +126,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-900',
 				bgColor: 'hover:bg-slate-900',
+				bgColorHalfOpacity: 'hover:bg-slate-900/50',
 				borderColor: 'hover:border-slate-900',
 			},
 		},
@@ -129,6 +139,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-slate-950',
 				bgColor: 'hover:bg-slate-950',
+				bgColorHalfOpacity: 'hover:bg-slate-950/50',
 				borderColor: 'hover:border-slate-950',
 			},
 		},
@@ -143,6 +154,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-50',
 				bgColor: 'hover:bg-gray-50',
+				bgColorHalfOpacity: 'hover:bg-gray-50/50',
 				borderColor: 'hover:border-gray-50',
 			},
 		},
@@ -155,6 +167,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-100',
 				bgColor: 'hover:bg-gray-100',
+				bgColorHalfOpacity: 'hover:bg-gray-100/50',
 				borderColor: 'hover:border-gray-100',
 			},
 		},
@@ -167,6 +180,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-200',
 				bgColor: 'hover:bg-gray-200',
+				bgColorHalfOpacity: 'hover:bg-gray-200/50',
 				borderColor: 'hover:border-gray-200',
 			},
 		},
@@ -179,6 +193,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-300',
 				bgColor: 'hover:bg-gray-300',
+				bgColorHalfOpacity: 'hover:bg-gray-300/50',
 				borderColor: 'hover:border-gray-300',
 			},
 		},
@@ -191,6 +206,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-400',
 				bgColor: 'hover:bg-gray-400',
+				bgColorHalfOpacity: 'hover:bg-gray-400/50',
 				borderColor: 'hover:border-gray-400',
 			},
 		},
@@ -203,6 +219,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-500',
 				bgColor: 'hover:bg-gray-500',
+				bgColorHalfOpacity: 'hover:bg-gray-500/50',
 				borderColor: 'hover:border-gray-500',
 			},
 		},
@@ -215,6 +232,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-600',
 				bgColor: 'hover:bg-gray-600',
+				bgColorHalfOpacity: 'hover:bg-gray-600/50',
 				borderColor: 'hover:border-gray-600',
 			},
 		},
@@ -227,6 +245,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-700',
 				bgColor: 'hover:bg-gray-700',
+				bgColorHalfOpacity: 'hover:bg-gray-700/50',
 				borderColor: 'hover:border-gray-700',
 			},
 		},
@@ -239,6 +258,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-800',
 				bgColor: 'hover:bg-gray-800',
+				bgColorHalfOpacity: 'hover:bg-gray-800/50',
 				borderColor: 'hover:border-gray-800',
 			},
 		},
@@ -251,6 +271,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-900',
 				bgColor: 'hover:bg-gray-900',
+				bgColorHalfOpacity: 'hover:bg-gray-900/50',
 				borderColor: 'hover:border-gray-900',
 			},
 		},
@@ -263,6 +284,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-gray-950',
 				bgColor: 'hover:bg-gray-950',
+				bgColorHalfOpacity: 'hover:bg-gray-950/50',
 				borderColor: 'hover:border-gray-950',
 			},
 		},
@@ -277,6 +299,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-50',
 				bgColor: 'hover:bg-zinc-50',
+				bgColorHalfOpacity: 'hover:bg-zinc-50/50',
 				borderColor: 'hover:border-zinc-50',
 			},
 		},
@@ -289,6 +312,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-100',
 				bgColor: 'hover:bg-zinc-100',
+				bgColorHalfOpacity: 'hover:bg-zinc-100/50',
 				borderColor: 'hover:border-zinc-100',
 			},
 		},
@@ -301,6 +325,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-200',
 				bgColor: 'hover:bg-zinc-200',
+				bgColorHalfOpacity: 'hover:bg-zinc-200/50',
 				borderColor: 'hover:border-zinc-200',
 			},
 		},
@@ -313,6 +338,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-300',
 				bgColor: 'hover:bg-zinc-300',
+				bgColorHalfOpacity: 'hover:bg-zinc-300/50',
 				borderColor: 'hover:border-zinc-300',
 			},
 		},
@@ -325,6 +351,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-400',
 				bgColor: 'hover:bg-zinc-400',
+				bgColorHalfOpacity: 'hover:bg-zinc-400/50',
 				borderColor: 'hover:border-zinc-400',
 			},
 		},
@@ -337,6 +364,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-500',
 				bgColor: 'hover:bg-zinc-500',
+				bgColorHalfOpacity: 'hover:bg-zinc-500/50',
 				borderColor: 'hover:border-zinc-500',
 			},
 		},
@@ -349,6 +377,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-600',
 				bgColor: 'hover:bg-zinc-600',
+				bgColorHalfOpacity: 'hover:bg-zinc-600/50',
 				borderColor: 'hover:border-zinc-600',
 			},
 		},
@@ -361,6 +390,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-700',
 				bgColor: 'hover:bg-zinc-700',
+				bgColorHalfOpacity: 'hover:bg-zinc-700/50',
 				borderColor: 'hover:border-zinc-700',
 			},
 		},
@@ -373,6 +403,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-800',
 				bgColor: 'hover:bg-zinc-800',
+				bgColorHalfOpacity: 'hover:bg-zinc-800/50',
 				borderColor: 'hover:border-zinc-800',
 			},
 		},
@@ -385,6 +416,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-900',
 				bgColor: 'hover:bg-zinc-900',
+				bgColorHalfOpacity: 'hover:bg-zinc-900/50',
 				borderColor: 'hover:border-zinc-900',
 			},
 		},
@@ -397,6 +429,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-zinc-950',
 				bgColor: 'hover:bg-zinc-950',
+				bgColorHalfOpacity: 'hover:bg-zinc-950/50',
 				borderColor: 'hover:border-zinc-950',
 			},
 		},
@@ -411,6 +444,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-50',
 				bgColor: 'hover:bg-neutral-50',
+				bgColorHalfOpacity: 'hover:bg-neutral-50/50',
 				borderColor: 'hover:border-neutral-50',
 			},
 		},
@@ -423,6 +457,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-100',
 				bgColor: 'hover:bg-neutral-100',
+				bgColorHalfOpacity: 'hover:bg-neutral-100/50',
 				borderColor: 'hover:border-neutral-100',
 			},
 		},
@@ -435,6 +470,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-200',
 				bgColor: 'hover:bg-neutral-200',
+				bgColorHalfOpacity: 'hover:bg-neutral-200/50',
 				borderColor: 'hover:border-neutral-200',
 			},
 		},
@@ -447,6 +483,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-300',
 				bgColor: 'hover:bg-neutral-300',
+				bgColorHalfOpacity: 'hover:bg-neutral-300/50',
 				borderColor: 'hover:border-neutral-300',
 			},
 		},
@@ -459,6 +496,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-400',
 				bgColor: 'hover:bg-neutral-400',
+				bgColorHalfOpacity: 'hover:bg-neutral-400/50',
 				borderColor: 'hover:border-neutral-400',
 			},
 		},
@@ -471,6 +509,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-500',
 				bgColor: 'hover:bg-neutral-500',
+				bgColorHalfOpacity: 'hover:bg-neutral-500/50',
 				borderColor: 'hover:border-neutral-500',
 			},
 		},
@@ -483,6 +522,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-600',
 				bgColor: 'hover:bg-neutral-600',
+				bgColorHalfOpacity: 'hover:bg-neutral-600/50',
 				borderColor: 'hover:border-neutral-600',
 			},
 		},
@@ -495,6 +535,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-700',
 				bgColor: 'hover:bg-neutral-700',
+				bgColorHalfOpacity: 'hover:bg-neutral-700/50',
 				borderColor: 'hover:border-neutral-700',
 			},
 		},
@@ -507,6 +548,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-800',
 				bgColor: 'hover:bg-neutral-800',
+				bgColorHalfOpacity: 'hover:bg-neutral-800/50',
 				borderColor: 'hover:border-neutral-800',
 			},
 		},
@@ -519,6 +561,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-900',
 				bgColor: 'hover:bg-neutral-900',
+				bgColorHalfOpacity: 'hover:bg-neutral-900/50',
 				borderColor: 'hover:border-neutral-900',
 			},
 		},
@@ -531,6 +574,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-neutral-950',
 				bgColor: 'hover:bg-neutral-950',
+				bgColorHalfOpacity: 'hover:bg-neutral-950/50',
 				borderColor: 'hover:border-neutral-950',
 			},
 		},
@@ -545,6 +589,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-50',
 				bgColor: 'hover:bg-stone-50',
+				bgColorHalfOpacity: 'hover:bg-stone-50/50',
 				borderColor: 'hover:border-stone-50',
 			},
 		},
@@ -557,6 +602,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-100',
 				bgColor: 'hover:bg-stone-100',
+				bgColorHalfOpacity: 'hover:bg-stone-100/50',
 				borderColor: 'hover:border-stone-100',
 			},
 		},
@@ -569,6 +615,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-200',
 				bgColor: 'hover:bg-stone-200',
+				bgColorHalfOpacity: 'hover:bg-stone-200/50',
 				borderColor: 'hover:border-stone-200',
 			},
 		},
@@ -581,6 +628,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-300',
 				bgColor: 'hover:bg-stone-300',
+				bgColorHalfOpacity: 'hover:bg-stone-300/50',
 				borderColor: 'hover:border-stone-300',
 			},
 		},
@@ -593,6 +641,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-400',
 				bgColor: 'hover:bg-stone-400',
+				bgColorHalfOpacity: 'hover:bg-stone-400/50',
 				borderColor: 'hover:border-stone-400',
 			},
 		},
@@ -605,6 +654,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-500',
 				bgColor: 'hover:bg-stone-500',
+				bgColorHalfOpacity: 'hover:bg-stone-500/50',
 				borderColor: 'hover:border-stone-500',
 			},
 		},
@@ -617,6 +667,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-600',
 				bgColor: 'hover:bg-stone-600',
+				bgColorHalfOpacity: 'hover:bg-stone-600/50',
 				borderColor: 'hover:border-stone-600',
 			},
 		},
@@ -629,6 +680,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-700',
 				bgColor: 'hover:bg-stone-700',
+				bgColorHalfOpacity: 'hover:bg-stone-700/50',
 				borderColor: 'hover:border-stone-700',
 			},
 		},
@@ -641,6 +693,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-800',
 				bgColor: 'hover:bg-stone-800',
+				bgColorHalfOpacity: 'hover:bg-stone-800/50',
 				borderColor: 'hover:border-stone-800',
 			},
 		},
@@ -653,6 +706,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-900',
 				bgColor: 'hover:bg-stone-900',
+				bgColorHalfOpacity: 'hover:bg-stone-900/50',
 				borderColor: 'hover:border-stone-900',
 			},
 		},
@@ -665,6 +719,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-stone-950',
 				bgColor: 'hover:bg-stone-950',
+				bgColorHalfOpacity: 'hover:bg-stone-950/50',
 				borderColor: 'hover:border-stone-950',
 			},
 		},
@@ -679,6 +734,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-50',
 				bgColor: 'hover:bg-red-50',
+				bgColorHalfOpacity: 'hover:bg-red-50/50',
 				borderColor: 'hover:border-red-50',
 			},
 		},
@@ -691,6 +747,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-100',
 				bgColor: 'hover:bg-red-100',
+				bgColorHalfOpacity: 'hover:bg-red-100/50',
 				borderColor: 'hover:border-red-100',
 			},
 		},
@@ -703,6 +760,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-200',
 				bgColor: 'hover:bg-red-200',
+				bgColorHalfOpacity: 'hover:bg-red-200/50',
 				borderColor: 'hover:border-red-200',
 			},
 		},
@@ -715,6 +773,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-300',
 				bgColor: 'hover:bg-red-300',
+				bgColorHalfOpacity: 'hover:bg-red-300/50',
 				borderColor: 'hover:border-red-300',
 			},
 		},
@@ -727,6 +786,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-400',
 				bgColor: 'hover:bg-red-400',
+				bgColorHalfOpacity: 'hover:bg-red-400/50',
 				borderColor: 'hover:border-red-400',
 			},
 		},
@@ -739,6 +799,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-500',
 				bgColor: 'hover:bg-red-500',
+				bgColorHalfOpacity: 'hover:bg-red-500/50',
 				borderColor: 'hover:border-red-500',
 			},
 		},
@@ -751,6 +812,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-600',
 				bgColor: 'hover:bg-red-600',
+				bgColorHalfOpacity: 'hover:bg-red-600/50',
 				borderColor: 'hover:border-red-600',
 			},
 		},
@@ -763,6 +825,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-700',
 				bgColor: 'hover:bg-red-700',
+				bgColorHalfOpacity: 'hover:bg-red-700/50',
 				borderColor: 'hover:border-red-700',
 			},
 		},
@@ -775,6 +838,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-800',
 				bgColor: 'hover:bg-red-800',
+				bgColorHalfOpacity: 'hover:bg-red-800/50',
 				borderColor: 'hover:border-red-800',
 			},
 		},
@@ -787,6 +851,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-900',
 				bgColor: 'hover:bg-red-900',
+				bgColorHalfOpacity: 'hover:bg-red-900/50',
 				borderColor: 'hover:border-red-900',
 			},
 		},
@@ -799,6 +864,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-red-950',
 				bgColor: 'hover:bg-red-950',
+				bgColorHalfOpacity: 'hover:bg-red-950/50',
 				borderColor: 'hover:border-red-950',
 			},
 		},
@@ -813,6 +879,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-50',
 				bgColor: 'hover:bg-orange-50',
+				bgColorHalfOpacity: 'hover:bg-orange-50/50',
 				borderColor: 'hover:border-orange-50',
 			},
 		},
@@ -825,6 +892,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-100',
 				bgColor: 'hover:bg-orange-100',
+				bgColorHalfOpacity: 'hover:bg-orange-100/50',
 				borderColor: 'hover:border-orange-100',
 			},
 		},
@@ -837,6 +905,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-200',
 				bgColor: 'hover:bg-orange-200',
+				bgColorHalfOpacity: 'hover:bg-orange-200/50',
 				borderColor: 'hover:border-orange-200',
 			},
 		},
@@ -849,6 +918,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-300',
 				bgColor: 'hover:bg-orange-300',
+				bgColorHalfOpacity: 'hover:bg-orange-300/50',
 				borderColor: 'hover:border-orange-300',
 			},
 		},
@@ -861,6 +931,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-400',
 				bgColor: 'hover:bg-orange-400',
+				bgColorHalfOpacity: 'hover:bg-orange-400/50',
 				borderColor: 'hover:border-orange-400',
 			},
 		},
@@ -873,6 +944,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-500',
 				bgColor: 'hover:bg-orange-500',
+				bgColorHalfOpacity: 'hover:bg-orange-500/50',
 				borderColor: 'hover:border-orange-500',
 			},
 		},
@@ -885,6 +957,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-600',
 				bgColor: 'hover:bg-orange-600',
+				bgColorHalfOpacity: 'hover:bg-orange-600/50',
 				borderColor: 'hover:border-orange-600',
 			},
 		},
@@ -897,6 +970,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-700',
 				bgColor: 'hover:bg-orange-700',
+				bgColorHalfOpacity: 'hover:bg-orange-700/50',
 				borderColor: 'hover:border-orange-700',
 			},
 		},
@@ -909,6 +983,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-800',
 				bgColor: 'hover:bg-orange-800',
+				bgColorHalfOpacity: 'hover:bg-orange-800/50',
 				borderColor: 'hover:border-orange-800',
 			},
 		},
@@ -921,6 +996,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-900',
 				bgColor: 'hover:bg-orange-900',
+				bgColorHalfOpacity: 'hover:bg-orange-900/50',
 				borderColor: 'hover:border-orange-900',
 			},
 		},
@@ -933,6 +1009,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-orange-950',
 				bgColor: 'hover:bg-orange-950',
+				bgColorHalfOpacity: 'hover:bg-orange-950/50',
 				borderColor: 'hover:border-orange-950',
 			},
 		},
@@ -947,6 +1024,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-50',
 				bgColor: 'hover:bg-amber-50',
+				bgColorHalfOpacity: 'hover:bg-amber-50/50',
 				borderColor: 'hover:border-amber-50',
 			},
 		},
@@ -959,6 +1037,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-100',
 				bgColor: 'hover:bg-amber-100',
+				bgColorHalfOpacity: 'hover:bg-amber-100/50',
 				borderColor: 'hover:border-amber-100',
 			},
 		},
@@ -971,6 +1050,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-200',
 				bgColor: 'hover:bg-amber-200',
+				bgColorHalfOpacity: 'hover:bg-amber-200/50',
 				borderColor: 'hover:border-amber-200',
 			},
 		},
@@ -983,6 +1063,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-300',
 				bgColor: 'hover:bg-amber-300',
+				bgColorHalfOpacity: 'hover:bg-amber-300/50',
 				borderColor: 'hover:border-amber-300',
 			},
 		},
@@ -995,6 +1076,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-400',
 				bgColor: 'hover:bg-amber-400',
+				bgColorHalfOpacity: 'hover:bg-amber-400/50',
 				borderColor: 'hover:border-amber-400',
 			},
 		},
@@ -1007,6 +1089,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-500',
 				bgColor: 'hover:bg-amber-500',
+				bgColorHalfOpacity: 'hover:bg-amber-500/50',
 				borderColor: 'hover:border-amber-500',
 			},
 		},
@@ -1019,6 +1102,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-600',
 				bgColor: 'hover:bg-amber-600',
+				bgColorHalfOpacity: 'hover:bg-amber-600/50',
 				borderColor: 'hover:border-amber-600',
 			},
 		},
@@ -1031,6 +1115,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-700',
 				bgColor: 'hover:bg-amber-700',
+				bgColorHalfOpacity: 'hover:bg-amber-700/50',
 				borderColor: 'hover:border-amber-700',
 			},
 		},
@@ -1043,6 +1128,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-800',
 				bgColor: 'hover:bg-amber-800',
+				bgColorHalfOpacity: 'hover:bg-amber-800/50',
 				borderColor: 'hover:border-amber-800',
 			},
 		},
@@ -1055,6 +1141,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-900',
 				bgColor: 'hover:bg-amber-900',
+				bgColorHalfOpacity: 'hover:bg-amber-900/50',
 				borderColor: 'hover:border-amber-900',
 			},
 		},
@@ -1067,6 +1154,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-amber-950',
 				bgColor: 'hover:bg-amber-950',
+				bgColorHalfOpacity: 'hover:bg-amber-950/50',
 				borderColor: 'hover:border-amber-950',
 			},
 		},
@@ -1081,6 +1169,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-50',
 				bgColor: 'hover:bg-yellow-50',
+				bgColorHalfOpacity: 'hover:bg-yellow-50/50',
 				borderColor: 'hover:border-yellow-50',
 			},
 		},
@@ -1093,6 +1182,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-100',
 				bgColor: 'hover:bg-yellow-100',
+				bgColorHalfOpacity: 'hover:bg-yellow-100/50',
 				borderColor: 'hover:border-yellow-100',
 			},
 		},
@@ -1105,6 +1195,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-200',
 				bgColor: 'hover:bg-yellow-200',
+				bgColorHalfOpacity: 'hover:bg-yellow-200/50',
 				borderColor: 'hover:border-yellow-200',
 			},
 		},
@@ -1117,6 +1208,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-300',
 				bgColor: 'hover:bg-yellow-300',
+				bgColorHalfOpacity: 'hover:bg-yellow-300/50',
 				borderColor: 'hover:border-yellow-300',
 			},
 		},
@@ -1129,6 +1221,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-400',
 				bgColor: 'hover:bg-yellow-400',
+				bgColorHalfOpacity: 'hover:bg-yellow-400/50',
 				borderColor: 'hover:border-yellow-400',
 			},
 		},
@@ -1141,6 +1234,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-500',
 				bgColor: 'hover:bg-yellow-500',
+				bgColorHalfOpacity: 'hover:bg-yellow-500/50',
 				borderColor: 'hover:border-yellow-500',
 			},
 		},
@@ -1153,6 +1247,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-600',
 				bgColor: 'hover:bg-yellow-600',
+				bgColorHalfOpacity: 'hover:bg-yellow-600/50',
 				borderColor: 'hover:border-yellow-600',
 			},
 		},
@@ -1165,6 +1260,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-700',
 				bgColor: 'hover:bg-yellow-700',
+				bgColorHalfOpacity: 'hover:bg-yellow-700/50',
 				borderColor: 'hover:border-yellow-700',
 			},
 		},
@@ -1177,6 +1273,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-800',
 				bgColor: 'hover:bg-yellow-800',
+				bgColorHalfOpacity: 'hover:bg-yellow-800/50',
 				borderColor: 'hover:border-yellow-800',
 			},
 		},
@@ -1189,6 +1286,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-900',
 				bgColor: 'hover:bg-yellow-900',
+				bgColorHalfOpacity: 'hover:bg-yellow-900/50',
 				borderColor: 'hover:border-yellow-900',
 			},
 		},
@@ -1201,6 +1299,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-yellow-950',
 				bgColor: 'hover:bg-yellow-950',
+				bgColorHalfOpacity: 'hover:bg-yellow-950/50',
 				borderColor: 'hover:border-yellow-950',
 			},
 		},
@@ -1215,6 +1314,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-50',
 				bgColor: 'hover:bg-lime-50',
+				bgColorHalfOpacity: 'hover:bg-lime-50/50',
 				borderColor: 'hover:border-lime-50',
 			},
 		},
@@ -1227,6 +1327,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-100',
 				bgColor: 'hover:bg-lime-100',
+				bgColorHalfOpacity: 'hover:bg-lime-100/50',
 				borderColor: 'hover:border-lime-100',
 			},
 		},
@@ -1239,6 +1340,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-200',
 				bgColor: 'hover:bg-lime-200',
+				bgColorHalfOpacity: 'hover:bg-lime-200/50',
 				borderColor: 'hover:border-lime-200',
 			},
 		},
@@ -1251,6 +1353,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-300',
 				bgColor: 'hover:bg-lime-300',
+				bgColorHalfOpacity: 'hover:bg-lime-300/50',
 				borderColor: 'hover:border-lime-300',
 			},
 		},
@@ -1263,6 +1366,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-400',
 				bgColor: 'hover:bg-lime-400',
+				bgColorHalfOpacity: 'hover:bg-lime-400/50',
 				borderColor: 'hover:border-lime-400',
 			},
 		},
@@ -1275,6 +1379,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-500',
 				bgColor: 'hover:bg-lime-500',
+				bgColorHalfOpacity: 'hover:bg-lime-500/50',
 				borderColor: 'hover:border-lime-500',
 			},
 		},
@@ -1287,6 +1392,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-600',
 				bgColor: 'hover:bg-lime-600',
+				bgColorHalfOpacity: 'hover:bg-lime-600/50',
 				borderColor: 'hover:border-lime-600',
 			},
 		},
@@ -1299,6 +1405,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-700',
 				bgColor: 'hover:bg-lime-700',
+				bgColorHalfOpacity: 'hover:bg-lime-700/50',
 				borderColor: 'hover:border-lime-700',
 			},
 		},
@@ -1311,6 +1418,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-800',
 				bgColor: 'hover:bg-lime-800',
+				bgColorHalfOpacity: 'hover:bg-lime-800/50',
 				borderColor: 'hover:border-lime-800',
 			},
 		},
@@ -1323,6 +1431,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-900',
 				bgColor: 'hover:bg-lime-900',
+				bgColorHalfOpacity: 'hover:bg-lime-900/50',
 				borderColor: 'hover:border-lime-900',
 			},
 		},
@@ -1335,6 +1444,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-lime-950',
 				bgColor: 'hover:bg-lime-950',
+				bgColorHalfOpacity: 'hover:bg-lime-950/50',
 				borderColor: 'hover:border-lime-950',
 			},
 		},
@@ -1349,6 +1459,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-50',
 				bgColor: 'hover:bg-green-50',
+				bgColorHalfOpacity: 'hover:bg-green-50/50',
 				borderColor: 'hover:border-green-50',
 			},
 		},
@@ -1361,6 +1472,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-100',
 				bgColor: 'hover:bg-green-100',
+				bgColorHalfOpacity: 'hover:bg-green-100/50',
 				borderColor: 'hover:border-green-100',
 			},
 		},
@@ -1373,6 +1485,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-200',
 				bgColor: 'hover:bg-green-200',
+				bgColorHalfOpacity: 'hover:bg-green-200/50',
 				borderColor: 'hover:border-green-200',
 			},
 		},
@@ -1385,6 +1498,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-300',
 				bgColor: 'hover:bg-green-300',
+				bgColorHalfOpacity: 'hover:bg-green-300/50',
 				borderColor: 'hover:border-green-300',
 			},
 		},
@@ -1397,6 +1511,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-400',
 				bgColor: 'hover:bg-green-400',
+				bgColorHalfOpacity: 'hover:bg-green-400/50',
 				borderColor: 'hover:border-green-400',
 			},
 		},
@@ -1409,6 +1524,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-500',
 				bgColor: 'hover:bg-green-500',
+				bgColorHalfOpacity: 'hover:bg-green-500/50',
 				borderColor: 'hover:border-green-500',
 			},
 		},
@@ -1421,6 +1537,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-600',
 				bgColor: 'hover:bg-green-600',
+				bgColorHalfOpacity: 'hover:bg-green-600/50',
 				borderColor: 'hover:border-green-600',
 			},
 		},
@@ -1433,6 +1550,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-700',
 				bgColor: 'hover:bg-green-700',
+				bgColorHalfOpacity: 'hover:bg-green-700/50',
 				borderColor: 'hover:border-green-700',
 			},
 		},
@@ -1445,6 +1563,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-800',
 				bgColor: 'hover:bg-green-800',
+				bgColorHalfOpacity: 'hover:bg-green-800/50',
 				borderColor: 'hover:border-green-800',
 			},
 		},
@@ -1457,6 +1576,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-900',
 				bgColor: 'hover:bg-green-900',
+				bgColorHalfOpacity: 'hover:bg-green-900/50',
 				borderColor: 'hover:border-green-900',
 			},
 		},
@@ -1469,6 +1589,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-green-950',
 				bgColor: 'hover:bg-green-950',
+				bgColorHalfOpacity: 'hover:bg-green-950/50',
 				borderColor: 'hover:border-green-950',
 			},
 		},
@@ -1483,6 +1604,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-50',
 				bgColor: 'hover:bg-emerald-50',
+				bgColorHalfOpacity: 'hover:bg-emerald-50/50',
 				borderColor: 'hover:border-emerald-50',
 			},
 		},
@@ -1495,6 +1617,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-100',
 				bgColor: 'hover:bg-emerald-100',
+				bgColorHalfOpacity: 'hover:bg-emerald-100/50',
 				borderColor: 'hover:border-emerald-100',
 			},
 		},
@@ -1507,6 +1630,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-200',
 				bgColor: 'hover:bg-emerald-200',
+				bgColorHalfOpacity: 'hover:bg-emerald-200/50',
 				borderColor: 'hover:border-emerald-200',
 			},
 		},
@@ -1519,6 +1643,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-300',
 				bgColor: 'hover:bg-emerald-300',
+				bgColorHalfOpacity: 'hover:bg-emerald-300/50',
 				borderColor: 'hover:border-emerald-300',
 			},
 		},
@@ -1531,6 +1656,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-400',
 				bgColor: 'hover:bg-emerald-400',
+				bgColorHalfOpacity: 'hover:bg-emerald-400/50',
 				borderColor: 'hover:border-emerald-400',
 			},
 		},
@@ -1543,6 +1669,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-500',
 				bgColor: 'hover:bg-emerald-500',
+				bgColorHalfOpacity: 'hover:bg-emerald-500/50',
 				borderColor: 'hover:border-emerald-500',
 			},
 		},
@@ -1555,6 +1682,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-600',
 				bgColor: 'hover:bg-emerald-600',
+				bgColorHalfOpacity: 'hover:bg-emerald-600/50',
 				borderColor: 'hover:border-emerald-600',
 			},
 		},
@@ -1567,6 +1695,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-700',
 				bgColor: 'hover:bg-emerald-700',
+				bgColorHalfOpacity: 'hover:bg-emerald-700/50',
 				borderColor: 'hover:border-emerald-700',
 			},
 		},
@@ -1579,6 +1708,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-800',
 				bgColor: 'hover:bg-emerald-800',
+				bgColorHalfOpacity: 'hover:bg-emerald-800/50',
 				borderColor: 'hover:border-emerald-800',
 			},
 		},
@@ -1591,6 +1721,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-900',
 				bgColor: 'hover:bg-emerald-900',
+				bgColorHalfOpacity: 'hover:bg-emerald-900/50',
 				borderColor: 'hover:border-emerald-900',
 			},
 		},
@@ -1603,6 +1734,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-emerald-950',
 				bgColor: 'hover:bg-emerald-950',
+				bgColorHalfOpacity: 'hover:bg-emerald-950/50',
 				borderColor: 'hover:border-emerald-950',
 			},
 		},
@@ -1617,6 +1749,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-50',
 				bgColor: 'hover:bg-teal-50',
+				bgColorHalfOpacity: 'hover:bg-teal-50/50',
 				borderColor: 'hover:border-teal-50',
 			},
 		},
@@ -1629,6 +1762,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-100',
 				bgColor: 'hover:bg-teal-100',
+				bgColorHalfOpacity: 'hover:bg-teal-100/50',
 				borderColor: 'hover:border-teal-100',
 			},
 		},
@@ -1641,6 +1775,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-200',
 				bgColor: 'hover:bg-teal-200',
+				bgColorHalfOpacity: 'hover:bg-teal-200/50',
 				borderColor: 'hover:border-teal-200',
 			},
 		},
@@ -1653,6 +1788,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-300',
 				bgColor: 'hover:bg-teal-300',
+				bgColorHalfOpacity: 'hover:bg-teal-300/50',
 				borderColor: 'hover:border-teal-300',
 			},
 		},
@@ -1665,6 +1801,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-400',
 				bgColor: 'hover:bg-teal-400',
+				bgColorHalfOpacity: 'hover:bg-teal-400/50',
 				borderColor: 'hover:border-teal-400',
 			},
 		},
@@ -1677,6 +1814,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-500',
 				bgColor: 'hover:bg-teal-500',
+				bgColorHalfOpacity: 'hover:bg-teal-500/50',
 				borderColor: 'hover:border-teal-500',
 			},
 		},
@@ -1689,6 +1827,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-600',
 				bgColor: 'hover:bg-teal-600',
+				bgColorHalfOpacity: 'hover:bg-teal-600/50',
 				borderColor: 'hover:border-teal-600',
 			},
 		},
@@ -1701,6 +1840,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-700',
 				bgColor: 'hover:bg-teal-700',
+				bgColorHalfOpacity: 'hover:bg-teal-700/50',
 				borderColor: 'hover:border-teal-700',
 			},
 		},
@@ -1713,6 +1853,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-800',
 				bgColor: 'hover:bg-teal-800',
+				bgColorHalfOpacity: 'hover:bg-teal-800/50',
 				borderColor: 'hover:border-teal-800',
 			},
 		},
@@ -1725,6 +1866,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-900',
 				bgColor: 'hover:bg-teal-900',
+				bgColorHalfOpacity: 'hover:bg-teal-900/50',
 				borderColor: 'hover:border-teal-900',
 			},
 		},
@@ -1737,6 +1879,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-teal-950',
 				bgColor: 'hover:bg-teal-950',
+				bgColorHalfOpacity: 'hover:bg-teal-950/50',
 				borderColor: 'hover:border-teal-950',
 			},
 		},
@@ -1751,6 +1894,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-50',
 				bgColor: 'hover:bg-cyan-50',
+				bgColorHalfOpacity: 'hover:bg-cyan-50/50',
 				borderColor: 'hover:border-cyan-50',
 			},
 		},
@@ -1763,6 +1907,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-100',
 				bgColor: 'hover:bg-cyan-100',
+				bgColorHalfOpacity: 'hover:bg-cyan-100/50',
 				borderColor: 'hover:border-cyan-100',
 			},
 		},
@@ -1775,6 +1920,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-200',
 				bgColor: 'hover:bg-cyan-200',
+				bgColorHalfOpacity: 'hover:bg-cyan-200/50',
 				borderColor: 'hover:border-cyan-200',
 			},
 		},
@@ -1787,6 +1933,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-300',
 				bgColor: 'hover:bg-cyan-300',
+				bgColorHalfOpacity: 'hover:bg-cyan-300/50',
 				borderColor: 'hover:border-cyan-300',
 			},
 		},
@@ -1799,6 +1946,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-400',
 				bgColor: 'hover:bg-cyan-400',
+				bgColorHalfOpacity: 'hover:bg-cyan-400/50',
 				borderColor: 'hover:border-cyan-400',
 			},
 		},
@@ -1811,6 +1959,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-500',
 				bgColor: 'hover:bg-cyan-500',
+				bgColorHalfOpacity: 'hover:bg-cyan-500/50',
 				borderColor: 'hover:border-cyan-500',
 			},
 		},
@@ -1823,6 +1972,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-600',
 				bgColor: 'hover:bg-cyan-600',
+				bgColorHalfOpacity: 'hover:bg-cyan-600/50',
 				borderColor: 'hover:border-cyan-600',
 			},
 		},
@@ -1835,6 +1985,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-700',
 				bgColor: 'hover:bg-cyan-700',
+				bgColorHalfOpacity: 'hover:bg-cyan-700/50',
 				borderColor: 'hover:border-cyan-700',
 			},
 		},
@@ -1847,6 +1998,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-800',
 				bgColor: 'hover:bg-cyan-800',
+				bgColorHalfOpacity: 'hover:bg-cyan-800/50',
 				borderColor: 'hover:border-cyan-800',
 			},
 		},
@@ -1859,6 +2011,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-900',
 				bgColor: 'hover:bg-cyan-900',
+				bgColorHalfOpacity: 'hover:bg-cyan-900/50',
 				borderColor: 'hover:border-cyan-900',
 			},
 		},
@@ -1871,6 +2024,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-cyan-950',
 				bgColor: 'hover:bg-cyan-950',
+				bgColorHalfOpacity: 'hover:bg-cyan-950/50',
 				borderColor: 'hover:border-cyan-950',
 			},
 		},
@@ -1885,6 +2039,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-50',
 				bgColor: 'hover:bg-sky-50',
+				bgColorHalfOpacity: 'hover:bg-sky-50/50',
 				borderColor: 'hover:border-sky-50',
 			},
 		},
@@ -1897,6 +2052,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-100',
 				bgColor: 'hover:bg-sky-100',
+				bgColorHalfOpacity: 'hover:bg-sky-100/50',
 				borderColor: 'hover:border-sky-100',
 			},
 		},
@@ -1909,6 +2065,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-200',
 				bgColor: 'hover:bg-sky-200',
+				bgColorHalfOpacity: 'hover:bg-sky-200/50',
 				borderColor: 'hover:border-sky-200',
 			},
 		},
@@ -1921,6 +2078,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-300',
 				bgColor: 'hover:bg-sky-300',
+				bgColorHalfOpacity: 'hover:bg-sky-300/50',
 				borderColor: 'hover:border-sky-300',
 			},
 		},
@@ -1933,6 +2091,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-400',
 				bgColor: 'hover:bg-sky-400',
+				bgColorHalfOpacity: 'hover:bg-sky-400/50',
 				borderColor: 'hover:border-sky-400',
 			},
 		},
@@ -1945,6 +2104,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-500',
 				bgColor: 'hover:bg-sky-500',
+				bgColorHalfOpacity: 'hover:bg-sky-500/50',
 				borderColor: 'hover:border-sky-500',
 			},
 		},
@@ -1957,6 +2117,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-600',
 				bgColor: 'hover:bg-sky-600',
+				bgColorHalfOpacity: 'hover:bg-sky-600/50',
 				borderColor: 'hover:border-sky-600',
 			},
 		},
@@ -1969,6 +2130,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-700',
 				bgColor: 'hover:bg-sky-700',
+				bgColorHalfOpacity: 'hover:bg-sky-700/50',
 				borderColor: 'hover:border-sky-700',
 			},
 		},
@@ -1981,6 +2143,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-800',
 				bgColor: 'hover:bg-sky-800',
+				bgColorHalfOpacity: 'hover:bg-sky-800/50',
 				borderColor: 'hover:border-sky-800',
 			},
 		},
@@ -1993,6 +2156,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-900',
 				bgColor: 'hover:bg-sky-900',
+				bgColorHalfOpacity: 'hover:bg-sky-900/50',
 				borderColor: 'hover:border-sky-900',
 			},
 		},
@@ -2005,6 +2169,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-sky-950',
 				bgColor: 'hover:bg-sky-950',
+				bgColorHalfOpacity: 'hover:bg-sky-950/50',
 				borderColor: 'hover:border-sky-950',
 			},
 		},
@@ -2019,6 +2184,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-50',
 				bgColor: 'hover:bg-blue-50',
+				bgColorHalfOpacity: 'hover:bg-blue-50/50',
 				borderColor: 'hover:border-blue-50',
 			},
 		},
@@ -2031,6 +2197,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-100',
 				bgColor: 'hover:bg-blue-100',
+				bgColorHalfOpacity: 'hover:bg-blue-100/50',
 				borderColor: 'hover:border-blue-100',
 			},
 		},
@@ -2043,6 +2210,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-200',
 				bgColor: 'hover:bg-blue-200',
+				bgColorHalfOpacity: 'hover:bg-blue-200/50',
 				borderColor: 'hover:border-blue-200',
 			},
 		},
@@ -2055,6 +2223,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-300',
 				bgColor: 'hover:bg-blue-300',
+				bgColorHalfOpacity: 'hover:bg-blue-300/50',
 				borderColor: 'hover:border-blue-300',
 			},
 		},
@@ -2067,6 +2236,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-400',
 				bgColor: 'hover:bg-blue-400',
+				bgColorHalfOpacity: 'hover:bg-blue-400/50',
 				borderColor: 'hover:border-blue-400',
 			},
 		},
@@ -2079,6 +2249,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-500',
 				bgColor: 'hover:bg-blue-500',
+				bgColorHalfOpacity: 'hover:bg-blue-500/50',
 				borderColor: 'hover:border-blue-500',
 			},
 		},
@@ -2091,6 +2262,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-600',
 				bgColor: 'hover:bg-blue-600',
+				bgColorHalfOpacity: 'hover:bg-blue-600/50',
 				borderColor: 'hover:border-blue-600',
 			},
 		},
@@ -2103,6 +2275,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-700',
 				bgColor: 'hover:bg-blue-700',
+				bgColorHalfOpacity: 'hover:bg-blue-700/50',
 				borderColor: 'hover:border-blue-700',
 			},
 		},
@@ -2115,6 +2288,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-800',
 				bgColor: 'hover:bg-blue-800',
+				bgColorHalfOpacity: 'hover:bg-blue-800/50',
 				borderColor: 'hover:border-blue-800',
 			},
 		},
@@ -2127,6 +2301,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-900',
 				bgColor: 'hover:bg-blue-900',
+				bgColorHalfOpacity: 'hover:bg-blue-900/50',
 				borderColor: 'hover:border-blue-900',
 			},
 		},
@@ -2139,6 +2314,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-blue-950',
 				bgColor: 'hover:bg-blue-950',
+				bgColorHalfOpacity: 'hover:bg-blue-950/50',
 				borderColor: 'hover:border-blue-950',
 			},
 		},
@@ -2153,6 +2329,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-50',
 				bgColor: 'hover:bg-indigo-50',
+				bgColorHalfOpacity: 'hover:bg-indigo-50/50',
 				borderColor: 'hover:border-indigo-50',
 			},
 		},
@@ -2165,6 +2342,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-100',
 				bgColor: 'hover:bg-indigo-100',
+				bgColorHalfOpacity: 'hover:bg-indigo-100/50',
 				borderColor: 'hover:border-indigo-100',
 			},
 		},
@@ -2177,6 +2355,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-200',
 				bgColor: 'hover:bg-indigo-200',
+				bgColorHalfOpacity: 'hover:bg-indigo-200/50',
 				borderColor: 'hover:border-indigo-200',
 			},
 		},
@@ -2189,6 +2368,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-300',
 				bgColor: 'hover:bg-indigo-300',
+				bgColorHalfOpacity: 'hover:bg-indigo-300/50',
 				borderColor: 'hover:border-indigo-300',
 			},
 		},
@@ -2201,6 +2381,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-400',
 				bgColor: 'hover:bg-indigo-400',
+				bgColorHalfOpacity: 'hover:bg-indigo-400/50',
 				borderColor: 'hover:border-indigo-400',
 			},
 		},
@@ -2213,6 +2394,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-500',
 				bgColor: 'hover:bg-indigo-500',
+				bgColorHalfOpacity: 'hover:bg-indigo-500/50',
 				borderColor: 'hover:border-indigo-500',
 			},
 		},
@@ -2225,6 +2407,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-600',
 				bgColor: 'hover:bg-indigo-600',
+				bgColorHalfOpacity: 'hover:bg-indigo-600/50',
 				borderColor: 'hover:border-indigo-600',
 			},
 		},
@@ -2237,6 +2420,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-700',
 				bgColor: 'hover:bg-indigo-700',
+				bgColorHalfOpacity: 'hover:bg-indigo-700/50',
 				borderColor: 'hover:border-indigo-700',
 			},
 		},
@@ -2249,6 +2433,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-800',
 				bgColor: 'hover:bg-indigo-800',
+				bgColorHalfOpacity: 'hover:bg-indigo-800/50',
 				borderColor: 'hover:border-indigo-800',
 			},
 		},
@@ -2261,6 +2446,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-900',
 				bgColor: 'hover:bg-indigo-900',
+				bgColorHalfOpacity: 'hover:bg-indigo-900/50',
 				borderColor: 'hover:border-indigo-900',
 			},
 		},
@@ -2273,6 +2459,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-indigo-950',
 				bgColor: 'hover:bg-indigo-950',
+				bgColorHalfOpacity: 'hover:bg-indigo-950/50',
 				borderColor: 'hover:border-indigo-950',
 			},
 		},
@@ -2287,6 +2474,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-50',
 				bgColor: 'hover:bg-violet-50',
+				bgColorHalfOpacity: 'hover:bg-violet-50/50',
 				borderColor: 'hover:border-violet-50',
 			},
 		},
@@ -2299,6 +2487,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-100',
 				bgColor: 'hover:bg-violet-100',
+				bgColorHalfOpacity: 'hover:bg-violet-100/50',
 				borderColor: 'hover:border-violet-100',
 			},
 		},
@@ -2311,6 +2500,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-200',
 				bgColor: 'hover:bg-violet-200',
+				bgColorHalfOpacity: 'hover:bg-violet-200/50',
 				borderColor: 'hover:border-violet-200',
 			},
 		},
@@ -2323,6 +2513,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-300',
 				bgColor: 'hover:bg-violet-300',
+				bgColorHalfOpacity: 'hover:bg-violet-300/50',
 				borderColor: 'hover:border-violet-300',
 			},
 		},
@@ -2335,6 +2526,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-400',
 				bgColor: 'hover:bg-violet-400',
+				bgColorHalfOpacity: 'hover:bg-violet-400/50',
 				borderColor: 'hover:border-violet-400',
 			},
 		},
@@ -2347,6 +2539,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-500',
 				bgColor: 'hover:bg-violet-500',
+				bgColorHalfOpacity: 'hover:bg-violet-500/50',
 				borderColor: 'hover:border-violet-500',
 			},
 		},
@@ -2359,6 +2552,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-600',
 				bgColor: 'hover:bg-violet-600',
+				bgColorHalfOpacity: 'hover:bg-violet-600/50',
 				borderColor: 'hover:border-violet-600',
 			},
 		},
@@ -2371,6 +2565,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-700',
 				bgColor: 'hover:bg-violet-700',
+				bgColorHalfOpacity: 'hover:bg-violet-700/50',
 				borderColor: 'hover:border-violet-700',
 			},
 		},
@@ -2383,6 +2578,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-800',
 				bgColor: 'hover:bg-violet-800',
+				bgColorHalfOpacity: 'hover:bg-violet-800/50',
 				borderColor: 'hover:border-violet-800',
 			},
 		},
@@ -2395,6 +2591,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-900',
 				bgColor: 'hover:bg-violet-900',
+				bgColorHalfOpacity: 'hover:bg-violet-900/50',
 				borderColor: 'hover:border-violet-900',
 			},
 		},
@@ -2407,6 +2604,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-violet-950',
 				bgColor: 'hover:bg-violet-950',
+				bgColorHalfOpacity: 'hover:bg-violet-950/50',
 				borderColor: 'hover:border-violet-950',
 			},
 		},
@@ -2421,6 +2619,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-50',
 				bgColor: 'hover:bg-purple-50',
+				bgColorHalfOpacity: 'hover:bg-purple-50/50',
 				borderColor: 'hover:border-purple-50',
 			},
 		},
@@ -2433,6 +2632,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-100',
 				bgColor: 'hover:bg-purple-100',
+				bgColorHalfOpacity: 'hover:bg-purple-100/50',
 				borderColor: 'hover:border-purple-100',
 			},
 		},
@@ -2445,6 +2645,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-200',
 				bgColor: 'hover:bg-purple-200',
+				bgColorHalfOpacity: 'hover:bg-purple-200/50',
 				borderColor: 'hover:border-purple-200',
 			},
 		},
@@ -2457,6 +2658,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-300',
 				bgColor: 'hover:bg-purple-300',
+				bgColorHalfOpacity: 'hover:bg-purple-300/50',
 				borderColor: 'hover:border-purple-300',
 			},
 		},
@@ -2469,6 +2671,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-400',
 				bgColor: 'hover:bg-purple-400',
+				bgColorHalfOpacity: 'hover:bg-purple-400/50',
 				borderColor: 'hover:border-purple-400',
 			},
 		},
@@ -2481,6 +2684,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-500',
 				bgColor: 'hover:bg-purple-500',
+				bgColorHalfOpacity: 'hover:bg-purple-500/50',
 				borderColor: 'hover:border-purple-500',
 			},
 		},
@@ -2493,6 +2697,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-600',
 				bgColor: 'hover:bg-purple-600',
+				bgColorHalfOpacity: 'hover:bg-purple-600/50',
 				borderColor: 'hover:border-purple-600',
 			},
 		},
@@ -2505,6 +2710,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-700',
 				bgColor: 'hover:bg-purple-700',
+				bgColorHalfOpacity: 'hover:bg-purple-700/50',
 				borderColor: 'hover:border-purple-700',
 			},
 		},
@@ -2517,6 +2723,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-800',
 				bgColor: 'hover:bg-purple-800',
+				bgColorHalfOpacity: 'hover:bg-purple-800/50',
 				borderColor: 'hover:border-purple-800',
 			},
 		},
@@ -2529,6 +2736,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-900',
 				bgColor: 'hover:bg-purple-900',
+				bgColorHalfOpacity: 'hover:bg-purple-900/50',
 				borderColor: 'hover:border-purple-900',
 			},
 		},
@@ -2541,6 +2749,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-purple-950',
 				bgColor: 'hover:bg-purple-950',
+				bgColorHalfOpacity: 'hover:bg-purple-950/50',
 				borderColor: 'hover:border-purple-950',
 			},
 		},
@@ -2555,6 +2764,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-50',
 				bgColor: 'hover:bg-fuchsia-50',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-50/50',
 				borderColor: 'hover:border-fuchsia-50',
 			},
 		},
@@ -2567,6 +2777,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-100',
 				bgColor: 'hover:bg-fuchsia-100',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-100/50',
 				borderColor: 'hover:border-fuchsia-100',
 			},
 		},
@@ -2579,6 +2790,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-200',
 				bgColor: 'hover:bg-fuchsia-200',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-200/50',
 				borderColor: 'hover:border-fuchsia-200',
 			},
 		},
@@ -2591,6 +2803,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-300',
 				bgColor: 'hover:bg-fuchsia-300',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-300/50',
 				borderColor: 'hover:border-fuchsia-300',
 			},
 		},
@@ -2603,6 +2816,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-400',
 				bgColor: 'hover:bg-fuchsia-400',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-400/50',
 				borderColor: 'hover:border-fuchsia-400',
 			},
 		},
@@ -2615,6 +2829,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-500',
 				bgColor: 'hover:bg-fuchsia-500',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-500/50',
 				borderColor: 'hover:border-fuchsia-500',
 			},
 		},
@@ -2627,6 +2842,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-600',
 				bgColor: 'hover:bg-fuchsia-600',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-600/50',
 				borderColor: 'hover:border-fuchsia-600',
 			},
 		},
@@ -2639,6 +2855,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-700',
 				bgColor: 'hover:bg-fuchsia-700',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-700/50',
 				borderColor: 'hover:border-fuchsia-700',
 			},
 		},
@@ -2651,6 +2868,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-800',
 				bgColor: 'hover:bg-fuchsia-800',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-800/50',
 				borderColor: 'hover:border-fuchsia-800',
 			},
 		},
@@ -2663,6 +2881,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-900',
 				bgColor: 'hover:bg-fuchsia-900',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-900/50',
 				borderColor: 'hover:border-fuchsia-900',
 			},
 		},
@@ -2675,6 +2894,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-fuchsia-950',
 				bgColor: 'hover:bg-fuchsia-950',
+				bgColorHalfOpacity: 'hover:bg-fuchsia-950/50',
 				borderColor: 'hover:border-fuchsia-950',
 			},
 		},
@@ -2689,6 +2909,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-50',
 				bgColor: 'hover:bg-pink-50',
+				bgColorHalfOpacity: 'hover:bg-pink-50/50',
 				borderColor: 'hover:border-pink-50',
 			},
 		},
@@ -2701,6 +2922,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-100',
 				bgColor: 'hover:bg-pink-100',
+				bgColorHalfOpacity: 'hover:bg-pink-100/50',
 				borderColor: 'hover:border-pink-100',
 			},
 		},
@@ -2713,6 +2935,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-200',
 				bgColor: 'hover:bg-pink-200',
+				bgColorHalfOpacity: 'hover:bg-pink-200/50',
 				borderColor: 'hover:border-pink-200',
 			},
 		},
@@ -2725,6 +2948,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-300',
 				bgColor: 'hover:bg-pink-300',
+				bgColorHalfOpacity: 'hover:bg-pink-300/50',
 				borderColor: 'hover:border-pink-300',
 			},
 		},
@@ -2737,6 +2961,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-400',
 				bgColor: 'hover:bg-pink-400',
+				bgColorHalfOpacity: 'hover:bg-pink-400/50',
 				borderColor: 'hover:border-pink-400',
 			},
 		},
@@ -2749,6 +2974,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-500',
 				bgColor: 'hover:bg-pink-500',
+				bgColorHalfOpacity: 'hover:bg-pink-500/50',
 				borderColor: 'hover:border-pink-500',
 			},
 		},
@@ -2761,6 +2987,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-600',
 				bgColor: 'hover:bg-pink-600',
+				bgColorHalfOpacity: 'hover:bg-pink-600/50',
 				borderColor: 'hover:border-pink-600',
 			},
 		},
@@ -2773,6 +3000,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-700',
 				bgColor: 'hover:bg-pink-700',
+				bgColorHalfOpacity: 'hover:bg-pink-700/50',
 				borderColor: 'hover:border-pink-700',
 			},
 		},
@@ -2785,6 +3013,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-800',
 				bgColor: 'hover:bg-pink-800',
+				bgColorHalfOpacity: 'hover:bg-pink-800/50',
 				borderColor: 'hover:border-pink-800',
 			},
 		},
@@ -2797,6 +3026,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-900',
 				bgColor: 'hover:bg-pink-900',
+				bgColorHalfOpacity: 'hover:bg-pink-900/50',
 				borderColor: 'hover:border-pink-900',
 			},
 		},
@@ -2809,6 +3039,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-pink-950',
 				bgColor: 'hover:bg-pink-950',
+				bgColorHalfOpacity: 'hover:bg-pink-950/50',
 				borderColor: 'hover:border-pink-950',
 			},
 		},
@@ -2823,6 +3054,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-50',
 				bgColor: 'hover:bg-rose-50',
+				bgColorHalfOpacity: 'hover:bg-rose-50/50',
 				borderColor: 'hover:border-rose-50',
 			},
 		},
@@ -2835,6 +3067,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-100',
 				bgColor: 'hover:bg-rose-100',
+				bgColorHalfOpacity: 'hover:bg-rose-100/50',
 				borderColor: 'hover:border-rose-100',
 			},
 		},
@@ -2847,6 +3080,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-200',
 				bgColor: 'hover:bg-rose-200',
+				bgColorHalfOpacity: 'hover:bg-rose-200/50',
 				borderColor: 'hover:border-rose-200',
 			},
 		},
@@ -2859,6 +3093,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-300',
 				bgColor: 'hover:bg-rose-300',
+				bgColorHalfOpacity: 'hover:bg-rose-300/50',
 				borderColor: 'hover:border-rose-300',
 			},
 		},
@@ -2871,6 +3106,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-400',
 				bgColor: 'hover:bg-rose-400',
+				bgColorHalfOpacity: 'hover:bg-rose-400/50',
 				borderColor: 'hover:border-rose-400',
 			},
 		},
@@ -2883,6 +3119,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-500',
 				bgColor: 'hover:bg-rose-500',
+				bgColorHalfOpacity: 'hover:bg-rose-500/50',
 				borderColor: 'hover:border-rose-500',
 			},
 		},
@@ -2895,6 +3132,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-600',
 				bgColor: 'hover:bg-rose-600',
+				bgColorHalfOpacity: 'hover:bg-rose-600/50',
 				borderColor: 'hover:border-rose-600',
 			},
 		},
@@ -2907,6 +3145,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-700',
 				bgColor: 'hover:bg-rose-700',
+				bgColorHalfOpacity: 'hover:bg-rose-700/50',
 				borderColor: 'hover:border-rose-700',
 			},
 		},
@@ -2919,6 +3158,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-800',
 				bgColor: 'hover:bg-rose-800',
+				bgColorHalfOpacity: 'hover:bg-rose-800/50',
 				borderColor: 'hover:border-rose-800',
 			},
 		},
@@ -2931,6 +3171,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-900',
 				bgColor: 'hover:bg-rose-900',
+				bgColorHalfOpacity: 'hover:bg-rose-900/50',
 				borderColor: 'hover:border-rose-900',
 			},
 		},
@@ -2943,6 +3184,7 @@ export const TAILWIND_COLORS_OBJ = {
 			hover: {
 				textColor: 'hover:text-rose-950',
 				bgColor: 'hover:bg-rose-950',
+				bgColorHalfOpacity: 'hover:bg-rose-950/50',
 				borderColor: 'hover:border-rose-950',
 			},
 		},

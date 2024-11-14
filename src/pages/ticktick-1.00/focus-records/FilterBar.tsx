@@ -4,6 +4,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import AppliedFilterItemList from './AppliedFilterItemList';
 import ModalFilterSidebar from './ModalFilterSidebar/ModalFilterSidebar';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const FilterBar = ({
 	groupBy,
@@ -19,10 +20,8 @@ const FilterBar = ({
 	endDate,
 	setEndDate,
 }) => {
-	const pageContext = usePageContext();
-	const location = pageContext.urlParsed;
-	const queryParams = new URLSearchParams(location.search);
-	const taskIdToFilterBy = queryParams.get('task-id');
+	const { searchParams } = useSearchParamsContext();
+	const taskIdToFilterBy = searchParams.get('task-id');
 
 	const GROUP_BY_OPTIONS = ['Date', 'Task', 'Project', 'No Group'];
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];

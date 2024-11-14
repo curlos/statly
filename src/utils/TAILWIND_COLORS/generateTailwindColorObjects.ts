@@ -33,6 +33,7 @@ export const generateTailwindColorObjects = () => {
 					hover: {
 						textColor: `hover:text-${currentColorGroupName}-${colorNumVal}`,
 						bgColor: `hover:bg-${currentColorGroupName}-${colorNumVal}`,
+						bgColorHalfOpacity: `hover:bg-${currentColorGroupName}-${colorNumVal}/50`,
 						borderColor: `hover:border-${currentColorGroupName}-${colorNumVal}`,
 					},
 				};

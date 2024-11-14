@@ -8,18 +8,17 @@ import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
 import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const Page = () => {
-	const pageContext = usePageContext();
-	const location = pageContext.urlParsed;
-	const queryParams = new URLSearchParams(location.search);
+	const { searchParams } = useSearchParamsContext();
 
 	// Query Params
-	const sortBy = queryParams.get('sort-by') || 'Newest';
-	const groupBy = queryParams.get('group-by');
-	const searchTextFromUrl = queryParams.get('search') || '';
-	const startDateUrlStr = queryParams.get('start-date');
-	const endDateUrlStr = queryParams.get('end-date');
+	const sortBy = searchParams.get('sort-by') || 'Newest';
+	const groupBy = searchParams.get('group-by');
+	const searchTextFromUrl = searchParams.get('search') || '';
+	const startDateUrlStr = searchParams.get('start-date');
+	const endDateUrlStr = searchParams.get('end-date');
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
@@ -50,6 +49,11 @@ const Page = () => {
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
+	// TODO: Should investigate this. Not sure if this is a good idea. Made this to
+	// useEffect(() => {
+	// 	setSearchText(searchTextFromUrl);
+	// }, [searchTextFromUrl]);
+
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
 			return;
@@ -63,6 +67,7 @@ const Page = () => {
 	}, [userSettings]);
 
 	useEffect(() => {
+		focusRecordListRef?.current?.scrollTo(0, 0);
 		setCurrentPage(1);
 	}, [filteredFocusRecords, groupBy, sortBy, searchText]);
 
@@ -123,6 +128,7 @@ const Page = () => {
 								totalPages,
 								setTotalPages,
 								showCompletedTasks,
+								setSearchText,
 							}}
 						/>
 					</div>

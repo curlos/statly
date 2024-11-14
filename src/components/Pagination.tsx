@@ -3,8 +3,8 @@ import Dropdown from './Dropdown/Dropdown';
 import { DropdownProps } from '../interfaces/interfaces';
 import classNames from 'classnames';
 import CustomInput from './CustomInput';
-import { debounce } from '../utils/helpers.utils';
 import useWindowSize from '../hooks/useWindowSize';
+import { useThemeContext } from '../contexts/useThemeContext';
 
 interface PaginationProps {
 	total: number; // Total number of pages
@@ -14,6 +14,7 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentPage, totalPages }) => {
+	const { chosenColorObj } = useThemeContext();
 	const { width } = useWindowSize();
 
 	const [numPagesToShow, setNumPagesToShow] = useState(9); // Maximum number of pages to display in the paginator
@@ -61,14 +62,20 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 	return (
 		<div className="flex items-center sm:space-x-2">
 			<button
-				className={`p-2 rounded ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-500/50'}`}
+				className={classNames(
+					'p-2 rounded',
+					currentPage === 1 ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
+				)}
 				disabled={currentPage === 1}
 				onClick={() => setCurrentPage(1)}
 			>
 				{'<<'}
 			</button>
 			<button
-				className={`p-1 sm:p-2 rounded ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-500/50'}`}
+				className={classNames(
+					'p-1 sm:p-2 rounded',
+					currentPage === 1 ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
+				)}
 				disabled={currentPage === 1}
 				onClick={() => setCurrentPage(currentPage - 1)}
 			>
@@ -88,7 +95,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				page === currentPage ? (
 					<button
 						key={page}
-						className="px-2 py-1 rounded bg-blue-500 text-white"
+						className={classNames('px-2 py-1 rounded text-white', chosenColorObj.bgColor)}
 						onClick={() => setCurrentPage(page)}
 					>
 						{page}
@@ -96,7 +103,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				) : (
 					<button
 						key={page}
-						className="px-2 py-1 hover:bg-blue-500/50 rounded"
+						className={classNames('px-2 py-1 rounded', chosenColorObj.hover.bgColorHalfOpacity)}
 						onClick={() => setCurrentPage(page)}
 					>
 						{page}
@@ -114,14 +121,20 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				</>
 			)}
 			<button
-				className={`p-2 rounded ${currentPage === total ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-500/50'}`}
+				className={classNames(
+					'p-2 rounded',
+					currentPage === total ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
+				)}
 				disabled={currentPage === total}
 				onClick={() => setCurrentPage(currentPage + 1)}
 			>
 				{'>'}
 			</button>
 			<button
-				className={`p-2 rounded ${currentPage === total ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-500/50'}`}
+				className={classNames(
+					`p-2 rounded`,
+					currentPage === total ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
+				)}
 				disabled={currentPage === total}
 				onClick={() => setCurrentPage(total)}
 			>
@@ -182,6 +195,9 @@ const DropdownCustomPageNumber: React.FC<DropdownAccountDetailsProps> = ({
 		}
 	};
 
+	const { chosenColorObj, getNextLightestOrDarkestColorObj } = useThemeContext();
+	const nextDarkestColorObj = getNextLightestOrDarkestColorObj('next-darkest');
+
 	return (
 		<Dropdown
 			toggleRef={toggleRef}
@@ -206,7 +222,11 @@ const DropdownCustomPageNumber: React.FC<DropdownAccountDetailsProps> = ({
 				/>
 				<button
 					type="submit"
-					className="mt-2 w-full bg-blue-500 rounded-md py-1 cursor-pointer hover:bg-color-blue-600 p-3"
+					className={classNames(
+						'mt-2 w-full rounded-md py-1 cursor-pointer p-3',
+						chosenColorObj.bgColor,
+						nextDarkestColorObj.hover.bgColor
+					)}
 				>
 					Ok
 				</button>

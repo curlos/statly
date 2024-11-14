@@ -49,7 +49,10 @@ const AppliedFilterItemList = ({
 
 	const taskIdFilter = {
 		name: `Task`,
-		value: taskIdToFilterBy && tasksById ? tasksById[taskIdToFilterBy]?.title : taskIdToFilterBy,
+		value:
+			taskIdToFilterBy && tasksById && tasksById[taskIdToFilterBy]?.title
+				? tasksById[taskIdToFilterBy]?.title
+				: taskIdToFilterBy,
 		handleRemove: () => {
 			updateQueryParams({ 'task-id': '' });
 		},
@@ -77,6 +80,10 @@ const AppliedFilterItemList = ({
 	if (nonDefaultFilterList.length === 0) {
 		return null;
 	}
+
+	console.log(taskIdToFilterBy);
+	console.log(tasksById);
+	console.log(tasksById[taskIdToFilterBy]);
 
 	return (
 		<div className="container flex flex-wrap pb-4 gap-3">
