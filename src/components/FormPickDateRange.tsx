@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useState, useRef } from 'react';
-import { useThemeContext } from '../pages/ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../contexts/useThemeContext';
 import { formatCheckedInDayDate } from '../utils/date.utils';
 import DropdownTimeCalendar from './Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
 

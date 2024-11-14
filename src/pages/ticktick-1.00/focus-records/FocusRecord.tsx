@@ -9,8 +9,8 @@ import { getFocusDuration, getFormattedDuration } from '../../../utils/helpers.u
 import Icon from '../../../components/Icon';
 import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { useThemeContext } from './useThemeContext';
-import { useSearchParamsContext } from '../../../hooks/useSearchParamsCustom';
+import { useThemeContext } from '../../../contexts/useThemeContext';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const FocusRecord = ({
 	focusRecord,

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Icon from '../../components/Icon';
-import { useThemeContext } from '../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
 const DropdownGeneralSelect = ({
 	toggleRef,

@@ -1,6 +1,6 @@
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
-import { useThemeContext } from '../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 
 const TopBar = () => {

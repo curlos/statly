@@ -6,7 +6,7 @@ import useHandleError from '../../../../hooks/useHandleError';
 import { useEditUserSettingsMutation } from '../../../../services/resources/userSettingsApi';
 import FormPickDateRange from '../../../../components/FormPickDateRange';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
-import { useSearchParamsContext } from '../../../../hooks/useSearchParamsCustom';
+import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
 
 const ModalFilterSidebar = ({
 	isOpen,

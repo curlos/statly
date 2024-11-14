@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedDuration } from '../../../utils/helpers.utils';
-import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const OverviewCard = () => {
 	const { total, today } = useStatsContext();

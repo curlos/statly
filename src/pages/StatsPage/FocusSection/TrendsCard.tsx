@@ -7,7 +7,7 @@ import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedLongDay, groupDatesByInterval } from '../../../utils/date.utils';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
 import classNames from 'classnames';
-import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const TrendsCard = () => {
 	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();

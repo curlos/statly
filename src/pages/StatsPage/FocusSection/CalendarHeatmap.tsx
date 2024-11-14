@@ -8,7 +8,7 @@ import {
 	getFormattedDuration,
 	secondsToHoursAndMinutes,
 } from '../../../utils/helpers.utils';
-import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 interface CalendarHeatmapProps {
 	data: number[]; // Array of numbers (0-4)

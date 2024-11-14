@@ -9,7 +9,7 @@ import {
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import apexchart from 'apexcharts';
 import { getFormattedDuration } from '../../../utils/helpers.utils';
-import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const TimelineChart = ({ selectedDates }) => {
 	const { focusRecordsGroupedByDate } = useStatsContext();

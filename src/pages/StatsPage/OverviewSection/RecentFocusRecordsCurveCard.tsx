@@ -2,7 +2,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 import classNames from 'classnames';
-import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const RecentFocusRecordsCurveCard = () => {
 	const { selected, setSelected, selectedOptions, data } = useGetStatsForInterval('focusRecords');

@@ -19,7 +19,6 @@ export const useSearchParamsCustom = () => {
 	const [searchParams, setSearchParams] = useState(new URLSearchParams(location.search));
 
 	useEffect(() => {
-		console.log('cahnging');
 		// This effect will update the searchParams state whenever the URL search part changes
 		const newSearchParams = new URLSearchParams(location.search);
 		setSearchParams(newSearchParams);

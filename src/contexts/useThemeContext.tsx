@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
-import { TAILWIND_COLORS_OBJ } from '../../../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
+import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
+import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 
 const ThemeContext = createContext();
 

@@ -7,7 +7,7 @@ import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants.utils';
 import classNames from 'classnames';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import { getStreaksInfo, getFocusDataForDayInfo } from '../../../utils/focus.utils';
-import { useThemeContext } from '../focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const defaultFocusData = {
 	goalSeconds: 5400,

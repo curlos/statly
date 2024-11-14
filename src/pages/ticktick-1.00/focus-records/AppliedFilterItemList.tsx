@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import Icon from '../../../components/Icon';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { useThemeContext } from './useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
-import { useSearchParamsContext } from '../../../hooks/useSearchParamsCustom';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const AppliedFilterItemList = ({
 	groupBy,

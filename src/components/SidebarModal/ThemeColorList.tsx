@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import useHandleError from '../../hooks/useHandleError';
-import { useThemeContext } from '../../pages/ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
 import { toTitleCase } from '../../utils/helpers.utils';
 import CustomRadioButton from '../CustomRadioButton';

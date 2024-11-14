@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedLongDay, getLast7Days } from '../../../utils/date.utils';
-import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
 
 const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => {

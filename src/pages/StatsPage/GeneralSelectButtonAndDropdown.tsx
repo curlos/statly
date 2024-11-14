@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import Icon from '../../components/Icon';
 import DropdownGeneralSelect from './DropdownGeneralSelect';
-import { useThemeContext } from '../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 
 const GeneralSelectButtonAndDropdown = ({ selected, setSelected, selectedOptions, onClick }) => {

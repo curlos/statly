@@ -11,7 +11,7 @@ import {
 } from '../../../utils/date.utils';
 import ModalPickDateRange from '../../../components/Modal/ModalPickDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
-import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
 
 const MostFocusedTimeCard = () => {

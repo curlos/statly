@@ -8,8 +8,8 @@ import store from '../store/store';
 import { StatsProvider } from '../contexts/useStatsContext';
 import GlobalAlertList from '../components/Alert/GlobalAlertList';
 import GlobalModalList from '../components/Modal/GlobalModalList';
-import { ThemeProvider } from './ticktick-1.00/focus-records/useThemeContext';
-import { SearchParamsProvider } from '../hooks/useSearchParamsCustom';
+import { ThemeProvider } from '../contexts/useThemeContext';
+import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
 
 export const Wrapper = ({ children }) => (
 	<Provider store={store}>

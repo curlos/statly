@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js';
 import { useEffect } from 'react';
-import { useSearchParamsContext } from '../../../hooks/useSearchParamsCustom';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isTimeBetween } from '../../../utils/date.utils';
 import { debounce } from '../../../utils/helpers.utils';
 
