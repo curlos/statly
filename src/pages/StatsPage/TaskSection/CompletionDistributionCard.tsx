@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedLongDay, getLast7Days } from '../../../utils/date.utils';
 import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
+import classNames from 'classnames';
 
 const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => {
 	const { completedTasksGroupedByDate } = useStatsContext();
@@ -98,7 +99,9 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 								const nameToUse = fullName || name;
 
 								return (
-									<div className="bg-black text-blue-500 p-2 rounded-md">{`${nameToUse}, ${completedTasks}`}</div>
+									<div
+										className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
+									>{`${nameToUse}, ${completedTasks}`}</div>
 								);
 							}
 
