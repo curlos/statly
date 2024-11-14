@@ -12,7 +12,7 @@ import DropdownGeneralSelect from '../DropdownGeneralSelect';
 import CompletionStatsCard from './CompletionStatsCard';
 import CompletionDistributionCard from './CompletionDistributionCard';
 import OverviewCard from './OverviewCard';
-import ModalPickDateRange from '../FocusSection/ModalPickDateRange';
+import ModalPickDateRange from '../../../components/Modal/ModalPickDateRange';
 
 const TaskSection = () => {
 	const dropdownRef = useRef(null);

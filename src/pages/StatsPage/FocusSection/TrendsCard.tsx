@@ -2,7 +2,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useEffect, useState } from 'react';
 import DateRangePicker from './DateRangePicker';
-import ModalPickDateRange from './ModalPickDateRange';
+import ModalPickDateRange from '../../../components/Modal/ModalPickDateRange';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedLongDay, groupDatesByInterval } from '../../../utils/date.utils';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';

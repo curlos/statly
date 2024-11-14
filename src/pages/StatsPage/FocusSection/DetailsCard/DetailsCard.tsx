@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../DateRangePicker';
-import ModalPickDateRange from '../ModalPickDateRange';
+import ModalPickDateRange from '../../../../components/Modal/ModalPickDateRange';
 import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../../utils/helpers.utils';
 import classNames from 'classnames';

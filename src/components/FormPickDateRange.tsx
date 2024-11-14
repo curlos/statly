@@ -1,0 +1,89 @@
+import classNames from 'classnames';
+import { useState, useRef } from 'react';
+import { useThemeContext } from '../pages/ticktick-1.00/focus-records/useThemeContext';
+import { formatCheckedInDayDate } from '../utils/date.utils';
+import DropdownTimeCalendar from './Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
+
+const FormPickDateRange = ({ startDate, setStartDate, endDate, setEndDate, onCancel, onConfirm }) => {
+	const [localStartDate, setLocalStartDate] = useState(startDate);
+	const [localEndDate, setLocalEndDate] = useState(endDate);
+
+	const { chosenColorObj, getNextLightestOrDarkestColorObj } = useThemeContext();
+	const nextLightestOrDarkestColorObj = getNextLightestOrDarkestColorObj('next-darkest');
+
+	return (
+		<div>
+			<div className="mb-5 space-y-2">
+				<DateInput labelName="Start" date={localStartDate} setDate={setLocalStartDate} />
+				<DateInput labelName="End" date={localEndDate} setDate={setLocalEndDate} />
+			</div>
+
+			<div className="flex justify-end gap-2">
+				<button
+					className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
+					onClick={() => {
+						if (onCancel) {
+							onCancel();
+						}
+					}}
+				>
+					Cancel
+				</button>
+				<button
+					className={classNames(
+						chosenColorObj.bgColor,
+						nextLightestOrDarkestColorObj.hover.bgColor,
+						'rounded py-1 cursor-pointer min-w-[114px]'
+					)}
+					onClick={async () => {
+						// TODO: Send the local start and end dates to the parent
+						setStartDate(localStartDate);
+						setEndDate(localEndDate);
+
+						if (onConfirm) {
+							onConfirm();
+						}
+					}}
+				>
+					Confirm
+				</button>
+			</div>
+		</div>
+	);
+};
+
+const DateInput = ({ labelName, date, setDate }) => {
+	const dropdownTimeCalenderRef = useRef(null);
+	const [isDropdownTimeCalendarVisible, setIsDropdownTimeCalendarVisible] = useState(false);
+
+	const { chosenColorObj } = useThemeContext();
+
+	return (
+		<div className="flex items-center gap-2">
+			<div className="w-[40px]">{labelName}</div>
+			<div className="w-full relative">
+				<div
+					ref={dropdownTimeCalenderRef}
+					onClick={() => setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible)}
+					className={classNames(
+						'border border-color-gray-300 cursor-pointer px-3 py-1 rounded w-full bg-color-gray-200',
+						chosenColorObj.hover.borderColor
+					)}
+				>
+					{formatCheckedInDayDate(date)}
+				</div>
+
+				<DropdownTimeCalendar
+					toggleRef={dropdownTimeCalenderRef}
+					isVisible={isDropdownTimeCalendarVisible}
+					setIsVisible={setIsDropdownTimeCalendarVisible}
+					date={date}
+					setDate={setDate}
+					showTime={false}
+				/>
+			</div>
+		</div>
+	);
+};
+
+export default FormPickDateRange;

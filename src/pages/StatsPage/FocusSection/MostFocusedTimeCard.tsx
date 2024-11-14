@@ -9,7 +9,7 @@ import {
 	getDailyHourBlocks,
 	getFormattedLongDay,
 } from '../../../utils/date.utils';
-import ModalPickDateRange from './ModalPickDateRange';
+import ModalPickDateRange from '../../../components/Modal/ModalPickDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useThemeContext } from '../../ticktick-1.00/focus-records/useThemeContext';
 import classNames from 'classnames';
