@@ -105,7 +105,6 @@ const ModalFilterSidebar = ({
 								value={searchText}
 								onChange={(e) => {
 									setSearchText(e.target.value);
-									updateQueryParams({ search: searchText });
 								}}
 								className="text-[16px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
 							/>
