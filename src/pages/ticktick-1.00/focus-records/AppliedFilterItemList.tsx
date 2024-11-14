@@ -3,6 +3,7 @@ import Icon from '../../../components/Icon';
 import { useUpdateQueryParams } from '../../../hooks/useUpdateQueryParams';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from './useThemeContext';
+import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 
 const AppliedFilterItemList = ({
 	groupedBy,
@@ -12,6 +13,10 @@ const AppliedFilterItemList = ({
 	searchText,
 	setSearchText,
 	taskIdToFilterBy,
+	startDate,
+	setStartDate,
+	endDate,
+	setEndDate,
 }) => {
 	const updateQueryParams = useUpdateQueryParams();
 
@@ -33,7 +38,7 @@ const AppliedFilterItemList = ({
 		value: sortedBy,
 		handleRemove: () => {
 			setSortedBy('Newest');
-			updateQueryParams({ sortBy: 'Newest' });
+			updateQueryParams({ 'sort-by': 'Newest' });
 		},
 	};
 
@@ -50,14 +55,26 @@ const AppliedFilterItemList = ({
 		name: `Task`,
 		value: taskIdToFilterBy && tasksById ? tasksById[taskIdToFilterBy]?.title : taskIdToFilterBy,
 		handleRemove: () => {
-			updateQueryParams({ taskId: '' });
+			updateQueryParams({ 'task-id': '' });
 		},
 	};
 
-	const allFilters = [groupByFilter, sortByFilter, searchTextFilter, taskIdFilter];
+	const dateRangeFilter = {
+		name: `Date Range`,
+		value: `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`,
+		handleRemove: () => {
+			setStartDate(new Date('November 2, 2020'));
+			setEndDate(new Date());
+			updateQueryParams({ 'start-date': '', 'end-date': '' });
+		},
+	};
+
+	const allFilters = [taskIdFilter, groupByFilter, sortByFilter, searchTextFilter, dateRangeFilter];
+	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
+
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
 		const { value } = focusRecordsFilter;
-		const isDefaultFilter = !value || value === 'No Group' || value === 'Newest';
+		const isDefaultFilter = !value || value === 'No Group' || value === 'Newest' || firstDayToTodayString === value;
 		return !isDefaultFilter;
 	});
 

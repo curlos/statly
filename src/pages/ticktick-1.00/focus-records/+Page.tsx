@@ -8,14 +8,22 @@ import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
 import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
+import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 
 const Page = () => {
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;
 	const queryParams = new URLSearchParams(location.search);
-	const taskIdToFilterBy = queryParams.get('taskId');
-	const defaultSortedBy = queryParams.get('sortBy') || 'Newest';
+
+	// Query Params
+	const taskIdToFilterBy = queryParams.get('task-id');
+	const defaultSortedBy = queryParams.get('sort-by') || 'Newest';
 	const defaultSearchText = queryParams.get('search') || '';
+	const startDateUrlStr = queryParams.get('start-date');
+	const endDateUrlStr = queryParams.get('end-date');
+
+	console.log(startDateUrlStr);
+	console.log(endDateUrlStr);
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const {
@@ -37,6 +45,12 @@ const Page = () => {
 	const [sortedBy, setSortedBy] = useState(defaultSortedBy);
 	const [searchText, setSearchText] = useState(defaultSearchText);
 
+	// Filter by Date Range
+	const [startDate, setStartDate] = useState(
+		startDateUrlStr ? new Date(startDateUrlStr) : new Date('November 2, 2020')
+	);
+	const [endDate, setEndDate] = useState(endDateUrlStr ? new Date(endDateUrlStr) : new Date());
+
 	const maxHeight = useMaxHeight(headerHeight);
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -44,6 +58,8 @@ const Page = () => {
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+
+	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
@@ -75,24 +91,41 @@ const Page = () => {
 		setTotalPages(newTotalPages);
 	}, [isLoadingGetFocusRecords, filteredFocusRecords]);
 
+	const focusRecordHasTaskId = (focusRecord, taskIdToFilterBy) => {
+		const taskIdToFilterByStr = String(taskIdToFilterBy);
+
+		if (!focusRecord.tasks || focusRecord.tasks.length === 0) {
+			return false;
+		}
+
+		const { tasks } = focusRecord;
+
+		return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
+	};
+
 	useEffect(() => {
-		if (!taskIdToFilterBy) {
-			setFilteredFocusRecords(focusRecords);
-		} else {
-			const taskIdToFilterByStr = String(taskIdToFilterBy);
-			const focusRecordsThatContainTaskId = focusRecords?.filter((focusRecord) => {
-				if (!focusRecord.tasks || focusRecord.tasks.length === 0) {
-					return false;
-				}
+		if (focusRecords) {
+			let newFilteredFocusRecords = focusRecords;
 
-				const { tasks } = focusRecord;
+			newFilteredFocusRecords = newFilteredFocusRecords.filter((focusRecord) => {
+				const containsTaskId = !taskIdToFilterBy ? true : focusRecordHasTaskId(focusRecord, taskIdToFilterBy);
 
-				return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
+				return containsTaskId;
 			});
 
-			setFilteredFocusRecords(focusRecordsThatContainTaskId || []);
+			// const currentDateRangeString = `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`;
+			// const doesNotIncludeAllDates = firstDayToTodayString !== currentDateRangeString
+
+			// if (doesNotIncludeAllDates) {
+			// 	// Go through each of the remaining focus records and check the "startTime". If this startTime is in the date range string, then the focus record can be included. If it's not, then filter it out.
+			// 	newFilteredFocusRecords.filter((focusRecord) => {
+
+			// 	})
+			// }
+
+			setFilteredFocusRecords(newFilteredFocusRecords);
 		}
-	}, [focusRecords, taskIdToFilterBy]);
+	}, [focusRecords, taskIdToFilterBy, startDate, endDate]);
 
 	return (
 		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
@@ -121,6 +154,10 @@ const Page = () => {
 						setSearchText,
 						showCompletedTasks,
 						setShowCompletedTasks,
+						startDate,
+						setStartDate,
+						endDate,
+						setEndDate,
 					}}
 				/>
 

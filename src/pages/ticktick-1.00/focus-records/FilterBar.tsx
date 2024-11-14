@@ -21,12 +21,16 @@ const FilterBar = ({
 	focusRecordListRef,
 	showCompletedTasks,
 	setShowCompletedTasks,
+	startDate,
+	setStartDate,
+	endDate,
+	setEndDate,
 }) => {
 	const updateQueryParams = useUpdateQueryParams();
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;
 	const queryParams = new URLSearchParams(location.search);
-	const taskIdToFilterBy = queryParams.get('taskId');
+	const taskIdToFilterBy = queryParams.get('task-id');
 
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
@@ -111,7 +115,19 @@ const FilterBar = ({
 			</div>
 
 			<AppliedFilterItemList
-				{...{ groupedBy, setGroupedBy, sortedBy, setSortedBy, searchText, setSearchText, taskIdToFilterBy }}
+				{...{
+					groupedBy,
+					setGroupedBy,
+					sortedBy,
+					setSortedBy,
+					searchText,
+					setSearchText,
+					taskIdToFilterBy,
+					startDate,
+					setStartDate,
+					endDate,
+					setEndDate,
+				}}
 			/>
 
 			<ModalFilterSidebar
@@ -128,6 +144,10 @@ const FilterBar = ({
 					GROUP_BY_OPTIONS,
 					showCompletedTasks,
 					setShowCompletedTasks,
+					startDate,
+					setStartDate,
+					endDate,
+					setEndDate,
 				}}
 			/>
 		</div>

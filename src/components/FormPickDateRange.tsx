@@ -4,7 +4,16 @@ import { useThemeContext } from '../pages/ticktick-1.00/focus-records/useThemeCo
 import { formatCheckedInDayDate } from '../utils/date.utils';
 import DropdownTimeCalendar from './Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
 
-const FormPickDateRange = ({ startDate, setStartDate, endDate, setEndDate, onCancel, onConfirm }) => {
+const FormPickDateRange = ({
+	startDate,
+	setStartDate,
+	endDate,
+	setEndDate,
+	onCancel,
+	onConfirm,
+	useLocalDatesFirst = true,
+	onUpdateStartOrEndDate,
+}) => {
 	const [localStartDate, setLocalStartDate] = useState(startDate);
 	const [localEndDate, setLocalEndDate] = useState(endDate);
 
@@ -14,40 +23,70 @@ const FormPickDateRange = ({ startDate, setStartDate, endDate, setEndDate, onCan
 	return (
 		<div>
 			<div className="mb-5 space-y-2">
-				<DateInput labelName="Start" date={localStartDate} setDate={setLocalStartDate} />
-				<DateInput labelName="End" date={localEndDate} setDate={setLocalEndDate} />
-			</div>
+				<DateInput
+					labelName="Start"
+					date={localStartDate}
+					setDate={(value) => {
+						setLocalStartDate(value);
 
-			<div className="flex justify-end gap-2">
-				<button
-					className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
-					onClick={() => {
-						if (onCancel) {
-							onCancel();
+						if (!useLocalDatesFirst) {
+							setStartDate(value);
+						}
+
+						if (onUpdateStartOrEndDate) {
+							onUpdateStartOrEndDate(value, null);
 						}
 					}}
-				>
-					Cancel
-				</button>
-				<button
-					className={classNames(
-						chosenColorObj.bgColor,
-						nextLightestOrDarkestColorObj.hover.bgColor,
-						'rounded py-1 cursor-pointer min-w-[114px]'
-					)}
-					onClick={async () => {
-						// TODO: Send the local start and end dates to the parent
-						setStartDate(localStartDate);
-						setEndDate(localEndDate);
+				/>
+				<DateInput
+					labelName="End"
+					date={localEndDate}
+					setDate={(value) => {
+						setLocalEndDate(value);
 
-						if (onConfirm) {
-							onConfirm();
+						if (!useLocalDatesFirst) {
+							setEndDate(value);
+						}
+
+						if (onUpdateStartOrEndDate) {
+							onUpdateStartOrEndDate(null, value);
 						}
 					}}
-				>
-					Confirm
-				</button>
+				/>
 			</div>
+
+			{useLocalDatesFirst && (
+				<div className="flex justify-end gap-2">
+					<button
+						className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
+						onClick={() => {
+							if (onCancel) {
+								onCancel();
+							}
+						}}
+					>
+						Cancel
+					</button>
+					<button
+						className={classNames(
+							chosenColorObj.bgColor,
+							nextLightestOrDarkestColorObj.hover.bgColor,
+							'rounded py-1 cursor-pointer min-w-[114px]'
+						)}
+						onClick={async () => {
+							// TODO: Send the local start and end dates to the parent
+							setStartDate(localStartDate);
+							setEndDate(localEndDate);
+
+							if (onConfirm) {
+								onConfirm();
+							}
+						}}
+					>
+						Confirm
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };

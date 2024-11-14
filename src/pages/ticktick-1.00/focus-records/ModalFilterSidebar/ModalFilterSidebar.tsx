@@ -5,6 +5,8 @@ import CustomRadioButton from '../../../../components/CustomRadioButton';
 import classNames from 'classnames';
 import useHandleError from '../../../../hooks/useHandleError';
 import { useEditUserSettingsMutation } from '../../../../services/resources/userSettingsApi';
+import FormPickDateRange from '../../../../components/FormPickDateRange';
+import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -19,6 +21,10 @@ const ModalFilterSidebar = ({
 	GROUP_BY_OPTIONS,
 	showCompletedTasks,
 	setShowCompletedTasks,
+	startDate,
+	setStartDate,
+	endDate,
+	setEndDate,
 }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
@@ -113,7 +119,7 @@ const ModalFilterSidebar = ({
 											checked={sortedBy === sortByOption}
 											onChange={() => {
 												setSortedBy(sortByOption);
-												updateQueryParams({ sortBy: sortByOption });
+												updateQueryParams({ 'sort-by': sortByOption });
 											}}
 											customOuterCircleClasses="!border-blue-500 !w-[20px] !h-[20px]"
 											customInnerCircleClasses="!bg-blue-500 !w-[10px] !h-[10px]"
@@ -145,7 +151,7 @@ const ModalFilterSidebar = ({
 											checked={groupedBy === groupByOption}
 											onChange={() => {
 												setGroupedBy(groupByOption);
-												updateQueryParams({ groupBy: groupByOption });
+												updateQueryParams({ 'group-by': groupByOption });
 											}}
 											customOuterCircleClasses="!border-blue-500 !w-[20px] !h-[20px]"
 											customInnerCircleClasses="!bg-blue-500 !w-[10px] !h-[10px]"
@@ -153,6 +159,39 @@ const ModalFilterSidebar = ({
 									);
 								})}
 							</div>
+						</div>
+
+						{/* Date Range */}
+						<hr className="border-color-gray-200 my-4" />
+						<div>
+							<div className="flex items-center gap-1 mb-3">
+								<h3 className="text-[16px] font-bold">Date Range</h3>
+								<Icon
+									name="diversity_2"
+									fill={0}
+									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								/>
+							</div>
+
+							<FormPickDateRange
+								{...{
+									startDate,
+									setStartDate,
+									endDate,
+									setEndDate,
+									useLocalDatesFirst: false,
+									onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
+										if (newStartDate) {
+											// TODO: Get these up in the filter bar or page components.
+											updateQueryParams({
+												'start-date': getFormattedShortMonthDay(newStartDate),
+											});
+										} else if (newEndDate) {
+											updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate) });
+										}
+									},
+								}}
+							/>
 						</div>
 
 						{/* Other */}

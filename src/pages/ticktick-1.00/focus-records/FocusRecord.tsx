@@ -97,7 +97,7 @@ const FocusRecord = ({
 
 		const { taskId } = task;
 
-		updateQueryParams({ taskId });
+		updateQueryParams({ 'task-id': taskId });
 	};
 
 	return (
