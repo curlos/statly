@@ -5,6 +5,8 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -40,9 +42,23 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 			projectNamesArr.push(name);
 		});
 
-		const newProjectNamesStr = projectNamesArr.join(', ');
+		const newProjectNamesStr = projectNamesArr
+			.map((projectName, index) => {
+				// Append a newline if the item is not the last in the array
+				return `- ${projectName}${index < projectNamesArr.length - 1 ? '\n' : ''}`;
+			})
+			.join('');
+
 		setProjectNamesStr(newProjectNamesStr);
-	}, [projectsById]);
+	}, [isLoadingGetProjects, projectsById, projectsFromUrl]);
+
+	const getProjectFilterValue = () => {
+		return (
+			<div className="break-words react-markdown">
+				<ReactMarkdown remarkPlugins={[remarkGfm]}>{projectNamesStr}</ReactMarkdown>
+			</div>
+		);
+	};
 
 	const groupByFilter = {
 		name: `Group By`,
@@ -89,7 +105,7 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 
 	const projectsFilter = {
 		name: 'Projects',
-		value: projectNamesStr,
+		value: getProjectFilterValue(),
 		handleRemove: () => {
 			updateQueryParams({ projects: '' });
 		},
@@ -99,7 +115,12 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
-		const { value } = focusRecordsFilter;
+		const { name, value } = focusRecordsFilter;
+
+		if (name === 'Projects') {
+			return null;
+		}
+
 		const isDefaultFilter = !value || value === 'Newest' || firstDayToTodayString === value;
 		return !isDefaultFilter;
 	});
@@ -108,13 +129,28 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 		return null;
 	}
 
-	return (
-		<div className="container flex flex-wrap pb-4 gap-3">
-			{nonDefaultFilterList.map((nonDefaultFilter) => {
-				const { name, value, handleRemove } = nonDefaultFilter;
+	const {
+		name: projectFilterName,
+		value: projectFilterValue,
+		handleRemove: projectFilterHandleRemove,
+	} = projectsFilter;
+	const atLeastOneSelectedProject = projectsFromUrl;
 
-				return <AppliedFilterItem key={name + value} {...{ name, value, handleRemove }} />;
-			})}
+	return (
+		<div className="container pb-4">
+			<div className="flex flex-wrap pb-4 gap-3">
+				{nonDefaultFilterList.map((nonDefaultFilter) => {
+					const { name, value, handleRemove } = nonDefaultFilter;
+					return <AppliedFilterItem key={name + value} {...{ name, value, handleRemove }} />;
+				})}
+			</div>
+
+			{atLeastOneSelectedProject && (
+				<AppliedFilterItem
+					key={projectFilterName + projectFilterValue}
+					{...{ name: projectFilterName, value: projectFilterValue, handleRemove: projectFilterHandleRemove }}
+				/>
+			)}
 		</div>
 	);
 };
