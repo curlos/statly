@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '../../../components/Icon';
 import AppliedFilterItemList from './AppliedFilterItemList';
-import ModalFilterSidebar from './ModalFilterSidebar/ModalFilterSidebar';
+import ModalFilterSidebar from './FilterSidebar/ModalFilterSidebar';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
@@ -46,7 +46,7 @@ const FilterBar = ({
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
 							onClick={() => setShowFilterSidebar(true)}
 						>
-							<div>Filter</div>
+							<div>{showFilterSidebar ? 'Hide Filters' : 'Show Filters'}</div>
 							<Icon
 								name="page_info"
 								fill={0}
@@ -63,17 +63,19 @@ const FilterBar = ({
 				}}
 			/>
 
-			<ModalFilterSidebar
-				{...{
-					isOpen: showFilterSidebar,
-					setIsOpen: setShowFilterSidebar,
-					sortByOptions,
-					showCompletedTasks,
-					setShowCompletedTasks,
-					showTotalFocusDuration,
-					setShowTotalFocusDuration,
-				}}
-			/>
+			<div className="lg:hidden">
+				<ModalFilterSidebar
+					{...{
+						isOpen: showFilterSidebar,
+						setIsOpen: setShowFilterSidebar,
+						sortByOptions,
+						showCompletedTasks,
+						setShowCompletedTasks,
+						showTotalFocusDuration,
+						setShowTotalFocusDuration,
+					}}
+				/>
+			</div>
 		</div>
 	);
 };
