@@ -21,6 +21,7 @@ const ProjectsSection = () => {
 	const { projectGroupsById } = fetchedProjectGroups || {};
 
 	const [groupedProjectsByGroupId, setGroupedProjectsByGroupId] = useState([]);
+	const [sortedProjectGroups, setSortedProjectGroups] = useState([]);
 	const [ungroupedProjects, setUngroupedProjects] = useState([]);
 
 	const getProjectsFromUrlById = (projectsFromUrl) => {
@@ -69,12 +70,18 @@ const ProjectsSection = () => {
 			groupedProjectsByGroupId[groupId].push(groupedProject);
 		});
 
+		const projectGroups = Object.keys(groupedProjectsByGroupId).map((groupId) => projectGroupsById[groupId]);
+		const sortedProjectGroups = projectGroups.sort((a, b) => a.sortOrder - b.sortOrder);
+
+		// Go through each list of projects in "groupedProjectsByGroupId" and sort them according to each other.
+		Object.keys(groupedProjectsByGroupId).forEach((groupId) => {
+			groupedProjectsByGroupId[groupId].sort((a, b) => a.sortOrder - b.sortOrder);
+		});
+
+		setSortedProjectGroups(sortedProjectGroups);
 		setGroupedProjectsByGroupId(groupedProjectsByGroupId);
 		setUngroupedProjects(ungroupedProjects);
 	}, [projects, projectGroupsById]);
-
-	console.log(groupedProjectsByGroupId);
-	console.log(ungroupedProjects);
 
 	return (
 		<div>
@@ -89,10 +96,10 @@ const ProjectsSection = () => {
 
 			<div>
 				<div className="space-y-2">
-					{Object.keys(groupedProjectsByGroupId).map((groupId) => (
+					{sortedProjectGroups.map((projectGroup) => (
 						<ProjectGroupWithProjects
 							{...{
-								groupId,
+								projectGroup,
 								groupedProjectsByGroupId,
 								projectGroupsById,
 								chosenColorObj,
@@ -122,7 +129,7 @@ const ProjectsSection = () => {
 };
 
 const ProjectGroupWithProjects = ({
-	groupId,
+	projectGroup,
 	groupedProjectsByGroupId,
 	projectGroupsById,
 	chosenColorObj,
@@ -130,12 +137,13 @@ const ProjectGroupWithProjects = ({
 	projectsFromUrlById,
 	updateQueryParams,
 }) => {
-	const groupedProjects = groupedProjectsByGroupId[groupId];
-	const groupName = projectGroupsById[groupId].name;
+	const { id } = projectGroup;
+	const groupedProjects = groupedProjectsByGroupId[id];
+	const groupName = projectGroupsById[id].name;
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
 
 	return (
-		<div key={groupId}>
+		<div key={id}>
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">
