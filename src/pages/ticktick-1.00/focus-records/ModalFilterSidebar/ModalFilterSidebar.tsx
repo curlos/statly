@@ -13,6 +13,8 @@ import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
 import SortBySection from './SortBySection';
 import GroupBySection from './GroupBySection';
+import DateRangeSection from './DateRangeSection';
+import OtherSection from './OtherSection';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -34,16 +36,9 @@ const ModalFilterSidebar = ({
 	};
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
-	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects');
 
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
-
-	const handleError = useHandleError();
-
-	// RTK Query - User Settings
-	const [editUserSettings] = useEditUserSettingsMutation();
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects } = useGetAllProjectsQuery();
@@ -147,82 +142,11 @@ const ModalFilterSidebar = ({
 
 						{/* Date Range */}
 						<hr className="border-color-gray-200 my-4" />
-						<div>
-							<div className="flex items-center gap-1 mb-3">
-								<h3 className="text-[16px] font-bold">Date Range</h3>
-								<Icon
-									name="diversity_2"
-									fill={0}
-									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-								/>
-							</div>
-
-							<FormPickDateRange
-								{...{
-									startDate: new Date(startDateFromUrl),
-									setStartDate: (value) => {
-										updateQueryParams({ 'start-date': value });
-									},
-									endDate: new Date(endDateFromUrl),
-									setEndDate: (value) => {
-										updateQueryParams({ 'end-date': value });
-									},
-									confirmBeforeUpdating: true,
-									onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
-										if (newStartDate) {
-											updateQueryParams({
-												'start-date': getFormattedShortMonthDay(newStartDate),
-											});
-										} else if (newEndDate) {
-											updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate) });
-										}
-									},
-								}}
-							/>
-						</div>
+						<DateRangeSection />
 
 						{/* Other */}
 						<hr className="border-color-gray-200 my-4" />
-						<div>
-							<div className="flex items-center gap-1 mb-3">
-								<h3 className="text-[16px] font-bold">Other</h3>
-								<Icon
-									name="diversity_2"
-									fill={0}
-									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-								/>
-							</div>
-							<div className="flex items-center gap-1">
-								<Icon
-									name={showCompletedTasks ? 'check_box' : 'check_box_outline_blank'}
-									fill={1}
-									customClass={classNames(
-										'!text-[22px] cursor-pointer',
-										chosenColorObj.textColor,
-										nextLightestColorObj.hover.textColor
-									)}
-									onClick={() => {
-										const newShowCompletedTasks = !showCompletedTasks;
-										setShowCompletedTasks(newShowCompletedTasks);
-
-										handleError(async () => {
-											const payload = {
-												tickTickOne: {
-													pages: {
-														focusRecords: {
-															showCompletedTasks: newShowCompletedTasks,
-														},
-													},
-												},
-											};
-
-											await editUserSettings(payload).unwrap();
-										});
-									}}
-								/>
-								<div>Show Completed Tasks</div>
-							</div>
-						</div>
+						<OtherSection {...{ showCompletedTasks, setShowCompletedTasks }} />
 
 						{/* Projects */}
 						<hr className="border-color-gray-200 my-4" />

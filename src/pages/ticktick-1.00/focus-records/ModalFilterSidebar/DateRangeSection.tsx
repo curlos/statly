@@ -1,0 +1,48 @@
+import FormPickDateRange from '../../../../components/FormPickDateRange';
+import Icon from '../../../../components/Icon';
+import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
+import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
+
+const DateRangeSection = () => {
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+
+	return (
+		<div>
+			<div className="flex items-center gap-1 mb-3">
+				<h3 className="text-[16px] font-bold">Date Range</h3>
+				<Icon
+					name="diversity_2"
+					fill={0}
+					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+				/>
+			</div>
+
+			<FormPickDateRange
+				{...{
+					startDate: new Date(startDateFromUrl),
+					setStartDate: (value) => {
+						updateQueryParams({ 'start-date': value });
+					},
+					endDate: new Date(endDateFromUrl),
+					setEndDate: (value) => {
+						updateQueryParams({ 'end-date': value });
+					},
+					confirmBeforeUpdating: true,
+					onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
+						if (newStartDate) {
+							updateQueryParams({
+								'start-date': getFormattedShortMonthDay(newStartDate),
+							});
+						} else if (newEndDate) {
+							updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate) });
+						}
+					},
+				}}
+			/>
+		</div>
+	);
+};
+
+export default DateRangeSection;
