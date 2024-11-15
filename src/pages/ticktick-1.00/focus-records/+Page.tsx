@@ -38,6 +38,7 @@ const Page = () => {
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
 
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
@@ -45,9 +46,14 @@ const Page = () => {
 		}
 
 		const newShowCompletedTasks = userSettings?.tickTickOne?.pages?.focusRecords?.showCompletedTasks;
+		const newShowTotalFocusDuration = userSettings?.tickTickOne?.pages?.focusRecords?.showTotalFocusDuration;
 
 		if (newShowCompletedTasks !== undefined) {
 			setShowCompletedTasks(newShowCompletedTasks);
+		}
+
+		if (newShowTotalFocusDuration !== undefined) {
+			setShowTotalFocusDuration(newShowTotalFocusDuration);
 		}
 	}, [userSettings]);
 
@@ -90,6 +96,8 @@ const Page = () => {
 						focusRecordListRef,
 						showCompletedTasks,
 						setShowCompletedTasks,
+						showTotalFocusDuration,
+						setShowTotalFocusDuration,
 					}}
 				/>
 
@@ -106,6 +114,7 @@ const Page = () => {
 								totalPages,
 								setTotalPages,
 								showCompletedTasks,
+								showTotalFocusDuration,
 							}}
 						/>
 					</div>

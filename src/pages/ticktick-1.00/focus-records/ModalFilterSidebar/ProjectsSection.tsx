@@ -3,7 +3,7 @@ import Icon from '../../../../components/Icon';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Accordion from '../../../../components/Accordion/Accordion';
 
 const ProjectsSection = () => {

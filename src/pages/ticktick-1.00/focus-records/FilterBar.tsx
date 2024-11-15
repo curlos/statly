@@ -4,6 +4,7 @@ import AppliedFilterItemList from './AppliedFilterItemList';
 import ModalFilterSidebar from './ModalFilterSidebar/ModalFilterSidebar';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
 
 const FilterBar = ({
 	defaultFocusRecords,
@@ -11,6 +12,8 @@ const FilterBar = ({
 	setFilteredFocusRecords,
 	showCompletedTasks,
 	setShowCompletedTasks,
+	showTotalFocusDuration,
+	setShowTotalFocusDuration,
 }) => {
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
@@ -28,12 +31,15 @@ const FilterBar = ({
 		DEFAULT_SORT_BY_OPTIONS,
 	});
 
+	const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords);
+
 	return (
 		<div>
 			<div className="flex justify-between items-center pb-5 container">
 				<div className="flex justify-between items-center gap-3 w-full">
 					<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
 						Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
+						{showTotalFocusDuration && ` - ${getFormattedDuration(totalFocusDuration, false)}`}
 					</h2>
 
 					<div className="text-[16px] cursor-pointer">
@@ -66,6 +72,8 @@ const FilterBar = ({
 					GROUP_BY_OPTIONS,
 					showCompletedTasks,
 					setShowCompletedTasks,
+					showTotalFocusDuration,
+					setShowTotalFocusDuration,
 				}}
 			/>
 		</div>

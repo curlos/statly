@@ -14,6 +14,8 @@ const ModalFilterSidebar = ({
 	GROUP_BY_OPTIONS,
 	showCompletedTasks,
 	setShowCompletedTasks,
+	showTotalFocusDuration,
+	setShowTotalFocusDuration,
 }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
@@ -74,7 +76,14 @@ const ModalFilterSidebar = ({
 						<DateRangeSection />
 
 						<hr className="border-color-gray-200 my-4" />
-						<OtherSection {...{ showCompletedTasks, setShowCompletedTasks }} />
+						<OtherSection
+							{...{
+								showCompletedTasks,
+								setShowCompletedTasks,
+								showTotalFocusDuration,
+								setShowTotalFocusDuration,
+							}}
+						/>
 
 						<hr className="border-color-gray-200 my-4" />
 						<ProjectsSection />
