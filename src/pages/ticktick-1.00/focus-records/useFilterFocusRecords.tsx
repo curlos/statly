@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { getFormattedShortMonthDay, isTimeBetween } from '../../../utils/date.utils';
+import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -80,7 +80,7 @@ export const useFilterFocusRecords = ({
 		const startDateFromUrlDate = new Date(startDateFromUrl);
 		const endDateFromUrlDate = new Date(endDateFromUrl);
 
-		return isTimeBetween(startTimeDate, startDateFromUrlDate, endDateFromUrlDate);
+		return isDateBetween(startTimeDate, startDateFromUrlDate, endDateFromUrlDate);
 	};
 
 	useEffect(() => {

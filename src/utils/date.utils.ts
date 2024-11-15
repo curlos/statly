@@ -729,7 +729,17 @@ export const isTimeBetween = (targetDate, startDate, endDate, offsetMinutes = 10
 	const endTime = endDate.getTime() + offsetMilliseconds; // Apply offset to end time
 
 	// Check if the target time in milliseconds is between the adjusted start and end times
-	return targetTime > startTime && targetTime < endTime;
+	return targetTime >= startTime && targetTime <= endTime;
+};
+
+export const isDateBetween = (targetDate, startDate, endDate) => {
+	// Remove the time part of each date
+	const target = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+	const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+	const end = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+
+	// Check if the target date is between the start and end dates (inclusive)
+	return target >= start && target <= end;
 };
 
 export const getTimeSince = (date) => {
