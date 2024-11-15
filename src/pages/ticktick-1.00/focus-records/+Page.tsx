@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import GroupedFocusRecordList from './GroupedFocusRecordList';
+import FocusRecordList from './FocusRecordList';
 import useMaxHeight from '../../../hooks/useMaxHeight';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import Pagination from '../../../components/Pagination';
@@ -15,7 +15,6 @@ const Page = () => {
 
 	// Query Params
 	const sortBy = searchParams.get('sort-by') || 'Newest';
-	const groupBy = searchParams.get('group-by');
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
@@ -60,7 +59,7 @@ const Page = () => {
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
 		setCurrentPage(1);
-	}, [filteredFocusRecords, groupBy, sortBy, searchTextFromUrl]);
+	}, [filteredFocusRecords, sortBy, searchTextFromUrl]);
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
@@ -103,11 +102,10 @@ const Page = () => {
 
 				<div className="flex-1 flex justify-center">
 					<div className="container p-1">
-						<GroupedFocusRecordList
+						<FocusRecordList
 							{...{
 								filteredFocusRecords,
 								isLoadingGetFocusRecords,
-								groupBy,
 								sortBy,
 								currentPage,
 								setCurrentPage,

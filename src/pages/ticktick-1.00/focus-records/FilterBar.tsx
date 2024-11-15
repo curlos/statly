@@ -17,9 +17,8 @@ const FilterBar = ({
 }) => {
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
-
-	const GROUP_BY_OPTIONS = ['Date', 'Task', 'Project', 'No Group'];
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
+
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
@@ -69,7 +68,6 @@ const FilterBar = ({
 					isOpen: showFilterSidebar,
 					setIsOpen: setShowFilterSidebar,
 					sortByOptions,
-					GROUP_BY_OPTIONS,
 					showCompletedTasks,
 					setShowCompletedTasks,
 					showTotalFocusDuration,

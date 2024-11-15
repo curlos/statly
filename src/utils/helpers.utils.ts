@@ -509,7 +509,7 @@ export const getMultiSelectFilteredTasks = (tasks, filters) => {
 /**
  * @description For TickTick 1.0 Focus Records
  */
-export const getFocusDuration = (focusRecord, groupedBy) => {
+export const getFocusDuration = (focusRecord) => {
 	const isTaskFromFocusRecord = focusRecord?.taskId;
 	const focusRecordWithoutTask = !focusRecord?.tasks;
 
@@ -525,27 +525,6 @@ export const getFocusDuration = (focusRecord, groupedBy) => {
 		const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
 		return durationSeconds;
 	}
-
-	if (groupedBy === 'tasks') {
-		const { tasks } = focusRecord;
-		let totalDurationSeconds = 0;
-
-		tasks.forEach((task) => {
-			const { startTime, endTime } = task;
-
-			// Convert ISO string times to Date objects
-			const start = new Date(startTime);
-			const end = new Date(endTime);
-
-			// Calculate the total duration in seconds
-			const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
-			totalDurationSeconds += durationSeconds;
-		});
-
-		return totalDurationSeconds;
-	}
-
-	// If grouped by date
 
 	const { startTime, endTime, pauseDuration } = focusRecord;
 

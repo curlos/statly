@@ -11,7 +11,6 @@ import remarkGfm from 'remark-gfm';
 const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by') || 'Newest';
-	const groupBy = searchParams.get('group-by');
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
@@ -53,14 +52,6 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 				<ReactMarkdown remarkPlugins={[remarkGfm]}>{projectNamesStr}</ReactMarkdown>
 			</div>
 		);
-	};
-
-	const groupByFilter = {
-		name: `Group By`,
-		value: groupBy,
-		handleRemove: () => {
-			updateQueryParams({ 'group-by': '' });
-		},
 	};
 
 	const sortByFilter = {
@@ -106,7 +97,7 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 		},
 	};
 
-	const allFilters = [taskIdFilter, dateRangeFilter, groupByFilter, sortByFilter, searchTextFilter, projectsFilter];
+	const allFilters = [taskIdFilter, dateRangeFilter, sortByFilter, searchTextFilter, projectsFilter];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {

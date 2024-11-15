@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../../../../components/Icon';
 import SortBySection from './SortBySection';
-import GroupBySection from './GroupBySection';
 import DateRangeSection from './DateRangeSection';
 import OtherSection from './OtherSection';
 import ProjectsSection from './ProjectsSection';
@@ -11,7 +10,6 @@ const ModalFilterSidebar = ({
 	isOpen,
 	setIsOpen,
 	sortByOptions,
-	GROUP_BY_OPTIONS,
 	showCompletedTasks,
 	setShowCompletedTasks,
 	showTotalFocusDuration,
@@ -68,9 +66,6 @@ const ModalFilterSidebar = ({
 
 						<hr className="border-color-gray-200 my-4" />
 						<SortBySection {...{ sortByOptions }} />
-
-						<hr className="border-color-gray-200 my-4" />
-						<GroupBySection {...{ GROUP_BY_OPTIONS }} />
 
 						<hr className="border-color-gray-200 my-4" />
 						<DateRangeSection />
