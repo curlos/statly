@@ -142,7 +142,15 @@ const FocusRecord = ({
 					</div>
 
 					<div className="sm:hidden text-gray-200">
-						<div className="font-bold">{getFormattedShortMonthDay(new Date(startTime))}</div>
+						<div
+							className="font-bold hover:underline cursor-pointer"
+							onClick={() => {
+								const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
+								updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl });
+							}}
+						>
+							{getFormattedShortMonthDay(new Date(startTime))}
+						</div>
 						<div>
 							{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
 						</div>
