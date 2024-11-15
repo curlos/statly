@@ -72,6 +72,18 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 				return { projects, projectsById };
 			},
 		}),
+		getAllProjectGroups: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString ? `/ticktick-1.0/project-groups?${queryString}` : '/ticktick-1.0/project-groups';
+			},
+			transformResponse: (response) => {
+				const projectGroups = response;
+				const projectGroupsById = arrayToObjectByKey(projectGroups, 'id');
+
+				return { projectGroups, projectGroupsById };
+			},
+		}),
 		getAllTags: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
@@ -92,5 +104,6 @@ export const {
 	useGetPomoAndStopwatchFocusRecordsQuery,
 	useGetAllTasksQuery,
 	useGetAllProjectsQuery,
+	useGetAllProjectGroupsQuery,
 	useGetAllTagsQuery,
 } = tickTickOneApi;
