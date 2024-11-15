@@ -80,7 +80,6 @@ const Page = () => {
 			>
 				<FilterBar
 					{...{
-						groupBy,
 						sortBy,
 						currentPage,
 						setCurrentPage,
