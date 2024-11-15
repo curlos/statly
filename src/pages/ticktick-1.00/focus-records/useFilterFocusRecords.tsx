@@ -2,6 +2,7 @@ import Fuse from 'fuse.js';
 import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
+import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -14,6 +15,11 @@ export const useFilterFocusRecords = ({
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const projectsFromUrl = searchParams.get('projects') || '';
+
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
+	const { tasksById } = fetchedTasks || {};
 
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
@@ -66,6 +72,39 @@ export const useFilterFocusRecords = ({
 		return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
 	};
 
+	const focusRecordContainsProjectId = (focusRecord) => {
+		if (!projectsFromUrl) {
+			return true;
+		}
+
+		if (!focusRecord.tasks || focusRecord.tasks.length === 0 || !tasksById) {
+			return false;
+		}
+
+		const projectIdsFromUrlArr = projectsFromUrl.split(',');
+		const projectIdsFromUrlObj = {};
+
+		projectIdsFromUrlArr.forEach((projectId) => {
+			projectIdsFromUrlObj[projectId] = true;
+		});
+
+		const { tasks } = focusRecord;
+		const oneOfTheTasksHasASelectedProject = tasks.find((task) => {
+			const taskWithFullInfo = tasksById[task.taskId];
+
+			if (!taskWithFullInfo) {
+				return false;
+			}
+
+			console.log(taskWithFullInfo);
+
+			const taskIsFromASelectedProject = projectIdsFromUrlObj[taskWithFullInfo.projectId];
+			return taskIsFromASelectedProject;
+		});
+
+		return oneOfTheTasksHasASelectedProject;
+	};
+
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
 	const includesAllDates = firstDayToTodayString === currentDateRangeString;
@@ -88,7 +127,7 @@ export const useFilterFocusRecords = ({
 			const newFilteredFocusRecords = getFilteredFocusRecords();
 			setFilteredFocusRecords(newFilteredFocusRecords);
 		}
-	}, [defaultFocusRecords, taskIdToFilterBy, startDateFromUrl, endDateFromUrl]);
+	}, [defaultFocusRecords, taskIdToFilterBy, startDateFromUrl, endDateFromUrl, projectsFromUrl, tasksById]);
 
 	const getFilteredFocusRecords = () => {
 		let searchedItems;
@@ -104,7 +143,10 @@ export const useFilterFocusRecords = ({
 		const searchedItemsFocusRecords = searchedItems.map((result) => result.item);
 
 		const newFilteredFocusRecords = searchedItemsFocusRecords.filter(
-			(focusRecord) => focusRecordContainsTaskId(focusRecord) && focusRecordInDateRange(focusRecord)
+			(focusRecord) =>
+				focusRecordContainsTaskId(focusRecord) &&
+				focusRecordContainsProjectId(focusRecord) &&
+				focusRecordInDateRange(focusRecord)
 		);
 
 		return newFilteredFocusRecords;

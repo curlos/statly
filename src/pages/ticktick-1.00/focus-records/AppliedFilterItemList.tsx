@@ -17,7 +17,9 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 
-	const [projectNamesStr, setProjectNamesStr] = useState('projectsFromUrl');
+	const [projectNamesStr, setProjectNamesStr] = useState(
+		projectsFromUrl ? getStrInBulletPointsMD(projectsFromUrl.split(',')) : ''
+	);
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
@@ -32,9 +34,7 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 			return;
 		}
 
-		console.log(projectsById);
-
-		const projectIdsFromUrlArr = projectsFromUrl.split(',');
+		const projectIdsFromUrlArr = projectsFromUrl ? projectsFromUrl.split(',') : [];
 		const projectNamesArr = [];
 
 		projectIdsFromUrlArr.forEach((projectId) => {
@@ -42,12 +42,7 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 			projectNamesArr.push(name);
 		});
 
-		const newProjectNamesStr = projectNamesArr
-			.map((projectName, index) => {
-				// Append a newline if the item is not the last in the array
-				return `- ${projectName}${index < projectNamesArr.length - 1 ? '\n' : ''}`;
-			})
-			.join('');
+		const newProjectNamesStr = getStrInBulletPointsMD(projectNamesArr);
 
 		setProjectNamesStr(newProjectNamesStr);
 	}, [isLoadingGetProjects, projectsById, projectsFromUrl]);
@@ -125,16 +120,16 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 		return !isDefaultFilter;
 	});
 
-	if (nonDefaultFilterList.length === 0) {
-		return null;
-	}
-
 	const {
 		name: projectFilterName,
 		value: projectFilterValue,
 		handleRemove: projectFilterHandleRemove,
 	} = projectsFilter;
 	const atLeastOneSelectedProject = projectsFromUrl;
+
+	if (nonDefaultFilterList.length === 0 && !atLeastOneSelectedProject) {
+		return null;
+	}
 
 	return (
 		<div className="container pb-4">
@@ -178,6 +173,15 @@ const AppliedFilterItem = ({ name, value, handleRemove }) => {
 			</div>
 		</div>
 	);
+};
+
+const getStrInBulletPointsMD = (strArr) => {
+	return strArr
+		.map((item, index) => {
+			// Append a newline if the item is not the last in the array
+			return `- ${item}${index < strArr.length - 1 ? '\n' : ''}`;
+		})
+		.join('');
 };
 
 export default AppliedFilterItemList;
