@@ -36,6 +36,7 @@ const ModalFilterSidebar = ({
 	const sortBy = searchParams.get('sort-by');
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const projectsFromUrl = searchParams.get('projects');
 
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
@@ -47,8 +48,6 @@ const ModalFilterSidebar = ({
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects } = fetchedProjects || {};
-
-	console.log(projects);
 
 	const isSortByOptionChecked = (sortByOption) => {
 		if (sortByOption === 'Newest' && !sortBy) {
@@ -83,6 +82,23 @@ const ModalFilterSidebar = ({
 	useEffect(() => {
 		setLocalSearchText(searchTextFromUrl);
 	}, [searchTextFromUrl]);
+
+	const getProjectsFromUrlById = (projectsFromUrl) => {
+		if (!projectsFromUrl) {
+			return {};
+		}
+
+		const projectIdsArr = projectsFromUrl.split(',');
+		const projectsFromUrlById = {};
+
+		for (let projectId of projectIdsArr) {
+			projectsFromUrlById[projectId] = true;
+		}
+
+		return projectsFromUrlById;
+	};
+
+	const projectsFromUrlById = getProjectsFromUrlById(projectsFromUrl);
 
 	return (
 		<AnimatePresence>
@@ -302,7 +318,20 @@ const ModalFilterSidebar = ({
 								/>
 							</div>
 
-							<div>{projects?.map((project) => <CheckboxProject project={project} />)}</div>
+							<div>
+								{projects?.map((project) => (
+									<CheckboxProject
+										key={project.id}
+										{...{
+											project,
+											chosenColorObj,
+											nextLightestColorObj,
+											projectsFromUrlById,
+											updateQueryParams,
+										}}
+									/>
+								))}
+							</div>
 						</div>
 					</motion.div>
 				</motion.div>
@@ -311,9 +340,8 @@ const ModalFilterSidebar = ({
 	);
 };
 
-const CheckboxProject = ({ project }) => {
-	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
-	const isChecked = false;
+const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projectsFromUrlById, updateQueryParams }) => {
+	const isChecked = projectsFromUrlById[project.id];
 
 	return (
 		<div className="flex items-center gap-1">
@@ -326,12 +354,33 @@ const CheckboxProject = ({ project }) => {
 					nextLightestColorObj.hover.textColor
 				)}
 				onClick={() => {
-					console.log('Checked');
+					if (isChecked) {
+						projectsFromUrlById[project.id] = false;
+					} else {
+						projectsFromUrlById[project.id] = true;
+					}
+
+					const commaSeparatedSelectedProjects = getCommaSeparatedSelectedProjects(projectsFromUrlById);
+					updateQueryParams({ projects: commaSeparatedSelectedProjects });
 				}}
 			/>
 			<div>{project.name}</div>
 		</div>
 	);
+};
+
+const getCommaSeparatedSelectedProjects = (projectsFromUrlById) => {
+	const selectedProjectsArr = [];
+
+	for (let projectId of Object.keys(projectsFromUrlById)) {
+		const isChecked = projectsFromUrlById[projectId];
+
+		if (isChecked) {
+			selectedProjectsArr.push(projectId);
+		}
+	}
+
+	return selectedProjectsArr.join(',');
 };
 
 export default ModalFilterSidebar;
