@@ -11,11 +11,11 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 
 const Page = () => {
 	const { searchParams } = useSearchParamsContext();
+	const searchTextFromUrl = searchParams.get('search') || '';
 
 	// Query Params
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const groupBy = searchParams.get('group-by');
-	const searchTextFromUrl = searchParams.get('search') || '';
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
@@ -88,7 +88,6 @@ const Page = () => {
 						filteredFocusRecords,
 						setFilteredFocusRecords,
 						focusRecordListRef,
-						searchTextFromUrl,
 						showCompletedTasks,
 						setShowCompletedTasks,
 					}}

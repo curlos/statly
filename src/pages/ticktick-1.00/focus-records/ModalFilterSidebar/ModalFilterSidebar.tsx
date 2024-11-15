@@ -1,25 +1,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../../../../components/Icon';
-import CustomRadioButton from '../../../../components/CustomRadioButton';
-import classNames from 'classnames';
-import useHandleError from '../../../../hooks/useHandleError';
-import { useEditUserSettingsMutation } from '../../../../services/resources/userSettingsApi';
-import FormPickDateRange from '../../../../components/FormPickDateRange';
-import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
-import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { useEffect, useState } from 'react';
-import { debounce } from '../../../../utils/helpers.utils';
-import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
 import SortBySection from './SortBySection';
 import GroupBySection from './GroupBySection';
 import DateRangeSection from './DateRangeSection';
 import OtherSection from './OtherSection';
+import ProjectsSection from './ProjectsSection';
+import SearchSection from './SearchSection';
 
 const ModalFilterSidebar = ({
 	isOpen,
 	setIsOpen,
-	searchTextFromUrl,
 	sortByOptions,
 	GROUP_BY_OPTIONS,
 	showCompletedTasks,
@@ -34,26 +24,6 @@ const ModalFilterSidebar = ({
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
 	};
-
-	const { updateQueryParams } = useSearchParamsContext();
-
-	const [localSearchText, setLocalSearchText] = useState(searchTextFromUrl);
-
-	const handleDebouncedSearch = debounce(() => {
-		updateQueryParams({ search: localSearchText });
-	}, 1000);
-
-	useEffect(() => {
-		handleDebouncedSearch();
-
-		return () => {
-			handleDebouncedSearch.cancel();
-		};
-	}, [localSearchText]);
-
-	useEffect(() => {
-		setLocalSearchText(searchTextFromUrl);
-	}, [searchTextFromUrl]);
 
 	return (
 		<AnimatePresence>
@@ -92,21 +62,7 @@ const ModalFilterSidebar = ({
 							/>
 						</div>
 
-						<div className="flex items-center gap-1 p-1 px-2 bg-color-gray-600 rounded-3xl mt-4">
-							<Icon
-								name="search"
-								fill={0}
-								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-							/>
-							<input
-								placeholder="Search"
-								value={localSearchText}
-								onChange={(e) => {
-									setLocalSearchText(e.target.value);
-								}}
-								className="text-[16px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
-							/>
-						</div>
+						<SearchSection />
 
 						<hr className="border-color-gray-200 my-4" />
 						<SortBySection {...{ sortByOptions }} />
@@ -120,8 +76,8 @@ const ModalFilterSidebar = ({
 						<hr className="border-color-gray-200 my-4" />
 						<OtherSection {...{ showCompletedTasks, setShowCompletedTasks }} />
 
-						{/* Projects */}
 						<hr className="border-color-gray-200 my-4" />
+						<ProjectsSection />
 					</motion.div>
 				</motion.div>
 			)}

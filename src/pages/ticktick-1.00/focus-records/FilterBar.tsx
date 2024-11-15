@@ -6,7 +6,6 @@ import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const FilterBar = ({
-	searchTextFromUrl,
 	defaultFocusRecords,
 	filteredFocusRecords,
 	setFilteredFocusRecords,
@@ -63,7 +62,6 @@ const FilterBar = ({
 				{...{
 					isOpen: showFilterSidebar,
 					setIsOpen: setShowFilterSidebar,
-					searchTextFromUrl,
 					sortByOptions,
 					GROUP_BY_OPTIONS,
 					showCompletedTasks,
