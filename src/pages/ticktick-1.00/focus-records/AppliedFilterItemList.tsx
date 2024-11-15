@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import Icon from '../../../components/Icon';
-import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
+import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import { useEffect, useState } from 'react';
 
 const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -12,10 +13,36 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const projectsFromUrl = searchParams.get('projects') || '';
+
+	const [projectNamesStr, setProjectNamesStr] = useState('projectsFromUrl');
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById } = fetchedTasks || {};
+
+	// RTK Query - TickTick 1.0 - Projects
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
+	useEffect(() => {
+		if (isLoadingGetProjects) {
+			return;
+		}
+
+		console.log(projectsById);
+
+		const projectIdsFromUrlArr = projectsFromUrl.split(',');
+		const projectNamesArr = [];
+
+		projectIdsFromUrlArr.forEach((projectId) => {
+			const { name } = projectsById[projectId];
+			projectNamesArr.push(name);
+		});
+
+		const newProjectNamesStr = projectNamesArr.join(', ');
+		setProjectNamesStr(newProjectNamesStr);
+	}, [projectsById]);
 
 	const groupByFilter = {
 		name: `Group By`,
@@ -60,7 +87,15 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 		},
 	};
 
-	const allFilters = [taskIdFilter, groupByFilter, sortByFilter, searchTextFilter, dateRangeFilter];
+	const projectsFilter = {
+		name: 'Projects',
+		value: projectNamesStr,
+		handleRemove: () => {
+			updateQueryParams({ projects: '' });
+		},
+	};
+
+	const allFilters = [taskIdFilter, dateRangeFilter, groupByFilter, sortByFilter, searchTextFilter, projectsFilter];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
@@ -94,7 +129,7 @@ const AppliedFilterItem = ({ name, value, handleRemove }) => {
 			<div className={classNames('px-2 py-1 text-[14px] text-white rounded-xl', bgColorHalfOpacity)}>
 				<div className="overflow-hidden">
 					<span className="font-bold">{name}: </span>
-					<span>{value}</span>
+					<span className="text-wrap break-all">{value}</span>
 				</div>
 			</div>
 

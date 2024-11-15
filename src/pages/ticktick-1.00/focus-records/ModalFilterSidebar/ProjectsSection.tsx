@@ -64,25 +64,23 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
 	const isChecked = projectsFromUrlById[project.id];
 
 	return (
-		<div className="flex items-center gap-1">
+		<div
+			className="flex items-center gap-1 cursor-pointer"
+			onClick={() => {
+				if (isChecked) {
+					projectsFromUrlById[project.id] = false;
+				} else {
+					projectsFromUrlById[project.id] = true;
+				}
+
+				const commaSeparatedSelectedProjects = getCommaSeparatedSelectedProjects(projectsFromUrlById);
+				updateQueryParams({ projects: commaSeparatedSelectedProjects });
+			}}
+		>
 			<Icon
 				name={isChecked ? 'check_box' : 'check_box_outline_blank'}
 				fill={1}
-				customClass={classNames(
-					'!text-[22px] cursor-pointer',
-					chosenColorObj.textColor,
-					nextLightestColorObj.hover.textColor
-				)}
-				onClick={() => {
-					if (isChecked) {
-						projectsFromUrlById[project.id] = false;
-					} else {
-						projectsFromUrlById[project.id] = true;
-					}
-
-					const commaSeparatedSelectedProjects = getCommaSeparatedSelectedProjects(projectsFromUrlById);
-					updateQueryParams({ projects: commaSeparatedSelectedProjects });
-				}}
+				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
 			/>
 			<div>{project.name}</div>
 		</div>

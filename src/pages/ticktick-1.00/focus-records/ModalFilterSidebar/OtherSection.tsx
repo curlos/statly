@@ -22,33 +22,35 @@ const OtherSection = ({ showCompletedTasks, setShowCompletedTasks }) => {
 					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 				/>
 			</div>
-			<div className="flex items-center gap-1">
+			<div
+				className="flex items-center gap-1 cursor-pointer"
+				onClick={() => {
+					const newShowCompletedTasks = !showCompletedTasks;
+					setShowCompletedTasks(newShowCompletedTasks);
+
+					handleError(async () => {
+						const payload = {
+							tickTickOne: {
+								pages: {
+									focusRecords: {
+										showCompletedTasks: newShowCompletedTasks,
+									},
+								},
+							},
+						};
+
+						await editUserSettings(payload).unwrap();
+					});
+				}}
+			>
 				<Icon
 					name={showCompletedTasks ? 'check_box' : 'check_box_outline_blank'}
 					fill={1}
 					customClass={classNames(
-						'!text-[22px] cursor-pointer',
+						'!text-[22px]',
 						chosenColorObj.textColor,
 						nextLightestColorObj.hover.textColor
 					)}
-					onClick={() => {
-						const newShowCompletedTasks = !showCompletedTasks;
-						setShowCompletedTasks(newShowCompletedTasks);
-
-						handleError(async () => {
-							const payload = {
-								tickTickOne: {
-									pages: {
-										focusRecords: {
-											showCompletedTasks: newShowCompletedTasks,
-										},
-									},
-								},
-							};
-
-							await editUserSettings(payload).unwrap();
-						});
-					}}
 				/>
 				<div>Show Completed Tasks</div>
 			</div>
