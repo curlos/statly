@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import Icon from '../../../../components/Icon';
 import useHandleError from '../../../../hooks/useHandleError';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { useEditUserSettingsMutation } from '../../../../services/resources/userSettingsApi';
+import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../../services/resources/userSettingsApi';
 
 const OtherSection = ({
 	showCompletedTasks,
@@ -15,6 +15,9 @@ const OtherSection = ({
 	const handleError = useHandleError();
 
 	// RTK Query - User Settings
+	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
+	const { userSettings } = fetchedUserSettings || {};
+
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	return (
@@ -27,72 +30,86 @@ const OtherSection = ({
 					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 				/>
 			</div>
-			<div
-				className="flex items-center gap-1 cursor-pointer"
-				onClick={() => {
-					const newShowCompletedTasks = !showCompletedTasks;
-					setShowCompletedTasks(newShowCompletedTasks);
 
-					handleError(async () => {
-						const payload = {
-							tickTickOne: {
-								pages: {
-									focusRecords: {
-										showCompletedTasks: newShowCompletedTasks,
-									},
+			{/* Checkbox - Show Completed Tasks */}
+			{!isLoadingGetUserSettings && (
+				<CheckboxOther
+					{...{
+						userSettings,
+						userSettingProperty: 'showCompletedTasks',
+						name: 'Show Completed Tasks',
+						showValue: showCompletedTasks,
+						setShowValue: setShowCompletedTasks,
+						handleError,
+						editUserSettings,
+						chosenColorObj,
+						nextLightestColorObj,
+					}}
+				/>
+			)}
+
+			{/* Checkbox - Show Total Focus Records Duration */}
+			{!isLoadingGetUserSettings && (
+				<CheckboxOther
+					{...{
+						userSettings,
+						userSettingProperty: 'showTotalFocusDuration',
+						name: 'Show Total Focus Records Duration',
+						showValue: showTotalFocusDuration,
+						setShowValue: setShowTotalFocusDuration,
+						handleError,
+						editUserSettings,
+						chosenColorObj,
+						nextLightestColorObj,
+					}}
+				/>
+			)}
+		</div>
+	);
+};
+
+const CheckboxOther = ({
+	userSettings,
+	userSettingProperty,
+	name,
+	showValue,
+	setShowValue,
+	handleError,
+	editUserSettings,
+	chosenColorObj,
+	nextLightestColorObj,
+}) => {
+	return (
+		<div
+			className="flex items-center gap-1 cursor-pointer"
+			onClick={() => {
+				const newShowValue = !showValue;
+				setShowValue(newShowValue);
+
+				const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
+
+				handleError(async () => {
+					const payload = {
+						tickTickOne: {
+							pages: {
+								focusRecords: {
+									...restOfFocusRecordsKeysAndVals,
+									[userSettingProperty]: newShowValue,
 								},
 							},
-						};
+						},
+					};
 
-						await editUserSettings(payload).unwrap();
-					});
-				}}
-			>
-				<Icon
-					name={showCompletedTasks ? 'check_box' : 'check_box_outline_blank'}
-					fill={1}
-					customClass={classNames(
-						'!text-[22px]',
-						chosenColorObj.textColor,
-						nextLightestColorObj.hover.textColor
-					)}
-				/>
-				<div>Show Completed Tasks</div>
-			</div>
-
-			{/* TODO: Probably come back and refactor this into a component to be reused by both Show Completed Tasks and Show Total Focus Duration. */}
-			<div
-				className="flex items-center gap-1 cursor-pointer"
-				onClick={() => {
-					const newShowTotalFocusDuration = !showTotalFocusDuration;
-					setShowTotalFocusDuration(newShowTotalFocusDuration);
-
-					handleError(async () => {
-						const payload = {
-							tickTickOne: {
-								pages: {
-									focusRecords: {
-										showTotalFocusDuration: newShowTotalFocusDuration,
-									},
-								},
-							},
-						};
-
-						await editUserSettings(payload).unwrap();
-					});
-				}}
-			>
-				<Icon
-					name={showTotalFocusDuration ? 'check_box' : 'check_box_outline_blank'}
-					fill={1}
-					customClass={classNames(
-						'!text-[22px]',
-						chosenColorObj.textColor,
-						nextLightestColorObj.hover.textColor
-					)}
-				/>
-				<div>Show Total Focus Records Duration</div>
-			</div>
+					await editUserSettings(payload).unwrap();
+				});
+			}}
+		>
+			<Icon
+				name={showValue ? 'check_box' : 'check_box_outline_blank'}
+				fill={1}
+				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
+			/>
+			<div>{name}</div>
 		</div>
 	);
 };
