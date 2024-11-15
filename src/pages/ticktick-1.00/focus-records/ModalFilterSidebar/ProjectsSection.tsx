@@ -117,6 +117,7 @@ const ProjectsSection = () => {
 							const projectGroup = projectOrProjectGroup;
 							return (
 								<ProjectGroupWithProjects
+									key={projectGroup.id}
 									{...{
 										projectGroup,
 										groupedProjectsByGroupId,
