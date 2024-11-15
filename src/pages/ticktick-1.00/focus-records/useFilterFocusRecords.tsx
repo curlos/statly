@@ -96,8 +96,6 @@ export const useFilterFocusRecords = ({
 				return false;
 			}
 
-			console.log(taskWithFullInfo);
-
 			const taskIsFromASelectedProject = projectIdsFromUrlObj[taskWithFullInfo.projectId];
 			return taskIsFromASelectedProject;
 		});

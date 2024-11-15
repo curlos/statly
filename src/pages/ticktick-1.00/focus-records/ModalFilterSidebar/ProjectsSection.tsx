@@ -2,7 +2,9 @@ import classNames from 'classnames';
 import Icon from '../../../../components/Icon';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
+import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
+import { useEffect, useRef, useState } from 'react';
+import Accordion from '../../../../components/Accordion/Accordion';
 
 const ProjectsSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
@@ -11,8 +13,15 @@ const ProjectsSection = () => {
 	const projectsFromUrl = searchParams.get('projects');
 
 	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects } = useGetAllProjectsQuery();
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects } = fetchedProjects || {};
+
+	// RTK Query - TickTick 1.0 - Project Groups
+	const { data: fetchedProjectGroups, isLoading: isLoadingGetProjectGroups } = useGetAllProjectGroupsQuery();
+	const { projectGroupsById } = fetchedProjectGroups || {};
+
+	const [groupedProjectsByGroupId, setGroupedProjectsByGroupId] = useState([]);
+	const [ungroupedProjects, setUngroupedProjects] = useState([]);
 
 	const getProjectsFromUrlById = (projectsFromUrl) => {
 		if (!projectsFromUrl) {
@@ -31,6 +40,42 @@ const ProjectsSection = () => {
 
 	const projectsFromUrlById = getProjectsFromUrlById(projectsFromUrl);
 
+	useEffect(() => {
+		if (isLoadingGetProjects || isLoadingGetProjectGroups) {
+			return;
+		}
+
+		const { groupedProjects, ungroupedProjects } = projects.reduce(
+			(acc, project) => {
+				if (project.groupId) {
+					acc.groupedProjects.push(project); // Add to groupedProjects if groupId exists
+				} else {
+					acc.ungroupedProjects.push(project); // Add to ungroupedProjects if no groupId
+				}
+				return acc;
+			},
+			{ groupedProjects: [], ungroupedProjects: [] }
+		);
+
+		const groupedProjectsByGroupId = {};
+
+		groupedProjects.forEach((groupedProject) => {
+			const { groupId } = groupedProject;
+
+			if (!groupedProjectsByGroupId[groupId]) {
+				groupedProjectsByGroupId[groupId] = [];
+			}
+
+			groupedProjectsByGroupId[groupId].push(groupedProject);
+		});
+
+		setGroupedProjectsByGroupId(groupedProjectsByGroupId);
+		setUngroupedProjects(ungroupedProjects);
+	}, [projects, projectGroupsById]);
+
+	console.log(groupedProjectsByGroupId);
+	console.log(ungroupedProjects);
+
 	return (
 		<div>
 			<div className="flex items-center gap-1 mb-3">
@@ -43,7 +88,23 @@ const ProjectsSection = () => {
 			</div>
 
 			<div>
-				{projects?.map((project) => (
+				<div className="space-y-2">
+					{Object.keys(groupedProjectsByGroupId).map((groupId) => (
+						<ProjectGroupWithProjects
+							{...{
+								groupId,
+								groupedProjectsByGroupId,
+								projectGroupsById,
+								chosenColorObj,
+								nextLightestColorObj,
+								projectsFromUrlById,
+								updateQueryParams,
+							}}
+						/>
+					))}
+				</div>
+
+				{/* {projects?.map((project) => (
 					<CheckboxProject
 						key={project.id}
 						{...{
@@ -54,8 +115,55 @@ const ProjectsSection = () => {
 							updateQueryParams,
 						}}
 					/>
-				))}
+				))} */}
 			</div>
+		</div>
+	);
+};
+
+const ProjectGroupWithProjects = ({
+	groupId,
+	groupedProjectsByGroupId,
+	projectGroupsById,
+	chosenColorObj,
+	nextLightestColorObj,
+	projectsFromUrlById,
+	updateQueryParams,
+}) => {
+	const groupedProjects = groupedProjectsByGroupId[groupId];
+	const groupName = projectGroupsById[groupId].name;
+	const [isOpenForParent, setIsOpenForParent] = useState(false);
+
+	return (
+		<div key={groupId}>
+			<Accordion
+				title={
+					<div className="flex items-center gap-1">
+						<Icon
+							name={isOpenForParent ? 'folder_open' : 'folder'}
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						/>
+						<div>{groupName}</div>
+					</div>
+				}
+				setIsOpenForParent={setIsOpenForParent}
+			>
+				<div className="pl-3">
+					{groupedProjects?.map((project) => (
+						<CheckboxProject
+							key={project.id}
+							{...{
+								project,
+								chosenColorObj,
+								nextLightestColorObj,
+								projectsFromUrlById,
+								updateQueryParams,
+							}}
+						/>
+					))}
+				</div>
+			</Accordion>
 		</div>
 	);
 };

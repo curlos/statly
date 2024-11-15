@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../Icon';
 
-const Accordion = ({ title, children }) => {
+const Accordion = ({ title, children, setIsOpenForParent }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const toggleOpen = () => setIsOpen(!isOpen);
+	const toggleOpen = () => {
+		setIsOpen(!isOpen);
+		setIsOpenForParent(!isOpen);
+	};
 
 	return (
 		<div>
