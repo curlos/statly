@@ -6,6 +6,9 @@ import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../../..
 import { useEffect, useState } from 'react';
 import Accordion from '../../../../components/Accordion/Accordion';
 
+/**
+ * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
+ */
 const ProjectsSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
@@ -25,6 +28,15 @@ const ProjectsSection = () => {
 	const [sortedUngroupedProjects, setSortedUngroupedProjects] = useState([]);
 	const [sortedArchivedProjects, setSortedArchivedProjects] = useState([]);
 
+	/**
+	 * @description Transforms the URL string of the "projects" query param into an object with the project ids as the keys.
+	 * @param {String} projectsFromUrl - The comma separated string of the "projects" query params.
+	 * @returns {Object} - Example: {
+	 * 	"66d0578f619d91029a6856ff": true,
+	 * 	"6546186da378914a9ef06b12": false,
+	 * ...
+	 * }
+	 */
 	const getProjectsFromUrlById = (projectsFromUrl) => {
 		if (!projectsFromUrl) {
 			return {};
@@ -47,14 +59,15 @@ const ProjectsSection = () => {
 			return;
 		}
 
+		// Go through all of the user's projects and separate them into 3 groups: Grouped, Ungrouped, and Archived projects.
 		const { groupedProjects, ungroupedProjects, archivedProjects } = projects.reduce(
 			(acc, project) => {
 				if (project.closed) {
 					acc.archivedProjects.push(project);
 				} else if (project.groupId) {
-					acc.groupedProjects.push(project); // Add to groupedProjects if groupId exists
+					acc.groupedProjects.push(project);
 				} else {
-					acc.ungroupedProjects.push(project); // Add to ungroupedProjects if no groupId
+					acc.ungroupedProjects.push(project);
 				}
 				return acc;
 			},
@@ -63,6 +76,7 @@ const ProjectsSection = () => {
 
 		const groupedProjectsByGroupId = {};
 
+		// Go through each project that is has a valid "groupId" and push it into the array of projects for that specific Project Group. Will look something like "{ "66d0578f619d91029a6856ff": [{"name": "GUNPLA", ...}]}"".
 		groupedProjects.forEach((groupedProject) => {
 			const { groupId } = groupedProject;
 
@@ -74,15 +88,16 @@ const ProjectsSection = () => {
 		});
 
 		const projectGroups = Object.keys(groupedProjectsByGroupId).map((groupId) => projectGroupsById[groupId]);
-		const sortedProjectGroups = projectGroups.sort((a, b) => a.sortOrder - b.sortOrder);
 
-		const sortedArchivedProjects = archivedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
-
-		// Go through each list of projects in "groupedProjectsByGroupId" and sort them according to each other.
+		// Sort all the grouped projects within the specifc Project Group project's array.
 		Object.keys(groupedProjectsByGroupId).forEach((groupId) => {
 			groupedProjectsByGroupId[groupId].sort((a, b) => a.sortOrder - b.sortOrder);
 		});
 
+		// "Project Groups" are different from "Projects". They are the "folders" that contain other projects within them. However, just like "Projects", they have a "sortOrder" property that determines the order it should appear in.
+		const sortedProjectGroups = projectGroups.sort((a, b) => a.sortOrder - b.sortOrder);
+
+		const sortedArchivedProjects = archivedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
 		const sortedUngroupedProjects = ungroupedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
 
 		setSortedProjectGroups(sortedProjectGroups);
@@ -91,6 +106,8 @@ const ProjectsSection = () => {
 		setSortedUngroupedProjects(sortedUngroupedProjects);
 	}, [projects, projectGroupsById]);
 
+	// This is the combined array of the "Project Groups" and the ungrouped Projects. It's necessary for them to be a combined array because it's possible on TickTick 1.0 for them to be mixed together. You could have a "Project Group" between two ungrouped "Projects". So, to be as accurate as possible, they both need to be in the same array.
+	// Archived Projects don't need to be here as they're technically not an actual Project Group in TickTick 1.0 and are the lowest priority since they're not active anymore.
 	const sortedProjectsAndGroups = sortedUngroupedProjects &&
 		sortedProjectGroups && [...sortedUngroupedProjects, ...sortedProjectGroups];
 
@@ -109,6 +126,7 @@ const ProjectsSection = () => {
 
 			<div>
 				<div className="space-y-2">
+					{/* Project Groups with their Projects AND Ungrouped Projects */}
 					{sortedProjectsAndGroups?.map((projectOrProjectGroup) => {
 						const { id } = projectOrProjectGroup;
 						const isProjectGroup = groupedProjectsByGroupId[id];
@@ -147,6 +165,7 @@ const ProjectsSection = () => {
 						);
 					})}
 
+					{/* Archived Projects */}
 					<ProjectGroupWithProjects
 						{...{
 							isArchivedGroup: true,
@@ -163,6 +182,9 @@ const ProjectsSection = () => {
 	);
 };
 
+/**
+ * @description A collapsible Accordion that will contain a "Project Group" and the list of projects under that speciifc "Project Group".
+ */
 const ProjectGroupWithProjects = ({
 	isArchivedGroup,
 	archivedProjects,
@@ -178,6 +200,7 @@ const ProjectGroupWithProjects = ({
 	const groupedProjects = isArchivedGroup ? archivedProjects : groupedProjectsByGroupId[id];
 	const groupName = isArchivedGroup ? 'Archived' : projectGroupsById[id].name;
 
+	// This was needed so that I know the state and can show a closing or opening folder icon depending on whether the Accordion is open or not.
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
 
 	return (
@@ -221,6 +244,9 @@ const ProjectGroupWithProjects = ({
 	);
 };
 
+/**
+ * @description Checkbox that will update the query params in the URL to either add or remove a project from the "projects" query params.
+ */
 const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projectsFromUrlById, updateQueryParams }) => {
 	const isChecked = projectsFromUrlById[project.id];
 
@@ -257,6 +283,10 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
 	);
 };
 
+/**
+ * @description Using "projectsFromUrlById", this will check all of the project ids that are checked and will create a comma separated string from this passed-in object. Mostly meant to update the query params of "projects" with this string.
+ * @returns {String}
+ */
 const getCommaSeparatedSelectedProjects = (projectsFromUrlById) => {
 	const selectedProjectsArr = [];
 
