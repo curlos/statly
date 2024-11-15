@@ -10,6 +10,7 @@ import { useSearchParamsContext } from '../../../../contexts/useSearchParamsCont
 import { useEffect, useState } from 'react';
 import { debounce } from '../../../../utils/helpers.utils';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
+import { useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -42,6 +43,12 @@ const ModalFilterSidebar = ({
 
 	// RTK Query - User Settings
 	const [editUserSettings] = useEditUserSettingsMutation();
+
+	// RTK Query - TickTick 1.0 - Projects
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const { projects } = fetchedProjects || {};
+
+	console.log(projects);
 
 	const isSortByOptionChecked = (sortByOption) => {
 		if (sortByOption === 'Newest' && !sortBy) {
@@ -229,7 +236,6 @@ const ModalFilterSidebar = ({
 									confirmBeforeUpdating: true,
 									onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 										if (newStartDate) {
-											// TODO: Get these up in the filter bar or page components.
 											updateQueryParams({
 												'start-date': getFormattedShortMonthDay(newStartDate),
 											});
@@ -283,10 +289,48 @@ const ModalFilterSidebar = ({
 								<div>Show Completed Tasks</div>
 							</div>
 						</div>
+
+						{/* Projects */}
+						<hr className="border-color-gray-200 my-4" />
+						<div>
+							<div className="flex items-center gap-1 mb-3">
+								<h3 className="text-[16px] font-bold">Projects</h3>
+								<Icon
+									name="construction"
+									fill={0}
+									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								/>
+							</div>
+
+							<div>{projects?.map((project) => <CheckboxProject project={project} />)}</div>
+						</div>
 					</motion.div>
 				</motion.div>
 			)}
 		</AnimatePresence>
+	);
+};
+
+const CheckboxProject = ({ project }) => {
+	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
+	const isChecked = false;
+
+	return (
+		<div className="flex items-center gap-1">
+			<Icon
+				name={isChecked ? 'check_box' : 'check_box_outline_blank'}
+				fill={1}
+				customClass={classNames(
+					'!text-[22px] cursor-pointer',
+					chosenColorObj.textColor,
+					nextLightestColorObj.hover.textColor
+				)}
+				onClick={() => {
+					console.log('Checked');
+				}}
+			/>
+			<div>{project.name}</div>
+		</div>
 	);
 };
 

@@ -36,8 +36,6 @@ const TimelineChart = ({ selectedDates }) => {
 		];
 	};
 
-	console.log(getColorScaleRanges());
-
 	const options = {
 		chart: {
 			id: chartId,
