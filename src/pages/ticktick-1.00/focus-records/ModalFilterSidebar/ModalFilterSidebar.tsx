@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { debounce } from '../../../../utils/helpers.utils';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
+import SortBySection from './SortBySection';
 
 const ModalFilterSidebar = ({
 	isOpen,
@@ -48,14 +49,6 @@ const ModalFilterSidebar = ({
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects } = fetchedProjects || {};
-
-	const isSortByOptionChecked = (sortByOption) => {
-		if (sortByOption === 'Newest' && !sortBy) {
-			return true;
-		}
-
-		return sortBy === sortByOption;
-	};
 
 	const isGroupByOptionChecked = (groupByOption) => {
 		if (groupByOption === 'No Group' && !groupBy) {
@@ -155,40 +148,7 @@ const ModalFilterSidebar = ({
 
 						{/* Sort By */}
 						<hr className="border-color-gray-200 my-4" />
-						<div>
-							<div className="flex items-center gap-1 mb-3">
-								<h3 className="text-[16px] font-bold">Sort By</h3>
-								<Icon
-									name="swap_vert"
-									fill={0}
-									customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-								/>
-							</div>
-
-							<div className="space-y-2">
-								{sortByOptions.map((sortByOption) => {
-									return (
-										<CustomRadioButton
-											key={sortByOption + 'radio'}
-											label={sortByOption}
-											name={sortByOption}
-											checked={isSortByOptionChecked(sortByOption)}
-											onChange={() => {
-												if (sortByOption === 'Newest') {
-													updateQueryParams({ 'sort-by': '' });
-												} else {
-													updateQueryParams({ 'sort-by': sortByOption });
-												}
-											}}
-											customOuterCircleClasses={classNames('!w-[20px] !h-[20px]')}
-											customInnerCircleClasses={classNames('!w-[10px] !h-[10px]')}
-											customOuterCircleBorderColorClasses={chosenColorObj.borderColor}
-											customInnerCircleBgColorClasses={chosenColorObj.bgColor}
-										/>
-									);
-								})}
-							</div>
-						</div>
+						<SortBySection {...{ sortByOptions }} />
 
 						{/* Group By */}
 						<hr className="border-color-gray-200 my-4" />
