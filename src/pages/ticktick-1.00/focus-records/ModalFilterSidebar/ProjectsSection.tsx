@@ -22,7 +22,8 @@ const ProjectsSection = () => {
 
 	const [groupedProjectsByGroupId, setGroupedProjectsByGroupId] = useState([]);
 	const [sortedProjectGroups, setSortedProjectGroups] = useState([]);
-	const [ungroupedProjects, setUngroupedProjects] = useState([]);
+	const [sortedUngroupedProjects, setSortedUngroupedProjects] = useState([]);
+	const [sortedArchivedProjects, setSortedArchivedProjects] = useState([]);
 
 	const getProjectsFromUrlById = (projectsFromUrl) => {
 		if (!projectsFromUrl) {
@@ -46,16 +47,18 @@ const ProjectsSection = () => {
 			return;
 		}
 
-		const { groupedProjects, ungroupedProjects } = projects.reduce(
+		const { groupedProjects, ungroupedProjects, archivedProjects } = projects.reduce(
 			(acc, project) => {
-				if (project.groupId) {
+				if (project.closed) {
+					acc.archivedProjects.push(project);
+				} else if (project.groupId) {
 					acc.groupedProjects.push(project); // Add to groupedProjects if groupId exists
 				} else {
 					acc.ungroupedProjects.push(project); // Add to ungroupedProjects if no groupId
 				}
 				return acc;
 			},
-			{ groupedProjects: [], ungroupedProjects: [] }
+			{ groupedProjects: [], ungroupedProjects: [], archivedProjects: [] }
 		);
 
 		const groupedProjectsByGroupId = {};
@@ -73,15 +76,25 @@ const ProjectsSection = () => {
 		const projectGroups = Object.keys(groupedProjectsByGroupId).map((groupId) => projectGroupsById[groupId]);
 		const sortedProjectGroups = projectGroups.sort((a, b) => a.sortOrder - b.sortOrder);
 
+		const sortedArchivedProjects = archivedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
+
 		// Go through each list of projects in "groupedProjectsByGroupId" and sort them according to each other.
 		Object.keys(groupedProjectsByGroupId).forEach((groupId) => {
 			groupedProjectsByGroupId[groupId].sort((a, b) => a.sortOrder - b.sortOrder);
 		});
 
+		const sortedUngroupedProjects = ungroupedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
+
 		setSortedProjectGroups(sortedProjectGroups);
 		setGroupedProjectsByGroupId(groupedProjectsByGroupId);
-		setUngroupedProjects(ungroupedProjects);
+		setSortedArchivedProjects(sortedArchivedProjects);
+		setSortedUngroupedProjects(sortedUngroupedProjects);
 	}, [projects, projectGroupsById]);
+
+	const sortedProjectsAndGroups = sortedUngroupedProjects &&
+		sortedProjectGroups && [...sortedUngroupedProjects, ...sortedProjectGroups];
+
+	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
 
 	return (
 		<div>
@@ -96,39 +109,62 @@ const ProjectsSection = () => {
 
 			<div>
 				<div className="space-y-2">
-					{sortedProjectGroups.map((projectGroup) => (
-						<ProjectGroupWithProjects
-							{...{
-								projectGroup,
-								groupedProjectsByGroupId,
-								projectGroupsById,
-								chosenColorObj,
-								nextLightestColorObj,
-								projectsFromUrlById,
-								updateQueryParams,
-							}}
-						/>
-					))}
-				</div>
+					{sortedProjectsAndGroups?.map((projectOrProjectGroup) => {
+						const { id } = projectOrProjectGroup;
+						const isProjectGroup = groupedProjectsByGroupId[id];
 
-				{/* {projects?.map((project) => (
-					<CheckboxProject
-						key={project.id}
+						if (isProjectGroup) {
+							const projectGroup = projectOrProjectGroup;
+							return (
+								<ProjectGroupWithProjects
+									{...{
+										projectGroup,
+										groupedProjectsByGroupId,
+										projectGroupsById,
+										chosenColorObj,
+										nextLightestColorObj,
+										projectsFromUrlById,
+										updateQueryParams,
+									}}
+								/>
+							);
+						}
+
+						const project = projectOrProjectGroup;
+
+						return (
+							<CheckboxProject
+								key={project.id}
+								{...{
+									project,
+									chosenColorObj,
+									nextLightestColorObj,
+									projectsFromUrlById,
+									updateQueryParams,
+								}}
+							/>
+						);
+					})}
+
+					<ProjectGroupWithProjects
 						{...{
-							project,
+							isArchivedGroup: true,
+							archivedProjects: sortedArchivedProjects,
 							chosenColorObj,
 							nextLightestColorObj,
 							projectsFromUrlById,
 							updateQueryParams,
 						}}
 					/>
-				))} */}
+				</div>
 			</div>
 		</div>
 	);
 };
 
 const ProjectGroupWithProjects = ({
+	isArchivedGroup,
+	archivedProjects,
 	projectGroup,
 	groupedProjectsByGroupId,
 	projectGroupsById,
@@ -137,9 +173,10 @@ const ProjectGroupWithProjects = ({
 	projectsFromUrlById,
 	updateQueryParams,
 }) => {
-	const { id } = projectGroup;
-	const groupedProjects = groupedProjectsByGroupId[id];
-	const groupName = projectGroupsById[id].name;
+	const { id } = isArchivedGroup ? 'Archived' : projectGroup;
+	const groupedProjects = isArchivedGroup ? archivedProjects : groupedProjectsByGroupId[id];
+	const groupName = isArchivedGroup ? 'Archived' : projectGroupsById[id].name;
+
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
 
 	return (
@@ -152,6 +189,13 @@ const ProjectGroupWithProjects = ({
 							fill={0}
 							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 						/>
+						{isArchivedGroup && (
+							<Icon
+								name={'folder_off'}
+								fill={0}
+								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							/>
+						)}
 						<div>{groupName}</div>
 					</div>
 				}
@@ -179,14 +223,16 @@ const ProjectGroupWithProjects = ({
 const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projectsFromUrlById, updateQueryParams }) => {
 	const isChecked = projectsFromUrlById[project.id];
 
+	const { id, name, color } = project;
+
 	return (
 		<div
 			className="flex items-center gap-1 cursor-pointer"
 			onClick={() => {
 				if (isChecked) {
-					projectsFromUrlById[project.id] = false;
+					projectsFromUrlById[id] = false;
 				} else {
-					projectsFromUrlById[project.id] = true;
+					projectsFromUrlById[id] = true;
 				}
 
 				const commaSeparatedSelectedProjects = getCommaSeparatedSelectedProjects(projectsFromUrlById);
@@ -198,7 +244,14 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
 				fill={1}
 				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
 			/>
-			<div>{project.name}</div>
+			<div className="flex-1 flex justify-between items-center gap-1">
+				<div>{name}</div>
+				{color && (
+					<div>
+						<div className="w-[10px] h-[10px] rounded-full" style={{ backgroundColor: color }} />
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
