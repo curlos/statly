@@ -225,7 +225,7 @@ const ProjectGroupWithProjects = ({
 				}
 				setIsOpenForParent={setIsOpenForParent}
 			>
-				<div className="pl-3">
+				<div>
 					{groupedProjects?.map((project) => (
 						<CheckboxProject
 							key={project.id}
@@ -254,7 +254,7 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
 
 	return (
 		<div
-			className="flex items-center gap-1 cursor-pointer"
+			className="flex items-center gap-1 cursor-pointer px-2"
 			onClick={() => {
 				if (isChecked) {
 					projectsFromUrlById[id] = false;
@@ -275,7 +275,7 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
 				<div>{name}</div>
 				{color && (
 					<div>
-						<div className="w-[10px] h-[10px] rounded-full" style={{ backgroundColor: color }} />
+						<div className="w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: color }} />
 					</div>
 				)}
 			</div>
