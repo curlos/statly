@@ -42,7 +42,7 @@ const FilterBar = ({
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
 							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
 						>
-							<div>Filter & Sort</div>
+							<div className="hidden sm:block">Filter & Sort</div>
 							<Icon
 								name="page_info"
 								fill={0}
