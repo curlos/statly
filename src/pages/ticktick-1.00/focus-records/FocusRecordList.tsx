@@ -1,9 +1,7 @@
-import classNames from 'classnames';
-import { MAX_SHOWN_FOCUS_RECORDS } from '../../../utils/constants.utils';
 import { getFocusDuration } from '../../../utils/helpers.utils';
-import FilterSidebar from './FilterSidebar/FilterSidebar';
 import ModalFilterSidebar from './FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord';
+import { useUserSettingsContext } from './useUserSettingsContext';
 
 const FocusRecordList = ({
 	filteredFocusRecords,
@@ -14,12 +12,14 @@ const FocusRecordList = ({
 	showFilterSidebar,
 	setShowFilterSidebar,
 }) => {
+	const { maxFocusRecordsPerPage } = useUserSettingsContext();
+
 	/**
 	 * @description Sorts the focus records by the selected sorting option and also only shows X amount of focus records per page based on the MAX number that is set.
 	 */
 	const getShownFocusRecords = () => {
-		const endIndex = currentPage * MAX_SHOWN_FOCUS_RECORDS;
-		const startIndex = endIndex - MAX_SHOWN_FOCUS_RECORDS;
+		const endIndex = currentPage * maxFocusRecordsPerPage;
+		const startIndex = endIndex - maxFocusRecordsPerPage;
 
 		const noSearchText = sortBy !== 'Most Relevant';
 

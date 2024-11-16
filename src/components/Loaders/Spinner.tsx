@@ -1,7 +1,12 @@
+import classNames from 'classnames';
+import { useThemeContext } from '../../contexts/useThemeContext';
+
 const Spinner = () => {
+	const { chosenColorObj } = useThemeContext();
+
 	return (
 		<svg
-			className="animate-spin h-5 w-5 text-white"
+			className={classNames('animate-spin h-5 w-5', chosenColorObj.textColor)}
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"

@@ -20,21 +20,36 @@ const useUserSettings = () => {
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 	const [showFocusNotes, setShowFocusNotes] = useState(true);
 	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
+	const [maxFocusRecordsPerPage, setMaxFocusRecordsPerPage] = useState(50);
 
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
 			return;
 		}
 
-		const newShowCompletedTasks = userSettings?.tickTickOne?.pages?.focusRecords?.showCompletedTasks;
-		const newShowTotalFocusDuration = userSettings?.tickTickOne?.pages?.focusRecords?.showTotalFocusDuration;
+		const focusRecordsPageSettings = userSettings?.tickTickOne?.pages?.focusRecords;
 
-		if (newShowCompletedTasks !== undefined) {
-			setShowCompletedTasks(newShowCompletedTasks);
+		if (!focusRecordsPageSettings) {
+			return;
 		}
 
-		if (newShowTotalFocusDuration !== undefined) {
-			setShowTotalFocusDuration(newShowTotalFocusDuration);
+		const { showCompletedTasks, showFocusNotes, showTotalFocusDuration, maxFocusRecordsPerPage } =
+			focusRecordsPageSettings;
+
+		if (showCompletedTasks !== undefined) {
+			setShowCompletedTasks(showCompletedTasks);
+		}
+
+		if (showFocusNotes !== undefined) {
+			setShowFocusNotes(showFocusNotes);
+		}
+
+		if (showTotalFocusDuration !== undefined) {
+			setShowTotalFocusDuration(showTotalFocusDuration);
+		}
+
+		if (maxFocusRecordsPerPage !== undefined) {
+			setMaxFocusRecordsPerPage(maxFocusRecordsPerPage);
 		}
 	}, [userSettings]);
 
@@ -45,5 +60,7 @@ const useUserSettings = () => {
 		setShowFocusNotes,
 		showTotalFocusDuration,
 		setShowTotalFocusDuration,
+		maxFocusRecordsPerPage,
+		setMaxFocusRecordsPerPage,
 	};
 };
