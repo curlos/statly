@@ -66,7 +66,7 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 		name: `Search Text`,
 		value: searchTextFromUrl,
 		handleRemove: () => {
-			updateQueryParams({ search: '' });
+			updateQueryParams({ search: '', 'sort-by': '' });
 		},
 	};
 

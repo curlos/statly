@@ -24,14 +24,14 @@ export const useFilterFocusRecords = ({
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
 		isCaseSensitive: false,
-		findAllMatches: false,
-		threshold: 0.3, // Lower threshold for stricter matches
-		location: 0,
-		distance: 100, // Lower distance to prefer closer matches
-		minMatchCharLength: 3, // Increase min match character length for longer matches
+		findAllMatches: true,
+		threshold: 0.1, // Lower threshold for the strictest matches
+		ignoreLocation: true, // Ignores location to search throughout the entire text
+		distance: 99999, // Higher distance means the searching algorithm will treat characters at the beginning and at the end as equally as possible.
+		minMatchCharLength: 3, // Increase min match character length for longer matches. Will ignore short words like "at" or "is" since I don't need those.
 		keys: [
-			{ name: 'tasks.title', weight: 1 },
 			{ name: 'note', weight: 1 },
+			{ name: 'tasks.title', weight: 0.75 },
 			{ name: 'tasks.projectName', weight: 0.5 },
 		],
 	});
@@ -39,15 +39,11 @@ export const useFilterFocusRecords = ({
 	const filterBySearch = () => {
 		if (searchTextFromUrl.trim() === '') {
 			setSortByOptions(DEFAULT_SORT_BY_OPTIONS);
-			updateQueryParams({ 'sort-by': '' });
 		} else {
-			const mostRelevantSortByOption = 'Most Relevant';
-			setSortByOptions([mostRelevantSortByOption, ...DEFAULT_SORT_BY_OPTIONS]);
-			updateQueryParams({ 'sort-by': mostRelevantSortByOption });
+			setSortByOptions(['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS]);
 		}
 
 		setFilteredFocusRecords(getFilteredFocusRecords());
-		updateQueryParams({ search: searchTextFromUrl });
 	};
 
 	useEffect(() => {

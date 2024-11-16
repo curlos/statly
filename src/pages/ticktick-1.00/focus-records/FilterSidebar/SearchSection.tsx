@@ -10,7 +10,7 @@ const SearchSection = () => {
 	const [localSearchText, setLocalSearchText] = useState(searchTextFromUrl);
 
 	const handleDebouncedSearch = debounce(() => {
-		updateQueryParams({ search: localSearchText });
+		updateQueryParams({ search: localSearchText, 'sort-by': localSearchText.length > 0 ? 'Most Relevant' : '' });
 	}, 1000);
 
 	useEffect(() => {
