@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import Icon from './Icon';
-import { areDatesEqual, formatCheckedInDayDate, getAllDaysInWeekFromDate, getCalendarMonth } from '../utils/date.utils';
+import {
+	areDatesEqual,
+	formatCheckedInDayDate,
+	getAllDaysInWeekFromDate,
+	getAllMonths,
+	getCalendarMonth,
+} from '../utils/date.utils';
 import { setTimeOnDateString } from '../utils/date.utils';
 import classNames from 'classnames';
 import { useThemeContext } from '../contexts/useThemeContext';
@@ -127,20 +133,24 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 				</div>
 			</div>
 
-			<MonthView
-				{...{
-					calendarMonth,
-					allDaysInWeekFromDate,
-					localCurrentDate,
-					selectedInterval,
-					setConnectedCurrentDate,
-					setLocalCurrentDate,
-					chosenColorObj,
-					dueDate,
-					setDueDate,
-					time,
-				}}
-			/>
+			{showYearView ? (
+				<YearView {...{ localCurrentDate, setLocalCurrentDate, dueDate, setDueDate, setShowYearView }} />
+			) : (
+				<MonthView
+					{...{
+						calendarMonth,
+						allDaysInWeekFromDate,
+						localCurrentDate,
+						selectedInterval,
+						setConnectedCurrentDate,
+						setLocalCurrentDate,
+						chosenColorObj,
+						dueDate,
+						setDueDate,
+						time,
+					}}
+				/>
+			)}
 		</div>
 	);
 };
@@ -243,6 +253,44 @@ const MonthView = ({
 					);
 				})}
 			</div>
+		</div>
+	);
+};
+
+const YearView = ({ localCurrentDate, setLocalCurrentDate, dueDate, setDueDate, setShowYearView }) => {
+	const monthsOfYear = getAllMonths(localCurrentDate);
+	console.log(monthsOfYear);
+
+	return (
+		<div className="grid grid-cols-3 gap-2 my-3">
+			{monthsOfYear.map((monthDate) => {
+				const monthName = monthDate.toLocaleString('default', { month: 'short' });
+
+				// Check if the current monthDate has the same month and year as localCurrentDate
+				const isSelected =
+					monthDate.getFullYear() === localCurrentDate.getFullYear() &&
+					monthDate.getMonth() === localCurrentDate.getMonth();
+
+				return (
+					<div
+						className="flex justify-center"
+						onClick={() => {
+							setLocalCurrentDate(monthDate);
+							setDueDate(monthDate);
+							setShowYearView(false);
+						}}
+					>
+						<div
+							className={classNames(
+								'flex justify-center items-center h-[40px] w-[40px] cursor-pointer rounded-full',
+								isSelected ? 'bg-blue-500' : 'bg-color-gray-600'
+							)}
+						>
+							{monthName}
+						</div>
+					</div>
+				);
+			})}
 		</div>
 	);
 };

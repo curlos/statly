@@ -934,3 +934,19 @@ export const getDayString = (date) => {
 	const dayOfWeek = daysOfWeek[date.getDay()];
 	return dayOfWeek;
 };
+
+export const getAllMonths = (date) => {
+    let months = [];
+    const year = date.getFullYear(); // Extract the year from the date
+    const day = date.getDate(); // Extract the day from the date
+
+    for (let month = 0; month < 12; month++) {
+        // Handle cases where the day does not exist in the month by using the last day of the month
+        let testDate = new Date(year, month + 1, 0); // Gets the last day of this month
+        let finalDay = day > testDate.getDate() ? testDate.getDate() : day; // Use the smaller of the provided day or the last day of the month
+        
+        months.push(new Date(year, month, finalDay)); // Create the date with the final day
+    }
+    return months;
+};
+
