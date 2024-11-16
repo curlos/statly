@@ -9,6 +9,7 @@ interface CustomInputProps {
 	setValue: React.Dispatch<React.SetStateAction<any>>;
 	customClasses?: string;
 	onChange?: any;
+	required?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -20,6 +21,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	setValue,
 	onChange,
 	customClasses,
+	required,
 }) => (
 	<input
 		type={type || 'text'}
@@ -43,6 +45,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 		}
 		min={type === 'number' ? min : undefined}
 		max={type === 'number' ? max : undefined}
+		required={required}
 	/>
 );
 

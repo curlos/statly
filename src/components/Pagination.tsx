@@ -182,17 +182,19 @@ const DropdownCustomPageNumber: React.FC<DropdownAccountDetailsProps> = ({
 }) => {
 	const [localCurrentPage, setLocalCurrentPage] = useState(currentPage);
 
-	const minPages = 1;
-	const maxPages = totalPages;
-
 	useEffect(() => {
 		setLocalCurrentPage(currentPage);
 	}, [currentPage]);
 
-	const handlePageChange = (newCurrentPage) => {
-		if (newCurrentPage >= minPages && newCurrentPage <= maxPages) {
-			setLocalCurrentPage(Number(newCurrentPage));
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setIsVisible(false);
+
+		if (currentPage === localCurrentPage) {
+			return;
 		}
+
+		setCurrentPage(localCurrentPage);
 	};
 
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
@@ -204,20 +206,14 @@ const DropdownCustomPageNumber: React.FC<DropdownAccountDetailsProps> = ({
 			setIsVisible={setIsVisible}
 			customClasses={classNames('shadow-2xl border border-color-gray-200 rounded-lg', customClasses)}
 		>
-			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					setCurrentPage(localCurrentPage);
-					setIsVisible(false);
-				}}
-				className="p-2 w-[80px]"
-			>
+			<form onSubmit={handleSubmit} className="p-2 w-[80px]">
 				<CustomInput
 					value={localCurrentPage}
-					setValue={handlePageChange}
+					setValue={setLocalCurrentPage}
 					type="number"
 					min={1}
 					max={totalPages}
+					required={true}
 				/>
 				<button
 					type="submit"
