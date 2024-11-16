@@ -114,8 +114,6 @@ const ProjectsSection = () => {
 
 	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
 
-	console.log(sortedProjectsAndGroups);
-
 	return (
 		<div>
 			<Accordion

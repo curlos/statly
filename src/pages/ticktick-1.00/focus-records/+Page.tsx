@@ -6,6 +6,7 @@ import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { UserSettingsProvider, useUserSettingsContext } from './useUserSettingsContext';
+import useSticky from '../../../hooks/useSticky';
 
 const Page = () => {
 	return (
@@ -59,8 +60,12 @@ const FocusRecordsPage = () => {
 		setTotalPages(newTotalPages);
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
+	const scrollableRef = useRef(null); // Reference to the scrollable container
+	const stickyRef = useRef(null); // Reference to the sticky element
+	const isFilterBarSticky = useSticky(scrollableRef, stickyRef, true); // Pass both refs to the hook
+
 	return (
-		<div>
+		<div ref={scrollableRef}>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<Navbar />
 
@@ -73,6 +78,8 @@ const FocusRecordsPage = () => {
 						showFilterSidebar,
 						setShowFilterSidebar,
 						DEFAULT_SORT_BY_OPTIONS,
+						stickyRef,
+						isFilterBarSticky,
 					}}
 				/>
 

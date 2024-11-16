@@ -7,6 +7,7 @@ import SearchSection from './SearchSection';
 import SortBySection from './SortBySection';
 import classNames from 'classnames';
 import { useSearchParamsCustom } from '../../../../contexts/useSearchParamsContext';
+import AppliedFilterItemList from '../AppliedFilterItemList';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 	const sidebarVariants = {
@@ -34,6 +35,8 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 		});
 	};
 
+	const isAtLeastOneFilterApplied = atLeastOneFilterApplied();
+
 	return (
 		<motion.div
 			initial="hidden"
@@ -49,7 +52,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 			<div className="flex justify-between items-center">
 				<h2 className="font-bold text-[18px]">Filter & Sort</h2>
 				<div className="flex items-center gap-3">
-					{atLeastOneFilterApplied() && (
+					{isAtLeastOneFilterApplied && (
 						<div
 							className="text-color-gray-50 hover:text-color-gray-25 underline cursor-pointer"
 							onClick={clearAllFilters}
@@ -68,6 +71,17 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 				</div>
 			</div>
 
+			{isAtLeastOneFilterApplied && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<div>
+						<h3 className="text-[16px] font-bold mb-2">APPLIED FILTERS</h3>
+						<AppliedFilterItemList />
+					</div>
+				</>
+			)}
+
+			<hr className={classNames('border-color-gray-200', isAtLeastOneFilterApplied ? 'mb-4' : 'my-4')} />
 			<SearchSection />
 
 			<hr className="border-color-gray-200 my-4" />

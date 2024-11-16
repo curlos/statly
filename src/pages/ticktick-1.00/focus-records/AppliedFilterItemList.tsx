@@ -8,13 +8,14 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
+const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
+	const taskIdToFilterBy = searchParams.get('task-id');
 
 	const [projectNamesStr, setProjectNamesStr] = useState(
 		projectsFromUrl ? getStrInBulletPointsMD(projectsFromUrl.split(',')) : ''
@@ -123,7 +124,7 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 	}
 
 	return (
-		<div className="container pb-4">
+		<div className="pb-4">
 			{nonDefaultFilterList && nonDefaultFilterList.length > 0 && (
 				<div className="flex flex-wrap gap-3 pb-4">
 					{nonDefaultFilterList.map((nonDefaultFilter) => {

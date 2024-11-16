@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useSticky = (scrollableElementRef, stickyElementRef) => {
+const useSticky = (scrollableElementRef, stickyElementRef, scrollableWindowElement = null) => {
 	const [isSticky, setSticky] = useState(false);
 
 	useEffect(() => {
@@ -15,7 +15,7 @@ const useSticky = (scrollableElementRef, stickyElementRef) => {
 		};
 
 		// Get the current scrollable element
-		const scrollableElement = scrollableElementRef.current;
+		const scrollableElement = scrollableWindowElement ? window : scrollableElementRef.current;
 
 		// Add the event listener to the scrollable element
 		scrollableElement?.addEventListener('scroll', handleScroll);
@@ -24,7 +24,7 @@ const useSticky = (scrollableElementRef, stickyElementRef) => {
 		return () => {
 			scrollableElement?.removeEventListener('scroll', handleScroll);
 		};
-	}, [scrollableElementRef, stickyElementRef]);
+	}, [scrollableElementRef, stickyElementRef, window]);
 
 	return isSticky;
 };
