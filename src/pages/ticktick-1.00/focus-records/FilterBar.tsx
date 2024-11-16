@@ -29,7 +29,7 @@ const FilterBar = ({
 	const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords);
 
 	return (
-		<div>
+		<div className="bg-color-gray-700">
 			<div className="flex justify-between items-center pb-5 container">
 				<div className="flex justify-between items-center gap-3 w-full">
 					<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
@@ -42,7 +42,7 @@ const FilterBar = ({
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
 							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
 						>
-							<div>{showFilterSidebar ? 'Hide Filters' : 'Show Filters'}</div>
+							<div>Filter & Sort</div>
 							<Icon
 								name="page_info"
 								fill={0}

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Accordion from '../../../../components/Accordion/Accordion';
 import FormPickDateRange from '../../../../components/FormPickDateRange';
 import Icon from '../../../../components/Icon';
@@ -8,6 +9,7 @@ const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const [isDropdownCalendarOpenForParent, setIsDropdownCalendarOpenForParent] = useState(false);
 
 	return (
 		<div>
@@ -23,6 +25,7 @@ const DateRangeSection = () => {
 					</div>
 				}
 				openByDefault={true}
+				isChildDropdownOpen={isDropdownCalendarOpenForParent}
 			>
 				<FormPickDateRange
 					{...{
@@ -34,7 +37,7 @@ const DateRangeSection = () => {
 						setEndDate: (value) => {
 							updateQueryParams({ 'end-date': value });
 						},
-						confirmBeforeUpdating: true,
+						confirmBeforeUpdating: false,
 						onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 							if (newStartDate) {
 								updateQueryParams({
@@ -44,6 +47,8 @@ const DateRangeSection = () => {
 								updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate) });
 							}
 						},
+						isDropdownCalendarOpenForParent,
+						setIsDropdownCalendarOpenForParent,
 					}}
 				/>
 			</Accordion>

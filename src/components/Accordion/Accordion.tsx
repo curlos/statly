@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../Icon';
 
-const Accordion = ({ title, children, setIsOpenForParent, openByDefault }) => {
+const Accordion = ({ title, children, setIsOpenForParent, openByDefault, isChildDropdownOpen }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 
 	const toggleOpen = () => {
@@ -30,7 +30,7 @@ const Accordion = ({ title, children, setIsOpenForParent, openByDefault }) => {
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
 						transition={{ duration: 0.3 }}
-						className="overflow-hidden"
+						className={isOpen && isChildDropdownOpen ? 'overflow-visible' : 'overflow-hidden'}
 					>
 						{children}
 					</motion.div>

@@ -41,10 +41,9 @@ const Page = () => {
 	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
 
 	// For Filter Sidebar and Filter Bar
-	const { width } = useWindowSize();
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
-	const [showFilterSidebar, setShowFilterSidebar] = useState(width && width < 992 ? false : true);
+	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
@@ -127,6 +126,7 @@ const Page = () => {
 								sortByOptions,
 								showFilterSidebar,
 								setShowFilterSidebar,
+								focusRecordListRef,
 							}}
 						/>
 					</div>

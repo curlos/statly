@@ -124,19 +124,25 @@ const AppliedFilterItemList = ({ taskIdToFilterBy }) => {
 
 	return (
 		<div className="container pb-4">
-			<div className="flex flex-wrap pb-4 gap-3">
-				{nonDefaultFilterList.map((nonDefaultFilter) => {
-					const { name, value, handleRemove } = nonDefaultFilter;
-					return <AppliedFilterItem key={name + value} {...{ name, value, handleRemove }} />;
-				})}
-			</div>
+			<div className="flex flex-wrap gap-3">
+				<div className="">
+					{nonDefaultFilterList.map((nonDefaultFilter) => {
+						const { name, value, handleRemove } = nonDefaultFilter;
+						return <AppliedFilterItem key={name + value} {...{ name, value, handleRemove }} />;
+					})}
+				</div>
 
-			{atLeastOneSelectedProject && (
-				<AppliedFilterItem
-					key={projectFilterName + projectFilterValue}
-					{...{ name: projectFilterName, value: projectFilterValue, handleRemove: projectFilterHandleRemove }}
-				/>
-			)}
+				{atLeastOneSelectedProject && (
+					<AppliedFilterItem
+						key={projectFilterName + projectFilterValue}
+						{...{
+							name: projectFilterName,
+							value: projectFilterValue,
+							handleRemove: projectFilterHandleRemove,
+						}}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

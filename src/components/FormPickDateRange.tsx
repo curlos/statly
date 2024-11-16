@@ -13,6 +13,8 @@ const FormPickDateRange = ({
 	onConfirm,
 	onUpdateStartOrEndDate,
 	confirmBeforeUpdating = true,
+	isDropdownCalendarOpenForParent,
+	setIsDropdownCalendarOpenForParent,
 }) => {
 	const [localStartDate, setLocalStartDate] = useState(startDate);
 	const [localEndDate, setLocalEndDate] = useState(endDate);
@@ -21,20 +23,24 @@ const FormPickDateRange = ({
 
 	return (
 		<div>
-			<div className="mb-5 space-y-2">
+			<div className="space-y-2">
 				<DateInput
 					labelName="Start"
 					date={localStartDate}
 					setDate={(value) => {
 						setLocalStartDate(value);
 
-						if (confirmBeforeUpdating) {
+						if (!confirmBeforeUpdating) {
 							setStartDate(value);
 						}
 
 						if (onUpdateStartOrEndDate) {
 							onUpdateStartOrEndDate(value, null);
 						}
+					}}
+					{...{
+						isDropdownCalendarOpenForParent,
+						setIsDropdownCalendarOpenForParent,
 					}}
 				/>
 				<DateInput
@@ -43,7 +49,7 @@ const FormPickDateRange = ({
 					setDate={(value) => {
 						setLocalEndDate(value);
 
-						if (confirmBeforeUpdating) {
+						if (!confirmBeforeUpdating) {
 							setEndDate(value);
 						}
 
@@ -51,11 +57,15 @@ const FormPickDateRange = ({
 							onUpdateStartOrEndDate(null, value);
 						}
 					}}
+					{...{
+						isDropdownCalendarOpenForParent,
+						setIsDropdownCalendarOpenForParent,
+					}}
 				/>
 			</div>
 
-			{!confirmBeforeUpdating && (
-				<div className="flex justify-end gap-2">
+			{confirmBeforeUpdating && (
+				<div className="flex justify-end gap-2 mt-5">
 					<button
 						className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
 						onClick={() => {
@@ -90,7 +100,13 @@ const FormPickDateRange = ({
 	);
 };
 
-const DateInput = ({ labelName, date, setDate }) => {
+const DateInput = ({
+	labelName,
+	date,
+	setDate,
+	isDropdownCalendarOpenForParent,
+	setIsDropdownCalendarOpenForParent,
+}) => {
 	const dropdownTimeCalenderRef = useRef(null);
 	const [isDropdownTimeCalendarVisible, setIsDropdownTimeCalendarVisible] = useState(false);
 
@@ -102,7 +118,13 @@ const DateInput = ({ labelName, date, setDate }) => {
 			<div className="w-full relative">
 				<div
 					ref={dropdownTimeCalenderRef}
-					onClick={() => setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible)}
+					onClick={() => {
+						setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible);
+
+						if (isDropdownCalendarOpenForParent !== undefined) {
+							setIsDropdownCalendarOpenForParent(!isDropdownTimeCalendarVisible);
+						}
+					}}
 					className={classNames(
 						'border border-color-gray-300 cursor-pointer px-3 py-1 rounded w-full bg-color-gray-200',
 						chosenColorObj.hover.borderColor
@@ -114,7 +136,13 @@ const DateInput = ({ labelName, date, setDate }) => {
 				<DropdownTimeCalendar
 					toggleRef={dropdownTimeCalenderRef}
 					isVisible={isDropdownTimeCalendarVisible}
-					setIsVisible={setIsDropdownTimeCalendarVisible}
+					setIsVisible={(value) => {
+						setIsDropdownTimeCalendarVisible(value);
+
+						if (isDropdownCalendarOpenForParent !== undefined) {
+							setIsDropdownCalendarOpenForParent(value);
+						}
+					}}
 					date={date}
 					setDate={setDate}
 					showTime={false}

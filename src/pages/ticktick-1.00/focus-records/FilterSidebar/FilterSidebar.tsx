@@ -17,7 +17,7 @@ const FilterSidebar = ({
 	isForModal,
 }) => {
 	const sidebarVariants = {
-		hidden: { x: 500, opacity: 0, transition: { duration: 0.3 } },
+		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
 	};
 
@@ -34,12 +34,12 @@ const FilterSidebar = ({
 			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 		>
 			<div className="flex justify-between items-center">
-				<h2 className="font-bold text-[18px]">Filter</h2>
+				<h2 className="font-bold text-[18px]">Filter & Sort</h2>
 				<Icon
 					name="close"
 					fill={0}
 					customClass={
-						'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1 lg:!hidden'
+						'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1'
 					}
 					onClick={() => setIsOpen(false)}
 				/>

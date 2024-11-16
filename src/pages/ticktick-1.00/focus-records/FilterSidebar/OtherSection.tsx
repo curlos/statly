@@ -87,7 +87,7 @@ const CheckboxOther = ({
 }) => {
 	return (
 		<div
-			className="flex items-center gap-1 cursor-pointer"
+			className="flex gap-1 cursor-pointer"
 			onClick={() => {
 				const newShowValue = !showValue;
 				setShowValue(newShowValue);
