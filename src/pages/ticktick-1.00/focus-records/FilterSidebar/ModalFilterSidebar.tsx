@@ -7,6 +7,8 @@ const ModalFilterSidebar = ({
 	sortByOptions,
 	showCompletedTasks,
 	setShowCompletedTasks,
+	showFocusNotes,
+	setShowFocusNotes,
 	showTotalFocusDuration,
 	setShowTotalFocusDuration,
 }) => {
@@ -38,6 +40,8 @@ const ModalFilterSidebar = ({
 							setIsOpen,
 							showCompletedTasks,
 							setShowCompletedTasks,
+							showFocusNotes,
+							setShowFocusNotes,
 							showTotalFocusDuration,
 							setShowTotalFocusDuration,
 							sortByOptions,

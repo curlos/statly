@@ -12,6 +12,8 @@ const FilterSidebar = ({
 	setIsOpen,
 	showCompletedTasks,
 	setShowCompletedTasks,
+	showFocusNotes,
+	setShowFocusNotes,
 	showTotalFocusDuration,
 	setShowTotalFocusDuration,
 	sortByOptions,
@@ -80,6 +82,8 @@ const FilterSidebar = ({
 				{...{
 					showCompletedTasks,
 					setShowCompletedTasks,
+					showFocusNotes,
+					setShowFocusNotes,
 					showTotalFocusDuration,
 					setShowTotalFocusDuration,
 				}}

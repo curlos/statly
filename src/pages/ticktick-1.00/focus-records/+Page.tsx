@@ -37,6 +37,7 @@ const Page = () => {
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+	const [showFocusNotes, setShowFocusNotes] = useState(true);
 	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
 
 	// For Filter Sidebar and Filter Bar
@@ -111,6 +112,8 @@ const Page = () => {
 								currentPage: currentPageFromUrl,
 								showCompletedTasks,
 								setShowCompletedTasks,
+								showFocusNotes,
+								setShowFocusNotes,
 								showTotalFocusDuration,
 								setShowTotalFocusDuration,
 								sortByOptions,

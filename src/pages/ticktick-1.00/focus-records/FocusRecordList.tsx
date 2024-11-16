@@ -12,6 +12,8 @@ const FocusRecordList = ({
 	currentPage,
 	showCompletedTasks,
 	setShowCompletedTasks,
+	showFocusNotes,
+	setShowFocusNotes,
 	showTotalFocusDuration,
 	setShowTotalFocusDuration,
 	sortByOptions,
@@ -83,6 +85,7 @@ const FocusRecordList = ({
 											focusRecord={focusRecord}
 											isLastItemForTheDay={isLastItem}
 											showCompletedTasks={showCompletedTasks}
+											showFocusNotes={showFocusNotes}
 										/>
 									);
 								})}
@@ -96,6 +99,8 @@ const FocusRecordList = ({
 							sortByOptions,
 							showCompletedTasks,
 							setShowCompletedTasks,
+							showFocusNotes,
+							setShowFocusNotes,
 							showTotalFocusDuration,
 							setShowTotalFocusDuration,
 						}}

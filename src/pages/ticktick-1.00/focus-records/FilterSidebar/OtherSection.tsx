@@ -8,6 +8,8 @@ import Accordion from '../../../../components/Accordion/Accordion';
 const OtherSection = ({
 	showCompletedTasks,
 	setShowCompletedTasks,
+	showFocusNotes,
+	setShowFocusNotes,
 	showTotalFocusDuration,
 	setShowTotalFocusDuration,
 }) => {
@@ -45,6 +47,23 @@ const OtherSection = ({
 							name: 'Show Completed Tasks',
 							showValue: showCompletedTasks,
 							setShowValue: setShowCompletedTasks,
+							handleError,
+							editUserSettings,
+							chosenColorObj,
+							nextLightestColorObj,
+						}}
+					/>
+				)}
+
+				{/* Checkbox - Show Completed Tasks */}
+				{!isLoadingGetUserSettings && (
+					<CheckboxOther
+						{...{
+							userSettings,
+							userSettingProperty: 'showFocusNotes',
+							name: 'Show Focus Notes',
+							showValue: showFocusNotes,
+							setShowValue: setShowFocusNotes,
 							handleError,
 							editUserSettings,
 							chosenColorObj,

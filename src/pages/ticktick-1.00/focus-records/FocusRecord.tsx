@@ -18,6 +18,7 @@ const FocusRecord = ({
 	isLastItemForTheDay = false,
 	focusDuration,
 	showCompletedTasks,
+	showFocusNotes,
 }) => {
 	const { updateQueryParams } = useSearchParamsContext();
 
@@ -190,11 +191,15 @@ const FocusRecord = ({
 						);
 					})}
 
-					<div
-						className={classNames('text-color-gray-100 text-white text-[15px] break-words react-markdown')}
-					>
-						<ReactMarkdown>{note}</ReactMarkdown>
-					</div>
+					{showFocusNotes && (
+						<div
+							className={classNames(
+								'text-color-gray-100 text-white text-[15px] break-words react-markdown'
+							)}
+						>
+							<ReactMarkdown>{note}</ReactMarkdown>
+						</div>
+					)}
 
 					{showCompletedTasks && thereAreCompletedTasks && (
 						<>
