@@ -49,6 +49,7 @@ const DateRangeSection = () => {
 						},
 						isDropdownCalendarOpenForParent,
 						setIsDropdownCalendarOpenForParent,
+						showTime: true,
 					}}
 				/>
 			</Accordion>

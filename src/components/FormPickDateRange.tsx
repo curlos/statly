@@ -15,11 +15,14 @@ const FormPickDateRange = ({
 	confirmBeforeUpdating = true,
 	isDropdownCalendarOpenForParent,
 	setIsDropdownCalendarOpenForParent,
+	showTime = true,
 }) => {
 	const [localStartDate, setLocalStartDate] = useState(startDate);
 	const [localEndDate, setLocalEndDate] = useState(endDate);
 
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
+
+	console.log(confirmBeforeUpdating);
 
 	return (
 		<div>
@@ -42,6 +45,7 @@ const FormPickDateRange = ({
 						isDropdownCalendarOpenForParent,
 						setIsDropdownCalendarOpenForParent,
 					}}
+					showTime={showTime}
 				/>
 				<DateInput
 					labelName="End"
@@ -61,6 +65,7 @@ const FormPickDateRange = ({
 						isDropdownCalendarOpenForParent,
 						setIsDropdownCalendarOpenForParent,
 					}}
+					showTime={showTime}
 				/>
 			</div>
 
@@ -106,6 +111,7 @@ const DateInput = ({
 	setDate,
 	isDropdownCalendarOpenForParent,
 	setIsDropdownCalendarOpenForParent,
+	showTime,
 }) => {
 	const dropdownTimeCalenderRef = useRef(null);
 	const [isDropdownTimeCalendarVisible, setIsDropdownTimeCalendarVisible] = useState(false);
@@ -145,7 +151,7 @@ const DateInput = ({
 					}}
 					date={date}
 					setDate={setDate}
-					showTime={false}
+					showTime={showTime}
 				/>
 			</div>
 		</div>

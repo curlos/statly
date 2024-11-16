@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { DropdownProps } from '../../../interfaces/interfaces';
 import SelectCalendar from '../../SelectCalendar';
 import Dropdown from '../Dropdown';
@@ -6,7 +6,6 @@ import DropdownTime from '../DropdownCalendar/DropdownTime';
 import { getTimeString, setTimeOnDateString } from '../../../utils/date.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
-import { generateTailwindColorObjects } from '../../../utils/TAILWIND_COLORS/generateTailwindColorObjects';
 
 interface DropdownTimeCalendarProps extends DropdownProps {
 	date: Date | null;
@@ -40,7 +39,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 				<SelectCalendar dueDate={selectedDate} setDueDate={setSelectedDate} time={selectedTime} />
 			</div>
 
-			{(true || showTime) && (
+			{showTime && (
 				<div className="relative">
 					<div className="mb-2 px-2">
 						<div
