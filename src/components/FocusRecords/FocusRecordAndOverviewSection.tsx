@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { formatTimeToHoursMinutesSeconds, getFormattedDuration } from '../../utils/helpers.utils';
+import { formatTimeToHoursMinutesSeconds } from '../../utils/helpers.utils';
 import { areDatesEqual } from '../../utils/date.utils';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import Icon from '../Icon';
 import useSticky from '../../hooks/useSticky';
 import { setModalState } from '../../slices/modalSlice';
 import { useDispatch } from 'react-redux';
-import { formatDateTime, groupByEndTimeDay } from '../../utils/date.utils';
-import { useGetTasksQuery } from '../../services/resources/tasksApi';
 import { useGetFocusRecordsQuery } from '../../services/resources/focusRecordsApi';
-import { useGetHabitsQuery } from '../../services/resources/habitsApi';
-import FocusRecord from './FocusRecord';
 import FocusRecordList from './FocusRecordList';
+import classNames from 'classnames';
 
 interface StatsOverviewProps {
 	overviewData: object;
@@ -118,10 +113,10 @@ const FocusRecordAndOverviewSection = () => {
 
 			<div
 				ref={stickyRef}
-				className={
-					`flex justify-between items-center px-5 mb-4 sticky top-0` +
-					(isSticky ? ' border-b border-color-gray-100 p-2 pt-4 bg-color-gray-700 z-10' : '')
-				}
+				className={classNames(
+					`flex justify-between items-center px-5 mb-4 sticky top-0`,
+					isSticky ? ' border-b border-color-gray-100 p-2 pt-4 bg-color-gray-700 z-10' : ''
+				)}
 			>
 				<h4 className="text-[18px]">Focus Record</h4>
 				<Icon

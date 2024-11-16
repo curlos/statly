@@ -1,15 +1,12 @@
 import { useState } from 'react';
-import useResizeObserver from '../../hooks/useResizeObserver';
 import Icon from '../Icon';
 import SidebarModal from '../SidebarModal/SidebarModal';
 
-const Navbar = ({ topHeaderRef, setHeaderHeight }) => {
-	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
-
+const Navbar = () => {
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 
 	return (
-		<div ref={topHeaderRef} className="container pt-4 pb-3 flex items-center justify-between">
+		<div className="container pt-4 pb-3 flex items-center justify-between">
 			<img src="/gundam-nu-icon.webp" className="h-[40px]" />
 
 			<Icon

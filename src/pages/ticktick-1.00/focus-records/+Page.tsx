@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import FocusRecordList from './FocusRecordList';
-import useMaxHeight from '../../../hooks/useMaxHeight';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import Pagination from '../../../components/Pagination';
 import Navbar from '../../../components/Navbar/Navbar';
@@ -31,12 +30,7 @@ const FocusRecordsPage = () => {
 		useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecords } = fetchedFocusRecords || {};
 
-	const topHeaderRef = useRef(null);
-	const [headerHeight, setHeaderHeight] = useState(0);
-
 	const focusRecordListRef = useRef(null);
-
-	const maxHeight = useMaxHeight(headerHeight);
 
 	const [totalPages, setTotalPages] = useState(null);
 
@@ -66,14 +60,10 @@ const FocusRecordsPage = () => {
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
 	return (
-		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
-			<Navbar {...{ topHeaderRef, setHeaderHeight }} />
+		<div>
+			<div className="max-w-screen min-h-screen bg-color-gray-700">
+				<Navbar />
 
-			<div
-				ref={focusRecordListRef}
-				className="w-full flex flex-col overflow-scroll gray-scrollbar"
-				style={{ maxHeight }}
-			>
 				<FilterBar
 					{...{
 						defaultFocusRecords: focusRecords,
@@ -86,35 +76,37 @@ const FocusRecordsPage = () => {
 					}}
 				/>
 
-				<div className="flex-1 flex justify-center">
-					<div className="container p-1">
-						<FocusRecordList
-							{...{
-								filteredFocusRecords,
-								isLoadingGetFocusRecords,
-								sortBy,
-								currentPage: currentPageFromUrl,
-								sortByOptions,
-								showFilterSidebar,
-								setShowFilterSidebar,
-								focusRecordListRef,
-							}}
-						/>
+				<div className="w-full flex flex-col">
+					<div className="flex-1 flex justify-center bg-color-gray-700">
+						<div className="container p-1">
+							<FocusRecordList
+								{...{
+									filteredFocusRecords,
+									isLoadingGetFocusRecords,
+									sortBy,
+									currentPage: currentPageFromUrl,
+									sortByOptions,
+									showFilterSidebar,
+									setShowFilterSidebar,
+									focusRecordListRef,
+								}}
+							/>
+						</div>
 					</div>
-				</div>
 
-				{totalPages && totalPages > 0 ? (
-					<div className="flex justify-center pt-1 pb-2">
-						<Pagination
-							total={totalPages}
-							currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
-							setCurrentPage={(value) => {
-								updateQueryParams({ page: value === 1 ? '' : value });
-							}}
-							totalPages={totalPages}
-						/>
-					</div>
-				) : null}
+					{totalPages && totalPages > 0 ? (
+						<div className="flex justify-center pt-1 pb-2 bg-color-gray-700">
+							<Pagination
+								total={totalPages}
+								currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
+								setCurrentPage={(value) => {
+									updateQueryParams({ page: value === 1 ? '' : value });
+								}}
+								totalPages={totalPages}
+							/>
+						</div>
+					) : null}
+				</div>
 			</div>
 		</div>
 	);
