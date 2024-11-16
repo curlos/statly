@@ -26,8 +26,6 @@ const FocusRecordsPage = () => {
 
 	const { maxFocusRecordsPerPage } = useUserSettingsContext();
 
-	console.log(maxFocusRecordsPerPage);
-
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
 		useGetPomoAndStopwatchFocusRecordsQuery();

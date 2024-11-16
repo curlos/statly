@@ -5,6 +5,7 @@ import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
 import { useEffect, useState } from 'react';
 import Accordion from '../../../../components/Accordion/Accordion';
+import Spinner from '../../../../components/Loaders/Spinner';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
@@ -113,6 +114,8 @@ const ProjectsSection = () => {
 
 	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
 
+	console.log(sortedProjectsAndGroups);
+
 	return (
 		<div>
 			<Accordion
@@ -124,6 +127,8 @@ const ProjectsSection = () => {
 							fill={0}
 							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 						/>
+						{/* Assume the user always has at least one project. I suppose it'd be possible for there to be 0 projects but this works better for me personally. */}
+						{(!sortedProjectsAndGroups || sortedProjectsAndGroups.length === 0) && <Spinner />}
 					</div>
 				}
 				openByDefault={true}
