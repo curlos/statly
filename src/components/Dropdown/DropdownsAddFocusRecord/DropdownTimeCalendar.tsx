@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DropdownProps } from '../../../interfaces/interfaces';
 import SelectCalendar from '../../SelectCalendar';
 import Dropdown from '../Dropdown';
@@ -6,6 +6,8 @@ import DropdownTime from '../DropdownCalendar/DropdownTime';
 import { getTimeString, setTimeOnDateString } from '../../../utils/date.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
+import Icon from '../../Icon';
+import { debounce } from '../../../utils/helpers.utils';
 
 interface DropdownTimeCalendarProps extends DropdownProps {
 	date: Date | null;
@@ -28,6 +30,8 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	const [isDropdownTimeVisible, setIsDropdownTimeVisible] = useState(false);
 	const dropdownTimeRef = useRef(null);
 
+	const [connectedCurrentDate, setConnectedCurrentDate] = useState();
+
 	return (
 		<Dropdown
 			toggleRef={toggleRef}
@@ -36,7 +40,15 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 			customClasses={'w-[250px] p-1 shadow-2xl border border-color-gray-200 rounded-lg select-none'}
 		>
 			<div className="pt-2">
-				<SelectCalendar dueDate={selectedDate} setDueDate={setSelectedDate} time={selectedTime} />
+				<SelectCalendar
+					{...{
+						dueDate: selectedDate,
+						setDueDate: setSelectedDate,
+						time: selectedTime,
+						connectedCurrentDate,
+						setConnectedCurrentDate,
+					}}
+				/>
 			</div>
 
 			{showTime && (
@@ -65,6 +77,9 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 					/>
 				</div>
 			)}
+
+			{/* Search Bar to search for Date through string. */}
+			<SearchDateInput {...{ setConnectedCurrentDate, setDueDate: setSelectedDate }} />
 
 			<div className="grid grid-cols-2 gap-2 p-2">
 				<button
@@ -97,6 +112,59 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 				</button>
 			</div>
 		</Dropdown>
+	);
+};
+
+const SearchDateInput = ({ setConnectedCurrentDate, setDueDate }) => {
+	const [localSearchText, setLocalSearchText] = useState('');
+	const [isInvalidDate, setIsInvalidDate] = useState(false);
+
+	const handleDebouncedSearch = debounce(() => {
+		const newDate = localSearchText ? new Date(localSearchText) : new Date();
+
+		const isDateValid = !isNaN(newDate.getTime());
+
+		if (isDateValid) {
+			const typedInNewDate = localSearchText;
+
+			if (typedInNewDate) {
+				setConnectedCurrentDate(newDate);
+				setDueDate(newDate);
+			}
+
+			setIsInvalidDate(false);
+		} else {
+			setIsInvalidDate(true);
+		}
+	}, 1000);
+
+	useEffect(() => {
+		handleDebouncedSearch();
+
+		return () => {
+			handleDebouncedSearch.cancel();
+		};
+	}, [localSearchText]);
+
+	return (
+		<div className="px-2">
+			<div className="flex items-center gap-1 p-1 rounded bg-color-gray-200">
+				<Icon
+					name="search"
+					fill={0}
+					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+				/>
+				<input
+					placeholder="Search Date"
+					value={localSearchText}
+					onChange={(e) => {
+						setLocalSearchText(e.target.value);
+					}}
+					className="text-[14px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none"
+				/>
+			</div>
+			{isInvalidDate && <div className="text-red-500 mt-1">Date is invalid</div>}
+		</div>
 	);
 };
 

@@ -134,7 +134,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 			</div>
 
 			{showYearView ? (
-				<YearView {...{ localCurrentDate, setLocalCurrentDate, dueDate, setDueDate, setShowYearView }} />
+				<YearView {...{ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYearView }} />
 			) : (
 				<MonthView
 					{...{
@@ -257,9 +257,8 @@ const MonthView = ({
 	);
 };
 
-const YearView = ({ localCurrentDate, setLocalCurrentDate, dueDate, setDueDate, setShowYearView }) => {
+const YearView = ({ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYearView }) => {
 	const monthsOfYear = getAllMonths(localCurrentDate);
-	console.log(monthsOfYear);
 
 	return (
 		<div className="grid grid-cols-3 gap-2 my-3">
