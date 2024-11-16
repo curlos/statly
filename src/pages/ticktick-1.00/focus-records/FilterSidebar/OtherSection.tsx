@@ -4,23 +4,24 @@ import useHandleError from '../../../../hooks/useHandleError';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../../services/resources/userSettingsApi';
 import Accordion from '../../../../components/Accordion/Accordion';
+import { useUserSettingsContext } from '../useUserSettingsContext';
 
-const OtherSection = ({
-	showCompletedTasks,
-	setShowCompletedTasks,
-	showFocusNotes,
-	setShowFocusNotes,
-	showTotalFocusDuration,
-	setShowTotalFocusDuration,
-}) => {
+const OtherSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
+	const {
+		showCompletedTasks,
+		setShowCompletedTasks,
+		showFocusNotes,
+		setShowFocusNotes,
+		showTotalFocusDuration,
+		setShowTotalFocusDuration,
+	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
-
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	return (

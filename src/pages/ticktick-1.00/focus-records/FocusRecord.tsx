@@ -11,15 +11,9 @@ import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import { useUserSettingsContext } from './useUserSettingsContext';
 
-const FocusRecord = ({
-	focusRecord,
-	showSubtaskTime = true,
-	isLastItemForTheDay = false,
-	focusDuration,
-	showCompletedTasks,
-	showFocusNotes,
-}) => {
+const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -35,6 +29,8 @@ const FocusRecord = ({
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
+
+	const { showCompletedTasks, showFocusNotes } = useUserSettingsContext();
 
 	const getAllCompletedTasksDuringFocusRecord = () => {
 		if (!completedTasksGroupedByDate) {

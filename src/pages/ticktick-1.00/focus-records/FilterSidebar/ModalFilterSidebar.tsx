@@ -1,17 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import FilterSidebar from './FilterSidebar';
 
-const ModalFilterSidebar = ({
-	isOpen,
-	setIsOpen,
-	sortByOptions,
-	showCompletedTasks,
-	setShowCompletedTasks,
-	showFocusNotes,
-	setShowFocusNotes,
-	showTotalFocusDuration,
-	setShowTotalFocusDuration,
-}) => {
+const ModalFilterSidebar = ({ isOpen, setIsOpen, sortByOptions }) => {
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
 		visible: { opacity: 0.3, transition: { duration: 0.3 } },
@@ -38,12 +28,6 @@ const ModalFilterSidebar = ({
 					<FilterSidebar
 						{...{
 							setIsOpen,
-							showCompletedTasks,
-							setShowCompletedTasks,
-							showFocusNotes,
-							setShowFocusNotes,
-							showTotalFocusDuration,
-							setShowTotalFocusDuration,
 							sortByOptions,
 							isForModal: true,
 						}}

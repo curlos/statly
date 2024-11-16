@@ -8,17 +8,7 @@ import SortBySection from './SortBySection';
 import classNames from 'classnames';
 import { useSearchParamsCustom } from '../../../../contexts/useSearchParamsContext';
 
-const FilterSidebar = ({
-	setIsOpen,
-	showCompletedTasks,
-	setShowCompletedTasks,
-	showFocusNotes,
-	setShowFocusNotes,
-	showTotalFocusDuration,
-	setShowTotalFocusDuration,
-	sortByOptions,
-	isForModal,
-}) => {
+const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -87,16 +77,7 @@ const FilterSidebar = ({
 			<DateRangeSection />
 
 			<hr className="border-color-gray-200 my-4" />
-			<OtherSection
-				{...{
-					showCompletedTasks,
-					setShowCompletedTasks,
-					showFocusNotes,
-					setShowFocusNotes,
-					showTotalFocusDuration,
-					setShowTotalFocusDuration,
-				}}
-			/>
+			<OtherSection />
 
 			<hr className="border-color-gray-200 my-4" />
 			<ProjectsSection />

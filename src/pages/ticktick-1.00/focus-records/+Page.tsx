@@ -8,6 +8,7 @@ import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import { UserSettingsProvider } from './useUserSettingsContext';
 
 const Page = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -36,31 +37,11 @@ const Page = () => {
 	const [totalPages, setTotalPages] = useState(null);
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
-	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
-	const [showFocusNotes, setShowFocusNotes] = useState(true);
-	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
 
 	// For Filter Sidebar and Filter Bar
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
-
-	useEffect(() => {
-		if (isLoadingGetUserSettings) {
-			return;
-		}
-
-		const newShowCompletedTasks = userSettings?.tickTickOne?.pages?.focusRecords?.showCompletedTasks;
-		const newShowTotalFocusDuration = userSettings?.tickTickOne?.pages?.focusRecords?.showTotalFocusDuration;
-
-		if (newShowCompletedTasks !== undefined) {
-			setShowCompletedTasks(newShowCompletedTasks);
-		}
-
-		if (newShowTotalFocusDuration !== undefined) {
-			setShowTotalFocusDuration(newShowTotalFocusDuration);
-		}
-	}, [userSettings]);
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
@@ -81,64 +62,59 @@ const Page = () => {
 	}, [isLoadingGetFocusRecords, filteredFocusRecords]);
 
 	return (
-		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
-			<Navbar {...{ topHeaderRef, setHeaderHeight }} />
+		<UserSettingsProvider>
+			<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
+				<Navbar {...{ topHeaderRef, setHeaderHeight }} />
 
-			<div
-				ref={focusRecordListRef}
-				className="w-full flex flex-col overflow-scroll gray-scrollbar"
-				style={{ maxHeight }}
-			>
-				<FilterBar
-					{...{
-						defaultFocusRecords: focusRecords,
-						filteredFocusRecords,
-						setFilteredFocusRecords,
-						showTotalFocusDuration,
-						setSortByOptions,
-						showFilterSidebar,
-						setShowFilterSidebar,
-						DEFAULT_SORT_BY_OPTIONS,
-					}}
-				/>
+				<div
+					ref={focusRecordListRef}
+					className="w-full flex flex-col overflow-scroll gray-scrollbar"
+					style={{ maxHeight }}
+				>
+					<FilterBar
+						{...{
+							defaultFocusRecords: focusRecords,
+							filteredFocusRecords,
+							setFilteredFocusRecords,
+							setSortByOptions,
+							showFilterSidebar,
+							setShowFilterSidebar,
+							DEFAULT_SORT_BY_OPTIONS,
+						}}
+					/>
 
-				<div className="flex-1 flex justify-center">
-					<div className="container p-1">
-						<FocusRecordList
-							{...{
-								filteredFocusRecords,
-								isLoadingGetFocusRecords,
-								sortBy,
-								currentPage: currentPageFromUrl,
-								showCompletedTasks,
-								setShowCompletedTasks,
-								showFocusNotes,
-								setShowFocusNotes,
-								showTotalFocusDuration,
-								setShowTotalFocusDuration,
-								sortByOptions,
-								showFilterSidebar,
-								setShowFilterSidebar,
-								focusRecordListRef,
-							}}
-						/>
+					<div className="flex-1 flex justify-center">
+						<div className="container p-1">
+							<FocusRecordList
+								{...{
+									filteredFocusRecords,
+									isLoadingGetFocusRecords,
+									sortBy,
+									currentPage: currentPageFromUrl,
+									sortByOptions,
+									showFilterSidebar,
+									setShowFilterSidebar,
+									focusRecordListRef,
+								}}
+							/>
+						</div>
 					</div>
+
+					{totalPages && totalPages > 0 ? (
+						<div className="flex justify-center pt-1 pb-2">
+							<Pagination
+								total={totalPages}
+								currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
+								setCurrentPage={(value) => {
+									updateQueryParams({ page: value === 1 ? '' : value });
+								}}
+								totalPages={totalPages}
+							/>
+						</div>
+					) : null}
 				</div>
-
-				{totalPages && totalPages > 0 ? (
-					<div className="flex justify-center pt-1 pb-2">
-						<Pagination
-							total={totalPages}
-							currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
-							setCurrentPage={(value) => {
-								updateQueryParams({ page: value === 1 ? '' : value });
-							}}
-							totalPages={totalPages}
-						/>
-					</div>
-				) : null}
 			</div>
-		</div>
+		</UserSettingsProvider>
 	);
 };
 

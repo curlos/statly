@@ -4,12 +4,12 @@ import AppliedFilterItemList from './AppliedFilterItemList';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
+import { useUserSettingsContext } from './useUserSettingsContext';
 
 const FilterBar = ({
 	defaultFocusRecords,
 	filteredFocusRecords,
 	setFilteredFocusRecords,
-	showTotalFocusDuration,
 	setSortByOptions,
 	showFilterSidebar,
 	setShowFilterSidebar,
@@ -17,6 +17,8 @@ const FilterBar = ({
 }) => {
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
+
+	const { showTotalFocusDuration } = useUserSettingsContext();
 
 	useFilterFocusRecords({
 		taskIdToFilterBy,

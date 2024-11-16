@@ -9,8 +9,8 @@ export const useThemeContext = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-	const calendar = useTheme();
-	return <ThemeContext.Provider value={calendar}>{children}</ThemeContext.Provider>;
+	const value = useTheme();
+	return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
 const useTheme = () => {

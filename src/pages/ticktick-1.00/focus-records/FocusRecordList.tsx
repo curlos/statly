@@ -10,12 +10,6 @@ const FocusRecordList = ({
 	isLoadingGetFocusRecords,
 	sortBy,
 	currentPage,
-	showCompletedTasks,
-	setShowCompletedTasks,
-	showFocusNotes,
-	setShowFocusNotes,
-	showTotalFocusDuration,
-	setShowTotalFocusDuration,
 	sortByOptions,
 	showFilterSidebar,
 	setShowFilterSidebar,
@@ -84,8 +78,6 @@ const FocusRecordList = ({
 											key={focusRecordKey}
 											focusRecord={focusRecord}
 											isLastItemForTheDay={isLastItem}
-											showCompletedTasks={showCompletedTasks}
-											showFocusNotes={showFocusNotes}
 										/>
 									);
 								})}
@@ -97,12 +89,6 @@ const FocusRecordList = ({
 							isOpen: showFilterSidebar,
 							setIsOpen: setShowFilterSidebar,
 							sortByOptions,
-							showCompletedTasks,
-							setShowCompletedTasks,
-							showFocusNotes,
-							setShowFocusNotes,
-							showTotalFocusDuration,
-							setShowTotalFocusDuration,
 						}}
 					/>
 				</>
