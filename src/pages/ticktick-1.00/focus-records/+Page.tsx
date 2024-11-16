@@ -66,7 +66,7 @@ const FocusRecordsPage = () => {
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
 	return (
-		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700 safe-bottom">
+		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
 			<Navbar {...{ topHeaderRef, setHeaderHeight }} />
 
 			<div
@@ -104,15 +104,17 @@ const FocusRecordsPage = () => {
 				</div>
 
 				{totalPages && totalPages > 0 ? (
-					<div className="flex justify-center pt-1 pb-2">
-						<Pagination
-							total={totalPages}
-							currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
-							setCurrentPage={(value) => {
-								updateQueryParams({ page: value === 1 ? '' : value });
-							}}
-							totalPages={totalPages}
-						/>
+					<div className="safe-bottom">
+						<div className="flex justify-center pt-1 pb-2">
+							<Pagination
+								total={totalPages}
+								currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
+								setCurrentPage={(value) => {
+									updateQueryParams({ page: value === 1 ? '' : value });
+								}}
+								totalPages={totalPages}
+							/>
+						</div>
 					</div>
 				) : null}
 			</div>
