@@ -39,7 +39,7 @@ const FilterSidebar = ({
 					name="close"
 					fill={0}
 					customClass={
-						'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1'
+						'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1 lg:!hidden'
 					}
 					onClick={() => setIsOpen(false)}
 				/>

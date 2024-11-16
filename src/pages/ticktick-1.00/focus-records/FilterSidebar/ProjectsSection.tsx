@@ -115,31 +115,51 @@ const ProjectsSection = () => {
 
 	return (
 		<div>
-			<div className="flex items-center gap-1 mb-3">
-				<h3 className="text-[16px] font-bold">Projects</h3>
-				<Icon
-					name="construction"
-					fill={0}
-					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-				/>
-			</div>
+			<Accordion
+				title={
+					<div className="flex items-center gap-1 mb-3">
+						<h3 className="text-[16px] font-bold">Projects</h3>
+						<Icon
+							name="construction"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						/>
+					</div>
+				}
+				openByDefault={true}
+			>
+				<div>
+					<div className="space-y-2">
+						{/* Project Groups with their Projects AND Ungrouped Projects */}
+						{sortedProjectsAndGroups?.map((projectOrProjectGroup) => {
+							const { id } = projectOrProjectGroup;
+							const isProjectGroup = groupedProjectsByGroupId[id];
 
-			<div>
-				<div className="space-y-2">
-					{/* Project Groups with their Projects AND Ungrouped Projects */}
-					{sortedProjectsAndGroups?.map((projectOrProjectGroup) => {
-						const { id } = projectOrProjectGroup;
-						const isProjectGroup = groupedProjectsByGroupId[id];
+							if (isProjectGroup) {
+								const projectGroup = projectOrProjectGroup;
+								return (
+									<ProjectGroupWithProjects
+										key={projectGroup.id}
+										{...{
+											projectGroup,
+											groupedProjectsByGroupId,
+											projectGroupsById,
+											chosenColorObj,
+											nextLightestColorObj,
+											projectsFromUrlById,
+											updateQueryParams,
+										}}
+									/>
+								);
+							}
 
-						if (isProjectGroup) {
-							const projectGroup = projectOrProjectGroup;
+							const project = projectOrProjectGroup;
+
 							return (
-								<ProjectGroupWithProjects
-									key={projectGroup.id}
+								<CheckboxProject
+									key={project.id}
 									{...{
-										projectGroup,
-										groupedProjectsByGroupId,
-										projectGroupsById,
+										project,
 										chosenColorObj,
 										nextLightestColorObj,
 										projectsFromUrlById,
@@ -147,37 +167,22 @@ const ProjectsSection = () => {
 									}}
 								/>
 							);
-						}
+						})}
 
-						const project = projectOrProjectGroup;
-
-						return (
-							<CheckboxProject
-								key={project.id}
-								{...{
-									project,
-									chosenColorObj,
-									nextLightestColorObj,
-									projectsFromUrlById,
-									updateQueryParams,
-								}}
-							/>
-						);
-					})}
-
-					{/* Archived Projects */}
-					<ProjectGroupWithProjects
-						{...{
-							isArchivedGroup: true,
-							archivedProjects: sortedArchivedProjects,
-							chosenColorObj,
-							nextLightestColorObj,
-							projectsFromUrlById,
-							updateQueryParams,
-						}}
-					/>
+						{/* Archived Projects */}
+						<ProjectGroupWithProjects
+							{...{
+								isArchivedGroup: true,
+								archivedProjects: sortedArchivedProjects,
+								chosenColorObj,
+								nextLightestColorObj,
+								projectsFromUrlById,
+								updateQueryParams,
+							}}
+						/>
+					</div>
 				</div>
-			</div>
+			</Accordion>
 		</div>
 	);
 };
@@ -225,7 +230,7 @@ const ProjectGroupWithProjects = ({
 				}
 				setIsOpenForParent={setIsOpenForParent}
 			>
-				<div>
+				<div className="pl-4">
 					{groupedProjects?.map((project) => (
 						<CheckboxProject
 							key={project.id}
@@ -254,7 +259,7 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
 
 	return (
 		<div
-			className="flex items-center gap-1 cursor-pointer px-2"
+			className="flex items-center gap-1 cursor-pointer"
 			onClick={() => {
 				if (isChecked) {
 					projectsFromUrlById[id] = false;

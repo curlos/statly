@@ -1,3 +1,4 @@
+import Accordion from '../../../../components/Accordion/Accordion';
 import FormPickDateRange from '../../../../components/FormPickDateRange';
 import Icon from '../../../../components/Icon';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
@@ -10,37 +11,42 @@ const DateRangeSection = () => {
 
 	return (
 		<div>
-			<div className="flex items-center gap-1 mb-3">
-				<h3 className="text-[16px] font-bold">Date Range</h3>
-				<Icon
-					name="diversity_2"
-					fill={0}
-					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+			<Accordion
+				title={
+					<div className="flex items-center gap-1 mb-3">
+						<h3 className="text-[16px] font-bold">Date Range</h3>
+						<Icon
+							name="diversity_2"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						/>
+					</div>
+				}
+				openByDefault={true}
+			>
+				<FormPickDateRange
+					{...{
+						startDate: new Date(startDateFromUrl),
+						setStartDate: (value) => {
+							updateQueryParams({ 'start-date': value });
+						},
+						endDate: new Date(endDateFromUrl),
+						setEndDate: (value) => {
+							updateQueryParams({ 'end-date': value });
+						},
+						confirmBeforeUpdating: true,
+						onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
+							if (newStartDate) {
+								updateQueryParams({
+									'start-date': getFormattedShortMonthDay(newStartDate),
+								});
+							} else if (newEndDate) {
+								updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate) });
+							}
+						},
+					}}
 				/>
-			</div>
-
-			<FormPickDateRange
-				{...{
-					startDate: new Date(startDateFromUrl),
-					setStartDate: (value) => {
-						updateQueryParams({ 'start-date': value });
-					},
-					endDate: new Date(endDateFromUrl),
-					setEndDate: (value) => {
-						updateQueryParams({ 'end-date': value });
-					},
-					confirmBeforeUpdating: true,
-					onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
-						if (newStartDate) {
-							updateQueryParams({
-								'start-date': getFormattedShortMonthDay(newStartDate),
-							});
-						} else if (newEndDate) {
-							updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate) });
-						}
-					},
-				}}
-			/>
+			</Accordion>
 		</div>
 	);
 };

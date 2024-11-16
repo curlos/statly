@@ -69,34 +69,39 @@ const ThemeColorList = () => {
 									</div>
 								}
 							>
-								{Object.keys(colorsFromGroup).map((colorKey) => {
-									const { borderColor, bgColor, textColor } = colorsFromGroup[colorKey];
+								<div className="pl-3">
+									{Object.keys(colorsFromGroup).map((colorKey) => {
+										const { borderColor, bgColor, textColor } = colorsFromGroup[colorKey];
 
-									return (
-										<CustomRadioButton
-											key={colorKey + 'radio'}
-											label={colorKey}
-											name={colorKey}
-											checked={themeColorKey === colorKey}
-											onChange={() => {
-												setThemeColorKey(colorKey);
+										return (
+											<CustomRadioButton
+												key={colorKey + 'radio'}
+												label={colorKey}
+												name={colorKey}
+												checked={themeColorKey === colorKey}
+												onChange={() => {
+													setThemeColorKey(colorKey);
 
-												handleError(async () => {
-													const payload = {
-														theme: {
-															color: colorKey,
-														},
-													};
+													handleError(async () => {
+														const payload = {
+															theme: {
+																color: colorKey,
+															},
+														};
 
-													await editUserSettings(payload).unwrap();
-												});
-											}}
-											customLabelClass={textColor}
-											customOuterCircleClasses={classNames('!w-[20px] !h-[20px]', borderColor)}
-											customInnerCircleClasses={classNames('!w-[10px] !h-[10px]', bgColor)}
-										/>
-									);
-								})}
+														await editUserSettings(payload).unwrap();
+													});
+												}}
+												customLabelClass={textColor}
+												customOuterCircleClasses={classNames(
+													'!w-[20px] !h-[20px]',
+													borderColor
+												)}
+												customInnerCircleClasses={classNames('!w-[10px] !h-[10px]', bgColor)}
+											/>
+										);
+									})}
+								</div>
 							</Accordion>
 						</div>
 					);

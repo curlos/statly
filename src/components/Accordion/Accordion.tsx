@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../Icon';
 
-const Accordion = ({ title, children, setIsOpenForParent }) => {
-	const [isOpen, setIsOpen] = useState(false);
+const Accordion = ({ title, children, setIsOpenForParent, openByDefault }) => {
+	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 
 	const toggleOpen = () => {
 		setIsOpen(!isOpen);
@@ -14,7 +14,7 @@ const Accordion = ({ title, children, setIsOpenForParent }) => {
 		<div>
 			<button
 				onClick={toggleOpen}
-				className="p-2 w-full text-left flex justify-between items-center focus:outline-none hover:bg-color-gray-300 rounded-xl"
+				className="w-full text-left flex justify-between items-center focus:outline-none rounded-xl mb-2"
 			>
 				{title}
 				<Icon
@@ -32,7 +32,7 @@ const Accordion = ({ title, children, setIsOpenForParent }) => {
 						transition={{ duration: 0.3 }}
 						className="overflow-hidden"
 					>
-						<div className="pl-6">{children}</div>
+						{children}
 					</motion.div>
 				)}
 			</AnimatePresence>

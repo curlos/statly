@@ -3,6 +3,7 @@ import Icon from '../../../../components/Icon';
 import useHandleError from '../../../../hooks/useHandleError';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../../services/resources/userSettingsApi';
+import Accordion from '../../../../components/Accordion/Accordion';
 
 const OtherSection = ({
 	showCompletedTasks,
@@ -22,48 +23,53 @@ const OtherSection = ({
 
 	return (
 		<div>
-			<div className="flex items-center gap-1 mb-3">
-				<h3 className="text-[16px] font-bold">Other</h3>
-				<Icon
-					name="diversity_2"
-					fill={0}
-					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-				/>
-			</div>
+			<Accordion
+				title={
+					<div className="flex items-center gap-1 mb-3">
+						<h3 className="text-[16px] font-bold">Other</h3>
+						<Icon
+							name="diversity_2"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						/>
+					</div>
+				}
+				openByDefault={true}
+			>
+				{/* Checkbox - Show Completed Tasks */}
+				{!isLoadingGetUserSettings && (
+					<CheckboxOther
+						{...{
+							userSettings,
+							userSettingProperty: 'showCompletedTasks',
+							name: 'Show Completed Tasks',
+							showValue: showCompletedTasks,
+							setShowValue: setShowCompletedTasks,
+							handleError,
+							editUserSettings,
+							chosenColorObj,
+							nextLightestColorObj,
+						}}
+					/>
+				)}
 
-			{/* Checkbox - Show Completed Tasks */}
-			{!isLoadingGetUserSettings && (
-				<CheckboxOther
-					{...{
-						userSettings,
-						userSettingProperty: 'showCompletedTasks',
-						name: 'Show Completed Tasks',
-						showValue: showCompletedTasks,
-						setShowValue: setShowCompletedTasks,
-						handleError,
-						editUserSettings,
-						chosenColorObj,
-						nextLightestColorObj,
-					}}
-				/>
-			)}
-
-			{/* Checkbox - Show Total Focus Records Duration */}
-			{!isLoadingGetUserSettings && (
-				<CheckboxOther
-					{...{
-						userSettings,
-						userSettingProperty: 'showTotalFocusDuration',
-						name: 'Show Total Focus Records Duration',
-						showValue: showTotalFocusDuration,
-						setShowValue: setShowTotalFocusDuration,
-						handleError,
-						editUserSettings,
-						chosenColorObj,
-						nextLightestColorObj,
-					}}
-				/>
-			)}
+				{/* Checkbox - Show Total Focus Records Duration */}
+				{!isLoadingGetUserSettings && (
+					<CheckboxOther
+						{...{
+							userSettings,
+							userSettingProperty: 'showTotalFocusDuration',
+							name: 'Show Total Focus Records Duration',
+							showValue: showTotalFocusDuration,
+							setShowValue: setShowTotalFocusDuration,
+							handleError,
+							editUserSettings,
+							chosenColorObj,
+							nextLightestColorObj,
+						}}
+					/>
+				)}
+			</Accordion>
 		</div>
 	);
 };

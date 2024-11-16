@@ -8,6 +8,7 @@ import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import useWindowSize from '../../../hooks/useWindowSize';
 
 const Page = () => {
 	const { searchParams } = useSearchParamsContext();
@@ -40,9 +41,10 @@ const Page = () => {
 	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
 
 	// For Filter Sidebar and Filter Bar
+	const { width } = useWindowSize();
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
-	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
+	const [showFilterSidebar, setShowFilterSidebar] = useState(width && width < 992 ? false : true);
 
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
