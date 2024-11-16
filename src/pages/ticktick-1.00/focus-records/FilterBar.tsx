@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Icon from '../../../components/Icon';
 import AppliedFilterItemList from './AppliedFilterItemList';
-import ModalFilterSidebar from './FilterSidebar/ModalFilterSidebar';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
@@ -10,17 +9,14 @@ const FilterBar = ({
 	defaultFocusRecords,
 	filteredFocusRecords,
 	setFilteredFocusRecords,
-	showCompletedTasks,
-	setShowCompletedTasks,
 	showTotalFocusDuration,
-	setShowTotalFocusDuration,
+	setSortByOptions,
+	showFilterSidebar,
+	setShowFilterSidebar,
+	DEFAULT_SORT_BY_OPTIONS,
 }) => {
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
-	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
-
-	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
-	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
 	useFilterFocusRecords({
 		taskIdToFilterBy,
@@ -44,7 +40,7 @@ const FilterBar = ({
 					<div className="text-[16px] cursor-pointer">
 						<div
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
-							onClick={() => setShowFilterSidebar(true)}
+							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
 						>
 							<div>{showFilterSidebar ? 'Hide Filters' : 'Show Filters'}</div>
 							<Icon
@@ -62,20 +58,6 @@ const FilterBar = ({
 					taskIdToFilterBy,
 				}}
 			/>
-
-			<div className="lg:hidden">
-				<ModalFilterSidebar
-					{...{
-						isOpen: showFilterSidebar,
-						setIsOpen: setShowFilterSidebar,
-						sortByOptions,
-						showCompletedTasks,
-						setShowCompletedTasks,
-						showTotalFocusDuration,
-						setShowTotalFocusDuration,
-					}}
-				/>
-			</div>
 		</div>
 	);
 };

@@ -39,6 +39,11 @@ const Page = () => {
 	const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
 
+	// For Filter Sidebar and Filter Bar
+	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
+	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
+	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
+
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
 			return;
@@ -97,6 +102,11 @@ const Page = () => {
 						setShowCompletedTasks,
 						showTotalFocusDuration,
 						setShowTotalFocusDuration,
+						sortByOptions,
+						setSortByOptions,
+						showFilterSidebar,
+						setShowFilterSidebar,
+						DEFAULT_SORT_BY_OPTIONS,
 					}}
 				/>
 
@@ -108,11 +118,13 @@ const Page = () => {
 								isLoadingGetFocusRecords,
 								sortBy,
 								currentPage,
-								setCurrentPage,
-								totalPages,
-								setTotalPages,
 								showCompletedTasks,
+								setShowCompletedTasks,
 								showTotalFocusDuration,
+								setShowTotalFocusDuration,
+								sortByOptions,
+								showFilterSidebar,
+								setShowFilterSidebar,
 							}}
 						/>
 					</div>

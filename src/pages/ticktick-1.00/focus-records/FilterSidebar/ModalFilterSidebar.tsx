@@ -41,6 +41,7 @@ const ModalFilterSidebar = ({
 							showTotalFocusDuration,
 							setShowTotalFocusDuration,
 							sortByOptions,
+							isForModal: true,
 						}}
 					/>
 				</motion.div>
