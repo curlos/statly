@@ -198,7 +198,7 @@ const InputMaxFocusRecordsPerPage = ({
 				</div>
 				<div className="flex items-center gap-1">
 					<div>Max Focus Records Per Page</div>
-					{apiRequestLoading || (true && <Spinner />)}
+					{apiRequestLoading && <Spinner />}
 				</div>
 			</div>
 			{errorMessage && <div className="text-[14px] text-red-500">{errorMessage}</div>}
