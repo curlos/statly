@@ -66,7 +66,7 @@ const FocusRecordsPage = () => {
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
 	return (
-		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700">
+		<div className="max-w-screen min-h-screen max-h-screen bg-color-gray-700 safe-bottom">
 			<Navbar {...{ topHeaderRef, setHeaderHeight }} />
 
 			<div

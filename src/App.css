@@ -239,3 +239,7 @@
     stroke-linecap: butt;
   }
   
+  /* This is mainly for use on IOS devices. The Safari gray bar at the bottom cuts off the content unless this safe bottom padding is used. */
+.safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
