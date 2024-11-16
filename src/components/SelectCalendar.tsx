@@ -44,12 +44,26 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 		}
 	}, [connectedCurrentDate]);
 
+	// Month
 	const goToPreviousMonth = () => {
 		setLocalCurrentDate(new Date(localCurrentDate.getFullYear(), localCurrentDate.getMonth() - 1, 1));
 	};
 
 	const goToNextMonth = () => {
 		setLocalCurrentDate(new Date(localCurrentDate.getFullYear(), localCurrentDate.getMonth() + 1, 1));
+	};
+
+	// Year
+	const goToPreviousYear = () => {
+		setLocalCurrentDate(
+			new Date(localCurrentDate.getFullYear() - 1, localCurrentDate.getMonth(), localCurrentDate.getDate())
+		);
+	};
+
+	const goToNextYear = () => {
+		setLocalCurrentDate(
+			new Date(localCurrentDate.getFullYear() + 1, localCurrentDate.getMonth(), localCurrentDate.getDate())
+		);
 	};
 
 	const calendarMonth = getCalendarMonth(localCurrentDate.getFullYear(), localCurrentDate.getMonth());
@@ -78,6 +92,12 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 				</div>
 				<div className="flex items-center">
 					<Icon
+						name="keyboard_double_arrow_left"
+						fill={0}
+						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
+						onClick={goToPreviousYear}
+					/>
+					<Icon
 						name="chevron_left"
 						fill={0}
 						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
@@ -93,6 +113,12 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 						fill={0}
 						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
 						onClick={goToNextMonth}
+					/>
+					<Icon
+						name="keyboard_double_arrow_right"
+						fill={0}
+						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
+						onClick={goToNextYear}
 					/>
 				</div>
 			</div>
