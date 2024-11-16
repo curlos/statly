@@ -90,6 +90,7 @@ const TaskSection = () => {
 			<div className="flex flex-col xs:flex-row gap-2 xs:gap-4">
 				<div className="relative">
 					<div
+						ref={dropdownRef}
 						className="flex gap-[2px] bg-color-gray-600 py-2 px-4 rounded-md cursor-pointer justify-between items-center"
 						onClick={() => setIsDropdownVisible(!isDropdownVisible)}
 					>

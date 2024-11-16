@@ -163,7 +163,6 @@ const InBetweenPages = ({ currentPage, setCurrentPage, totalPages }) => {
 				isVisible={isDropdownVisible}
 				setIsVisible={setIsDropdownVisible}
 				{...{ currentPage, setCurrentPage, totalPages }}
-				// customClasses="ml-[10px] mt-[-5px]"
 			/>
 		</div>
 	);
