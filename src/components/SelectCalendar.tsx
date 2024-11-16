@@ -84,11 +84,15 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 		}
 	}, [selectedInterval, outerCurrentDate]);
 
+	const [showYearView, setShowYearView] = useState(false);
+
 	return (
 		<div>
 			<div className="flex items-center justify-between px-4">
-				<div>
-					{monthName} {localCurrentDate.getFullYear()}
+				<div className="flex-1 cursor-pointer" onClick={() => setShowYearView(!showYearView)}>
+					{showYearView
+						? `${localCurrentDate.getFullYear()}`
+						: `${monthName} ${localCurrentDate.getFullYear()}`}
 				</div>
 				<div className="flex items-center">
 					<Icon
@@ -123,91 +127,121 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 				</div>
 			</div>
 
-			<div className="w-full text-[12px] p-3">
-				<div>
-					<div className="grid grid-cols-7 gap-1 text-center">
-						{['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day, i) => (
-							<div key={day + i} className="py-1">
-								{day}
-							</div>
-						))}
-					</div>
+			<MonthView
+				{...{
+					calendarMonth,
+					allDaysInWeekFromDate,
+					localCurrentDate,
+					selectedInterval,
+					setConnectedCurrentDate,
+					setLocalCurrentDate,
+					chosenColorObj,
+					dueDate,
+					setDueDate,
+					time,
+				}}
+			/>
+		</div>
+	);
+};
+
+const MonthView = ({
+	calendarMonth,
+	allDaysInWeekFromDate,
+	localCurrentDate,
+	selectedInterval,
+	setConnectedCurrentDate,
+	setLocalCurrentDate,
+	chosenColorObj,
+	dueDate,
+	setDueDate,
+	time,
+}) => {
+	return (
+		<div className="w-full text-[12px] p-3">
+			<div>
+				<div className="grid grid-cols-7 gap-1 text-center">
+					{['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day, i) => (
+						<div key={day + i} className="py-1">
+							{day}
+						</div>
+					))}
 				</div>
-				<div className="text-center">
-					{calendarMonth.map((week, index) => {
-						let isSelectedWeek = false;
+			</div>
+			<div className="text-center">
+				{calendarMonth.map((week, index) => {
+					let isSelectedWeek = false;
 
-						if (allDaysInWeekFromDate) {
-							const firstDayOfThisWeekKey = formatCheckedInDayDate(week[0]);
-							isSelectedWeek = allDaysInWeekFromDate[firstDayOfThisWeekKey];
-						}
+					if (allDaysInWeekFromDate) {
+						const firstDayOfThisWeekKey = formatCheckedInDayDate(week[0]);
+						isSelectedWeek = allDaysInWeekFromDate[firstDayOfThisWeekKey];
+					}
 
-						return (
-							<div
-								key={`week-${index}`}
-								className={classNames(
-									'mb-1 grid grid-cols-7 gap-1',
-									isSelectedWeek && 'bg-color-gray-200 rounded-full'
-								)}
-							>
-								{week.map((day, index) => {
-									const isCurrentMonth = day.getMonth() === localCurrentDate.getMonth();
-									const isDayToday = areDatesEqual(new Date(), day);
-									const isChosenDay = areDatesEqual(dueDate, day);
-									let appliedStyles = [];
+					return (
+						<div
+							key={`week-${index}`}
+							className={classNames(
+								'mb-1 grid grid-cols-7 gap-1',
+								isSelectedWeek && 'bg-color-gray-200 rounded-full'
+							)}
+						>
+							{week.map((day, index) => {
+								const isCurrentMonth = day.getMonth() === localCurrentDate.getMonth();
+								const isDayToday = areDatesEqual(new Date(), day);
+								const isChosenDay = areDatesEqual(dueDate, day);
+								let appliedStyles = [];
 
-									if (isCurrentMonth) {
-										if (isChosenDay && selectedInterval !== 'Week') {
-											appliedStyles.push(`${chosenColorObj.bgColor} text-white`);
-										} else if (isDayToday) {
-											appliedStyles.push(
-												`bg-color-gray-200 hover:bg-color-gray-200 ${chosenColorObj.textColor}`
-											);
-										} else {
-											appliedStyles.push('text-white bg-transparent hover:bg-color-gray-300');
-										}
+								if (isCurrentMonth) {
+									if (isChosenDay && selectedInterval !== 'Week') {
+										appliedStyles.push(`${chosenColorObj.bgColor} text-white`);
+									} else if (isDayToday) {
+										appliedStyles.push(
+											`bg-color-gray-200 hover:bg-color-gray-200 ${chosenColorObj.textColor}`
+										);
 									} else {
-										appliedStyles.push('text-color-gray-100 bg-transparent hover:bg-color-gray-20');
+										appliedStyles.push('text-white bg-transparent hover:bg-color-gray-300');
+									}
+								} else {
+									appliedStyles.push('text-color-gray-100 bg-transparent hover:bg-color-gray-20');
+								}
+
+								const handleClick = () => {
+									setLocalCurrentDate(new Date(day.getFullYear(), day.getMonth(), 1));
+
+									let newDueDate = day ? day : new Date();
+
+									if (time) {
+										const newDateObject = setTimeOnDateString(newDueDate, time);
+										newDueDate = newDateObject;
 									}
 
-									const handleClick = () => {
-										setLocalCurrentDate(new Date(day.getFullYear(), day.getMonth(), 1));
-
-										let newDueDate = day ? day : new Date();
-
-										if (time) {
-											const newDateObject = setTimeOnDateString(newDueDate, time);
-											newDueDate = newDateObject;
+									if (selectedInterval === 'Week') {
+										if (setConnectedCurrentDate) {
+											setConnectedCurrentDate(newDueDate);
 										}
 
-										if (selectedInterval === 'Week') {
-											if (setConnectedCurrentDate) {
-												setConnectedCurrentDate(newDueDate);
-											}
-
-											// setOuterCurrentDate(newDueDate);
-										} else {
-											if (setConnectedCurrentDate) {
-												setConnectedCurrentDate(new Date(day.getFullYear(), day.getMonth(), 1));
-											}
-											setDueDate(newDueDate);
+										// setOuterCurrentDate(newDueDate);
+									} else {
+										if (setConnectedCurrentDate) {
+											setConnectedCurrentDate(new Date(day.getFullYear(), day.getMonth(), 1));
 										}
-									};
+										setDueDate(newDueDate);
+									}
+								};
 
-									return (
-										<div
-											key={`day-${index}`}
-											className={`py-1 cursor-pointer rounded-full ${appliedStyles}`}
-											onClick={handleClick}
-										>
-											{day.getDate()}
-										</div>
-									);
-								})}
-							</div>
-						);
-					})}
-				</div>
+								return (
+									<div
+										key={`day-${index}`}
+										className={`py-1 cursor-pointer rounded-full ${appliedStyles}`}
+										onClick={handleClick}
+									>
+										{day.getDate()}
+									</div>
+								);
+							})}
+						</div>
+					);
+				})}
 			</div>
 		</div>
 	);

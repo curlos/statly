@@ -7,7 +7,10 @@ const Accordion = ({ title, children, setIsOpenForParent, openByDefault, isChild
 
 	const toggleOpen = () => {
 		setIsOpen(!isOpen);
-		setIsOpenForParent(!isOpen);
+
+		if (setIsOpenForParent) {
+			setIsOpenForParent(!isOpen);
+		}
 	};
 
 	return (

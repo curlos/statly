@@ -22,8 +22,6 @@ const FormPickDateRange = ({
 
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
-	console.log(confirmBeforeUpdating);
-
 	return (
 		<div>
 			<div className="space-y-2">
