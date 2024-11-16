@@ -56,12 +56,14 @@ const FocusRecordList = ({
 
 	const shownFocusRecords = getShownFocusRecords();
 
+	const modernWarfareRemasteredMedal = '/airstrike_medal_cod_mwr.webp';
+
 	return (
 		<div>
 			{isLoadingGetFocusRecords || !filteredFocusRecords ? (
 				<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
 					<div>
-						<img src="/cod-bo3-icons/Unstoppable_Medal_BO3.webp" className="h-[200px] animate-pulse" />
+						<img src={modernWarfareRemasteredMedal} className="h-[150px] animate-pulse" />
 					</div>
 				</div>
 			) : (
