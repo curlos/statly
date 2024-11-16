@@ -12,7 +12,7 @@ const ModalFilterSidebar = ({
 }) => {
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
-		visible: { opacity: 0.7, transition: { duration: 0.3 } },
+		visible: { opacity: 0.3, transition: { duration: 0.3 } },
 	};
 
 	return (

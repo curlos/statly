@@ -6,6 +6,7 @@ import ProjectsSection from './ProjectsSection';
 import SearchSection from './SearchSection';
 import SortBySection from './SortBySection';
 import classNames from 'classnames';
+import { useSearchParamsCustom } from '../../../../contexts/useSearchParamsContext';
 
 const FilterSidebar = ({
 	setIsOpen,
@@ -19,6 +20,19 @@ const FilterSidebar = ({
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
+	};
+
+	const { updateQueryParams } = useSearchParamsCustom();
+
+	const clearAllFilters = () => {
+		updateQueryParams({
+			'task-id': '',
+			'sort-by': '',
+			search: '',
+			'start-date': '',
+			'end-date': '',
+			projects: '',
+		});
 	};
 
 	return (
@@ -35,14 +49,22 @@ const FilterSidebar = ({
 		>
 			<div className="flex justify-between items-center">
 				<h2 className="font-bold text-[18px]">Filter & Sort</h2>
-				<Icon
-					name="close"
-					fill={0}
-					customClass={
-						'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1'
-					}
-					onClick={() => setIsOpen(false)}
-				/>
+				<div className="flex items-center gap-3">
+					<div
+						className="text-color-gray-50 hover:text-color-gray-25 underline cursor-pointer"
+						onClick={clearAllFilters}
+					>
+						Clear All
+					</div>
+					<Icon
+						name="close"
+						fill={0}
+						customClass={
+							'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1'
+						}
+						onClick={() => setIsOpen(false)}
+					/>
+				</div>
 			</div>
 
 			<SearchSection />
