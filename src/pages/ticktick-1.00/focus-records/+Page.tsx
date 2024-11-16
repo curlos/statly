@@ -8,14 +8,14 @@ import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import useWindowSize from '../../../hooks/useWindowSize';
 
 const Page = () => {
-	const { searchParams } = useSearchParamsContext();
-	const searchTextFromUrl = searchParams.get('search') || '';
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
 
 	// Query Params
+	const searchTextFromUrl = searchParams.get('search') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
+	const currentPageFromUrl = searchParams.get('page') || 1;
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
@@ -33,7 +33,6 @@ const Page = () => {
 
 	const maxHeight = useMaxHeight(headerHeight);
 
-	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(null);
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
@@ -64,12 +63,12 @@ const Page = () => {
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
-		setCurrentPage(1);
+		updateQueryParams({ page: '' });
 	}, [filteredFocusRecords, sortBy, searchTextFromUrl]);
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
-	}, [currentPage]);
+	}, [currentPageFromUrl]);
 
 	useEffect(() => {
 		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
@@ -91,19 +90,10 @@ const Page = () => {
 			>
 				<FilterBar
 					{...{
-						sortBy,
-						currentPage,
-						setCurrentPage,
-						totalPages,
 						defaultFocusRecords: focusRecords,
 						filteredFocusRecords,
 						setFilteredFocusRecords,
-						focusRecordListRef,
-						showCompletedTasks,
-						setShowCompletedTasks,
 						showTotalFocusDuration,
-						setShowTotalFocusDuration,
-						sortByOptions,
 						setSortByOptions,
 						showFilterSidebar,
 						setShowFilterSidebar,
@@ -118,7 +108,7 @@ const Page = () => {
 								filteredFocusRecords,
 								isLoadingGetFocusRecords,
 								sortBy,
-								currentPage,
+								currentPage: currentPageFromUrl,
 								showCompletedTasks,
 								setShowCompletedTasks,
 								showTotalFocusDuration,
@@ -136,8 +126,10 @@ const Page = () => {
 					<div className="flex justify-center pt-1 pb-2">
 						<Pagination
 							total={totalPages}
-							currentPage={currentPage}
-							setCurrentPage={setCurrentPage}
+							currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
+							setCurrentPage={(value) => {
+								updateQueryParams({ page: value === 1 ? '' : value });
+							}}
 							totalPages={totalPages}
 						/>
 					</div>
