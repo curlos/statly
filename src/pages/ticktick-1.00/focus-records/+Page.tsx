@@ -104,17 +104,15 @@ const FocusRecordsPage = () => {
 				</div>
 
 				{totalPages && totalPages > 0 ? (
-					<div className="safe-bottom">
-						<div className="flex justify-center pt-1 pb-2">
-							<Pagination
-								total={totalPages}
-								currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
-								setCurrentPage={(value) => {
-									updateQueryParams({ page: value === 1 ? '' : value });
-								}}
-								totalPages={totalPages}
-							/>
-						</div>
+					<div className="flex justify-center pt-1 pb-2">
+						<Pagination
+							total={totalPages}
+							currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
+							setCurrentPage={(value) => {
+								updateQueryParams({ page: value === 1 ? '' : value });
+							}}
+							totalPages={totalPages}
+						/>
 					</div>
 				) : null}
 			</div>
