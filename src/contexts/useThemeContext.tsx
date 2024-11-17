@@ -18,20 +18,7 @@ const useTheme = () => {
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
-	const [themeColorKey, setThemeColorKey] = useState('red-500');
-
-	useEffect(() => {
-		if (isLoadingGetUserSettings) {
-			return;
-		}
-
-		const currentThemeColor = userSettings?.theme?.color;
-
-		if (currentThemeColor) {
-			setThemeColorKey(currentThemeColor);
-		}
-	}, [userSettings]);
-
+	const themeColorKey = userSettings?.theme?.color || 'red-500';
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
 	const chosenColorObj = TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
 	const chosenColorVariantsObj = TAILWIND_COLORS_OBJ[chosenColorName];
@@ -97,7 +84,6 @@ const useTheme = () => {
 
 	return {
 		themeColorKey,
-		setThemeColorKey,
 		cssStyles: TAILWIND_COLORS_OBJ,
 		chosenColorObj,
 		chosenColorVariantsObj, // To get all the variants. If a chosen color is red-500, then the variants would be red-50, red-100, red-200, red-300, etc.

@@ -18,6 +18,27 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 				method: 'PUT',
 				body: payload,
 			}),
+			// Optimistically update the user settings
+			onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
+				const patchResult = dispatch(
+					userSettingsApi.util.updateQueryData('getUserSettings', undefined, (draft) => {
+						const currentUserSettings = draft.userSettings;
+
+						// Overwrite user settings properties with those from payload
+						// This will update user settings with all the properties from payload
+						// Existing properties in user settings that are also in the payload will be overwritten
+						Object.assign(currentUserSettings, payload);
+					})
+				);
+
+				try {
+					// Wait for the mutation to resolve
+					await queryFulfilled;
+				} catch {
+					// If the mutation fails, undo the optimistic update
+					patchResult.undo();
+				}
+			},
 			invalidatesTags: (result, error, userId) => ['UserSettings'],
 		}),
 	}),

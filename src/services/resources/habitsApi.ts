@@ -34,7 +34,6 @@ export const habitsApi = baseAPI.injectEndpoints({
 				body: payload,
 			}),
 			// Adding optimistic update logic
-			// Adding optimistic update logic
 			onQueryStarted: async ({ habitId, payload }, { dispatch, queryFulfilled, getState }) => {
 				// Optimistically update the cache
 				const patchResult = dispatch(

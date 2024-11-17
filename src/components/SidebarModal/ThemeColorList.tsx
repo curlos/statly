@@ -14,7 +14,19 @@ const ThemeColorList = () => {
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, setThemeColorKey, cssStyles, chosenColorObj } = themeContext;
+	const { themeColorKey, cssStyles, chosenColorObj } = themeContext;
+
+	const handleChangeThemeColor = (colorKey) => {
+		handleError(async () => {
+			const payload = {
+				theme: {
+					color: colorKey,
+				},
+			};
+
+			await editUserSettings(payload).unwrap();
+		});
+	};
 
 	return (
 		<div>
@@ -79,19 +91,7 @@ const ThemeColorList = () => {
 												label={colorKey}
 												name={colorKey}
 												checked={themeColorKey === colorKey}
-												onChange={() => {
-													setThemeColorKey(colorKey);
-
-													handleError(async () => {
-														const payload = {
-															theme: {
-																color: colorKey,
-															},
-														};
-
-														await editUserSettings(payload).unwrap();
-													});
-												}}
+												onChange={() => handleChangeThemeColor(colorKey)}
 												customLabelClass={textColor}
 												customOuterCircleClasses={classNames(
 													'!w-[20px] !h-[20px]',
