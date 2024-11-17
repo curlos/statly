@@ -14,7 +14,8 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { useUserSettingsContext } from './useUserSettingsContext';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
-	const { updateQueryParams } = useSearchParamsContext();
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const taskIdFromUrl = searchParams.get('task-id');
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
@@ -24,7 +25,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 
 	const startTimeObj = formatDateTime(startTime);
 	const endTimeObj = formatDateTime(endTime);
-	const duration = focusDuration ? focusDuration : getFocusDuration(focusRecord);
+	const duration = focusDuration ? focusDuration : getFocusDuration({ focusRecord });
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -162,6 +163,10 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 
 					{tasks.map((task) => {
 						const { startTime, endTime, taskId } = task;
+
+						if (taskIdFromUrl && (!taskId || taskId !== taskIdFromUrl)) {
+							return null;
+						}
 
 						const startTimeObj = formatDateTime(startTime);
 						const endTimeObj = formatDateTime(endTime);

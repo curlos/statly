@@ -509,7 +509,7 @@ export const getMultiSelectFilteredTasks = (tasks, filters) => {
 /**
  * @description For TickTick 1.0 Focus Records
  */
-export const getFocusDuration = (focusRecord) => {
+export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => {
 	const isTaskFromFocusRecord = focusRecord?.taskId;
 	const focusRecordWithoutTask = !focusRecord?.tasks;
 
@@ -524,6 +524,28 @@ export const getFocusDuration = (focusRecord) => {
 		// Calculate the total duration in seconds
 		const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
 		return durationSeconds;
+	}
+
+	if (onlyTasks) {
+		const { tasks } = focusRecord;
+		let totalDurationSeconds = 0;
+
+		for (const task of tasks) {
+			const { startTime, endTime, taskId } = task;
+
+			if (filterByTaskId && (!taskId || taskId !== filterByTaskId)) {
+				continue;
+			}
+
+			// Convert ISO string times to Date objects
+			const start = new Date(startTime);
+			const end = new Date(endTime);
+			// Calculate the total duration in seconds
+			const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
+			totalDurationSeconds += durationSeconds;
+		}
+
+		return totalDurationSeconds;
 	}
 
 	const { startTime, endTime, pauseDuration } = focusRecord;
@@ -738,11 +760,11 @@ export const getGroupedFocusRecordsByTask = (focusRecords, tasksById) => {
 	return sortedGroupedFocusRecordsAsc;
 };
 
-export const getFocusDurationFromArray = (focusRecords) => {
+export const getFocusDurationFromArray = (focusRecords, onlyTasks, taskId) => {
 	let totalFocusDuration = 0;
 
 	focusRecords?.forEach((focusRecord) => {
-		totalFocusDuration += getFocusDuration(focusRecord);
+		totalFocusDuration += getFocusDuration({ focusRecord, onlyTasks, filterByTaskId: taskId });
 	});
 
 	return totalFocusDuration;

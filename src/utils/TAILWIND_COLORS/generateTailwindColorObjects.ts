@@ -38,6 +38,9 @@ export const generateTailwindColorObjects = () => {
 						borderColor: `hover:border-${currentColorGroupName}-${colorNumVal}`,
 						outlineColor: `hover:outline-${currentColorGroupName}-${colorNumVal}`,
 					},
+					focus: {
+						outlineColor: `focus:outline-${currentColorGroupName}-${colorNumVal}`,
+					},
 				};
 
 				// If found a color name (Slate, Red, Blue, Yellow, etc.)

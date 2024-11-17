@@ -30,7 +30,7 @@ const FilterBar = ({
 		DEFAULT_SORT_BY_OPTIONS,
 	});
 
-	const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords);
+	const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, taskIdToFilterBy);
 
 	return (
 		<div ref={stickyRef} className="bg-color-gray-700 sticky top-0 z-[1] pt-2">

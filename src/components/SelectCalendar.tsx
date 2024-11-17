@@ -258,6 +258,7 @@ const MonthView = ({
 };
 
 const YearView = ({ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYearView }) => {
+	const { chosenColorObj } = useThemeContext();
 	const monthsOfYear = getAllMonths(localCurrentDate);
 
 	return (
@@ -282,7 +283,7 @@ const YearView = ({ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYe
 						<div
 							className={classNames(
 								'flex justify-center items-center h-[40px] w-[40px] cursor-pointer rounded-full',
-								isSelected ? 'bg-blue-500' : 'bg-color-gray-600'
+								isSelected ? chosenColorObj.bgColor : 'bg-color-gray-600'
 							)}
 						>
 							{monthName}

@@ -35,8 +35,8 @@ const FocusRecordList = ({
 							return startTimeOne - startTimeTwo;
 						}
 					} else if (sortBy.startsWith('Focus Hours')) {
-						const durationOne = getFocusDuration(focusRecordOne);
-						const durationTwo = getFocusDuration(focusRecordTwo);
+						const durationOne = getFocusDuration({ focusRecord: focusRecordOne });
+						const durationTwo = getFocusDuration({ focusRecord: focusRecordTwo });
 
 						if (sortBy === 'Focus Hours: Most-Least') {
 							return durationTwo - durationOne;
