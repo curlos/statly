@@ -31,7 +31,7 @@ const UserForm = ({ mode }) => {
 				await registerUser(data).unwrap();
 			}
 
-			navigate('/projects/all/tasks');
+			navigate('/ticktick-1.00/focus-records');
 		} catch (error) {
 			dispatch(setModalState({ modalId: 'ModalErrorMessenger', isOpen: true, props: { error } }));
 		}
@@ -53,7 +53,7 @@ const UserForm = ({ mode }) => {
 							type="text"
 							placeholder="Nickname (optional)"
 							{...register('nickname')}
-							className="w-full text-[14px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
+							className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
 						/>
 					</div>
 					{errors.nickname && <p className="text-red-500">{errors.nickname.message}</p>}
@@ -67,7 +67,7 @@ const UserForm = ({ mode }) => {
 						type="email"
 						placeholder="Email"
 						{...register('email', { required: 'Email is required' })}
-						className="w-full text-[14px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
+						className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
 					/>
 				</div>
 				{errors.email && <p className="text-red-500">{errors.email.message}</p>}
@@ -80,7 +80,7 @@ const UserForm = ({ mode }) => {
 						type="password"
 						placeholder="Password"
 						{...register('password', { required: 'Password is required' })}
-						className="w-full text-[14px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
+						className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
 					/>
 				</div>
 				{errors.password && <p className="text-red-500">{errors.password.message}</p>}
