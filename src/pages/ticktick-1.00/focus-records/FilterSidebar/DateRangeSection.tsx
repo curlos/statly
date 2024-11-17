@@ -31,20 +31,21 @@ const DateRangeSection = () => {
 					{...{
 						startDate: new Date(startDateFromUrl),
 						setStartDate: (value) => {
-							updateQueryParams({ 'start-date': value });
+							updateQueryParams({ 'start-date': value, page: '' });
 						},
 						endDate: new Date(endDateFromUrl),
 						setEndDate: (value) => {
-							updateQueryParams({ 'end-date': value });
+							updateQueryParams({ 'end-date': value, page: '' });
 						},
 						confirmBeforeUpdating: false,
 						onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 							if (newStartDate) {
 								updateQueryParams({
 									'start-date': getFormattedShortMonthDay(newStartDate),
+									page: '',
 								});
 							} else if (newEndDate) {
-								updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate) });
+								updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate), page: '' });
 							}
 						},
 						isDropdownCalendarOpenForParent,

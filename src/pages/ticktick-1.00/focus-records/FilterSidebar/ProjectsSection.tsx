@@ -271,7 +271,7 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
 				}
 
 				const commaSeparatedSelectedProjects = getCommaSeparatedSelectedProjects(projectsFromUrlById);
-				updateQueryParams({ projects: commaSeparatedSelectedProjects });
+				updateQueryParams({ projects: commaSeparatedSelectedProjects, page: '' });
 			}}
 		>
 			<Icon

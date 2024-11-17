@@ -44,9 +44,9 @@ const SortBySection = ({ sortByOptions }) => {
 								checked={isSortByOptionChecked(sortByOption)}
 								onChange={() => {
 									if (sortByOption === 'Newest') {
-										updateQueryParams({ 'sort-by': '' });
+										updateQueryParams({ 'sort-by': '', page: '' });
 									} else {
-										updateQueryParams({ 'sort-by': sortByOption });
+										updateQueryParams({ 'sort-by': sortByOption, page: '' });
 									}
 								}}
 								customOuterCircleClasses={classNames('!w-[20px] !h-[20px]')}

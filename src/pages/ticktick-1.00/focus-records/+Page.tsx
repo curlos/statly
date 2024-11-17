@@ -22,6 +22,8 @@ const FocusRecordsPage = () => {
 	// Query Params
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
+	const taskIdFromUrl = searchParams.get('task-id');
+	const projectsFromUrl = searchParams.get('projects');
 	const currentPageFromUrl = searchParams.get('page') || 1;
 
 	const { maxFocusRecordsPerPage } = useUserSettingsContext();
@@ -44,8 +46,7 @@ const FocusRecordsPage = () => {
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
-		updateQueryParams({ page: '' });
-	}, [filteredFocusRecords, sortBy, searchTextFromUrl]);
+	}, [filteredFocusRecords, sortBy, searchTextFromUrl, taskIdFromUrl, projectsFromUrl]);
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);

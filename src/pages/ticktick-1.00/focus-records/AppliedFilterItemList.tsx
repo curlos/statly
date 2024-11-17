@@ -59,7 +59,7 @@ const AppliedFilterItemList = () => {
 		name: `Sort By`,
 		value: sortBy,
 		handleRemove: () => {
-			updateQueryParams({ 'sort-by': '' });
+			updateQueryParams({ 'sort-by': '', page: '' });
 		},
 	};
 
@@ -67,7 +67,7 @@ const AppliedFilterItemList = () => {
 		name: `Search Text`,
 		value: searchTextFromUrl,
 		handleRemove: () => {
-			updateQueryParams({ search: '', 'sort-by': '' });
+			updateQueryParams({ search: '', 'sort-by': '', page: '' });
 		},
 	};
 
@@ -78,7 +78,7 @@ const AppliedFilterItemList = () => {
 				? tasksById[taskIdToFilterBy]?.title
 				: taskIdToFilterBy,
 		handleRemove: () => {
-			updateQueryParams({ 'task-id': '' });
+			updateQueryParams({ 'task-id': '', page: '' });
 		},
 	};
 
@@ -86,7 +86,7 @@ const AppliedFilterItemList = () => {
 		name: `Date Range`,
 		value: `${startDateFromUrl} - ${endDateFromUrl}`,
 		handleRemove: () => {
-			updateQueryParams({ 'start-date': '', 'end-date': '' });
+			updateQueryParams({ 'start-date': '', 'end-date': '', page: '' });
 		},
 	};
 
@@ -94,7 +94,7 @@ const AppliedFilterItemList = () => {
 		name: 'Projects',
 		value: getProjectFilterValue(),
 		handleRemove: () => {
-			updateQueryParams({ projects: '' });
+			updateQueryParams({ projects: '', page: '' });
 		},
 	};
 

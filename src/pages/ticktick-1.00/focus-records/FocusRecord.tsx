@@ -102,6 +102,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			'start-date': '',
 			'end-date': '',
 			projects: '',
+			page: '',
 		});
 	};
 
@@ -140,7 +141,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							className="font-bold hover:underline cursor-pointer"
 							onClick={() => {
 								const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
-								updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl });
+								updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
 							}}
 						>
 							{getFormattedLongDay(new Date(startTime))}
@@ -153,7 +154,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							className="font-bold hover:underline cursor-pointer"
 							onClick={() => {
 								const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
-								updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl });
+								updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
 							}}
 						>
 							{getFormattedShortMonthDay(new Date(startTime))}
