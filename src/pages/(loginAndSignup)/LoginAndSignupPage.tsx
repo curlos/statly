@@ -7,6 +7,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 
 const LoginAndSignupPage = () => {
 	const isLoggedIn = useSelector(selectUserToken);
+
 	const pageContext = usePageContext();
 
 	useEffect(() => {
@@ -16,7 +17,7 @@ const LoginAndSignupPage = () => {
 	}, []);
 
 	// Determine the mode based on the pathname
-	const isSignupRoute = pageContext.urlParsed.pathname.includes('/signup');
+	const isSignupRoute = pageContext?.urlParsed?.pathname?.includes('/signup');
 	const mode = isSignupRoute ? 'register' : 'login';
 
 	return (

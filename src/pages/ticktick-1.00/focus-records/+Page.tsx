@@ -9,11 +9,7 @@ import { UserSettingsProvider, useUserSettingsContext } from './useUserSettingsC
 import useSticky from '../../../hooks/useSticky';
 
 const Page = () => {
-	return (
-		<UserSettingsProvider>
-			<FocusRecordsPage />
-		</UserSettingsProvider>
-	);
+	return <FocusRecordsPage />;
 };
 
 const FocusRecordsPage = () => {

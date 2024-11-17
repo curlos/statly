@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
 import Icon from './Icon';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../slices/modalSlice';
 import { useLoginUserMutation, useRegisterUserMutation } from '../services/resources/usersApi';
 import { navigate } from 'vike/client/router';
+import Link from './Link';
 
 const UserForm = ({ mode }) => {
 	const dispatch = useDispatch();
@@ -89,12 +89,12 @@ const UserForm = ({ mode }) => {
 				{mode === 'register' ? (
 					<div>
 						Have an account already?{' '}
-						<Link to="/login" className="text-blue-500 cursor-pointer hover:underline">
+						<Link href="/login" className="text-blue-500 cursor-pointer hover:underline">
 							Sign in
 						</Link>
 					</div>
 				) : (
-					<Link to="/signup" className="text-blue-500 cursor-pointer hover:underline">
+					<Link href="/signup" className="text-blue-500 cursor-pointer hover:underline">
 						Sign Up for Free
 					</Link>
 				)}
