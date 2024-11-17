@@ -2,7 +2,7 @@ import '../index.css';
 import '../App.css';
 import 'material-symbols';
 
-// import { registerSW } from 'virtual:pwa-register';
+import { registerSW } from 'virtual:pwa-register';
 import { Provider, useSelector } from 'react-redux';
 import store from '../store/store';
 import { StatsProvider } from '../contexts/useStatsContext';
@@ -55,4 +55,4 @@ const ProviderList = ({ children }) => {
 	);
 };
 
-// registerSW();
+registerSW();
