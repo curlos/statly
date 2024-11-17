@@ -14,15 +14,11 @@ const OtherSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const {
 		showCompletedTasks,
-		setShowCompletedTasks,
 		showFocusNotes,
-		setShowFocusNotes,
 		showTotalFocusDuration,
-		setShowTotalFocusDuration,
 		maxFocusRecordsPerPage,
 		setMaxFocusRecordsPerPage,
 		filterOutUnrelatedTasksWhenTaskIdIsApplied,
-		setFilterOutUnrelatedTasksWhenTaskIdIsApplied,
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
@@ -55,7 +51,6 @@ const OtherSection = () => {
 							userSettingProperty: 'showCompletedTasks',
 							name: 'Show Completed Tasks',
 							showValue: showCompletedTasks,
-							setShowValue: setShowCompletedTasks,
 							handleError,
 							editUserSettings,
 							chosenColorObj,
@@ -72,7 +67,6 @@ const OtherSection = () => {
 							userSettingProperty: 'showFocusNotes',
 							name: 'Show Focus Notes',
 							showValue: showFocusNotes,
-							setShowValue: setShowFocusNotes,
 							handleError,
 							editUserSettings,
 							chosenColorObj,
@@ -89,7 +83,6 @@ const OtherSection = () => {
 							userSettingProperty: 'showTotalFocusDuration',
 							name: 'Show Total Focus Records Duration',
 							showValue: showTotalFocusDuration,
-							setShowValue: setShowTotalFocusDuration,
 							handleError,
 							editUserSettings,
 							chosenColorObj,
@@ -106,7 +99,6 @@ const OtherSection = () => {
 							userSettingProperty: 'filterOutUnrelatedTasksWhenTaskIdIsApplied',
 							name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
 							showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
-							setShowValue: setFilterOutUnrelatedTasksWhenTaskIdIsApplied,
 							handleError,
 							editUserSettings,
 							chosenColorObj,
@@ -230,7 +222,6 @@ const CheckboxOther = ({
 	userSettingProperty,
 	name,
 	showValue,
-	setShowValue,
 	handleError,
 	editUserSettings,
 	chosenColorObj,
@@ -241,7 +232,6 @@ const CheckboxOther = ({
 			className="flex gap-1 cursor-pointer"
 			onClick={() => {
 				const newShowValue = !showValue;
-				setShowValue(newShowValue);
 
 				const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
 
