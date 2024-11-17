@@ -5,6 +5,8 @@ import { setModalState } from '../slices/modalSlice';
 import { useLoginUserMutation, useRegisterUserMutation } from '../services/resources/usersApi';
 import { navigate } from 'vike/client/router';
 import Link from './Link';
+import { useThemeContext } from '../contexts/useThemeContext';
+import classNames from 'classnames';
 
 const UserForm = ({ mode }) => {
 	const dispatch = useDispatch();
@@ -35,10 +37,12 @@ const UserForm = ({ mode }) => {
 		}
 	};
 
+	const { chosenColorObj } = useThemeContext();
+
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className="flex flex-col gap-4 w-[400px] bg-color-gray-300 p-10 rounded"
+			className="flex flex-col gap-4 w-full sm:max-w-[400px] bg-color-gray-300 p-10 rounded"
 		>
 			{mode === 'register' && (
 				<div>
@@ -81,7 +85,11 @@ const UserForm = ({ mode }) => {
 				</div>
 				{errors.password && <p className="text-red-500">{errors.password.message}</p>}
 			</div>
-			<button type="submit" disabled={isLoading} className="bg-blue-500 w-full rounded p-2 mt-4">
+			<button
+				type="submit"
+				disabled={isLoading}
+				className={classNames(chosenColorObj.bgColor, 'w-full rounded p-2 mt-4')}
+			>
 				{mode === 'login' ? 'Login' : 'Sign Up'}
 			</button>
 
@@ -89,12 +97,18 @@ const UserForm = ({ mode }) => {
 				{mode === 'register' ? (
 					<div>
 						Have an account already?{' '}
-						<Link href="/login" className="text-blue-500 cursor-pointer hover:underline">
+						<Link
+							href="/login"
+							className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
+						>
 							Sign in
 						</Link>
 					</div>
 				) : (
-					<Link href="/signup" className="text-blue-500 cursor-pointer hover:underline">
+					<Link
+						href="/signup"
+						className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
+					>
 						Sign Up for Free
 					</Link>
 				)}
