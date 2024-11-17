@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useSticky = (scrollableElementRef, stickyElementRef, scrollableWindowElement = null) => {
+const useSticky = (scrollableElementRef, stickyElementRef, scrollableWindowElement = null, offsetY) => {
 	const [isSticky, setSticky] = useState(false);
 
 	useEffect(() => {
@@ -10,7 +10,7 @@ const useSticky = (scrollableElementRef, stickyElementRef, scrollableWindowEleme
 				// Get the bounding rectangle of the sticky element relative to the viewport
 				const stickyElementRect = stickyElementRef.current.getBoundingClientRect();
 				// Check if the element is sticky
-				setSticky(stickyElementRect.top <= 50);
+				setSticky(stickyElementRect.top <= (offsetY ? offsetY : 0));
 			}
 		};
 
