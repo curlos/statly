@@ -10,7 +10,7 @@ const useSticky = (scrollableElementRef, stickyElementRef, scrollableWindowEleme
 				// Get the bounding rectangle of the sticky element relative to the viewport
 				const stickyElementRect = stickyElementRef.current.getBoundingClientRect();
 				// Check if the element is sticky
-				setSticky(stickyElementRect.top <= 0);
+				setSticky(stickyElementRect.top <= 50);
 			}
 		};
 
