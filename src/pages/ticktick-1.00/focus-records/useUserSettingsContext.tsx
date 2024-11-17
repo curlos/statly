@@ -21,6 +21,7 @@ const useUserSettings = () => {
 	const [showFocusNotes, setShowFocusNotes] = useState(true);
 	const [showTotalFocusDuration, setShowTotalFocusDuration] = useState(true);
 	const [maxFocusRecordsPerPage, setMaxFocusRecordsPerPage] = useState(50);
+	const [filterOutUnrelatedTasksWhenTaskIdIsApplied, setFilterOutUnrelatedTasksWhenTaskIdIsApplied] = useState(true);
 
 	useEffect(() => {
 		if (isLoadingGetUserSettings) {
@@ -33,8 +34,13 @@ const useUserSettings = () => {
 			return;
 		}
 
-		const { showCompletedTasks, showFocusNotes, showTotalFocusDuration, maxFocusRecordsPerPage } =
-			focusRecordsPageSettings;
+		const {
+			showCompletedTasks,
+			showFocusNotes,
+			showTotalFocusDuration,
+			maxFocusRecordsPerPage,
+			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+		} = focusRecordsPageSettings;
 
 		if (showCompletedTasks !== undefined) {
 			setShowCompletedTasks(showCompletedTasks);
@@ -51,6 +57,10 @@ const useUserSettings = () => {
 		if (maxFocusRecordsPerPage !== undefined) {
 			setMaxFocusRecordsPerPage(maxFocusRecordsPerPage);
 		}
+
+		if (filterOutUnrelatedTasksWhenTaskIdIsApplied !== undefined) {
+			setFilterOutUnrelatedTasksWhenTaskIdIsApplied(filterOutUnrelatedTasksWhenTaskIdIsApplied);
+		}
 	}, [userSettings]);
 
 	return {
@@ -62,5 +72,7 @@ const useUserSettings = () => {
 		setShowTotalFocusDuration,
 		maxFocusRecordsPerPage,
 		setMaxFocusRecordsPerPage,
+		filterOutUnrelatedTasksWhenTaskIdIsApplied,
+		setFilterOutUnrelatedTasksWhenTaskIdIsApplied,
 	};
 };

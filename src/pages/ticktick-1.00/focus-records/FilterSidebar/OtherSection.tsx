@@ -21,6 +21,8 @@ const OtherSection = () => {
 		setShowTotalFocusDuration,
 		maxFocusRecordsPerPage,
 		setMaxFocusRecordsPerPage,
+		filterOutUnrelatedTasksWhenTaskIdIsApplied,
+		setFilterOutUnrelatedTasksWhenTaskIdIsApplied,
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
@@ -88,6 +90,23 @@ const OtherSection = () => {
 							name: 'Show Total Focus Records Duration',
 							showValue: showTotalFocusDuration,
 							setShowValue: setShowTotalFocusDuration,
+							handleError,
+							editUserSettings,
+							chosenColorObj,
+							nextLightestColorObj,
+						}}
+					/>
+				)}
+
+				{/* Checkbox - Filter Out Unrelated Tasks When Task ID Is Applied */}
+				{!isLoadingGetUserSettings && (
+					<CheckboxOther
+						{...{
+							userSettings,
+							userSettingProperty: 'filterOutUnrelatedTasksWhenTaskIdIsApplied',
+							name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
+							showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
+							setShowValue: setFilterOutUnrelatedTasksWhenTaskIdIsApplied,
 							handleError,
 							editUserSettings,
 							chosenColorObj,

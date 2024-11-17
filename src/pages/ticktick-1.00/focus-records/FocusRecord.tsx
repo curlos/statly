@@ -105,6 +105,8 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		});
 	};
 
+	const { filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
+
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
 			<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
@@ -164,7 +166,11 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 					{tasks.map((task) => {
 						const { startTime, endTime, taskId } = task;
 
-						if (taskIdFromUrl && (!taskId || taskId !== taskIdFromUrl)) {
+						if (
+							filterOutUnrelatedTasksWhenTaskIdIsApplied &&
+							taskIdFromUrl &&
+							(!taskId || taskId !== taskIdFromUrl)
+						) {
 							return null;
 						}
 

@@ -20,7 +20,7 @@ const FilterBar = ({
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
 
-	const { showTotalFocusDuration } = useUserSettingsContext();
+	const { showTotalFocusDuration, filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
 
 	useFilterFocusRecords({
 		taskIdToFilterBy,
@@ -30,7 +30,8 @@ const FilterBar = ({
 		DEFAULT_SORT_BY_OPTIONS,
 	});
 
-	const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, taskIdToFilterBy);
+	const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdToFilterBy : false;
+	const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, filterByTaskId);
 
 	return (
 		<div ref={stickyRef} className="bg-color-gray-700 sticky top-0 z-[1] pt-2">
