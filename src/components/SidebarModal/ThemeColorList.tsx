@@ -25,6 +25,9 @@ const ThemeColorList = () => {
 			};
 
 			await editUserSettings(payload).unwrap();
+
+			// Once the theme has been successfully set on the backend, update it in localStorage.
+			localStorage.setItem('theme-color', colorKey);
 		});
 	};
 

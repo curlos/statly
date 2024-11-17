@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext } from 'react';
 import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 
@@ -15,13 +15,17 @@ export const ThemeProvider = ({ children }) => {
 
 const useTheme = () => {
 	// RTK Query - User Settings
-	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
-	const themeColorKey = userSettings?.theme?.color || 'red-500';
+	const themeColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
 	const chosenColorObj = TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
 	const chosenColorVariantsObj = TAILWIND_COLORS_OBJ[chosenColorName];
+
+	if (userSettings?.theme?.color && !localStorage.getItem('theme-color')) {
+		localStorage.setItem('theme-color', userSettings?.theme?.color);
+	}
 
 	const getNextLightestAndDarkestColor = () => {
 		const colorVariantNameList = Object.keys(chosenColorVariantsObj);
