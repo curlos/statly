@@ -12,8 +12,27 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 			},
 			transformResponse: (response) => {
 				const sessionFocusRecords = response;
+				const sessionFocusRecordsByCategory = {};
 
-				return { sessionFocusRecords };
+				const categoriesById = {};
+
+				sessionFocusRecords.forEach((focusRecord) => {
+					const { category } = focusRecord;
+
+					const categoryId = category.id || 'General';
+
+					if (!categoriesById[categoryId]) {
+						categoriesById[categoryId] = category;
+					}
+
+					if (!sessionFocusRecordsByCategory[categoryId]) {
+						sessionFocusRecordsByCategory[categoryId] = [];
+					}
+
+					sessionFocusRecordsByCategory[categoryId].push(focusRecord);
+				});
+
+				return { sessionFocusRecords, sessionFocusRecordsByCategory, sessionCategoriesById: categoriesById };
 			},
 		}),
 	}),

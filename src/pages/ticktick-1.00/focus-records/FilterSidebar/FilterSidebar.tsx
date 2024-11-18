@@ -8,6 +8,7 @@ import SortBySection from './SortBySection';
 import classNames from 'classnames';
 import { useSearchParamsCustom } from '../../../../contexts/useSearchParamsContext';
 import AppliedFilterItemList from '../AppliedFilterItemList';
+import CategoriesSection from './CategoriesSection';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 	const sidebarVariants = {
@@ -95,6 +96,9 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 
 			<hr className="border-color-gray-200 my-4" />
 			<ProjectsSection />
+
+			<hr className="border-color-gray-200 my-4" />
+			<CategoriesSection />
 		</motion.div>
 	);
 };

@@ -520,3 +520,27 @@ export const getRandomColor = () => {
 export const isFromServer = () => typeof window === 'undefined';
 
 export const checkIfIsFocusHoursHabit = (habitId) => habitId === FOCUS_HOURS_HABIT_ID;
+
+/**
+ * @description Transforms the URL string of the passed in query param (like "projects" or "categories") into an object with the
+ * @param {String} projectsFromUrl - The comma separated string of the query param value.
+ * @returns {Object} - Example: {
+ * 	"66d0578f619d91029a6856ff": true,
+ * 	"6546186da378914a9ef06b12": false,
+ * ...
+ * }
+ */
+export const getCommaSeparatedObj = (commaSeparatedStr) => {
+	if (!commaSeparatedStr) {
+		return {};
+	}
+
+	const commaSeparatedStrArr = commaSeparatedStr.split(',');
+	const commaSeparatedObj = {};
+
+	for (let value of commaSeparatedStrArr) {
+		commaSeparatedObj[value] = true;
+	}
+
+	return commaSeparatedObj;
+};

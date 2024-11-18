@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import Icon from '../../../../components/Icon';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
@@ -6,6 +5,8 @@ import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../../..
 import { useEffect, useState } from 'react';
 import Accordion from '../../../../components/Accordion/Accordion';
 import Spinner from '../../../../components/Loaders/Spinner';
+import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
+import CheckboxProject from './CheckboxProject';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
@@ -29,31 +30,7 @@ const ProjectsSection = () => {
 	const [sortedUngroupedProjects, setSortedUngroupedProjects] = useState([]);
 	const [sortedArchivedProjects, setSortedArchivedProjects] = useState([]);
 
-	/**
-	 * @description Transforms the URL string of the "projects" query param into an object with the project ids as the keys.
-	 * @param {String} projectsFromUrl - The comma separated string of the "projects" query params.
-	 * @returns {Object} - Example: {
-	 * 	"66d0578f619d91029a6856ff": true,
-	 * 	"6546186da378914a9ef06b12": false,
-	 * ...
-	 * }
-	 */
-	const getProjectsFromUrlById = (projectsFromUrl) => {
-		if (!projectsFromUrl) {
-			return {};
-		}
-
-		const projectIdsArr = projectsFromUrl.split(',');
-		const projectsFromUrlById = {};
-
-		for (let projectId of projectIdsArr) {
-			projectsFromUrlById[projectId] = true;
-		}
-
-		return projectsFromUrlById;
-	};
-
-	const projectsFromUrlById = getProjectsFromUrlById(projectsFromUrl);
+	const projectsFromUrlById = getCommaSeparatedObj(projectsFromUrl);
 
 	useEffect(() => {
 		if (isLoadingGetProjects || isLoadingGetProjectGroups) {
@@ -119,7 +96,7 @@ const ProjectsSection = () => {
 			<Accordion
 				title={
 					<div className="flex items-center gap-1 mb-3">
-						<h3 className="text-[16px] font-bold">Projects</h3>
+						<h3 className="text-[16px] font-bold">Projects (TickTick)</h3>
 						<Icon
 							name="construction"
 							fill={0}
@@ -250,63 +227,6 @@ const ProjectGroupWithProjects = ({
 			</Accordion>
 		</div>
 	);
-};
-
-/**
- * @description Checkbox that will update the query params in the URL to either add or remove a project from the "projects" query params.
- */
-const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projectsFromUrlById, updateQueryParams }) => {
-	const isChecked = projectsFromUrlById[project.id];
-
-	const { id, name, color } = project;
-
-	return (
-		<div
-			className="flex items-center gap-1 cursor-pointer"
-			onClick={() => {
-				if (isChecked) {
-					projectsFromUrlById[id] = false;
-				} else {
-					projectsFromUrlById[id] = true;
-				}
-
-				const commaSeparatedSelectedProjects = getCommaSeparatedSelectedProjects(projectsFromUrlById);
-				updateQueryParams({ projects: commaSeparatedSelectedProjects, page: '' });
-			}}
-		>
-			<Icon
-				name={isChecked ? 'check_box' : 'check_box_outline_blank'}
-				fill={1}
-				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
-			/>
-			<div className="flex-1 flex justify-between items-center gap-1">
-				<div>{name}</div>
-				{color && (
-					<div>
-						<div className="w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: color }} />
-					</div>
-				)}
-			</div>
-		</div>
-	);
-};
-
-/**
- * @description Using "projectsFromUrlById", this will check all of the project ids that are checked and will create a comma separated string from this passed-in object. Mostly meant to update the query params of "projects" with this string.
- * @returns {String}
- */
-const getCommaSeparatedSelectedProjects = (projectsFromUrlById) => {
-	const selectedProjectsArr = [];
-
-	for (let projectId of Object.keys(projectsFromUrlById)) {
-		const isChecked = projectsFromUrlById[projectId];
-
-		if (isChecked) {
-			selectedProjectsArr.push(projectId);
-		}
-	}
-
-	return selectedProjectsArr.join(',');
 };
 
 export default ProjectsSection;

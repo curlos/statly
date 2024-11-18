@@ -32,7 +32,7 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 				return focusRecordTitle;
 			}
 
-			break;
+			return '';
 		case 'startTime':
 			if (fromTickTick) {
 				return focusRecord.startTime;
@@ -42,7 +42,7 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 				return focusRecord['start_date'];
 			}
 
-			break;
+			return '';
 		case 'endTime':
 			if (fromTickTick) {
 				return focusRecord.endTime;
@@ -52,7 +52,7 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 				return focusRecord['end_date'];
 			}
 
-			break;
+			return '';
 		case 'note':
 			if (fromTickTick) {
 				return focusRecord.note;
@@ -62,6 +62,59 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 				return focusRecord.notes;
 			}
 
-			break;
+			return '';
+	}
+};
+
+export const isTickTickProject = (project) => {
+	return project.name;
+};
+export const isSessionAppProject = (project) => {
+	return project.title;
+};
+
+/**
+ * @description
+ * - TickTick = Project or List
+ * - Session App = Category
+ * @param {Object} project
+ * @param {String} property
+ * @returns
+ */
+export const getProjectProperty = (project, property) => {
+	const fromTickTick = isTickTickProject(project);
+	const fromSessionApp = isSessionAppProject(project);
+
+	switch (property) {
+		case 'id':
+			if (fromTickTick) {
+				return project.id;
+			}
+
+			if (fromSessionApp) {
+				return project.id || 'General';
+			}
+
+			return '';
+		case 'color':
+			if (fromTickTick) {
+				return project.color;
+			}
+
+			if (fromSessionApp) {
+				return project['hex_color'];
+			}
+
+			return '';
+		case 'name':
+			if (fromTickTick) {
+				return project.name;
+			}
+
+			if (fromSessionApp) {
+				return project['title'];
+			}
+
+			return '';
 	}
 };
