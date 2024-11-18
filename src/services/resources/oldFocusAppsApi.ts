@@ -35,7 +35,22 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 				return { sessionFocusRecords, sessionFocusRecordsByCategory, sessionCategoriesById: categoriesById };
 			},
 		}),
+		getTodoistAllCompletedTasks: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString
+					? `/old-focus-apps/todoist-all-completed-tasks?${queryString}`
+					: '/old-focus-apps/todoist-all-completed-tasks';
+			},
+			transformResponse: (response) => {
+				const todoistAllCompletedTasks = response;
+
+				console.log(todoistAllCompletedTasks);
+
+				return { todoistAllCompletedTasks };
+			},
+		}),
 	}),
 });
 
-export const { useGetSessionFocusRecordsQuery } = oldFocusAppsApi;
+export const { useGetSessionFocusRecordsQuery, useGetTodoistAllCompletedTasksQuery } = oldFocusAppsApi;

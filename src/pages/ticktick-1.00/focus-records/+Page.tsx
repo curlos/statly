@@ -7,7 +7,10 @@ import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import useSticky from '../../../hooks/useSticky';
-import { useGetSessionFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
+import {
+	useGetSessionFocusRecordsQuery,
+	useGetTodoistAllCompletedTasksQuery,
+} from '../../../services/resources/oldFocusAppsApi';
 
 const Page = () => {
 	return <FocusRecordsPage />;
@@ -34,6 +37,13 @@ const FocusRecordsPage = () => {
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
 		useGetSessionFocusRecordsQuery();
 	const { sessionFocusRecords } = fetchedSessionFocusRecords || {};
+
+	// RTK Query - Todoist - All Completed Tasks
+	const { data: fetchedTodoistAllCompletedTasks, isLoading: isLoadingGetTodoistAllCompletedTasks } =
+		useGetTodoistAllCompletedTasksQuery();
+	const { todoistAllCompletedTasks } = fetchedTodoistAllCompletedTasks || {};
+
+	console.log(todoistAllCompletedTasks);
 
 	const focusRecordListRef = useRef(null);
 
