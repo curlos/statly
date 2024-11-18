@@ -1,4 +1,4 @@
-import { getFocusDuration } from '../../../utils/helpers.utils';
+import { getFocusDuration, isSessionAppFocusRecord, isTickTickFocusRecord } from '../../../utils/helpers.utils';
 import ModalFilterSidebar from './FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord';
 import { useUserSettingsContext } from './useUserSettingsContext';
@@ -26,8 +26,15 @@ const FocusRecordList = ({
 		const sortedFocusRecords = noSearchText
 			? filteredFocusRecords?.toSorted((focusRecordOne, focusRecordTwo) => {
 					if (sortBy === 'Newest' || sortBy === 'Oldest') {
-						const startTimeOne = new Date(focusRecordOne.startTime);
-						const startTimeTwo = new Date(focusRecordTwo.startTime);
+						const focusRecordOneStartTime = isTickTickFocusRecord(focusRecordOne)
+							? focusRecordOne.startTime
+							: focusRecordOne['start_date'];
+						const focusRecordTwoStartTime = isTickTickFocusRecord(focusRecordTwo)
+							? focusRecordTwo.startTime
+							: focusRecordTwo['start_date'];
+
+						const startTimeOne = new Date(focusRecordOneStartTime);
+						const startTimeTwo = new Date(focusRecordTwoStartTime);
 
 						if (sortBy === 'Newest') {
 							return startTimeTwo - startTimeOne;
@@ -54,6 +61,8 @@ const FocusRecordList = ({
 
 	const modernWarfareRemasteredMedal = '/airstrike_medal_cod_mwr.webp';
 
+	// console.log(filteredFocusRecords);
+
 	return (
 		<div>
 			{isLoadingGetFocusRecords || !filteredFocusRecords ? (
@@ -71,7 +80,9 @@ const FocusRecordList = ({
 							<div className="space-y-3">
 								{shownFocusRecords.map((focusRecord, index) => {
 									const isLastItem = index === shownFocusRecords.length - 1;
-									const focusRecordKey = focusRecord.id;
+									const focusRecordKey = isSessionAppFocusRecord(focusRecord)
+										? `${focusRecord['start_date']} - ${focusRecord['end_date']}`
+										: focusRecord.id;
 
 									return (
 										<FocusRecord

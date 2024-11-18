@@ -5,7 +5,7 @@ import {
 	getFormattedShortMonthDay,
 	isTimeBetween,
 } from '../../../utils/date.utils';
-import { getFocusDuration, getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFocusDuration, getFormattedDuration, isTickTickFocusRecord } from '../../../utils/helpers.utils';
 import Icon from '../../../components/Icon';
 import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
@@ -14,14 +14,15 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { useUserSettingsContext } from './useUserSettingsContext';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
-	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const taskIdFromUrl = searchParams.get('task-id');
+	const { updateQueryParams } = useSearchParamsContext();
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { completedTasksGroupedByDate } = fetchedTasks || {};
 
-	const { note, startTime, endTime, tasks } = focusRecord;
+	const startTime = isTickTickFocusRecord(focusRecord) ? focusRecord.startTime : focusRecord['start_date'];
+	const endTime = isTickTickFocusRecord(focusRecord) ? focusRecord.endTime : focusRecord['end_date'];
+	const focusNote = isTickTickFocusRecord(focusRecord) ? focusRecord.note : focusRecord.notes;
 
 	const startTimeObj = formatDateTime(startTime);
 	const endTimeObj = formatDateTime(endTime);
@@ -39,7 +40,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		}
 
 		const startTimeDate = new Date(startTime);
-		const endTimeDate = new Date(endTime);
+		const endTimeDate = isTickTickFocusRecord(focusRecord)
+			? new Date(focusRecord.endTime)
+			: new Date(focusRecord['end_date']);
 		const startTimeKey = getFormattedLongDay(startTimeDate);
 		const endTimeKey = getFormattedLongDay(endTimeDate);
 		const startAndEndTimeHappenedOnSameDay = startTimeKey === endTimeKey;
@@ -87,26 +90,6 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 
 	const completedTasksDuringFocusSession = getAllCompletedTasksDuringFocusRecord();
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
-
-	const updateTaskIdQueryParam = (task) => {
-		if (!task || !task.taskId) {
-			return;
-		}
-
-		const { taskId } = task;
-
-		updateQueryParams({
-			'task-id': taskId,
-			'sort-by': '',
-			search: '',
-			'start-date': '',
-			'end-date': '',
-			projects: '',
-			page: '',
-		});
-	};
-
-	const { filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
@@ -164,40 +147,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 						</div>
 					</div>
 
-					{tasks.map((task) => {
-						const { startTime, endTime, taskId } = task;
-
-						if (
-							filterOutUnrelatedTasksWhenTaskIdIsApplied &&
-							taskIdFromUrl &&
-							(!taskId || taskId !== taskIdFromUrl)
-						) {
-							return null;
-						}
-
-						const startTimeObj = formatDateTime(startTime);
-						const endTimeObj = formatDateTime(endTime);
-
-						return (
-							<div
-								key={`${taskId} - ${startTime}`}
-								className="mt-2 md:mt-0 sm:flex justify-between items-center"
-							>
-								<h3
-									onClick={() => updateTaskIdQueryParam(task)}
-									className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
-								>
-									{task?.title}
-								</h3>
-
-								{showSubtaskTime && (
-									<div className="sm:ml-3 text-white">
-										{startTimeObj.time} - {endTimeObj.time}
-									</div>
-								)}
-							</div>
-						);
-					})}
+					<FocusRecordTasks focusRecord={focusRecord} showSubtaskTime={showSubtaskTime} />
 
 					{showFocusNotes && (
 						<div
@@ -205,7 +155,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 								'text-color-gray-100 text-white text-[15px] break-words react-markdown'
 							)}
 						>
-							<ReactMarkdown>{note}</ReactMarkdown>
+							<ReactMarkdown>{focusNote}</ReactMarkdown>
 						</div>
 					)}
 
@@ -215,8 +165,6 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 
 							<ul className="list-disc ml-[20px]">
 								{completedTasksDuringFocusSession.map((completedTask, index) => {
-									// console.log(completedTask);
-
 									return (
 										<li key={`${focusRecord.id} ${completedTask.id} ${index}`}>
 											{completedTask.title}
@@ -230,6 +178,96 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			</div>
 		</div>
 	);
+};
+
+const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const taskIdFromUrl = searchParams.get('task-id');
+	const { filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
+
+	const updateTaskIdQueryParam = (task) => {
+		if (!task || !task.taskId) {
+			return;
+		}
+
+		const { taskId } = task;
+
+		updateQueryParams({
+			'task-id': taskId,
+			'sort-by': '',
+			search: '',
+			'start-date': '',
+			'end-date': '',
+			projects: '',
+			page: '',
+		});
+	};
+
+	const getTickTickFocusRecordTask = () => {
+		return focusRecord.tasks.map((task) => {
+			const { startTime, endTime, taskId } = task;
+
+			if (filterOutUnrelatedTasksWhenTaskIdIsApplied && taskIdFromUrl && (!taskId || taskId !== taskIdFromUrl)) {
+				return null;
+			}
+
+			const startTimeObj = formatDateTime(startTime);
+			const endTimeObj = formatDateTime(endTime);
+
+			return (
+				<div key={`${taskId} - ${startTime}`} className="mt-2 md:mt-0 sm:flex justify-between items-center">
+					<h3
+						onClick={() => updateTaskIdQueryParam(task)}
+						className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
+					>
+						{task?.title}
+					</h3>
+
+					{showSubtaskTime && (
+						<div className="sm:ml-3 text-white">
+							{startTimeObj.time} - {endTimeObj.time}
+						</div>
+					)}
+				</div>
+			);
+		});
+	};
+
+	const getSessionFocusRecordTask = () => {
+		const { start_date, end_date, title, category } = focusRecord;
+
+		const startTimeObj = formatDateTime(start_date);
+		const endTimeObj = formatDateTime(end_date);
+
+		const focusRecordTitle = title ? `${title} (${category.title})` : `${category.title}`;
+
+		return (
+			<div key={`${start_date} - ${end_date}`} className="mt-2 md:mt-0 sm:flex justify-between items-center">
+				<h3
+					// onClick={() => updateTaskIdQueryParam(task)}
+					className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
+				>
+					{focusRecordTitle}
+				</h3>
+
+				{showSubtaskTime && (
+					<div className="sm:ml-3 text-white">
+						{startTimeObj.time} - {endTimeObj.time}
+					</div>
+				)}
+			</div>
+		);
+	};
+
+	const getFocusRecordTask = () => {
+		if (isTickTickFocusRecord(focusRecord)) {
+			return getTickTickFocusRecordTask();
+		} else {
+			return getSessionFocusRecordTask();
+		}
+	};
+
+	return getFocusRecordTask();
 };
 
 export default FocusRecord;

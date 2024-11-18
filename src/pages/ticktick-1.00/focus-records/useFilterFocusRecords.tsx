@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
+import { isSessionAppFocusRecord } from '../../../utils/helpers.utils';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -30,9 +31,15 @@ export const useFilterFocusRecords = ({
 		distance: 99999, // Higher distance means the searching algorithm will treat characters at the beginning and at the end as equally as possible.
 		minMatchCharLength: 3, // Increase min match character length for longer matches. Will ignore short words like "at" or "is" since I don't need those.
 		keys: [
+			// TickTick Focus Records
 			{ name: 'note', weight: 1 },
 			{ name: 'tasks.title', weight: 0.75 },
 			{ name: 'tasks.projectName', weight: 0.5 },
+
+			// Session Focus Records
+			{ name: 'notes', weight: 1 },
+			{ name: 'title', weight: 0.75 },
+			{ name: 'category.title', weight: 1 },
 		],
 	});
 
@@ -99,6 +106,14 @@ export const useFilterFocusRecords = ({
 		return oneOfTheTasksHasASelectedProject;
 	};
 
+	const focusRecordIsNotABreak = (focusRecord) => {
+		if (!isSessionAppFocusRecord(focusRecord)) {
+			return true;
+		}
+
+		return focusRecord['type'] === 'fullFocus';
+	};
+
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
 	const includesAllDates = firstDayToTodayString === currentDateRangeString;
@@ -140,7 +155,8 @@ export const useFilterFocusRecords = ({
 			(focusRecord) =>
 				focusRecordContainsTaskId(focusRecord) &&
 				focusRecordContainsProjectId(focusRecord) &&
-				focusRecordInDateRange(focusRecord)
+				focusRecordInDateRange(focusRecord) &&
+				focusRecordIsNotABreak(focusRecord)
 		);
 
 		return newFilteredFocusRecords;

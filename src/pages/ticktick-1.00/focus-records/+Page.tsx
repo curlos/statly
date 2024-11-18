@@ -5,8 +5,9 @@ import Pagination from '../../../components/Pagination';
 import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { UserSettingsProvider, useUserSettingsContext } from './useUserSettingsContext';
+import { useUserSettingsContext } from './useUserSettingsContext';
 import useSticky from '../../../hooks/useSticky';
+import { useGetSessionFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const Page = () => {
 	return <FocusRecordsPage />;
@@ -29,11 +30,16 @@ const FocusRecordsPage = () => {
 		useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecords } = fetchedFocusRecords || {};
 
+	// RTK Query - Session App - Focus Records
+	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
+		useGetSessionFocusRecordsQuery();
+	const { sessionFocusRecords } = fetchedSessionFocusRecords || {};
+
 	const focusRecordListRef = useRef(null);
 
 	const [totalPages, setTotalPages] = useState(null);
 
-	const [filteredFocusRecords, setFilteredFocusRecords] = useState(focusRecords);
+	const [filteredFocusRecords, setFilteredFocusRecords] = useState(sessionFocusRecords);
 
 	// For Filter Sidebar and Filter Bar
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
@@ -68,7 +74,9 @@ const FocusRecordsPage = () => {
 
 				<FilterBar
 					{...{
-						defaultFocusRecords: focusRecords,
+						// Passing in "sessionFocusRecords" for now to get this to work BUT later on should combine with TickTick 1.0 Focus Records.
+						// TODO: Bring back TickTick 1.0 Focus Records after I'm done testing this with Session App Focus Records.
+						defaultFocusRecords: sessionFocusRecords,
 						filteredFocusRecords,
 						setFilteredFocusRecords,
 						setSortByOptions,
@@ -86,7 +94,8 @@ const FocusRecordsPage = () => {
 							<FocusRecordList
 								{...{
 									filteredFocusRecords,
-									isLoadingGetFocusRecords,
+									isLoadingGetFocusRecords:
+										isLoadingGetFocusRecords || isLoadingGetSessionFocusRecords,
 									sortBy,
 									currentPage: currentPageFromUrl,
 									sortByOptions,

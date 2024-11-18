@@ -407,6 +407,11 @@ export const getFormattedDuration = (duration, includeSeconds = true) => {
 	const minutesStr = minutes !== 0 ? `${minutes}m` : '';
 	const secondsStr = seconds !== 0 && includeSeconds ? `${seconds}s` : '';
 
+	// Should only be possible with non-TickTick focus records like Session App. TickTick demands a minimum of 5 minutes for Focus Records but other apps like Session do not so you could have a focus record that is 16 seconds for example.
+	if (duration < 60) {
+		return `${seconds}s`;
+	}
+
 	return `${hoursStr}${minutesStr}${secondsStr}`;
 };
 
@@ -510,6 +515,11 @@ export const getMultiSelectFilteredTasks = (tasks, filters) => {
  * @description For TickTick 1.0 Focus Records
  */
 export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => {
+	if (isSessionAppFocusRecord(focusRecord)) {
+		return focusRecord['duration_second'];
+	}
+
+	// Code below is for TickTick 1.0 Focus Records
 	const isTaskFromFocusRecord = focusRecord?.taskId;
 	const focusRecordWithoutTask = !focusRecord?.tasks;
 
@@ -780,3 +790,10 @@ export const getRandomColor = () => {
 export const isFromServer = () => typeof window === 'undefined';
 
 export const checkIfIsFocusHoursHabit = (habitId) => habitId === FOCUS_HOURS_HABIT_ID;
+
+export const isTickTickFocusRecord = (focusRecord) => {
+	return focusRecord.tasks;
+};
+export const isSessionAppFocusRecord = (focusRecord) => {
+	return focusRecord['start_date'];
+};
