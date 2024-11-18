@@ -10,6 +10,7 @@ import useSticky from '../../../hooks/useSticky';
 import {
 	useGetSessionFocusRecordsQuery,
 	useGetTodoistAllCompletedTasksQuery,
+	useGetTodoistAllTasksByIdQuery,
 } from '../../../services/resources/oldFocusAppsApi';
 
 const Page = () => {
@@ -37,6 +38,12 @@ const FocusRecordsPage = () => {
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
 		useGetSessionFocusRecordsQuery();
 	const { sessionFocusRecords } = fetchedSessionFocusRecords || {};
+
+	// RTK Query - Todoist - All Completed Tasks
+	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksByIdQuery();
+	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
+
+	console.log(todoistAllTasksById);
 
 	const focusRecordListRef = useRef(null);
 
