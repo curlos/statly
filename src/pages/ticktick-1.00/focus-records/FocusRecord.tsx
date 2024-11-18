@@ -13,7 +13,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { useUserSettingsContext } from './useUserSettingsContext';
 import { getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
-import { isTickTickFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
+import { getFocusRecordProperty, isTickTickFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -22,9 +22,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { completedTasksGroupedByDate } = fetchedTasks || {};
 
-	const startTime = isTickTickFocusRecord(focusRecord) ? focusRecord.startTime : focusRecord['start_date'];
-	const endTime = isTickTickFocusRecord(focusRecord) ? focusRecord.endTime : focusRecord['end_date'];
-	const focusNote = isTickTickFocusRecord(focusRecord) ? focusRecord.note : focusRecord.notes;
+	const startTime = getFocusRecordProperty(focusRecord, 'startTime');
+	const endTime = getFocusRecordProperty(focusRecord, 'endTime');
+	const focusNote = getFocusRecordProperty(focusRecord, 'note');
 
 	const startTimeObj = formatDateTime(startTime);
 	const endTimeObj = formatDateTime(endTime);
@@ -197,7 +197,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 
 			taskId = task.taskId;
 		} else {
-			taskId = focusRecordTitle;
+			taskId = getFocusRecordProperty(focusRecord, 'taskId');
 		}
 
 		updateQueryParams({

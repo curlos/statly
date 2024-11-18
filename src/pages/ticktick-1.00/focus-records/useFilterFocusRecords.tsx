@@ -3,7 +3,11 @@ import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { isTickTickFocusRecord, isSessionAppFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
+import {
+	isTickTickFocusRecord,
+	isSessionAppFocusRecord,
+	getFocusRecordProperty,
+} from '../../../utils/focus-apps/multiFocusApps.utils';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -74,7 +78,9 @@ export const useFilterFocusRecords = ({
 			const { tasks } = focusRecord;
 
 			return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
-		} else {
+		} else if (isSessionAppFocusRecord(focusRecord)) {
+			const taskId = getFocusRecordProperty(focusRecord, 'taskId');
+			return taskId === taskIdToFilterByStr;
 		}
 	};
 

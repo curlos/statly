@@ -15,3 +15,53 @@ export const getSessionAppFocusRecordTaskId = (focusRecord) => {
 	const focusRecordTitle = title ? `${title} (${category.title})` : `${category.title}`;
 	return focusRecordTitle;
 };
+
+export const getFocusRecordProperty = (focusRecord, property) => {
+	const fromTickTick = isTickTickFocusRecord(focusRecord);
+	const fromSessionApp = isSessionAppFocusRecord(focusRecord);
+
+	switch (property) {
+		case 'taskId':
+			if (fromTickTick) {
+				return '';
+			}
+
+			if (fromSessionApp) {
+				const { title, category } = focusRecord;
+				const focusRecordTitle = title ? `${title} (${category.title})` : `${category.title}`;
+				return focusRecordTitle;
+			}
+
+			break;
+		case 'startTime':
+			if (fromTickTick) {
+				return focusRecord.startTime;
+			}
+
+			if (fromSessionApp) {
+				return focusRecord['start_date'];
+			}
+
+			break;
+		case 'endTime':
+			if (fromTickTick) {
+				return focusRecord.endTime;
+			}
+
+			if (fromSessionApp) {
+				return focusRecord['end_date'];
+			}
+
+			break;
+		case 'note':
+			if (fromTickTick) {
+				return focusRecord.note;
+			}
+
+			if (fromSessionApp) {
+				return focusRecord.notes;
+			}
+
+			break;
+	}
+};

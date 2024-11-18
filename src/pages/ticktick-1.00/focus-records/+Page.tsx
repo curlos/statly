@@ -67,7 +67,9 @@ const FocusRecordsPage = () => {
 	const stickyRef = useRef(null); // Reference to the sticky element
 
 	const offsetY = maxFocusRecordsPerPage < 10 || !filteredFocusRecords || filteredFocusRecords.length < 10 ? 0 : 50;
-	const isFilterBarSticky = useSticky(scrollableRef, stickyRef, true, offsetY); // Pass both refs to the hook
+
+	// TODO: offsetY should be set to 50 in the future but causing annoying issues at the moment so setting to 0.
+	const isFilterBarSticky = useSticky(scrollableRef, stickyRef, true, 0); // Pass both refs to the hook
 
 	return (
 		<div ref={scrollableRef}>
