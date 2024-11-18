@@ -18,7 +18,15 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 
 	const { searchParams, updateQueryParams } = useSearchParamsCustom();
 
-	const allPossibleFilterStrings = ['task-id', 'sort-by', 'search', 'start-date', 'end-date', 'projects'];
+	const allPossibleFilterStrings = [
+		'task-id',
+		'sort-by',
+		'search',
+		'start-date',
+		'end-date',
+		'projects',
+		'categories',
+	];
 
 	const clearAllFilters = () => {
 		const emptyFiltersObj = {};

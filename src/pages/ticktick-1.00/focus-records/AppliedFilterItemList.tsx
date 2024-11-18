@@ -7,6 +7,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useGetSessionFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -15,10 +16,14 @@ const AppliedFilterItemList = () => {
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
+	const categoriesFromUrl = searchParams.get('categories') || '';
 	const taskIdToFilterBy = searchParams.get('task-id');
 
 	const [projectNamesStr, setProjectNamesStr] = useState(
 		projectsFromUrl ? getStrInBulletPointsMD(projectsFromUrl.split(',')) : ''
+	);
+	const [categoryNamesStr, setCategoryNamesStr] = useState(
+		categoriesFromUrl ? getStrInBulletPointsMD(categoriesFromUrl.split(',')) : ''
 	);
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -29,11 +34,24 @@ const AppliedFilterItemList = () => {
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
+	// RTK Query - Session App - Focus Records
+	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
+		useGetSessionFocusRecordsQuery();
+	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
+
 	useEffect(() => {
 		if (isLoadingGetProjects) {
 			return;
 		}
 
+		const newProjectNamesStr = getProjectNamesStr();
+		const newCategoryNamesStr = getCategoryNamesStr();
+
+		setProjectNamesStr(newProjectNamesStr);
+		setCategoryNamesStr(newCategoryNamesStr);
+	}, [isLoadingGetProjects, projectsFromUrl, isLoadingGetSessionFocusRecords, categoriesFromUrl]);
+
+	const getProjectNamesStr = () => {
 		const projectIdsFromUrlArr = projectsFromUrl ? projectsFromUrl.split(',') : [];
 		const projectNamesArr = [];
 
@@ -42,15 +60,33 @@ const AppliedFilterItemList = () => {
 			projectNamesArr.push(name);
 		});
 
-		const newProjectNamesStr = getStrInBulletPointsMD(projectNamesArr);
+		return getStrInBulletPointsMD(projectNamesArr);
+	};
 
-		setProjectNamesStr(newProjectNamesStr);
-	}, [isLoadingGetProjects, projectsById, projectsFromUrl]);
+	const getCategoryNamesStr = () => {
+		const categoryIdsFromUrlArr = categoriesFromUrl ? categoriesFromUrl.split(',') : [];
+		const categoryNamesArr = [];
+
+		categoryIdsFromUrlArr.forEach((categoryId) => {
+			const { title } = sessionCategoriesById[categoryId];
+			categoryNamesArr.push(title);
+		});
+
+		return getStrInBulletPointsMD(categoryNamesArr);
+	};
 
 	const getProjectFilterValue = () => {
 		return (
 			<div className="break-words react-markdown">
 				<ReactMarkdown remarkPlugins={[remarkGfm]}>{projectNamesStr}</ReactMarkdown>
+			</div>
+		);
+	};
+
+	const getCategoryFilterValue = () => {
+		return (
+			<div className="break-words react-markdown">
+				<ReactMarkdown remarkPlugins={[remarkGfm]}>{categoryNamesStr}</ReactMarkdown>
 			</div>
 		);
 	};
@@ -91,20 +127,32 @@ const AppliedFilterItemList = () => {
 	};
 
 	const projectsFilter = {
-		name: 'Projects',
+		name: 'Projects (TickTick)',
 		value: getProjectFilterValue(),
 		handleRemove: () => {
 			updateQueryParams({ projects: '', page: '' });
 		},
 	};
 
-	const allFilters = [taskIdFilter, dateRangeFilter, sortByFilter, searchTextFilter, projectsFilter];
+	const categoriesFilter = {
+		name: 'Categories (Session App)',
+		value: getCategoryFilterValue(),
+		handleRemove: () => {
+			updateQueryParams({ categories: '', page: '' });
+		},
+	};
+
+	const singleSelectFilters = [taskIdFilter, dateRangeFilter, sortByFilter, searchTextFilter];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
-	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
+	const nonDefaultFilterList = singleSelectFilters.filter((focusRecordsFilter) => {
 		const { name, value } = focusRecordsFilter;
 
-		if (name === 'Projects') {
+		if (name === 'Projects (TickTick)') {
+			return null;
+		}
+
+		if (name === 'Categories (Session App)') {
 			return null;
 		}
 
@@ -112,16 +160,14 @@ const AppliedFilterItemList = () => {
 		return !isDefaultFilter;
 	});
 
-	const {
-		name: projectFilterName,
-		value: projectFilterValue,
-		handleRemove: projectFilterHandleRemove,
-	} = projectsFilter;
 	const atLeastOneSelectedProject = projectsFromUrl;
+	const atLeastOneSelectedCategory = categoriesFromUrl;
 
-	if (nonDefaultFilterList.length === 0 && !atLeastOneSelectedProject) {
+	if (nonDefaultFilterList.length === 0 && !atLeastOneSelectedProject && !atLeastOneSelectedCategory) {
 		return null;
 	}
+
+	const multiSelectFilters = [projectsFilter, categoriesFilter];
 
 	return (
 		<div className="pb-4">
@@ -134,16 +180,29 @@ const AppliedFilterItemList = () => {
 				</div>
 			)}
 
-			{atLeastOneSelectedProject && (
-				<AppliedFilterItem
-					key={projectFilterName + projectFilterValue}
-					{...{
-						name: projectFilterName,
-						value: projectFilterValue,
-						handleRemove: projectFilterHandleRemove,
-					}}
-				/>
-			)}
+			{multiSelectFilters.map((filterObj) => {
+				const isProjectFilter = filterObj.name === 'Projects (TickTick)';
+				const isCategoryFilter = filterObj.name === 'Categories (Session App)';
+				const showFilter =
+					(isProjectFilter && atLeastOneSelectedProject) || (isCategoryFilter && atLeastOneSelectedCategory);
+
+				if (!showFilter) {
+					return null;
+				}
+
+				const { name, value, handleRemove } = filterObj;
+
+				return (
+					<AppliedFilterItem
+						key={name + value}
+						{...{
+							name,
+							value,
+							handleRemove,
+						}}
+					/>
+				);
+			})}
 		</div>
 	);
 };
