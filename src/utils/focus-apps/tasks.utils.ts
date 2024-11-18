@@ -16,6 +16,11 @@ export const getAllTasksAndItemsTickTickOne = (tasks) => {
 	return allTasksAndItems;
 };
 
+/**
+ * @description Groups the array of tasks from TickTick by date, project, and tag.
+ * @param {Array<Object>} tasks
+ * @returns {Object}
+ */
 export const getGroupedCompletedTasks = (tasks) => {
 	const allCompletedTasks = [];
 	const completedTasksGroupedByDate = {};
@@ -78,5 +83,39 @@ export const getGroupedCompletedTasks = (tasks) => {
 		completedTasksGroupedByProject,
 		completedTasksGroupedByTag,
 		allCompletedTasks,
+	};
+};
+
+/**
+ * @description Gets the grouped completed tasks from Todoist. Only be date currently since that's all I have access to but in the future, if I somehow secure the FULL Todoist Tasks with the linked project and other info then this function can be expanded.
+ * @param {Array<Object>} tasks
+ * @returns {Object}
+ */
+export const getGroupedTodoistCompletedTasks = (tasks) => {
+	const todoistCompletedTasksGroupedByDate = {};
+
+	const storeTaskInCompletedDateKey = (completed_at, task) => {
+		const completedTimeDate = new Date(completed_at);
+		const completedTimeKey = getFormattedLongDay(completedTimeDate);
+
+		if (!todoistCompletedTasksGroupedByDate[completedTimeKey]) {
+			todoistCompletedTasksGroupedByDate[completedTimeKey] = [];
+		}
+
+		todoistCompletedTasksGroupedByDate[completedTimeKey].push(task);
+	};
+
+	for (let task of tasks) {
+		const { completed_at } = task;
+
+		if (!completed_at) {
+			continue;
+		}
+
+		storeTaskInCompletedDateKey(completed_at, task);
+	}
+
+	return {
+		todoistCompletedTasksGroupedByDate,
 	};
 };

@@ -38,13 +38,6 @@ const FocusRecordsPage = () => {
 		useGetSessionFocusRecordsQuery();
 	const { sessionFocusRecords } = fetchedSessionFocusRecords || {};
 
-	// RTK Query - Todoist - All Completed Tasks
-	const { data: fetchedTodoistAllCompletedTasks, isLoading: isLoadingGetTodoistAllCompletedTasks } =
-		useGetTodoistAllCompletedTasksQuery();
-	const { todoistAllCompletedTasks } = fetchedTodoistAllCompletedTasks || {};
-
-	console.log(todoistAllCompletedTasks);
-
 	const focusRecordListRef = useRef(null);
 
 	const [totalPages, setTotalPages] = useState(null);

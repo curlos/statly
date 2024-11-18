@@ -1,3 +1,4 @@
+import { getGroupedTodoistCompletedTasks } from '../../utils/focus-apps/tasks.utils';
 import { baseAPI, buildQueryString } from '../api';
 
 /**
@@ -45,9 +46,10 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 			transformResponse: (response) => {
 				const todoistAllCompletedTasks = response;
 
-				console.log(todoistAllCompletedTasks);
+				const { todoistCompletedTasksGroupedByDate } =
+					getGroupedTodoistCompletedTasks(todoistAllCompletedTasks);
 
-				return { todoistAllCompletedTasks };
+				return { todoistAllCompletedTasks, todoistCompletedTasksGroupedByDate };
 			},
 		}),
 	}),

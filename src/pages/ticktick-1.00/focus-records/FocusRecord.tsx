@@ -14,6 +14,7 @@ import { useUserSettingsContext } from './useUserSettingsContext';
 import { getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordProperty, isTickTickFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
+import { useGetTodoistAllCompletedTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -21,6 +22,10 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { completedTasksGroupedByDate } = fetchedTasks || {};
+
+	// RTK Query - Todoist - All Completed Tasks
+	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllCompletedTasksQuery();
+	const { todoistCompletedTasksGroupedByDate } = fetchedTodoistAllCompletedTasks || {};
 
 	const startTime = getFocusRecordProperty(focusRecord, 'startTime');
 	const endTime = getFocusRecordProperty(focusRecord, 'endTime');
@@ -37,7 +42,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const { showCompletedTasks, showFocusNotes } = useUserSettingsContext();
 
 	const getAllCompletedTasksDuringFocusRecord = () => {
-		if (!completedTasksGroupedByDate) {
+		if (!completedTasksGroupedByDate || !todoistCompletedTasksGroupedByDate) {
 			return [];
 		}
 
@@ -49,12 +54,24 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		const endTimeKey = getFormattedLongDay(endTimeDate);
 		const startAndEndTimeHappenedOnSameDay = startTimeKey === endTimeKey;
 
+		// TickTick Completed Tasks
 		let completedTasksDuringFocusSession = [];
 
 		const completedTasksInStartTimeDay = completedTasksGroupedByDate[startTimeKey];
 
 		completedTasksDuringFocusSession = getCompletedTasksBetweenTimes(
 			completedTasksInStartTimeDay,
+			startTimeDate,
+			endTimeDate
+		);
+
+		// Todoist Completed Tasks
+		let todoistCompletedTasksDuringFocusSession = [];
+
+		const todoistCompletedTasksInStartTimeDay = todoistCompletedTasksGroupedByDate[startTimeKey];
+
+		todoistCompletedTasksDuringFocusSession = getCompletedTasksBetweenTimes(
+			todoistCompletedTasksInStartTimeDay,
 			startTimeDate,
 			endTimeDate
 		);
@@ -69,9 +86,17 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 					...getCompletedTasksBetweenTimes(completedTasksInEndTimeDay, startTimeDate, endTimeDate)
 				);
 			}
+
+			const todoistCompletedTasksInEndTimeDay = todoistCompletedTasksGroupedByDate[endTimeKey];
+
+			if (todoistCompletedTasksInEndTimeDay) {
+				todoistCompletedTasksDuringFocusSession.push(
+					...getCompletedTasksBetweenTimes(todoistCompletedTasksInEndTimeDay, startTimeDate, endTimeDate)
+				);
+			}
 		}
 
-		return completedTasksDuringFocusSession;
+		return [...completedTasksDuringFocusSession, ...todoistCompletedTasksDuringFocusSession];
 	};
 
 	const getCompletedTasksBetweenTimes = (completedTasksInTimeDay, startTimeDate, endTimeDate) => {
@@ -80,7 +105,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		}
 
 		return completedTasksInTimeDay.filter((completedTask) => {
-			const { completedTime } = completedTask;
+			const completedTime = completedTask.completedTime || completedTask['completed_at'];
 			const completedTimeDate = new Date(completedTime);
 
 			// Passed in an offset of 10 minutes between the start and end times because often times, I don't actually complete a task during the literal focus record session but a little after it or maybe even before it. So, I feel like this would handle most of the completed task scenarios during a focus record.
@@ -169,7 +194,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 								{completedTasksDuringFocusSession.map((completedTask, index) => {
 									return (
 										<li key={`${focusRecord.id} ${completedTask.id} ${index}`}>
-											{completedTask.title}
+											{completedTask.title || completedTask.content}
 										</li>
 									);
 								})}
