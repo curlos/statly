@@ -75,10 +75,8 @@ export const useFilterFocusRecords = ({
 	};
 
 	useEffect(() => {
-		if (defaultFocusRecords) {
-			filterBySearch();
-		}
-	}, [searchTextFromUrl, defaultFocusRecords]);
+		filterBySearch();
+	}, [searchTextFromUrl]);
 
 	const focusRecordContainsTaskId = (focusRecord) => {
 		if (!taskIdToFilterBy) {
@@ -166,19 +164,9 @@ export const useFilterFocusRecords = ({
 	};
 
 	useEffect(() => {
-		if (defaultFocusRecords) {
-			const newFilteredFocusRecords = getFilteredFocusRecords();
-			setFilteredFocusRecords(newFilteredFocusRecords);
-		}
-	}, [
-		defaultFocusRecords,
-		taskIdToFilterBy,
-		startDateFromUrl,
-		endDateFromUrl,
-		projectsFromUrl,
-		categoriesFromUrl,
-		tasksById,
-	]);
+		const newFilteredFocusRecords = getFilteredFocusRecords();
+		setFilteredFocusRecords(newFilteredFocusRecords);
+	}, [taskIdToFilterBy, startDateFromUrl, endDateFromUrl, projectsFromUrl, categoriesFromUrl, tasksById]);
 
 	const getFilteredFocusRecords = () => {
 		let searchedItems;
@@ -196,8 +184,7 @@ export const useFilterFocusRecords = ({
 		const newFilteredFocusRecords = searchedItemsFocusRecords.filter(
 			(focusRecord) =>
 				focusRecordContainsTaskId(focusRecord) &&
-				focusRecordContainsProjectId(focusRecord) &&
-				focusRecordContainsCategoryId(focusRecord) &&
+				(focusRecordContainsProjectId(focusRecord) || focusRecordContainsCategoryId(focusRecord)) &&
 				focusRecordInDateRange(focusRecord) &&
 				focusRecordIsNotABreak(focusRecord)
 		);

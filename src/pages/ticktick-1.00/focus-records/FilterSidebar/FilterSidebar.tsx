@@ -90,7 +90,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 				</>
 			)}
 
-			<hr className={classNames('border-color-gray-200', isAtLeastOneFilterApplied ? 'mb-4' : 'my-4')} />
+			<hr className="border-color-gray-200 my-4" />
 			<SearchSection />
 
 			<hr className="border-color-gray-200 my-4" />

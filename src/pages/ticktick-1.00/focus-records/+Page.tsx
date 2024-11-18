@@ -39,7 +39,9 @@ const FocusRecordsPage = () => {
 
 	const [totalPages, setTotalPages] = useState(null);
 
-	const [filteredFocusRecords, setFilteredFocusRecords] = useState(sessionFocusRecords);
+	const defaultFocusRecords = focusRecords && sessionFocusRecords ? [...focusRecords, ...sessionFocusRecords] : [];
+
+	const [filteredFocusRecords, setFilteredFocusRecords] = useState(defaultFocusRecords);
 
 	// For Filter Sidebar and Filter Bar
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
@@ -76,21 +78,23 @@ const FocusRecordsPage = () => {
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<Navbar />
 
-				<FilterBar
-					{...{
-						// Passing in "sessionFocusRecords" for now to get this to work BUT later on should combine with TickTick 1.0 Focus Records.
-						// TODO: Bring back TickTick 1.0 Focus Records after I'm done testing this with Session App Focus Records.
-						defaultFocusRecords: sessionFocusRecords,
-						filteredFocusRecords,
-						setFilteredFocusRecords,
-						setSortByOptions,
-						showFilterSidebar,
-						setShowFilterSidebar,
-						DEFAULT_SORT_BY_OPTIONS,
-						stickyRef,
-						isFilterBarSticky,
-					}}
-				/>
+				{!isLoadingGetFocusRecords && !isLoadingGetSessionFocusRecords && (
+					<FilterBar
+						{...{
+							// Passing in "sessionFocusRecords" for now to get this to work BUT later on should combine with TickTick 1.0 Focus Records.
+							// TODO: Bring back TickTick 1.0 Focus Records after I'm done testing this with Session App Focus Records.
+							defaultFocusRecords,
+							filteredFocusRecords,
+							setFilteredFocusRecords,
+							setSortByOptions,
+							showFilterSidebar,
+							setShowFilterSidebar,
+							DEFAULT_SORT_BY_OPTIONS,
+							stickyRef,
+							isFilterBarSticky,
+						}}
+					/>
+				)}
 
 				<div className="w-full flex flex-col">
 					<div className="flex-1 flex justify-center bg-color-gray-700">

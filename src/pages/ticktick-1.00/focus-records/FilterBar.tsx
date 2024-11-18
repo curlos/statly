@@ -15,7 +15,6 @@ const FilterBar = ({
 	setShowFilterSidebar,
 	DEFAULT_SORT_BY_OPTIONS,
 	stickyRef,
-	isFilterBarSticky,
 }) => {
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
@@ -37,12 +36,18 @@ const FilterBar = ({
 		<div ref={stickyRef} className="bg-color-gray-700 sticky top-0 z-[1] pt-2">
 			<div className="flex justify-between items-center pb-5 container">
 				<div className="flex justify-between items-center gap-3 w-full">
-					<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-						Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
-						{showTotalFocusDuration && ` - ${getFormattedDuration(totalFocusDuration, false)}`}
-					</h2>
+					<div className="flex items-center gap-4">
+						<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
+							Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
+							{showTotalFocusDuration && ` - ${getFormattedDuration(totalFocusDuration, false)}`}
+						</h2>
 
-					<div className="text-[16px] cursor-pointer">
+						<div className="hidden lg:block">
+							<AppliedFilterItemList />
+						</div>
+					</div>
+
+					<div className="text-nowrap text-[16px] cursor-pointer">
 						<div
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
 							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
@@ -57,12 +62,6 @@ const FilterBar = ({
 					</div>
 				</div>
 			</div>
-
-			{!isFilterBarSticky && (
-				<div className="container">
-					<AppliedFilterItemList />
-				</div>
-			)}
 		</div>
 	);
 };

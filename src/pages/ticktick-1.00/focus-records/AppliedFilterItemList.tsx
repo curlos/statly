@@ -5,8 +5,6 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { useGetSessionFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const AppliedFilterItemList = () => {
@@ -60,7 +58,7 @@ const AppliedFilterItemList = () => {
 			projectNamesArr.push(name);
 		});
 
-		return getStrInBulletPointsMD(projectNamesArr);
+		return projectNamesArr.join(', ');
 	};
 
 	const getCategoryNamesStr = () => {
@@ -72,23 +70,7 @@ const AppliedFilterItemList = () => {
 			categoryNamesArr.push(title);
 		});
 
-		return getStrInBulletPointsMD(categoryNamesArr);
-	};
-
-	const getProjectFilterValue = () => {
-		return (
-			<div className="break-words react-markdown">
-				<ReactMarkdown remarkPlugins={[remarkGfm]}>{projectNamesStr}</ReactMarkdown>
-			</div>
-		);
-	};
-
-	const getCategoryFilterValue = () => {
-		return (
-			<div className="break-words react-markdown">
-				<ReactMarkdown remarkPlugins={[remarkGfm]}>{categoryNamesStr}</ReactMarkdown>
-			</div>
-		);
+		return categoryNamesArr.join(', ');
 	};
 
 	const sortByFilter = {
@@ -128,7 +110,7 @@ const AppliedFilterItemList = () => {
 
 	const projectsFilter = {
 		name: 'Projects (TickTick)',
-		value: getProjectFilterValue(),
+		value: projectNamesStr,
 		handleRemove: () => {
 			updateQueryParams({ projects: '', page: '' });
 		},
@@ -136,25 +118,24 @@ const AppliedFilterItemList = () => {
 
 	const categoriesFilter = {
 		name: 'Categories (Session App)',
-		value: getCategoryFilterValue(),
+		value: categoryNamesStr,
 		handleRemove: () => {
 			updateQueryParams({ categories: '', page: '' });
 		},
 	};
 
-	const singleSelectFilters = [taskIdFilter, dateRangeFilter, sortByFilter, searchTextFilter];
+	const singleSelectFilters = [
+		taskIdFilter,
+		dateRangeFilter,
+		sortByFilter,
+		searchTextFilter,
+		projectsFilter,
+		categoriesFilter,
+	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	const nonDefaultFilterList = singleSelectFilters.filter((focusRecordsFilter) => {
 		const { name, value } = focusRecordsFilter;
-
-		if (name === 'Projects (TickTick)') {
-			return null;
-		}
-
-		if (name === 'Categories (Session App)') {
-			return null;
-		}
 
 		const isDefaultFilter = !value || value === 'Newest' || firstDayToTodayString === value;
 		return !isDefaultFilter;
@@ -167,42 +148,16 @@ const AppliedFilterItemList = () => {
 		return null;
 	}
 
-	const multiSelectFilters = [projectsFilter, categoriesFilter];
-
 	return (
-		<div className="pb-4">
+		<div>
 			{nonDefaultFilterList && nonDefaultFilterList.length > 0 && (
-				<div className="flex flex-wrap gap-3 pb-4">
+				<div className="flex flex-wrap gap-3">
 					{nonDefaultFilterList.map((nonDefaultFilter) => {
 						const { name, value, handleRemove } = nonDefaultFilter;
 						return <AppliedFilterItem key={name + value} {...{ name, value, handleRemove }} />;
 					})}
 				</div>
 			)}
-
-			{multiSelectFilters.map((filterObj) => {
-				const isProjectFilter = filterObj.name === 'Projects (TickTick)';
-				const isCategoryFilter = filterObj.name === 'Categories (Session App)';
-				const showFilter =
-					(isProjectFilter && atLeastOneSelectedProject) || (isCategoryFilter && atLeastOneSelectedCategory);
-
-				if (!showFilter) {
-					return null;
-				}
-
-				const { name, value, handleRemove } = filterObj;
-
-				return (
-					<AppliedFilterItem
-						key={name + value}
-						{...{
-							name,
-							value,
-							handleRemove,
-						}}
-					/>
-				);
-			})}
 		</div>
 	);
 };
