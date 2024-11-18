@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Icon from '../Icon';
 import { IProject } from '../../interfaces/interfaces';
-import { arrayToObjectByKey, containsEmoji, fetchData } from '../../utils/helpers.utils';
+import { arrayToObjectByKey, containsEmoji, fetchData } from '../../utils/focus-apps/helpers.utils';
 import { useDispatch, useSelector } from 'react-redux';
 import DraggableProjects, { ProjectItem } from '../DraggableProjects';
 import { SortableTree } from '../SortableTest/SortableTree';

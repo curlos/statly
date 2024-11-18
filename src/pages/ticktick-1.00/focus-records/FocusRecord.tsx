@@ -5,13 +5,15 @@ import {
 	getFormattedShortMonthDay,
 	isTimeBetween,
 } from '../../../utils/date.utils';
-import { getFocusDuration, getFormattedDuration, isTickTickFocusRecord } from '../../../utils/helpers.utils';
 import Icon from '../../../components/Icon';
 import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
+import { getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
+import { isTickTickFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -186,11 +188,17 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	const { filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
 
 	const updateTaskIdQueryParam = (task) => {
-		if (!task || !task.taskId) {
-			return;
-		}
+		let taskId = '';
 
-		const { taskId } = task;
+		if (isTickTickFocusRecord(focusRecord)) {
+			if (!task || !task.taskId) {
+				return;
+			}
+
+			taskId = task.taskId;
+		} else {
+			taskId = focusRecordTitle;
+		}
 
 		updateQueryParams({
 			'task-id': taskId,
@@ -244,7 +252,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		return (
 			<div key={`${start_date} - ${end_date}`} className="mt-2 md:mt-0 sm:flex justify-between items-center">
 				<h3
-					// onClick={() => updateTaskIdQueryParam(task)}
+					onClick={() => updateTaskIdQueryParam()}
 					className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
 				>
 					{focusRecordTitle}

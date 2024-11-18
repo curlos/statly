@@ -1,4 +1,5 @@
-import { getFocusDuration, isSessionAppFocusRecord, isTickTickFocusRecord } from '../../../utils/helpers.utils';
+import { getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
+import { isTickTickFocusRecord, isSessionAppFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
 import ModalFilterSidebar from './FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord';
 import { useUserSettingsContext } from './useUserSettingsContext';

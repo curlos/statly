@@ -273,6 +273,7 @@ const YearView = ({ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYe
 
 				return (
 					<div
+						key={`${monthName} - ${monthDate.getFullYear()}`}
 						className="flex justify-center"
 						onClick={() => {
 							setLocalCurrentDate(monthDate);

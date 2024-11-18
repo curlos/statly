@@ -3,7 +3,7 @@ import { useGetFocusRecordsQuery } from '../../../services/resources/focusRecord
 import { useGetHabitsQuery } from '../../../services/resources/habitsApi';
 import { useGetTasksQuery } from '../../../services/resources/tasksApi';
 import { formatDateTime } from '../../../utils/date.utils';
-import { getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import DropdownSetTaskOrHabit from '../../Dropdown/DropdownsAddFocusRecord/DropdownSetTaskOrHabit';
 import Icon from '../../Icon';
 

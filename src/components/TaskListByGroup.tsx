@@ -8,7 +8,7 @@ import { PRIORITIES } from '../utils/priorities.utils';
 import { useGetProjectsQuery } from '../services/resources/projectsApi';
 import MiniTaskList from '../pages/CalendarPage/ArrangeTasksSidebar/MiniTaskList';
 import { useGetTagsQuery } from '../services/resources/tagsApi';
-import { getMultiSelectFilteredTasks, getTotalTaskCountWithChildren } from '../utils/helpers.utils';
+import { getMultiSelectFilteredTasks, getTotalTaskCountWithChildren } from '../utils/focus-apps/helpers.utils';
 
 interface TaskListByGroupProps {
 	tasks: Array<TaskObj>;

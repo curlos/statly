@@ -4,7 +4,7 @@ import { DndContext, closestCenter } from '@dnd-kit/core';
 import { arrayMove, useSortable } from '@dnd-kit/sortable';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { arrayToObjectByKey, containsEmoji, getNumberOfTasks } from '../utils/helpers.utils';
+import { arrayToObjectByKey, containsEmoji, getNumberOfTasks } from '../utils/focus-apps/helpers.utils';
 import { IProject } from '../interfaces/interfaces';
 import Icon from './Icon';
 import { SMART_LISTS } from '../utils/smartLists.utils';

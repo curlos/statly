@@ -7,7 +7,7 @@ import { getTimeString, setTimeOnDateString } from '../../../utils/date.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
 import Icon from '../../Icon';
-import { debounce } from '../../../utils/helpers.utils';
+import { debounce } from '../../../utils/focus-apps/helpers.utils';
 
 interface DropdownTimeCalendarProps extends DropdownProps {
 	date: Date | null;

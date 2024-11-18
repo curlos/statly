@@ -14,7 +14,7 @@ import {
 import alarmSound from '/clock-alarm-8761.mp3';
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import Icon from './Icon';
-import { formatSeconds } from '../utils/helpers.utils';
+import { formatSeconds } from '../utils/focus-apps/helpers.utils';
 import ModalAddFocusNote from './Modal/ModalAddFocusNote';
 import { setModalState } from '../slices/modalSlice';
 import PixelArtTimer from './PixelArtTimer';

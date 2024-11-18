@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import { useGetFocusRecordsQuery } from '../../services/resources/focusRecordsApi';
 import { setModalState } from '../../slices/modalSlice';
 import { formatDateTime } from '../../utils/date.utils';
-import { getFormattedDuration } from '../../utils/helpers.utils';
+import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import Icon from '../Icon';
 
 const FocusRecord = ({ focusRecord, tasksById, habitsById }) => {

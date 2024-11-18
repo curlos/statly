@@ -5,7 +5,7 @@ import {
 	sortObjectByDateKeys,
 	areDatesEqual,
 } from './date.utils';
-import { getFocusDurationFilteredByProjects } from './helpers.utils';
+import { getFocusDurationFilteredByProjects } from './focus-apps/focusRecords.utils';
 
 export const CRUCIAL_PROJECTS = {
 	LeetCode: true,

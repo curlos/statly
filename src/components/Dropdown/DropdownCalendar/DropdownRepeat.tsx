@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import Dropdown from '.././Dropdown';
 import Icon from '../../Icon';
-import { getDateWithOrdinalAndMonth } from '../../../utils/helpers.utils';
+import { getDateWithOrdinalAndMonth } from '../../../utils/focus-apps/helpers.utils';
 import { DropdownProps } from '../../../interfaces/interfaces';
 
 const BASIC_REMINDER_OPTIONS = {

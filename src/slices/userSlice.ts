@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { isFromServer } from '../utils/helpers.utils';
+import { isFromServer } from '../utils/focus-apps/helpers.utils';
 
 const initialState = {
 	user: null,

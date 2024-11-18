@@ -8,7 +8,7 @@ import { HADES_ITEM_ICONS } from '../../utils/hadesIcons/items';
 import { HADES_FISH_ICON_URLS } from '../../utils/hadesIcons/fish';
 import { HADES_CONTRACTOR_ICONS } from '../../utils/hadesIcons/contractor';
 import Fuse from 'fuse.js';
-import { debounce } from '../../utils/helpers.utils';
+import { debounce } from '../../utils/focus-apps/helpers.utils';
 
 interface DropdownHabitIconsProps extends DropdownProps {
 	customClasses: string;

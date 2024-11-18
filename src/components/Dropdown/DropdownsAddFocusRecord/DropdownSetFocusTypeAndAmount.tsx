@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Dropdown from '../Dropdown';
 import { DropdownProps } from '../../../interfaces/interfaces';
 import CustomInput from '../../CustomInput';
-import { formatTimeToHoursMinutesSeconds } from '../../../utils/helpers.utils';
+import { formatTimeToHoursMinutesSeconds } from '../../../utils/focus-apps/helpers.utils';
 
 interface DropdownSetFocusTypeAndAmountProps extends DropdownProps {
 	selectedTask: Object | null;

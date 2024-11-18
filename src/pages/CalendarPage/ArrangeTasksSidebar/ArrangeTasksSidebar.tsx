@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import TaskListByGroup from '../../../components/TaskListByGroup';
-import { getTasksWithNoParent } from '../../../utils/helpers.utils';
+import { getTasksWithNoParent } from '../../../utils/focus-apps/helpers.utils';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { useGetTasksQuery } from '../../../services/resources/tasksApi';
 import useMaxHeight from '../../../hooks/useMaxHeight';

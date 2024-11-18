@@ -1,9 +1,6 @@
-import {
-	arrayToObjectByKey,
-	getAllTasksAndItemsTickTickOne,
-	getGroupedCompletedTasks,
-	getGroupedFocusRecordsByDate,
-} from '../../utils/helpers.utils';
+import { getGroupedFocusRecordsByDate } from '../../utils/focus-apps/focusRecords.utils';
+import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
+import { getAllTasksAndItemsTickTickOne, getGroupedCompletedTasks } from '../../utils/focus-apps/tasks.utils';
 import { baseAPI, buildQueryString } from '../api';
 
 /**

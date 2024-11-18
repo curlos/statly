@@ -22,7 +22,7 @@ import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-ki
 import { buildTree, flattenTree, getProjection, getChildCount, removeChildrenOf, setProperty } from './utilities';
 import type { FlattenedItem, SensorContext, TreeItems } from './types';
 import { SortableTreeItem } from './components';
-import { getTasksWithFilledInChildren, prepareForBulkEdit } from '../../utils/helpers.utils';
+import { getTasksWithFilledInChildren, prepareForBulkEdit } from '../../utils/focus-apps/helpers.utils';
 import { TaskObj } from '../../interfaces/interfaces';
 import { useBulkEditTasksMutation, useFlagTaskMutation, useGetTasksQuery } from '../../services/resources/tasksApi';
 import { useGetFiltersQuery } from '../../services/resources/filtersApi';

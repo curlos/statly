@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { allExceptOneFalse, getTasksWithNoParent } from '../utils/helpers.utils';
+import { allExceptOneFalse, getTasksWithNoParent } from '../utils/focus-apps/helpers.utils';
 import { SMART_LISTS } from '../utils/smartLists.utils';
 import Icon from './Icon';
 import DropdownMatrixOptions from './Dropdown/DropdownMatrixOptions';

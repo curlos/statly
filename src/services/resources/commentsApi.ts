@@ -1,4 +1,4 @@
-import { arrayToObjectArrayByKey } from '../../utils/helpers.utils';
+import { arrayToObjectArrayByKey } from '../../utils/focus-apps/helpers.utils';
 import { baseAPI, buildQueryString } from '../api';
 
 export const commentsApi = baseAPI.injectEndpoints({

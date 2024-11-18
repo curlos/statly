@@ -3,7 +3,7 @@ import {
 	arrayToObjectArrayByKey,
 	arrayToObjectByKey,
 	getObjectOfEachFocusRecordsParent,
-} from '../../utils/helpers.utils';
+} from '../../utils/focus-apps/helpers.utils';
 import { baseAPI, buildQueryString } from '../api';
 
 export const focusRecordsApi = baseAPI.injectEndpoints({

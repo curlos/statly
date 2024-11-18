@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DropdownProps, IProject } from '../../../interfaces/interfaces';
-import { fetchData } from '../../../utils/helpers.utils';
+import { fetchData } from '../../../utils/focus-apps/helpers.utils';
 import Icon from '../../Icon';
 import Dropdown from '../../Dropdown/Dropdown';
 

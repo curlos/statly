@@ -5,8 +5,8 @@ import { areDatesEqual, formatCheckedInDayDate, getDayNameAbbreviation, getLast7
 
 const WeeklyHabitStatusCard = () => {
 	// Habits
-	const { data: fetchedHabits, isLoading: isLoadingGetHabits, error: errorGetHabits } = useGetHabitsQuery();
-	const { habits, habitsById } = fetchedHabits || {};
+	const { data: fetchedHabits } = useGetHabitsQuery();
+	const { habits } = fetchedHabits || {};
 	const lastSevenDays = getLast7Days();
 
 	return (

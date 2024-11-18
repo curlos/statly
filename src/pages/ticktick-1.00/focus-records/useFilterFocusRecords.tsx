@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { isSessionAppFocusRecord } from '../../../utils/helpers.utils';
+import { isTickTickFocusRecord, isSessionAppFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -66,13 +66,16 @@ export const useFilterFocusRecords = ({
 
 		const taskIdToFilterByStr = String(taskIdToFilterBy);
 
-		if (!focusRecord.tasks || focusRecord.tasks.length === 0) {
-			return false;
+		if (isTickTickFocusRecord(focusRecord)) {
+			if (!focusRecord.tasks || focusRecord.tasks.length === 0) {
+				return false;
+			}
+
+			const { tasks } = focusRecord;
+
+			return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
+		} else {
 		}
-
-		const { tasks } = focusRecord;
-
-		return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
 	};
 
 	const focusRecordContainsProjectId = (focusRecord) => {
@@ -123,7 +126,7 @@ export const useFilterFocusRecords = ({
 			return true;
 		}
 
-		const { startTime } = focusRecord;
+		const startTime = isTickTickFocusRecord(focusRecord) ? focusRecord.startTime : focusRecord['start_date'];
 		const startTimeDate = new Date(startTime);
 		const startDateFromUrlDate = new Date(startDateFromUrl);
 		const endDateFromUrlDate = new Date(endDateFromUrl);

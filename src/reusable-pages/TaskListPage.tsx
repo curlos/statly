@@ -8,7 +8,7 @@ import { useGetProjectsQuery } from '../services/resources/projectsApi';
 import { useGetTagsQuery } from '../services/resources/tagsApi';
 import { useGetTasksQuery } from '../services/resources/tasksApi';
 import { filterTasksByFilter } from '../utils/filters.util';
-import { getTasksWithNoParent } from '../utils/helpers.utils';
+import { getTasksWithNoParent } from '../utils/focus-apps/helpers.utils';
 import { SMART_LISTS } from '../utils/smartLists.utils';
 
 const TaskListPage = () => {

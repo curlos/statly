@@ -4,7 +4,7 @@ import { setModalState } from '../../slices/modalSlice';
 import Icon from '../Icon';
 import Fuse from 'fuse.js';
 import { useEffect, useRef, useState } from 'react';
-import { debounce } from '../../utils/helpers.utils';
+import { debounce } from '../../utils/focus-apps/helpers.utils';
 import Task from '../Task';
 import { useGetTasksQuery } from '../../services/resources/tasksApi';
 

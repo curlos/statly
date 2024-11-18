@@ -5,7 +5,12 @@ import { TaskObj } from '../../interfaces/interfaces';
 import DropdownCalendar from '../Dropdown/DropdownCalendar/DropdownCalendar';
 import AddTaskForm from '../AddTaskForm';
 import ModalTaskActivities from '../Modal/ModalTaskActivities';
-import { getFormattedDuration, getTasksWithFilledInChildren, hexToRGBA, sumProperty } from '../../utils/helpers.utils';
+import {
+	getFormattedDuration,
+	getTasksWithFilledInChildren,
+	hexToRGBA,
+	sumProperty,
+} from '../../utils/focus-apps/helpers.utils';
 import { SortableTree } from '../SortableTest/SortableTree';
 import useDebouncedEditTask from '../../hooks/useDebouncedEditTask';
 import classNames from 'classnames';

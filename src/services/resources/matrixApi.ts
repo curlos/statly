@@ -1,5 +1,5 @@
 import { loginUserSuccess } from '../../slices/userSlice';
-import { arrayToObjectByKey } from '../../utils/helpers.utils';
+import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
 import { baseAPI, buildQueryString } from '../api';
 
 export const matrixApi = baseAPI.injectEndpoints({

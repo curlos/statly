@@ -6,7 +6,7 @@ import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../.
 import Accordion from '../../../../components/Accordion/Accordion';
 import { useUserSettingsContext } from '../useUserSettingsContext';
 import CustomInput from '../../../../components/CustomInput';
-import { debounce } from '../../../../utils/helpers.utils';
+import { debounce } from '../../../../utils/focus-apps/helpers.utils';
 import { useEffect, useState } from 'react';
 import Spinner from '../../../../components/Loaders/Spinner';
 

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { SuperMarioPixelHTML } from '../utils/superMarioPixelArt.utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSeconds } from '../slices/timerSlice';
-import { formatSeconds } from '../utils/helpers.utils';
+import { formatSeconds } from '../utils/focus-apps/helpers.utils';
 import { PixelDigit, PixelColon } from './PixelDigit';
 
 const textThemeColor = 'text-[#4772F9]';

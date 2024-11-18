@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { formatTimeToHoursMinutesSeconds } from '../../utils/helpers.utils';
+import { formatTimeToHoursMinutesSeconds } from '../../utils/focus-apps/helpers.utils';
 import { areDatesEqual } from '../../utils/date.utils';
 import Icon from '../Icon';
 import useSticky from '../../hooks/useSticky';

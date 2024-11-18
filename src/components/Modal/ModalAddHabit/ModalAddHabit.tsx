@@ -16,7 +16,7 @@ import { useAddHabitMutation, useEditHabitMutation } from '../../../services/res
 import { useGetHabitSectionsQuery } from '../../../services/resources/habitSectionsApi';
 import DropdownHabitIcons from '../../Dropdown/DropdownHabitIcons';
 import { HADES_KEEPSAKE_ICON_URLS } from '../../../utils/hadesIcons/keepsake';
-import { checkIfIsFocusHoursHabit } from '../../../utils/helpers.utils';
+import { checkIfIsFocusHoursHabit } from '../../../utils/focus-apps/helpers.utils';
 
 const DEFAULT_DAYS_OF_WEEK = [
 	{ fullName: 'Monday', shortName: 'Mon', selected: true },

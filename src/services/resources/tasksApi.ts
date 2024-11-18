@@ -1,5 +1,5 @@
 import { groupTasksByDate } from '../../utils/date.utils';
-import { arrayToObjectByKey, getObjectOfEachItemsParent } from '../../utils/helpers.utils';
+import { arrayToObjectByKey, getObjectOfEachItemsParent } from '../../utils/focus-apps/helpers.utils';
 import { baseAPI, buildQueryString } from '../api';
 
 export const tasksApi = baseAPI.injectEndpoints({

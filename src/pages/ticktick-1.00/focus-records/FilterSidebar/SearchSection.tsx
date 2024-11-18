@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Icon from '../../../../components/Icon';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { debounce } from '../../../../utils/helpers.utils';
+import { debounce } from '../../../../utils/focus-apps/helpers.utils';
 
 const SearchSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();

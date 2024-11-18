@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { isFromServer } from '../utils/helpers.utils';
+import { isFromServer } from '../utils/focus-apps/helpers.utils';
 
 /**
  * A reusable hook for handling audio playback.

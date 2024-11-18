@@ -15,7 +15,7 @@ import useHandleError from '../../../hooks/useHandleError';
 import classNames from 'classnames';
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
-import { checkIfIsFocusHoursHabit } from '../../../utils/helpers.utils';
+import { checkIfIsFocusHoursHabit } from '../../../utils/focus-apps/helpers.utils';
 
 interface DropdownHabitOptionsProps extends DropdownProps {
 	habit: Object;

@@ -3,7 +3,7 @@ import { DropdownProps } from '../../../interfaces/interfaces';
 import Icon from '../../Icon';
 import Dropdown from '../Dropdown';
 import { SMART_LISTS } from '../../../utils/smartLists.utils';
-import { debounce, getTasksWithNoParent } from '../../../utils/helpers.utils';
+import { debounce, getTasksWithNoParent } from '../../../utils/focus-apps/helpers.utils';
 import Fuse from 'fuse.js';
 import Task from '../../Task';
 import classNames from 'classnames';

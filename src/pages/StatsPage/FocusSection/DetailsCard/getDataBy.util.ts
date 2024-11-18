@@ -1,4 +1,5 @@
-import { getFocusDurationFromArray, getRandomColor, getFormattedDuration } from '../../../../utils/helpers.utils';
+import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
+import { getRandomColor, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
 
 /**

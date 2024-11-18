@@ -4,7 +4,7 @@ import DrodpownAddFocusRecord from '../../components/Dropdown/DropdownAddFocusRe
 import DropdownTaskDetails from '../../components/Dropdown/DropdownTaskDetails';
 import Icon from '../../components/Icon';
 import { formatDateTime, getAssociatedTimeForTask } from '../../utils/date.utils';
-import { hexToRGBA, getFormattedDuration } from '../../utils/helpers.utils';
+import { hexToRGBA, getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import useContextMenu from '../../hooks/useContextMenu';
 
 const AgendaItem = ({

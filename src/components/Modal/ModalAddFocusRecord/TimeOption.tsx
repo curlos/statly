@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import DropdownTimeCalendar from '../../Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
 import Icon from '../../Icon';
 import { getDurationFromDates, isDateBefore } from '../../../utils/date.utils';
-import { formatTimeToHoursMinutesSeconds } from '../../../utils/helpers.utils';
+import { formatTimeToHoursMinutesSeconds } from '../../../utils/focus-apps/helpers.utils';
 import useHandleError from '../../../hooks/useHandleError';
 
 const TimeOption = ({

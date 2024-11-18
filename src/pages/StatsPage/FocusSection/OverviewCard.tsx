@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import Icon from '../../../components/Icon';
 import { useStatsContext } from '../../../contexts/useStatsContext';
-import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFormattedLongDay } from '../../../utils/date.utils';
 import classNames from 'classnames';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 
 const OverviewCard = () => {
 	const { total, today, focusRecordsGroupedByDate } = useStatsContext();

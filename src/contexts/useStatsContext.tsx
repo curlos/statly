@@ -6,7 +6,7 @@ import {
 	useGetAllTagsQuery,
 } from '../services/resources/ticktickOneApi';
 import { getFormattedLongDay, getLast7Days, getLast7Months, getLast7Weeks, getTimeSince } from '../utils/date.utils';
-import { getFocusDurationFromArray, getGroupedFocusRecordsByDate } from '../utils/helpers.utils';
+import { getGroupedFocusRecordsByDate, getFocusDurationFromArray } from '../utils/focus-apps/focusRecords.utils';
 
 const StatsContext = createContext();
 

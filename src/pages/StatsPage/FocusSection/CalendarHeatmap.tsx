@@ -3,12 +3,9 @@ import { useState, useRef } from 'react';
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import { getAllDatesInYear, getFormattedLongDay } from '../../../utils/date.utils';
 import { useStatsContext } from '../../../contexts/useStatsContext';
-import {
-	getFocusDurationFromArray,
-	getFormattedDuration,
-	secondsToHoursAndMinutes,
-} from '../../../utils/helpers.utils';
+import { getFormattedDuration, secondsToHoursAndMinutes } from '../../../utils/focus-apps/helpers.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 
 interface CalendarHeatmapProps {
 	data: number[]; // Array of numbers (0-4)

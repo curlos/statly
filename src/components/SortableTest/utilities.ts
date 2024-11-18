@@ -1,7 +1,7 @@
 import { arrayMove } from '@dnd-kit/sortable';
 
 import type { FlattenedItem, TreeItem, TreeItems } from './types';
-import { isFromServer } from '../../utils/helpers.utils';
+import { isFromServer } from '../../utils/focus-apps/helpers.utils';
 
 export const iOS = isFromServer() ? false : /iPad|iPhone|iPod/.test(navigator.platform);
 

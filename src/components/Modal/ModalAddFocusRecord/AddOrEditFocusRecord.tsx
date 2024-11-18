@@ -6,7 +6,7 @@ import {
 	usePermanentlyDeleteFocusRecordMutation,
 } from '../../../services/resources/focusRecordsApi';
 import { useGetTasksQuery } from '../../../services/resources/tasksApi';
-import { formatTimeToHoursMinutesSeconds } from '../../../utils/helpers.utils';
+import { formatTimeToHoursMinutesSeconds } from '../../../utils/focus-apps/helpers.utils';
 import DropdownSetFocusTypeAndAmount from '../../Dropdown/DropdownsAddFocusRecord/DropdownSetFocusTypeAndAmount';
 import DropdownSetTaskOrHabit from '../../Dropdown/DropdownsAddFocusRecord/DropdownSetTaskOrHabit';
 import Icon from '../../Icon';

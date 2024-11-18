@@ -2,8 +2,9 @@ import Icon from '../../../components/Icon';
 import AppliedFilterItemList from './AppliedFilterItemList';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { useUserSettingsContext } from './useUserSettingsContext';
+import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 
 const FilterBar = ({
 	defaultFocusRecords,

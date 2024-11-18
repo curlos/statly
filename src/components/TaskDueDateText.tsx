@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { isTaskOverdue } from '../utils/helpers.utils';
+import { isTaskOverdue } from '../utils/focus-apps/helpers.utils';
 import Icon from './Icon';
 
 const TaskDueDateText = ({ dueDate, showCalendarIcon = false, showShortVersion }) => {

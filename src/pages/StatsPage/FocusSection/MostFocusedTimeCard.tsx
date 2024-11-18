@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Bar } from 'recharts';
-import { getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import DateRangePicker from './DateRangePicker';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import {

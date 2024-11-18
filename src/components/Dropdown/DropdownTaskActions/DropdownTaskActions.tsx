@@ -16,7 +16,7 @@ import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { useGetTagsQuery } from '../../../services/resources/tagsApi';
 import { navigate } from 'vike/client/router';
 import { usePageContext } from 'vike-react/usePageContext';
-import { isFromServer } from '../../../utils/helpers.utils';
+import { isFromServer } from '../../../utils/focus-apps/helpers.utils';
 
 interface DropdownTaskActionsProps extends DropdownProps {
 	onCloseContextMenu: () => void;

@@ -8,7 +8,7 @@ import {
 } from '../../../utils/date.utils';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import apexchart from 'apexcharts';
-import { getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const TimelineChart = ({ selectedDates }) => {

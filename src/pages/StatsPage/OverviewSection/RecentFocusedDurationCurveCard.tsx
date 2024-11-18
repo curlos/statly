@@ -1,4 +1,4 @@
-import { getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';

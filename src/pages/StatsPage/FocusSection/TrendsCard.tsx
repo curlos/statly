@@ -5,9 +5,10 @@ import DateRangePicker from './DateRangePicker';
 import ModalPickDateRange from '../../../components/Modal/ModalPickDateRange';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFormattedLongDay, groupDatesByInterval } from '../../../utils/date.utils';
-import { getFocusDurationFromArray, getFormattedDuration } from '../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import classNames from 'classnames';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 
 const TrendsCard = () => {
 	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();

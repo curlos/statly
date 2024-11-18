@@ -4,11 +4,12 @@ import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown
 import DateRangePicker from '../DateRangePicker';
 import ModalPickDateRange from '../../../../components/Modal/ModalPickDateRange';
 import { useStatsContext } from '../../../../contexts/useStatsContext';
-import { getFocusDurationFromArray, getFormattedDuration } from '../../../../utils/helpers.utils';
+import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import classNames from 'classnames';
 import CustomPieChartTooltip from './CustomPieChartTooltip';
 import ProgressBarList from './ProgressBarList';
 import { getDataByProjects, getDataByTags, getDataByTasks } from './getDataBy.util';
+import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 
 const noData = [
 	{

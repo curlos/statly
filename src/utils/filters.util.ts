@@ -1,4 +1,4 @@
-import { arrayToObjectByKey } from './helpers.utils';
+import { arrayToObjectByKey } from './focus-apps/helpers.utils';
 import { PRIORITIES } from './priorities.utils';
 
 export const filterTasksByFilter = (tasks, filter) => {

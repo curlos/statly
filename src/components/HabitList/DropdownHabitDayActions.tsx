@@ -6,7 +6,7 @@ import useHandleError from '../../hooks/useHandleError';
 import { useEditHabitMutation } from '../../services/resources/habitsApi';
 import { setModalState } from '../../slices/modalSlice';
 import { useDispatch } from 'react-redux';
-import { checkIfIsFocusHoursHabit } from '../../utils/helpers.utils';
+import { checkIfIsFocusHoursHabit } from '../../utils/focus-apps/helpers.utils';
 import { useGetHabitLogsQuery } from '../../services/resources/habitLogsApi';
 
 interface IDropdownHabitDayActions extends DropdownProps {}

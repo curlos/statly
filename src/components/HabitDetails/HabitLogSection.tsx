@@ -1,6 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { getFormattedDuration } from '../../utils/helpers.utils';
+import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import Icon from '../Icon';
 import { useState } from 'react';
 import classNames from 'classnames';

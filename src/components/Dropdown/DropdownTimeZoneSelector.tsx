@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 import Dropdown from './Dropdown';
 import { useEffect, useRef, useState } from 'react';
-import { debounce } from '../../utils/helpers.utils';
+import { debounce } from '../../utils/focus-apps/helpers.utils';
 import Icon from '../Icon';
 import { DropdownProps } from '../../interfaces/interfaces';
 

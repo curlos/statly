@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import { debounce } from '../../../utils/helpers.utils';
+import { debounce } from '../../../utils/focus-apps/helpers.utils';
 import Dropdown from '../Dropdown';
 import Icon from '../../Icon';
 import { DropdownProps, IProject, TaskObj } from '../../../interfaces/interfaces';

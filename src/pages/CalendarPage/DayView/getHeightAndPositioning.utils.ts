@@ -1,4 +1,4 @@
-import { secondsToMinutes } from '../../../utils/helpers.utils';
+import { secondsToMinutes } from '../../../utils/focus-apps/helpers.utils';
 
 export const getTopPositioningFromTime = (date, fromWeekView) => {
 	// Extract the hours and minutes

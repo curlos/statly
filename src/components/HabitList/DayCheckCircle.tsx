@@ -8,7 +8,7 @@ import Icon from '../Icon';
 import ContextMenuGeneric from '../ContextMenu/ContextMenuGeneric';
 import DropdownHabitDayActions from './DropdownHabitDayActions';
 import { isFutureDate } from '../../utils/date.utils';
-import { checkIfIsFocusHoursHabit, getFormattedDuration } from '../../utils/helpers.utils';
+import { checkIfIsFocusHoursHabit, getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';

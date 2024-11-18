@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useRef, useState } from 'react';
 import { setModalState } from '../../slices/modalSlice';
 import { useDispatch } from 'react-redux';
-import { toTitleCase } from '../../utils/helpers.utils';
+import { toTitleCase } from '../../utils/focus-apps/helpers.utils';
 import { useEditMatrixMutation } from '../../services/resources/matrixApi';
 
 interface DropdownMatrixOptions extends DropdownProps {

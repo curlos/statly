@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { isFromServer } from '../../utils/helpers.utils';
+import { isFromServer } from '../../utils/focus-apps/helpers.utils';
 
 interface IContextMenuGeneric {
 	xPos: string;
