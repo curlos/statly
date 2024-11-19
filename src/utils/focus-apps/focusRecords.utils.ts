@@ -68,6 +68,8 @@ export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => 
 			return focusRecord['duration_second'];
 		case 'tide-ios-app':
 			return formattedDurationStrToSeconds(focusRecord.duration);
+		case 'forest-app':
+			return getForestDurationSec(focusRecord['Start Time'], focusRecord['End Time']);
 	}
 };
 

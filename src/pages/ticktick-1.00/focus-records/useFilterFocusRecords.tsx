@@ -66,6 +66,10 @@ export const useFilterFocusRecords = ({
 
 			// Tide App
 			{ name: 'name', weight: 1 },
+
+			// Forest App
+			{ name: 'Tag', weight: 1 },
+			{ name: 'Tree Type', weight: 0.25 },
 		],
 	});
 

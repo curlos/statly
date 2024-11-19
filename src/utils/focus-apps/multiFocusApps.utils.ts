@@ -1,3 +1,4 @@
+import { FOCUS_APPS } from '../constants.utils';
 import { getEndTimeFromStartTimeAndDuration } from './focusRecords.utils';
 
 export const getFocusRecordFocusApp = (focusRecord) => {
@@ -39,6 +40,11 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return focusRecord.name;
 		}
 
+		if (fromForestApp) {
+			const focusAppName = FOCUS_APPS[focusRecord.focusRecordApp].name;
+			return `${focusRecord.Tag} - ${focusAppName}`;
+		}
+
 		return '';
 	};
 
@@ -53,6 +59,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 
 		if (fromTideApp) {
 			return focusRecord.startTime;
+		}
+
+		if (fromForestApp) {
+			return focusRecord['Start Time'];
 		}
 
 		return '';
@@ -71,6 +81,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return getEndTimeFromStartTimeAndDuration(focusRecord.startTime, focusRecord.duration);
 		}
 
+		if (fromForestApp) {
+			return focusRecord['End Time'];
+		}
+
 		return '';
 	};
 
@@ -81,6 +95,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 
 		if (fromSessionApp) {
 			return focusRecord.notes;
+		}
+
+		if (fromForestApp) {
+			return focusRecord['Note'];
 		}
 
 		return '';
@@ -98,6 +116,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 		if (fromTideApp) {
 			return `${focusRecord.name} - ${focusRecord.startTime} - ${focusRecord.duration} ${focusRecord.focusRecordApp}`;
 		}
+
+		if (fromForestApp) {
+			return `${focusRecord.Tag} - ${focusRecord['Start Time']} - ${focusRecord['End Time']}`;
+		}
 	};
 
 	const getDisplayTitle = () => {
@@ -108,6 +130,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 
 		if (fromTideApp) {
 			return focusRecord.name;
+		}
+
+		if (fromForestApp) {
+			return focusRecord.Tag;
 		}
 
 		return '';
