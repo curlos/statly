@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Accordion from '../../../../components/Accordion/Accordion';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
-import CheckboxProject from './CheckboxProject';
+import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
@@ -136,14 +136,15 @@ const ProjectsSection = () => {
 							const project = projectOrProjectGroup;
 
 							return (
-								<CheckboxProject
+								<CheckboxMultiSelectForUrl
 									key={project.id}
 									{...{
 										project,
 										chosenColorObj,
 										nextLightestColorObj,
-										projectsFromUrlById,
+										commaSeparatedObj: projectsFromUrlById,
 										updateQueryParams,
+										urlQueryParamName: 'projects',
 									}}
 								/>
 							);
@@ -212,14 +213,15 @@ const ProjectGroupWithProjects = ({
 			>
 				<div className="pl-4">
 					{groupedProjects?.map((project) => (
-						<CheckboxProject
+						<CheckboxMultiSelectForUrl
 							key={project.id}
 							{...{
 								project,
 								chosenColorObj,
 								nextLightestColorObj,
-								projectsFromUrlById,
+								commaSeparatedObj: projectsFromUrlById,
 								updateQueryParams,
+								urlQueryParamName: 'projects',
 							}}
 						/>
 					))}

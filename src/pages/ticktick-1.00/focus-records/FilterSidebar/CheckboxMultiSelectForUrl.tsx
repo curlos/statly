@@ -2,35 +2,49 @@ import classNames from 'classnames';
 import Icon from '../../../../components/Icon';
 import { getProjectProperty, isSessionAppProject } from '../../../../utils/focus-apps/multiFocusApps.utils';
 
+interface CheckboxMultiSelectForUrlProps {
+	project?: object;
+	chosenColorObj: object;
+	nextLightestColorObj: object;
+	commaSeparatedObj: object;
+	updateQueryParams: () => void;
+	urlQueryParamName: string;
+	checkboxName?: string;
+}
+
 /**
  * @description Checkbox that will update the query params in the URL to either add or remove a project from the "projects" query params.
  */
-const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projectsFromUrlById, updateQueryParams }) => {
-	const id = getProjectProperty(project, 'id');
-	const name = getProjectProperty(project, 'name');
-	const color = getProjectProperty(project, 'color');
+const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
+	project,
+	chosenColorObj,
+	nextLightestColorObj,
+	commaSeparatedObj,
+	updateQueryParams,
+	urlQueryParamName,
+	checkboxName,
+}) => {
+	const isProjectOrCategory = urlQueryParamName === 'projects' || urlQueryParamName === 'categories';
 
-	const isChecked = projectsFromUrlById[id];
+	const id = isProjectOrCategory ? getProjectProperty(project, 'id') : checkboxName;
+	const name = isProjectOrCategory ? getProjectProperty(project, 'name') : checkboxName;
+	const color = isProjectOrCategory ? getProjectProperty(project, 'color') : null;
+
+	const isChecked = commaSeparatedObj[id];
 
 	return (
 		<div
 			className="flex items-center gap-1 cursor-pointer"
 			onClick={() => {
 				if (isChecked) {
-					projectsFromUrlById[id] = false;
+					commaSeparatedObj[id] = false;
 				} else {
-					projectsFromUrlById[id] = true;
+					commaSeparatedObj[id] = true;
 				}
 
-				const commaSeparatedSelectedProjects = getCommaSeparatedSelectedProjects(projectsFromUrlById);
+				const commaSeparatedSelectedValues = getCommaSeparatedSelectedValues(commaSeparatedObj);
 
-				let urlQueryParamName = 'projects';
-
-				if (isSessionAppProject(project)) {
-					urlQueryParamName = 'categories';
-				}
-
-				updateQueryParams({ [urlQueryParamName]: commaSeparatedSelectedProjects, page: '' });
+				updateQueryParams({ [urlQueryParamName]: commaSeparatedSelectedValues, page: '' });
 			}}
 		>
 			<Icon
@@ -54,7 +68,7 @@ const CheckboxProject = ({ project, chosenColorObj, nextLightestColorObj, projec
  * @description Using "projectsFromUrlById", this will check all of the project ids that are checked and will create a comma separated string from this passed-in object. Mostly meant to update the query params of "projects" with this string.
  * @returns {String}
  */
-const getCommaSeparatedSelectedProjects = (projectsFromUrlById) => {
+const getCommaSeparatedSelectedValues = (projectsFromUrlById) => {
 	const selectedProjectsArr = [];
 
 	for (let projectId of Object.keys(projectsFromUrlById)) {
@@ -68,4 +82,4 @@ const getCommaSeparatedSelectedProjects = (projectsFromUrlById) => {
 	return selectedProjectsArr.join(',');
 };
 
-export default CheckboxProject;
+export default CheckboxMultiSelectForUrl;

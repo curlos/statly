@@ -5,7 +5,7 @@ import Accordion from '../../../../components/Accordion/Accordion';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
 import { useGetSessionAppFocusRecordsQuery } from '../../../../services/resources/oldFocusAppsApi';
-import CheckboxProject from './CheckboxProject';
+import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 
 /**
  * @description Displays all of the "Categories" from "Session App" to check or uncheck whether we should filter by a category.
@@ -44,14 +44,15 @@ const CategoriesSection = () => {
 					<div className="space-y-2">
 						{sessionCategories?.map((category) => {
 							return (
-								<CheckboxProject
+								<CheckboxMultiSelectForUrl
 									key={category.id}
 									{...{
 										project: category,
 										chosenColorObj,
 										nextLightestColorObj,
-										projectsFromUrlById: categoriesFromUrlById,
+										commaSeparatedObj: categoriesFromUrlById,
 										updateQueryParams,
+										urlQueryParamName: 'categories',
 									}}
 								/>
 							);
