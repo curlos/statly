@@ -2,7 +2,7 @@ export const isTickTickFocusRecord = (focusRecord) => {
 	return focusRecord.tasks;
 };
 export const isSessionAppFocusRecord = (focusRecord) => {
-	return focusRecord['start_date'];
+	return focusRecord?.focusRecordApp === 'session-app';
 };
 
 /**

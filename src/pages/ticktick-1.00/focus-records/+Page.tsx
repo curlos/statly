@@ -8,7 +8,10 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { useUserSettingsContext } from './useUserSettingsContext';
 import useSticky from '../../../hooks/useSticky';
 import {
-	useGetSessionFocusRecordsQuery,
+	useGetBeFocusedAppFocusRecordsQuery,
+	useGetForestAppFocusRecordsQuery,
+	useGetSessionAppFocusRecordsQuery,
+	useGetTideAppFocusRecordsQuery,
 	useGetTodoistAllCompletedTasksQuery,
 	useGetTodoistAllTasksByIdQuery,
 } from '../../../services/resources/oldFocusAppsApi';
@@ -36,14 +39,26 @@ const FocusRecordsPage = () => {
 
 	// RTK Query - Session App - Focus Records
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionFocusRecordsQuery();
+		useGetSessionAppFocusRecordsQuery();
 	const { sessionFocusRecords } = fetchedSessionFocusRecords || {};
+
+	// RTK Query - BeFocused App - Focus Records
+	const { data: fetchedBeFocusedAppFocusRecords, isLoading: isLoadingGetBeFocusedAppFocusRecords } =
+		useGetBeFocusedAppFocusRecordsQuery();
+	const { beFocusedAppFocusRecords } = fetchedBeFocusedAppFocusRecords || {};
+
+	// RTK Query - Forest App - Focus Records
+	const { data: fetchedForestAppFocusRecords, isLoading: isLoadingGetForestAppFocusRecords } =
+		useGetForestAppFocusRecordsQuery();
+	const { forestAppFocusRecords } = fetchedForestAppFocusRecords || {};
+
+	// RTK Query - Tide App - Focus Records
+	const { data: fetchedTideFocusRecords, isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
+	const { tideFocusRecords } = fetchedTideFocusRecords || {};
 
 	// RTK Query - Todoist - All Completed Tasks
 	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksByIdQuery();
 	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
-
-	console.log(todoistAllTasksById);
 
 	const focusRecordListRef = useRef(null);
 

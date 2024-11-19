@@ -4,7 +4,7 @@ import { useThemeContext } from '../../../../contexts/useThemeContext';
 import Accordion from '../../../../components/Accordion/Accordion';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetSessionFocusRecordsQuery } from '../../../../services/resources/oldFocusAppsApi';
+import { useGetSessionAppFocusRecordsQuery } from '../../../../services/resources/oldFocusAppsApi';
 import CheckboxProject from './CheckboxProject';
 
 /**
@@ -18,7 +18,7 @@ const CategoriesSection = () => {
 
 	// RTK Query - Session App - Focus Records
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionFocusRecordsQuery();
+		useGetSessionAppFocusRecordsQuery();
 	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
 
 	const categoriesFromUrlById = getCommaSeparatedObj(categoriesFromUrl);

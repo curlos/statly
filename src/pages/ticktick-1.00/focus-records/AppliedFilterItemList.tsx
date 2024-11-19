@@ -5,7 +5,7 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
-import { useGetSessionFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
+import { useGetSessionAppFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -34,7 +34,7 @@ const AppliedFilterItemList = () => {
 
 	// RTK Query - Session App - Focus Records
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionFocusRecordsQuery();
+		useGetSessionAppFocusRecordsQuery();
 	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
 
 	useEffect(() => {

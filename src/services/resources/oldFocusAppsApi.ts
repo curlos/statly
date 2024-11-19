@@ -6,10 +6,12 @@ import { baseAPI, buildQueryString } from '../api';
  */
 export const oldFocusAppsApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
-		getSessionFocusRecords: builder.query({
+		getSessionAppFocusRecords: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString ? `/old-focus-apps/session?${queryString}` : '/old-focus-apps/session';
+				return queryString
+					? `/old-focus-apps/focus-records/session-app?${queryString}`
+					: '/old-focus-apps/focus-records/session-app';
 			},
 			transformResponse: (response) => {
 				const sessionFocusRecords = response;
@@ -34,6 +36,45 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 				});
 
 				return { sessionFocusRecords, sessionFocusRecordsByCategory, sessionCategoriesById: categoriesById };
+			},
+		}),
+		getBeFocusedAppFocusRecords: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString
+					? `/old-focus-apps/focus-records/be-focused-app?${queryString}`
+					: '/old-focus-apps/focus-records/be-focused-app';
+			},
+			transformResponse: (response) => {
+				const beFocusedAppFocusRecords = response;
+
+				return { beFocusedAppFocusRecords };
+			},
+		}),
+		getForestAppFocusRecords: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString
+					? `/old-focus-apps/focus-records/forest-app?${queryString}`
+					: '/old-focus-apps/focus-records/forest-app';
+			},
+			transformResponse: (response) => {
+				const forestAppFocusRecords = response;
+
+				return { forestAppFocusRecords };
+			},
+		}),
+		getTideAppFocusRecords: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString
+					? `/old-focus-apps/focus-records/tide-app?${queryString}`
+					: '/old-focus-apps/focus-records/tide-app';
+			},
+			transformResponse: (response) => {
+				const tideAppFocusRecords = response;
+
+				return { tideAppFocusRecords };
 			},
 		}),
 		getTodoistAllCompletedTasks: builder.query({
@@ -68,5 +109,11 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 	}),
 });
 
-export const { useGetSessionFocusRecordsQuery, useGetTodoistAllCompletedTasksQuery, useGetTodoistAllTasksByIdQuery } =
-	oldFocusAppsApi;
+export const {
+	useGetSessionAppFocusRecordsQuery,
+	useGetBeFocusedAppFocusRecordsQuery,
+	useGetForestAppFocusRecordsQuery,
+	useGetTideAppFocusRecordsQuery,
+	useGetTodoistAllCompletedTasksQuery,
+	useGetTodoistAllTasksByIdQuery,
+} = oldFocusAppsApi;
