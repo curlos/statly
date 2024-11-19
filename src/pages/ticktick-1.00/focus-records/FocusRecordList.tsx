@@ -59,14 +59,14 @@ const FocusRecordList = ({
 
 	const shownFocusRecords = getShownFocusRecords();
 
-	const modernWarfareRemasteredMedal = '/airstrike_medal_cod_mwr.webp';
+	const bo3GrudgeMedal = '/Grudge_Medal_BO3.webp';
 
 	return (
 		<div>
 			{isLoadingGetFocusRecords || !filteredFocusRecords ? (
 				<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
 					<div>
-						<img src={modernWarfareRemasteredMedal} className="h-[150px] animate-pulse" />
+						<img src={bo3GrudgeMedal} className="h-[150px] animate-pulse" />
 					</div>
 				</div>
 			) : (

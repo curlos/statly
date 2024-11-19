@@ -11,8 +11,6 @@ import {
 	useGetForestAppFocusRecordsQuery,
 	useGetSessionAppFocusRecordsQuery,
 	useGetTideAppFocusRecordsQuery,
-	useGetTodoistAllCompletedTasksQuery,
-	useGetTodoistAllTasksByIdQuery,
 } from '../../../services/resources/oldFocusAppsApi';
 
 const Page = () => {
@@ -55,16 +53,13 @@ const FocusRecordsPage = () => {
 	const { data: fetchedTideFocusRecords, isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
 	const { tideAppFocusRecords } = fetchedTideFocusRecords || {};
 
-	// RTK Query - Todoist - All Completed Tasks
-	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksByIdQuery();
-	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
-
 	const focusRecordListRef = useRef(null);
 
 	const [totalPages, setTotalPages] = useState(null);
 
 	const allFocusRecordsAreHere =
 		focusRecords && sessionFocusRecords && beFocusedAppFocusRecords && forestAppFocusRecords && tideAppFocusRecords;
+
 	const defaultFocusRecords = allFocusRecordsAreHere
 		? [
 				...focusRecords,
@@ -99,19 +94,12 @@ const FocusRecordsPage = () => {
 		setTotalPages(newTotalPages);
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
-	const areAllFocusRecordsDoneLoading =
-		!isLoadingGetFocusRecords &&
-		!isLoadingGetSessionFocusRecords &&
-		!isLoadingGetBeFocusedAppFocusRecords &&
-		!isLoadingGetForestAppFocusRecords &&
-		!isLoadingGetTideFocusRecords;
-
 	return (
 		<div>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<Navbar />
 
-				{areAllFocusRecordsDoneLoading && (
+				{allFocusRecordsAreHere && (
 					<FilterBar
 						{...{
 							defaultFocusRecords,

@@ -1,5 +1,5 @@
-import { getFormattedLongDay, sortObjectByDateKeys, sortArrayByProperty } from '../date.utils';
-import { getFocusRecordFocusApp } from './multiFocusApps.utils';
+import { getFormattedLongDay, sortObjectByDateKeys, sortArrayByProperty, isTimeBetween } from '../date.utils';
+import { getFocusRecordFocusApp, getFocusRecordProperty } from './multiFocusApps.utils';
 
 /**
  * @description For TickTick 1.0, Session, Forest, BeFocused, and Tide Focus Records
@@ -205,8 +205,6 @@ export const getEndTimeFromStartTimeAndDuration = (startTime, duration, duration
 	// Create a Date object from the startTime string
 	const startTimeDate = new Date(startTime);
 
-	console.log(startTimeDate);
-
 	if (durationInSeconds) {
 		startTimeDate.setSeconds(startTimeDate.getSeconds() + duration);
 		const newEndTimeStr = startTimeDate.toString();
@@ -259,4 +257,104 @@ export const getForestDurationSec = (startTimeStr, endTimeStr) => {
 	const durationInSeconds = differenceInSeconds;
 
 	return durationInSeconds;
+};
+
+export const getAllCompletedTasksDuringFocusRecord = ({
+	completedTasksGroupedByDate,
+	todoistCompletedTasksGroupedByDate,
+	focusRecord,
+}) => {
+	if (!completedTasksGroupedByDate || !todoistCompletedTasksGroupedByDate) {
+		return [];
+	}
+
+	const startTime = getFocusRecordProperty(focusRecord, 'startTime');
+	const endTime = getFocusRecordProperty(focusRecord, 'endTime');
+
+	const startTimeDate = new Date(startTime);
+	const endTimeDate = new Date(endTime);
+	const startTimeKey = getFormattedLongDay(startTimeDate);
+	const endTimeKey = getFormattedLongDay(endTimeDate);
+	const startAndEndTimeHappenedOnSameDay = startTimeKey === endTimeKey;
+
+	// TickTick Completed Tasks
+	let completedTasksDuringFocusSession = [];
+
+	const completedTasksInStartTimeDay = completedTasksGroupedByDate[startTimeKey];
+
+	completedTasksDuringFocusSession = getCompletedTasksBetweenTimes(
+		completedTasksInStartTimeDay,
+		startTimeDate,
+		endTimeDate
+	);
+
+	// Todoist Completed Tasks
+	let todoistCompletedTasksDuringFocusSession = [];
+
+	const todoistCompletedTasksInStartTimeDay = todoistCompletedTasksGroupedByDate[startTimeKey];
+
+	todoistCompletedTasksDuringFocusSession = getCompletedTasksBetweenTimes(
+		todoistCompletedTasksInStartTimeDay,
+		startTimeDate,
+		endTimeDate
+	);
+
+	// I would think this scenario is very rare since I don't work at midnight anymore but basically if the start and end times were to happen on different days (September 13, 2024 11:05PM to September 14, 2024 1:12AM), then you need to grab the completed tasks for the end time's date as well.
+	// TODO: Should be possible to actually test this when I bring over the focus records from 2021 and early 2022 since I did do a lot of work at midnight back then so the start and end time's would be different. Test this out after bringing over the records from back then.
+	if (!startAndEndTimeHappenedOnSameDay) {
+		const completedTasksInEndTimeDay = completedTasksGroupedByDate[endTimeKey];
+
+		if (completedTasksInEndTimeDay) {
+			completedTasksDuringFocusSession.push(
+				...getCompletedTasksBetweenTimes(completedTasksInEndTimeDay, startTimeDate, endTimeDate)
+			);
+		}
+
+		const todoistCompletedTasksInEndTimeDay = todoistCompletedTasksGroupedByDate[endTimeKey];
+
+		if (todoistCompletedTasksInEndTimeDay) {
+			todoistCompletedTasksDuringFocusSession.push(
+				...getCompletedTasksBetweenTimes(todoistCompletedTasksInEndTimeDay, startTimeDate, endTimeDate)
+			);
+		}
+	}
+
+	return [...completedTasksDuringFocusSession, ...todoistCompletedTasksDuringFocusSession];
+};
+
+export const getCompletedTasksBetweenTimes = (completedTasksInTimeDay, startTimeDate, endTimeDate) => {
+	if (!completedTasksInTimeDay) {
+		return [];
+	}
+
+	return completedTasksInTimeDay.filter((completedTask) => {
+		const completedTime = completedTask.completedTime || completedTask['completed_at'];
+		const completedTimeDate = new Date(completedTime);
+
+		// Passed in an offset of 10 minutes between the start and end times because often times, I don't actually complete a task during the literal focus record session but a little after it or maybe even before it. So, I feel like this would handle most of the completed task scenarios during a focus record.
+		const completedDuringFocusSession = isTimeBetween(completedTimeDate, startTimeDate, endTimeDate, 10);
+
+		return completedDuringFocusSession;
+	});
+};
+
+export const getFocusRecordsWithCompletedTasks = ({
+	completedTasksGroupedByDate,
+	todoistCompletedTasksGroupedByDate,
+	focusRecords,
+}) => {
+	const focusRecordsWithCompletedTasks = focusRecords.map((focusRecord) => {
+		const completedTasksDuringFocusSession = getAllCompletedTasksDuringFocusRecord({
+			completedTasksGroupedByDate,
+			todoistCompletedTasksGroupedByDate,
+			focusRecord,
+		});
+
+		return {
+			...focusRecord,
+			completedTasksDuringFocusSession,
+		};
+	});
+
+	return focusRecordsWithCompletedTasks;
 };
