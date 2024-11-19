@@ -27,6 +27,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 		'end-date',
 		'projects',
 		'categories',
+		'focus-app',
 	];
 
 	const clearAllFilters = () => {

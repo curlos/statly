@@ -4,35 +4,13 @@ import Accordion from '../../../../components/Accordion/Accordion';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
 import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
+import { FOCUS_APPS } from '../../../../utils/constants.utils';
 
 const ShowRecordsFromFocusAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const focusAppsFromUrl = searchParams.get('focus-apps');
 	const focusAppsByName = getCommaSeparatedObj(focusAppsFromUrl);
-
-	const focusApps = [
-		{
-			id: 'TickTick',
-			name: 'TickTick',
-		},
-		{
-			id: 'session-app',
-			name: 'Session',
-		},
-		{
-			id: 'be-focused-app',
-			name: 'BeFocused',
-		},
-		{
-			id: 'forest-app',
-			name: 'Forest',
-		},
-		{
-			id: 'tide-ios-app',
-			name: 'Tide',
-		},
-	];
 
 	return (
 		<div>
@@ -49,7 +27,7 @@ const ShowRecordsFromFocusAppSection = () => {
 				}
 				openByDefault={true}
 			>
-				{Object.values(focusApps).map((focusApp) => {
+				{Object.values(FOCUS_APPS).map((focusApp) => {
 					return (
 						<CheckboxMultiSelectForUrl
 							key={focusApp.id}

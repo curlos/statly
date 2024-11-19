@@ -6,6 +6,7 @@ import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
 import { useGetSessionAppFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
+import { FOCUS_APPS } from '../../../utils/constants.utils';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -15,6 +16,7 @@ const AppliedFilterItemList = () => {
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
+	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
 	const taskIdToFilterBy = searchParams.get('task-id');
 
 	const [projectNamesStr, setProjectNamesStr] = useState(
@@ -22,6 +24,9 @@ const AppliedFilterItemList = () => {
 	);
 	const [categoryNamesStr, setCategoryNamesStr] = useState(
 		categoriesFromUrl ? getStrInBulletPointsMD(categoriesFromUrl.split(',')) : ''
+	);
+	const [focusAppNamesStr, setFocusAppNamesStr] = useState(
+		focusAppsFromUrl ? getStrInBulletPointsMD(focusAppsFromUrl.split(',')) : ''
 	);
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -44,10 +49,12 @@ const AppliedFilterItemList = () => {
 
 		const newProjectNamesStr = getProjectNamesStr();
 		const newCategoryNamesStr = getCategoryNamesStr();
+		const newFocusAppNamesStr = getFocusAppNamesStr();
 
 		setProjectNamesStr(newProjectNamesStr);
 		setCategoryNamesStr(newCategoryNamesStr);
-	}, [isLoadingGetProjects, projectsFromUrl, isLoadingGetSessionFocusRecords, categoriesFromUrl]);
+		setFocusAppNamesStr(newFocusAppNamesStr);
+	}, [isLoadingGetProjects, projectsFromUrl, isLoadingGetSessionFocusRecords, categoriesFromUrl, focusAppsFromUrl]);
 
 	const getProjectNamesStr = () => {
 		const projectIdsFromUrlArr = projectsFromUrl ? projectsFromUrl.split(',') : [];
@@ -71,6 +78,18 @@ const AppliedFilterItemList = () => {
 		});
 
 		return categoryNamesArr.join(', ');
+	};
+
+	const getFocusAppNamesStr = () => {
+		const focusAppsFromUrlArr = focusAppsFromUrl ? focusAppsFromUrl.split(',') : [];
+		const focusAppsNamesArr = [];
+
+		focusAppsFromUrlArr.forEach((id) => {
+			const { name } = FOCUS_APPS[id];
+			focusAppsNamesArr.push(name);
+		});
+
+		return focusAppsNamesArr.join(', ');
 	};
 
 	const sortByFilter = {
@@ -124,17 +143,26 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
-	const singleSelectFilters = [
+	const focusAppFilter = {
+		name: 'Focus Apps',
+		value: focusAppNamesStr,
+		handleRemove: () => {
+			updateQueryParams({ 'focus-apps': '', page: '' });
+		},
+	};
+
+	const allFilters = [
 		taskIdFilter,
 		dateRangeFilter,
 		sortByFilter,
 		searchTextFilter,
 		projectsFilter,
 		categoriesFilter,
+		focusAppFilter,
 	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
-	const nonDefaultFilterList = singleSelectFilters.filter((focusRecordsFilter) => {
+	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
 		const { name, value } = focusRecordsFilter;
 
 		const isDefaultFilter = !value || value === 'Newest' || firstDayToTodayString === value;

@@ -6,7 +6,6 @@ import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
-import useSticky from '../../../hooks/useSticky';
 import {
 	useGetBeFocusedAppFocusRecordsQuery,
 	useGetForestAppFocusRecordsQuery,
@@ -67,7 +66,7 @@ const FocusRecordsPage = () => {
 	const allFocusRecordsAreHere =
 		focusRecords && sessionFocusRecords && beFocusedAppFocusRecords && forestAppFocusRecords && tideAppFocusRecords;
 	const defaultFocusRecords = allFocusRecordsAreHere
-		? [...focusRecords, ...sessionFocusRecords, ...tideAppFocusRecords]
+		? [...focusRecords, ...sessionFocusRecords, ...forestAppFocusRecords, ...tideAppFocusRecords]
 		: [];
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(defaultFocusRecords);
@@ -109,8 +108,6 @@ const FocusRecordsPage = () => {
 				{areAllFocusRecordsDoneLoading && (
 					<FilterBar
 						{...{
-							// Passing in "sessionFocusRecords" for now to get this to work BUT later on should combine with TickTick 1.0 Focus Records.
-							// TODO: Bring back TickTick 1.0 Focus Records after I'm done testing this with Session App Focus Records.
 							defaultFocusRecords,
 							filteredFocusRecords,
 							setFilteredFocusRecords,

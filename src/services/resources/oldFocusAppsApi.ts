@@ -53,10 +53,7 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 		}),
 		getForestAppFocusRecords: builder.query({
 			query: (queryParams) => {
-				const queryString = buildQueryString(queryParams);
-				return queryString
-					? `/old-focus-apps/focus-records/forest-app?${queryString}`
-					: '/old-focus-apps/focus-records/forest-app';
+				return '/old-focus-apps/focus-records/forest-app?beforeSessionApp=true';
 			},
 			transformResponse: (response) => {
 				const forestAppFocusRecords = response;

@@ -233,3 +233,17 @@ function formattedDurationStrToSeconds(duration) {
 	// Calculate total seconds
 	return hours * 3600 + minutes * 60 + seconds;
 }
+
+export const getForestDurationSec = (startTimeStr, endTimeStr) => {
+	const startTimeDate = new Date(startTimeStr);
+	const endTimeDate = new Date(endTimeStr);
+
+	// Calculate the difference in milliseconds
+	const differenceInMilliseconds = endTimeDate - startTimeDate;
+
+	// Convert milliseconds to seconds
+	const differenceInSeconds = differenceInMilliseconds / 1000;
+	const durationInSeconds = differenceInSeconds;
+
+	return durationInSeconds;
+};
