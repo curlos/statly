@@ -7,6 +7,7 @@ import {
 	isTickTickFocusRecord,
 	isSessionAppFocusRecord,
 	getFocusRecordProperty,
+	getFocusRecordFocusApp,
 } from '../../../utils/focus-apps/multiFocusApps.utils';
 
 export const useFilterFocusRecords = ({
@@ -22,11 +23,11 @@ export const useFilterFocusRecords = ({
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
+	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
 
 	// Projects
 	const projectIdsFromUrlArr = projectsFromUrl.split(',');
 	const projectIdsFromUrlObj = {};
-
 	projectIdsFromUrlArr.forEach((projectId) => {
 		projectIdsFromUrlObj[projectId] = true;
 	});
@@ -34,9 +35,15 @@ export const useFilterFocusRecords = ({
 	// Categories
 	const categoryIdsFromUrlArr = categoriesFromUrl.split(',');
 	const categoryIdsFromUrlObj = {};
-
 	categoryIdsFromUrlArr.forEach((categoryId) => {
 		categoryIdsFromUrlObj[categoryId] = true;
+	});
+
+	// Focus Apps
+	const focusAppNamesFromUrlArr = focusAppsFromUrl.split(',');
+	const focusAppNamesFromUrlObj = {};
+	focusAppNamesFromUrlArr.forEach((name) => {
+		focusAppNamesFromUrlObj[name] = true;
 	});
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -134,8 +141,17 @@ export const useFilterFocusRecords = ({
 
 		const categoryId = focusRecord.category.id || 'General';
 		const categoryIsInUrl = categoryIdsFromUrlObj[categoryId];
-
 		return categoryIsInUrl;
+	};
+
+	const focusRecordContainsFocusApp = (focusRecord) => {
+		if (!focusAppsFromUrl) {
+			return true;
+		}
+
+		const focusApp = getFocusRecordFocusApp(focusRecord);
+		const focusAppIsInUrl = focusAppNamesFromUrlObj[focusApp];
+		return focusAppIsInUrl;
 	};
 
 	const focusRecordIsNotABreak = (focusRecord) => {
@@ -166,7 +182,15 @@ export const useFilterFocusRecords = ({
 	useEffect(() => {
 		const newFilteredFocusRecords = getFilteredFocusRecords();
 		setFilteredFocusRecords(newFilteredFocusRecords);
-	}, [taskIdToFilterBy, startDateFromUrl, endDateFromUrl, projectsFromUrl, categoriesFromUrl, tasksById]);
+	}, [
+		taskIdToFilterBy,
+		startDateFromUrl,
+		endDateFromUrl,
+		projectsFromUrl,
+		categoriesFromUrl,
+		focusAppsFromUrl,
+		tasksById,
+	]);
 
 	const getFilteredFocusRecords = () => {
 		let searchedItems;
@@ -187,7 +211,8 @@ export const useFilterFocusRecords = ({
 				focusRecordContainsProjectId(focusRecord) &&
 				focusRecordContainsCategoryId(focusRecord) &&
 				focusRecordInDateRange(focusRecord) &&
-				focusRecordIsNotABreak(focusRecord)
+				focusRecordIsNotABreak(focusRecord) &&
+				focusRecordContainsFocusApp(focusRecord)
 		);
 
 		return newFilteredFocusRecords;

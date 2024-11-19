@@ -9,6 +9,7 @@ interface CheckboxMultiSelectForUrlProps {
 	commaSeparatedObj: object;
 	updateQueryParams: () => void;
 	urlQueryParamName: string;
+	checkboxId?: string;
 	checkboxName?: string;
 }
 
@@ -22,11 +23,12 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 	commaSeparatedObj,
 	updateQueryParams,
 	urlQueryParamName,
+	checkboxId,
 	checkboxName,
 }) => {
 	const isProjectOrCategory = urlQueryParamName === 'projects' || urlQueryParamName === 'categories';
 
-	const id = isProjectOrCategory ? getProjectProperty(project, 'id') : checkboxName;
+	const id = isProjectOrCategory ? getProjectProperty(project, 'id') : checkboxId;
 	const name = isProjectOrCategory ? getProjectProperty(project, 'name') : checkboxName;
 	const color = isProjectOrCategory ? getProjectProperty(project, 'color') : null;
 

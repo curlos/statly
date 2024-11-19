@@ -11,7 +11,28 @@ const ShowRecordsFromFocusAppSection = () => {
 	const focusAppsFromUrl = searchParams.get('focus-apps');
 	const focusAppsByName = getCommaSeparatedObj(focusAppsFromUrl);
 
-	const focusApps = ['TickTick', 'Session', 'BeFocused', 'Forest', 'Tide'];
+	const focusApps = [
+		{
+			id: 'TickTick',
+			name: 'TickTick',
+		},
+		{
+			id: 'session-app',
+			name: 'Session',
+		},
+		{
+			id: 'be-focused-app',
+			name: 'BeFocused',
+		},
+		{
+			id: 'forest-app',
+			name: 'Forest',
+		},
+		{
+			id: 'tide-ios-app',
+			name: 'Tide',
+		},
+	];
 
 	return (
 		<div>
@@ -28,17 +49,18 @@ const ShowRecordsFromFocusAppSection = () => {
 				}
 				openByDefault={true}
 			>
-				{focusApps.map((focusApp) => {
+				{Object.values(focusApps).map((focusApp) => {
 					return (
 						<CheckboxMultiSelectForUrl
-							key={focusApp}
+							key={focusApp.id}
 							{...{
 								chosenColorObj,
 								nextLightestColorObj,
 								commaSeparatedObj: focusAppsByName,
 								updateQueryParams,
 								urlQueryParamName: 'focus-apps',
-								checkboxName: focusApp,
+								checkboxId: focusApp.id,
+								checkboxName: focusApp.name,
 							}}
 						/>
 					);
