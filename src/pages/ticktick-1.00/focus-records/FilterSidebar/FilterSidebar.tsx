@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import { useSearchParamsCustom } from '../../../../contexts/useSearchParamsContext';
 import AppliedFilterItemList from '../AppliedFilterItemList';
 import CategoriesSection from './CategoriesSection';
+import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 	const sidebarVariants = {
@@ -101,6 +102,9 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 
 			<hr className="border-color-gray-200 my-4" />
 			<OtherSection />
+
+			<hr className="border-color-gray-200 my-4" />
+			<ShowRecordsFromFocusAppSection />
 
 			<hr className="border-color-gray-200 my-4" />
 			<ProjectsSection />
