@@ -61,8 +61,6 @@ const FocusRecordList = ({
 
 	const modernWarfareRemasteredMedal = '/airstrike_medal_cod_mwr.webp';
 
-	// console.log(filteredFocusRecords);
-
 	return (
 		<div>
 			{isLoadingGetFocusRecords || !filteredFocusRecords ? (

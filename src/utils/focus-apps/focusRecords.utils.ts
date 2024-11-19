@@ -66,6 +66,8 @@ export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => 
 			return getTickTickFocusDuration();
 		case 'session-app':
 			return focusRecord['duration_second'];
+		case 'tide-ios-app':
+			return formattedDurationStrToSeconds(focusRecord.duration);
 	}
 };
 
@@ -194,3 +196,40 @@ export const getFocusDurationFromArray = (focusRecords, onlyTasks, taskId) => {
 
 	return totalFocusDuration;
 };
+
+export const getEndTimeFromStartTimeAndDuration = (startTime, duration) => {
+	// Regular expression to parse the duration string
+	const durationRegex = /(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/;
+	const matches = duration.match(durationRegex);
+
+	// Extract hours, minutes, and seconds from the duration string
+	const hours = parseInt(matches[1], 10) || 0;
+	const minutes = parseInt(matches[2], 10) || 0;
+	const seconds = parseInt(matches[3], 10) || 0;
+
+	// Create a Date object from the startTime string
+	const startTimeDate = new Date(startTime);
+
+	// Add duration to startTime
+	startTimeDate.setHours(startTimeDate.getHours() + hours);
+	startTimeDate.setMinutes(startTimeDate.getMinutes() + minutes);
+	startTimeDate.setSeconds(startTimeDate.getSeconds() + seconds);
+
+	const newEndTimeStr = startTimeDate.toString();
+
+	return newEndTimeStr;
+};
+
+function formattedDurationStrToSeconds(duration) {
+	// Regular expression to parse the duration string
+	const durationRegex = /(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/;
+	const matches = duration.match(durationRegex);
+
+	// Extract hours, minutes, and seconds from the duration string
+	const hours = parseInt(matches[1], 10) || 0;
+	const minutes = parseInt(matches[2], 10) || 0;
+	const seconds = parseInt(matches[3], 10) || 0;
+
+	// Calculate total seconds
+	return hours * 3600 + minutes * 60 + seconds;
+}

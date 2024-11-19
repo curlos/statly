@@ -210,6 +210,10 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	const taskIdFromUrl = searchParams.get('task-id');
 	const { filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
 
+	const headerWrapperStyling = 'mt-2 md:mt-0 sm:flex justify-between items-center';
+	const headerStyling =
+		'text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline';
+
 	const updateTaskIdQueryParam = (task?: object) => {
 		let taskId = '';
 
@@ -248,11 +252,8 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 			const endTimeObj = formatDateTime(endTime);
 
 			return (
-				<div key={`${taskId} - ${startTime}`} className="mt-2 md:mt-0 sm:flex justify-between items-center">
-					<h3
-						onClick={() => updateTaskIdQueryParam(task)}
-						className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
-					>
+				<div key={`${taskId} - ${startTime}`} className={headerWrapperStyling}>
+					<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
 						{task?.title}
 					</h3>
 
@@ -266,47 +267,18 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		});
 	};
 
-	const getSessionFocusRecordTask = () => {
-		const { start_date, end_date, title, category } = focusRecord;
-
-		const startTimeObj = formatDateTime(start_date);
-		const endTimeObj = formatDateTime(end_date);
-
-		const focusRecordTitle = title ? `${title} (${category.title})` : `${category.title}`;
-
-		return (
-			<div key={`${start_date} - ${end_date}`} className="mt-2 md:mt-0 sm:flex justify-between items-center">
-				<h3
-					onClick={() => updateTaskIdQueryParam()}
-					className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
-				>
-					{focusRecordTitle}
-				</h3>
-
-				{showSubtaskTime && (
-					<div className="sm:ml-3 text-white">
-						{startTimeObj.time} - {endTimeObj.time}
-					</div>
-				)}
-			</div>
-		);
-	};
-
-	// TODO: FIX!!!!
-	const getTideAppFocusRecordTask = () => {
-		const { name, startTime, duration } = focusRecord;
+	const getOtherAppsFocusRecordTask = () => {
+		const startTime = getFocusRecordProperty(focusRecord, 'startTime');
+		const endTime = getFocusRecordProperty(focusRecord, 'endTime');
 
 		const startTimeObj = formatDateTime(startTime);
-		const endTimeObj = formatDateTime(end_date);
+		const endTimeObj = formatDateTime(endTime);
 
-		const focusRecordTitle = name;
+		const focusRecordTitle = getFocusRecordProperty(focusRecord, 'displayTitle');
 
 		return (
-			<div key={`${start_date} - ${end_date}`} className="mt-2 md:mt-0 sm:flex justify-between items-center">
-				<h3
-					onClick={() => updateTaskIdQueryParam()}
-					className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
-				>
+			<div key={`${startTimeObj.time} - ${endTimeObj.time}`} className={headerWrapperStyling}>
+				<h3 onClick={() => updateTaskIdQueryParam()} className={headerStyling}>
 					{focusRecordTitle}
 				</h3>
 
@@ -325,10 +297,8 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		switch (focusApp) {
 			case 'TickTick':
 				return getTickTickFocusRecordTask();
-			case 'session-app':
-				return getSessionFocusRecordTask();
-			case 'tide-ios-app':
-				return;
+			default:
+				return getOtherAppsFocusRecordTask();
 		}
 	};
 

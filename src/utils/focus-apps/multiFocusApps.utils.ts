@@ -1,3 +1,5 @@
+import { getEndTimeFromStartTimeAndDuration } from './focusRecords.utils';
+
 export const getFocusRecordFocusApp = (focusRecord) => {
 	return focusRecord.focusRecordApp || 'TickTick';
 };
@@ -33,6 +35,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return focusRecordTitle;
 		}
 
+		if (fromTideApp) {
+			return focusRecord.name;
+		}
+
 		return '';
 	};
 
@@ -45,6 +51,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return focusRecord['start_date'];
 		}
 
+		if (fromTideApp) {
+			return focusRecord.startTime;
+		}
+
 		return '';
 	};
 
@@ -55,6 +65,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 
 		if (fromSessionApp) {
 			return focusRecord['end_date'];
+		}
+
+		if (fromTideApp) {
+			return getEndTimeFromStartTimeAndDuration(focusRecord.startTime, focusRecord.duration);
 		}
 
 		return '';
@@ -80,6 +94,23 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 		if (fromSessionApp) {
 			return `${focusRecord['start_date']} - ${focusRecord['end_date']}`;
 		}
+
+		if (fromTideApp) {
+			return `${focusRecord.name} - ${focusRecord.startTime} - ${focusRecord.duration} ${focusRecord.focusRecordApp}`;
+		}
+	};
+
+	const getDisplayTitle = () => {
+		if (fromSessionApp) {
+			const { title, category } = focusRecord;
+			return title ? `${title} (${category.title})` : `${category.title}`;
+		}
+
+		if (fromTideApp) {
+			return focusRecord.name;
+		}
+
+		return '';
 	};
 
 	switch (property) {
@@ -93,6 +124,8 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return getNote();
 		case 'key':
 			return getKey();
+		case 'displayTitle':
+			return getDisplayTitle();
 	}
 };
 

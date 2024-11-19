@@ -73,7 +73,6 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 			},
 			transformResponse: (response) => {
 				const tideAppFocusRecords = response;
-
 				return { tideAppFocusRecords };
 			},
 		}),
