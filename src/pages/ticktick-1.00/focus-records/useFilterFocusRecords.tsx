@@ -64,12 +64,15 @@ export const useFilterFocusRecords = ({
 			{ name: 'title', weight: 0.75 },
 			{ name: 'category.title', weight: 1 },
 
-			// Tide App
-			{ name: 'name', weight: 1 },
+			// Be Focused App
+			{ name: 'Assigned task', weight: 1 },
 
 			// Forest App
 			{ name: 'Tag', weight: 1 },
 			{ name: 'Tree Type', weight: 0.25 },
+
+			// Tide App
+			{ name: 'name', weight: 1 },
 		],
 	});
 

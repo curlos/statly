@@ -66,7 +66,13 @@ const FocusRecordsPage = () => {
 	const allFocusRecordsAreHere =
 		focusRecords && sessionFocusRecords && beFocusedAppFocusRecords && forestAppFocusRecords && tideAppFocusRecords;
 	const defaultFocusRecords = allFocusRecordsAreHere
-		? [...focusRecords, ...sessionFocusRecords, ...forestAppFocusRecords, ...tideAppFocusRecords]
+		? [
+				...focusRecords,
+				...sessionFocusRecords,
+				...beFocusedAppFocusRecords,
+				...forestAppFocusRecords,
+				...tideAppFocusRecords,
+			]
 		: [];
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(defaultFocusRecords);

@@ -36,13 +36,19 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return focusRecordTitle;
 		}
 
-		if (fromTideApp) {
-			return focusRecord.name;
+		if (fromBeFocusedApp) {
+			const focusAppName = FOCUS_APPS[focusRecord.focusRecordApp].name;
+			return `${focusRecord['Assigned task']} - ${focusAppName}`;
 		}
 
 		if (fromForestApp) {
 			const focusAppName = FOCUS_APPS[focusRecord.focusRecordApp].name;
 			return `${focusRecord.Tag} - ${focusAppName}`;
+		}
+
+		if (fromTideApp) {
+			const focusAppName = FOCUS_APPS[focusRecord.focusRecordApp].name;
+			return `${focusRecord.name} - ${focusAppName}`;
 		}
 
 		return '';
@@ -57,12 +63,16 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return focusRecord['start_date'];
 		}
 
-		if (fromTideApp) {
-			return focusRecord.startTime;
+		if (fromBeFocusedApp) {
+			return focusRecord['Start date'];
 		}
 
 		if (fromForestApp) {
 			return focusRecord['Start Time'];
+		}
+
+		if (fromTideApp) {
+			return focusRecord.startTime;
 		}
 
 		return '';
@@ -77,12 +87,16 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return focusRecord['end_date'];
 		}
 
-		if (fromTideApp) {
-			return getEndTimeFromStartTimeAndDuration(focusRecord.startTime, focusRecord.duration);
+		if (fromBeFocusedApp) {
+			return getEndTimeFromStartTimeAndDuration(focusRecord['Start date'], focusRecord.Duration * 60, true);
 		}
 
 		if (fromForestApp) {
 			return focusRecord['End Time'];
+		}
+
+		if (fromTideApp) {
+			return getEndTimeFromStartTimeAndDuration(focusRecord.startTime, focusRecord.duration);
 		}
 
 		return '';
@@ -113,6 +127,10 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return `${focusRecord['start_date']} - ${focusRecord['end_date']}`;
 		}
 
+		if (fromBeFocusedApp) {
+			return `${focusRecord['Assigned task']} ${focusRecord['Start date']} ${focusRecord.Duration}`;
+		}
+
 		if (fromTideApp) {
 			return `${focusRecord.name} - ${focusRecord.startTime} - ${focusRecord.duration} ${focusRecord.focusRecordApp}`;
 		}
@@ -128,12 +146,16 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 			return title ? `${title} (${category.title})` : `${category.title}`;
 		}
 
-		if (fromTideApp) {
-			return focusRecord.name;
+		if (fromBeFocusedApp) {
+			return focusRecord['Assigned task'];
 		}
 
 		if (fromForestApp) {
 			return focusRecord.Tag;
+		}
+
+		if (fromTideApp) {
+			return focusRecord.name;
 		}
 
 		return '';

@@ -70,6 +70,8 @@ export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => 
 			return formattedDurationStrToSeconds(focusRecord.duration);
 		case 'forest-app':
 			return getForestDurationSec(focusRecord['Start Time'], focusRecord['End Time']);
+		case 'be-focused-app':
+			return focusRecord.Duration * 60;
 	}
 };
 
@@ -199,7 +201,19 @@ export const getFocusDurationFromArray = (focusRecords, onlyTasks, taskId) => {
 	return totalFocusDuration;
 };
 
-export const getEndTimeFromStartTimeAndDuration = (startTime, duration) => {
+export const getEndTimeFromStartTimeAndDuration = (startTime, duration, durationInSeconds = false) => {
+	// Create a Date object from the startTime string
+	const startTimeDate = new Date(startTime);
+
+	console.log(startTimeDate);
+
+	if (durationInSeconds) {
+		startTimeDate.setSeconds(startTimeDate.getSeconds() + duration);
+		const newEndTimeStr = startTimeDate.toString();
+
+		return newEndTimeStr;
+	}
+
 	// Regular expression to parse the duration string
 	const durationRegex = /(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/;
 	const matches = duration.match(durationRegex);
@@ -208,9 +222,6 @@ export const getEndTimeFromStartTimeAndDuration = (startTime, duration) => {
 	const hours = parseInt(matches[1], 10) || 0;
 	const minutes = parseInt(matches[2], 10) || 0;
 	const seconds = parseInt(matches[3], 10) || 0;
-
-	// Create a Date object from the startTime string
-	const startTimeDate = new Date(startTime);
 
 	// Add duration to startTime
 	startTimeDate.setHours(startTimeDate.getHours() + hours);
