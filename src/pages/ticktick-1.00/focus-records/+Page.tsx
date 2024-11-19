@@ -54,7 +54,7 @@ const FocusRecordsPage = () => {
 
 	// RTK Query - Tide App - Focus Records
 	const { data: fetchedTideFocusRecords, isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
-	const { tideFocusRecords } = fetchedTideFocusRecords || {};
+	const { tideAppFocusRecords } = fetchedTideFocusRecords || {};
 
 	// RTK Query - Todoist - All Completed Tasks
 	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksByIdQuery();
@@ -64,7 +64,11 @@ const FocusRecordsPage = () => {
 
 	const [totalPages, setTotalPages] = useState(null);
 
-	const defaultFocusRecords = focusRecords && sessionFocusRecords ? [...focusRecords, ...sessionFocusRecords] : [];
+	const allFocusRecordsAreHere =
+		focusRecords && sessionFocusRecords && beFocusedAppFocusRecords && forestAppFocusRecords && tideAppFocusRecords;
+	const defaultFocusRecords = allFocusRecordsAreHere
+		? [...focusRecords, ...sessionFocusRecords, ...tideAppFocusRecords]
+		: [];
 
 	const [filteredFocusRecords, setFilteredFocusRecords] = useState(defaultFocusRecords);
 
@@ -90,20 +94,19 @@ const FocusRecordsPage = () => {
 		setTotalPages(newTotalPages);
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
-	const scrollableRef = useRef(null); // Reference to the scrollable container
-	const stickyRef = useRef(null); // Reference to the sticky element
-
-	const offsetY = maxFocusRecordsPerPage < 10 || !filteredFocusRecords || filteredFocusRecords.length < 10 ? 0 : 50;
-
-	// TODO: offsetY should be set to 50 in the future but causing annoying issues at the moment so setting to 0.
-	const isFilterBarSticky = useSticky(scrollableRef, stickyRef, true, 0); // Pass both refs to the hook
+	const areAllFocusRecordsDoneLoading =
+		!isLoadingGetFocusRecords &&
+		!isLoadingGetSessionFocusRecords &&
+		!isLoadingGetBeFocusedAppFocusRecords &&
+		!isLoadingGetForestAppFocusRecords &&
+		!isLoadingGetTideFocusRecords;
 
 	return (
-		<div ref={scrollableRef}>
+		<div>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<Navbar />
 
-				{!isLoadingGetFocusRecords && !isLoadingGetSessionFocusRecords && (
+				{areAllFocusRecordsDoneLoading && (
 					<FilterBar
 						{...{
 							// Passing in "sessionFocusRecords" for now to get this to work BUT later on should combine with TickTick 1.0 Focus Records.
@@ -115,8 +118,6 @@ const FocusRecordsPage = () => {
 							showFilterSidebar,
 							setShowFilterSidebar,
 							DEFAULT_SORT_BY_OPTIONS,
-							stickyRef,
-							isFilterBarSticky,
 						}}
 					/>
 				)}

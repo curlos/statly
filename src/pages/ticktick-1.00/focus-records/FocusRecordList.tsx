@@ -1,5 +1,5 @@
 import { getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
-import { isTickTickFocusRecord, isSessionAppFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
+import { getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import ModalFilterSidebar from './FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord';
 import { useUserSettingsContext } from './useUserSettingsContext';
@@ -26,13 +26,12 @@ const FocusRecordList = ({
 
 		const sortedFocusRecords = noSearchText
 			? filteredFocusRecords?.toSorted((focusRecordOne, focusRecordTwo) => {
+					const startTimeOneProperty = getFocusRecordProperty(focusRecordOne, 'startTime');
+					const startTimeTwoProperty = getFocusRecordProperty(focusRecordTwo, 'startTime');
+
 					if (sortBy === 'Newest' || sortBy === 'Oldest') {
-						const focusRecordOneStartTime = isTickTickFocusRecord(focusRecordOne)
-							? focusRecordOne.startTime
-							: focusRecordOne['start_date'];
-						const focusRecordTwoStartTime = isTickTickFocusRecord(focusRecordTwo)
-							? focusRecordTwo.startTime
-							: focusRecordTwo['start_date'];
+						const focusRecordOneStartTime = startTimeOneProperty;
+						const focusRecordTwoStartTime = startTimeTwoProperty;
 
 						const startTimeOne = new Date(focusRecordOneStartTime);
 						const startTimeTwo = new Date(focusRecordTwoStartTime);
@@ -81,9 +80,8 @@ const FocusRecordList = ({
 							<div className="space-y-3">
 								{shownFocusRecords.map((focusRecord, index) => {
 									const isLastItem = index === shownFocusRecords.length - 1;
-									const focusRecordKey = isSessionAppFocusRecord(focusRecord)
-										? `${focusRecord['start_date']} - ${focusRecord['end_date']}`
-										: focusRecord.id;
+
+									const focusRecordKey = getFocusRecordProperty(focusRecord, 'key');
 
 									return (
 										<FocusRecord

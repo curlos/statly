@@ -14,7 +14,6 @@ const FilterBar = ({
 	showFilterSidebar,
 	setShowFilterSidebar,
 	DEFAULT_SORT_BY_OPTIONS,
-	stickyRef,
 }) => {
 	const { searchParams } = useSearchParamsContext();
 	const taskIdToFilterBy = searchParams.get('task-id');
@@ -33,7 +32,7 @@ const FilterBar = ({
 	const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, filterByTaskId);
 
 	return (
-		<div ref={stickyRef} className="bg-color-gray-700 sticky top-0 z-[1] pt-2">
+		<div className="bg-color-gray-700 sticky top-0 z-[1] pt-2">
 			<div className="flex justify-between items-center pb-5 container">
 				<div className="flex justify-between items-center gap-3 w-full">
 					<div className="flex items-center gap-4">

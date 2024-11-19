@@ -13,7 +13,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { useUserSettingsContext } from './useUserSettingsContext';
 import { getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
-import { getFocusRecordProperty, isTickTickFocusRecord } from '../../../utils/focus-apps/multiFocusApps.utils';
+import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import { useGetTodoistAllCompletedTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
@@ -47,9 +47,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		}
 
 		const startTimeDate = new Date(startTime);
-		const endTimeDate = isTickTickFocusRecord(focusRecord)
-			? new Date(focusRecord.endTime)
-			: new Date(focusRecord['end_date']);
+		const endTimeDate = new Date(endTime);
 		const startTimeKey = getFormattedLongDay(startTimeDate);
 		const endTimeKey = getFormattedLongDay(endTimeDate);
 		const startAndEndTimeHappenedOnSameDay = startTimeKey === endTimeKey;
@@ -212,10 +210,12 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	const taskIdFromUrl = searchParams.get('task-id');
 	const { filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
 
-	const updateTaskIdQueryParam = (task) => {
+	const updateTaskIdQueryParam = (task?: object) => {
 		let taskId = '';
 
-		if (isTickTickFocusRecord(focusRecord)) {
+		const focusApp = getFocusRecordFocusApp(focusRecord);
+
+		if (focusApp === 'TickTick') {
 			if (!task || !task.taskId) {
 				return;
 			}
@@ -292,11 +292,43 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		);
 	};
 
+	// TODO: FIX!!!!
+	const getTideAppFocusRecordTask = () => {
+		const { name, startTime, duration } = focusRecord;
+
+		const startTimeObj = formatDateTime(startTime);
+		const endTimeObj = formatDateTime(end_date);
+
+		const focusRecordTitle = name;
+
+		return (
+			<div key={`${start_date} - ${end_date}`} className="mt-2 md:mt-0 sm:flex justify-between items-center">
+				<h3
+					onClick={() => updateTaskIdQueryParam()}
+					className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
+				>
+					{focusRecordTitle}
+				</h3>
+
+				{showSubtaskTime && (
+					<div className="sm:ml-3 text-white">
+						{startTimeObj.time} - {endTimeObj.time}
+					</div>
+				)}
+			</div>
+		);
+	};
+
 	const getFocusRecordTask = () => {
-		if (isTickTickFocusRecord(focusRecord)) {
-			return getTickTickFocusRecordTask();
-		} else {
-			return getSessionFocusRecordTask();
+		const focusApp = getFocusRecordFocusApp(focusRecord);
+
+		switch (focusApp) {
+			case 'TickTick':
+				return getTickTickFocusRecordTask();
+			case 'session-app':
+				return getSessionFocusRecordTask();
+			case 'tide-ios-app':
+				return;
 		}
 	};
 

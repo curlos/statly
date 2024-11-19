@@ -1,10 +1,3 @@
-export const isTickTickFocusRecord = (focusRecord) => {
-	return focusRecord.tasks;
-};
-export const isSessionAppFocusRecord = (focusRecord) => {
-	return focusRecord?.focusRecordApp === 'session-app';
-};
-
 export const getFocusRecordFocusApp = (focusRecord) => {
 	return focusRecord.focusRecordApp || 'TickTick';
 };
@@ -21,52 +14,85 @@ export const getSessionAppFocusRecordTaskId = (focusRecord) => {
 };
 
 export const getFocusRecordProperty = (focusRecord, property) => {
-	const fromTickTick = isTickTickFocusRecord(focusRecord);
-	const fromSessionApp = isSessionAppFocusRecord(focusRecord);
+	const focusApp = getFocusRecordFocusApp(focusRecord);
+
+	const fromTickTick = focusApp === 'TickTick';
+	const fromSessionApp = focusApp === 'session-app';
+	const fromBeFocusedApp = focusApp === 'be-focused-app';
+	const fromForestApp = focusApp === 'forest-app';
+	const fromTideApp = focusApp === 'tide-ios-app';
+
+	const getTaskId = () => {
+		if (fromTickTick) {
+			return '';
+		}
+
+		if (fromSessionApp) {
+			const { title, category } = focusRecord;
+			const focusRecordTitle = title ? `${title} (${category.title})` : `${category.title}`;
+			return focusRecordTitle;
+		}
+
+		return '';
+	};
+
+	const getStartTime = () => {
+		if (fromTickTick) {
+			return focusRecord.startTime;
+		}
+
+		if (fromSessionApp) {
+			return focusRecord['start_date'];
+		}
+
+		return '';
+	};
+
+	const getEndTime = () => {
+		if (fromTickTick) {
+			return focusRecord.endTime;
+		}
+
+		if (fromSessionApp) {
+			return focusRecord['end_date'];
+		}
+
+		return '';
+	};
+
+	const getNote = () => {
+		if (fromTickTick) {
+			return focusRecord.note;
+		}
+
+		if (fromSessionApp) {
+			return focusRecord.notes;
+		}
+
+		return '';
+	};
+
+	const getKey = () => {
+		if (fromTickTick) {
+			return focusRecord.id;
+		}
+
+		if (fromSessionApp) {
+			return `${focusRecord['start_date']} - ${focusRecord['end_date']}`;
+		}
+	};
 
 	switch (property) {
 		case 'taskId':
-			if (fromTickTick) {
-				return '';
-			}
-
-			if (fromSessionApp) {
-				const { title, category } = focusRecord;
-				const focusRecordTitle = title ? `${title} (${category.title})` : `${category.title}`;
-				return focusRecordTitle;
-			}
-
-			return '';
+			return getTaskId();
 		case 'startTime':
-			if (fromTickTick) {
-				return focusRecord.startTime;
-			}
-
-			if (fromSessionApp) {
-				return focusRecord['start_date'];
-			}
-
-			return '';
+			return getStartTime();
 		case 'endTime':
-			if (fromTickTick) {
-				return focusRecord.endTime;
-			}
-
-			if (fromSessionApp) {
-				return focusRecord['end_date'];
-			}
-
-			return '';
+			return getEndTime();
 		case 'note':
-			if (fromTickTick) {
-				return focusRecord.note;
-			}
-
-			if (fromSessionApp) {
-				return focusRecord.notes;
-			}
-
-			return '';
+			return getNote();
+		case 'key':
+			return getKey();
 	}
 };
 

@@ -1,66 +1,72 @@
 import { getFormattedLongDay, sortObjectByDateKeys, sortArrayByProperty } from '../date.utils';
-import { isSessionAppFocusRecord } from './multiFocusApps.utils';
+import { getFocusRecordFocusApp } from './multiFocusApps.utils';
 
 /**
  * @description For TickTick 1.0, Session, Forest, BeFocused, and Tide Focus Records
  */
 export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => {
-	if (isSessionAppFocusRecord(focusRecord)) {
-		return focusRecord['duration_second'];
-	}
+	const focusApp = getFocusRecordFocusApp(focusRecord);
 
-	// Code below is for TickTick 1.0 Focus Records
-	const isTaskFromFocusRecord = focusRecord?.taskId;
-	const focusRecordWithoutTask = !focusRecord?.tasks;
+	const getTickTickFocusDuration = () => {
+		const isTaskFromFocusRecord = focusRecord?.taskId;
+		const focusRecordWithoutTask = !focusRecord?.tasks;
 
-	if (isTaskFromFocusRecord || focusRecordWithoutTask) {
-		const task = focusRecord;
-		const { startTime, endTime } = task;
+		if (isTaskFromFocusRecord || focusRecordWithoutTask) {
+			const task = focusRecord;
+			const { startTime, endTime } = task;
+
+			// Convert ISO string times to Date objects
+			const start = new Date(startTime);
+			const end = new Date(endTime);
+
+			// Calculate the total duration in seconds
+			const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
+			return durationSeconds;
+		}
+
+		if (onlyTasks) {
+			const { tasks } = focusRecord;
+			let totalDurationSeconds = 0;
+
+			for (const task of tasks) {
+				const { startTime, endTime, taskId } = task;
+
+				if (filterByTaskId && (!taskId || taskId !== filterByTaskId)) {
+					continue;
+				}
+
+				// Convert ISO string times to Date objects
+				const start = new Date(startTime);
+				const end = new Date(endTime);
+				// Calculate the total duration in seconds
+				const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
+				totalDurationSeconds += durationSeconds;
+			}
+
+			return totalDurationSeconds;
+		}
+
+		const { startTime, endTime, pauseDuration } = focusRecord;
 
 		// Convert ISO string times to Date objects
 		const start = new Date(startTime);
 		const end = new Date(endTime);
 
 		// Calculate the total duration in seconds
-		const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
-		return durationSeconds;
+		const totalDurationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
+
+		// Subtract the pause duration to get the real focus time
+		const realFocusTimeSeconds = totalDurationSeconds - pauseDuration;
+
+		return realFocusTimeSeconds;
+	};
+
+	switch (focusApp) {
+		case 'TickTick':
+			return getTickTickFocusDuration();
+		case 'session-app':
+			return focusRecord['duration_second'];
 	}
-
-	if (onlyTasks) {
-		const { tasks } = focusRecord;
-		let totalDurationSeconds = 0;
-
-		for (const task of tasks) {
-			const { startTime, endTime, taskId } = task;
-
-			if (filterByTaskId && (!taskId || taskId !== filterByTaskId)) {
-				continue;
-			}
-
-			// Convert ISO string times to Date objects
-			const start = new Date(startTime);
-			const end = new Date(endTime);
-			// Calculate the total duration in seconds
-			const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
-			totalDurationSeconds += durationSeconds;
-		}
-
-		return totalDurationSeconds;
-	}
-
-	const { startTime, endTime, pauseDuration } = focusRecord;
-
-	// Convert ISO string times to Date objects
-	const start = new Date(startTime);
-	const end = new Date(endTime);
-
-	// Calculate the total duration in seconds
-	const totalDurationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
-
-	// Subtract the pause duration to get the real focus time
-	const realFocusTimeSeconds = totalDurationSeconds - pauseDuration;
-
-	return realFocusTimeSeconds;
 };
 
 export const getFocusDurationFilteredByProjects = (focusRecord, filteredProjects) => {

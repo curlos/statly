@@ -3,12 +3,7 @@ import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import {
-	isTickTickFocusRecord,
-	isSessionAppFocusRecord,
-	getFocusRecordProperty,
-	getFocusRecordFocusApp,
-} from '../../../utils/focus-apps/multiFocusApps.utils';
+import { getFocusRecordProperty, getFocusRecordFocusApp } from '../../../utils/focus-apps/multiFocusApps.utils';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -92,17 +87,22 @@ export const useFilterFocusRecords = ({
 
 		const taskIdToFilterByStr = String(taskIdToFilterBy);
 
-		if (isTickTickFocusRecord(focusRecord)) {
-			if (!focusRecord.tasks || focusRecord.tasks.length === 0) {
-				return false;
+		const focusApp = getFocusRecordFocusApp(focusRecord);
+
+		switch (focusApp) {
+			case 'TickTick': {
+				if (!focusRecord.tasks || focusRecord.tasks.length === 0) {
+					return false;
+				}
+
+				const { tasks } = focusRecord;
+
+				return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
 			}
-
-			const { tasks } = focusRecord;
-
-			return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
-		} else if (isSessionAppFocusRecord(focusRecord)) {
-			const taskId = getFocusRecordProperty(focusRecord, 'taskId');
-			return taskId === taskIdToFilterByStr;
+			case 'session-app': {
+				const taskId = getFocusRecordProperty(focusRecord, 'taskId');
+				return taskId === taskIdToFilterByStr;
+			}
 		}
 	};
 
@@ -135,7 +135,9 @@ export const useFilterFocusRecords = ({
 			return true;
 		}
 
-		if (!isSessionAppFocusRecord(focusRecord)) {
+		const focusApp = getFocusRecordFocusApp(focusRecord);
+
+		if (focusApp !== 'session-app') {
 			return false;
 		}
 
@@ -155,7 +157,8 @@ export const useFilterFocusRecords = ({
 	};
 
 	const focusRecordIsNotABreak = (focusRecord) => {
-		if (!isSessionAppFocusRecord(focusRecord)) {
+		const focusApp = getFocusRecordFocusApp(focusRecord);
+		if (focusApp !== 'session-app') {
 			return true;
 		}
 
@@ -171,7 +174,7 @@ export const useFilterFocusRecords = ({
 			return true;
 		}
 
-		const startTime = isTickTickFocusRecord(focusRecord) ? focusRecord.startTime : focusRecord['start_date'];
+		const startTime = getFocusRecordProperty(focusRecord, 'startTime');
 		const startTimeDate = new Date(startTime);
 		const startDateFromUrlDate = new Date(startDateFromUrl);
 		const endDateFromUrlDate = new Date(endDateFromUrl);
