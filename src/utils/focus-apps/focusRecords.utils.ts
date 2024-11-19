@@ -338,6 +338,10 @@ export const getCompletedTasksBetweenTimes = (completedTasksInTimeDay, startTime
 	});
 };
 
+/**
+ * @description Adds the "completedTasksDuringFocusSession" for each focus record however this made the page too slow so not in use at the moment. Was meant to be used to allow me to search for stuff on the Focus Records page and find Completed tasks text but ultimately the loss in performance is too great.
+ * @returns
+ */
 export const getFocusRecordsWithCompletedTasks = ({
 	completedTasksGroupedByDate,
 	todoistCompletedTasksGroupedByDate,
