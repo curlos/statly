@@ -106,7 +106,7 @@ export const getGroupedFocusRecordsByDate = (focusRecords) => {
 	const groupedFocusRecordsByDate = {};
 
 	focusRecords?.forEach((focusRecord) => {
-		const { startTime, endTime, note, tasks } = focusRecord;
+		const startTime = getFocusRecordProperty(focusRecord, 'startTime');
 
 		const dayTitle = getFormattedLongDay(new Date(startTime));
 

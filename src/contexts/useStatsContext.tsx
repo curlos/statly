@@ -7,6 +7,12 @@ import {
 } from '../services/resources/ticktickOneApi';
 import { getFormattedLongDay, getLast7Days, getLast7Months, getLast7Weeks, getTimeSince } from '../utils/date.utils';
 import { getGroupedFocusRecordsByDate, getFocusDurationFromArray } from '../utils/focus-apps/focusRecords.utils';
+import {
+	useGetSessionAppFocusRecordsQuery,
+	useGetBeFocusedAppFocusRecordsQuery,
+	useGetForestAppFocusRecordsQuery,
+	useGetTideAppFocusRecordsQuery,
+} from '../services/resources/oldFocusAppsApi';
 
 const StatsContext = createContext();
 
@@ -35,14 +41,35 @@ const useStats = () => {
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects, projectsById } = fetchedProjects || {};
 
+	// RTK Query - TickTick 1.0 - Tags
+	const { data: fetchedTags } = useGetAllTagsQuery();
+	const { tags, tagsByRawName } = fetchedTags || {};
+
+	// FOCUS RECORDS FROM ALL APPS
+
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
 		useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecords } = fetchedFocusRecords || {};
 
-	// RTK Query - TickTick 1.0 - Tags
-	const { data: fetchedTags } = useGetAllTagsQuery();
-	const { tags, tagsByRawName } = fetchedTags || {};
+	// RTK Query - Session App - Focus Records
+	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
+		useGetSessionAppFocusRecordsQuery();
+	const { sessionFocusRecords, sessionCategoriesById } = fetchedSessionFocusRecords || {};
+
+	// RTK Query - BeFocused App - Focus Records
+	const { data: fetchedBeFocusedAppFocusRecords, isLoading: isLoadingGetBeFocusedAppFocusRecords } =
+		useGetBeFocusedAppFocusRecordsQuery();
+	const { beFocusedAppFocusRecords } = fetchedBeFocusedAppFocusRecords || {};
+
+	// RTK Query - Forest App - Focus Records
+	const { data: fetchedForestAppFocusRecords, isLoading: isLoadingGetForestAppFocusRecords } =
+		useGetForestAppFocusRecordsQuery();
+	const { forestAppFocusRecords } = fetchedForestAppFocusRecords || {};
+
+	// RTK Query - Tide App - Focus Records
+	const { data: fetchedTideFocusRecords, isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
+	const { tideAppFocusRecords } = fetchedTideFocusRecords || {};
 
 	const accountCreatedDate = new Date('November 3, 2020');
 	const timeSinceAccountCreated = getTimeSince(accountCreatedDate);
@@ -60,14 +87,33 @@ const useStats = () => {
 	const todayDate = new Date();
 	const todayDateKey = getFormattedLongDay(todayDate);
 
+	const isLoading =
+		isLoadingGetFocusRecords ||
+		isLoadingGetSessionFocusRecords ||
+		isLoadingGetBeFocusedAppFocusRecords ||
+		isLoadingGetForestAppFocusRecords ||
+		isLoadingGetTasks ||
+		isLoadingGetTideFocusRecords ||
+		isLoadingGetProjects;
+
+	const allFocusRecords = isLoading
+		? []
+		: [
+				...focusRecords,
+				...sessionFocusRecords,
+				...beFocusedAppFocusRecords,
+				...forestAppFocusRecords,
+				...tideAppFocusRecords,
+			];
+
 	useEffect(() => {
-		if (isLoadingGetFocusRecords || isLoadingGetTasks || isLoadingGetProjects) {
+		if (isLoading) {
 			return;
 		}
 
-		setFocusRecordsGroupedByDate(getGroupedFocusRecordsByDate(focusRecords));
-		setTotalFocusDuration(getFocusDurationFromArray(focusRecords));
-	}, [isLoadingGetFocusRecords, isLoadingGetTasks, isLoadingGetProjects]);
+		setFocusRecordsGroupedByDate(getGroupedFocusRecordsByDate(allFocusRecords));
+		setTotalFocusDuration(getFocusDurationFromArray(allFocusRecords));
+	}, [isLoading]);
 
 	useEffect(() => {
 		if (!focusRecordsGroupedByDate) {
@@ -223,7 +269,7 @@ const useStats = () => {
 			numOfCompletedTasks: totalCompletedTasks || 0,
 			numOfProjects: projects?.length || 0,
 			numOfDaysSinceAccountCreated: days || 0,
-			numOfFocusRecords: focusRecords?.length || 0,
+			numOfFocusRecords: allFocusRecords?.length || 0,
 			focusDuration: totalFocusDuration || 0,
 		},
 		today: {
@@ -241,9 +287,10 @@ const useStats = () => {
 		completedTasksGroupedByProject,
 		tasksById,
 		projectsById,
+		sessionCategoriesById,
 		tags,
 		tagsByRawName,
-		focusRecords,
+		focusRecords: allFocusRecords,
 		focusRecordsGroupedByDate,
 
 		// Functions

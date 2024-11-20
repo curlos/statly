@@ -9,9 +9,7 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 		getSessionAppFocusRecords: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString
-					? `/old-focus-apps/focus-records/session-app?${queryString}`
-					: '/old-focus-apps/focus-records/session-app';
+				return '/old-focus-apps/focus-records/session-app?no-breaks=true';
 			},
 			transformResponse: (response) => {
 				const sessionFocusRecords = response;
@@ -53,7 +51,7 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 		}),
 		getForestAppFocusRecords: builder.query({
 			query: (queryParams) => {
-				return '/old-focus-apps/focus-records/forest-app?beforeSessionApp=true';
+				return '/old-focus-apps/focus-records/forest-app?before-session-app=true';
 			},
 			transformResponse: (response) => {
 				const forestAppFocusRecords = response;

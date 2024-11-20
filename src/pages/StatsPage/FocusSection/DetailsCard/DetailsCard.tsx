@@ -27,6 +27,7 @@ const DetailsCard = () => {
 		getFocusRecordsFromSelectedDates,
 		tasksById,
 		projectsById,
+		sessionCategoriesById,
 		tagsByRawName,
 	} = useStatsContext();
 
@@ -46,7 +47,10 @@ const DetailsCard = () => {
 	const [endDate, setEndDate] = useState(new Date());
 
 	useEffect(() => {
-		if (!focusRecords || !focusRecordsGroupedByDate || !projectsById || !tasksById) {
+		const isLoading =
+			!focusRecords || !focusRecordsGroupedByDate || !projectsById || !tasksById || !sessionCategoriesById;
+
+		if (isLoading) {
 			return;
 		}
 
@@ -63,7 +67,8 @@ const DetailsCard = () => {
 					allFocusRecordsForInterval,
 					newFocusDurationForInterval,
 					tasksById,
-					projectsById
+					projectsById,
+					sessionCategoriesById
 				);
 				break;
 			case 'Task':
@@ -86,6 +91,7 @@ const DetailsCard = () => {
 		focusRecordsGroupedByDate,
 		selectedDates,
 		projectsById,
+		sessionCategoriesById,
 		tagsByRawName,
 		selected,
 		selectedInterval,

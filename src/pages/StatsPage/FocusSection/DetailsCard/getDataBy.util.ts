@@ -1,5 +1,7 @@
+import { FOCUS_APPS } from '../../../../utils/constants.utils';
 import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import { getRandomColor, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFocusRecordFocusApp } from '../../../../utils/focus-apps/multiFocusApps.utils';
 import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
 
 /**
@@ -15,40 +17,67 @@ import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
 		"percentage": 53.38
 	}, ...]
  */
-export const getDataByProjects = (allFocusRecordsForInterval, focusDurationForInterval, tasksById, projectsById) => {
+export const getDataByProjects = (
+	allFocusRecordsForInterval,
+	focusDurationForInterval,
+	tasksById,
+	projectsById,
+	sessionCategoriesById
+) => {
 	const focusRecordsGroupedByProject = {};
 
 	// Default it to the "Inbox" project if the focus record has no task with a project.
 	const INBOX_PROJECT_ID = 'inbox116577688';
 
 	allFocusRecordsForInterval.forEach((focusRecord) => {
-		const { tasks } = focusRecord;
+		const focusApp = getFocusRecordFocusApp(focusRecord);
 
-		if (tasks?.length > 0) {
-			for (const task of tasks) {
-				const { taskId } = task;
-				let projectKey = INBOX_PROJECT_ID;
+		if (focusApp === 'TickTick') {
+			const { tasks } = focusRecord;
 
-				if (taskId) {
-					if (tasksById[taskId]) {
-						const { projectId } = tasksById[taskId];
-						projectKey = projectId;
+			if (tasks?.length > 0) {
+				for (const task of tasks) {
+					const { taskId } = task;
+					let projectKey = INBOX_PROJECT_ID;
+
+					if (taskId) {
+						if (tasksById[taskId]) {
+							const { projectId } = tasksById[taskId];
+							projectKey = projectId;
+						}
 					}
+
+					if (!focusRecordsGroupedByProject[projectKey]) {
+						focusRecordsGroupedByProject[projectKey] = [];
+					}
+
+					focusRecordsGroupedByProject[projectKey].push(task);
+				}
+			} else {
+				// If there are no tasks in the focus records, there is no connected project, so just put it in the "Inbox" project by default.
+				if (!focusRecordsGroupedByProject[INBOX_PROJECT_ID]) {
+					focusRecordsGroupedByProject[INBOX_PROJECT_ID] = [];
 				}
 
-				if (!focusRecordsGroupedByProject[projectKey]) {
-					focusRecordsGroupedByProject[projectKey] = [];
-				}
-
-				focusRecordsGroupedByProject[projectKey].push(task);
+				focusRecordsGroupedByProject[INBOX_PROJECT_ID].push(focusRecord);
 			}
+		} else if (focusApp === 'session-app') {
+			sessionCategoriesById[focusRecord.category.id];
+			const projectKey = focusRecord.category.id || 'General';
+
+			if (!focusRecordsGroupedByProject[projectKey]) {
+				focusRecordsGroupedByProject[projectKey] = [];
+			}
+
+			focusRecordsGroupedByProject[projectKey].push(focusRecord);
 		} else {
-			// If there are no tasks in the focus records, there is no connected project, so just put it in the "Inbox" project by default.
-			if (!focusRecordsGroupedByProject[INBOX_PROJECT_ID]) {
-				focusRecordsGroupedByProject[INBOX_PROJECT_ID] = [];
+			const projectKey = focusApp;
+
+			if (!focusRecordsGroupedByProject[projectKey]) {
+				focusRecordsGroupedByProject[projectKey] = [];
 			}
 
-			focusRecordsGroupedByProject[INBOX_PROJECT_ID].push(focusRecord);
+			focusRecordsGroupedByProject[projectKey].push(focusRecord);
 		}
 	});
 
@@ -59,20 +88,45 @@ export const getDataByProjects = (allFocusRecordsForInterval, focusDurationForIn
 		const percentage = Number(((focusDurationForProject / focusDurationForInterval) * 100).toFixed(2));
 
 		const isFromInboxProject = checkIfInboxProject(projectId);
+		const isFromGeneralSessionAppProject = projectId === 'General';
+		const isNotFromTickTickOrSessionApp =
+			projectId === 'forest-app' || projectId === 'be-focused-app' || projectId === 'tide-ios-app';
+		const isFromDefaultProject =
+			isFromInboxProject || isFromGeneralSessionAppProject || isNotFromTickTickOrSessionApp;
 
 		let name = 'Inbox';
 		let color = 'green';
 
-		if (!isFromInboxProject) {
-			const project = projectsById[projectId];
-			name = project.name;
+		if (!isFromDefaultProject) {
+			const isTickTickProject = projectsById[projectId];
+			const isSessionCategory = sessionCategoriesById[projectId];
 
-			if (project.color) {
-				color = project.color;
-			} else {
-				// If there's no color, assign a random color.
-				color = getRandomColor();
+			if (isTickTickProject) {
+				const project = projectsById[projectId];
+				name = project.name;
+
+				if (project.color) {
+					color = project.color;
+				} else {
+					// If there's no color, assign a random color.
+					color = getRandomColor();
+				}
+			} else if (isSessionCategory) {
+				const category = sessionCategoriesById[projectId];
+				name = `${category.title} (Session App)`;
+
+				if (category.hex_color) {
+					color = category.hex_color;
+				} else {
+					// If there's no color, assign a random color.
+					color = getRandomColor();
+				}
 			}
+		} else if (isFromGeneralSessionAppProject) {
+			name = 'General (Session App)';
+		} else if (isNotFromTickTickOrSessionApp) {
+			name = `${FOCUS_APPS[projectId].name} (App)`;
+			color = getRandomColor();
 		}
 
 		return {
