@@ -59,14 +59,12 @@ const FocusRecordList = ({
 
 	const shownFocusRecords = getShownFocusRecords();
 
-	const bo3GrudgeMedal = '/Grudge_Medal_BO3.webp';
-
 	return (
 		<div>
 			{isLoadingGetFocusRecords || !filteredFocusRecords ? (
 				<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
 					<div>
-						<img src={bo3GrudgeMedal} className="h-[150px] animate-pulse" />
+						<img src="https://i.imgur.com/tFa0En4.png" className="h-[175px] animate-pulse" />
 					</div>
 				</div>
 			) : (

@@ -5,7 +5,7 @@ const LoaderBlackOpsThreeMedal = () => {
 
 	return (
 		<div className="">
-			<img src={bo3GrudgeMedal} className="h-[120px] animate-pulse" />
+			<img src="https://i.imgur.com/tFa0En4.png" className="h-[120px] animate-pulse" />
 		</div>
 	);
 };
