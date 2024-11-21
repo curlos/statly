@@ -12,6 +12,9 @@ import {
 	useGetSessionAppFocusRecordsQuery,
 	useGetTideAppFocusRecordsQuery,
 } from '../../../services/resources/oldFocusAppsApi';
+import { useFilterFocusRecords } from './useFilterFocusRecords';
+import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 
 const Page = () => {
 	return <FocusRecordsPage />;
@@ -57,7 +60,7 @@ const FocusRecordsPage = () => {
 
 	const [totalPages, setTotalPages] = useState(null);
 
-	const allFocusRecordsAreHere =
+	const allFocusRecordsAreHere: any =
 		focusRecords && sessionFocusRecords && beFocusedAppFocusRecords && forestAppFocusRecords && tideAppFocusRecords;
 
 	const defaultFocusRecords = allFocusRecordsAreHere
@@ -94,6 +97,28 @@ const FocusRecordsPage = () => {
 		setTotalPages(newTotalPages);
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
+	useFilterFocusRecords({
+		taskIdToFilterBy: taskIdFromUrl,
+		setFilteredFocusRecords,
+		defaultFocusRecords,
+		setSortByOptions,
+		DEFAULT_SORT_BY_OPTIONS,
+	});
+
+	const getFilterBarHeaderContent = () => {
+		const { showTotalFocusDuration, filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
+
+		const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
+		const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, filterByTaskId);
+
+		return (
+			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
+				Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
+				{showTotalFocusDuration && ` - ${getFormattedDuration(totalFocusDuration, false)}`}
+			</h2>
+		);
+	};
+
 	return (
 		<div>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
@@ -102,13 +127,9 @@ const FocusRecordsPage = () => {
 				{allFocusRecordsAreHere && (
 					<FilterBar
 						{...{
-							defaultFocusRecords,
-							filteredFocusRecords,
-							setFilteredFocusRecords,
-							setSortByOptions,
 							showFilterSidebar,
 							setShowFilterSidebar,
-							DEFAULT_SORT_BY_OPTIONS,
+							headerContent: getFilterBarHeaderContent(),
 						}}
 					/>
 				)}
