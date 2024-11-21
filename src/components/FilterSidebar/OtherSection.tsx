@@ -1,14 +1,14 @@
 import classNames from 'classnames';
-import Icon from '../../../../components/Icon';
-import useHandleError from '../../../../hooks/useHandleError';
-import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../../services/resources/userSettingsApi';
-import Accordion from '../../../../components/Accordion/Accordion';
-import { useUserSettingsContext } from '../useUserSettingsContext';
-import CustomInput from '../../../../components/CustomInput';
-import { debounce } from '../../../../utils/focus-apps/helpers.utils';
+import Icon from '../Icon';
+import useHandleError from '../../hooks/useHandleError';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
+import Accordion from '../Accordion/Accordion';
+import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
+import CustomInput from '../CustomInput';
+import { debounce } from '../../utils/focus-apps/helpers.utils';
 import { useEffect, useState } from 'react';
-import Spinner from '../../../../components/Loaders/Spinner';
+import Spinner from '../Loaders/Spinner';
 
 const OtherSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import Icon from '../../../../components/Icon';
-import { getProjectProperty, isSessionAppProject } from '../../../../utils/focus-apps/multiFocusApps.utils';
+import Icon from '../Icon';
+import { getProjectProperty, isSessionAppProject } from '../../utils/focus-apps/multiFocusApps.utils';
 
 interface CheckboxMultiSelectForUrlProps {
 	project?: object;

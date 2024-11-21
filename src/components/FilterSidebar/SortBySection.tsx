@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import CustomRadioButton from '../../../../components/CustomRadioButton';
-import Icon from '../../../../components/Icon';
-import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { useThemeContext } from '../../../../contexts/useThemeContext';
-import Accordion from '../../../../components/Accordion/Accordion';
+import CustomRadioButton from '../CustomRadioButton';
+import Icon from '../Icon';
+import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import Accordion from '../Accordion/Accordion';
 
 const SortBySection = ({ sortByOptions }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();

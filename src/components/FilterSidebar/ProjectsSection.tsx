@@ -1,11 +1,11 @@
-import Icon from '../../../../components/Icon';
-import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../../../services/resources/ticktickOneApi';
+import Icon from '../Icon';
+import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../services/resources/ticktickOneApi';
 import { useEffect, useState } from 'react';
-import Accordion from '../../../../components/Accordion/Accordion';
-import Spinner from '../../../../components/Loaders/Spinner';
-import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
+import Accordion from '../Accordion/Accordion';
+import Spinner from '../Loaders/Spinner';
+import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 
 /**

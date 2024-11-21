@@ -1,6 +1,6 @@
 import { getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
-import ModalFilterSidebar from './FilterSidebar/ModalFilterSidebar';
+import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord';
 import { useUserSettingsContext } from './useUserSettingsContext';
 

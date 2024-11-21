@@ -1,10 +1,10 @@
-import Icon from '../../../../components/Icon';
-import { useThemeContext } from '../../../../contexts/useThemeContext';
-import Accordion from '../../../../components/Accordion/Accordion';
+import Icon from '../Icon';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import Accordion from '../Accordion/Accordion';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
-import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
-import { FOCUS_APPS } from '../../../../utils/constants.utils';
+import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
+import { FOCUS_APPS } from '../../utils/constants.utils';
 
 const ShowRecordsFromFocusAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();

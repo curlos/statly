@@ -1,10 +1,10 @@
-import Icon from '../../../../components/Icon';
-import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { useThemeContext } from '../../../../contexts/useThemeContext';
-import Accordion from '../../../../components/Accordion/Accordion';
-import Spinner from '../../../../components/Loaders/Spinner';
-import { getCommaSeparatedObj } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetSessionAppFocusRecordsQuery } from '../../../../services/resources/oldFocusAppsApi';
+import Icon from '../Icon';
+import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import Accordion from '../Accordion/Accordion';
+import Spinner from '../Loaders/Spinner';
+import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
+import { useGetSessionAppFocusRecordsQuery } from '../../services/resources/oldFocusAppsApi';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 
 /**

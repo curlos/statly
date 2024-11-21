@@ -1,4 +1,5 @@
 import { useStatsContext } from '../../../contexts/useStatsContext';
+import MedalsCard from './MedalsCard';
 import OverviewCard from './OverviewCard';
 import RecentCompletionCurveCard from './RecentCompletionCurveCard';
 import RecentFocusedDurationCurveCard from './RecentFocusedDurationCurveCard';
@@ -35,12 +36,16 @@ const OverviewSection = () => {
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
 				<OverviewCard />
-				<RecentCompletionCurveCard />
+				<MedalsCard />
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 				<RecentFocusRecordsCurveCard />
 				<RecentFocusedDurationCurveCard />
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+				<RecentCompletionCurveCard />
 			</div>
 		</div>
 	);

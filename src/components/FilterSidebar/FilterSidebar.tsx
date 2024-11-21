@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
-import Icon from '../../../../components/Icon';
+import Icon from '../Icon';
 import DateRangeSection from './DateRangeSection';
 import OtherSection from './OtherSection';
 import ProjectsSection from './ProjectsSection';
 import SearchSection from './SearchSection';
 import SortBySection from './SortBySection';
 import classNames from 'classnames';
-import { useSearchParamsCustom } from '../../../../contexts/useSearchParamsContext';
-import AppliedFilterItemList from '../AppliedFilterItemList';
+import { useSearchParamsCustom } from '../../contexts/useSearchParamsContext';
+import AppliedFilterItemList from '../../pages/ticktick-1.00/focus-records/AppliedFilterItemList';
 import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
 

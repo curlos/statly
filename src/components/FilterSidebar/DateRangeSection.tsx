@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import Accordion from '../../../../components/Accordion/Accordion';
-import FormPickDateRange from '../../../../components/FormPickDateRange';
-import Icon from '../../../../components/Icon';
-import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
+import Accordion from '../Accordion/Accordion';
+import FormPickDateRange from '../FormPickDateRange';
+import Icon from '../Icon';
+import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { getFormattedShortMonthDay } from '../../utils/date.utils';
 
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
