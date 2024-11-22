@@ -102,18 +102,19 @@ export const useFilterCompletedTasks = ({
 	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
 	const includesAllDates = firstDayToTodayString === currentDateRangeString;
 
-	// const focusRecordInDateRange = (focusRecord) => {
-	// 	if (includesAllDates) {
-	// 		return true;
-	// 	}
+	const isInDateRange = (dayWithCompletedTasks) => {
+		if (includesAllDates) {
+			return true;
+		}
 
-	// 	const startTime = getFocusRecordProperty(focusRecord, 'startTime');
-	// 	const startTimeDate = new Date(startTime);
-	// 	const startDateFromUrlDate = new Date(startDateFromUrl);
-	// 	const endDateFromUrlDate = new Date(endDateFromUrl);
+		const { dateStr } = dayWithCompletedTasks;
 
-	// 	return isDateBetween(startTimeDate, startDateFromUrlDate, endDateFromUrlDate);
-	// };
+		const date = new Date(dateStr);
+		const startDateFromUrlDate = new Date(startDateFromUrl);
+		const endDateFromUrlDate = new Date(endDateFromUrl);
+
+		return isDateBetween(date, startDateFromUrlDate, endDateFromUrlDate);
+	};
 
 	useEffect(() => {
 		const newFilteredFocusRecords = getFilteredCompletedTasksByDay();
@@ -133,12 +134,12 @@ export const useFilterCompletedTasks = ({
 			searchedItems = fuse.search(searchTextFromUrl);
 		}
 
-		const searchedItemsCompletedTasksByDate = searchedItems.map((result) => result.item);
+		const searchedItemsDaysWithCompletedTasks = searchedItems.map((result) => result.item);
 
-		const newFilteredFocusRecords = searchedItemsCompletedTasksByDate.filter(
-			(completedTasksByDate) => true
-			// focusRecordContainsProjectId(completedTasksByDate) &&
-			// focusRecordInDateRange(completedTasksByDate) &&
+		const newFilteredFocusRecords = searchedItemsDaysWithCompletedTasks.filter(
+			(dayWithCompletedTasks) =>
+				// focusRecordContainsProjectId(completedTasksByDate) &&
+				isInDateRange(dayWithCompletedTasks)
 			// focusRecordContainsFocusApp(completedTasksByDate)
 		);
 

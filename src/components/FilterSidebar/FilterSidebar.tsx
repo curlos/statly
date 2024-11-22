@@ -11,7 +11,7 @@ import AppliedFilterItemList from '../../pages/ticktick-1.00/focus-records/Appli
 import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
 
-const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
+const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -19,16 +19,16 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 
 	const { searchParams, updateQueryParams } = useSearchParamsCustom();
 
-	const allPossibleFilterStrings = [
-		'task-id',
-		'sort-by',
-		'search',
-		'start-date',
-		'end-date',
-		'projects',
-		'categories',
-		'focus-apps',
-	];
+	const allPossibleFilterStrings = ['task-id', 'sort-by', 'search', 'start-date', 'end-date', 'projects'];
+
+	switch (page) {
+		case 'focus-records-page':
+			allPossibleFilterStrings.push('categories', 'focus-apps');
+			break;
+		case 'completed-tasks-page':
+			allPossibleFilterStrings.push('todolist-apps');
+			break;
+	}
 
 	const clearAllFilters = () => {
 		const emptyFiltersObj = {};
@@ -101,17 +101,30 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal }) => {
 			<hr className="border-color-gray-200 my-4" />
 			<DateRangeSection />
 
-			<hr className="border-color-gray-200 my-4" />
-			<OtherSection />
+			{/* TODO: Bring this back for the Completed Tasks page but re-work this so that the inner components are separated and reusable. */}
+			{page === 'focus-records-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<OtherSection />
+				</>
+			)}
 
-			<hr className="border-color-gray-200 my-4" />
-			<ShowRecordsFromFocusAppSection />
+			{page === 'focus-records-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<ShowRecordsFromFocusAppSection />
+				</>
+			)}
 
 			<hr className="border-color-gray-200 my-4" />
 			<ProjectsSection />
 
-			<hr className="border-color-gray-200 my-4" />
-			<CategoriesSection />
+			{page === 'focus-records-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<CategoriesSection />
+				</>
+			)}
 		</motion.div>
 	);
 };

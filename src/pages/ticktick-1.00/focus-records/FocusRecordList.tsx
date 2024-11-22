@@ -95,6 +95,7 @@ const FocusRecordList = ({
 							isOpen: showFilterSidebar,
 							setIsOpen: setShowFilterSidebar,
 							sortByOptions,
+							page: 'focus-records-page',
 						}}
 					/>
 				</>

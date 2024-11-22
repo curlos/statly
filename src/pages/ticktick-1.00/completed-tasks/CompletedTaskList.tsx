@@ -86,6 +86,7 @@ const CompletedTaskList = ({
 							isOpen: showFilterSidebar,
 							setIsOpen: setShowFilterSidebar,
 							sortByOptions,
+							page: 'completed-tasks-page',
 						}}
 					/>
 				</>

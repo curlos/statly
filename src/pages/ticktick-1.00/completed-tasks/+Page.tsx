@@ -56,9 +56,20 @@ const Page = () => {
 	const getFilterBarHeaderContent = () => {
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Completed Tasks ({totalCompletedTasks.toLocaleString()})
+				Completed Tasks ({getNumOfCompletedTasks().toLocaleString()})
 			</h2>
 		);
+	};
+
+	const getNumOfCompletedTasks = () => {
+		let numOfCompletedTasks = 0;
+
+		filteredDaysWithCompletedTasks.forEach((dayWithCompletedTasks) => {
+			const { completedTasksForDay } = dayWithCompletedTasks;
+			numOfCompletedTasks += completedTasksForDay.length;
+		});
+
+		return numOfCompletedTasks;
 	};
 
 	useEffect(() => {
