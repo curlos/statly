@@ -16,24 +16,16 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 
 	const LinkLi = ({ name, linkUrl, iconName }) => {
 		return (
-			<div className="flex items-center gap-2">
-				<div
-					className="cursor-pointer hover:underline"
-					onClick={() => {
-						navigate(linkUrl);
-						setIsSidebarModalOpen(false);
-					}}
-				>
-					{name}
-				</div>
+			<div
+				className="group flex items-center gap-2 cursor-pointer"
+				onClick={() => {
+					navigate(linkUrl);
+					setIsSidebarModalOpen(false);
+				}}
+			>
+				<div className="group-hover:underline">{name}</div>
 
-				{iconName && (
-					<Icon
-						name={iconName}
-						fill={1}
-						customClass={'text-color-gray-50 !text-[24px] hover:text-white cursor-pointer'}
-					/>
-				)}
+				{iconName && <Icon name={iconName} fill={1} customClass={'text-color-gray-50 !text-[24px]'} />}
 			</div>
 		);
 	};
@@ -71,6 +63,11 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 							/>
 							<LinkLi name="Focus Records" linkUrl="/ticktick-1.00/focus-records" iconName="timeline" />
 							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="network_intelligence_history" />
+							<LinkLi
+								name="Completed Tasks"
+								linkUrl="/ticktick-1.00/completed-tasks"
+								iconName="select_check_box"
+							/>
 						</div>
 
 						{/* Theme Color */}

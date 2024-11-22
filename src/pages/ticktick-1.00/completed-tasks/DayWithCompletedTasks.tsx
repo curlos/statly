@@ -50,6 +50,23 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks();
 
+	const getTaskBreadcrumbs = (task) => {
+		const parentTaskObjsArr = [];
+
+		const getParentTask = (task) => {
+			const parentTask = task?.parentId && tasksById[task.parentId];
+
+			if (parentTask) {
+				parentTaskObjsArr.push(parentTask);
+				getParentTask(parentTask);
+			}
+		};
+
+		getParentTask(task);
+
+		return parentTaskObjsArr;
+	};
+
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
 			<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
@@ -107,10 +124,9 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 							{Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
 								const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
 								const parentTask = tasksById && tasksById[parentTaskId];
-								const uppermostParentTask = parentTask?.parentId && tasksById[parentTask.parentId];
-
 								const parentTaskTitle = parentTask?.title || parentTaskId;
-								const upperMostParentTaskTitle = uppermostParentTask?.title;
+
+								const parentTaskBreadcrumbs = getTaskBreadcrumbs(parentTask);
 
 								return (
 									<Accordion
@@ -118,9 +134,17 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 										title={
 											<div className="text-[18px]">
 												<span className="underline font-bold">{parentTaskTitle}</span>
-												{upperMostParentTaskTitle && (
+												{parentTaskBreadcrumbs?.length > 0 && (
 													<span className="ml-1 text-color-gray-25">
-														({upperMostParentTaskTitle})
+														-{' '}
+														{parentTaskBreadcrumbs.map((taskObj, index) => (
+															<span key={`breadcrumbs-${dateStr}-${taskObj.id}`}>
+																<span>{taskObj.title}</span>
+																{index !== parentTaskBreadcrumbs.length - 1 && (
+																	<span>{' > '}</span>
+																)}
+															</span>
+														))}
 													</span>
 												)}
 											</div>
