@@ -25,37 +25,33 @@ const CompletedTaskList = ({
 
 		const noSearchText = sortBy !== 'Most Relevant';
 
-		// const sortedFocusRecords = noSearchText
-		// 	? filteredCompletedTasksByDay?.toSorted((focusRecordOne, focusRecordTwo) => {
-		// 			const startTimeOneProperty = getFocusRecordProperty(focusRecordOne, 'startTime');
-		// 			const startTimeTwoProperty = getFocusRecordProperty(focusRecordTwo, 'startTime');
+		const sortedDatesWithCompletedTasks = noSearchText
+			? filteredCompletedTasksByDay?.toSorted((dateWithCompletedTaskOne, dateWithCompletedTaskTwo) => {
+					if (sortBy === 'Newest' || sortBy === 'Oldest') {
+						const dateOne = new Date(dateWithCompletedTaskOne.dateStr);
+						const dateTwo = new Date(dateWithCompletedTaskTwo.dateStr);
 
-		// 			if (sortBy === 'Newest' || sortBy === 'Oldest') {
-		// 				const focusRecordOneStartTime = startTimeOneProperty;
-		// 				const focusRecordTwoStartTime = startTimeTwoProperty;
+						if (sortBy === 'Newest') {
+							return dateTwo - dateOne;
+						} else if (sortBy === 'Oldest') {
+							return dateOne - dateTwo;
+						}
+					}
 
-		// 				const startTimeOne = new Date(focusRecordOneStartTime);
-		// 				const startTimeTwo = new Date(focusRecordTwoStartTime);
+					// else if (sortBy.startsWith('Focus Hours')) {
+					// 	const durationOne = getFocusDuration({ focusRecord: focusRecordOne });
+					// 	const durationTwo = getFocusDuration({ focusRecord: focusRecordTwo });
 
-		// 				if (sortBy === 'Newest') {
-		// 					return startTimeTwo - startTimeOne;
-		// 				} else if (sortBy === 'Oldest') {
-		// 					return startTimeOne - startTimeTwo;
-		// 				}
-		// 			} else if (sortBy.startsWith('Focus Hours')) {
-		// 				const durationOne = getFocusDuration({ focusRecord: focusRecordOne });
-		// 				const durationTwo = getFocusDuration({ focusRecord: focusRecordTwo });
+					// 	if (sortBy === 'Focus Hours: Most-Least') {
+					// 		return durationTwo - durationOne;
+					// 	} else if (sortBy === 'Focus Hours: Least-Most') {
+					// 		return durationOne - durationTwo;
+					// 	}
+					// }
+				})
+			: filteredCompletedTasksByDay;
 
-		// 				if (sortBy === 'Focus Hours: Most-Least') {
-		// 					return durationTwo - durationOne;
-		// 				} else if (sortBy === 'Focus Hours: Least-Most') {
-		// 					return durationOne - durationTwo;
-		// 				}
-		// 			}
-		// 		})
-		// 	: filteredCompletedTasksByDay;
-
-		return filteredCompletedTasksByDay?.slice(startIndex, endIndex);
+		return sortedDatesWithCompletedTasks?.slice(startIndex, endIndex);
 	};
 
 	const shownCompletedTasks = getShownCompletedTasks();
