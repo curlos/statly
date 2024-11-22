@@ -4,6 +4,7 @@ import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi'
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useGetTodoistAllCompletedTasksQuery } from '../../../services/resources/oldFocusAppsApi';
+import Accordion from '../../../components/Accordion/Accordion';
 
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -52,21 +53,26 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 				)}
 
 				<div className={classNames(bgColorHalfOpacity, 'p-2 rounded-lg w-[95%] sm:w-full')}>
-					<div className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline">
-						<span>{dateStr}</span>
-						<span> ({completedTasksForDay.length})</span>
-					</div>
-
-					<div className="space-y-1">
-						{completedTasksForDay.map((task) => {
-							return (
-								<div className="flex items-start gap-1">
-									<Icon name="check_box" customClass={classNames('!text-[20px] text-white')} />
-									<div className="mt-[-2px]">{task.title}</div>
-								</div>
-							);
-						})}
-					</div>
+					<Accordion
+						title={
+							<div className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline">
+								<span>{dateStr}</span>
+								<span> ({completedTasksForDay.length})</span>
+							</div>
+						}
+						openByDefault={true}
+					>
+						<div className="space-y-1">
+							{completedTasksForDay.map((task) => {
+								return (
+									<div className="flex items-start gap-1">
+										<Icon name="check_box" customClass={classNames('!text-[20px] text-white')} />
+										<div className="mt-[-2px]">{task.title}</div>
+									</div>
+								);
+							})}
+						</div>
+					</Accordion>
 				</div>
 			</div>
 		</div>
