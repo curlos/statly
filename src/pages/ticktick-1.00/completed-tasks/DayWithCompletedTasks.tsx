@@ -67,6 +67,18 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		return parentTaskObjsArr;
 	};
 
+	const updateTaskIdQueryParam = (taskId) => {
+		updateQueryParams({
+			'task-id': taskId,
+			'sort-by': '',
+			search: '',
+			'start-date': '',
+			'end-date': '',
+			projects: '',
+			page: '',
+		});
+	};
+
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
 			<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
@@ -133,13 +145,27 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 										key={dateStr + parentTaskId}
 										title={
 											<div className="text-[18px]">
-												<span className="underline font-bold">{parentTaskTitle}</span>
+												<span
+													className="underline font-bold hover:text-blue-500"
+													onClick={() => {
+														updateTaskIdQueryParam(parentTaskId);
+													}}
+												>
+													{parentTaskTitle}
+												</span>
 												{parentTaskBreadcrumbs?.length > 0 && (
 													<span className="ml-1 text-color-gray-25">
 														-{' '}
 														{parentTaskBreadcrumbs.map((taskObj, index) => (
 															<span key={`breadcrumbs-${dateStr}-${taskObj.id}`}>
-																<span>{taskObj.title}</span>
+																<span
+																	className="hover:text-blue-500 hover:underline"
+																	onClick={() => {
+																		updateTaskIdQueryParam(taskObj.id);
+																	}}
+																>
+																	{taskObj.title}
+																</span>
 																{index !== parentTaskBreadcrumbs.length - 1 && (
 																	<span>{' > '}</span>
 																)}

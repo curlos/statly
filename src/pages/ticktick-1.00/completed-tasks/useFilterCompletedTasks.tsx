@@ -17,6 +17,7 @@ export const useFilterCompletedTasks = ({
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+	const taskIdFromUrl = searchParams.get('task-id') || '';
 
 	// Projects
 	const projectIdsFromUrlArr = projectsFromUrl.split(',');
@@ -102,6 +103,20 @@ export const useFilterCompletedTasks = ({
 	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
 	const includesAllDates = firstDayToTodayString === currentDateRangeString;
 
+	const containsTaskId = (dayWithCompletedTasks) => {
+		if (!taskIdFromUrl) {
+			return true;
+		}
+
+		const { completedTasksForDay } = dayWithCompletedTasks;
+
+		console.log(completedTasksForDay);
+
+		return completedTasksForDay.find((task) => {
+			String(task.id) === String(taskIdFromUrl);
+		});
+	};
+
 	const isInDateRange = (dayWithCompletedTasks) => {
 		if (includesAllDates) {
 			return true;
@@ -119,7 +134,15 @@ export const useFilterCompletedTasks = ({
 	useEffect(() => {
 		const newFilteredFocusRecords = getFilteredCompletedTasksByDay();
 		setFilteredDaysWithCompletedTasks(newFilteredFocusRecords);
-	}, [startDateFromUrl, endDateFromUrl, projectsFromUrl, categoriesFromUrl, focusAppsFromUrl, tasksById]);
+	}, [
+		startDateFromUrl,
+		endDateFromUrl,
+		projectsFromUrl,
+		categoriesFromUrl,
+		focusAppsFromUrl,
+		taskIdFromUrl,
+		tasksById,
+	]);
 
 	const getFilteredCompletedTasksByDay = () => {
 		let searchedItems;
@@ -137,9 +160,7 @@ export const useFilterCompletedTasks = ({
 		const searchedItemsDaysWithCompletedTasks = searchedItems.map((result) => result.item);
 
 		const newFilteredFocusRecords = searchedItemsDaysWithCompletedTasks.filter(
-			(dayWithCompletedTasks) =>
-				// focusRecordContainsProjectId(completedTasksByDate) &&
-				isInDateRange(dayWithCompletedTasks)
+			(dayWithCompletedTasks) => containsTaskId(dayWithCompletedTasks) && isInDateRange(dayWithCompletedTasks)
 			// focusRecordContainsFocusApp(completedTasksByDate)
 		);
 
