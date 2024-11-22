@@ -1,8 +1,16 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../Icon';
+import classNames from 'classnames';
 
-const Accordion = ({ title, children, setIsOpenForParent, openByDefault, isChildDropdownOpen }) => {
+const Accordion = ({
+	title,
+	children,
+	setIsOpenForParent,
+	openByDefault,
+	isChildDropdownOpen,
+	showArrowNextToText,
+}) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 
 	const toggleOpen = () => {
@@ -17,7 +25,10 @@ const Accordion = ({ title, children, setIsOpenForParent, openByDefault, isChild
 		<div>
 			<button
 				onClick={toggleOpen}
-				className="w-full text-left flex justify-between items-center focus:outline-none rounded-xl mb-2"
+				className={classNames(
+					'w-full text-left flex gap-2 items-center focus:outline-none rounded-xl mb-2',
+					showArrowNextToText ? 'justify-start' : 'justify-between'
+				)}
 			>
 				{title}
 				<Icon

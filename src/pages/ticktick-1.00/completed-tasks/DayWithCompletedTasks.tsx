@@ -11,19 +11,41 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { completedTasksGroupedByDate } = fetchedTasks || {};
-
-	// RTK Query - Todoist - All Completed Tasks
-	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllCompletedTasksQuery();
-	const { todoistCompletedTasksGroupedByDate } = fetchedTodoistAllCompletedTasks || {};
+	const { tasksById } = fetchedTasks || {};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
 
-	console.log(dateWithCompletedTasks);
-
 	const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
+
+	const getGroupedSubtasksAndParentTasks = () => {
+		const groupedSubtasksByParentTask = {};
+		const parentTasks = [];
+
+		completedTasksForDay.forEach((task) => {
+			const { itemParentTaskId } = task;
+
+			if (itemParentTaskId) {
+				if (!groupedSubtasksByParentTask[itemParentTaskId]) {
+					groupedSubtasksByParentTask[itemParentTaskId] = [];
+				}
+
+				groupedSubtasksByParentTask[itemParentTaskId].push(task);
+			} else {
+				parentTasks.push(task);
+			}
+		});
+
+		return {
+			groupedSubtasksByParentTask,
+			parentTasks,
+		};
+	};
+
+	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks();
+
+	console.log(tasksById['632885b8e631912b15833920']);
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
@@ -62,13 +84,39 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						}
 						openByDefault={true}
 					>
-						<div className="space-y-1">
-							{completedTasksForDay.map((task) => {
-								return (
-									<div className="flex items-start gap-1">
-										<Icon name="check_box" customClass={classNames('!text-[20px] text-white')} />
-										<div className="mt-[-2px]">{task.title}</div>
+						<div className="mb-5">
+							{parentTasks && parentTasks.length > 0 && (
+								<Accordion
+									title={<div className="underline font-bold text-[18px]">Parent Tasks</div>}
+									openByDefault={true}
+									showArrowNextToText={true}
+								>
+									<div className="space-y-1">
+										{parentTasks.map((task) => (
+											<CompletedTask title={task.title} />
+										))}
 									</div>
+								</Accordion>
+							)}
+						</div>
+
+						<div className="space-y-5">
+							{Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
+								const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
+								const parentTaskTitle = tasksById ? tasksById[parentTaskId].title : parentTaskId;
+
+								return (
+									<Accordion
+										title={<div className="underline font-bold text-[18px]">{parentTaskTitle}</div>}
+										openByDefault={true}
+										showArrowNextToText={true}
+									>
+										<div className="space-y-1">
+											{completedSubtasks.map((task) => (
+												<CompletedTask title={task.title} />
+											))}
+										</div>
+									</Accordion>
 								);
 							})}
 						</div>
@@ -78,5 +126,12 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		</div>
 	);
 };
+
+const CompletedTask = ({ title }) => (
+	<div className="flex items-start gap-1">
+		<Icon name="check_box" customClass={classNames('!text-[20px] text-white')} />
+		<div className="mt-[-2px]">{title}</div>
+	</div>
+);
 
 export default DayWithCompletedTasks;
