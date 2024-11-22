@@ -5,8 +5,8 @@ import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.ut
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 
 export const useFilterCompletedTasks = ({
-	setFilteredCompletedTasksByDay,
-	defaultCompletedTasksByDate,
+	setFilteredDaysWithCompletedTasks,
+	defaultDaysWithCompletedTasks,
 	setSortByOptions,
 	DEFAULT_SORT_BY_OPTIONS,
 }) => {
@@ -36,7 +36,7 @@ export const useFilterCompletedTasks = ({
 	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
 	const { tasksById } = fetchedTasks || {};
 
-	const fuse = new Fuse(defaultCompletedTasksByDate, {
+	const fuse = new Fuse(defaultDaysWithCompletedTasks, {
 		includeScore: true,
 		isCaseSensitive: false,
 		findAllMatches: true,
@@ -57,7 +57,7 @@ export const useFilterCompletedTasks = ({
 			setSortByOptions(['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS]);
 		}
 
-		setFilteredCompletedTasksByDay(getFilteredCompletedTasksByDay());
+		setFilteredDaysWithCompletedTasks(getFilteredCompletedTasksByDay());
 	};
 
 	useEffect(() => {
@@ -117,7 +117,7 @@ export const useFilterCompletedTasks = ({
 
 	useEffect(() => {
 		const newFilteredFocusRecords = getFilteredCompletedTasksByDay();
-		setFilteredCompletedTasksByDay(newFilteredFocusRecords);
+		setFilteredDaysWithCompletedTasks(newFilteredFocusRecords);
 	}, [startDateFromUrl, endDateFromUrl, projectsFromUrl, categoriesFromUrl, focusAppsFromUrl, tasksById]);
 
 	const getFilteredCompletedTasksByDay = () => {
@@ -125,7 +125,9 @@ export const useFilterCompletedTasks = ({
 
 		if (searchTextFromUrl.trim() === '') {
 			// If searchText is empty, consider all focus records as the searched result.
-			searchedItems = defaultCompletedTasksByDate.map((completedTasksByDate) => ({ item: completedTasksByDate }));
+			searchedItems = defaultDaysWithCompletedTasks.map((dayWithCompletedTasks) => ({
+				item: dayWithCompletedTasks,
+			}));
 		} else {
 			// When searchText is not empty, perform the search using Fuse.js
 			searchedItems = fuse.search(searchTextFromUrl);

@@ -5,7 +5,7 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useGetTodoistAllCompletedTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 
-const CompletedTasksByDay = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
+const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -53,7 +53,8 @@ const CompletedTasksByDay = ({ dateWithCompletedTasks, isLastItemForTheDay = fal
 
 				<div className={classNames(bgColorHalfOpacity, 'p-2 rounded-lg w-[95%] sm:w-full')}>
 					<div className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline">
-						{dateStr}
+						<span>{dateStr}</span>
+						<span> ({completedTasksForDay.length})</span>
 					</div>
 
 					<div className="space-y-1">
@@ -72,4 +73,4 @@ const CompletedTasksByDay = ({ dateWithCompletedTasks, isLastItemForTheDay = fal
 	);
 };
 
-export default CompletedTasksByDay;
+export default DayWithCompletedTasks;

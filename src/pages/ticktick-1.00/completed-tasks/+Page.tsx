@@ -3,7 +3,6 @@ import Navbar from '../../../components/Navbar/Navbar';
 import { useGetTodoistAllCompletedTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import FilterBar from '../focus-records/FilterBar';
-import CompletedTasksByDay from './CompletedTasksByDay';
 import Pagination from '../../../components/Pagination';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import CompletedTaskList from './CompletedTaskList';
@@ -35,7 +34,7 @@ const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
 
 const Page = () => {
 	// For Filter Sidebar and Filter Bar
-	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
+	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
@@ -62,10 +61,10 @@ const Page = () => {
 
 	const [totalPages, setTotalPages] = useState(null);
 
-	const defaultCompletedTasksByDate = allCompletedTasksAreHere
+	const defaultDaysWithCompletedTasks = allCompletedTasksAreHere
 		? getCompletedTasksByDate(completedTasksGroupedByDate)
 		: [];
-	const [filteredCompletedTasksByDay, setFilteredCompletedTasksByDay] = useState(defaultCompletedTasksByDate);
+	const [filteredDaysWithCompletedTasks, setFilteredDaysWithCompletedTasks] = useState(defaultDaysWithCompletedTasks);
 
 	const getFilterBarHeaderContent = () => {
 		return (
@@ -77,7 +76,7 @@ const Page = () => {
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, [filteredCompletedTasksByDay, sortBy, searchTextFromUrl, taskIdFromUrl, projectsFromUrl]);
+	}, [filteredDaysWithCompletedTasks, sortBy, searchTextFromUrl, taskIdFromUrl, projectsFromUrl]);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -88,15 +87,13 @@ const Page = () => {
 			return;
 		}
 
-		const newTotalPages = Math.ceil(filteredCompletedTasksByDay.length / maxDaysPerPage);
+		const newTotalPages = Math.ceil(filteredDaysWithCompletedTasks.length / maxDaysPerPage);
 		setTotalPages(newTotalPages);
-	}, [allCompletedTasksAreHere, filteredCompletedTasksByDay, maxDaysPerPage]);
-
-	console.log(filteredCompletedTasksByDay);
+	}, [allCompletedTasksAreHere, filteredDaysWithCompletedTasks, maxDaysPerPage]);
 
 	useFilterCompletedTasks({
-		setFilteredCompletedTasksByDay,
-		defaultCompletedTasksByDate,
+		setFilteredDaysWithCompletedTasks,
+		defaultDaysWithCompletedTasks,
 		setSortByOptions,
 		DEFAULT_SORT_BY_OPTIONS,
 	});
@@ -120,7 +117,7 @@ const Page = () => {
 					<div className="container p-1">
 						<CompletedTaskList
 							{...{
-								filteredCompletedTasksByDay,
+								filteredDaysWithCompletedTasks,
 								allCompletedTasksAreHere,
 								sortBy,
 								currentPage: currentPageFromUrl,

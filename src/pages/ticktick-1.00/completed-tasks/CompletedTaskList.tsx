@@ -1,10 +1,8 @@
-import { getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
-import { useFilterCompletedTasks } from './useFilterCompletedTasks';
-import CompletedTasksByDay from './CompletedTasksByDay';
+import DayWithCompletedTasks from './DayWithCompletedTasks';
 
 const CompletedTaskList = ({
-	filteredCompletedTasksByDay,
+	filteredDaysWithCompletedTasks,
 	allCompletedTasksAreHere,
 	sortBy,
 	currentPage,
@@ -26,7 +24,7 @@ const CompletedTaskList = ({
 		const noSearchText = sortBy !== 'Most Relevant';
 
 		const sortedDatesWithCompletedTasks = noSearchText
-			? filteredCompletedTasksByDay?.toSorted((dateWithCompletedTaskOne, dateWithCompletedTaskTwo) => {
+			? filteredDaysWithCompletedTasks?.toSorted((dateWithCompletedTaskOne, dateWithCompletedTaskTwo) => {
 					if (sortBy === 'Newest' || sortBy === 'Oldest') {
 						const dateOne = new Date(dateWithCompletedTaskOne.dateStr);
 						const dateTwo = new Date(dateWithCompletedTaskTwo.dateStr);
@@ -36,31 +34,29 @@ const CompletedTaskList = ({
 						} else if (sortBy === 'Oldest') {
 							return dateOne - dateTwo;
 						}
+					} else if (sortBy.startsWith('Completed Tasks')) {
+						const dateWithCompletedTaskOneLength = dateWithCompletedTaskOne.completedTasksForDay.length;
+						const dateWithCompletedTaskTwoLength = dateWithCompletedTaskTwo.completedTasksForDay.length;
+
+						if (sortBy === 'Completed Tasks: Most-Least') {
+							return dateWithCompletedTaskTwoLength - dateWithCompletedTaskOneLength;
+						} else if (sortBy === 'Completed Tasks: Least-Most') {
+							return dateWithCompletedTaskOneLength - dateWithCompletedTaskTwoLength;
+						}
 					}
-
-					// else if (sortBy.startsWith('Focus Hours')) {
-					// 	const durationOne = getFocusDuration({ focusRecord: focusRecordOne });
-					// 	const durationTwo = getFocusDuration({ focusRecord: focusRecordTwo });
-
-					// 	if (sortBy === 'Focus Hours: Most-Least') {
-					// 		return durationTwo - durationOne;
-					// 	} else if (sortBy === 'Focus Hours: Least-Most') {
-					// 		return durationOne - durationTwo;
-					// 	}
-					// }
 				})
-			: filteredCompletedTasksByDay;
+			: filteredDaysWithCompletedTasks;
 
 		return sortedDatesWithCompletedTasks?.slice(startIndex, endIndex);
 	};
 
 	const shownCompletedTasks = getShownCompletedTasks();
 
-	console.log(filteredCompletedTasksByDay);
+	console.log(filteredDaysWithCompletedTasks);
 
 	return (
 		<div>
-			{!allCompletedTasksAreHere || !filteredCompletedTasksByDay ? (
+			{!allCompletedTasksAreHere || !filteredDaysWithCompletedTasks ? (
 				<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
 					<div>
 						<img src="https://i.imgur.com/tFa0En4.png" className="h-[175px] animate-pulse" />
@@ -69,7 +65,7 @@ const CompletedTaskList = ({
 			) : (
 				<>
 					<div>
-						{filteredCompletedTasksByDay.length === 0 ? (
+						{filteredDaysWithCompletedTasks.length === 0 ? (
 							<div>No Focus Records</div>
 						) : (
 							<div className="space-y-3">
@@ -77,7 +73,7 @@ const CompletedTaskList = ({
 									const isLastItem = index === shownCompletedTasks.length - 1;
 
 									return (
-										<CompletedTasksByDay
+										<DayWithCompletedTasks
 											key={dateWithCompletedTasks.dateStr}
 											dateWithCompletedTasks={dateWithCompletedTasks}
 											isLastItemForTheDay={isLastItem}
