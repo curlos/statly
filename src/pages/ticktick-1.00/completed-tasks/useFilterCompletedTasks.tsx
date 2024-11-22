@@ -46,7 +46,7 @@ export const useFilterCompletedTasks = ({
 		minMatchCharLength: 3, // Increase min match character length for longer matches. Will ignore short words like "at" or "is" since I don't need those.
 		keys: [
 			// TickTick
-			{ name: 'title', weight: 1 },
+			{ name: 'completedTasksForDay.title', weight: 1 },
 		],
 	});
 
