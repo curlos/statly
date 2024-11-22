@@ -9,19 +9,6 @@ import CompletedTaskList from './CompletedTaskList';
 import { useFilterCompletedTasks } from './useFilterCompletedTasks';
 
 const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
-	console.log(completedTasksGroupedByDate);
-	console.log(Object.keys(completedTasksGroupedByDate));
-	console.log(
-		Object.keys(completedTasksGroupedByDate).map((dateStr) => {
-			const completedTasksForDay = completedTasksGroupedByDate[dateStr];
-
-			return {
-				dateStr,
-				completedTasksForDay,
-			};
-		})
-	);
-
 	return Object.keys(completedTasksGroupedByDate).map((dateStr) => {
 		const completedTasksForDay = completedTasksGroupedByDate[dateStr];
 

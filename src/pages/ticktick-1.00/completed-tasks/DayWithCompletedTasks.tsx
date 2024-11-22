@@ -45,8 +45,6 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks();
 
-	console.log(tasksById['632885b8e631912b15833920']);
-
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
 			<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
@@ -103,17 +101,30 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						<div className="space-y-5">
 							{Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
 								const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
-								const parentTaskTitle = tasksById ? tasksById[parentTaskId].title : parentTaskId;
+								const parentTask = tasksById && tasksById[parentTaskId];
+								const uppermostParentTask = parentTask?.parentId && tasksById[parentTask.parentId];
+
+								const parentTaskTitle = parentTask?.title || parentTaskId;
+								const upperMostParentTaskTitle = uppermostParentTask?.title;
 
 								return (
 									<Accordion
-										title={<div className="underline font-bold text-[18px]">{parentTaskTitle}</div>}
-										openByDefault={true}
+										title={
+											<div className="text-[18px]">
+												<span className="underline font-bold">{parentTaskTitle}</span>
+												{upperMostParentTaskTitle && (
+													<span className="ml-1 text-color-gray-25">
+														({upperMostParentTaskTitle})
+													</span>
+												)}
+											</div>
+										}
+										openByDefault={false}
 										showArrowNextToText={true}
 									>
 										<div className="space-y-1">
 											{completedSubtasks.map((task) => (
-												<CompletedTask title={task.title} />
+												<CompletedTask key={task.id} title={task.title} />
 											))}
 										</div>
 									</Accordion>
