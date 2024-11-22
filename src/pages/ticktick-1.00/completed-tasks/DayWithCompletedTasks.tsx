@@ -21,7 +21,8 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	const getGroupedSubtasksAndParentTasks = () => {
 		const groupedSubtasksByParentTask = {};
-		const parentTasks = [];
+		const parentTasksArr = [];
+		const parentTasksObj = {};
 
 		completedTasksForDay.forEach((task) => {
 			const { itemParentTaskId } = task;
@@ -33,13 +34,17 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 				groupedSubtasksByParentTask[itemParentTaskId].push(task);
 			} else {
-				parentTasks.push(task);
+				// Sometimes it's possible for a parent task to appear more than once (not entirely sure how though) so need to check if it's already been pushed to the array first.
+				if (!parentTasksObj[task.id]) {
+					parentTasksArr.push(task);
+					parentTasksObj[task.id] = true;
+				}
 			}
 		});
 
 		return {
 			groupedSubtasksByParentTask,
-			parentTasks,
+			parentTasks: parentTasksArr,
 		};
 	};
 
@@ -91,7 +96,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 								>
 									<div className="space-y-1">
 										{parentTasks.map((task) => (
-											<CompletedTask title={task.title} />
+											<CompletedTask key={dateStr + task.id} title={task.title} />
 										))}
 									</div>
 								</Accordion>
@@ -109,6 +114,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 								return (
 									<Accordion
+										key={dateStr + parentTaskId}
 										title={
 											<div className="text-[18px]">
 												<span className="underline font-bold">{parentTaskTitle}</span>
@@ -124,7 +130,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 									>
 										<div className="space-y-1">
 											{completedSubtasks.map((task) => (
-												<CompletedTask key={task.id} title={task.title} />
+												<CompletedTask key={dateStr + task.id} title={task.title} />
 											))}
 										</div>
 									</Accordion>
