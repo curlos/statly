@@ -8,13 +8,7 @@ import InputMaxFocusRecordsPerPage from './InputMaxFocusRecordsPerPage';
 
 const OtherSectionFocusRecords = () => {
 	const {
-		focusRecordsPageSettings: {
-			showCompletedTasks,
-			showFocusNotes,
-			showTotalFocusDuration,
-			maxFocusRecordsPerPage,
-			filterOutUnrelatedTasksWhenTaskIdIsApplied,
-		},
+		completedTasksPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied },
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
@@ -27,14 +21,14 @@ const OtherSectionFocusRecords = () => {
 	const handleCheckboxClick = (showValue, userSettingProperty) => {
 		const newShowValue = !showValue;
 
-		const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
+		const restOfCompletedTasksPageKeysAndVals = userSettings?.tickTickOne?.pages?.completedTasks;
 
 		handleError(async () => {
 			const payload = {
 				tickTickOne: {
 					pages: {
-						focusRecords: {
-							...restOfFocusRecordsKeysAndVals,
+						completedTasks: {
+							...restOfCompletedTasksPageKeysAndVals,
 							[userSettingProperty]: newShowValue,
 						},
 					},
@@ -64,32 +58,6 @@ const OtherSectionFocusRecords = () => {
 					<>
 						<CheckboxOther
 							{...{
-								name: 'Show Completed Tasks',
-								showValue: showCompletedTasks,
-								handleCheckboxClick: () =>
-									handleCheckboxClick(showCompletedTasks, 'showCompletedTasks'),
-							}}
-						/>
-
-						<CheckboxOther
-							{...{
-								name: 'Show Focus Notes',
-								showValue: showFocusNotes,
-								handleCheckboxClick: () => handleCheckboxClick(showFocusNotes, 'showFocusNotes'),
-							}}
-						/>
-
-						<CheckboxOther
-							{...{
-								name: 'Show Total Focus Records Duration',
-								showValue: showTotalFocusDuration,
-								handleCheckboxClick: () =>
-									handleCheckboxClick(showTotalFocusDuration, 'showTotalFocusDuration'),
-							}}
-						/>
-
-						<CheckboxOther
-							{...{
 								name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
 								showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
 								handleCheckboxClick: () =>
@@ -101,14 +69,14 @@ const OtherSectionFocusRecords = () => {
 						/>
 
 						{/* Input - Max Focus Records Per Page */}
-						<InputMaxFocusRecordsPerPage
+						{/* <InputMaxFocusRecordsPerPage
 							{...{
 								maxFocusRecordsPerPage,
 								handleError,
 								userSettings,
 								editUserSettings,
 							}}
-						/>
+						/> */}
 					</>
 				)}
 			</Accordion>

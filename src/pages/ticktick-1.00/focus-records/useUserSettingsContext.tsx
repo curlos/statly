@@ -18,21 +18,30 @@ const useUserSettings = () => {
 	const { userSettings } = fetchedUserSettings || {};
 
 	const focusRecordsPageSettings = userSettings?.tickTickOne?.pages?.focusRecords || {};
+	const completedTasksPageSettings = userSettings?.tickTickOne?.pages?.completedTasks || {};
+
 	const {
 		showCompletedTasks = true,
 		showFocusNotes = true,
 		showTotalFocusDuration = true,
-		filterOutUnrelatedTasksWhenTaskIdIsApplied = true,
+		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage = true,
 		maxFocusRecordsPerPage = 50,
 	} = focusRecordsPageSettings;
+
+	const {
+		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage = true,
+	} = completedTasksPageSettings;
 
 	return {
 		focusRecordsPageSettings: {
 			showCompletedTasks,
 			showFocusNotes,
 			showTotalFocusDuration,
-			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage,
 			maxFocusRecordsPerPage,
+		},
+		completedTasksPageSettings: {
+			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage,
 		},
 	};
 };

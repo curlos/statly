@@ -4,6 +4,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 
 export const useFilterCompletedTasks = ({
 	setFilteredDaysWithCompletedTasks,
@@ -19,6 +20,8 @@ export const useFilterCompletedTasks = ({
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
 	const taskIdFromUrl = searchParams.get('task-id') || '';
+
+	const { completedTasksPageSettings } = useUserSettingsContext();
 
 	// Projects
 	const projectIdsFromUrlArr = projectsFromUrl.split(',');
@@ -143,6 +146,7 @@ export const useFilterCompletedTasks = ({
 		focusAppsFromUrl,
 		taskIdFromUrl,
 		tasksById,
+		completedTasksPageSettings,
 	]);
 
 	const getFilteredCompletedTasksByDay = () => {
@@ -165,11 +169,8 @@ export const useFilterCompletedTasks = ({
 			// focusRecordContainsFocusApp(completedTasksByDate)
 		);
 
-		// TODO: Turn this into a user setting later
-		const filterCompletedTasksThatDoNotMatchTaskIdFromUrl = true;
-
 		// If the "task-id" query param is in the URL, then the remaining daysWithCompletedTasks cards left contain at least one completed task that is present is a descendant of the task id from the URL. So, we must further filter out the "completedTasksForDay" of the specific days so that only the tasks matching those from the URL are shown assuming the user setting is checked to want to do that.
-		if (taskIdFromUrl && filterCompletedTasksThatDoNotMatchTaskIdFromUrl) {
+		if (taskIdFromUrl && completedTasksPageSettings.filterOutUnrelatedTasksWhenTaskIdIsApplied) {
 			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
 					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
