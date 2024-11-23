@@ -122,11 +122,18 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 						<>
 							<h4 className="text-[16px] font-bold underline mt-4">Completed Tasks</h4>
 
-							<ul className="list-disc ml-[20px]">
+							<ul>
 								{completedTasksDuringFocusSession.map((completedTask, index) => {
 									return (
-										<li key={`${focusRecord.id} ${completedTask.id} ${index}`}>
-											{completedTask.title || completedTask.content}
+										<li
+											key={`${focusRecord.id} ${completedTask.id} ${index}`}
+											className="flex items-start gap-1"
+										>
+											<Icon
+												name="check_box"
+												customClass={classNames('!text-[20px] text-white mt-[2px]')}
+											/>
+											<span>{completedTask.title || completedTask.content}</span>
 										</li>
 									);
 								})}
