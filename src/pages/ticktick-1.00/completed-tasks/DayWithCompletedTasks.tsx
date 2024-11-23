@@ -206,7 +206,10 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 const CompletedTask = ({ task, isFullTask, updateTaskIdQueryParam }) => (
 	<div className="flex items-start gap-1">
-		<Icon name="check_box" customClass={classNames('!text-[20px] text-white')} />
+		<Icon
+			name={task.status === -1 ? 'disabled_by_default' : 'check_box'}
+			customClass={classNames('!text-[20px] text-white')}
+		/>
 		<div
 			className={classNames('mt-[-2px]', isFullTask && 'hover:underline cursor-pointer')}
 			onClick={() => {

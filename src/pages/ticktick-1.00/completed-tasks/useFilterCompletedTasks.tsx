@@ -69,39 +69,20 @@ export const useFilterCompletedTasks = ({
 		filterBySearch();
 	}, [searchTextFromUrl]);
 
-	// const focusRecordContainsProjectId = (focusRecord) => {
-	// 	if (!projectsFromUrl) {
-	// 		return true;
-	// 	}
+	const containsProjectId = (dayWithCompletedTasks) => {
+		if (!projectsFromUrl) {
+			return true;
+		}
 
-	// 	if (!focusRecord.tasks || focusRecord.tasks.length === 0 || !tasksById) {
-	// 		return false;
-	// 	}
+		const { completedTasksForDay } = dayWithCompletedTasks;
 
-	// 	const { tasks } = focusRecord;
-	// 	const oneOfTheTasksHasASelectedProject = tasks.find((task) => {
-	// 		const taskWithFullInfo = tasksById[task.taskId];
+		const oneOfTheTasksHasASelectedProject = completedTasksForDay.find((task) => {
+			const taskIsFromASelectedProject = projectIdsFromUrlObj[task.projectId];
+			return taskIsFromASelectedProject;
+		});
 
-	// 		if (!taskWithFullInfo) {
-	// 			return false;
-	// 		}
-
-	// 		const taskIsFromASelectedProject = projectIdsFromUrlObj[taskWithFullInfo.projectId];
-	// 		return taskIsFromASelectedProject;
-	// 	});
-
-	// 	return oneOfTheTasksHasASelectedProject;
-	// };
-
-	// const focusRecordContainsFocusApp = (focusRecord) => {
-	// 	if (!focusAppsFromUrl) {
-	// 		return true;
-	// 	}
-
-	// 	const focusApp = getFocusRecordFocusApp(focusRecord);
-	// 	const focusAppIsInUrl = focusAppNamesFromUrlObj[focusApp];
-	// 	return focusAppIsInUrl;
-	// };
+		return oneOfTheTasksHasASelectedProject;
+	};
 
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
@@ -165,8 +146,10 @@ export const useFilterCompletedTasks = ({
 		const searchedItemsDaysWithCompletedTasks = searchedItems.map((result) => result.item);
 
 		let newFilteredDaysWithCompletedTasks = searchedItemsDaysWithCompletedTasks.filter(
-			(dayWithCompletedTasks) => isInDateRange(dayWithCompletedTasks) && containsTaskId(dayWithCompletedTasks)
-			// focusRecordContainsFocusApp(completedTasksByDate)
+			(dayWithCompletedTasks) =>
+				isInDateRange(dayWithCompletedTasks) &&
+				containsTaskId(dayWithCompletedTasks) &&
+				containsProjectId(dayWithCompletedTasks)
 		);
 
 		// If the "task-id" query param is in the URL, then the remaining daysWithCompletedTasks cards left contain at least one completed task that is present is a descendant of the task id from the URL. So, we must further filter out the "completedTasksForDay" of the specific days so that only the tasks matching those from the URL are shown assuming the user setting is checked to want to do that.
@@ -189,6 +172,20 @@ export const useFilterCompletedTasks = ({
 			});
 		}
 
+		if (projectsFromUrl) {
+			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
+				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
+					const taskIsFromASelectedProject = projectIdsFromUrlObj[task.projectId];
+					return taskIsFromASelectedProject;
+				});
+
+				return {
+					...dayWithCompletedTasks,
+					completedTasksForDay: filteredCompletedTasksForDay,
+				};
+			});
+		}
+
 		// Sort the completedTasksForDay of each day from oldest to newest completed times.
 		newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 			const completedTasksForDay = dayWithCompletedTasks.completedTasksForDay.toSorted(
@@ -200,6 +197,8 @@ export const useFilterCompletedTasks = ({
 				completedTasksForDay,
 			};
 		});
+
+		console.log(newFilteredDaysWithCompletedTasks);
 
 		return newFilteredDaysWithCompletedTasks;
 	};
