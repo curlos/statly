@@ -1,40 +1,12 @@
 import classNames from 'classnames';
 import Icon from '../Icon';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
-const CheckboxOther = ({
-	userSettings,
-	userSettingProperty,
-	name,
-	showValue,
-	handleError,
-	editUserSettings,
-	chosenColorObj,
-	nextLightestColorObj,
-}) => {
+const CheckboxOther = ({ name, showValue, handleCheckboxClick }) => {
+	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
+
 	return (
-		<div
-			className="flex gap-1 cursor-pointer"
-			onClick={() => {
-				const newShowValue = !showValue;
-
-				const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
-
-				handleError(async () => {
-					const payload = {
-						tickTickOne: {
-							pages: {
-								focusRecords: {
-									...restOfFocusRecordsKeysAndVals,
-									[userSettingProperty]: newShowValue,
-								},
-							},
-						},
-					};
-
-					await editUserSettings(payload).unwrap();
-				});
-			}}
-		>
+		<div className="flex gap-1 cursor-pointer" onClick={handleCheckboxClick}>
 			<Icon
 				name={showValue ? 'check_box' : 'check_box_outline_blank'}
 				fill={1}

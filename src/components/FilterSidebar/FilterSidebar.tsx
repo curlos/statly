@@ -10,6 +10,7 @@ import AppliedFilterItemList from '../../pages/ticktick-1.00/focus-records/Appli
 import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
 import OtherSectionFocusRecords from './OtherSectionFocusRecords';
+import OtherSectionCompletedTasks from './OtherSectionCompletedTasks';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 	const sidebarVariants = {
@@ -101,11 +102,17 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 			<hr className="border-color-gray-200 my-4" />
 			<DateRangeSection />
 
-			{/* TODO: Bring this back for the Completed Tasks page but re-work this so that the inner components are separated and reusable. */}
 			{page === 'focus-records-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<OtherSectionFocusRecords />
+				</>
+			)}
+
+			{page === 'completed-tasks-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<OtherSectionCompletedTasks />
 				</>
 			)}
 

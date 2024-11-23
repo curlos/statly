@@ -26,6 +26,27 @@ const OtherSectionFocusRecords = () => {
 	const { userSettings } = fetchedUserSettings || {};
 	const [editUserSettings] = useEditUserSettingsMutation();
 
+	const handleCheckboxClick = (showValue, userSettingProperty) => {
+		const newShowValue = !showValue;
+
+		const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
+
+		handleError(async () => {
+			const payload = {
+				tickTickOne: {
+					pages: {
+						focusRecords: {
+							...restOfFocusRecordsKeysAndVals,
+							[userSettingProperty]: newShowValue,
+						},
+					},
+				},
+			};
+
+			await editUserSettings(payload).unwrap();
+		});
+	};
+
 	return (
 		<div>
 			<Accordion
@@ -43,59 +64,41 @@ const OtherSectionFocusRecords = () => {
 			>
 				{!isLoadingGetUserSettings && (
 					<>
-						{/* Checkbox - Show Completed Tasks */}
 						<CheckboxOther
 							{...{
-								userSettings,
-								userSettingProperty: 'showCompletedTasks',
 								name: 'Show Completed Tasks',
 								showValue: showCompletedTasks,
-								handleError,
-								editUserSettings,
-								chosenColorObj,
-								nextLightestColorObj,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(showCompletedTasks, 'showCompletedTasks'),
 							}}
 						/>
 
-						{/* Checkbox - Show Completed Tasks */}
 						<CheckboxOther
 							{...{
-								userSettings,
-								userSettingProperty: 'showFocusNotes',
 								name: 'Show Focus Notes',
 								showValue: showFocusNotes,
-								handleError,
-								editUserSettings,
-								chosenColorObj,
-								nextLightestColorObj,
+								handleCheckboxClick: () => handleCheckboxClick(showFocusNotes, 'showFocusNotes'),
 							}}
 						/>
 
-						{/* Checkbox - Show Total Focus Records Duration */}
 						<CheckboxOther
 							{...{
-								userSettings,
-								userSettingProperty: 'showTotalFocusDuration',
 								name: 'Show Total Focus Records Duration',
 								showValue: showTotalFocusDuration,
-								handleError,
-								editUserSettings,
-								chosenColorObj,
-								nextLightestColorObj,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(showTotalFocusDuration, 'showTotalFocusDuration'),
 							}}
 						/>
 
-						{/* Checkbox - Filter Out Unrelated Tasks When Task ID Is Applied */}
 						<CheckboxOther
 							{...{
-								userSettings,
-								userSettingProperty: 'filterOutUnrelatedTasksWhenTaskIdIsApplied',
 								name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
 								showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
-								handleError,
-								editUserSettings,
-								chosenColorObj,
-								nextLightestColorObj,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(
+										filterOutUnrelatedTasksWhenTaskIdIsApplied,
+										'filterOutUnrelatedTasksWhenTaskIdIsApplied'
+									),
 							}}
 						/>
 
