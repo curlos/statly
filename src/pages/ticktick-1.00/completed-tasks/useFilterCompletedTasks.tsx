@@ -189,6 +189,18 @@ export const useFilterCompletedTasks = ({
 			});
 		}
 
+		// Sort the completedTasksForDay of each day from oldest to newest completed times.
+		newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
+			const completedTasksForDay = dayWithCompletedTasks.completedTasksForDay.toSorted(
+				(a, b) => new Date(a.completedTime) - new Date(b.completedTime)
+			);
+
+			return {
+				...dayWithCompletedTasks,
+				completedTasksForDay,
+			};
+		});
+
 		return newFilteredDaysWithCompletedTasks;
 	};
 };
