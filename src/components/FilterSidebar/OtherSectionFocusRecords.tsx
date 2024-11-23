@@ -1,6 +1,5 @@
 import Icon from '../Icon';
 import useHandleError from '../../hooks/useHandleError';
-import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
@@ -8,7 +7,6 @@ import CheckboxOther from './CheckboxOther';
 import InputMaxFocusRecordsPerPage from './InputMaxFocusRecordsPerPage';
 
 const OtherSectionFocusRecords = () => {
-	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const {
 		focusRecordsPageSettings: {
 			showCompletedTasks,

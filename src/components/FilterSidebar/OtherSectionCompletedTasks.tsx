@@ -1,14 +1,12 @@
 import Icon from '../Icon';
 import useHandleError from '../../hooks/useHandleError';
-import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
 import InputMaxFocusRecordsPerPage from './InputMaxFocusRecordsPerPage';
 
-const OtherSectionCompletedTasks = () => {
-	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
+const OtherSectionFocusRecords = () => {
 	const {
 		focusRecordsPageSettings: {
 			showCompletedTasks,
@@ -25,6 +23,27 @@ const OtherSectionCompletedTasks = () => {
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 	const [editUserSettings] = useEditUserSettingsMutation();
+
+	const handleCheckboxClick = (showValue, userSettingProperty) => {
+		const newShowValue = !showValue;
+
+		const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
+
+		handleError(async () => {
+			const payload = {
+				tickTickOne: {
+					pages: {
+						focusRecords: {
+							...restOfFocusRecordsKeysAndVals,
+							[userSettingProperty]: newShowValue,
+						},
+					},
+				},
+			};
+
+			await editUserSettings(payload).unwrap();
+		});
+	};
 
 	return (
 		<div>
@@ -43,11 +62,51 @@ const OtherSectionCompletedTasks = () => {
 			>
 				{!isLoadingGetUserSettings && (
 					<>
-						{/* Checkbox - Show Completed Tasks */}
+						<CheckboxOther
+							{...{
+								name: 'Show Completed Tasks',
+								showValue: showCompletedTasks,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(showCompletedTasks, 'showCompletedTasks'),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Focus Notes',
+								showValue: showFocusNotes,
+								handleCheckboxClick: () => handleCheckboxClick(showFocusNotes, 'showFocusNotes'),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Total Focus Records Duration',
+								showValue: showTotalFocusDuration,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(showTotalFocusDuration, 'showTotalFocusDuration'),
+							}}
+						/>
+
 						<CheckboxOther
 							{...{
 								name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
-								showValue: showCompletedTasks,
+								showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(
+										filterOutUnrelatedTasksWhenTaskIdIsApplied,
+										'filterOutUnrelatedTasksWhenTaskIdIsApplied'
+									),
+							}}
+						/>
+
+						{/* Input - Max Focus Records Per Page */}
+						<InputMaxFocusRecordsPerPage
+							{...{
+								maxFocusRecordsPerPage,
+								handleError,
+								userSettings,
+								editUserSettings,
 							}}
 						/>
 					</>
@@ -57,4 +116,4 @@ const OtherSectionCompletedTasks = () => {
 	);
 };
 
-export default OtherSectionCompletedTasks;
+export default OtherSectionFocusRecords;
