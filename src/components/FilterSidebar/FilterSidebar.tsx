@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import Icon from '../Icon';
 import DateRangeSection from './DateRangeSection';
-import OtherSection from './OtherSection';
 import ProjectsSection from './ProjectsSection';
 import SearchSection from './SearchSection';
 import SortBySection from './SortBySection';
@@ -10,6 +9,7 @@ import { useSearchParamsCustom } from '../../contexts/useSearchParamsContext';
 import AppliedFilterItemList from '../../pages/ticktick-1.00/focus-records/AppliedFilterItemList';
 import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
+import OtherSectionFocusRecords from './OtherSectionFocusRecords';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 	const sidebarVariants = {
@@ -105,7 +105,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 			{page === 'focus-records-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
-					<OtherSection />
+					<OtherSectionFocusRecords />
 				</>
 			)}
 
