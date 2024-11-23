@@ -35,8 +35,8 @@ export const useFilterCompletedTasks = ({
 	});
 
 	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
-	const { tasksById, allTasksWithParents } = fetchedTasks || {};
+	const { data: fetchedTasks } = useGetAllTasksQuery();
+	const { tasksById, ancestorTasksById } = fetchedTasks || {};
 
 	const fuse = new Fuse(defaultDaysWithCompletedTasks, {
 		includeScore: true,
@@ -112,7 +112,7 @@ export const useFilterCompletedTasks = ({
 		const { completedTasksForDay } = dayWithCompletedTasks;
 
 		return completedTasksForDay.find((task) => {
-			const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(task, taskIdFromUrl, allTasksWithParents);
+			const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById);
 
 			return foundMatchingTaskOrAncestor;
 		});
@@ -175,7 +175,7 @@ export const useFilterCompletedTasks = ({
 					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
 						task,
 						taskIdFromUrl,
-						allTasksWithParents
+						ancestorTasksById
 					);
 
 					return foundMatchingTaskOrAncestor;

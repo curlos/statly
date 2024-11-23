@@ -10,7 +10,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { tasksById, allTasksWithParents } = fetchedTasks || {};
+	const { tasksById, ancestorTasksById } = fetchedTasks || {};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -116,7 +116,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 						<div className="space-y-5">
 							{tasksById &&
-								allTasksWithParents &&
+								ancestorTasksById &&
 								Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
 									const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
 									const parentTask = tasksById && tasksById[parentTaskId];
@@ -124,8 +124,8 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 									const parentTaskBreadcrumbs =
 										parentTask &&
-										allTasksWithParents[parentTask.id] &&
-										Object.keys(allTasksWithParents[parentTask.id]);
+										ancestorTasksById[parentTask.id] &&
+										Object.keys(ancestorTasksById[parentTask.id]);
 
 									return (
 										<Accordion

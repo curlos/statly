@@ -22,14 +22,14 @@ export const getAllTasksAndItemsTickTickOne = (tasks) => {
  * @param {Object} tasksById
  * @returns {Array<String>}
  */
-const getTaskParents = (task, tasksById) => {
-	const parentTasksById = {};
+const getAncestorTasksById = (task, tasksById) => {
+	const ancestorTasksById = {};
 
 	const getParentTask = (task) => {
 		const parentTask = task?.parentId && tasksById[task.parentId];
 
 		if (parentTask) {
-			parentTasksById[parentTask.id] = true;
+			ancestorTasksById[parentTask.id] = true;
 
 			getParentTask(parentTask);
 		}
@@ -37,7 +37,7 @@ const getTaskParents = (task, tasksById) => {
 
 	getParentTask(task);
 
-	return parentTasksById;
+	return ancestorTasksById;
 };
 
 /**
@@ -86,7 +86,7 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 		allCompletedTasks.push(taskWithAllProperties);
 	};
 
-	const allTasksWithParents = {};
+	const ancestorTasksById = {};
 
 	for (let task of tasks) {
 		const { completedTime, items, projectId, tags } = task;
@@ -100,9 +100,9 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 			storeTaskInCompletedDateKey(completedTime, task, projectId, tags);
 		}
 
-		const taskParents = getTaskParents(task, tasksById);
+		const ancestorTasksByIdOfTask = getAncestorTasksById(task, tasksById);
 
-		allTasksWithParents[task.id] = taskParents;
+		ancestorTasksById[task.id] = ancestorTasksByIdOfTask;
 
 		for (let item of items) {
 			const { completedTime } = item;
@@ -118,7 +118,7 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 		completedTasksGroupedByProject,
 		completedTasksGroupedByTag,
 		allCompletedTasks,
-		allTasksWithParents,
+		ancestorTasksById,
 	};
 };
 
@@ -156,7 +156,7 @@ export const getGroupedTodoistCompletedTasks = (tasks) => {
 	};
 };
 
-export const findMatchingTaskOrAncestor = (task, taskIdToMatch, allTasksWithParents) => {
+export const findMatchingTaskOrAncestor = (task, taskIdToMatch, ancestorTasksById) => {
 	const taskIds = [task.id, task.parentId, task.itemParentTaskId];
 
 	// If the task or the task's parent is the ID from the URL.
@@ -167,10 +167,10 @@ export const findMatchingTaskOrAncestor = (task, taskIdToMatch, allTasksWithPare
 	}
 
 	for (let taskId of taskIds) {
-		const ancestorTasksById = allTasksWithParents[taskId];
+		const ancestorTasksByIdForTask = ancestorTasksById[taskId];
 
-		if (ancestorTasksById) {
-			if (ancestorTasksById[taskIdToMatch]) {
+		if (ancestorTasksByIdForTask) {
+			if (ancestorTasksByIdForTask[taskIdToMatch]) {
 				return true;
 			}
 		}
