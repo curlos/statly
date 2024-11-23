@@ -10,11 +10,13 @@ import InputMaxFocusRecordsPerPage from './InputMaxFocusRecordsPerPage';
 const OtherSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const {
-		showCompletedTasks,
-		showFocusNotes,
-		showTotalFocusDuration,
-		maxFocusRecordsPerPage,
-		filterOutUnrelatedTasksWhenTaskIdIsApplied,
+		focusRecordsPageSettings: {
+			showCompletedTasks,
+			showFocusNotes,
+			showTotalFocusDuration,
+			maxFocusRecordsPerPage,
+			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+		},
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();

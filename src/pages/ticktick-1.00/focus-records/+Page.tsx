@@ -30,7 +30,13 @@ const FocusRecordsPage = () => {
 	const projectsFromUrl = searchParams.get('projects');
 	const currentPageFromUrl = searchParams.get('page') || 1;
 
-	const { maxFocusRecordsPerPage } = useUserSettingsContext();
+	const {
+		focusRecordsPageSettings: {
+			maxFocusRecordsPerPage,
+			showTotalFocusDuration,
+			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+		},
+	} = useUserSettingsContext();
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
@@ -106,8 +112,6 @@ const FocusRecordsPage = () => {
 	});
 
 	const getFilterBarHeaderContent = () => {
-		const { showTotalFocusDuration, filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
-
 		const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
 		const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, filterByTaskId);
 

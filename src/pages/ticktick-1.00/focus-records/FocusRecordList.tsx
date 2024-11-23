@@ -13,7 +13,9 @@ const FocusRecordList = ({
 	showFilterSidebar,
 	setShowFilterSidebar,
 }) => {
-	const { maxFocusRecordsPerPage } = useUserSettingsContext();
+	const {
+		focusRecordsPageSettings: { maxFocusRecordsPerPage },
+	} = useUserSettingsContext();
 
 	/**
 	 * @description Sorts the focus records by the selected sorting option and also only shows X amount of focus records per page based on the MAX number that is set.

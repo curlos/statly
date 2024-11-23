@@ -27,10 +27,12 @@ const useUserSettings = () => {
 	} = focusRecordsPageSettings;
 
 	return {
-		showCompletedTasks,
-		showFocusNotes,
-		showTotalFocusDuration,
-		maxFocusRecordsPerPage,
-		filterOutUnrelatedTasksWhenTaskIdIsApplied,
+		focusRecordsPageSettings: {
+			showCompletedTasks,
+			showFocusNotes,
+			showTotalFocusDuration,
+			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+			maxFocusRecordsPerPage,
+		},
 	};
 };

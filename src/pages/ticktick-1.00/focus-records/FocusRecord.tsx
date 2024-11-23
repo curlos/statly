@@ -39,7 +39,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const { chosenColorObj } = themeContext;
 	const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
 
-	const { showCompletedTasks, showFocusNotes } = useUserSettingsContext();
+	const {
+		focusRecordsPageSettings: { showCompletedTasks, showFocusNotes },
+	} = useUserSettingsContext();
 
 	const completedTasksDuringFocusSession = getAllCompletedTasksDuringFocusRecord({
 		completedTasksGroupedByDate,
@@ -140,7 +142,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const taskIdFromUrl = searchParams.get('task-id');
-	const { filterOutUnrelatedTasksWhenTaskIdIsApplied } = useUserSettingsContext();
+	const {
+		focusRecordsPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied },
+	} = useUserSettingsContext();
 
 	const headerWrapperStyling = 'mt-2 md:mt-0 sm:flex justify-between items-center';
 	const headerStyling =
