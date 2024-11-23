@@ -5,9 +5,14 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import Accordion from '../../../components/Accordion/Accordion';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
+
+	const {
+		completedTasksPageSettings: { groupedTasksCollapsedByDefault },
+	} = useUserSettingsContext();
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
@@ -175,7 +180,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 													)}
 												</div>
 											}
-											openByDefault={false}
+											openByDefault={!groupedTasksCollapsedByDefault}
 											showArrowNextToText={true}
 										>
 											<div className="space-y-1">

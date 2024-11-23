@@ -8,7 +8,7 @@ import InputMaxFocusRecordsPerPage from './InputMaxFocusRecordsPerPage';
 
 const OtherSectionFocusRecords = () => {
 	const {
-		completedTasksPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied },
+		completedTasksPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied, groupedTasksCollapsedByDefault },
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
@@ -64,6 +64,18 @@ const OtherSectionFocusRecords = () => {
 									handleCheckboxClick(
 										filterOutUnrelatedTasksWhenTaskIdIsApplied,
 										'filterOutUnrelatedTasksWhenTaskIdIsApplied'
+									),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Grouped Tasks Collapsed By Default',
+								showValue: groupedTasksCollapsedByDefault,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(
+										groupedTasksCollapsedByDefault,
+										'groupedTasksCollapsedByDefault'
 									),
 							}}
 						/>

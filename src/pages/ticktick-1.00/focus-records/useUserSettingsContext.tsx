@@ -30,6 +30,7 @@ const useUserSettings = () => {
 
 	const {
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage = true,
+		groupedTasksCollapsedByDefault = true,
 	} = completedTasksPageSettings;
 
 	return {
@@ -42,6 +43,7 @@ const useUserSettings = () => {
 		},
 		completedTasksPageSettings: {
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage,
+			groupedTasksCollapsedByDefault,
 		},
 	};
 };
