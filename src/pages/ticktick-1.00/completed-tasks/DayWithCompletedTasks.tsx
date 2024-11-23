@@ -4,6 +4,7 @@ import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi'
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import Accordion from '../../../components/Accordion/Accordion';
+import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -91,7 +92,14 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 				<div className={classNames(bgColorHalfOpacity, 'p-2 rounded-lg w-[95%] sm:w-full')}>
 					<Accordion
 						title={
-							<div className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline">
+							<div
+								className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
+								onClick={(e) => {
+									e.stopPropagation();
+									const newDayUrl = getFormattedShortMonthDay(new Date(dateStr));
+									updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
+								}}
+							>
 								<span>{dateStr}</span>
 								<span> ({completedTasksForDay.length})</span>
 							</div>
