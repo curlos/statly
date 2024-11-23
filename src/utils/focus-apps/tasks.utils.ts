@@ -19,24 +19,17 @@ export const getAllTasksAndItemsTickTickOne = (tasks) => {
 /**
  * @description Get all of the parent/ancestor task ids for a task. For example, "Focus Records Page" would have two: "TickTick 1.0 Stats Integration -> TickTick 2.0 (Web)."
  * @param {Object} task
- * @param {Object} allChildrenOfParentTasks
  * @param {Object} tasksById
  * @returns {Array<String>}
  */
-const getTaskParents = (task, allChildrenOfParentTasks, tasksById) => {
-	const parentTaskObjsArr = [];
+const getTaskParents = (task, tasksById) => {
+	const parentTasksById = {};
 
 	const getParentTask = (task) => {
 		const parentTask = task?.parentId && tasksById[task.parentId];
 
 		if (parentTask) {
-			parentTaskObjsArr.push(parentTask.id);
-
-			if (!allChildrenOfParentTasks[parentTask.id]) {
-				allChildrenOfParentTasks[parentTask.id] = {};
-			}
-
-			allChildrenOfParentTasks[parentTask.id][task.id] = true;
+			parentTasksById[parentTask.id] = true;
 
 			getParentTask(parentTask);
 		}
@@ -44,7 +37,7 @@ const getTaskParents = (task, allChildrenOfParentTasks, tasksById) => {
 
 	getParentTask(task);
 
-	return parentTaskObjsArr;
+	return parentTasksById;
 };
 
 /**
@@ -93,7 +86,6 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 		allCompletedTasks.push(taskWithAllProperties);
 	};
 
-	const allChildrenOfParentTasks = {};
 	const allTasksWithParents = {};
 
 	for (let task of tasks) {
@@ -108,7 +100,7 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 			storeTaskInCompletedDateKey(completedTime, task, projectId, tags);
 		}
 
-		const taskParents = getTaskParents(task, allChildrenOfParentTasks, tasksById);
+		const taskParents = getTaskParents(task, tasksById);
 
 		allTasksWithParents[task.id] = taskParents;
 
@@ -126,7 +118,6 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 		completedTasksGroupedByProject,
 		completedTasksGroupedByTag,
 		allCompletedTasks,
-		allChildrenOfParentTasks,
 		allTasksWithParents,
 	};
 };
@@ -165,9 +156,8 @@ export const getGroupedTodoistCompletedTasks = (tasks) => {
 	};
 };
 
-export const findMatchingTaskOrAncestor = (task, taskIdToMatch, allChildrenOfParentTasks, allTasksWithParents) => {
+export const findMatchingTaskOrAncestor = (task, taskIdToMatch, allTasksWithParents) => {
 	const taskIds = [task.id, task.parentId, task.itemParentTaskId];
-	const taskIdToMatchObjChildTaskIds = allChildrenOfParentTasks[taskIdToMatch];
 
 	// If the task or the task's parent is the ID from the URL.
 	for (let taskId of taskIds) {
@@ -176,23 +166,12 @@ export const findMatchingTaskOrAncestor = (task, taskIdToMatch, allChildrenOfPar
 		}
 	}
 
-	// If the task is a direct descendant of the taskId from the url
-	if (taskIdToMatchObjChildTaskIds) {
-		for (let taskId of taskIds) {
-			if (taskIdToMatchObjChildTaskIds[taskId]) {
-				return true;
-			}
-		}
-	}
-
 	for (let taskId of taskIds) {
-		const ancestorTaskIdList = allTasksWithParents[taskId];
+		const ancestorTasksById = allTasksWithParents[taskId];
 
-		if (ancestorTaskIdList) {
-			for (let ancestorTaskId of ancestorTaskIdList) {
-				if (String(ancestorTaskId) === String(taskIdToMatch)) {
-					return true;
-				}
+		if (ancestorTasksById) {
+			if (ancestorTasksById[taskIdToMatch]) {
+				return true;
 			}
 		}
 	}

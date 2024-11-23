@@ -36,7 +36,7 @@ export const useFilterCompletedTasks = ({
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
-	const { tasksById, allChildrenOfParentTasks, allTasksWithParents } = fetchedTasks || {};
+	const { tasksById, allTasksWithParents } = fetchedTasks || {};
 
 	const fuse = new Fuse(defaultDaysWithCompletedTasks, {
 		includeScore: true,
@@ -112,12 +112,7 @@ export const useFilterCompletedTasks = ({
 		const { completedTasksForDay } = dayWithCompletedTasks;
 
 		return completedTasksForDay.find((task) => {
-			const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
-				task,
-				taskIdFromUrl,
-				allChildrenOfParentTasks,
-				allTasksWithParents
-			);
+			const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(task, taskIdFromUrl, allTasksWithParents);
 
 			return foundMatchingTaskOrAncestor;
 		});
@@ -174,13 +169,12 @@ export const useFilterCompletedTasks = ({
 		const filterCompletedTasksThatDoNotMatchTaskIdFromUrl = true;
 
 		// If the "task-id" query param is in the URL, then the remaining daysWithCompletedTasks cards left contain at least one completed task that is present is a descendant of the task id from the URL. So, we must further filter out the "completedTasksForDay" of the specific days so that only the tasks matching those from the URL are shown assuming the user setting is checked to want to do that.
-		if (taskIdFromUrl || filterCompletedTasksThatDoNotMatchTaskIdFromUrl) {
+		if (taskIdFromUrl && filterCompletedTasksThatDoNotMatchTaskIdFromUrl) {
 			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
 					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
 						task,
 						taskIdFromUrl,
-						allChildrenOfParentTasks,
 						allTasksWithParents
 					);
 

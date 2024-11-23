@@ -122,7 +122,10 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 									const parentTask = tasksById && tasksById[parentTaskId];
 									const parentTaskTitle = parentTask?.title || parentTaskId;
 
-									const parentTaskBreadcrumbs = parentTask && allTasksWithParents[parentTask.id];
+									const parentTaskBreadcrumbs =
+										parentTask &&
+										allTasksWithParents[parentTask.id] &&
+										Object.keys(allTasksWithParents[parentTask.id]);
 
 									return (
 										<Accordion

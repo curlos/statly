@@ -35,7 +35,6 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 					completedTasksGroupedByDate,
 					completedTasksGroupedByProject,
 					completedTasksGroupedByTag,
-					allChildrenOfParentTasks,
 					allTasksWithParents,
 				} = getGroupedCompletedTasks(tasks, tasksById);
 
@@ -56,7 +55,6 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 					completedTasksGroupedByProject,
 					completedTasksGroupedByTag,
 					totalCompletedTasks,
-					allChildrenOfParentTasks,
 					allTasksWithParents,
 				};
 			},
