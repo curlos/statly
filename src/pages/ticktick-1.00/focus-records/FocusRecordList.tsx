@@ -3,6 +3,8 @@ import { getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord';
 import { useUserSettingsContext } from './useUserSettingsContext';
+import { useFilterFocusRecords } from './useFilterFocusRecords';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const FocusRecordList = ({
 	filteredFocusRecords,
@@ -12,10 +14,25 @@ const FocusRecordList = ({
 	sortByOptions,
 	showFilterSidebar,
 	setShowFilterSidebar,
+	setFilteredFocusRecords,
+	defaultFocusRecords,
+	setSortByOptions,
+	DEFAULT_SORT_BY_OPTIONS,
 }) => {
+	const { searchParams } = useSearchParamsContext();
 	const {
 		focusRecordsPageSettings: { maxFocusRecordsPerPage },
 	} = useUserSettingsContext();
+
+	const taskIdFromUrl = searchParams.get('task-id');
+
+	useFilterFocusRecords({
+		taskIdToFilterBy: taskIdFromUrl,
+		setFilteredFocusRecords,
+		defaultFocusRecords,
+		setSortByOptions,
+		DEFAULT_SORT_BY_OPTIONS,
+	});
 
 	/**
 	 * @description Sorts the focus records by the selected sorting option and also only shows X amount of focus records per page based on the MAX number that is set.
@@ -61,47 +78,39 @@ const FocusRecordList = ({
 
 	const shownFocusRecords = getShownFocusRecords();
 
+	// console.log(filteredFocusRecords);
+
 	return (
 		<div>
-			{isLoadingGetFocusRecords || !filteredFocusRecords ? (
-				<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
-					<div>
-						<img src="https://i.imgur.com/tFa0En4.png" className="h-[175px] animate-pulse" />
-					</div>
-				</div>
-			) : (
-				<>
-					<div>
-						{filteredFocusRecords.length === 0 ? (
-							<div>No Focus Records</div>
-						) : (
-							<div className="space-y-3">
-								{shownFocusRecords.map((focusRecord, index) => {
-									const isLastItem = index === shownFocusRecords.length - 1;
+			<div>
+				{filteredFocusRecords.length === 0 ? (
+					<div>No Focus Records</div>
+				) : (
+					<div className="space-y-3">
+						{shownFocusRecords.map((focusRecord, index) => {
+							const isLastItem = index === shownFocusRecords.length - 1;
 
-									const focusRecordKey = getFocusRecordProperty(focusRecord, 'key');
+							const focusRecordKey = getFocusRecordProperty(focusRecord, 'key');
 
-									return (
-										<FocusRecord
-											key={focusRecordKey}
-											focusRecord={focusRecord}
-											isLastItemForTheDay={isLastItem}
-										/>
-									);
-								})}
-							</div>
-						)}
+							return (
+								<FocusRecord
+									key={focusRecordKey}
+									focusRecord={focusRecord}
+									isLastItemForTheDay={isLastItem}
+								/>
+							);
+						})}
 					</div>
-					<ModalFilterSidebar
-						{...{
-							isOpen: showFilterSidebar,
-							setIsOpen: setShowFilterSidebar,
-							sortByOptions,
-							page: 'focus-records-page',
-						}}
-					/>
-				</>
-			)}
+				)}
+			</div>
+			<ModalFilterSidebar
+				{...{
+					isOpen: showFilterSidebar,
+					setIsOpen: setShowFilterSidebar,
+					sortByOptions,
+					page: 'focus-records-page',
+				}}
+			/>
 		</div>
 	);
 };

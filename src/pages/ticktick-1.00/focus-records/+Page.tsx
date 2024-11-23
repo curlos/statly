@@ -12,7 +12,6 @@ import {
 	useGetSessionAppFocusRecordsQuery,
 	useGetTideAppFocusRecordsQuery,
 } from '../../../services/resources/oldFocusAppsApi';
-import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 
@@ -103,14 +102,6 @@ const FocusRecordsPage = () => {
 		setTotalPages(newTotalPages);
 	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
 
-	useFilterFocusRecords({
-		taskIdToFilterBy: taskIdFromUrl,
-		setFilteredFocusRecords,
-		defaultFocusRecords,
-		setSortByOptions,
-		DEFAULT_SORT_BY_OPTIONS,
-	});
-
 	const getFilterBarHeaderContent = () => {
 		const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
 		const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, filterByTaskId);
@@ -141,19 +132,34 @@ const FocusRecordsPage = () => {
 				<div className="w-full flex flex-col">
 					<div className="flex-1 flex justify-center bg-color-gray-700">
 						<div className="container p-1">
-							<FocusRecordList
-								{...{
-									filteredFocusRecords,
-									isLoadingGetFocusRecords:
-										isLoadingGetFocusRecords || isLoadingGetSessionFocusRecords,
-									sortBy,
-									currentPage: currentPageFromUrl,
-									sortByOptions,
-									showFilterSidebar,
-									setShowFilterSidebar,
-									focusRecordListRef,
-								}}
-							/>
+							{isLoadingGetFocusRecords ? (
+								<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
+									<div>
+										<img
+											src="https://i.imgur.com/tFa0En4.png"
+											className="h-[175px] animate-pulse"
+										/>
+									</div>
+								</div>
+							) : (
+								<FocusRecordList
+									{...{
+										filteredFocusRecords,
+										isLoadingGetFocusRecords:
+											isLoadingGetFocusRecords || isLoadingGetSessionFocusRecords,
+										sortBy,
+										currentPage: currentPageFromUrl,
+										sortByOptions,
+										showFilterSidebar,
+										setShowFilterSidebar,
+										focusRecordListRef,
+										setFilteredFocusRecords,
+										defaultFocusRecords,
+										setSortByOptions,
+										DEFAULT_SORT_BY_OPTIONS,
+									}}
+								/>
+							)}
 						</div>
 					</div>
 
