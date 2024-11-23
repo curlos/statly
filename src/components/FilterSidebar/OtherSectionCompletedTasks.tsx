@@ -4,11 +4,15 @@ import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../serv
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
-import InputMaxFocusRecordsPerPage from './InputMaxFocusRecordsPerPage';
+import InputNumUserSettings from './InputNumUserSettings';
 
 const OtherSectionFocusRecords = () => {
 	const {
-		completedTasksPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied, groupedTasksCollapsedByDefault },
+		completedTasksPageSettings: {
+			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+			groupedTasksCollapsedByDefault,
+			maxDaysPerPage,
+		},
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
@@ -81,14 +85,18 @@ const OtherSectionFocusRecords = () => {
 						/>
 
 						{/* Input - Max Focus Records Per Page */}
-						{/* <InputMaxFocusRecordsPerPage
+						<InputNumUserSettings
 							{...{
-								maxFocusRecordsPerPage,
+								defaultValue: maxDaysPerPage,
 								handleError,
 								userSettings,
 								editUserSettings,
+								minNum: 7,
+								maxNum: 14,
+								name: 'Max Days Per Page',
+								page: 'completed-tasks-page',
 							}}
-						/> */}
+						/>
 					</>
 				)}
 			</Accordion>

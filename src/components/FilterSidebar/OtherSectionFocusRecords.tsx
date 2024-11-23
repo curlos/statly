@@ -4,7 +4,7 @@ import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../serv
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
-import InputMaxFocusRecordsPerPage from './InputMaxFocusRecordsPerPage';
+import InputNumUserSettings from './InputNumUserSettings';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -101,12 +101,16 @@ const OtherSectionFocusRecords = () => {
 						/>
 
 						{/* Input - Max Focus Records Per Page */}
-						<InputMaxFocusRecordsPerPage
+						<InputNumUserSettings
 							{...{
-								maxFocusRecordsPerPage,
+								defaultValue: maxFocusRecordsPerPage,
 								handleError,
 								userSettings,
 								editUserSettings,
+								minNum: 5,
+								maxNum: 100,
+								name: 'Max Focus Records Per Page',
+								page: 'focus-records-page',
 							}}
 						/>
 					</>

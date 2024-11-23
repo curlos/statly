@@ -31,6 +31,7 @@ const useUserSettings = () => {
 	const {
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage = true,
 		groupedTasksCollapsedByDefault = true,
+		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
 	return {
@@ -44,6 +45,7 @@ const useUserSettings = () => {
 		completedTasksPageSettings: {
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage,
 			groupedTasksCollapsedByDefault,
+			maxDaysPerPage,
 		},
 	};
 };

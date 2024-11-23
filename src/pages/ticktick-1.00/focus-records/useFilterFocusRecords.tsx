@@ -12,7 +12,7 @@ export const useFilterFocusRecords = ({
 	setSortByOptions,
 	DEFAULT_SORT_BY_OPTIONS,
 }) => {
-	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const { searchParams } = useSearchParamsContext();
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());

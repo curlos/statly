@@ -1,4 +1,5 @@
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import DayWithCompletedTasks from './DayWithCompletedTasks';
 
 const CompletedTaskList = ({
@@ -10,9 +11,9 @@ const CompletedTaskList = ({
 	showFilterSidebar,
 	setShowFilterSidebar,
 }) => {
-	// TODO: Add a "maxDaysPerPage" property in the user settings for the Completed Tasks page.
-	// const { maxFocusRecordsPerPage } = useUserSettingsContext();
-	const maxDaysPerPage = 10;
+	const {
+		completedTasksPageSettings: { maxDaysPerPage },
+	} = useUserSettingsContext();
 
 	/**
 	 * @description Sorts the focus records by the selected sorting option and also only shows X amount of focus records per page based on the MAX number that is set.

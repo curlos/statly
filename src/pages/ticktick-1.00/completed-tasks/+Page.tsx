@@ -7,6 +7,7 @@ import Pagination from '../../../components/Pagination';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import CompletedTaskList from './CompletedTaskList';
 import { useFilterCompletedTasks } from './useFilterCompletedTasks';
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 
 const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
 	return Object.keys(completedTasksGroupedByDate).map((dateStr) => {
@@ -26,8 +27,9 @@ const Page = () => {
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
-
-	const maxDaysPerPage = 10;
+	const {
+		completedTasksPageSettings: { maxDaysPerPage },
+	} = useUserSettingsContext();
 
 	// Query Params
 	const searchTextFromUrl = searchParams.get('search') || '';
@@ -38,7 +40,7 @@ const Page = () => {
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { completedTasksGroupedByDate, totalCompletedTasks } = fetchedTasks || {};
+	const { completedTasksGroupedByDate } = fetchedTasks || {};
 
 	// RTK Query - Todoist - All Completed Tasks
 	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllCompletedTasksQuery();

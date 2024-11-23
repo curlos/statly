@@ -8,7 +8,6 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 
 const FocusRecordList = ({
 	filteredFocusRecords,
-	isLoadingGetFocusRecords,
 	sortBy,
 	currentPage,
 	sortByOptions,
