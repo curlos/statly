@@ -120,7 +120,12 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 								>
 									<div className="space-y-1">
 										{parentTasks.map((task) => (
-											<CompletedTask key={dateStr + task.id} title={task.title} />
+											<CompletedTask
+												key={dateStr + task.id}
+												task={task}
+												isFullTask={true}
+												updateTaskIdQueryParam={updateTaskIdQueryParam}
+											/>
 										))}
 									</div>
 								</Accordion>
@@ -185,7 +190,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 										>
 											<div className="space-y-1">
 												{completedSubtasks.map((task) => (
-													<CompletedTask key={dateStr + task.id} title={task.title} />
+													<CompletedTask key={dateStr + task.id} task={task} />
 												))}
 											</div>
 										</Accordion>
@@ -199,10 +204,21 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	);
 };
 
-const CompletedTask = ({ title }) => (
+const CompletedTask = ({ task, isFullTask, updateTaskIdQueryParam }) => (
 	<div className="flex items-start gap-1">
 		<Icon name="check_box" customClass={classNames('!text-[20px] text-white')} />
-		<div className="mt-[-2px]">{title}</div>
+		<div
+			className={classNames('mt-[-2px]', isFullTask && 'hover:underline cursor-pointer')}
+			onClick={() => {
+				if (!isFullTask) {
+					return;
+				}
+
+				updateTaskIdQueryParam(task.id);
+			}}
+		>
+			{task.title}
+		</div>
 	</div>
 );
 
