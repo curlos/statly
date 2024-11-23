@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
+import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
 
 export const useFilterCompletedTasks = ({
 	setFilteredDaysWithCompletedTasks,
@@ -35,7 +36,7 @@ export const useFilterCompletedTasks = ({
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
-	const { tasksById } = fetchedTasks || {};
+	const { tasksById, allChildrenOfParentTasks, allTasksWithParents } = fetchedTasks || {};
 
 	const fuse = new Fuse(defaultDaysWithCompletedTasks, {
 		includeScore: true,
@@ -110,10 +111,15 @@ export const useFilterCompletedTasks = ({
 
 		const { completedTasksForDay } = dayWithCompletedTasks;
 
-		console.log(completedTasksForDay);
-
 		return completedTasksForDay.find((task) => {
-			String(task.id) === String(taskIdFromUrl);
+			const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+				task,
+				taskIdFromUrl,
+				allChildrenOfParentTasks,
+				allTasksWithParents
+			);
+
+			return foundMatchingTaskOrAncestor;
 		});
 	};
 
@@ -159,11 +165,35 @@ export const useFilterCompletedTasks = ({
 
 		const searchedItemsDaysWithCompletedTasks = searchedItems.map((result) => result.item);
 
-		const newFilteredFocusRecords = searchedItemsDaysWithCompletedTasks.filter(
-			(dayWithCompletedTasks) => containsTaskId(dayWithCompletedTasks) && isInDateRange(dayWithCompletedTasks)
+		let newFilteredDaysWithCompletedTasks = searchedItemsDaysWithCompletedTasks.filter(
+			(dayWithCompletedTasks) => isInDateRange(dayWithCompletedTasks) && containsTaskId(dayWithCompletedTasks)
 			// focusRecordContainsFocusApp(completedTasksByDate)
 		);
 
-		return newFilteredFocusRecords;
+		// TODO: Turn this into a user setting later
+		const filterCompletedTasksThatDoNotMatchTaskIdFromUrl = true;
+
+		// If the "task-id" query param is in the URL, then the remaining daysWithCompletedTasks cards left contain at least one completed task that is present is a descendant of the task id from the URL. So, we must further filter out the "completedTasksForDay" of the specific days so that only the tasks matching those from the URL are shown assuming the user setting is checked to want to do that.
+		if (taskIdFromUrl || filterCompletedTasksThatDoNotMatchTaskIdFromUrl) {
+			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
+				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
+					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+						task,
+						taskIdFromUrl,
+						allChildrenOfParentTasks,
+						allTasksWithParents
+					);
+
+					return foundMatchingTaskOrAncestor;
+				});
+
+				return {
+					...dayWithCompletedTasks,
+					completedTasksForDay: filteredCompletedTasksForDay,
+				};
+			});
+		}
+
+		return newFilteredDaysWithCompletedTasks;
 	};
 };

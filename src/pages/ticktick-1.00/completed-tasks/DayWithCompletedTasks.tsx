@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { useGetTodoistAllCompletedTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import Accordion from '../../../components/Accordion/Accordion';
 
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
@@ -11,7 +10,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { tasksById } = fetchedTasks || {};
+	const { tasksById, allTasksWithParents } = fetchedTasks || {};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -49,23 +48,6 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	};
 
 	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks();
-
-	const getTaskBreadcrumbs = (task) => {
-		const parentTaskObjsArr = [];
-
-		const getParentTask = (task) => {
-			const parentTask = task?.parentId && tasksById[task.parentId];
-
-			if (parentTask) {
-				parentTaskObjsArr.push(parentTask);
-				getParentTask(parentTask);
-			}
-		};
-
-		getParentTask(task);
-
-		return parentTaskObjsArr;
-	};
 
 	const updateTaskIdQueryParam = (taskId) => {
 		updateQueryParams({
@@ -133,59 +115,66 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						</div>
 
 						<div className="space-y-5">
-							{Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
-								const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
-								const parentTask = tasksById && tasksById[parentTaskId];
-								const parentTaskTitle = parentTask?.title || parentTaskId;
+							{tasksById &&
+								allTasksWithParents &&
+								Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
+									const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
+									const parentTask = tasksById && tasksById[parentTaskId];
+									const parentTaskTitle = parentTask?.title || parentTaskId;
 
-								const parentTaskBreadcrumbs = getTaskBreadcrumbs(parentTask);
+									const parentTaskBreadcrumbs = parentTask && allTasksWithParents[parentTask.id];
 
-								return (
-									<Accordion
-										key={dateStr + parentTaskId}
-										title={
-											<div className="text-[18px]">
-												<span
-													className="underline font-bold hover:text-blue-500"
-													onClick={() => {
-														updateTaskIdQueryParam(parentTaskId);
-													}}
-												>
-													{parentTaskTitle}
-												</span>
-												{parentTaskBreadcrumbs?.length > 0 && (
-													<span className="ml-1 text-color-gray-25">
-														-{' '}
-														{parentTaskBreadcrumbs.map((taskObj, index) => (
-															<span key={`breadcrumbs-${dateStr}-${taskObj.id}`}>
-																<span
-																	className="hover:text-blue-500 hover:underline"
-																	onClick={() => {
-																		updateTaskIdQueryParam(taskObj.id);
-																	}}
-																>
-																	{taskObj.title}
-																</span>
-																{index !== parentTaskBreadcrumbs.length - 1 && (
-																	<span>{' > '}</span>
-																)}
-															</span>
-														))}
+									return (
+										<Accordion
+											key={dateStr + parentTaskId}
+											title={
+												<div className="text-[18px]">
+													<span
+														className="underline font-bold hover:text-blue-500"
+														onClick={() => {
+															updateTaskIdQueryParam(parentTaskId);
+														}}
+													>
+														{parentTaskTitle}
 													</span>
-												)}
+
+													{parentTaskBreadcrumbs?.length > 0 && (
+														<span className="ml-1 text-color-gray-25">
+															-{' '}
+															{parentTaskBreadcrumbs.map((taskId, index) => {
+																const taskObj = tasksById[taskId];
+
+																return (
+																	<span key={`breadcrumbs-${dateStr}-${taskObj.id}`}>
+																		<span
+																			className="hover:text-blue-500 hover:underline"
+																			onClick={() => {
+																				updateTaskIdQueryParam(taskObj.id);
+																			}}
+																		>
+																			{taskObj.title}
+																		</span>
+																		{index !== parentTaskBreadcrumbs.length - 1 && (
+																			<span>{' > '}</span>
+																		)}
+																	</span>
+																);
+															})}
+														</span>
+													)}
+												</div>
+											}
+											openByDefault={false}
+											showArrowNextToText={true}
+										>
+											<div className="space-y-1">
+												{completedSubtasks.map((task) => (
+													<CompletedTask key={dateStr + task.id} title={task.title} />
+												))}
 											</div>
-										}
-										openByDefault={false}
-										showArrowNextToText={true}
-									>
-										<div className="space-y-1">
-											{completedSubtasks.map((task) => (
-												<CompletedTask key={dateStr + task.id} title={task.title} />
-											))}
-										</div>
-									</Accordion>
-								);
-							})}
+										</Accordion>
+									);
+								})}
 						</div>
 					</Accordion>
 				</div>
