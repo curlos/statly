@@ -103,7 +103,9 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 			},
 			transformResponse: (response) => {
 				const todoistAllProjects = response;
-				return { todoistAllProjects };
+				const todoistAllProjectsById = arrayToObjectByKey(response, 'id');
+
+				return { todoistAllProjects, todoistAllProjectsById };
 			},
 		}),
 	}),

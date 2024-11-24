@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import Icon from '../Icon';
 import DateRangeSection from './DateRangeSection';
-import ProjectsSection from './ProjectsSection';
 import SearchSection from './SearchSection';
 import SortBySection from './SortBySection';
 import classNames from 'classnames';
@@ -12,6 +11,8 @@ import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
 import OtherSectionFocusRecords from './OtherSectionFocusRecords';
 import OtherSectionCompletedTasks from './OtherSectionCompletedTasks';
 import ShowDaysFromToDoListAppSection from './ShowDaysFromToDoListAppSection';
+import ProjectsTickTickSection from './ProjectsTickTickSection';
+import ProjectsTodoistSection from './ProjectsTodoistSection';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 	const sidebarVariants = {
@@ -28,7 +29,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 			allPossibleFilterStrings.push('categories', 'focus-apps');
 			break;
 		case 'completed-tasks-page':
-			allPossibleFilterStrings.push('to-do-list-apps');
+			allPossibleFilterStrings.push('to-do-list-apps', 'projects-todoist');
 			break;
 	}
 
@@ -134,12 +135,12 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 			)}
 
 			<hr className="border-color-gray-200 my-4" />
-			<ProjectsSection />
+			<ProjectsTickTickSection />
 
 			{/* {page === 'completed-tasks-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
-					<ProjectsSection />
+					<ProjectsTodoistSection />
 				</>
 			)} */}
 

@@ -7,24 +7,39 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { useEffect, useState } from 'react';
 import {
 	useGetSessionAppFocusRecordsQuery,
+	useGetTodoistAllProjectsQuery,
 	useGetTodoistAllTasksQuery,
 } from '../../../services/resources/oldFocusAppsApi';
 import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../../utils/constants.utils';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
+
+	// For All
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
-	const projectsFromUrl = searchParams.get('projects') || '';
-	const categoriesFromUrl = searchParams.get('categories') || '';
-	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
-	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
 	const taskIdToFilterBy = searchParams.get('task-id');
+	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+
+	// TickTick
+	const projectsFromUrl = searchParams.get('projects') || '';
+
+	// Todoist
+	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
+
+	// Session (Focus Records Page)
+	const categoriesFromUrl = searchParams.get('categories') || '';
+
+	// TickTick & Todoist (Completed Tasks Page)
+	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
 
 	const [projectNamesStr, setProjectNamesStr] = useState(
 		projectsFromUrl ? getStrInBulletPointsMD(projectsFromUrl.split(',')) : ''
+	);
+	const [projectTodoistNamesStr, setProjectTodoistNamesStr] = useState(
+		projectsFromUrl ? getStrInBulletPointsMD(projectsTodoistFromUrl.split(',')) : ''
 	);
 	const [categoryNamesStr, setCategoryNamesStr] = useState(
 		categoriesFromUrl ? getStrInBulletPointsMD(categoriesFromUrl.split(',')) : ''
@@ -40,13 +55,17 @@ const AppliedFilterItemList = () => {
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById } = fetchedTasks || {};
 
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
-	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
-
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
+
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistAllTasks } = useGetTodoistAllTasksQuery();
+	const { todoistAllTasksById } = fetchedTodoistAllTasks || {};
+
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
+	const { todoistAllProjectsById } = fetchedTodoistAllProjects || {};
 
 	// RTK Query - Session App - Focus Records
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
@@ -58,15 +77,17 @@ const AppliedFilterItemList = () => {
 			return;
 		}
 
-		const newProjectNamesStr = getProjectNamesStr();
-		const newCategoryNamesStr = getCategoryNamesStr();
-		const newFocusAppNamesStr = getFocusAppNamesStr();
-		const newToDoListAppNamesStr = getToDoListAppNamesStr();
+		const newProjectNamesStr = getUrlNamesStr(projectsFromUrl, projectsById, 'name');
+		const newCategoryNamesStr = getUrlNamesStr(categoriesFromUrl, sessionCategoriesById, 'title');
+		const newFocusAppNamesStr = getUrlNamesStr(focusAppsFromUrl, FOCUS_APPS, 'name');
+		const newToDoListAppNamesStr = getUrlNamesStr(toDoListAppsFromUrl, TO_DO_LIST_APPS, 'name');
+		const newProjectTodoistNamesStr = getUrlNamesStr(projectsTodoistFromUrl, todoistAllProjectsById, 'name');
 
 		setProjectNamesStr(newProjectNamesStr);
 		setCategoryNamesStr(newCategoryNamesStr);
 		setFocusAppNamesStr(newFocusAppNamesStr);
 		setToDoListAppNamesStr(newToDoListAppNamesStr);
+		setProjectTodoistNamesStr(newProjectTodoistNamesStr);
 	}, [
 		isLoadingGetProjects,
 		projectsFromUrl,
@@ -74,54 +95,19 @@ const AppliedFilterItemList = () => {
 		categoriesFromUrl,
 		focusAppsFromUrl,
 		toDoListAppsFromUrl,
+		projectsTodoistFromUrl,
 	]);
 
-	const getProjectNamesStr = () => {
-		const projectIdsFromUrlArr = projectsFromUrl ? projectsFromUrl.split(',') : [];
-		const projectNamesArr = [];
+	const getUrlNamesStr = (commaSeparatedStr, obj, entityPropToGetValue) => {
+		const commaSeparatedArr = commaSeparatedStr ? commaSeparatedStr.split(',') : [];
+		const namesArr = [];
 
-		projectIdsFromUrlArr.forEach((projectId) => {
-			const { name } = projectsById[projectId];
-			projectNamesArr.push(name);
+		commaSeparatedArr.forEach((key) => {
+			const name = obj[key][entityPropToGetValue];
+			namesArr.push(name);
 		});
 
-		return projectNamesArr.join(', ');
-	};
-
-	const getCategoryNamesStr = () => {
-		const categoryIdsFromUrlArr = categoriesFromUrl ? categoriesFromUrl.split(',') : [];
-		const categoryNamesArr = [];
-
-		categoryIdsFromUrlArr.forEach((categoryId) => {
-			const { title } = sessionCategoriesById[categoryId];
-			categoryNamesArr.push(title);
-		});
-
-		return categoryNamesArr.join(', ');
-	};
-
-	const getFocusAppNamesStr = () => {
-		const focusAppsFromUrlArr = focusAppsFromUrl ? focusAppsFromUrl.split(',') : [];
-		const focusAppsNamesArr = [];
-
-		focusAppsFromUrlArr.forEach((id) => {
-			const { name } = FOCUS_APPS[id];
-			focusAppsNamesArr.push(name);
-		});
-
-		return focusAppsNamesArr.join(', ');
-	};
-
-	const getToDoListAppNamesStr = () => {
-		const toDoListAppsFromUrlArr = toDoListAppsFromUrl ? toDoListAppsFromUrl.split(',') : [];
-		const toDoListAppsNamesArr = [];
-
-		toDoListAppsFromUrlArr.forEach((id) => {
-			const { name } = TO_DO_LIST_APPS[id];
-			toDoListAppsNamesArr.push(name);
-		});
-
-		return toDoListAppsNamesArr.join(', ');
+		return namesArr.join(', ');
 	};
 
 	const sortByFilter = {
@@ -164,11 +150,19 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
-	const projectsFilter = {
+	const projectsTickTickFilter = {
 		name: 'Projects (TickTick)',
 		value: projectNamesStr,
 		handleRemove: () => {
 			updateQueryParams({ projects: '', page: '' });
+		},
+	};
+
+	const projectsTodoistFilter = {
+		name: 'Projects (Todoist)',
+		value: projectTodoistNamesStr,
+		handleRemove: () => {
+			updateQueryParams({ 'projects-todoist': '', page: '' });
 		},
 	};
 
@@ -201,10 +195,11 @@ const AppliedFilterItemList = () => {
 		dateRangeFilter,
 		sortByFilter,
 		searchTextFilter,
-		projectsFilter,
+		projectsTickTickFilter,
 		categoriesFilter,
 		focusAppFilter,
 		toDoListAppFilter,
+		projectsTodoistFilter,
 	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 

@@ -11,7 +11,7 @@ import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
  */
-const ProjectsSection = () => {
+const ProjectsTickTickSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -231,4 +231,4 @@ const ProjectGroupWithProjects = ({
 	);
 };
 
-export default ProjectsSection;
+export default ProjectsTickTickSection;
