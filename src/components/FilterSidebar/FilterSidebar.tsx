@@ -28,7 +28,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 			allPossibleFilterStrings.push('categories', 'focus-apps');
 			break;
 		case 'completed-tasks-page':
-			allPossibleFilterStrings.push('todolist-apps');
+			allPossibleFilterStrings.push('to-do-list-apps');
 			break;
 	}
 
@@ -135,6 +135,13 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 
 			<hr className="border-color-gray-200 my-4" />
 			<ProjectsSection />
+
+			{/* {page === 'completed-tasks-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<ProjectsSection />
+				</>
+			)} */}
 
 			{page === 'focus-records-page' && (
 				<>
