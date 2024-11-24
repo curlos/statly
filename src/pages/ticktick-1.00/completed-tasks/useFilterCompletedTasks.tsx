@@ -198,8 +198,6 @@ export const useFilterCompletedTasks = ({
 			};
 		});
 
-		console.log(newFilteredDaysWithCompletedTasks);
-
 		return newFilteredDaysWithCompletedTasks;
 	};
 };

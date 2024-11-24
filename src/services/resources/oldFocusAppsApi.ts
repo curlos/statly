@@ -100,6 +100,18 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 				return { todoistAllTasksById };
 			},
 		}),
+		getTodoistAllProjects: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString
+					? `/old-focus-apps/todoist-all-projects?${queryString}`
+					: '/old-focus-apps/todoist-all-projects';
+			},
+			transformResponse: (response) => {
+				const todoistAllProjects = response;
+				return { todoistAllProjects };
+			},
+		}),
 	}),
 });
 
@@ -110,4 +122,5 @@ export const {
 	useGetTideAppFocusRecordsQuery,
 	useGetTodoistAllCompletedTasksQuery,
 	useGetTodoistAllTasksByIdQuery,
+	useGetTodoistAllProjectsQuery,
 } = oldFocusAppsApi;

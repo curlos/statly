@@ -6,6 +6,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import Accordion from '../../../components/Accordion/Accordion';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import { useGetTodoistAllTasksByIdQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -17,6 +18,10 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
+
+	// RTK Query - Todoist - All Tasks By Id
+	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksByIdQuery();
+	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -30,14 +35,16 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		const parentTasksObj = {};
 
 		completedTasksForDay.forEach((task) => {
-			const { itemParentTaskId } = task;
+			const { itemParentTaskId, parent_id } = task;
 
-			if (itemParentTaskId) {
-				if (!groupedSubtasksByParentTask[itemParentTaskId]) {
-					groupedSubtasksByParentTask[itemParentTaskId] = [];
+			const parentId = itemParentTaskId || parent_id;
+
+			if (parentId) {
+				if (!groupedSubtasksByParentTask[parentId]) {
+					groupedSubtasksByParentTask[parentId] = [];
 				}
 
-				groupedSubtasksByParentTask[itemParentTaskId].push(task);
+				groupedSubtasksByParentTask[parentId].push(task);
 			} else {
 				// Sometimes it's possible for a parent task to appear more than once (not entirely sure how though) so need to check if it's already been pushed to the array first.
 				if (!parentTasksObj[task.id]) {
@@ -66,6 +73,8 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 			page: '',
 		});
 	};
+
+	console.log(parentTasks);
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
@@ -137,8 +146,13 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 								ancestorTasksById &&
 								Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
 									const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
-									const parentTask = tasksById && tasksById[parentTaskId];
-									const parentTaskTitle = parentTask?.title || parentTaskId;
+									const parentTask =
+										(tasksById && tasksById[parentTaskId]) ||
+										(todoistAllTasksById && todoistAllTasksById[parentTaskId]);
+									const parentTaskTitle =
+										parentTask?.title || parentTask?.item?.content || parentTaskId;
+
+									console.log(parentTask);
 
 									const parentTaskBreadcrumbs =
 										parentTask &&
@@ -220,7 +234,7 @@ const CompletedTask = ({ task, isFullTask, updateTaskIdQueryParam }) => (
 				updateTaskIdQueryParam(task.id);
 			}}
 		>
-			{task.title}
+			{task.title || task.content}
 		</div>
 	</div>
 );
