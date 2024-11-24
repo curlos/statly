@@ -65,6 +65,9 @@ export const useFilterCompletedTasks = ({
 		keys: [
 			// TickTick
 			{ name: 'completedTasksForDay.title', weight: 1 },
+
+			// Todoist
+			{ name: 'completedTasksForDay.content', weight: 1 },
 		],
 	});
 

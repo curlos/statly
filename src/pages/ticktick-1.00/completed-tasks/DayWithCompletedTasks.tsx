@@ -37,7 +37,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		completedTasksForDay.forEach((task) => {
 			const { itemParentTaskId, parent_id } = task;
 
-			const parentId = itemParentTaskId || parent_id;
+			const parentId = itemParentTaskId || parent_id || task.parentId;
 
 			if (parentId) {
 				if (!groupedSubtasksByParentTask[parentId]) {
@@ -54,21 +54,118 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 			}
 		});
 
-		// console.log(groupedSubtasksByParentTask);
+		// New Grouping Logic
 
-		// Object.keys(groupedSubtasksByParentTask).forEach((taskId) => {
-		// 	const task = todoistAllTasksById[taskId];
+		const tasksWithParentId = {};
 
-		// 	console.log(parentTask);
+		completedTasksForDay.forEach((task) => {
+			const groupTask = task.itemParentTaskId
+				? tasksById[task.itemParentTaskId]
+				: tasksById[task.id] || todoistAllTasksById[task.id];
+
+			console.log(groupTask);
+			console.log(task);
+			console.log(tasksById);
+
+			const groupTaskBreadcrumbsTickTick =
+				groupTask && ancestorTasksById[groupTask.id] && Object.keys(ancestorTasksById[groupTask.id]);
+
+			const groupTaskBreadcrumbsTodoist =
+				groupTask &&
+				todoistAncestorTasksById[groupTask.id] &&
+				Object.keys(todoistAncestorTasksById[groupTask.id]);
+
+			let groupTaskBreadcrumbs = groupTaskBreadcrumbsTickTick || groupTaskBreadcrumbsTodoist;
+
+			console.log(groupTaskBreadcrumbsTickTick);
+
+			if (groupTaskBreadcrumbs) {
+				groupTaskBreadcrumbs = task.itemParentTaskId
+					? [task.itemParentTaskId, ...groupTaskBreadcrumbs]
+					: groupTaskBreadcrumbs;
+
+				groupTaskBreadcrumbs.forEach((taskId) => {
+					const task = tasksById[taskId] || todoistAllTasksById[taskId];
+					const taskParent = task.parentId || task['parent_id'] || task.itemParentTaskId;
+
+					if (taskParent) {
+						tasksWithParentId[task.id] = taskParent;
+					} else {
+						tasksWithParentId[task.id] = null;
+					}
+				});
+			} else {
+				const taskParent = task.parentId || task['parent_id'] || task.itemParentTaskId;
+
+				if (taskParent) {
+					tasksWithParentId[task.id] = taskParent;
+				} else {
+					tasksWithParentId[task.id] = null;
+				}
+			}
+		});
+
+		const tasksWithNoParent = Object.keys(tasksWithParentId).filter((currentTaskId) => {
+			return !tasksWithParentId[currentTaskId];
+		});
+
+		console.log(tasksWithParentId);
+		console.log(tasksWithNoParent);
+
+		// const tasksWithNoParent = [];
+		// const tasksWithParent = [];
+
+		// const finalGroupedTasks = {};
+
+		// Object.keys(groupedSubtasksByParentTask).forEach((groupTaskId) => {
+		// 	const groupTask = todoistAllTasksById[groupTaskId];
+
+		// 	// console.log(groupTask);
+
+		// 	const groupTaskBreadcrumbsTickTick =
+		// 		groupTask && ancestorTasksById[groupTask.id] && Object.keys(ancestorTasksById[groupTask.id]);
+
+		// 	const groupTaskBreadcrumbsTodoist =
+		// 		groupTask &&
+		// 		todoistAncestorTasksById[groupTask.id] &&
+		// 		Object.keys(todoistAncestorTasksById[groupTask.id]);
+
+		// 	let groupTaskBreadcrumbs = groupTaskBreadcrumbsTickTick || groupTaskBreadcrumbsTodoist;
+
+		// 	console.log(groupTaskBreadcrumbs);
+
+		// 	if (groupTaskBreadcrumbs) {
+		// 		groupTaskBreadcrumbs = [groupTask.id, ...groupTaskBreadcrumbs];
+
+		// 		console.log(groupTaskBreadcrumbs);
+
+		// 		for (let i = groupTaskBreadcrumbs.length - 1; i >= 0; i--) {
+		// 			const taskId = groupTaskBreadcrumbs[i];
+		// 			const task = todoistAllTasksById[taskId];
+
+		// 			if (!finalGroupedTasks[taskId] && !task.parent_id) {
+		// 				finalGroupedTasks[taskId] = {};
+		// 			}
+
+		// 			const prevTaskId = groupTaskBreadcrumbs[i + 1];
+
+		// 			if (prevTaskId) {
+		// 				finalGroupedTasks[prevTaskId][taskId] = {};
+		// 			}
+		// 		}
+		// 	}
 		// });
 
 		return {
 			groupedSubtasksByParentTask,
 			parentTasks: parentTasksArr,
+			tasksWithParentId,
+			tasksWithNoParent,
 		};
 	};
 
-	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks();
+	const { groupedSubtasksByParentTask, parentTasks, tasksWithParentId, tasksWithNoParent } =
+		getGroupedSubtasksAndParentTasks();
 
 	const updateTaskIdQueryParam = (taskId) => {
 		updateQueryParams({
@@ -82,7 +179,100 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		});
 	};
 
-	// console.log(parentTasks);
+	const oneLevelTasks = {};
+
+	Object.entries(tasksWithParentId).forEach(([currentTaskId, parentTaskId]) => {
+		if (parentTaskId) {
+			if (!oneLevelTasks[parentTaskId]) {
+				oneLevelTasks[parentTaskId] = [];
+			}
+
+			oneLevelTasks[parentTaskId].push(currentTaskId);
+		}
+	});
+
+	console.log(tasksWithParentId);
+	console.log(oneLevelTasks);
+
+	const renderDirectCompletedSubtasks = (directCompletedSubtasks) => {
+		return (
+			<ul className="">
+				{directCompletedSubtasks?.length > 0 &&
+					directCompletedSubtasks.map((subtask) => (
+						<li className="flex items-start gap-1">
+							<Icon
+								name={subtask.status === -1 ? 'disabled_by_default' : 'check_box'}
+								customClass={classNames('!text-[20px] text-white mt-[2px]')}
+							/>
+							<span>{subtask.content || subtask.title}</span>
+						</li>
+					))}
+			</ul>
+		);
+	};
+
+	const renderNestedTasks = (parentTaskId) => {
+		const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
+
+		// oneLevelTasks[parentTaskId] &&
+		// 	oneLevelTasks[parentTaskId].sort((a, b) => {
+		// 		const taskA = todoistAllTasksById[a];
+		// 		const taskB = todoistAllTasksById[b];
+		// 		return taskA['child_order'] - taskB['child_order'];
+		// 	});
+
+		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
+
+		return (
+			<ul className="text-[16px]">
+				<Accordion
+					title={
+						<li key={parentTask.id} className="underline cursor-pointer font-bold text-[18px]">
+							{parentTask.content || parentTask.title}
+						</li>
+					}
+					openByDefault={!groupedTasksCollapsedByDefault}
+					showArrowNextToText={true}
+				>
+					{renderDirectCompletedSubtasks(directCompletedSubtasks)}
+
+					<ul className="pl-6">
+						{oneLevelTasks[parentTaskId] &&
+							oneLevelTasks[parentTaskId].map((taskId) => {
+								const task = tasksById[taskId] || todoistAllTasksById[taskId];
+
+								if (oneLevelTasks[taskId] && oneLevelTasks[taskId].length > 0) {
+									return renderNestedTasks(taskId);
+								}
+
+								const directCompletedSubtasks = groupedSubtasksByParentTask[taskId];
+
+								return (
+									<>
+										<Accordion
+											title={
+												<li
+													key={task.id}
+													className="underline cursor-pointer font-bold text-[18px] mt-1"
+												>
+													{task.content || task.title}
+												</li>
+											}
+											openByDefault={!groupedTasksCollapsedByDefault}
+											showArrowNextToText={true}
+										>
+											{renderDirectCompletedSubtasks(directCompletedSubtasks)}
+										</Accordion>
+									</>
+								);
+							})}
+					</ul>
+				</Accordion>
+			</ul>
+		);
+	};
+
+	console.log(tasksWithNoParent);
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
@@ -131,7 +321,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						<div className="mb-5">
 							{parentTasks && parentTasks.length > 0 && (
 								<Accordion
-									title={<div className="underline font-bold text-[18px]">Parent Tasks</div>}
+									title={<div className="underline font-bold text-[18px]">Tasks With No Parent</div>}
 									openByDefault={true}
 									showArrowNextToText={true}
 								>
@@ -150,7 +340,11 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						</div>
 
 						<div className="space-y-5">
-							{tasksById &&
+							{tasksWithNoParent.map((taskId) => {
+								return <div>{renderNestedTasks(taskId)}</div>;
+							})}
+
+							{/* {tasksById &&
 								ancestorTasksById &&
 								todoistAncestorTasksById &&
 								Object.keys(groupedSubtasksByParentTask).map((parentTaskId, i) => {
@@ -228,7 +422,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 											</div>
 										</Accordion>
 									);
-								})}
+								})} */}
 						</div>
 					</Accordion>
 				</div>
