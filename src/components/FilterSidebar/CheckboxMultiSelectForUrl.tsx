@@ -26,7 +26,10 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 	checkboxId,
 	checkboxName,
 }) => {
-	const isProjectOrCategory = urlQueryParamName === 'projects' || urlQueryParamName === 'categories';
+	const isProjectOrCategory =
+		urlQueryParamName === 'projects' ||
+		urlQueryParamName === 'categories' ||
+		urlQueryParamName === 'projects-todoist';
 
 	const id = isProjectOrCategory ? getProjectProperty(project, 'id') : checkboxId;
 	const name = isProjectOrCategory ? getProjectProperty(project, 'name') : checkboxName;

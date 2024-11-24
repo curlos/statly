@@ -20,17 +20,25 @@ export const useFilterCompletedTasks = ({
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
+	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps') || '';
 	const taskIdFromUrl = searchParams.get('task-id') || '';
 
 	const { completedTasksPageSettings } = useUserSettingsContext();
 
-	// Projects
+	// Projects (TickTick)
 	const projectIdsFromUrlArr = projectsFromUrl.split(',');
 	const projectIdsFromUrlObj = {};
 	projectIdsFromUrlArr.forEach((projectId) => {
 		projectIdsFromUrlObj[projectId] = true;
+	});
+
+	// Projects (Todoist)
+	const projectTodoistIdsFromUrlArr = projectsTodoistFromUrl.split(',');
+	const projectTodoistIdsFromUrlObj = {};
+	projectTodoistIdsFromUrlArr.forEach((projectId) => {
+		projectTodoistIdsFromUrlObj[projectId] = true;
 	});
 
 	// To Do List Apps
@@ -77,15 +85,22 @@ export const useFilterCompletedTasks = ({
 	}, [searchTextFromUrl]);
 
 	const containsProjectId = (dayWithCompletedTasks) => {
-		if (!projectsFromUrl) {
+		if (!projectsFromUrl && !projectsTodoistFromUrl) {
 			return true;
 		}
 
 		const { completedTasksForDay } = dayWithCompletedTasks;
 
 		const oneOfTheTasksHasASelectedProject = completedTasksForDay.find((task) => {
-			const taskIsFromASelectedProject = projectIdsFromUrlObj[task.projectId];
-			return taskIsFromASelectedProject;
+			if (projectsFromUrl) {
+				const isTaskFromASelectedProject = projectIdsFromUrlObj[task.projectId];
+				return isTaskFromASelectedProject;
+			}
+
+			if (projectsTodoistFromUrl) {
+				const isTaskFromASelectedProject = projectTodoistIdsFromUrlObj[task.project_id];
+				return isTaskFromASelectedProject;
+			}
 		});
 
 		return oneOfTheTasksHasASelectedProject;
@@ -147,6 +162,7 @@ export const useFilterCompletedTasks = ({
 		startDateFromUrl,
 		endDateFromUrl,
 		projectsFromUrl,
+		projectsTodoistFromUrl,
 		categoriesFromUrl,
 		toDoListAppsFromUrl,
 		taskIdFromUrl,
@@ -197,11 +213,20 @@ export const useFilterCompletedTasks = ({
 			});
 		}
 
-		if (projectsFromUrl) {
+		if (projectsFromUrl || projectsTodoistFromUrl) {
 			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
-					const taskIsFromASelectedProject = projectIdsFromUrlObj[task.projectId];
-					return taskIsFromASelectedProject;
+					// TickTick
+					if (projectsFromUrl) {
+						const taskIsFromASelectedProject = projectIdsFromUrlObj[task.projectId];
+						return taskIsFromASelectedProject;
+					}
+
+					// Todoist
+					if (projectsTodoistFromUrl) {
+						const taskIsFromASelectedProject = projectTodoistIdsFromUrlObj[task.project_id];
+						return taskIsFromASelectedProject;
+					}
 				});
 
 				return {

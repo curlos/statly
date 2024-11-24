@@ -63,7 +63,7 @@ const AppliedFilterItemList = () => {
 	const { data: fetchedTodoistAllTasks } = useGetTodoistAllTasksQuery();
 	const { todoistAllTasksById } = fetchedTodoistAllTasks || {};
 
-	// RTK Query - Todoist - Tasks
+	// RTK Query - Todoist - Projects
 	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
 	const { todoistAllProjectsById } = fetchedTodoistAllProjects || {};
 

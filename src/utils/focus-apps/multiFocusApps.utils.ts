@@ -178,8 +178,13 @@ export const getFocusRecordProperty = (focusRecord, property) => {
 };
 
 export const isTickTickProject = (project) => {
-	return project.name;
+	return project.name && !project.url;
 };
+
+export const isTodoistProject = (project) => {
+	return project.url;
+};
+
 export const isSessionAppProject = (project) => {
 	return project.title;
 };
@@ -195,10 +200,11 @@ export const isSessionAppProject = (project) => {
 export const getProjectProperty = (project, property) => {
 	const fromTickTick = isTickTickProject(project);
 	const fromSessionApp = isSessionAppProject(project);
+	const fromTodoist = isTodoistProject(project);
 
 	switch (property) {
 		case 'id':
-			if (fromTickTick) {
+			if (fromTickTick || fromTodoist) {
 				return project.id;
 			}
 
@@ -208,7 +214,7 @@ export const getProjectProperty = (project, property) => {
 
 			return '';
 		case 'color':
-			if (fromTickTick) {
+			if (fromTickTick || fromTodoist) {
 				return project.color;
 			}
 
@@ -218,7 +224,7 @@ export const getProjectProperty = (project, property) => {
 
 			return '';
 		case 'name':
-			if (fromTickTick) {
+			if (fromTickTick || fromTodoist) {
 				return project.name;
 			}
 

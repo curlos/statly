@@ -137,12 +137,12 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 			<hr className="border-color-gray-200 my-4" />
 			<ProjectsTickTickSection />
 
-			{/* {page === 'completed-tasks-page' && (
+			{page === 'completed-tasks-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<ProjectsTodoistSection />
 				</>
-			)} */}
+			)}
 
 			{page === 'focus-records-page' && (
 				<>

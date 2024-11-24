@@ -7,30 +7,25 @@ import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
+import { useGetTodoistAllProjectsQuery } from '../../services/resources/oldFocusAppsApi';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
  */
 const ProjectsTodoistSection = () => {
+	// RTK Query - Todoist - Projects
+	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
+	const { todoistAllProjects } = fetchedTodoistAllProjects || {};
+
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const projectsFromUrl = searchParams.get('projects-todoist');
+	const projectsTodoistFromUrl = searchParams.get('projects-todoist');
 
-	const projectsFromUrlById = getCommaSeparatedObj(projectsFromUrl);
+	const projectsTodoistFromUrlById = getCommaSeparatedObj(projectsTodoistFromUrl);
 
-	useEffect(() => {
-		if (isLoadingGetProjects || isLoadingGetProjectGroups) {
-			return;
-		}
-	}, [projects, projectGroupsById]);
-
-	// This is the combined array of the "Project Groups" and the ungrouped Projects. It's necessary for them to be a combined array because it's possible on TickTick 1.0 for them to be mixed together. You could have a "Project Group" between two ungrouped "Projects". So, to be as accurate as possible, they both need to be in the same array.
-	// Archived Projects don't need to be here as they're technically not an actual Project Group in TickTick 1.0 and are the lowest priority since they're not active anymore.
-	const sortedProjectsAndGroups = sortedUngroupedProjects &&
-		sortedProjectGroups && [...sortedUngroupedProjects, ...sortedProjectGroups];
-
-	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
+	console.log(projectsTodoistFromUrlById);
+	console.log(todoistAllProjects);
 
 	return (
 		<div>
@@ -44,24 +39,28 @@ const ProjectsTodoistSection = () => {
 							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 						/>
 						{/* Assume the user always has at least one project. I suppose it'd be possible for there to be 0 projects but this works better for me personally. */}
-						{(!sortedProjectsAndGroups || sortedProjectsAndGroups.length === 0) && <Spinner />}
+						<Spinner />
 					</div>
 				}
 				openByDefault={true}
 			>
 				<div>
 					<div className="space-y-2">
-						{/* Archived Projects */}
-						<ProjectGroupWithProjects
-							{...{
-								isArchivedGroup: true,
-								archivedProjects: sortedArchivedProjects,
-								chosenColorObj,
-								nextLightestColorObj,
-								projectsFromUrlById,
-								updateQueryParams,
-							}}
-						/>
+						{todoistAllProjects?.map((project) => {
+							return (
+								<CheckboxMultiSelectForUrl
+									key={project.id}
+									{...{
+										project,
+										chosenColorObj,
+										nextLightestColorObj,
+										commaSeparatedObj: projectsTodoistFromUrlById,
+										updateQueryParams,
+										urlQueryParamName: 'projects-todoist',
+									}}
+								/>
+							);
+						})}
 					</div>
 				</div>
 			</Accordion>
