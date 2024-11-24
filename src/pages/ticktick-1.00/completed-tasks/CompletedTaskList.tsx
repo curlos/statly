@@ -67,7 +67,7 @@ const CompletedTaskList = ({
 				<>
 					<div>
 						{filteredDaysWithCompletedTasks.length === 0 ? (
-							<div>No Focus Records</div>
+							<div>No Completed Tasks</div>
 						) : (
 							<div className="space-y-3">
 								{shownCompletedTasks.map((dateWithCompletedTasks, index) => {

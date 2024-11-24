@@ -81,16 +81,10 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 			},
 			transformResponse: (response) => {
 				const todoistAllTasks = response;
-				console.log(todoistAllTasks);
-
 				const todoistAllTasksById = arrayToObjectByKey(response, 'id');
-
-				console.log(todoistAllTasksById);
 
 				const { todoistCompletedTasksGroupedByDate, ancestorTasksById: todoistAncestorTasksById } =
 					getGroupedTodoistCompletedTasks(todoistAllTasks, todoistAllTasksById);
-
-				console.log(todoistCompletedTasksGroupedByDate);
 
 				return {
 					todoistAllTasks,

@@ -22,3 +22,14 @@ export const FOCUS_APPS = {
 		name: 'Tide',
 	},
 };
+
+export const TO_DO_LIST_APPS = {
+	TickTick: {
+		id: 'TickTick',
+		name: 'TickTick',
+	},
+	Todoist: {
+		id: 'Todoist',
+		name: 'Todoist',
+	},
+};

@@ -54,6 +54,14 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 			}
 		});
 
+		// console.log(groupedSubtasksByParentTask);
+
+		// Object.keys(groupedSubtasksByParentTask).forEach((taskId) => {
+		// 	const task = todoistAllTasksById[taskId];
+
+		// 	console.log(parentTask);
+		// });
+
 		return {
 			groupedSubtasksByParentTask,
 			parentTasks: parentTasksArr,
@@ -74,10 +82,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		});
 	};
 
-	// console.log(parentTasks);
-
-	console.log(dateWithCompletedTasks);
-	console.log(todoistAncestorTasksById);
+	console.log(parentTasks);
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
@@ -148,14 +153,12 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 							{tasksById &&
 								ancestorTasksById &&
 								todoistAncestorTasksById &&
-								Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
+								Object.keys(groupedSubtasksByParentTask).map((parentTaskId, i) => {
 									const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
 									const parentTask =
 										(tasksById && tasksById[parentTaskId]) ||
 										(todoistAllTasksById && todoistAllTasksById[parentTaskId]);
 									const parentTaskTitle = parentTask?.title || parentTask?.content || parentTaskId;
-
-									console.log(parentTask);
 
 									const parentTaskBreadcrumbsTickTick =
 										parentTask &&
@@ -172,7 +175,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 									return (
 										<Accordion
-											key={dateStr + parentTaskId}
+											key={dateStr + parentTaskId + i}
 											title={
 												<div className="text-[18px]">
 													<span
@@ -194,7 +197,9 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 																const title = taskObj.title || taskObj.content;
 
 																return (
-																	<span key={`breadcrumbs-${dateStr}-${taskObj.id}`}>
+																	<span
+																		key={`breadcrumbs-${dateStr}-${taskObj.id}-${index}`}
+																	>
 																		<span
 																			className="hover:text-blue-500 hover:underline"
 																			onClick={() => {
@@ -217,8 +222,8 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 											showArrowNextToText={true}
 										>
 											<div className="space-y-1">
-												{completedSubtasks.map((task) => (
-													<CompletedTask key={dateStr + task.id} task={task} />
+												{completedSubtasks.map((task, i) => (
+													<CompletedTask key={dateStr + task.id + i} task={task} />
 												))}
 											</div>
 										</Accordion>

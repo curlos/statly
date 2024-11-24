@@ -11,6 +11,7 @@ import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
 import OtherSectionFocusRecords from './OtherSectionFocusRecords';
 import OtherSectionCompletedTasks from './OtherSectionCompletedTasks';
+import ShowDaysFromToDoListAppSection from './ShowDaysFromToDoListAppSection';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 	const sidebarVariants = {
@@ -48,6 +49,8 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 	};
 
 	const isAtLeastOneFilterApplied = atLeastOneFilterApplied();
+
+	console.log(page);
 
 	return (
 		<motion.div
@@ -120,6 +123,13 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<ShowRecordsFromFocusAppSection />
+				</>
+			)}
+
+			{page === 'completed-tasks-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<ShowDaysFromToDoListAppSection />
 				</>
 			)}
 

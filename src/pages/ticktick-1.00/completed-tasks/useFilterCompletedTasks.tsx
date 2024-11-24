@@ -5,6 +5,7 @@ import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.ut
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 
 export const useFilterCompletedTasks = ({
 	setFilteredDaysWithCompletedTasks,
@@ -20,7 +21,7 @@ export const useFilterCompletedTasks = ({
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
-	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps') || '';
 	const taskIdFromUrl = searchParams.get('task-id') || '';
 
 	const { completedTasksPageSettings } = useUserSettingsContext();
@@ -32,16 +33,20 @@ export const useFilterCompletedTasks = ({
 		projectIdsFromUrlObj[projectId] = true;
 	});
 
-	// Focus Apps
-	const focusAppNamesFromUrlArr = focusAppsFromUrl.split(',');
-	const focusAppNamesFromUrlObj = {};
-	focusAppNamesFromUrlArr.forEach((name) => {
-		focusAppNamesFromUrlObj[name] = true;
+	// To Do List Apps
+	const toDoListAppNamesFromUrlArr = toDoListAppsFromUrl.split(',');
+	const toDoListAppNamesFromUrlObj = {};
+	toDoListAppNamesFromUrlArr.forEach((name) => {
+		toDoListAppNamesFromUrlObj[name] = true;
 	});
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
+
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
+	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
 
 	const fuse = new Fuse(defaultDaysWithCompletedTasks, {
 		includeScore: true,
@@ -98,7 +103,10 @@ export const useFilterCompletedTasks = ({
 		const { completedTasksForDay } = dayWithCompletedTasks;
 
 		return completedTasksForDay.find((task) => {
-			const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById);
+			const isFromTickTick = task.title !== undefined;
+			const foundMatchingTaskOrAncestor = isFromTickTick
+				? findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById)
+				: findMatchingTaskOrAncestor(task, taskIdFromUrl, todoistAncestorTasksById);
 
 			return foundMatchingTaskOrAncestor;
 		});
@@ -118,6 +126,20 @@ export const useFilterCompletedTasks = ({
 		return isDateBetween(date, startDateFromUrlDate, endDateFromUrlDate);
 	};
 
+	const containsToDoListApp = (dayWithCompletedTasks) => {
+		if (!toDoListAppsFromUrl) {
+			return true;
+		}
+
+		const { completedTasksForDay } = dayWithCompletedTasks;
+
+		return completedTasksForDay.find((task) => {
+			const taskToDoListApp = task.projectId !== undefined ? 'TickTick' : 'Todoist';
+			const toDoListAppIsInUrl = toDoListAppNamesFromUrlObj[taskToDoListApp];
+			return toDoListAppIsInUrl;
+		});
+	};
+
 	useEffect(() => {
 		const newFilteredFocusRecords = getFilteredCompletedTasksByDay();
 		setFilteredDaysWithCompletedTasks(newFilteredFocusRecords);
@@ -126,9 +148,10 @@ export const useFilterCompletedTasks = ({
 		endDateFromUrl,
 		projectsFromUrl,
 		categoriesFromUrl,
-		focusAppsFromUrl,
+		toDoListAppsFromUrl,
 		taskIdFromUrl,
 		tasksById,
+		todoistAllTasksById,
 		completedTasksPageSettings,
 	]);
 
@@ -151,18 +174,18 @@ export const useFilterCompletedTasks = ({
 			(dayWithCompletedTasks) =>
 				isInDateRange(dayWithCompletedTasks) &&
 				containsTaskId(dayWithCompletedTasks) &&
-				containsProjectId(dayWithCompletedTasks)
+				containsProjectId(dayWithCompletedTasks) &&
+				containsToDoListApp(dayWithCompletedTasks)
 		);
 
 		// If the "task-id" query param is in the URL, then the remaining daysWithCompletedTasks cards left contain at least one completed task that is present is a descendant of the task id from the URL. So, we must further filter out the "completedTasksForDay" of the specific days so that only the tasks matching those from the URL are shown assuming the user setting is checked to want to do that.
 		if (taskIdFromUrl && completedTasksPageSettings.filterOutUnrelatedTasksWhenTaskIdIsApplied) {
 			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
-					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
-						task,
-						taskIdFromUrl,
-						ancestorTasksById
-					);
+					const isFromTickTick = task.title !== undefined;
+					const foundMatchingTaskOrAncestor = isFromTickTick
+						? findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById)
+						: findMatchingTaskOrAncestor(task, taskIdFromUrl, todoistAncestorTasksById);
 
 					return foundMatchingTaskOrAncestor;
 				});
@@ -191,7 +214,7 @@ export const useFilterCompletedTasks = ({
 		// Sort the completedTasksForDay of each day from oldest to newest completed times.
 		newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 			const completedTasksForDay = dayWithCompletedTasks.completedTasksForDay.toSorted(
-				(a, b) => new Date(a.completedTime) - new Date(b.completedTime)
+				(a, b) => new Date(a.completedTime || a.completed_at) - new Date(b.completedTime || b.completed_at)
 			);
 
 			return {
@@ -199,8 +222,6 @@ export const useFilterCompletedTasks = ({
 				completedTasksForDay,
 			};
 		});
-
-		// console.log(newFilteredDaysWithCompletedTasks);
 
 		return newFilteredDaysWithCompletedTasks;
 	};
