@@ -49,10 +49,11 @@ const ProjectsTodoistSection = () => {
 		setArchivedProjects(newArchivedProjects.toSorted((a, b) => a.order - b.order));
 	}, [todoistAllProjects]);
 
-	console.log(activeProjects);
-	console.log(archivedProjects);
-
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
+
+	const isFromQLinkAccount = (project) => {
+		return project.id === '2289588215' || project.id === '2295853642';
+	};
 
 	return (
 		<div>
@@ -83,6 +84,7 @@ const ProjectsTodoistSection = () => {
 									commaSeparatedObj: projectsTodoistFromUrlById,
 									updateQueryParams,
 									urlQueryParamName: 'projects-todoist',
+									nameParentheses: isFromQLinkAccount(project) ? ' (Q Link)' : '',
 								}}
 							/>
 						))}
@@ -116,6 +118,8 @@ const ProjectsTodoistSection = () => {
 											commaSeparatedObj: projectsTodoistFromUrlById,
 											updateQueryParams,
 											urlQueryParamName: 'projects-todoist',
+											// Not technically needed here since I have no archived projects from my Q Link account but keeping it for the sake of consistency. Could definitely be removed and nothing would change.
+											nameParentheses: isFromQLinkAccount(project) ? ' (Q Link)' : '',
 										}}
 									/>
 								))}
