@@ -9,7 +9,7 @@ import {
 	useGetSessionAppFocusRecordsQuery,
 	useGetTodoistAllTasksQuery,
 } from '../../../services/resources/oldFocusAppsApi';
-import { FOCUS_APPS } from '../../../utils/constants.utils';
+import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../../utils/constants.utils';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -20,6 +20,7 @@ const AppliedFilterItemList = () => {
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
 	const taskIdToFilterBy = searchParams.get('task-id');
 
 	const [projectNamesStr, setProjectNamesStr] = useState(
@@ -30,6 +31,9 @@ const AppliedFilterItemList = () => {
 	);
 	const [focusAppNamesStr, setFocusAppNamesStr] = useState(
 		focusAppsFromUrl ? getStrInBulletPointsMD(focusAppsFromUrl.split(',')) : ''
+	);
+	const [toDoListAppNamesStr, setToDoListAppNamesStr] = useState(
+		toDoListAppsFromUrl ? getStrInBulletPointsMD(toDoListAppsFromUrl.split(',')) : ''
 	);
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -57,11 +61,20 @@ const AppliedFilterItemList = () => {
 		const newProjectNamesStr = getProjectNamesStr();
 		const newCategoryNamesStr = getCategoryNamesStr();
 		const newFocusAppNamesStr = getFocusAppNamesStr();
+		const newToDoListAppNamesStr = getToDoListAppNamesStr();
 
 		setProjectNamesStr(newProjectNamesStr);
 		setCategoryNamesStr(newCategoryNamesStr);
 		setFocusAppNamesStr(newFocusAppNamesStr);
-	}, [isLoadingGetProjects, projectsFromUrl, isLoadingGetSessionFocusRecords, categoriesFromUrl, focusAppsFromUrl]);
+		setToDoListAppNamesStr(newToDoListAppNamesStr);
+	}, [
+		isLoadingGetProjects,
+		projectsFromUrl,
+		isLoadingGetSessionFocusRecords,
+		categoriesFromUrl,
+		focusAppsFromUrl,
+		toDoListAppsFromUrl,
+	]);
 
 	const getProjectNamesStr = () => {
 		const projectIdsFromUrlArr = projectsFromUrl ? projectsFromUrl.split(',') : [];
@@ -97,6 +110,18 @@ const AppliedFilterItemList = () => {
 		});
 
 		return focusAppsNamesArr.join(', ');
+	};
+
+	const getToDoListAppNamesStr = () => {
+		const toDoListAppsFromUrlArr = toDoListAppsFromUrl ? toDoListAppsFromUrl.split(',') : [];
+		const toDoListAppsNamesArr = [];
+
+		toDoListAppsFromUrlArr.forEach((id) => {
+			const { name } = TO_DO_LIST_APPS[id];
+			toDoListAppsNamesArr.push(name);
+		});
+
+		return toDoListAppsNamesArr.join(', ');
 	};
 
 	const sortByFilter = {
@@ -163,6 +188,14 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	const toDoListAppFilter = {
+		name: 'To-Do List Apps',
+		value: toDoListAppNamesStr,
+		handleRemove: () => {
+			updateQueryParams({ 'to-do-list-apps': '', page: '' });
+		},
+	};
+
 	const allFilters = [
 		taskIdFilter,
 		dateRangeFilter,
@@ -171,6 +204,7 @@ const AppliedFilterItemList = () => {
 		projectsFilter,
 		categoriesFilter,
 		focusAppFilter,
+		toDoListAppFilter,
 	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 
