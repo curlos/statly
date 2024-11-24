@@ -24,8 +24,35 @@ const ProjectsTodoistSection = () => {
 
 	const projectsTodoistFromUrlById = getCommaSeparatedObj(projectsTodoistFromUrl);
 
-	console.log(projectsTodoistFromUrlById);
-	console.log(todoistAllProjects);
+	const [activeProjects, setActiveProjects] = useState([]);
+	const [archivedProjects, setArchivedProjects] = useState([]);
+
+	useEffect(() => {
+		if (!todoistAllProjects) {
+			return;
+		}
+
+		const newActiveProjects = [];
+		const newArchivedProjects = [];
+
+		for (let project of todoistAllProjects) {
+			const { is_inbox_project, is_archived } = project;
+
+			if (!is_inbox_project && is_archived) {
+				newArchivedProjects.push(project);
+			} else {
+				newActiveProjects.push(project);
+			}
+		}
+
+		setActiveProjects(newActiveProjects.toSorted((a, b) => a.order - b.order));
+		setArchivedProjects(newArchivedProjects.toSorted((a, b) => a.order - b.order));
+	}, [todoistAllProjects]);
+
+	console.log(activeProjects);
+	console.log(archivedProjects);
+
+	const [isOpenForParent, setIsOpenForParent] = useState(false);
 
 	return (
 		<div>
@@ -39,28 +66,61 @@ const ProjectsTodoistSection = () => {
 							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 						/>
 						{/* Assume the user always has at least one project. I suppose it'd be possible for there to be 0 projects but this works better for me personally. */}
-						<Spinner />
+						{activeProjects.length === 0 || (archivedProjects.length === 0 && <Spinner />)}
 					</div>
 				}
 				openByDefault={true}
 			>
 				<div>
 					<div className="space-y-2">
-						{todoistAllProjects?.map((project) => {
-							return (
-								<CheckboxMultiSelectForUrl
-									key={project.id}
-									{...{
-										project,
-										chosenColorObj,
-										nextLightestColorObj,
-										commaSeparatedObj: projectsTodoistFromUrlById,
-										updateQueryParams,
-										urlQueryParamName: 'projects-todoist',
-									}}
-								/>
-							);
-						})}
+						{activeProjects.map((project) => (
+							<CheckboxMultiSelectForUrl
+								key={project.id}
+								{...{
+									project,
+									chosenColorObj,
+									nextLightestColorObj,
+									commaSeparatedObj: projectsTodoistFromUrlById,
+									updateQueryParams,
+									urlQueryParamName: 'projects-todoist',
+								}}
+							/>
+						))}
+
+						<Accordion
+							title={
+								<div className="flex items-center gap-1">
+									<Icon
+										name={isOpenForParent ? 'folder_open' : 'folder'}
+										fill={0}
+										customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+									/>
+									<Icon
+										name={'folder_off'}
+										fill={0}
+										customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+									/>
+									<div>Archived</div>
+								</div>
+							}
+							setIsOpenForParent={setIsOpenForParent}
+						>
+							<div className="pl-4">
+								{archivedProjects.map((project) => (
+									<CheckboxMultiSelectForUrl
+										key={project.id}
+										{...{
+											project,
+											chosenColorObj,
+											nextLightestColorObj,
+											commaSeparatedObj: projectsTodoistFromUrlById,
+											updateQueryParams,
+											urlQueryParamName: 'projects-todoist',
+										}}
+									/>
+								))}
+							</div>
+						</Accordion>
 					</div>
 				</div>
 			</Accordion>

@@ -82,7 +82,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		});
 	};
 
-	console.log(parentTasks);
+	// console.log(parentTasks);
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
