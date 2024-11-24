@@ -17,7 +17,7 @@ export const getAllTasksAndItemsTickTickOne = (tasks) => {
 };
 
 /**
- * @description Get all of the parent/ancestor task ids for a task. For example, "Focus Records Page" would have two: "TickTick 1.0 Stats Integration -> TickTick 2.0 (Web)."
+ * @description Get all of the parent/ancestor task ids for a task. For example, "Focus Records Page" would have two: "TickTick 1.0 Stats Integration -> TickTick 2.0 (Web)." Works for both TickTick and Todoist tasks.
  * @param {Object} task
  * @param {Object} tasksById
  * @returns {Array<String>}
@@ -26,7 +26,8 @@ const getAncestorTasksById = (task, tasksById) => {
 	const ancestorTasksById = {};
 
 	const getParentTask = (task) => {
-		const parentTask = task?.parentId && tasksById[task.parentId];
+		const parentId = task?.parentId || task?.parent_id;
+		const parentTask = parentId && tasksById[parentId];
 
 		if (parentTask) {
 			ancestorTasksById[parentTask.id] = true;
@@ -127,7 +128,7 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
  * @param {Array<Object>} tasks
  * @returns {Object}
  */
-export const getGroupedTodoistCompletedTasks = (tasks) => {
+export const getGroupedTodoistCompletedTasks = (tasks, todoistAllTasksById) => {
 	const todoistCompletedTasksGroupedByDate = {};
 
 	const storeTaskInCompletedDateKey = (completed_at, task) => {
@@ -141,6 +142,8 @@ export const getGroupedTodoistCompletedTasks = (tasks) => {
 		todoistCompletedTasksGroupedByDate[completedTimeKey].push(task);
 	};
 
+	const ancestorTasksById = {};
+
 	for (let task of tasks) {
 		const { completed_at } = task;
 
@@ -148,11 +151,16 @@ export const getGroupedTodoistCompletedTasks = (tasks) => {
 			continue;
 		}
 
+		const ancestorTasksByIdOfTask = getAncestorTasksById(task, todoistAllTasksById);
+
+		ancestorTasksById[task.id] = ancestorTasksByIdOfTask;
+
 		storeTaskInCompletedDateKey(completed_at, task);
 	}
 
 	return {
 		todoistCompletedTasksGroupedByDate,
+		ancestorTasksById,
 	};
 };
 

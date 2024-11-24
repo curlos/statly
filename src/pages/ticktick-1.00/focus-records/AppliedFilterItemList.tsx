@@ -5,7 +5,10 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
-import { useGetSessionAppFocusRecordsQuery } from '../../../services/resources/oldFocusAppsApi';
+import {
+	useGetSessionAppFocusRecordsQuery,
+	useGetTodoistAllTasksQuery,
+} from '../../../services/resources/oldFocusAppsApi';
 import { FOCUS_APPS } from '../../../utils/constants.utils';
 
 const AppliedFilterItemList = () => {
@@ -32,6 +35,10 @@ const AppliedFilterItemList = () => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById } = fetchedTasks || {};
+
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
+	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
@@ -108,12 +115,17 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	const getTaskTitle = () => {
+		if (taskIdToFilterBy && tasksById && todoistAllTasksById) {
+			return (
+				tasksById[taskIdToFilterBy]?.title || todoistAllTasksById[taskIdToFilterBy]?.content || taskIdToFilterBy
+			);
+		}
+	};
+
 	const taskIdFilter = {
 		name: `Task`,
-		value:
-			taskIdToFilterBy && tasksById && tasksById[taskIdToFilterBy]?.title
-				? tasksById[taskIdToFilterBy]?.title
-				: taskIdToFilterBy,
+		value: getTaskTitle(),
 		handleRemove: () => {
 			updateQueryParams({ 'task-id': '', page: '' });
 		},

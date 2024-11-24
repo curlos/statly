@@ -53,6 +53,8 @@ const CompletedTaskList = ({
 
 	const shownCompletedTasks = getShownCompletedTasks();
 
+	// console.log(filteredDaysWithCompletedTasks);
+
 	return (
 		<div>
 			{!allCompletedTasksAreHere || !filteredDaysWithCompletedTasks ? (

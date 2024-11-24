@@ -6,7 +6,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import Accordion from '../../../components/Accordion/Accordion';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
-import { useGetTodoistAllTasksByIdQuery } from '../../../services/resources/oldFocusAppsApi';
+import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -19,9 +19,9 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
 
-	// RTK Query - Todoist - All Tasks By Id
-	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksByIdQuery();
-	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
+	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -74,7 +74,10 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		});
 	};
 
-	console.log(parentTasks);
+	// console.log(parentTasks);
+
+	console.log(dateWithCompletedTasks);
+	console.log(todoistAncestorTasksById);
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
@@ -144,20 +147,28 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						<div className="space-y-5">
 							{tasksById &&
 								ancestorTasksById &&
+								todoistAncestorTasksById &&
 								Object.keys(groupedSubtasksByParentTask).map((parentTaskId) => {
 									const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
 									const parentTask =
 										(tasksById && tasksById[parentTaskId]) ||
 										(todoistAllTasksById && todoistAllTasksById[parentTaskId]);
-									const parentTaskTitle =
-										parentTask?.title || parentTask?.item?.content || parentTaskId;
+									const parentTaskTitle = parentTask?.title || parentTask?.content || parentTaskId;
 
 									console.log(parentTask);
 
-									const parentTaskBreadcrumbs =
+									const parentTaskBreadcrumbsTickTick =
 										parentTask &&
 										ancestorTasksById[parentTask.id] &&
 										Object.keys(ancestorTasksById[parentTask.id]);
+
+									const parentTaskBreadcrumbsTodoist =
+										parentTask &&
+										todoistAncestorTasksById[parentTask.id] &&
+										Object.keys(todoistAncestorTasksById[parentTask.id]);
+
+									const parentTaskBreadcrumbs =
+										parentTaskBreadcrumbsTickTick || parentTaskBreadcrumbsTodoist;
 
 									return (
 										<Accordion
@@ -177,7 +188,10 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 														<span className="ml-1 text-color-gray-25">
 															-{' '}
 															{parentTaskBreadcrumbs.map((taskId, index) => {
-																const taskObj = tasksById[taskId];
+																const taskObj =
+																	tasksById[taskId] || todoistAllTasksById[taskId];
+
+																const title = taskObj.title || taskObj.content;
 
 																return (
 																	<span key={`breadcrumbs-${dateStr}-${taskObj.id}`}>
@@ -187,7 +201,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 																				updateTaskIdQueryParam(taskObj.id);
 																			}}
 																		>
-																			{taskObj.title}
+																			{title}
 																		</span>
 																		{index !== parentTaskBreadcrumbs.length - 1 && (
 																			<span>{' > '}</span>

@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../../../components/Navbar/Navbar';
-import {
-	useGetTodoistAllCompletedTasksQuery,
-	useGetTodoistAllProjectsQuery,
-	useGetTodoistAllTasksByIdQuery,
-} from '../../../services/resources/oldFocusAppsApi';
+import { useGetTodoistAllTasksQuery, useGetTodoistAllProjectsQuery } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import FilterBar from '../focus-records/FilterBar';
 import Pagination from '../../../components/Pagination';
@@ -22,20 +18,6 @@ const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
 			completedTasksForDay,
 		};
 	});
-};
-
-const getTodoistFullTasksGroupedByDate = (todoistCompletedTasksGroupedByDate, todoistAllTasksById) => {
-	const todoistFullTasksGroupedByDate = {};
-
-	Object.keys(todoistCompletedTasksGroupedByDate).forEach((dateStr) => {
-		const completedTasksForTheDay = todoistCompletedTasksGroupedByDate[dateStr];
-		todoistFullTasksGroupedByDate[dateStr] = completedTasksForTheDay.map((completedTask) => {
-			const fullTask = todoistAllTasksById[completedTask['task_id']];
-			return fullTask?.item;
-		});
-	});
-
-	return todoistFullTasksGroupedByDate;
 };
 
 const Page = () => {
@@ -60,19 +42,13 @@ const Page = () => {
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { completedTasksGroupedByDate } = fetchedTasks || {};
 
-	// RTK Query - Todoist - All Completed Tasks
-	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllCompletedTasksQuery();
-	const { todoistCompletedTasksGroupedByDate } = fetchedTodoistAllCompletedTasks || {};
-
-	// RTK Query - Todoist - All Tasks By Id
-	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksByIdQuery();
-	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistTasks } = useGetTodoistAllTasksQuery();
+	const { todoistCompletedTasksGroupedByDate, todoistAllTasksById } = fetchedTodoistTasks || {};
 
 	// RTK Query - Todoist - All Projects
 	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
 	const { todoistAllProjects } = fetchedTodoistAllProjects || {};
-
-	// console.log(todoistAllTasksById);
 
 	const allCompletedTasksAreHere =
 		completedTasksGroupedByDate && todoistCompletedTasksGroupedByDate && todoistAllTasksById;
@@ -82,7 +58,7 @@ const Page = () => {
 	const defaultDaysWithCompletedTasks = allCompletedTasksAreHere
 		? getCompletedTasksByDate({
 				...completedTasksGroupedByDate,
-				...getTodoistFullTasksGroupedByDate(todoistCompletedTasksGroupedByDate, todoistAllTasksById),
+				...todoistCompletedTasksGroupedByDate,
 			})
 		: [];
 	const [filteredDaysWithCompletedTasks, setFilteredDaysWithCompletedTasks] = useState(defaultDaysWithCompletedTasks);

@@ -14,7 +14,7 @@ import { useUserSettingsContext } from './useUserSettingsContext';
 import { getAllCompletedTasksDuringFocusRecord, getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
-import { useGetTodoistAllCompletedTasksQuery } from '../../../services/resources/oldFocusAppsApi';
+import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -24,7 +24,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const { completedTasksGroupedByDate } = fetchedTasks || {};
 
 	// RTK Query - Todoist - All Completed Tasks
-	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllCompletedTasksQuery();
+	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllTasksQuery();
 	const { todoistCompletedTasksGroupedByDate } = fetchedTodoistAllCompletedTasks || {};
 
 	const startTime = getFocusRecordProperty(focusRecord, 'startTime');

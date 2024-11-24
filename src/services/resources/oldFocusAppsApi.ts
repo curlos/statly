@@ -1,3 +1,4 @@
+import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
 import { getGroupedTodoistCompletedTasks } from '../../utils/focus-apps/tasks.utils';
 import { baseAPI, buildQueryString } from '../api';
 
@@ -71,33 +72,32 @@ export const oldFocusAppsApi = baseAPI.injectEndpoints({
 				return { tideAppFocusRecords };
 			},
 		}),
-		getTodoistAllCompletedTasks: builder.query({
+		getTodoistAllTasks: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
 				return queryString
-					? `/old-focus-apps/todoist-all-completed-tasks?${queryString}`
-					: '/old-focus-apps/todoist-all-completed-tasks';
+					? `/old-focus-apps/todoist-all-tasks?${queryString}`
+					: '/old-focus-apps/todoist-all-tasks';
 			},
 			transformResponse: (response) => {
-				const todoistAllCompletedTasks = response;
+				const todoistAllTasks = response;
+				console.log(todoistAllTasks);
 
-				const { todoistCompletedTasksGroupedByDate } =
-					getGroupedTodoistCompletedTasks(todoistAllCompletedTasks);
+				const todoistAllTasksById = arrayToObjectByKey(response, 'id');
 
-				return { todoistAllCompletedTasks, todoistCompletedTasksGroupedByDate };
-			},
-		}),
-		getTodoistAllTasksById: builder.query({
-			query: (queryParams) => {
-				const queryString = buildQueryString(queryParams);
-				return queryString
-					? `/old-focus-apps/todoist-all-tasks-by-id?${queryString}`
-					: '/old-focus-apps/todoist-all-tasks-by-id';
-			},
-			transformResponse: (response) => {
-				const todoistAllTasksById = response;
+				console.log(todoistAllTasksById);
 
-				return { todoistAllTasksById };
+				const { todoistCompletedTasksGroupedByDate, ancestorTasksById: todoistAncestorTasksById } =
+					getGroupedTodoistCompletedTasks(todoistAllTasks, todoistAllTasksById);
+
+				console.log(todoistCompletedTasksGroupedByDate);
+
+				return {
+					todoistAllTasks,
+					todoistAllTasksById,
+					todoistCompletedTasksGroupedByDate,
+					todoistAncestorTasksById,
+				};
 			},
 		}),
 		getTodoistAllProjects: builder.query({
@@ -120,7 +120,6 @@ export const {
 	useGetBeFocusedAppFocusRecordsQuery,
 	useGetForestAppFocusRecordsQuery,
 	useGetTideAppFocusRecordsQuery,
-	useGetTodoistAllCompletedTasksQuery,
-	useGetTodoistAllTasksByIdQuery,
+	useGetTodoistAllTasksQuery,
 	useGetTodoistAllProjectsQuery,
 } = oldFocusAppsApi;

@@ -12,6 +12,8 @@ export const useFilterCompletedTasks = ({
 	setSortByOptions,
 	DEFAULT_SORT_BY_OPTIONS,
 }) => {
+	// console.log(defaultDaysWithCompletedTasks);
+
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
@@ -197,6 +199,8 @@ export const useFilterCompletedTasks = ({
 				completedTasksForDay,
 			};
 		});
+
+		// console.log(newFilteredDaysWithCompletedTasks);
 
 		return newFilteredDaysWithCompletedTasks;
 	};
