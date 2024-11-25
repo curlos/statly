@@ -68,6 +68,7 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 								linkUrl="/ticktick-1.00/completed-tasks"
 								iconName="select_check_box"
 							/>
+							<LinkLi name="Medals" linkUrl="/ticktick-1.00/medals" iconName="workspace_premium" />
 						</div>
 
 						{/* Theme Color */}
