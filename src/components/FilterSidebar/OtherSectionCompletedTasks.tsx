@@ -11,6 +11,7 @@ const OtherSectionFocusRecords = () => {
 		completedTasksPageSettings: {
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 			groupedTasksCollapsedByDefault,
+			showIndentedTasks,
 			maxDaysPerPage,
 		},
 	} = useUserSettingsContext();
@@ -81,6 +82,14 @@ const OtherSectionFocusRecords = () => {
 										groupedTasksCollapsedByDefault,
 										'groupedTasksCollapsedByDefault'
 									),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Indented Tasks',
+								showValue: showIndentedTasks,
+								handleCheckboxClick: () => handleCheckboxClick(showIndentedTasks, 'showIndentedTasks'),
 							}}
 						/>
 

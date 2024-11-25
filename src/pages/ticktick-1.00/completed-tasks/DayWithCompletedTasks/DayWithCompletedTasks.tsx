@@ -14,7 +14,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	const { updateQueryParams } = useSearchParamsContext();
 
 	const {
-		completedTasksPageSettings: { groupedTasksCollapsedByDefault },
+		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
 	} = useUserSettingsContext();
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -275,22 +275,24 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						</div>
 
 						<div className="space-y-5">
-							{tasksWithNoParent.map((taskId) => {
-								return <div>{renderNestedTasks(taskId)}</div>;
-							})}
-
-							<CompletedTasksWithBreadcrumbs
-								{...{
-									tasksById,
-									ancestorTasksById,
-									todoistAncestorTasksById,
-									groupedSubtasksByParentTask,
-									todoistAllTasksById,
-									dateStr,
-									updateTaskIdQueryParam,
-									groupedTasksCollapsedByDefault,
-								}}
-							/>
+							{showIndentedTasks ? (
+								tasksWithNoParent.map((taskId) => {
+									return <div>{renderNestedTasks(taskId)}</div>;
+								})
+							) : (
+								<CompletedTasksWithBreadcrumbs
+									{...{
+										tasksById,
+										ancestorTasksById,
+										todoistAncestorTasksById,
+										groupedSubtasksByParentTask,
+										todoistAllTasksById,
+										dateStr,
+										updateTaskIdQueryParam,
+										groupedTasksCollapsedByDefault,
+									}}
+								/>
+							)}
 						</div>
 					</Accordion>
 				</div>
