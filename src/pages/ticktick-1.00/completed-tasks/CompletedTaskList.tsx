@@ -1,6 +1,6 @@
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
-import DayWithCompletedTasks from './DayWithCompletedTasks';
+import DayWithCompletedTasks from './DayWithCompletedTasks/DayWithCompletedTasks';
 
 const CompletedTaskList = ({
 	filteredDaysWithCompletedTasks,

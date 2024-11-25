@@ -1,12 +1,14 @@
-import Icon from '../../../components/Icon';
+import Icon from '../../../../components/Icon';
 import classNames from 'classnames';
-import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { useThemeContext } from '../../../contexts/useThemeContext';
-import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import Accordion from '../../../components/Accordion/Accordion';
-import { getFormattedShortMonthDay } from '../../../utils/date.utils';
-import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
-import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
+import { useGetAllTasksQuery } from '../../../../services/resources/ticktickOneApi';
+import { useThemeContext } from '../../../../contexts/useThemeContext';
+import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
+import Accordion from '../../../../components/Accordion/Accordion';
+import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
+import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
+import { useGetTodoistAllTasksQuery } from '../../../../services/resources/oldFocusAppsApi';
+import CompletedTasksWithBreadcrumbs from './CompletedTasksWithBreadcrumbs';
+import CompletedTask from './CompletedTask';
 
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -141,8 +143,8 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		return (
 			<ul className="">
 				{directCompletedSubtasks?.length > 0 &&
-					directCompletedSubtasks.map((subtask) => (
-						<li className="flex items-start gap-1">
+					directCompletedSubtasks.map((subtask, index) => (
+						<li key={subtask.id + index + dateStr} className="flex items-start gap-1">
 							<Icon
 								name={subtask.status === -1 ? 'disabled_by_default' : 'check_box'}
 								customClass={classNames('!text-[20px] text-white mt-[2px]')}
@@ -156,13 +158,6 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	const renderNestedTasks = (parentTaskId) => {
 		const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
-
-		// oneLevelTasks[parentTaskId] &&
-		// 	oneLevelTasks[parentTaskId].sort((a, b) => {
-		// 		const taskA = todoistAllTasksById[a];
-		// 		const taskB = todoistAllTasksById[b];
-		// 		return taskA['child_order'] - taskB['child_order'];
-		// 	});
 
 		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
 
@@ -181,7 +176,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 					<ul className="pl-6">
 						{oneLevelTasks[parentTaskId] &&
-							oneLevelTasks[parentTaskId].map((taskId) => {
+							oneLevelTasks[parentTaskId].map((taskId, index) => {
 								const task = tasksById[taskId] || todoistAllTasksById[taskId];
 
 								if (oneLevelTasks[taskId] && oneLevelTasks[taskId].length > 0) {
@@ -191,22 +186,21 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 								const directCompletedSubtasks = groupedSubtasksByParentTask[taskId];
 
 								return (
-									<>
-										<Accordion
-											title={
-												<li
-													key={task.id}
-													className="underline cursor-pointer font-bold text-[18px] mt-1"
-												>
-													{task.content || task.title}
-												</li>
-											}
-											openByDefault={true}
-											showArrowNextToText={true}
-										>
-											{renderDirectCompletedSubtasks(directCompletedSubtasks)}
-										</Accordion>
-									</>
+									<Accordion
+										key={taskId + index + dateStr}
+										title={
+											<li
+												key={task.id}
+												className="underline cursor-pointer font-bold text-[18px] mt-1"
+											>
+												{task.content || task.title}
+											</li>
+										}
+										openByDefault={true}
+										showArrowNextToText={true}
+									>
+										{renderDirectCompletedSubtasks(directCompletedSubtasks)}
+									</Accordion>
 								);
 							})}
 					</ul>
@@ -285,85 +279,18 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 								return <div>{renderNestedTasks(taskId)}</div>;
 							})}
 
-							{/* {tasksById &&
-								ancestorTasksById &&
-								todoistAncestorTasksById &&
-								Object.keys(groupedSubtasksByParentTask).map((parentTaskId, i) => {
-									const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
-									const parentTask =
-										(tasksById && tasksById[parentTaskId]) ||
-										(todoistAllTasksById && todoistAllTasksById[parentTaskId]);
-									const parentTaskTitle = parentTask?.title || parentTask?.content || parentTaskId;
-
-									const parentTaskBreadcrumbsTickTick =
-										parentTask &&
-										ancestorTasksById[parentTask.id] &&
-										Object.keys(ancestorTasksById[parentTask.id]);
-
-									const parentTaskBreadcrumbsTodoist =
-										parentTask &&
-										todoistAncestorTasksById[parentTask.id] &&
-										Object.keys(todoistAncestorTasksById[parentTask.id]);
-
-									const parentTaskBreadcrumbs =
-										parentTaskBreadcrumbsTickTick || parentTaskBreadcrumbsTodoist;
-
-									return (
-										<Accordion
-											key={dateStr + parentTaskId + i}
-											title={
-												<div className="text-[18px]">
-													<span
-														className="underline font-bold hover:text-blue-500"
-														onClick={() => {
-															updateTaskIdQueryParam(parentTaskId);
-														}}
-													>
-														{parentTaskTitle}
-													</span>
-
-													{parentTaskBreadcrumbs?.length > 0 && (
-														<span className="ml-1 text-color-gray-25">
-															-{' '}
-															{parentTaskBreadcrumbs.map((taskId, index) => {
-																const taskObj =
-																	tasksById[taskId] || todoistAllTasksById[taskId];
-
-																const title = taskObj.title || taskObj.content;
-
-																return (
-																	<span
-																		key={`breadcrumbs-${dateStr}-${taskObj.id}-${index}`}
-																	>
-																		<span
-																			className="hover:text-blue-500 hover:underline"
-																			onClick={() => {
-																				updateTaskIdQueryParam(taskObj.id);
-																			}}
-																		>
-																			{title}
-																		</span>
-																		{index !== parentTaskBreadcrumbs.length - 1 && (
-																			<span>{' > '}</span>
-																		)}
-																	</span>
-																);
-															})}
-														</span>
-													)}
-												</div>
-											}
-											openByDefault={!groupedTasksCollapsedByDefault}
-											showArrowNextToText={true}
-										>
-											<div className="space-y-1">
-												{completedSubtasks.map((task, i) => (
-													<CompletedTask key={dateStr + task.id + i} task={task} />
-												))}
-											</div>
-										</Accordion>
-									);
-								})} */}
+							<CompletedTasksWithBreadcrumbs
+								{...{
+									tasksById,
+									ancestorTasksById,
+									todoistAncestorTasksById,
+									groupedSubtasksByParentTask,
+									todoistAllTasksById,
+									dateStr,
+									updateTaskIdQueryParam,
+									groupedTasksCollapsedByDefault,
+								}}
+							/>
 						</div>
 					</Accordion>
 				</div>
@@ -371,26 +298,5 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		</div>
 	);
 };
-
-const CompletedTask = ({ task, isFullTask, updateTaskIdQueryParam }) => (
-	<div className="flex items-start gap-1">
-		<Icon
-			name={task.status === -1 ? 'disabled_by_default' : 'check_box'}
-			customClass={classNames('!text-[20px] text-white')}
-		/>
-		<div
-			className={classNames('mt-[-2px]', isFullTask && 'hover:underline cursor-pointer')}
-			onClick={() => {
-				if (!isFullTask) {
-					return;
-				}
-
-				updateTaskIdQueryParam(task.id);
-			}}
-		>
-			{task.title || task.content}
-		</div>
-	</div>
-);
 
 export default DayWithCompletedTasks;
