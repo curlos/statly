@@ -23,6 +23,10 @@ const NestedCompletedTasks = ({
 		}
 	});
 
+	/**
+	 * @description
+	 * @param directCompletedSubtasks
+	 */
 	const renderDirectCompletedSubtasks = (directCompletedSubtasks) => {
 		return (
 			<ul className="">
@@ -40,16 +44,20 @@ const NestedCompletedTasks = ({
 		);
 	};
 
+	/**
+	 * @description
+	 * @param {String} parentTaskId
+	 */
 	const renderNestedTasks = (parentTaskId) => {
 		const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
 
 		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
 
 		return (
-			<ul className="text-[16px]">
+			<ul key={parentTaskId} className="text-[16px]">
 				<Accordion
 					title={
-						<li key={parentTask.id} className="underline cursor-pointer font-bold text-[18px]">
+						<li className="underline cursor-pointer font-bold text-[18px]">
 							{parentTask.content || parentTask.title}
 						</li>
 					}
@@ -73,10 +81,7 @@ const NestedCompletedTasks = ({
 									<Accordion
 										key={taskId + index + dateStr}
 										title={
-											<li
-												key={task.id}
-												className="underline cursor-pointer font-bold text-[18px] mt-1"
-											>
+											<li className="underline cursor-pointer font-bold text-[18px] mt-1">
 												{task.content || task.title}
 											</li>
 										}
@@ -95,8 +100,8 @@ const NestedCompletedTasks = ({
 
 	return (
 		<>
-			{tasksWithNoParent.map((taskId) => {
-				return <div>{renderNestedTasks(taskId)}</div>;
+			{tasksWithNoParent.map((taskId, index) => {
+				return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
 			})}
 		</>
 	);

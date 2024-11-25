@@ -1,3 +1,7 @@
+/**
+ * @description
+ * @returns {Object}
+ */
 export const getGroupedSubtasksAndParentTasks = ({
 	completedTasksForDay,
 	tasksById,

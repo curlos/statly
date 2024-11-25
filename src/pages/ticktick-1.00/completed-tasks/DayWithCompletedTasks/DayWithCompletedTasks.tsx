@@ -57,7 +57,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
 			<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
-				<Icon name="timer" customClass={classNames('!text-[20px]', textColor)} />
+				<Icon name="check_box" customClass={classNames('!text-[20px]', textColor)} />
 			</div>
 
 			{!isLastItemForTheDay && (
