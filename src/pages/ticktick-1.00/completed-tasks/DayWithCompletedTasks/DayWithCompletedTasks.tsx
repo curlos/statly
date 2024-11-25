@@ -10,7 +10,10 @@ import { useGetTodoistAllTasksQuery } from '../../../../services/resources/oldFo
 import CompletedTasksWithBreadcrumbs from './CompletedTasksWithBreadcrumbs';
 import CompletedTask from './CompletedTask';
 import NestedCompletedTasks from './NestedCompletedTasks';
-import { getGroupedSubtasksAndParentTasks } from './getGroupedSubtasksAndParentTasks.util';
+import {
+	getGroupedSubtasksAndParentTasks,
+	getTasksWithParentIdAndNoParent,
+} from './getGroupedSubtasksAndParentTasks.util';
 
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
@@ -37,14 +40,17 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
 
-	const { groupedSubtasksByParentTask, parentTasks, tasksWithParentId, tasksWithNoParent } =
-		getGroupedSubtasksAndParentTasks({
-			completedTasksForDay,
-			tasksById,
-			todoistAllTasksById,
-			ancestorTasksById,
-			todoistAncestorTasksById,
-		});
+	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks({
+		completedTasksForDay,
+	});
+
+	const { tasksWithParentId, tasksWithNoParent } = getTasksWithParentIdAndNoParent({
+		completedTasksForDay,
+		tasksById,
+		todoistAllTasksById,
+		ancestorTasksById,
+		todoistAncestorTasksById,
+	});
 
 	const updateTaskIdQueryParam = (taskId) => {
 		// All the other query params must be cleared to show all of the tasks from the specific task id.
