@@ -10,6 +10,7 @@ const NestedCompletedTasks = ({
 	tasksById,
 	groupedTasksCollapsedByDefault,
 	dateStr,
+	updateTaskIdQueryParam,
 }) => {
 	const oneLevelTasks = {};
 
@@ -57,7 +58,10 @@ const NestedCompletedTasks = ({
 			<ul key={parentTaskId} className="text-[16px]">
 				<Accordion
 					title={
-						<li className="underline cursor-pointer font-bold text-[18px]">
+						<li
+							className="underline cursor-pointer font-bold text-[18px] hover:text-blue-500"
+							onClick={() => updateTaskIdQueryParam(parentTask.id)}
+						>
 							{parentTask.content || parentTask.title}
 						</li>
 					}
@@ -81,7 +85,10 @@ const NestedCompletedTasks = ({
 									<Accordion
 										key={taskId + index + dateStr}
 										title={
-											<li className="underline cursor-pointer font-bold text-[18px] mt-1">
+											<li
+												className="underline cursor-pointer font-bold text-[18px] mt-1 hover:text-blue-500"
+												onClick={() => updateTaskIdQueryParam(task.id)}
+											>
 												{task.content || task.title}
 											</li>
 										}

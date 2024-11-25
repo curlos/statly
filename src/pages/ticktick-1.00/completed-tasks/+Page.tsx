@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../../../components/Navbar/Navbar';
-import { useGetTodoistAllTasksQuery, useGetTodoistAllProjectsQuery } from '../../../services/resources/oldFocusAppsApi';
+import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import FilterBar from '../focus-records/FilterBar';
 import Pagination from '../../../components/Pagination';
@@ -8,17 +8,6 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import CompletedTaskList from './CompletedTaskList';
 import { useFilterCompletedTasks } from './useFilterCompletedTasks';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
-
-const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
-	return Object.keys(completedTasksGroupedByDate).map((dateStr) => {
-		const completedTasksForDay = completedTasksGroupedByDate[dateStr];
-
-		return {
-			dateStr,
-			completedTasksForDay,
-		};
-	});
-};
 
 const Page = () => {
 	// For Filter Sidebar and Filter Bar
@@ -45,10 +34,6 @@ const Page = () => {
 	// RTK Query - Todoist - Tasks
 	const { data: fetchedTodoistTasks } = useGetTodoistAllTasksQuery();
 	const { todoistCompletedTasksGroupedByDate, todoistAllTasksById } = fetchedTodoistTasks || {};
-
-	// RTK Query - Todoist - All Projects
-	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
-	const { todoistAllProjects } = fetchedTodoistAllProjects || {};
 
 	const allCompletedTasksAreHere =
 		completedTasksGroupedByDate && todoistCompletedTasksGroupedByDate && todoistAllTasksById;
@@ -152,6 +137,17 @@ const Page = () => {
 			</div>
 		</div>
 	);
+};
+
+const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
+	return Object.keys(completedTasksGroupedByDate).map((dateStr) => {
+		const completedTasksForDay = completedTasksGroupedByDate[dateStr];
+
+		return {
+			dateStr,
+			completedTasksForDay,
+		};
+	});
 };
 
 export default Page;

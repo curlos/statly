@@ -51,8 +51,6 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 
 	const isAtLeastOneFilterApplied = atLeastOneFilterApplied();
 
-	console.log(page);
-
 	return (
 		<motion.div
 			initial="hidden"

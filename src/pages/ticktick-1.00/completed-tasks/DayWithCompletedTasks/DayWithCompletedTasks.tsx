@@ -12,13 +12,10 @@ import CompletedTask from './CompletedTask';
 import NestedCompletedTasks from './NestedCompletedTasks';
 import { getGroupedSubtasksAndParentTasks } from './getGroupedSubtasksAndParentTasks.util';
 
+/**
+ * @description This is a card that will show the Completed Tasks for a specific day.
+ */
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
-	const { updateQueryParams } = useSearchParamsContext();
-
-	const {
-		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
-	} = useUserSettingsContext();
-
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
@@ -27,6 +24,13 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
 	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
 
+	// Context
+	const { updateQueryParams } = useSearchParamsContext();
+	const {
+		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
+	} = useUserSettingsContext();
+
+	// Theme Context
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
@@ -43,6 +47,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		});
 
 	const updateTaskIdQueryParam = (taskId) => {
+		// All the other query params must be cleared to show all of the tasks from the specific task id.
 		updateQueryParams({
 			'task-id': taskId,
 			'sort-by': '',
@@ -52,6 +57,12 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 			projects: '',
 			page: '',
 		});
+	};
+
+	const handleClickDay = (e) => {
+		e.stopPropagation();
+		const newDayUrl = getFormattedShortMonthDay(new Date(dateStr));
+		updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
 	};
 
 	return (
@@ -86,11 +97,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						title={
 							<div
 								className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
-								onClick={(e) => {
-									e.stopPropagation();
-									const newDayUrl = getFormattedShortMonthDay(new Date(dateStr));
-									updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
-								}}
+								onClick={handleClickDay}
 							>
 								<span>{dateStr}</span>
 								<span> ({completedTasksForDay.length})</span>
@@ -130,6 +137,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 										tasksById,
 										groupedTasksCollapsedByDefault,
 										dateStr,
+										updateTaskIdQueryParam,
 									}}
 								/>
 							) : (
