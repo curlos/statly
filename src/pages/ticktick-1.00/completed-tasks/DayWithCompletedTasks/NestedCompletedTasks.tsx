@@ -12,17 +12,28 @@ const NestedCompletedTasks = ({
 	dateStr,
 	updateTaskIdQueryParam,
 }) => {
-	const oneLevelTasks = {};
+	/**
+	 * @description Get and map the parent ids to their direct children. The array will contain the list of direct children (who are siblings to each other).
+	 * @returns {Object}
+	 */
+	const getParentDirectChildrenTaskIdsByParentId = () => {
+		const parentDirectChildrenTaskIdsByParentId = {};
 
-	Object.entries(tasksWithParentId).forEach(([currentTaskId, parentTaskId]) => {
-		if (parentTaskId) {
-			if (!oneLevelTasks[parentTaskId]) {
-				oneLevelTasks[parentTaskId] = [];
+		Object.entries(tasksWithParentId).forEach(([currentTaskId, parentTaskId]) => {
+			if (parentTaskId) {
+				if (!parentDirectChildrenTaskIdsByParentId[parentTaskId]) {
+					parentDirectChildrenTaskIdsByParentId[parentTaskId] = [];
+				}
+
+				// This array for the specific key of "parentTaskId" will only contain the taskIds of tasks who have the SAME PARENT ID. If they have the same parent id, then they are siblings. This will only contain the direct children of that parent. It will NOT contain the parent's grandchildren or great-grandchildren and so on.
+				parentDirectChildrenTaskIdsByParentId[parentTaskId].push(currentTaskId);
 			}
+		});
 
-			oneLevelTasks[parentTaskId].push(currentTaskId);
-		}
-	});
+		return parentDirectChildrenTaskIdsByParentId;
+	};
+
+	const parentDirectChildrenTaskIdsByParentId = getParentDirectChildrenTaskIdsByParentId();
 
 	/**
 	 * @description
@@ -31,19 +42,20 @@ const NestedCompletedTasks = ({
 	const renderDirectCompletedSubtasks = (directCompletedSubtasks) => {
 		return (
 			<ul className="">
-				{directCompletedSubtasks?.length > 0 &&
-					directCompletedSubtasks.map((subtask, index) => (
-						<li key={subtask.id + index + dateStr} className="flex items-start gap-1">
-							<Icon
-								name={subtask.status === -1 ? 'disabled_by_default' : 'check_box'}
-								customClass={classNames('!text-[20px] text-white mt-[2px]')}
-							/>
-							<span>{subtask.content || subtask.title}</span>
-						</li>
-					))}
+				{directCompletedSubtasks?.map((subtask, index) => (
+					<li key={subtask.id + index + dateStr} className="flex items-start gap-1">
+						<Icon
+							name={subtask.status === -1 ? 'disabled_by_default' : 'check_box'}
+							customClass={classNames('!text-[20px] text-white mt-[2px]')}
+						/>
+						<span>{subtask.content || subtask.title}</span>
+					</li>
+				))}
 			</ul>
 		);
 	};
+
+	console.log(parentDirectChildrenTaskIdsByParentId);
 
 	/**
 	 * @description
@@ -52,6 +64,7 @@ const NestedCompletedTasks = ({
 	const renderNestedTasks = (parentTaskId) => {
 		const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
 
+		// These are the tasks who are direct children of the parent task. These will be rendered as completed checkboxes with the content.
 		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
 
 		return (
@@ -62,20 +75,24 @@ const NestedCompletedTasks = ({
 							className="underline cursor-pointer font-bold text-[18px] hover:text-blue-500"
 							onClick={() => updateTaskIdQueryParam(parentTask.id)}
 						>
-							{parentTask.content || parentTask.title}
+							{/* TickTick tasks = "title", Todoist tasks = "content" */}
+							{parentTask.title || parentTask.content}
 						</li>
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
 					showArrowNextToText={true}
 				>
-					{renderDirectCompletedSubtasks(directCompletedSubtasks)}
+					{directCompletedSubtasks?.length > 0 && renderDirectCompletedSubtasks(directCompletedSubtasks)}
 
 					<ul className="pl-6">
-						{oneLevelTasks[parentTaskId] &&
-							oneLevelTasks[parentTaskId].map((taskId, index) => {
+						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
+							parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId, index) => {
 								const task = tasksById[taskId] || todoistAllTasksById[taskId];
 
-								if (oneLevelTasks[taskId] && oneLevelTasks[taskId].length > 0) {
+								if (
+									parentDirectChildrenTaskIdsByParentId[taskId] &&
+									parentDirectChildrenTaskIdsByParentId[taskId].length > 0
+								) {
 									return renderNestedTasks(taskId);
 								}
 
@@ -95,7 +112,8 @@ const NestedCompletedTasks = ({
 										openByDefault={true}
 										showArrowNextToText={true}
 									>
-										{renderDirectCompletedSubtasks(directCompletedSubtasks)}
+										{directCompletedSubtasks?.length > 0 &&
+											renderDirectCompletedSubtasks(directCompletedSubtasks)}
 									</Accordion>
 								);
 							})}
@@ -107,6 +125,7 @@ const NestedCompletedTasks = ({
 
 	return (
 		<>
+			{/* Starting the tasks with NO parent, recursively render the nested tasks. It's important to start with the tasks with NO parent as they are the top-level task and for this to recursively render this without missing any tasks, it must start from the top. */}
 			{tasksWithNoParent.map((taskId, index) => {
 				return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
 			})}
