@@ -7,7 +7,7 @@ const TopButtonList = ({ BUTTONS_INTERVALS_OBJ }) => {
 	const { chosenColorObj } = themeContext;
 	const { textColor, bgColorHalfOpacity } = chosenColorObj;
 
-	const sharedButtonStyle = `text-[16px] py-1 px-3 rounded-3xl cursor-pointer`;
+	const sharedButtonStyle = `text-[16px] py-1 px-3 cursor-pointer`;
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
