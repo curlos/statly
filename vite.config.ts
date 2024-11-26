@@ -82,7 +82,11 @@ export default defineConfig({
 				navigateFallback: null,
 			},
 		}),
-		vike({}),
+		vike({
+			redirects: {
+				'/ticktick-1.00/medals': '/ticktick-1.00/medals/focus/daily',
+			},
+		}),
 	],
 	server: {
 		port: 5173,

@@ -10,7 +10,7 @@ import {
 	useGetTodoistAllProjectsQuery,
 	useGetTodoistAllTasksQuery,
 } from '../../../services/resources/oldFocusAppsApi';
-import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../../utils/constants.utils';
+import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../../utils/constants/constants.utils';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();

@@ -4,7 +4,7 @@ import Accordion from '../Accordion/Accordion';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
-import { TO_DO_LIST_APPS } from '../../utils/constants.utils';
+import { TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
 
 const ShowDaysFromToDoListAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();

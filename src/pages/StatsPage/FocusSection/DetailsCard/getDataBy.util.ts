@@ -1,4 +1,4 @@
-import { FOCUS_APPS } from '../../../../utils/constants.utils';
+import { FOCUS_APPS } from '../../../../utils/constants/constants.utils';
 import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import { getRandomColor, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp } from '../../../../utils/focus-apps/multiFocusApps.utils';

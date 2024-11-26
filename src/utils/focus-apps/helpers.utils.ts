@@ -1,4 +1,4 @@
-import { FOCUS_HOURS_HABIT_ID } from '../constants.utils';
+import { FOCUS_HOURS_HABIT_ID } from '../constants/constants.utils';
 import { filterTasksByFilter } from '../filters.util';
 import { SMART_LISTS } from '../smartLists.utils';
 

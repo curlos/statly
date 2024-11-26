@@ -4,7 +4,7 @@ import Accordion from '../Accordion/Accordion';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
-import { FOCUS_APPS } from '../../utils/constants.utils';
+import { FOCUS_APPS } from '../../utils/constants/constants.utils';
 
 const ShowRecordsFromFocusAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();

@@ -1,4 +1,4 @@
-import { FOCUS_APPS } from '../constants.utils';
+import { FOCUS_APPS } from '../constants/constants.utils';
 import { getEndTimeFromStartTimeAndDuration } from './focusRecords.utils';
 
 export const getFocusRecordFocusApp = (focusRecord) => {

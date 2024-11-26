@@ -3,7 +3,7 @@ import Icon from '../../../components/Icon';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import ModalHabitDetails from '../../../components/Modal/ModalHabitDetails/ModalHabitDetails';
 import { useState } from 'react';
-import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants.utils';
+import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants/constants.utils';
 import classNames from 'classnames';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
 import { getStreaksInfo, getFocusDataForDayInfo } from '../../../utils/focus.utils';
