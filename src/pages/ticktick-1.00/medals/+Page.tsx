@@ -5,6 +5,7 @@ import useResizeObserver from '../../../hooks/useResizeObserver';
 import { DEFAULT_DAILY_FOCUS_HOURS_MEDALS } from '../../../utils/constants/focus/focusHoursMedals.utils';
 import TopButtonList from './TopButtonList';
 import MedalList from './MedalList/MedalList';
+import ChosenMedal from './ChosenMedal';
 
 const Page = () => {
 	const [chosenMedal, setChosenMedal] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS[0]);
@@ -44,45 +45,10 @@ const Page = () => {
 				</div>
 
 				<div className="grid grid-cols-12 container">
-					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal, BUTTONS_INTERVALS_OBJ }} />
+					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal }} />
 
 					<div className="col-span-4">
 						<ChosenMedal {...{ chosenMedal }} />
-					</div>
-				</div>
-			</div>
-		</div>
-	);
-};
-
-const ChosenMedal = ({ chosenMedal }) => {
-	const getIntervalText = () => {
-		if (location.pathname.includes('daily')) {
-			return 'day';
-		} else if (location.pathname.includes('weekly')) {
-			return 'week';
-		} else if (location.pathname.includes('monthly')) {
-			return 'month';
-		} else if (location.pathname.includes('yearly')) {
-			return 'year';
-		}
-	};
-
-	return (
-		<div className="flex justify-center mt-5">
-			<div>
-				<div className="flex justify-center">
-					<img src="/Backfire_Medal_IW.webp" />
-				</div>
-				<div>
-					<div className="text-[26px] font-bold bg-color-gray-200 px-2">{chosenMedal.name}</div>
-					<div className="text-[18px]">
-						<span className="font-bold">Times Earned: </span>
-						{chosenMedal.timesEarned.toLocaleString()}
-					</div>
-					<div className="text-[18px]">
-						<span className="font-bold">Description: </span>
-						{chosenMedal.name} in a {getIntervalText()}
 					</div>
 				</div>
 			</div>

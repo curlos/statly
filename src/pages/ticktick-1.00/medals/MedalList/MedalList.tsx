@@ -10,10 +10,9 @@ import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRec
 import MedalCard from './MedalCard';
 import { sumFocusByPeriod } from '../../../../utils/focus.utils';
 
-const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, BUTTONS_INTERVALS_OBJ }) => {
+const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
 	const { focusRecordsGroupedByDate } = useStatsContext();
 
-	const [focusDurationByDate, setFocusDurationByDate] = useState({});
 	const [dailyFocusHoursMedals, setDailyFocusHoursMedals] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS);
 	const [weeklyFocusHoursMedals, setWeeklyFocusHoursMedals] = useState(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS);
 	const [monthlyFocusHoursMedals, setMonthlyFocusHoursMedals] = useState(DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS);
@@ -52,18 +51,13 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, BUTTONS_INTERVALS_O
 		const focusDurationByMonth = sumFocusByPeriod(newFocusDurationByDate, 'month');
 		const focusDurationByYear = sumFocusByPeriod(newFocusDurationByDate, 'year');
 
-		console.log(focusDurationByWeek);
-
 		// Calculate the number of times a medal for each interval was earned.
 		getTimesEarnedForInterval(newFocusDurationByDate, newDailyFocusHoursMedals);
 		getTimesEarnedForInterval(focusDurationByWeek, newWeeklyFocusHoursMedals);
 		getTimesEarnedForInterval(focusDurationByMonth, newMonthlyFocusHoursMedals);
 		getTimesEarnedForInterval(focusDurationByYear, newYearlyFocusHoursMedals);
 
-		console.log(newWeeklyFocusHoursMedals);
-
-		setFocusDurationByDate(newFocusDurationByDate);
-
+		// Update with new focus durations
 		setDailyFocusHoursMedals(newDailyFocusHoursMedals);
 		setWeeklyFocusHoursMedals(newWeeklyFocusHoursMedals);
 		setMonthlyFocusHoursMedals(newMonthlyFocusHoursMedals);
