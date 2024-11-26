@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Navbar from '../../../components/Navbar/Navbar';
 import { useStatsContext } from '../../../contexts/useStatsContext';
 import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 import { DEFAULT_DAILY_FOCUS_HOURS_MEDALS } from '../../../utils/constants.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
+import useMaxHeight from '../../../hooks/useMaxHeight';
+import useResizeObserver from '../../../hooks/useResizeObserver';
 
 const Page = () => {
 	const { focusRecordsGroupedByDate } = useStatsContext();
@@ -40,22 +42,32 @@ const Page = () => {
 
 		setFocusDurationByDate(newFocusDurationByDate);
 		setDailyFocusHoursMedals(newDailyFocusHoursMedals);
+		setChosenMedal(newDailyFocusHoursMedals[0]);
 	}, [focusRecordsGroupedByDate]);
+
+	const [headerHeight, setHeaderHeight] = useState(0);
+	const topHeaderRef = useRef(null);
+
+	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
+
+	const maxHeight = useMaxHeight(headerHeight);
 
 	return (
 		<div>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
-				<Navbar />
-
-				<div className="container text-[28px] font-bold">Medals</div>
+				<div ref={topHeaderRef}>
+					<Navbar />
+					<div className="container text-[28px] font-bold">Medals</div>
+				</div>
 
 				<div className="grid grid-cols-12 container">
-					<div className="col-span-8 grid grid-cols-4 gap-2 max-h-[700px] overflow-auto gray-scrollbar">
-						{focusDurationByDate &&
-							Object.keys(focusDurationByDate).length > 0 &&
-							dailyFocusHoursMedals.map((dailyFocusMedal) => {
-								return <MedalCard {...{ medal: dailyFocusMedal, chosenMedal, setChosenMedal }} />;
-							})}
+					<div
+						className="col-span-8 grid grid-cols-4 gap-2 overflow-auto gray-scrollbar"
+						style={{ maxHeight }}
+					>
+						{dailyFocusHoursMedals.map((dailyFocusMedal) => {
+							return <MedalCard {...{ medal: dailyFocusMedal, chosenMedal, setChosenMedal }} />;
+						})}
 					</div>
 
 					<div className="col-span-4">
