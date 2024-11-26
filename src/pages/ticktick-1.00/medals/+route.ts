@@ -1,1 +1,1 @@
-export default '/ticktick-1.00/medals/*';
+export default '/ticktick-1.00/medals/@type/@interval';

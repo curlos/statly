@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { navigate } from 'vike/client/router';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import { usePageContext } from 'vike-react/usePageContext';
 
-const TopButtonList = ({ BUTTONS_INTERVALS_OBJ }) => {
+const TopButtonList = ({ BUTTONS_OBJ, isForInterval = true }) => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, bgColorHalfOpacity } = chosenColorObj;
@@ -12,22 +13,33 @@ const TopButtonList = ({ BUTTONS_INTERVALS_OBJ }) => {
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
 	return (
-		<div className="container flex items-center gap-2 my-2">
-			{BUTTONS_INTERVALS_OBJ.map((buttonObj) => {
-				const { name, url } = buttonObj;
-
-				return <TopButton key={name} {...{ name, url, selectedButtonStyle, unselectedButtonStyle }} />;
+		<div className="flex items-center gap-2 my-2">
+			{BUTTONS_OBJ.map((buttonObj) => {
+				return (
+					<TopButton
+						key={buttonObj.name}
+						{...{ buttonObj, selectedButtonStyle, unselectedButtonStyle, isForInterval }}
+					/>
+				);
 			})}
 		</div>
 	);
 };
 
-const TopButton = ({ name, url, selectedButtonStyle, unselectedButtonStyle }) => {
+const TopButton = ({ buttonObj, selectedButtonStyle, unselectedButtonStyle, isForInterval }) => {
+	const pageContext = usePageContext();
+	const { type, interval } = pageContext.routeParams;
+
+	const { name, urlName } = buttonObj;
+
+	const isSelected = isForInterval ? urlName === interval : urlName === type;
+
+	const newType = isForInterval ? type : urlName;
+	const newInterval = isForInterval ? urlName : interval;
+	const buttonUrl = `/ticktick-1.00/medals/${newType}/${newInterval}`;
+
 	return (
-		<div
-			className={location.pathname.includes(name.toLowerCase()) ? selectedButtonStyle : unselectedButtonStyle}
-			onClick={() => navigate(url)}
-		>
+		<div className={isSelected ? selectedButtonStyle : unselectedButtonStyle} onClick={() => navigate(buttonUrl)}>
 			{name}
 		</div>
 	);

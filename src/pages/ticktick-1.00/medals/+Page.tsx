@@ -16,22 +16,33 @@ const Page = () => {
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
+	const BUTTONS_MEDALS_TYPE_OBJ = [
+		{
+			name: 'Focus',
+			urlName: 'focus',
+		},
+		{
+			name: 'Tasks',
+			urlName: 'tasks',
+		},
+	];
+
 	const BUTTONS_INTERVALS_OBJ = [
 		{
 			name: 'Daily',
-			url: '/ticktick-1.00/medals/focus/daily',
+			urlName: 'daily',
 		},
 		{
 			name: 'Weekly',
-			url: '/ticktick-1.00/medals/focus/weekly',
+			urlName: 'weekly',
 		},
 		{
 			name: 'Monthly',
-			url: '/ticktick-1.00/medals/focus/monthly',
+			urlName: 'monthly',
 		},
 		{
 			name: 'Yearly',
-			url: '/ticktick-1.00/medals/focus/yearly',
+			urlName: 'yearly',
 		},
 	];
 
@@ -41,7 +52,14 @@ const Page = () => {
 				<div ref={topHeaderRef}>
 					<Navbar />
 					<div className="container text-[28px] font-bold">Medals</div>
-					<TopButtonList {...{ BUTTONS_INTERVALS_OBJ }} />
+					<div className="container grid grid-cols-12">
+						<div className="flex items-center justify-between col-span-8">
+							<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
+							<div className="mr-3">
+								<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_INTERVALS_OBJ }} />
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<div className="grid grid-cols-12 container">
