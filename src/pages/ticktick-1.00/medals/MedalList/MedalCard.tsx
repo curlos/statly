@@ -9,9 +9,10 @@ const MedalCard = ({ medal, chosenMedal, setChosenMedal }) => {
 	return (
 		<div
 			className={classNames(
-				'bg-color-gray-600 border cursor-pointer',
+				'bg-color-gray-600 border-2 cursor-pointer',
 				chosenColorObj.hover.borderColor,
-				chosenMedal.name === name ? chosenColorObj.borderColor : 'border-[transparent]'
+				chosenMedal.name === name ? chosenColorObj.borderColor : 'border-[transparent]',
+				timesEarned === 0 && 'opacity-50'
 			)}
 			onClick={() => setChosenMedal(medal)}
 		>

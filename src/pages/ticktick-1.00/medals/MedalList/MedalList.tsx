@@ -83,9 +83,20 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
 		return dailyFocusHoursMedals;
 	};
 
+	const medalsToUse = getMedalsToUse();
+
+	console.log(medalsToUse);
+
+	const medalsThatHaveNotBeenEarned = medalsToUse.filter((medal) => medal.timesEarned === 0);
+	const medalsThatHaveBeenEarned = medalsToUse.filter((medal) => medal.timesEarned > 0);
+
 	return (
 		<div className="col-span-8 grid grid-cols-4 gap-2 overflow-auto gray-scrollbar" style={{ maxHeight }}>
-			{getMedalsToUse().map((medal) => {
+			{medalsThatHaveBeenEarned.map((medal) => {
+				return <MedalCard key={medal.name} {...{ medal: medal, chosenMedal, setChosenMedal }} />;
+			})}
+
+			{medalsThatHaveNotBeenEarned.map((medal) => {
 				return <MedalCard key={medal.name} {...{ medal: medal, chosenMedal, setChosenMedal }} />;
 			})}
 		</div>
