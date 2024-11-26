@@ -12,6 +12,7 @@ import {
 	useGetBeFocusedAppFocusRecordsQuery,
 	useGetForestAppFocusRecordsQuery,
 	useGetTideAppFocusRecordsQuery,
+	useGetTodoistAllTasksQuery,
 } from '../services/resources/oldFocusAppsApi';
 
 const StatsContext = createContext();
@@ -37,6 +38,10 @@ const useStats = () => {
 		completedTasksGroupedByProject,
 	} = fetchedTasks || {};
 
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistTasks } = useGetTodoistAllTasksQuery();
+	const { todoistCompletedTasksGroupedByDate } = fetchedTodoistTasks || {};
+
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects, projectsById } = fetchedProjects || {};
@@ -46,7 +51,6 @@ const useStats = () => {
 	const { tags, tagsByRawName } = fetchedTags || {};
 
 	// FOCUS RECORDS FROM ALL APPS
-
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
 		useGetPomoAndStopwatchFocusRecordsQuery();
@@ -292,6 +296,8 @@ const useStats = () => {
 		tagsByRawName,
 		focusRecords: allFocusRecords,
 		focusRecordsGroupedByDate,
+
+		allCompletedTasksGroupedByDate: { ...completedTasksGroupedByDate, ...todoistCompletedTasksGroupedByDate },
 
 		// Functions
 		getCompletedTasksFromSelectedDates,

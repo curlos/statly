@@ -2,13 +2,36 @@ import { useRef, useState } from 'react';
 import Navbar from '../../../components/Navbar/Navbar';
 import useMaxHeight from '../../../hooks/useMaxHeight';
 import useResizeObserver from '../../../hooks/useResizeObserver';
-import { DEFAULT_DAILY_FOCUS_HOURS_MEDALS } from '../../../utils/constants/focus/focusHoursMedals.utils';
+import {
+	DEFAULT_DAILY_FOCUS_HOURS_MEDALS,
+	DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS,
+	DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS,
+	DEFAULT_YEARLY_FOCUS_HOURS_MEDALS,
+} from '../../../utils/constants/focus/focusHoursMedals.utils';
 import TopButtonList from './TopButtonList';
 import MedalList from './MedalList/MedalList';
 import ChosenMedal from './ChosenMedal';
+import { usePageContext } from 'vike-react/usePageContext';
+import { DEFAULT_DAILY_COMPLETED_TASKS_MEDALS } from '../../../utils/constants/tasks/tasksMedals.utils';
+
+const DEFAULT_MEDALS = {
+	focus: {
+		daily: DEFAULT_DAILY_FOCUS_HOURS_MEDALS,
+		weekly: DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS,
+		monthly: DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS,
+		yearly: DEFAULT_YEARLY_FOCUS_HOURS_MEDALS,
+	},
+	tasks: {
+		daily: DEFAULT_DAILY_COMPLETED_TASKS_MEDALS,
+	},
+};
 
 const Page = () => {
-	const [chosenMedal, setChosenMedal] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS[0]);
+	const pageContext = usePageContext();
+	const { type, interval } = pageContext.routeParams;
+
+	const defaultMedals = DEFAULT_MEDALS[type][interval];
+	const [chosenMedal, setChosenMedal] = useState(defaultMedals[0]);
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
