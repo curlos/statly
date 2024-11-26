@@ -13,7 +13,7 @@ const Page = () => {
 	const [headerHeight, setHeaderHeight] = useState(0);
 	const topHeaderRef = useRef(null);
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
-	const maxHeight = useMaxHeight(headerHeight);
+	const maxHeight = useMaxHeight(headerHeight + 20);
 
 	const BUTTONS_INTERVALS_OBJ = [
 		{
