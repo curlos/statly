@@ -189,57 +189,57 @@ export const DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS = [
 
 export const DEFAULT_YEARLY_FOCUS_HOURS_MEDALS = [
 	{
-		name: 'Focus 2000 Hours',
+		name: 'Focus 2,000 Hours',
 		requiredDuration: 7200000, // 2000 hours * 3600 = 7200000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1900 Hours',
+		name: 'Focus 1,900 Hours',
 		requiredDuration: 6840000, // 1900 hours * 3600 = 6840000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1800 Hours',
+		name: 'Focus 1,800 Hours',
 		requiredDuration: 6480000, // 1800 hours * 3600 = 6480000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1700 Hours',
+		name: 'Focus 1,700 Hours',
 		requiredDuration: 6120000, // 1700 hours * 3600 = 6120000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1600 Hours',
+		name: 'Focus 1,600 Hours',
 		requiredDuration: 5760000, // 1600 hours * 3600 = 5760000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1500 Hours',
+		name: 'Focus 1,500 Hours',
 		requiredDuration: 5400000, // 1500 hours * 3600 = 5400000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1400 Hours',
+		name: 'Focus 1,400 Hours',
 		requiredDuration: 5040000, // 1400 hours * 3600 = 5040000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1300 Hours',
+		name: 'Focus 1,300 Hours',
 		requiredDuration: 4680000, // 1300 hours * 3600 = 4680000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1200 Hours',
+		name: 'Focus 1,200 Hours',
 		requiredDuration: 4320000, // 1200 hours * 3600 = 4320000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1100 Hours',
+		name: 'Focus 1,100 Hours',
 		requiredDuration: 3960000, // 1100 hours * 3600 = 3960000 seconds
 		timesEarned: 0,
 	},
 	{
-		name: 'Focus 1000 Hours',
+		name: 'Focus 1,000 Hours',
 		requiredDuration: 3600000, // 1000 hours * 3600 = 3600000 seconds
 		timesEarned: 0,
 	},

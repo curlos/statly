@@ -8,7 +8,9 @@ import useMaxHeight from '../../../hooks/useMaxHeight';
 import useResizeObserver from '../../../hooks/useResizeObserver';
 import {
 	DEFAULT_DAILY_FOCUS_HOURS_MEDALS,
+	DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS,
 	DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS,
+	DEFAULT_YEARLY_FOCUS_HOURS_MEDALS,
 } from '../../../utils/constants/focus/focusHoursMedals.utils';
 import { navigate } from 'vike/client/router';
 
@@ -87,8 +89,20 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, BUTTONS_INTERVALS_O
 	const [focusDurationByDate, setFocusDurationByDate] = useState({});
 	const [dailyFocusHoursMedals, setDailyFocusHoursMedals] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS);
 	const [weeklyFocusHoursMedals, setWeeklyFocusHoursMedals] = useState(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS);
-	// const [dailyFocusHoursMedals, setDailyFocusHoursMedals] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS);
-	// const [dailyFocusHoursMedals, setDailyFocusHoursMedals] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS);
+	const [monthlyFocusHoursMedals, setMonthlyFocusHoursMedals] = useState(DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS);
+	const [yearlyFocusHoursMedals, setYearlyFocusHoursMedals] = useState(DEFAULT_YEARLY_FOCUS_HOURS_MEDALS);
+
+	const getTimesEarnedForInterval = (focusDurationForInterval, intervalFocusHoursMedals) => {
+		Object.entries(focusDurationForInterval).forEach(([dateKey, focusDuration]) => {
+			intervalFocusHoursMedals.forEach((focusHourMedal) => {
+				const { requiredDuration } = focusHourMedal;
+
+				if (focusDuration >= requiredDuration) {
+					focusHourMedal.timesEarned += 1;
+				}
+			});
+		});
+	};
 
 	useEffect(() => {
 		if (!focusRecordsGroupedByDate) {
@@ -98,28 +112,36 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, BUTTONS_INTERVALS_O
 		const newFocusDurationByDate = {};
 
 		const newDailyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_DAILY_FOCUS_HOURS_MEDALS));
-		// const newWeeklyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS));
+		const newWeeklyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS));
+		const newMonthlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS));
+		const newYearlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_YEARLY_FOCUS_HOURS_MEDALS));
 
 		// Get the focus duration for each day.
 		Object.entries(focusRecordsGroupedByDate).forEach(([dateKey, focusRecords]) => {
 			newFocusDurationByDate[dateKey] = getFocusDurationFromArray(focusRecords);
 		});
 
+		const focusDurationByWeek = sumFocusByPeriod(newFocusDurationByDate, 'week');
+		const focusDurationByMonth = sumFocusByPeriod(newFocusDurationByDate, 'month');
+		const focusDurationByYear = sumFocusByPeriod(newFocusDurationByDate, 'year');
+
+		console.log(focusDurationByWeek);
+
 		// Calculate the number of times a medal for each interval was earned.
-		Object.entries(newFocusDurationByDate).forEach(([dateKey, focusDurationForDay]) => {
-			newDailyFocusHoursMedals.forEach((dailyFocusHourMedal) => {
-				const { requiredDuration } = dailyFocusHourMedal;
+		getTimesEarnedForInterval(newFocusDurationByDate, newDailyFocusHoursMedals);
+		getTimesEarnedForInterval(focusDurationByWeek, newWeeklyFocusHoursMedals);
+		getTimesEarnedForInterval(focusDurationByMonth, newMonthlyFocusHoursMedals);
+		getTimesEarnedForInterval(focusDurationByYear, newYearlyFocusHoursMedals);
 
-				if (focusDurationForDay >= requiredDuration) {
-					dailyFocusHourMedal.timesEarned += 1;
-				}
-			});
-		});
-
-		console.log(newDailyFocusHoursMedals);
+		console.log(newWeeklyFocusHoursMedals);
 
 		setFocusDurationByDate(newFocusDurationByDate);
+
 		setDailyFocusHoursMedals(newDailyFocusHoursMedals);
+		setWeeklyFocusHoursMedals(newWeeklyFocusHoursMedals);
+		setMonthlyFocusHoursMedals(newMonthlyFocusHoursMedals);
+		setYearlyFocusHoursMedals(newYearlyFocusHoursMedals);
+
 		setChosenMedal(newDailyFocusHoursMedals[0]);
 	}, [focusRecordsGroupedByDate]);
 
@@ -127,8 +149,8 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, BUTTONS_INTERVALS_O
 		const allMedals = {
 			daily: dailyFocusHoursMedals,
 			weekly: weeklyFocusHoursMedals,
-			// 'daily': dailyFocusHoursMedals,
-			// 'daily': dailyFocusHoursMedals,
+			monthly: monthlyFocusHoursMedals,
+			yearly: yearlyFocusHoursMedals,
 		};
 
 		for (const [interval, intervalFocusHourMedals] of Object.entries(allMedals)) {
@@ -200,5 +222,77 @@ const TopButton = ({ name, url, selectedButtonStyle, unselectedButtonStyle }) =>
 		</div>
 	);
 };
+
+/**
+ * @description Adds up the focus duration over different grouped periods using the object with the focus duration for all the singular days "focusData".
+ * @param {Object} focusData
+ * @param {String} period
+ * @returns {Object}
+ */
+function sumFocusByPeriod(focusData, period) {
+	const results = {}; // Object to hold the sum of focus time for each period
+
+	/**
+	 * @description Gets the start of the passed in period (week, month, year).
+	 */
+	function getStartOfPeriod(date, period) {
+		switch (period) {
+			// For the passed in date, retreive that date's monday. For example, if the date is November 26, 2024 (Tuesday), then this would get November 25, 2024 (Monday).
+			case 'week':
+				const dayOfWeek = date.getDay();
+				const thatWeeksMonday = date.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+				date.setDate(thatWeeksMonday);
+				date.setHours(0, 0, 0, 0);
+				return new Date(date);
+			// Gets the first day of the month for that date
+			case 'month':
+				return new Date(date.getFullYear(), date.getMonth(), 1);
+			// Gets the first day of January of that year for that date.
+			case 'year':
+				return new Date(date.getFullYear(), 0, 1);
+			default:
+				return new Date(date);
+		}
+	}
+
+	/**
+	 * @description
+	 */
+	function getEndOfPeriod(start, period) {
+		switch (period) {
+			// With "week", the corresponding "getStartOfPeriod" function will always set the start date to Monday so adding 6 to the Monday date will bring us to the end of the period/week (Sunday).
+			case 'week':
+				start.setDate(start.getDate() + 6);
+				start.setHours(23, 59, 59, 999);
+				return new Date(start);
+			// Gets the last day of the month for that date "start.getMonth()" will set it to the next month and then "0" after it will set it back by one.
+			case 'month':
+				return new Date(start.getFullYear(), start.getMonth() + 1, 0, 23, 59, 59, 999);
+			// Sets this to December 31 of that date's year.
+			case 'year':
+				return new Date(start.getFullYear(), 11, 31, 23, 59, 59, 999);
+			default:
+				return new Date(start);
+		}
+	}
+
+	Object.keys(focusData).forEach((dateStr) => {
+		const date = new Date(dateStr);
+		const startOfPeriod = getStartOfPeriod(new Date(date), period);
+		const endOfPeriod = getEndOfPeriod(new Date(startOfPeriod), period);
+
+		// A period key can be created because each date in the array of focus data will have their own period key that is shared by other dates that are within the same period.
+		const periodKey = `${startOfPeriod.toLocaleDateString('en-US')} to ${endOfPeriod.toLocaleDateString('en-US')}`;
+
+		if (!results[periodKey]) {
+			results[periodKey] = 0;
+		}
+
+		// Add the focus duration to the period
+		results[periodKey] += focusData[dateStr];
+	});
+
+	return results;
+}
 
 export default Page;
