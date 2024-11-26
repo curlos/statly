@@ -12,7 +12,12 @@ import TopButtonList from './TopButtonList';
 import MedalList from './MedalList/MedalList';
 import ChosenMedal from './ChosenMedal';
 import { usePageContext } from 'vike-react/usePageContext';
-import { DEFAULT_DAILY_COMPLETED_TASKS_MEDALS } from '../../../utils/constants/tasks/tasksMedals.utils';
+import {
+	DEFAULT_DAILY_COMPLETED_TASKS_MEDALS,
+	DEFAULT_MONTHLY_COMPLETED_TASKS_MEDALS,
+	DEFAULT_WEEKLY_COMPLETED_TASKS_MEDALS,
+	DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS,
+} from '../../../utils/constants/tasks/tasksMedals.utils';
 
 const DEFAULT_MEDALS = {
 	focus: {
@@ -23,15 +28,14 @@ const DEFAULT_MEDALS = {
 	},
 	tasks: {
 		daily: DEFAULT_DAILY_COMPLETED_TASKS_MEDALS,
+		weekly: DEFAULT_WEEKLY_COMPLETED_TASKS_MEDALS,
+		monthly: DEFAULT_MONTHLY_COMPLETED_TASKS_MEDALS,
+		yearly: DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS,
 	},
 };
 
 const Page = () => {
-	const pageContext = usePageContext();
-	const { type, interval } = pageContext.routeParams;
-
-	const defaultMedals = DEFAULT_MEDALS[type][interval];
-	const [chosenMedal, setChosenMedal] = useState(defaultMedals[0]);
+	const [chosenMedal, setChosenMedal] = useState({});
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
@@ -89,7 +93,7 @@ const Page = () => {
 					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal }} />
 
 					<div className="col-span-4">
-						<ChosenMedal {...{ chosenMedal }} />
+						<ChosenMedal {...{ chosenMedal, maxHeight }} />
 					</div>
 				</div>
 			</div>

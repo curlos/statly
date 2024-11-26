@@ -4,6 +4,7 @@ import {
 	getDateMapSinceDay,
 	sortObjectByDateKeys,
 	areDatesEqual,
+	getFormattedShortMonthDay,
 } from './date.utils';
 import { getFocusDurationFilteredByProjects } from './focus-apps/focusRecords.utils';
 
@@ -165,12 +166,12 @@ export const getFocusDataForDayInfo = (focusRecordsByDate, date) => {
 };
 
 /**
- * @description Adds up the focus duration over different grouped periods using the object with the focus duration for all the singular days "focusData".
- * @param {Object} focusData
+ * @description Adds up the focus duration or completed tasks number over different grouped periods using the object with the num value (focus duration or completed tasks length) for all the singular days "numsData".
+ * @param {Object} numsData
  * @param {String} period
  * @returns {Object}
  */
-export const sumFocusByPeriod = (focusData, period) => {
+export const sumNumsByPeriod = (numsData, period) => {
 	const results = {}; // Object to hold the sum of focus time for each period
 
 	/**
@@ -217,20 +218,31 @@ export const sumFocusByPeriod = (focusData, period) => {
 		}
 	}
 
-	Object.keys(focusData).forEach((dateStr) => {
+	const getPeriodKey = (endOfPeriod) => {
+		switch (period) {
+			case 'week':
+				return getFormattedLongDay(endOfPeriod);
+			case 'month':
+				return new Date(endOfPeriod).toLocaleString('default', { month: 'long', year: 'numeric' });
+			case 'year':
+				return new Date(endOfPeriod).toLocaleString('default', { year: 'numeric' });
+		}
+	};
+
+	Object.keys(numsData).forEach((dateStr) => {
 		const date = new Date(dateStr);
 		const startOfPeriod = getStartOfPeriod(new Date(date), period);
 		const endOfPeriod = getEndOfPeriod(new Date(startOfPeriod), period);
 
 		// A period key can be created because each date in the array of focus data will have their own period key that is shared by other dates that are within the same period.
-		const periodKey = `${startOfPeriod.toLocaleDateString('en-US')} to ${endOfPeriod.toLocaleDateString('en-US')}`;
+		const periodKey = getPeriodKey(endOfPeriod);
 
 		if (!results[periodKey]) {
 			results[periodKey] = 0;
 		}
 
 		// Add the focus duration to the period
-		results[periodKey] += focusData[dateStr];
+		results[periodKey] += numsData[dateStr];
 	});
 
 	return results;
