@@ -33,14 +33,14 @@ const Page = () => {
 				<Navbar />
 				<div className="container text-[28px] font-bold">Challenges</div>
 				<div className="container grid grid-cols-12">
-					<div className="flex flex-col lg:flex-row lg:items-center justify-between col-span-8">
+					<div className="col-span-8">
 						<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
-
-						<ChallengeList
-							{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }}
-						/>
 					</div>
 				</div>
+			</div>
+
+			<div className="grid grid-cols-12 container">
+				<ChallengeList {...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }} />
 			</div>
 		</div>
 	);
