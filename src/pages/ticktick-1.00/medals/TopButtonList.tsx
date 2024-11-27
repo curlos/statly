@@ -36,7 +36,11 @@ const TopButton = ({ buttonObj, selectedButtonStyle, unselectedButtonStyle, isFo
 
 	const newType = isForInterval ? type : urlName;
 	const newInterval = isForInterval ? urlName : interval;
-	const buttonUrl = `/ticktick-1.00/medals/${newType}/${newInterval}`;
+	let buttonUrl = `/ticktick-1.00/medals/${newType}/${newInterval}`;
+
+	if (pageContext.urlParsed.pathname.includes('/challenges')) {
+		buttonUrl = `/ticktick-1.00/challenges/${newType}`;
+	}
 
 	return (
 		<div className={isSelected ? selectedButtonStyle : unselectedButtonStyle} onClick={() => navigate(buttonUrl)}>

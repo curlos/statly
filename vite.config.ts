@@ -85,6 +85,7 @@ export default defineConfig({
 		vike({
 			redirects: {
 				'/ticktick-1.00/medals': '/ticktick-1.00/medals/focus/daily',
+				'/ticktick-1.00/challenges': '/ticktick-1.00/challenges/focus',
 			},
 		}),
 	],
