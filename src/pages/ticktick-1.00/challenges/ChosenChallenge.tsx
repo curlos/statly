@@ -8,7 +8,7 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 	const imgSrc =
 		chosenChallenge.requiredDuration !== undefined
 			? 'https://i.imgur.com/6xLKg5k.jpeg'
-			: 'https://i.imgur.com/6xLKg5k.jpeg';
+			: 'https://i.imgur.com/x084PtQ.png';
 
 	return (
 		<div
@@ -29,7 +29,7 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 						</div>
 						<div className="text-[18px]">
 							<span className="font-bold">Completion Date: </span>
-							{completedDate}
+							{completedDate ? completedDate : 'N/A'}
 						</div>
 					</div>
 				</div>

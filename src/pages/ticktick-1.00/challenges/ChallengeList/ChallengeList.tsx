@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import ChallengeCard from './ChallengeCard';
+import { DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES } from '../../../../utils/constants/tasks/tasksChallenges.utils';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
 	const { focusRecordsGroupedByDate, allCompletedTasksGroupedByDate } = useStatsContext();
 
 	const [focusHoursChallenges, setFocusHoursChallenges] = useState(DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES);
+	const [completedTasksChallenges, setCompletedTasksChallenges] = useState(DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES);
 
 	const isLoadingFocusOrTasksData = !focusRecordsGroupedByDate || !allCompletedTasksGroupedByDate;
 
@@ -18,18 +20,20 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 			return;
 		}
 
-		const newFocusDurationByDate = {};
+		const focusDurationByDate = {};
 
 		// Get the focus duration for each day.
 		Object.entries(focusRecordsGroupedByDate).forEach(([dateKey, focusRecords]) => {
-			newFocusDurationByDate[dateKey] = getFocusDurationFromArray(focusRecords);
+			focusDurationByDate[dateKey] = getFocusDurationFromArray(focusRecords);
 		});
 
 		const newFocusHoursChallenges = JSON.parse(JSON.stringify(DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES));
+		const newCompletedTasksChallenges = JSON.parse(JSON.stringify(DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES));
 
+		// Focus
 		let totalFocusHours = 0;
 
-		Object.entries(newFocusDurationByDate).forEach(([dateKey, focusHoursForDay]) => {
+		Object.entries(focusDurationByDate).forEach(([dateKey, focusHoursForDay]) => {
 			totalFocusHours += focusHoursForDay;
 
 			newFocusHoursChallenges.forEach((challenge) => {
@@ -40,10 +44,54 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 		});
 
 		setFocusHoursChallenges(newFocusHoursChallenges);
+
+		// Tasks
+		let totalCompletedTasks = 0;
+
+		// Convert the object into an array of entries
+		const sortedEntries = Object.entries(allCompletedTasksGroupedByDate).sort(
+			(a, b) => new Date(a[0]) - new Date(b[0])
+		);
+
+		// Convert the array of entries back into an object
+		const sortedAllCompletedTasksGroupedByDate = Object.fromEntries(sortedEntries);
+
+		Object.entries(sortedAllCompletedTasksGroupedByDate).forEach(([dateKey, completedTasksForDay]) => {
+			totalCompletedTasks += completedTasksForDay.length;
+
+			newCompletedTasksChallenges.forEach((challenge) => {
+				if (!challenge.completedDate && totalCompletedTasks >= challenge.requiredCompletedTasks) {
+					challenge.completedDate = dateKey;
+				}
+			});
+		});
+
+		setCompletedTasksChallenges(newCompletedTasksChallenges);
+
+		if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
+			const allChallenges = {
+				focus: newFocusHoursChallenges,
+				tasks: newCompletedTasksChallenges,
+			};
+
+			const { type } = pageContext.routeParams;
+
+			const newChosenChallenge = allChallenges[type].find((challenge) => challenge.completedDate);
+
+			setChosenChallenge(newChosenChallenge);
+		}
 	}, [focusRecordsGroupedByDate, allCompletedTasksGroupedByDate]);
 
-	const completedChallenges = focusHoursChallenges.filter((challenge) => challenge.completedDate);
-	const incompleteChallenges = focusHoursChallenges.filter((challenge) => !challenge.completedDate);
+	const getChallengesToUse = () => {
+		const { type } = pageContext.routeParams;
+		const challengesToUse = type === 'focus' ? focusHoursChallenges : completedTasksChallenges;
+		return challengesToUse;
+	};
+
+	const challengesToUse = getChallengesToUse();
+
+	const completedChallenges = challengesToUse.filter((challenge) => challenge.completedDate);
+	const incompleteChallenges = challengesToUse.filter((challenge) => !challenge.completedDate);
 
 	return (
 		<div className="overflow-auto gray-scrollbar">

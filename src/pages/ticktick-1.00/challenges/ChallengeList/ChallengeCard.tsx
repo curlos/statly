@@ -12,6 +12,11 @@ const ChallengeCard = ({
 
 	const { chosenColorObj } = useThemeContext();
 
+	const imgSrc =
+		challenge.requiredDuration !== undefined
+			? 'https://i.imgur.com/6xLKg5k.jpeg'
+			: 'https://i.imgur.com/x084PtQ.png';
+
 	return (
 		<div
 			className={classNames(
@@ -21,7 +26,7 @@ const ChallengeCard = ({
 			)}
 			onClick={() => setChosenChallenge(challenge)}
 		>
-			<img src="https://i.imgur.com/6xLKg5k.jpeg" className="w-full" />
+			<img src={imgSrc} className="w-full" />
 
 			<div
 				className={classNames(
