@@ -31,7 +31,7 @@ const ChallengeCard = ({
 			onClick={() => {
 				setChosenChallenge(challenge);
 
-				if (width && width < 576) {
+				if (width && width < 768) {
 					setShowChosenChallengeModal(true);
 				}
 			}}

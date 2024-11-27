@@ -46,17 +46,17 @@ const Page = () => {
 			</div>
 
 			<div className="container grid grid-cols-12 gap-2">
-				<div className="col-span-12 sm:col-span-8">
+				<div className="col-span-12 md:col-span-7 lg:col-span-8">
 					<ChallengeList
 						{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }}
 					/>
 				</div>
 
-				<div className="hidden sm:block sm:col-span-4">
+				<div className="hidden sm:block md:col-span-5 lg:col-span-4">
 					<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
 				</div>
 
-				<div className="sm:hidden">
+				<div className="md:hidden">
 					<Modal
 						isOpen={showChosenChallengeModal}
 						onClose={() => setShowChosenChallengeModal(false)}

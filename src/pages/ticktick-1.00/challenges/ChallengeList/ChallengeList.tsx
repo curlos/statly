@@ -95,7 +95,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 
 	return (
 		<div className="overflow-auto gray-scrollbar">
-			<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-2 " style={{ maxHeight }}>
+			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2 " style={{ maxHeight }}>
 				{completedChallenges.map((challenge) => {
 					return (
 						<ChallengeCard
