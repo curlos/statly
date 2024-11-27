@@ -218,10 +218,10 @@ export const sumNumsByPeriod = (numsData, period) => {
 		}
 	}
 
-	const getPeriodKey = (endOfPeriod) => {
+	const getPeriodKey = (startOfPeriod, endOfPeriod) => {
 		switch (period) {
 			case 'week':
-				return getFormattedLongDay(endOfPeriod);
+				return `${getFormattedShortMonthDay(startOfPeriod)} - ${getFormattedShortMonthDay(endOfPeriod)}`;
 			case 'month':
 				return new Date(endOfPeriod).toLocaleString('default', { month: 'long', year: 'numeric' });
 			case 'year':
@@ -235,7 +235,7 @@ export const sumNumsByPeriod = (numsData, period) => {
 		const endOfPeriod = getEndOfPeriod(new Date(startOfPeriod), period);
 
 		// A period key can be created because each date in the array of focus data will have their own period key that is shared by other dates that are within the same period.
-		const periodKey = getPeriodKey(endOfPeriod);
+		const periodKey = getPeriodKey(startOfPeriod, endOfPeriod);
 
 		if (!results[periodKey]) {
 			results[periodKey] = 0;

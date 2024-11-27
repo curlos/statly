@@ -64,7 +64,17 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 								<span className="font-bold underline">{getIntervalsEarnedText()} Earned: </span>
 								<ul className="pb-3">
 									{intervalsEarned
-										.toSorted((a, b) => new Date(b) - new Date(a))
+										.toSorted((a, b) => {
+											if (chosenMedal.interval !== 'weekly') {
+												return new Date(b) - new Date(a);
+											}
+
+											// If it's weekly, split the strings into two since weekly shows both the start and end period. Grab the start period date and sort it by that.
+											const startDateA = a.split(' - ')[0].trim();
+											const startDateB = b.split(' - ')[0].trim();
+
+											return new Date(startDateB) - new Date(startDateA);
+										})
 										?.map((interval) => {
 											return (
 												<li key={interval} className="list-disc ml-5">
