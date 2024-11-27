@@ -1,4 +1,4 @@
-const ChosenMedal = ({ chosenMedal, maxHeight }) => {
+const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 	if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
 		return null;
 	}
@@ -39,7 +39,11 @@ const ChosenMedal = ({ chosenMedal, maxHeight }) => {
 			: '/Eternal_Order_of_the_Gladiator_Medal.webp';
 
 	return (
-		<div className="flex justify-center mt-5 overflow-auto gray-scrollbar" style={{ maxHeight }}>
+		<div
+			ref={chosenMedalRef}
+			className="flex justify-center mt-5 overflow-auto gray-scrollbar"
+			style={{ maxHeight }}
+		>
 			<div>
 				<div className="flex justify-center mb-2">
 					<img src={imgSrc} />
