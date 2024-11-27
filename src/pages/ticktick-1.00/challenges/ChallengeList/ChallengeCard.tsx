@@ -10,14 +10,18 @@ const ChallengeCard = ({
 	isLoadingFocusOrTasksData,
 	setShowChosenChallengeModal,
 }) => {
-	const { name } = challenge;
+	const { name, smallImageSrc } = challenge;
 
 	const { chosenColorObj } = useThemeContext();
 
-	const imgSrc =
+	let imgSrc =
 		challenge.requiredDuration !== undefined
 			? 'https://i.imgur.com/6xLKg5k.jpeg'
 			: 'https://i.imgur.com/x084PtQ.png';
+
+	if (smallImageSrc) {
+		imgSrc = smallImageSrc;
+	}
 
 	const { width } = useWindowSize();
 

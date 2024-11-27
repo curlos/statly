@@ -3,12 +3,18 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 		return null;
 	}
 
-	const { name, completedDate } = chosenChallenge;
+	const { name, completedDate, startDate, deadline, fullImageSrc, rewardName } = chosenChallenge;
 
-	const imgSrc =
+	let imgSrc =
 		chosenChallenge.requiredDuration !== undefined
 			? 'https://i.imgur.com/6xLKg5k.jpeg'
 			: 'https://i.imgur.com/x084PtQ.png';
+
+	if (fullImageSrc) {
+		imgSrc = fullImageSrc;
+	}
+
+	const isCustomChallenge = chosenChallenge.fullImageSrc !== undefined;
 
 	return (
 		<div
@@ -25,11 +31,31 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 					<div className="mt-2 space-y-1">
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Description: </span>
-							{name} in total
+							<span className="text-color-gray-50">
+								{name} {isCustomChallenge ? '' : 'in total'}
+							</span>
 						</div>
+						{rewardName && (
+							<div className="text-[16px] md:text-[18px]">
+								<span className="font-bold">Reward: </span>
+								<span className="text-color-gray-50">{rewardName ? rewardName : 'N/A'}</span>
+							</div>
+						)}
+						{startDate && (
+							<div className="text-[16px] md:text-[18px]">
+								<span className="font-bold">Start Date: </span>
+								<span className="text-color-gray-50">{startDate ? startDate : 'N/A'}</span>
+							</div>
+						)}
+						{deadline && (
+							<div className="text-[16px] md:text-[18px]">
+								<span className="font-bold">Deadline: </span>
+								<span className="text-color-gray-50">{deadline ? deadline : 'N/A'}</span>
+							</div>
+						)}
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Completion Date: </span>
-							{completedDate ? completedDate : 'N/A'}
+							<span className="text-color-gray-50">{completedDate ? completedDate : 'N/A'}</span>
 						</div>
 					</div>
 				</div>

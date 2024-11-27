@@ -5,6 +5,10 @@ import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import ChallengeCard from './ChallengeCard';
 import { DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES } from '../../../../utils/constants/tasks/tasksChallenges.utils';
+import Icon from '../../../../components/Icon';
+import classNames from 'classnames';
+import { useThemeContext } from '../../../../contexts/useThemeContext';
+import Modal from '../../../../components/Modal/Modal';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
 	const pageContext = usePageContext();
@@ -12,6 +16,8 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 
 	const [focusHoursChallenges, setFocusHoursChallenges] = useState(DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES);
 	const [completedTasksChallenges, setCompletedTasksChallenges] = useState(DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES);
+
+	const [showAddChallengeModal, setShowAddChallengeModal] = useState(false);
 
 	const isLoadingFocusOrTasksData = !focusRecordsGroupedByDate || !allCompletedTasksGroupedByDate;
 
@@ -72,6 +78,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 			const allChallenges = {
 				focus: newFocusHoursChallenges,
 				tasks: newCompletedTasksChallenges,
+				custom: [],
 			};
 
 			const { type } = pageContext.routeParams;
@@ -84,8 +91,34 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 
 	const getChallengesToUse = () => {
 		const { type } = pageContext.routeParams;
-		const challengesToUse = type === 'focus' ? focusHoursChallenges : completedTasksChallenges;
-		return challengesToUse;
+
+		switch (type) {
+			case 'focus':
+				return focusHoursChallenges;
+			case 'tasks':
+				return completedTasksChallenges;
+			case 'custom':
+				return [
+					{
+						name: 'Complete JS.Info Part 1, Part 2, and Part 3',
+						startDate: 'December 6, 2023',
+						deadline: 'December 31, 2023',
+						completedDate: 'December 30, 2023',
+						rewardName: 'MG 1/100 - Strike Rouge Ootori',
+						smallImageSrc: '/mg_strike_rouge_small.jpg',
+						fullImageSrc: '/mg_strike_rouge_large.jpg',
+					},
+					{
+						name: 'Complete NeetCode 150',
+						startDate: null,
+						deadline: null,
+						completedDate: null,
+						rewardName: 'Perfect Grade 1/60 - Astray Red Frame',
+						smallImageSrc: '/mg_strike_rouge_small.jpg',
+						fullImageSrc: '/mg_strike_rouge_large.jpg',
+					},
+				];
+		}
 	};
 
 	const challengesToUse = getChallengesToUse();
@@ -118,7 +151,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 							key={challenge.name}
 							{...{
 								challenge,
-								isChosenChallenge: challenge.name === chosenChallenge.name,
+								isChosenChallenge: challenge.name === chosenChallenge?.name,
 								setChosenChallenge,
 								isIncomplete: true,
 								isLoadingFocusOrTasksData,
@@ -127,9 +160,34 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 						/>
 					);
 				})}
+
+				<AddChallengeCard {...{ setShowAddChallengeModal }} />
 			</div>
 
-			<div></div>
+			<Modal isOpen={showAddChallengeModal} onClose={() => setShowAddChallengeModal(false)} position="top-center">
+				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">Add Challenge</div>
+			</Modal>
+		</div>
+	);
+};
+
+const AddChallengeCard = ({ setShowAddChallengeModal }) => {
+	const { chosenColorObj } = useThemeContext();
+
+	return (
+		<div
+			className={classNames(
+				'border py-1 px-3 flex items-center gap-1 text-color-gray-50 cursor-pointer',
+				chosenColorObj.borderColor
+			)}
+			onClick={() => setShowAddChallengeModal(true)}
+		>
+			<div className="font-bold text-[18px]">Add Challenge</div>
+			<Icon
+				name="add"
+				fill={0}
+				customClass={classNames('text-color-gray-50 !text-[20px] cursor-pointer', chosenColorObj.textColor)}
+			/>
 		</div>
 	);
 };
