@@ -208,8 +208,11 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
 	});
 
 	return (
-		<div className="col-span-8">
-			<div className="grid grid-cols-4 gap-2 overflow-auto gray-scrollbar" style={{ maxHeight }}>
+		<div className="col-span-12 sm:col-span-8">
+			<div
+				className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 overflow-auto gray-scrollbar"
+				style={{ maxHeight }}
+			>
 				{medalsThatHaveBeenEarned.map((medal) => {
 					return <MedalCard key={medal.name} {...{ medal: medal, chosenMedal, setChosenMedal }} />;
 				})}

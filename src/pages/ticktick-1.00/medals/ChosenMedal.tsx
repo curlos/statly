@@ -34,12 +34,14 @@ const ChosenMedal = ({ chosenMedal, maxHeight }) => {
 	};
 
 	const imgSrc =
-		chosenMedal.requiredDuration !== undefined ? '/Backfire_Medal_IW.webp' : '/GoodCitizen_Medal_IW.webp';
+		chosenMedal.requiredDuration !== undefined
+			? '/Brusilovs_Star.webp'
+			: '/Eternal_Order_of_the_Gladiator_Medal.webp';
 
 	return (
 		<div className="flex justify-center mt-5 overflow-auto gray-scrollbar" style={{ maxHeight }}>
 			<div>
-				<div className="flex justify-center">
+				<div className="flex justify-center mb-2">
 					<img src={imgSrc} />
 				</div>
 				<div>

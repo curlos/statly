@@ -80,19 +80,19 @@ const Page = () => {
 					<Navbar />
 					<div className="container text-[28px] font-bold">Medals</div>
 					<div className="container grid grid-cols-12">
-						<div className="flex items-center justify-between col-span-8">
+						<div className="flex flex-col lg:flex-row lg:items-center justify-between col-span-8">
 							<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
-							<div className="mr-3">
+							<div className="mr-md-2 mr-xl-3">
 								<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_INTERVALS_OBJ }} />
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div className="grid grid-cols-12 container">
+				<div className="container grid grid-cols-12 gap-3">
 					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal }} />
 
-					<div className="col-span-4">
+					<div className="hidden sm:block col-span-4">
 						<ChosenMedal {...{ chosenMedal, maxHeight }} />
 					</div>
 				</div>

@@ -8,7 +8,8 @@ const MedalCard = ({ medal, chosenMedal, setChosenMedal }) => {
 
 	const timesEarned = !intervalsEarned ? 0 : intervalsEarned.length;
 
-	const imgSrc = medal.requiredDuration !== undefined ? '/Backfire_Medal_IW.webp' : '/GoodCitizen_Medal_IW.webp';
+	const imgSrc =
+		medal.requiredDuration !== undefined ? '/Brusilovs_Star.webp' : '/Eternal_Order_of_the_Gladiator_Medal.webp';
 
 	return (
 		<div
@@ -20,9 +21,15 @@ const MedalCard = ({ medal, chosenMedal, setChosenMedal }) => {
 			)}
 			onClick={() => setChosenMedal(medal)}
 		>
-			<div className="bg-color-gray-150 border-l-[5px] border-white pl-1 font-semibold">{name}</div>
-			<img src={imgSrc} className="w-[200px]" />
-			<div className="flex justify-end px-2 text-[18px] font-bold">x{timesEarned.toLocaleString()}</div>
+			<div className="bg-color-gray-150 border-l-[5px] border-white pl-1 font-semibold text-[14px] sm:text-[16px]">
+				{name}
+			</div>
+			<div className="flex justify-center">
+				<img src={imgSrc} className="w-[150px] my-2" />
+			</div>
+			<div className="flex justify-end px-2 text-[16px] sm:text-[20px] font-bold">
+				x{timesEarned.toLocaleString()}
+			</div>
 		</div>
 	);
 };
