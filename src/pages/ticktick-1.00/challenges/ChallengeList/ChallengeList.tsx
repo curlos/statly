@@ -46,7 +46,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 	const incompleteChallenges = focusHoursChallenges.filter((challenge) => !challenge.completedDate);
 
 	return (
-		<div className="col-span-12 sm:col-span-8 overflow-auto gray-scrollbar">
+		<div className="overflow-auto gray-scrollbar">
 			<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-2 " style={{ maxHeight }}>
 				{completedChallenges.map((challenge) => {
 					return (

@@ -4,6 +4,7 @@ import useMaxHeight from '../../../hooks/useMaxHeight';
 import TopButtonList from '../medals/TopButtonList';
 import useResizeObserver from '../../../hooks/useResizeObserver';
 import ChallengeList from './ChallengeList/ChallengeList';
+import ChosenChallenge from './ChosenChallenge';
 
 const Page = () => {
 	const [chosenChallenge, setChosenChallenge] = useState({});
@@ -40,7 +41,15 @@ const Page = () => {
 			</div>
 
 			<div className="grid grid-cols-12 container">
-				<ChallengeList {...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }} />
+				<div className="col-span-12 sm:col-span-8">
+					<ChallengeList
+						{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }}
+					/>
+				</div>
+
+				<div className="hidden sm:block sm:col-span-4">
+					<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
+				</div>
 			</div>
 		</div>
 	);
