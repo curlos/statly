@@ -6,7 +6,7 @@ import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRec
 import ChallengeCard from './ChallengeCard';
 import { DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES } from '../../../../utils/constants/tasks/tasksChallenges.utils';
 
-const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenMedalModal }) => {
+const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
 	const pageContext = usePageContext();
 	const { focusRecordsGroupedByDate, allCompletedTasksGroupedByDate } = useStatsContext();
 
@@ -106,6 +106,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 								setChosenChallenge,
 								isIncomplete: false,
 								isLoadingFocusOrTasksData,
+								setShowChosenChallengeModal,
 							}}
 						/>
 					);
@@ -121,6 +122,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 								setChosenChallenge,
 								isIncomplete: true,
 								isLoadingFocusOrTasksData,
+								setShowChosenChallengeModal,
 							}}
 						/>
 					);

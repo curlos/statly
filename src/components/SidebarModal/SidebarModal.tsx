@@ -56,13 +56,13 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
 						<div className="font-bold text-[24px]">
+							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="network_intelligence_history" />
 							<LinkLi
 								name="Focus Hours Goal"
 								linkUrl="/ticktick-1.00/focus-hours-goal"
 								iconName="clock_loader_20"
 							/>
 							<LinkLi name="Focus Records" linkUrl="/ticktick-1.00/focus-records" iconName="timeline" />
-							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="network_intelligence_history" />
 							<LinkLi
 								name="Completed Tasks"
 								linkUrl="/ticktick-1.00/completed-tasks"

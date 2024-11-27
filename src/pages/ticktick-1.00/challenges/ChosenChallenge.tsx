@@ -21,13 +21,13 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 					<img src={imgSrc} />
 				</div>
 				<div>
-					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-2 sticky">{name}</div>
+					<div className="text-[20px] md:text-[24px] font-bold bg-color-gray-200 px-2 sticky">{name}</div>
 					<div className="mt-2 space-y-1">
-						<div className="text-[18px]">
+						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Description: </span>
 							{name} in total
 						</div>
-						<div className="text-[18px]">
+						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Completion Date: </span>
 							{completedDate ? completedDate : 'N/A'}
 						</div>

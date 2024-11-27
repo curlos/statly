@@ -5,6 +5,7 @@ import TopButtonList from '../medals/TopButtonList';
 import useResizeObserver from '../../../hooks/useResizeObserver';
 import ChallengeList from './ChallengeList/ChallengeList';
 import ChosenChallenge from './ChosenChallenge';
+import Modal from '../../../components/Modal/Modal';
 
 const Page = () => {
 	const [chosenChallenge, setChosenChallenge] = useState({});
@@ -18,6 +19,10 @@ const Page = () => {
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
+		{
+			name: 'Custom',
+			urlName: 'custom',
+		},
 		{
 			name: 'Focus',
 			urlName: 'focus',
@@ -40,7 +45,7 @@ const Page = () => {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-12 container">
+			<div className="container grid grid-cols-12 gap-2">
 				<div className="col-span-12 sm:col-span-8">
 					<ChallengeList
 						{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }}
@@ -49,6 +54,18 @@ const Page = () => {
 
 				<div className="hidden sm:block sm:col-span-4">
 					<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
+				</div>
+
+				<div className="sm:hidden">
+					<Modal
+						isOpen={showChosenChallengeModal}
+						onClose={() => setShowChosenChallengeModal(false)}
+						position="top-center"
+					>
+						<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
+							<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
+						</div>
+					</Modal>
 				</div>
 			</div>
 		</div>
