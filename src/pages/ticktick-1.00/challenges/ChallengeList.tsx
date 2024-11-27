@@ -6,7 +6,7 @@ import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecord
 import classNames from 'classnames';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
-const ChallengeList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
+const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
 	const { focusRecordsGroupedByDate, allCompletedTasksGroupedByDate } = useStatsContext();
 
@@ -43,8 +43,6 @@ const ChallengeList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMe
 		setFocusHoursChallenges(newFocusHoursChallenges);
 	}, [focusRecordsGroupedByDate, allCompletedTasksGroupedByDate]);
 
-	console.log(focusHoursChallenges);
-
 	const completedChallenges = focusHoursChallenges.filter((challenge) => challenge.completedDate);
 	const incompleteChallenges = focusHoursChallenges.filter((challenge) => !challenge.completedDate);
 
@@ -52,11 +50,31 @@ const ChallengeList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMe
 		<div className="col-span-12 sm:col-span-8 overflow-auto gray-scrollbar">
 			<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-2 " style={{ maxHeight }}>
 				{completedChallenges.map((challenge) => {
-					return <ChallengeCard {...{ challenge }} />;
+					return (
+						<ChallengeCard
+							{...{
+								challenge,
+								isChosenChallenge: challenge.name === chosenChallenge.name,
+								setChosenChallenge,
+								isIncomplete: false,
+								isLoadingFocusOrTasksData,
+							}}
+						/>
+					);
 				})}
 
 				{incompleteChallenges.map((challenge) => {
-					return <ChallengeCard {...{ challenge, isIncomplete: true }} />;
+					return (
+						<ChallengeCard
+							{...{
+								challenge,
+								isChosenChallenge: challenge.name === chosenChallenge.name,
+								setChosenChallenge,
+								isIncomplete: true,
+								isLoadingFocusOrTasksData,
+							}}
+						/>
+					);
 				})}
 			</div>
 
@@ -65,13 +83,26 @@ const ChallengeList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMe
 	);
 };
 
-const ChallengeCard = ({ challenge, isIncomplete = false }) => {
+const ChallengeCard = ({
+	challenge,
+	isChosenChallenge,
+	setChosenChallenge,
+	isIncomplete = false,
+	isLoadingFocusOrTasksData,
+}) => {
 	const { name } = challenge;
 
 	const { chosenColorObj } = useThemeContext();
 
 	return (
-		<div className={classNames('border cursor-pointer', chosenColorObj.borderColor, isIncomplete && 'opacity-50')}>
+		<div
+			className={classNames(
+				'cursor-pointer',
+				isChosenChallenge ? `border-2 ${chosenColorObj.borderColor}` : 'border-2 border-color-gray-200',
+				isLoadingFocusOrTasksData ? 'animate-pulse' : isIncomplete && 'opacity-50'
+			)}
+			onClick={() => setChosenChallenge(challenge)}
+		>
 			<img src="https://i.imgur.com/6xLKg5k.jpeg" className="w-full" />
 
 			<div className={classNames('border-t py-1 px-2 font-semibold', chosenColorObj.borderColor)}>{name}</div>
