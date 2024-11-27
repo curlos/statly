@@ -17,7 +17,7 @@ import {
 	DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS,
 } from '../../../../utils/constants/tasks/tasksMedals.utils';
 
-const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
+const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
 	const { focusRecordsGroupedByDate, allCompletedTasksGroupedByDate } = useStatsContext();
 
@@ -219,7 +219,13 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
 					return (
 						<MedalCard
 							key={medal.name}
-							{...{ medal: medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData }}
+							{...{
+								medal: medal,
+								chosenMedal,
+								setChosenMedal,
+								isLoadingFocusOrTasksData,
+								setShowChosenMedalModal,
+							}}
 						/>
 					);
 				})}
@@ -228,7 +234,13 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
 					return (
 						<MedalCard
 							key={medal.name}
-							{...{ medal: medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData }}
+							{...{
+								medal: medal,
+								chosenMedal,
+								setChosenMedal,
+								isLoadingFocusOrTasksData,
+								setShowChosenMedalModal,
+							}}
 						/>
 					);
 				})}

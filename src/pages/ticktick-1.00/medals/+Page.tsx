@@ -5,6 +5,7 @@ import useResizeObserver from '../../../hooks/useResizeObserver';
 import TopButtonList from './TopButtonList';
 import MedalList from './MedalList/MedalList';
 import ChosenMedal from './ChosenMedal';
+import Modal from '../../../components/Modal/Modal';
 
 const Page = () => {
 	const [chosenMedal, setChosenMedal] = useState({});
@@ -15,6 +16,8 @@ const Page = () => {
 	const topHeaderRef = useRef(null);
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
+
+	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
 		{
@@ -67,10 +70,22 @@ const Page = () => {
 				</div>
 
 				<div className="container grid grid-cols-12 gap-3">
-					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal }} />
+					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }} />
 
 					<div className="hidden sm:block col-span-4">
 						<ChosenMedal {...{ chosenMedal, maxHeight, chosenMedalRef }} />
+					</div>
+
+					<div className="sm:hidden">
+						<Modal
+							isOpen={showChosenMedalModal}
+							onClose={() => setShowChosenMedalModal(false)}
+							position="top-center"
+						>
+							<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
+								<ChosenMedal {...{ chosenMedal, maxHeight, chosenMedalRef }} />
+							</div>
+						</Modal>
 					</div>
 				</div>
 			</div>

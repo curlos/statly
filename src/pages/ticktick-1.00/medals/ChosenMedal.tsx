@@ -49,7 +49,9 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 					<img src={imgSrc} />
 				</div>
 				<div>
-					<div className="text-[26px] font-bold bg-color-gray-200 px-2 sticky">{chosenMedal.name}</div>
+					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-2 sticky">
+						{chosenMedal.name}
+					</div>
 					<div className="mt-2 space-y-1">
 						<div className="text-[18px]">
 							<span className="font-bold">Description: </span>

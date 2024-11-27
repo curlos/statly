@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
+import useWindowSize from '../../../../hooks/useWindowSize';
 
-const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData }) => {
+const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData, setShowChosenMedalModal }) => {
 	const { name, intervalsEarned } = medal;
 
 	const { chosenColorObj } = useThemeContext();
@@ -11,6 +12,8 @@ const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksDa
 	const imgSrc =
 		medal.requiredDuration !== undefined ? '/Brusilovs_Star.webp' : '/Eternal_Order_of_the_Gladiator_Medal.webp';
 
+	const { width } = useWindowSize();
+
 	return (
 		<div
 			className={classNames(
@@ -19,7 +22,13 @@ const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksDa
 				chosenMedal?.name === name ? chosenColorObj.borderColor : 'border-[transparent]',
 				isLoadingFocusOrTasksData ? 'animate-pulse' : timesEarned === 0 && 'opacity-50'
 			)}
-			onClick={() => setChosenMedal(medal)}
+			onClick={() => {
+				setChosenMedal(medal);
+
+				if (width && width < 576) {
+					setShowChosenMedalModal(true);
+				}
+			}}
 		>
 			<div className="bg-color-gray-150 border-l-[5px] border-white pl-1 font-semibold text-[14px] sm:text-[16px]">
 				{name}
