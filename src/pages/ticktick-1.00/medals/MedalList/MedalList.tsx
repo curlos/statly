@@ -85,15 +85,15 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 	const updateFocusMedalsData = () => {
 		const newFocusDurationByDate = {};
 
-		const newDailyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_DAILY_FOCUS_HOURS_MEDALS));
-		const newWeeklyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS));
-		const newMonthlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS));
-		const newYearlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_YEARLY_FOCUS_HOURS_MEDALS));
-
 		// Get the focus duration for each day.
 		Object.entries(focusRecordsGroupedByDate).forEach(([dateKey, focusRecords]) => {
 			newFocusDurationByDate[dateKey] = getFocusDurationFromArray(focusRecords);
 		});
+
+		const newDailyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_DAILY_FOCUS_HOURS_MEDALS));
+		const newWeeklyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS));
+		const newMonthlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS));
+		const newYearlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_YEARLY_FOCUS_HOURS_MEDALS));
 
 		const focusDurationByWeek = sumNumsByPeriod(newFocusDurationByDate, 'week');
 		const focusDurationByMonth = sumNumsByPeriod(newFocusDurationByDate, 'month');

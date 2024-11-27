@@ -10,14 +10,13 @@ import Modal from '../../../components/Modal/Modal';
 const Page = () => {
 	const [chosenMedal, setChosenMedal] = useState({});
 	const chosenMedalRef = useRef(null);
+	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
 	const topHeaderRef = useRef(null);
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
-
-	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
 		{
