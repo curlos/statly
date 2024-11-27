@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 
-const MedalCard = ({ medal, chosenMedal, setChosenMedal }) => {
+const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData }) => {
 	const { name, intervalsEarned } = medal;
 
 	const { chosenColorObj } = useThemeContext();
@@ -17,7 +17,7 @@ const MedalCard = ({ medal, chosenMedal, setChosenMedal }) => {
 				'bg-color-gray-600 border-2 cursor-pointer',
 				chosenColorObj.hover.borderColor,
 				chosenMedal?.name === name ? chosenColorObj.borderColor : 'border-[transparent]',
-				timesEarned === 0 && 'opacity-50'
+				isLoadingFocusOrTasksData ? 'animate-pulse' : timesEarned === 0 && 'opacity-50'
 			)}
 			onClick={() => setChosenMedal(medal)}
 		>

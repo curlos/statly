@@ -35,8 +35,10 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
 	);
 	const [yearlyCompletedTasksMedals, setYearlyCompletedTasksMedals] = useState(DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS);
 
+	const isLoadingFocusOrTasksData = !focusRecordsGroupedByDate || !allCompletedTasksGroupedByDate;
+
 	useEffect(() => {
-		if (!focusRecordsGroupedByDate || !allCompletedTasksGroupedByDate) {
+		if (isLoadingFocusOrTasksData) {
 			return;
 		}
 
@@ -214,11 +216,21 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal }) => {
 				style={{ maxHeight }}
 			>
 				{medalsThatHaveBeenEarned.map((medal) => {
-					return <MedalCard key={medal.name} {...{ medal: medal, chosenMedal, setChosenMedal }} />;
+					return (
+						<MedalCard
+							key={medal.name}
+							{...{ medal: medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData }}
+						/>
+					);
 				})}
 
 				{medalsThatHaveNotBeenEarned.map((medal) => {
-					return <MedalCard key={medal.name} {...{ medal: medal, chosenMedal, setChosenMedal }} />;
+					return (
+						<MedalCard
+							key={medal.name}
+							{...{ medal: medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData }}
+						/>
+					);
 				})}
 			</div>
 		</div>
