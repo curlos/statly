@@ -3,7 +3,7 @@ import Navbar from '../../../components/Navbar/Navbar';
 import useMaxHeight from '../../../hooks/useMaxHeight';
 import TopButtonList from '../medals/TopButtonList';
 import useResizeObserver from '../../../hooks/useResizeObserver';
-import ChallengeList from './ChallengeList';
+import ChallengeList from './ChallengeList/ChallengeList';
 
 const Page = () => {
 	const [chosenChallenge, setChosenChallenge] = useState({});

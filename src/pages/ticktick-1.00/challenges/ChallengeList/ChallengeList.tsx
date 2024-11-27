@@ -1,10 +1,9 @@
 import { usePageContext } from 'vike-react/usePageContext';
-import { DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES } from '../../../utils/constants/focus/focusHoursChallenges.utils';
+import { DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES } from '../../../../utils/constants/focus/focusHoursChallenges.utils';
 import { useEffect, useState } from 'react';
-import { useStatsContext } from '../../../contexts/useStatsContext';
-import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
-import classNames from 'classnames';
-import { useThemeContext } from '../../../contexts/useThemeContext';
+import { useStatsContext } from '../../../../contexts/useStatsContext';
+import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
+import ChallengeCard from './ChallengeCard';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
@@ -52,6 +51,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 				{completedChallenges.map((challenge) => {
 					return (
 						<ChallengeCard
+							key={challenge.name}
 							{...{
 								challenge,
 								isChosenChallenge: challenge.name === chosenChallenge.name,
@@ -66,6 +66,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 				{incompleteChallenges.map((challenge) => {
 					return (
 						<ChallengeCard
+							key={challenge.name}
 							{...{
 								challenge,
 								isChosenChallenge: challenge.name === chosenChallenge.name,
@@ -79,33 +80,6 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 			</div>
 
 			<div></div>
-		</div>
-	);
-};
-
-const ChallengeCard = ({
-	challenge,
-	isChosenChallenge,
-	setChosenChallenge,
-	isIncomplete = false,
-	isLoadingFocusOrTasksData,
-}) => {
-	const { name } = challenge;
-
-	const { chosenColorObj } = useThemeContext();
-
-	return (
-		<div
-			className={classNames(
-				'cursor-pointer',
-				isChosenChallenge ? `border-2 ${chosenColorObj.borderColor}` : 'border-2 border-color-gray-200',
-				isLoadingFocusOrTasksData ? 'animate-pulse' : isIncomplete && 'opacity-50'
-			)}
-			onClick={() => setChosenChallenge(challenge)}
-		>
-			<img src="https://i.imgur.com/6xLKg5k.jpeg" className="w-full" />
-
-			<div className={classNames('border-t py-1 px-2 font-semibold', chosenColorObj.borderColor)}>{name}</div>
 		</div>
 	);
 };
