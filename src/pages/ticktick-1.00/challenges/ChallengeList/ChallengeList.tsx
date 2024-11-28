@@ -8,7 +8,7 @@ import { DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES } from '../../../../utils/cons
 import Icon from '../../../../components/Icon';
 import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import Modal from '../../../../components/Modal/Modal';
+import ModalAddChallenge from '../ModalAddChallenge';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
 	const pageContext = usePageContext();
@@ -135,7 +135,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 							key={challenge.name}
 							{...{
 								challenge,
-								isChosenChallenge: challenge.name === chosenChallenge.name,
+								isChosenChallenge: challenge.name === chosenChallenge?.name,
 								setChosenChallenge,
 								isIncomplete: false,
 								isLoadingFocusOrTasksData,
@@ -164,9 +164,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 				<AddChallengeCard {...{ setShowAddChallengeModal }} />
 			</div>
 
-			<Modal isOpen={showAddChallengeModal} onClose={() => setShowAddChallengeModal(false)} position="top-center">
-				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">Add Challenge</div>
-			</Modal>
+			<ModalAddChallenge {...{ showAddChallengeModal, setShowAddChallengeModal }} />
 		</div>
 	);
 };

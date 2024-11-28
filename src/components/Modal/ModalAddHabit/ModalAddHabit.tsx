@@ -179,7 +179,9 @@ const ModalAddHabit: React.FC = () => {
 			<div className="rounded-xl shadow-lg bg-color-gray-600">
 				<div className={classNames('p-5')}>
 					<div className="flex items-center justify-between mb-4">
-						<h3 className="font-bold text-[16px]">{editingExistingHabit ? 'Edit' : 'Create'} Habit</h3>
+						<h3 className="font-bold text-[16px]">
+							{editingExistingHabit ? 'Edit Habit' : 'Create Habit'}
+						</h3>
 						<Icon
 							name="close"
 							customClass={'!text-[20px] text-color-gray-100 hover:text-white cursor-pointer'}
