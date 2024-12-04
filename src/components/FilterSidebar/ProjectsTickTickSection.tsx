@@ -42,7 +42,7 @@ const ProjectsTickTickSection = () => {
 			(acc, project) => {
 				if (project.closed) {
 					acc.archivedProjects.push(project);
-				} else if (project.groupId) {
+				} else if (project.groupId && project.groupId !== 'NONE') {
 					acc.groupedProjects.push(project);
 				} else {
 					acc.ungroupedProjects.push(project);
