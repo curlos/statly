@@ -10,7 +10,7 @@ import { getStreaksInfo, getFocusDataForDayInfo } from '../../../utils/focus.uti
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const defaultFocusData = {
-	goalSeconds: 5400,
+	goalSeconds: 18000,
 	totalFocusDurationForDay: 0,
 	percentageOfFocusedGoalHours: 0,
 };

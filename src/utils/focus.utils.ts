@@ -6,7 +6,7 @@ import {
 	areDatesEqual,
 	getFormattedShortMonthDay,
 } from './date.utils';
-import { getFocusDurationFilteredByProjects } from './focus-apps/focusRecords.utils';
+import { getFocusDurationFilteredByProjects, getFocusDurationFromArray } from './focus-apps/focusRecords.utils';
 
 export const CRUCIAL_PROJECTS = {
 	LeetCode: true,
@@ -26,7 +26,7 @@ export const GOAL_FOR_DAYS = {
 
 export const getGoalSeconds = (date) => {
 	const currentDayString = getDayString(date);
-	const goalSecondsForToday = GOAL_FOR_DAYS[currentDayString];
+	const goalSecondsForToday = 18000 || GOAL_FOR_DAYS[currentDayString];
 	return goalSecondsForToday;
 };
 
@@ -59,7 +59,8 @@ export const getStreaksInfo = (focusRecords) => {
 
 	Object.keys(focusRecordsByDate).map((dayKey) => {
 		const focusRecordsForDay = focusRecordsByDate[dayKey];
-		const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay);
+		// const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay);
+		const durationForDay = getFocusDurationFromArray(focusRecordsForDay);
 		totalFocusDurationByDate[dayKey] = durationForDay;
 	});
 
