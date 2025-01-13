@@ -151,7 +151,9 @@ export const getFocusRecordsFromToday = (focusRecords) => {
 export const getFocusDurationForDay = (focusRecordsByDate, date) => {
 	const dayKey = getFormattedLongDay(date);
 	const focusRecordsForTheDay = focusRecordsByDate[dayKey];
-	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay);
+	// TODO: In the future, filter this out if certain filters are selected in the settings modal for the Daily Focus Hours Goal page. However, since that feature has not been implemented yet, just take everything and do not filter it by project or anything else yet.
+	// return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay);
+	return getFocusDurationFromArray(focusRecordsForTheDay);
 };
 
 export const getFocusDataForDayInfo = (focusRecordsByDate, date) => {
