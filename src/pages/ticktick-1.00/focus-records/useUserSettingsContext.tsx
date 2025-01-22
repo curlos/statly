@@ -25,6 +25,8 @@ const useUserSettings = () => {
 		showTotalFocusDuration = true,
 		showCompletedTasks = true,
 		showTaskAncestors = true,
+		showTaskProjectName = true,
+		taskIdIncludeFocusRecordsFromSubtasks = true,
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage = true,
 		maxFocusRecordsPerPage = 50,
 	} = focusRecordsPageSettings;
@@ -42,6 +44,8 @@ const useUserSettings = () => {
 			showTotalFocusDuration,
 			showCompletedTasks,
 			showTaskAncestors,
+			showTaskProjectName,
+			taskIdIncludeFocusRecordsFromSubtasks,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage,
 			maxFocusRecordsPerPage,
 		},

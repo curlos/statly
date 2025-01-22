@@ -151,7 +151,11 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const taskIdFromUrl = searchParams.get('task-id');
 	const {
-		focusRecordsPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied, showTaskAncestors },
+		focusRecordsPageSettings: {
+			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+			showTaskAncestors,
+			taskIdIncludeFocusRecordsFromSubtasks,
+		},
 	} = useUserSettingsContext();
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -221,7 +225,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 					return null;
 				}
 
-				if (showTaskAncestors) {
+				if (showTaskAncestors && taskIdIncludeFocusRecordsFromSubtasks) {
 					if (!ancestorTasksById) {
 						return null;
 					}
@@ -386,6 +390,14 @@ const TaskProjectName = ({ taskId }) => {
 	const { projectsById } = fetchedProjects || {};
 
 	const { updateQueryParams } = useSearchParamsContext();
+
+	const {
+		focusRecordsPageSettings: { showTaskProjectName },
+	} = useUserSettingsContext();
+
+	if (!showTaskProjectName) {
+		return null;
+	}
 
 	const fullTask = tasksById[taskId];
 	const taskProject = fullTask?.projectId && projectsById[fullTask?.projectId];

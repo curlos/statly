@@ -13,6 +13,8 @@ const OtherSectionFocusRecords = () => {
 			showTotalFocusDuration,
 			showCompletedTasks,
 			showTaskAncestors,
+			showTaskProjectName,
+			taskIdIncludeFocusRecordsFromSubtasks,
 			maxFocusRecordsPerPage,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 		},
@@ -94,6 +96,27 @@ const OtherSectionFocusRecords = () => {
 								name: 'Show Task Ancestors',
 								showValue: showTaskAncestors,
 								handleCheckboxClick: () => handleCheckboxClick(showTaskAncestors, 'showTaskAncestors'),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Task Project Name',
+								showValue: showTaskProjectName,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(showTaskProjectName, 'showTaskProjectName'),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Task ID: Include Focus Records From Subtasks',
+								showValue: taskIdIncludeFocusRecordsFromSubtasks,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(
+										taskIdIncludeFocusRecordsFromSubtasks,
+										'taskIdIncludeFocusRecordsFromSubtasks'
+									),
 							}}
 						/>
 

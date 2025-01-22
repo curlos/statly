@@ -23,7 +23,7 @@ export const useFilterFocusRecords = ({
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
 
 	const {
-		focusRecordsPageSettings: { showTaskAncestors },
+		focusRecordsPageSettings: { showTaskAncestors, taskIdIncludeFocusRecordsFromSubtasks },
 	} = useUserSettingsContext();
 
 	// Projects
@@ -120,11 +120,7 @@ export const useFilterFocusRecords = ({
 						return taskIdIsDirectlyInFocusRecord;
 					}
 
-					if (!showTaskAncestors) {
-						return false;
-					}
-
-					if (!ancestorTasksById) {
+					if (!showTaskAncestors || !taskIdIncludeFocusRecordsFromSubtasks || !ancestorTasksById) {
 						return false;
 					}
 
@@ -233,6 +229,8 @@ export const useFilterFocusRecords = ({
 		focusAppsFromUrl,
 		tasksById,
 		ancestorTasksById,
+		showTaskAncestors,
+		taskIdIncludeFocusRecordsFromSubtasks,
 	]);
 
 	const getFilteredFocusRecords = () => {

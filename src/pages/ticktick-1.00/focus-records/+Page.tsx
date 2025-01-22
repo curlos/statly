@@ -38,6 +38,7 @@ const FocusRecordsPage = () => {
 			showTotalFocusDuration,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 			showTaskAncestors,
+			taskIdIncludeFocusRecordsFromSubtasks,
 		},
 	} = useUserSettingsContext();
 
@@ -117,7 +118,8 @@ const FocusRecordsPage = () => {
 			true,
 			filterByTaskId,
 			ancestorTasksById,
-			showTaskAncestors
+			showTaskAncestors,
+			taskIdIncludeFocusRecordsFromSubtasks
 		);
 
 		return (
