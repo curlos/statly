@@ -184,6 +184,19 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	};
 
 	const getTickTickFocusRecordTask = () => {
+		const getTaskTitle = (task, titleStyle) => {
+			switch (titleStyle) {
+				case 'normal':
+					return (
+						<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
+							{task?.title}
+						</h3>
+					);
+				case 'use-task-breadcrumbs':
+					return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling }} />;
+			}
+		};
+
 		return focusRecord.tasks.map((task) => {
 			const { startTime, endTime, taskId } = task;
 
@@ -196,9 +209,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 
 			return (
 				<div key={`${taskId} - ${startTime}`} className={headerWrapperStyling}>
-					<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
-						{task?.title}
-					</h3>
+					{getTaskTitle(task, 'use-task-breadcrumbs')}
 
 					{showSubtaskTime && (
 						<div className="sm:ml-3 text-white">
@@ -246,6 +257,77 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	};
 
 	return getFocusRecordTask();
+};
+
+const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling }) => {
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks, isLoading: isLoadingGetTasks } = useGetAllTasksQuery();
+	const { tasksById, ancestorTasksById } = fetchedTasks || {};
+
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistAllTasksById, isLoading: isLoadingGetTodoistAllTasks } = useGetTodoistAllTasksQuery();
+	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
+
+	if (isLoadingGetTasks || isLoadingGetTodoistAllTasks) {
+		return (
+			<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
+				{task?.title}
+			</h3>
+		);
+	}
+
+	const parentTask = task;
+	const parentTaskId = task.id || task.taskId;
+	const parentTaskTitle = parentTask?.title || parentTask?.content || parentTaskId;
+
+	const parentTaskBreadcrumbsTickTick =
+		parentTask && ancestorTasksById[parentTaskId] && Object.keys(ancestorTasksById[parentTaskId]);
+	const parentTaskBreadcrumbsTodoist =
+		parentTask && todoistAncestorTasksById[parentTaskId] && Object.keys(todoistAncestorTasksById[parentTaskId]);
+
+	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick || parentTaskBreadcrumbsTodoist;
+
+	if (task.title === 'Review Code') {
+		debugger;
+	}
+
+	return (
+		<div className="text-[22px] cursor-pointer">
+			<span
+				className="hover:underline font-bold hover:text-blue-500"
+				onClick={() => {
+					updateTaskIdQueryParam(parentTaskId);
+				}}
+			>
+				{parentTaskTitle}
+			</span>
+
+			{parentTaskBreadcrumbs?.length > 0 && (
+				<span className="ml-1 text-color-gray-25">
+					-{' '}
+					{parentTaskBreadcrumbs.map((taskId, index) => {
+						const taskObj = tasksById[taskId] || todoistAllTasksById[taskId];
+
+						const title = taskObj.title || taskObj.content;
+
+						return (
+							<span key={`breadcrumbs-${taskObj.id}-${index}`}>
+								<span
+									className="hover:text-blue-500 hover:underline"
+									onClick={() => {
+										updateTaskIdQueryParam(taskObj.id);
+									}}
+								>
+									{title}
+								</span>
+								{index !== parentTaskBreadcrumbs.length - 1 && <span>{' > '}</span>}
+							</span>
+						);
+					})}
+				</span>
+			)}
+		</div>
+	);
 };
 
 export default FocusRecord;
