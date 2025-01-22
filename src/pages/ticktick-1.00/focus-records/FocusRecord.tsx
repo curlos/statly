@@ -216,7 +216,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 			);
 		};
 
-		return focusRecord.tasks.map((task) => {
+		return focusRecord.tasks.map((task, index) => {
 			const { startTime, endTime, taskId } = task;
 			const isNotDirectTask = taskId !== taskIdFromUrl;
 
@@ -248,7 +248,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 			const endTimeObj = formatDateTime(endTime);
 
 			return (
-				<div key={`${taskId} - ${startTime}`} className={headerWrapperStyling}>
+				<div key={`${taskId} - ${startTime} - ${endTime} - ${index}`} className={headerWrapperStyling}>
 					{getTaskTitle(
 						task,
 						`${startTimeObj.day + ' ' + startTimeObj.time} - ${endTimeObj.day + ' ' + endTimeObj.time}`
