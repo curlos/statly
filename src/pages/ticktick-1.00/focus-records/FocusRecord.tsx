@@ -327,17 +327,11 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 	const parentTaskId = task.id || task.taskId;
 	const parentTaskTitle = parentTask?.title || parentTask?.content || parentTaskId;
 
+	// Only checking TickTick because Todoist does not have Focus Records.
 	const parentTaskBreadcrumbsTickTick =
 		parentTask && ancestorTasksById[parentTaskId] && Object.keys(ancestorTasksById[parentTaskId]);
-	const parentTaskBreadcrumbsTodoist =
-		parentTask && todoistAncestorTasksById[parentTaskId] && Object.keys(todoistAncestorTasksById[parentTaskId]);
 
-	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick || parentTaskBreadcrumbsTodoist;
-
-	// TODO: Review this bug!
-	// if (task.title === 'Review Code') {
-	// 	debugger;
-	// }
+	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick;
 
 	return (
 		<div className="text-[22px] cursor-pointer">
@@ -395,7 +389,7 @@ const TaskProjectName = ({ taskId }) => {
 		focusRecordsPageSettings: { showTaskProjectName },
 	} = useUserSettingsContext();
 
-	if (!showTaskProjectName) {
+	if (!showTaskProjectName || !taskId) {
 		return null;
 	}
 

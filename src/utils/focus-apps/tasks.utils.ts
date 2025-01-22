@@ -91,7 +91,11 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 
 	for (let task of tasks) {
 		const { completedTime, items, projectId, tags } = task;
+		const taskId = task.id || task.taskId;
 		const noCompletedTasksOrTaskItems = !completedTime && (!items || items.length === 0);
+
+		const ancestorTasksByIdOfTask = getAncestorTasksById(task, tasksById);
+		ancestorTasksById[taskId] = ancestorTasksByIdOfTask;
 
 		if (noCompletedTasksOrTaskItems) {
 			continue;
@@ -100,10 +104,6 @@ export const getGroupedCompletedTasks = (tasks, tasksById) => {
 		if (completedTime) {
 			storeTaskInCompletedDateKey(completedTime, task, projectId, tags);
 		}
-
-		const ancestorTasksByIdOfTask = getAncestorTasksById(task, tasksById);
-
-		ancestorTasksById[task.id] = ancestorTasksByIdOfTask;
 
 		for (let item of items) {
 			const { completedTime } = item;
