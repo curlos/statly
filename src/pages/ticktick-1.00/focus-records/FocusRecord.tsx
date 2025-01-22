@@ -7,7 +7,7 @@ import {
 } from '../../../utils/date.utils';
 import Icon from '../../../components/Icon';
 import classNames from 'classnames';
-import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
+import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
@@ -153,7 +153,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		focusRecordsPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied },
 	} = useUserSettingsContext();
 
-	const headerWrapperStyling = 'mt-2 md:mt-0 sm:flex justify-between items-center';
+	const headerWrapperStyling = 'mt-2 md:mt-0 sm:flex justify-between';
 	const headerStyling =
 		'text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline';
 
@@ -163,13 +163,17 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		const focusApp = getFocusRecordFocusApp(focusRecord);
 
 		if (focusApp === 'TickTick') {
-			if (!task || !task.taskId) {
+			if (!task) {
 				return;
 			}
 
-			taskId = task.taskId;
+			taskId = task.taskId || task.id;
 		} else {
 			taskId = getFocusRecordProperty(focusRecord, 'taskId');
+		}
+
+		if (!taskId) {
+			return;
 		}
 
 		updateQueryParams({
@@ -184,7 +188,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	};
 
 	const getTickTickFocusRecordTask = () => {
-		const getTaskTitle = (task, titleStyle) => {
+		const getTaskTitle = (task, titleStyle, dateStr) => {
 			switch (titleStyle) {
 				case 'normal':
 					return (
@@ -193,7 +197,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 						</h3>
 					);
 				case 'use-task-breadcrumbs':
-					return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling }} />;
+					return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
 			}
 		};
 
@@ -209,10 +213,14 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 
 			return (
 				<div key={`${taskId} - ${startTime}`} className={headerWrapperStyling}>
-					{getTaskTitle(task, 'use-task-breadcrumbs')}
+					{getTaskTitle(
+						task,
+						'use-task-breadcrumbs',
+						`${startTimeObj.day + ' ' + startTimeObj.time} - ${endTimeObj.day + ' ' + endTimeObj.time}`
+					)}
 
 					{showSubtaskTime && (
-						<div className="sm:ml-3 text-white">
+						<div className="sm:ml-3 text-white min-w-[150px] flex justify-end md:mt-[6px]">
 							{startTimeObj.time} - {endTimeObj.time}
 						</div>
 					)}
@@ -259,7 +267,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	return getFocusRecordTask();
 };
 
-const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling }) => {
+const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling, dateStr }) => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks, isLoading: isLoadingGetTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
@@ -268,7 +276,13 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling 
 	const { data: fetchedTodoistAllTasksById, isLoading: isLoadingGetTodoistAllTasks } = useGetTodoistAllTasksQuery();
 	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
 
-	if (isLoadingGetTasks || isLoadingGetTodoistAllTasks) {
+	// RTK Query - TickTick 1.0 - Projects
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
+	const { updateQueryParams } = useSearchParamsContext();
+
+	if (isLoadingGetTasks || isLoadingGetTodoistAllTasks || isLoadingGetProjects) {
 		return (
 			<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
 				{task?.title}
@@ -287,16 +301,37 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling 
 
 	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick || parentTaskBreadcrumbsTodoist;
 
-	if (task.title === 'Review Code') {
-		debugger;
-	}
+	// if (task.title === 'Review Code') {
+	// 	debugger;
+	// }
+
+	const TaskProjectName = ({ taskId }) => {
+		const fullTask = tasksById[taskId];
+		const taskProject = fullTask?.projectId && projectsById[fullTask?.projectId];
+		const taskProjectName = taskProject ? taskProject.name : '';
+
+		return (
+			<span className="text-color-gray-25">
+				{' '}
+				-{' '}
+				<span
+					className="hover:underline hover:text-blue-500"
+					onClick={() => {
+						updateQueryParams({ projects: taskProject.id, page: '' });
+					}}
+				>
+					({taskProjectName})
+				</span>
+			</span>
+		);
+	};
 
 	return (
 		<div className="text-[22px] cursor-pointer">
 			<span
 				className="hover:underline font-bold hover:text-blue-500"
 				onClick={() => {
-					updateTaskIdQueryParam(parentTaskId);
+					updateTaskIdQueryParam(parentTask);
 				}}
 			>
 				{parentTaskTitle}
@@ -310,12 +345,14 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling 
 
 						const title = taskObj.title || taskObj.content;
 
+						console.log(taskObj);
+
 						return (
-							<span key={`breadcrumbs-${taskObj.id}-${index}`}>
+							<span key={`breadcrumbs-${taskObj.id}-${index}-${dateStr}`}>
 								<span
 									className="hover:text-blue-500 hover:underline"
 									onClick={() => {
-										updateTaskIdQueryParam(taskObj.id);
+										updateTaskIdQueryParam(taskObj);
 									}}
 								>
 									{title}
@@ -326,6 +363,8 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling 
 					})}
 				</span>
 			)}
+
+			<TaskProjectName {...{ taskId: parentTaskId }} />
 		</div>
 	);
 };
