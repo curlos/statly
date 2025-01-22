@@ -9,9 +9,10 @@ import InputNumUserSettings from './InputNumUserSettings';
 const OtherSectionFocusRecords = () => {
 	const {
 		focusRecordsPageSettings: {
-			showCompletedTasks,
 			showFocusNotes,
 			showTotalFocusDuration,
+			showCompletedTasks,
+			showTaskAncestors,
 			maxFocusRecordsPerPage,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 		},
@@ -64,15 +65,6 @@ const OtherSectionFocusRecords = () => {
 					<>
 						<CheckboxOther
 							{...{
-								name: 'Show Completed Tasks',
-								showValue: showCompletedTasks,
-								handleCheckboxClick: () =>
-									handleCheckboxClick(showCompletedTasks, 'showCompletedTasks'),
-							}}
-						/>
-
-						<CheckboxOther
-							{...{
 								name: 'Show Focus Notes',
 								showValue: showFocusNotes,
 								handleCheckboxClick: () => handleCheckboxClick(showFocusNotes, 'showFocusNotes'),
@@ -85,6 +77,23 @@ const OtherSectionFocusRecords = () => {
 								showValue: showTotalFocusDuration,
 								handleCheckboxClick: () =>
 									handleCheckboxClick(showTotalFocusDuration, 'showTotalFocusDuration'),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Completed Tasks',
+								showValue: showCompletedTasks,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(showCompletedTasks, 'showCompletedTasks'),
+							}}
+						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Task Ancestors',
+								showValue: showTaskAncestors,
+								handleCheckboxClick: () => handleCheckboxClick(showTaskAncestors, 'showTaskAncestors'),
 							}}
 						/>
 

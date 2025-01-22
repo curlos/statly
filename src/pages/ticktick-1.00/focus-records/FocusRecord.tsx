@@ -151,7 +151,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const taskIdFromUrl = searchParams.get('task-id');
 	const {
-		focusRecordsPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied },
+		focusRecordsPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied, showTaskAncestors },
 	} = useUserSettingsContext();
 
 	// RTK Query - TickTick 1.0 - Tasks
@@ -195,23 +195,19 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	// task.taskId === '6790e7ae80fdd13f212014bf'
 
 	const getTickTickFocusRecordTask = () => {
-		const getTaskTitle = (task, titleStyle, dateStr) => {
-			switch (titleStyle) {
-				case 'normal':
-					return (
-						<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
-							{task?.title}
-						</h3>
-					);
-				case 'use-task-breadcrumbs':
-					return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
+		const getTaskTitle = (task, dateStr) => {
+			if (showTaskAncestors) {
+				return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
 			}
+
+			return (
+				<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
+					{task?.title}
+				</h3>
+			);
 		};
 
 		return focusRecord.tasks.map((task) => {
-			// TODO: Use dyanmic setting later.
-			const useTaskBreadcrumbs = true;
-
 			const { startTime, endTime, taskId } = task;
 			const isNotDirectTask = taskId !== taskIdFromUrl;
 
@@ -220,7 +216,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 					return null;
 				}
 
-				if (useTaskBreadcrumbs) {
+				if (showTaskAncestors) {
 					if (!ancestorTasksById) {
 						return null;
 					}
@@ -246,7 +242,6 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 				<div key={`${taskId} - ${startTime}`} className={headerWrapperStyling}>
 					{getTaskTitle(
 						task,
-						'use-task-breadcrumbs',
 						`${startTimeObj.day + ' ' + startTimeObj.time} - ${endTimeObj.day + ' ' + endTimeObj.time}`
 					)}
 

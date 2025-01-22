@@ -5,6 +5,7 @@ import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.ut
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { getFocusRecordProperty, getFocusRecordFocusApp } from '../../../utils/focus-apps/multiFocusApps.utils';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
+import { useUserSettingsContext } from './useUserSettingsContext';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -20,6 +21,10 @@ export const useFilterFocusRecords = ({
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+
+	const {
+		focusRecordsPageSettings: { showTaskAncestors },
+	} = useUserSettingsContext();
 
 	// Projects
 	const projectIdsFromUrlArr = projectsFromUrl.split(',');
@@ -113,6 +118,10 @@ export const useFilterFocusRecords = ({
 
 					if (taskIdIsDirectlyInFocusRecord) {
 						return taskIdIsDirectlyInFocusRecord;
+					}
+
+					if (!showTaskAncestors) {
+						return false;
 					}
 
 					if (!ancestorTasksById) {

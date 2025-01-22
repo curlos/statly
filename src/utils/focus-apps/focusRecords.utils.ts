@@ -5,14 +5,7 @@ import { findMatchingTaskOrAncestor } from './tasks.utils';
 /**
  * @description For TickTick 1.0, Session, Forest, BeFocused, and Tide Focus Records
  */
-export const getFocusDuration = ({
-	focusRecord,
-	onlyTasks,
-	filterByTaskId,
-	// TODO: Use dynamic setting later on!
-	useTaskBreadcrumbs = true,
-	ancestorTasksById,
-}) => {
+export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId, showTaskAncestors, ancestorTasksById }) => {
 	const focusApp = getFocusRecordFocusApp(focusRecord);
 
 	const getTickTickFocusDuration = () => {
@@ -45,7 +38,7 @@ export const getFocusDuration = ({
 						continue;
 					}
 
-					if (useTaskBreadcrumbs && ancestorTasksById) {
+					if (showTaskAncestors && ancestorTasksById) {
 						const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
 							task,
 							filterByTaskId,
@@ -216,11 +209,17 @@ export const getGroupedFocusRecordsByTask = (focusRecords, tasksById) => {
 	return sortedGroupedFocusRecordsAsc;
 };
 
-export const getFocusDurationFromArray = (focusRecords, onlyTasks, taskId, ancestorTasksById) => {
+export const getFocusDurationFromArray = (focusRecords, onlyTasks, taskId, ancestorTasksById, showTaskAncestors) => {
 	let totalFocusDuration = 0;
 
 	focusRecords?.forEach((focusRecord) => {
-		totalFocusDuration += getFocusDuration({ focusRecord, onlyTasks, filterByTaskId: taskId, ancestorTasksById });
+		totalFocusDuration += getFocusDuration({
+			focusRecord,
+			onlyTasks,
+			filterByTaskId: taskId,
+			ancestorTasksById,
+			showTaskAncestors,
+		});
 	});
 
 	return totalFocusDuration;

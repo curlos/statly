@@ -21,9 +21,10 @@ const useUserSettings = () => {
 	const completedTasksPageSettings = userSettings?.tickTickOne?.pages?.completedTasks || {};
 
 	const {
-		showCompletedTasks = true,
 		showFocusNotes = true,
 		showTotalFocusDuration = true,
+		showCompletedTasks = true,
+		showTaskAncestors = true,
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage = true,
 		maxFocusRecordsPerPage = 50,
 	} = focusRecordsPageSettings;
@@ -37,9 +38,10 @@ const useUserSettings = () => {
 
 	return {
 		focusRecordsPageSettings: {
-			showCompletedTasks,
 			showFocusNotes,
 			showTotalFocusDuration,
+			showCompletedTasks,
+			showTaskAncestors,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage,
 			maxFocusRecordsPerPage,
 		},

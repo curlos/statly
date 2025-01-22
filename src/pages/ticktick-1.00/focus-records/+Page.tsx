@@ -37,6 +37,7 @@ const FocusRecordsPage = () => {
 			maxFocusRecordsPerPage,
 			showTotalFocusDuration,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+			showTaskAncestors,
 		},
 	} = useUserSettingsContext();
 
@@ -115,7 +116,8 @@ const FocusRecordsPage = () => {
 			filteredFocusRecords,
 			true,
 			filterByTaskId,
-			ancestorTasksById
+			ancestorTasksById,
+			showTaskAncestors
 		);
 
 		return (
@@ -131,7 +133,7 @@ const FocusRecordsPage = () => {
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<Navbar />
 
-				{allFocusRecordsAreHere && ancestorTasksById && (
+				{allFocusRecordsAreHere && (
 					<FilterBar
 						{...{
 							showFilterSidebar,
