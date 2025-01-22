@@ -4,6 +4,7 @@ import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { getFocusRecordProperty, getFocusRecordFocusApp } from '../../../utils/focus-apps/multiFocusApps.utils';
+import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
 
 export const useFilterFocusRecords = ({
 	taskIdToFilterBy,
@@ -43,7 +44,7 @@ export const useFilterFocusRecords = ({
 
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
-	const { tasksById } = fetchedTasks || {};
+	const { tasksById, ancestorTasksById } = fetchedTasks || {};
 
 	const fuse = new Fuse(defaultFocusRecords, {
 		includeScore: true,
@@ -107,7 +108,26 @@ export const useFilterFocusRecords = ({
 
 				const { tasks } = focusRecord;
 
-				return tasks.find((task) => String(task.taskId) === taskIdToFilterByStr);
+				return tasks.find((task) => {
+					const taskIdIsDirectlyInFocusRecord = String(task.taskId) === taskIdToFilterByStr;
+
+					if (taskIdIsDirectlyInFocusRecord) {
+						return taskIdIsDirectlyInFocusRecord;
+					}
+
+					if (!ancestorTasksById) {
+						return false;
+					}
+
+					// If the task is NOT directly in the Focus Record's tasks, then look through all of othe Focus Record's task's breadcrumbs and check if the taskId is an ancestor of one of those tasks.
+					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+						task,
+						taskIdToFilterByStr,
+						ancestorTasksById
+					);
+
+					return foundMatchingTaskOrAncestor;
+				});
 			}
 			default: {
 				const taskId = getFocusRecordProperty(focusRecord, 'taskId');
@@ -203,6 +223,7 @@ export const useFilterFocusRecords = ({
 		categoriesFromUrl,
 		focusAppsFromUrl,
 		tasksById,
+		ancestorTasksById,
 	]);
 
 	const getFilteredFocusRecords = () => {

@@ -165,7 +165,8 @@ export const getGroupedTodoistCompletedTasks = (tasks, todoistAllTasksById) => {
 };
 
 export const findMatchingTaskOrAncestor = (task, taskIdToMatch, ancestorTasksById) => {
-	const taskIds = [task.id, task.parentId, task.itemParentTaskId];
+	// It's possible for "task.taskId" to be undefined since it's only present in Focus Record "tasks" (not full ones) so filter out any task ids that are falsey.
+	const taskIds = [task.id, task.taskId, task.parentId, task.itemParentTaskId].filter((taskId) => taskId);
 
 	// If the task or the task's parent is the ID from the URL.
 	for (let taskId of taskIds) {

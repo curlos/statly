@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import FocusRecordList from './FocusRecordList';
-import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
+import {
+	useGetAllTasksQuery,
+	useGetPomoAndStopwatchFocusRecordsQuery,
+} from '../../../services/resources/ticktickOneApi';
 import Pagination from '../../../components/Pagination';
 import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
@@ -36,6 +39,10 @@ const FocusRecordsPage = () => {
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 		},
 	} = useUserSettingsContext();
+
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks } = useGetAllTasksQuery();
+	const { ancestorTasksById } = fetchedTasks || {};
 
 	// RTK Query - TickTick 1.0 - Focus Records
 	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
@@ -104,7 +111,12 @@ const FocusRecordsPage = () => {
 
 	const getFilterBarHeaderContent = () => {
 		const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
-		const totalFocusDuration = getFocusDurationFromArray(filteredFocusRecords, true, filterByTaskId);
+		const totalFocusDuration = getFocusDurationFromArray(
+			filteredFocusRecords,
+			true,
+			filterByTaskId,
+			ancestorTasksById
+		);
 
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
@@ -119,7 +131,7 @@ const FocusRecordsPage = () => {
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<Navbar />
 
-				{allFocusRecordsAreHere && (
+				{allFocusRecordsAreHere && ancestorTasksById && (
 					<FilterBar
 						{...{
 							showFilterSidebar,

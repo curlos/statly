@@ -15,6 +15,7 @@ import { getAllCompletedTasksDuringFocusRecord, getFocusDuration } from '../../.
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
+import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -153,6 +154,10 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		focusRecordsPageSettings: { filterOutUnrelatedTasksWhenTaskIdIsApplied },
 	} = useUserSettingsContext();
 
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks } = useGetAllTasksQuery();
+	const { ancestorTasksById } = fetchedTasks || {};
+
 	const headerWrapperStyling = 'mt-2 md:mt-0 sm:flex justify-between';
 	const headerStyling =
 		'text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline';
@@ -187,6 +192,8 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		});
 	};
 
+	// task.taskId === '6790e7ae80fdd13f212014bf'
+
 	const getTickTickFocusRecordTask = () => {
 		const getTaskTitle = (task, titleStyle, dateStr) => {
 			switch (titleStyle) {
@@ -202,10 +209,34 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		};
 
 		return focusRecord.tasks.map((task) => {
-			const { startTime, endTime, taskId } = task;
+			// TODO: Use dyanmic setting later.
+			const useTaskBreadcrumbs = true;
 
-			if (filterOutUnrelatedTasksWhenTaskIdIsApplied && taskIdFromUrl && (!taskId || taskId !== taskIdFromUrl)) {
-				return null;
+			const { startTime, endTime, taskId } = task;
+			const isNotDirectTask = taskId !== taskIdFromUrl;
+
+			if (filterOutUnrelatedTasksWhenTaskIdIsApplied && taskIdFromUrl) {
+				if (!taskId) {
+					return null;
+				}
+
+				if (useTaskBreadcrumbs) {
+					if (!ancestorTasksById) {
+						return null;
+					}
+
+					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+						task,
+						taskIdFromUrl,
+						ancestorTasksById
+					);
+
+					if (!foundMatchingTaskOrAncestor) {
+						return null;
+					}
+				} else if (isNotDirectTask) {
+					return null;
+				}
 			}
 
 			const startTimeObj = formatDateTime(startTime);
@@ -344,8 +375,6 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 						const taskObj = tasksById[taskId] || todoistAllTasksById[taskId];
 
 						const title = taskObj.title || taskObj.content;
-
-						console.log(taskObj);
 
 						return (
 							<span key={`breadcrumbs-${taskObj.id}-${index}-${dateStr}`}>

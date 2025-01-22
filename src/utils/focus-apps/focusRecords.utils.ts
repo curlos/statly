@@ -1,10 +1,18 @@
 import { getFormattedLongDay, sortObjectByDateKeys, sortArrayByProperty, isTimeBetween } from '../date.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from './multiFocusApps.utils';
+import { findMatchingTaskOrAncestor } from './tasks.utils';
 
 /**
  * @description For TickTick 1.0, Session, Forest, BeFocused, and Tide Focus Records
  */
-export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => {
+export const getFocusDuration = ({
+	focusRecord,
+	onlyTasks,
+	filterByTaskId,
+	// TODO: Use dynamic setting later on!
+	useTaskBreadcrumbs = true,
+	ancestorTasksById,
+}) => {
 	const focusApp = getFocusRecordFocusApp(focusRecord);
 
 	const getTickTickFocusDuration = () => {
@@ -30,9 +38,26 @@ export const getFocusDuration = ({ focusRecord, onlyTasks, filterByTaskId }) => 
 
 			for (const task of tasks) {
 				const { startTime, endTime, taskId } = task;
+				const isNotDirectTask = taskId !== filterByTaskId;
 
-				if (filterByTaskId && (!taskId || taskId !== filterByTaskId)) {
-					continue;
+				if (filterByTaskId) {
+					if (!taskId) {
+						continue;
+					}
+
+					if (useTaskBreadcrumbs && ancestorTasksById) {
+						const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+							task,
+							filterByTaskId,
+							ancestorTasksById
+						);
+
+						if (!foundMatchingTaskOrAncestor) {
+							continue;
+						}
+					} else if (isNotDirectTask) {
+						continue;
+					}
 				}
 
 				// Convert ISO string times to Date objects
@@ -191,11 +216,11 @@ export const getGroupedFocusRecordsByTask = (focusRecords, tasksById) => {
 	return sortedGroupedFocusRecordsAsc;
 };
 
-export const getFocusDurationFromArray = (focusRecords, onlyTasks, taskId) => {
+export const getFocusDurationFromArray = (focusRecords, onlyTasks, taskId, ancestorTasksById) => {
 	let totalFocusDuration = 0;
 
 	focusRecords?.forEach((focusRecord) => {
-		totalFocusDuration += getFocusDuration({ focusRecord, onlyTasks, filterByTaskId: taskId });
+		totalFocusDuration += getFocusDuration({ focusRecord, onlyTasks, filterByTaskId: taskId, ancestorTasksById });
 	});
 
 	return totalFocusDuration;
