@@ -66,9 +66,16 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 			},
 			transformResponse: (response) => {
 				const projects = response;
-				const projectsById = arrayToObjectByKey(response, 'id');
+				const projectsWithInbox = [
+					...projects,
+					{
+						id: 'inbox116577688',
+						name: 'Inbox',
+					},
+				];
+				const projectsById = arrayToObjectByKey(projectsWithInbox, 'id');
 
-				return { projects, projectsById };
+				return { projects: projectsWithInbox, projectsById };
 			},
 		}),
 		getAllProjectGroups: builder.query({

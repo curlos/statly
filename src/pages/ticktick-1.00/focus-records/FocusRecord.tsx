@@ -410,19 +410,8 @@ const TaskProjectName = ({ taskId }) => {
 			<span
 				className="hover:underline hover:text-blue-500"
 				onClick={() => {
-					console.log('Click project name!');
-					console.log({
-						projects: taskProject.id,
-						'task-id': '',
-						'sort-by': '',
-						search: '',
-						'start-date': '',
-						'end-date': '',
-						page: '',
-					});
-
 					updateQueryParams({
-						projects: taskProject.id,
+						projects: taskProject?.id,
 						'task-id': '',
 						'sort-by': '',
 						search: '',
