@@ -327,6 +327,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 
 	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick || parentTaskBreadcrumbsTodoist;
 
+	// TODO: Review this bug!
 	// if (task.title === 'Review Code') {
 	// 	debugger;
 	// }
@@ -343,7 +344,15 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 				<span
 					className="hover:underline hover:text-blue-500"
 					onClick={() => {
-						updateQueryParams({ projects: taskProject.id, page: '' });
+						updateQueryParams({
+							projects: taskProject.id,
+							'task-id': '',
+							'sort-by': '',
+							search: '',
+							'start-date': '',
+							'end-date': '',
+							page: '',
+						});
 					}}
 				>
 					({taskProjectName})
