@@ -200,9 +200,14 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 				return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
 			}
 
+			const taskId = task?.taskId || task.id;
+
 			return (
-				<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
-					{task?.title}
+				<h3 className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
+					<span onClick={() => updateTaskIdQueryParam(task)} className="hover:text-blue-500 hover:underline">
+						{task?.title}
+					</span>
+					<TaskProjectName {...{ taskId: taskId }} />
 				</h3>
 			);
 		};
@@ -306,8 +311,6 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
-	const { updateQueryParams } = useSearchParamsContext();
-
 	if (isLoadingGetTasks || isLoadingGetTodoistAllTasks || isLoadingGetProjects) {
 		return (
 			<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
@@ -331,35 +334,6 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 	// if (task.title === 'Review Code') {
 	// 	debugger;
 	// }
-
-	const TaskProjectName = ({ taskId }) => {
-		const fullTask = tasksById[taskId];
-		const taskProject = fullTask?.projectId && projectsById[fullTask?.projectId];
-		const taskProjectName = taskProject ? taskProject.name : '';
-
-		return (
-			<span className="text-color-gray-25">
-				{' '}
-				-{' '}
-				<span
-					className="hover:underline hover:text-blue-500"
-					onClick={() => {
-						updateQueryParams({
-							projects: taskProject.id,
-							'task-id': '',
-							'sort-by': '',
-							search: '',
-							'start-date': '',
-							'end-date': '',
-							page: '',
-						});
-					}}
-				>
-					({taskProjectName})
-				</span>
-			</span>
-		);
-	};
 
 	return (
 		<div className="text-[22px] cursor-pointer">
@@ -397,8 +371,58 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 				</span>
 			)}
 
-			<TaskProjectName {...{ taskId: parentTaskId }} />
+			<TaskProjectName {...{ taskId: parentTaskId, tasksById, projectsById }} />
 		</div>
+	);
+};
+
+const TaskProjectName = ({ taskId }) => {
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks } = useGetAllTasksQuery();
+	const { tasksById } = fetchedTasks || {};
+
+	// RTK Query - TickTick 1.0 - Projects
+	const { data: fetchedProjects } = useGetAllProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
+	const { updateQueryParams } = useSearchParamsContext();
+
+	const fullTask = tasksById[taskId];
+	const taskProject = fullTask?.projectId && projectsById[fullTask?.projectId];
+	const taskProjectName = taskProject ? taskProject.name : '';
+
+	return (
+		<span className="text-color-gray-25">
+			{' '}
+			-{' '}
+			<span
+				className="hover:underline hover:text-blue-500"
+				onClick={() => {
+					console.log('Click project name!');
+					console.log({
+						projects: taskProject.id,
+						'task-id': '',
+						'sort-by': '',
+						search: '',
+						'start-date': '',
+						'end-date': '',
+						page: '',
+					});
+
+					updateQueryParams({
+						projects: taskProject.id,
+						'task-id': '',
+						'sort-by': '',
+						search: '',
+						'start-date': '',
+						'end-date': '',
+						page: '',
+					});
+				}}
+			>
+				({taskProjectName})
+			</span>
+		</span>
 	);
 };
 
