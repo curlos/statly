@@ -9,9 +9,14 @@ import {
 import { getFocusDurationFilteredByProjects, getFocusDurationFromArray } from './focus-apps/focusRecords.utils';
 
 export const CRUCIAL_PROJECTS = {
-	LeetCode: true,
+	'LeetCode': true,
 	'Side Projects': true,
 	'Behavioral Interview Prep': true,
+	'DS&A': true,
+	'University Courses': true,
+	'NeetCode 250': true,
+	'MIT': true,
+	'GUNPLA': true
 };
 
 export const GOAL_FOR_DAYS = {
@@ -44,6 +49,8 @@ export const getStreaksInfo = (focusRecords) => {
 	const focusRecordsByDate = {};
 
 	focusRecords.forEach((focusRecord) => {
+
+
 		const { startTime } = focusRecord;
 
 		const dayKey = getFormattedLongDay(new Date(startTime));
@@ -59,8 +66,8 @@ export const getStreaksInfo = (focusRecords) => {
 
 	Object.keys(focusRecordsByDate).map((dayKey) => {
 		const focusRecordsForDay = focusRecordsByDate[dayKey];
-		// const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay);
-		const durationForDay = getFocusDurationFromArray(focusRecordsForDay);
+		const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay);
+		// const durationForDay = getFocusDurationFromArray(focusRecordsForDay);
 		totalFocusDurationByDate[dayKey] = durationForDay;
 	});
 
@@ -152,8 +159,8 @@ export const getFocusDurationForDay = (focusRecordsByDate, date) => {
 	const dayKey = getFormattedLongDay(date);
 	const focusRecordsForTheDay = focusRecordsByDate[dayKey];
 	// TODO: In the future, filter this out if certain filters are selected in the settings modal for the Daily Focus Hours Goal page. However, since that feature has not been implemented yet, just take everything and do not filter it by project or anything else yet.
-	// return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay);
-	return getFocusDurationFromArray(focusRecordsForTheDay);
+	// return getFocusDurationFromArray(focusRecordsForTheDay);
+	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay);
 };
 
 export const getFocusDataForDayInfo = (focusRecordsByDate, date) => {
