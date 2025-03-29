@@ -31,7 +31,7 @@ export const GOAL_FOR_DAYS = {
 
 export const getGoalSeconds = (date) => {
 	const currentDayString = getDayString(date);
-	const goalSecondsForToday = 16200 || GOAL_FOR_DAYS[currentDayString];
+	const goalSecondsForToday = 21600 || GOAL_FOR_DAYS[currentDayString];
 	return goalSecondsForToday;
 };
 
