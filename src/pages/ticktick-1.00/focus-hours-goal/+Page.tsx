@@ -4,11 +4,13 @@ import Icon from '../../../components/Icon.js';
 import SidebarModal from '../../../components/SidebarModal/SidebarModal.js';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi.js';
 import LoaderBottomRightBO3Medal from '../../../components/Loaders/LoaderBottomRightBO3Medal.js';
+// import FocusHourGoalSidebarModal from '../../../components/FocusHourGoalSidebarModal.js';
 
 export default function Page() {
 	const { isLoading: isLoadingGetFocusRecords } = useGetPomoAndStopwatchFocusRecordsQuery();
 
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
+	// const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 
 	return (
 		<div className="w-screen h-screen bg-color-gray-700 flex justify-center items-center">
@@ -23,7 +25,23 @@ export default function Page() {
 					onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
 				/>
 
+				{/* <Icon
+					name="page_info"
+					customClass={
+						'!text-[30px] text-color-gray-100 absolute right-0 top-[15px] mt-[35px] mr-[15px] cursor-pointer'
+					}
+					onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
+				/> */}
+
 				{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
+				{/* {isFilterSidebarModalOpen && (
+					<FocusHourGoalSidebarModal
+						{...{
+							isSidebarModalOpen: isFilterSidebarModalOpen,
+							setIsSidebarModalOpen: setIsFilterSidebarModalOpen,
+						}}
+					/>
+				)} */}
 			</>
 		</div>
 	);
