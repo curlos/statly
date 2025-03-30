@@ -35,17 +35,17 @@ export const getGoalSeconds = (date) => {
 	return goalSecondsForToday;
 };
 
-export const getDurationForFocusRecordsFilteredByProjects = (focusRecords) => {
+export const getDurationForFocusRecordsFilteredByProjects = (focusRecords, filteredProjects) => {
 	let totalFocusDuration = 0;
 
 	focusRecords?.forEach((focusRecord) => {
-		totalFocusDuration += getFocusDurationFilteredByProjects(focusRecord, CRUCIAL_PROJECTS);
+		totalFocusDuration += getFocusDurationFilteredByProjects(focusRecord, filteredProjects);
 	});
 
 	return totalFocusDuration;
 };
 
-export const getStreaksInfo = (focusRecords) => {
+export const getStreaksInfo = (focusRecords, filteredProjects) => {
 	const focusRecordsByDate = {};
 
 	focusRecords.forEach((focusRecord) => {
@@ -63,14 +63,22 @@ export const getStreaksInfo = (focusRecords) => {
 	});
 
 	const totalFocusDurationByDate = getDateMapSinceDay('November 1, 2020');
+	const includeAllProjects = Object.values(filteredProjects).every(value => value === false)
 
-	Object.keys(focusRecordsByDate).map((dayKey) => {
-		const focusRecordsForDay = focusRecordsByDate[dayKey];
-		const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay);
-		// const durationForDay = getFocusDurationFromArray(focusRecordsForDay);
-		totalFocusDurationByDate[dayKey] = durationForDay;
-	});
-
+	if (includeAllProjects) {
+		Object.keys(focusRecordsByDate).map((dayKey) => {
+			const focusRecordsForDay = focusRecordsByDate[dayKey];
+			const durationForDay = getFocusDurationFromArray(focusRecordsForDay);
+			totalFocusDurationByDate[dayKey] = durationForDay;
+		});
+	} else {
+		Object.keys(focusRecordsByDate).map((dayKey) => {
+			const focusRecordsForDay = focusRecordsByDate[dayKey];
+			const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay, filteredProjects);
+			totalFocusDurationByDate[dayKey] = durationForDay;
+		});
+	}
+	
 	const sortedFocusDurationByDate = sortObjectByDateKeys(totalFocusDurationByDate);
 
 	const newStreaksInfo = {
@@ -155,17 +163,24 @@ export const getFocusRecordsFromToday = (focusRecords) => {
 	return focusRecordsFromToday;
 };
 
-export const getFocusDurationForDay = (focusRecordsByDate, date) => {
+export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProjects) => {
 	const dayKey = getFormattedLongDay(date);
 	const focusRecordsForTheDay = focusRecordsByDate[dayKey];
-	// TODO: In the future, filter this out if certain filters are selected in the settings modal for the Daily Focus Hours Goal page. However, since that feature has not been implemented yet, just take everything and do not filter it by project or anything else yet.
-	// return getFocusDurationFromArray(focusRecordsForTheDay);
-	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay);
+	const includeAllProjects = Object.values(filteredProjects).every(value => value === false)
+
+	if (includeAllProjects) {
+		return getFocusDurationFromArray(focusRecordsForTheDay);
+	}
+	
+	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay, filteredProjects);
 };
 
-export const getFocusDataForDayInfo = (focusRecordsByDate, date) => {
+export const getFocusDataForDayInfo = (focusRecordsByDate, date, filteredProjects) => {
+	console.log(filteredProjects)
+	debugger
+
 	const goalSeconds = getGoalSeconds(date);
-	const totalFocusDurationForDay = getFocusDurationForDay(focusRecordsByDate, date);
+	const totalFocusDurationForDay = getFocusDurationForDay(focusRecordsByDate, date, filteredProjects);
 	const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalSeconds) * 100;
 
 	return {
@@ -256,4 +271,16 @@ export const sumNumsByPeriod = (numsData, period) => {
 	});
 
 	return results;
+};
+
+export const getFilteredProjectsWithNames = (filteredProjects, projectsById) => {
+	const filteredProjectsWithNames = { ...filteredProjects };
+
+	for (const [projectId, checked] of Object.entries(filteredProjects)) {
+		console.log(projectId);
+		const { name } = projectsById[projectId];
+		filteredProjectsWithNames[name] = checked;
+	}
+
+	return filteredProjectsWithNames;
 };

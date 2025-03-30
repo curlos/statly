@@ -5,9 +5,13 @@ import ModalHabitDetails from '../../../components/Modal/ModalHabitDetails/Modal
 import { useState } from 'react';
 import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants/constants.utils';
 import classNames from 'classnames';
-import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi';
-import { getStreaksInfo, getFocusDataForDayInfo } from '../../../utils/focus.utils';
+import {
+	useGetAllProjectsQuery,
+	useGetPomoAndStopwatchFocusRecordsQuery,
+} from '../../../services/resources/ticktickOneApi';
+import { getStreaksInfo, getFocusDataForDayInfo, getFilteredProjectsWithNames } from '../../../utils/focus.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 
 const defaultFocusData = {
 	goalSeconds: 21600,
@@ -19,8 +23,28 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { data: fetchedFocusRecords } = useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecords, focusRecordsByDate } = fetchedFocusRecords || {};
 
-	const streaksInfo = focusRecords && getStreaksInfo(focusRecords);
-	const focusDataForTodayInfo = focusRecordsByDate && getFocusDataForDayInfo(focusRecordsByDate, new Date());
+	// RTK Query - TickTick 1.0 - Projects
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
+	const {
+		focusHoursGoalPageSettings: { filteredProjects },
+	} = useUserSettingsContext();
+
+	const streaksInfo =
+		focusRecords &&
+		projectsById &&
+		filteredProjects &&
+		getStreaksInfo(focusRecords, getFilteredProjectsWithNames(filteredProjects, projectsById));
+	const focusDataForTodayInfo =
+		focusRecordsByDate &&
+		projectsById &&
+		filteredProjects &&
+		getFocusDataForDayInfo(
+			focusRecordsByDate,
+			new Date('March 26, 2025'),
+			getFilteredProjectsWithNames(filteredProjects, projectsById)
+		);
 	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
 		focusDataForTodayInfo || defaultFocusData;
 

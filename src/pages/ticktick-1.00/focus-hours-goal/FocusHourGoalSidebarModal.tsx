@@ -1,7 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { navigate } from 'vike/client/router';
-import Icon from './Icon';
-import ProjectsTickTickSection from './FilterSidebar/ProjectsTickTickSection';
+import ProjectsTickTickSection from '../../../components/FilterSidebar/ProjectsTickTickSection';
 
 const FocusHourGoalSidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -12,22 +10,6 @@ const FocusHourGoalSidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
-	};
-
-	const LinkLi = ({ name, linkUrl, iconName }) => {
-		return (
-			<div
-				className="group flex items-center gap-2 cursor-pointer"
-				onClick={() => {
-					navigate(linkUrl);
-					setIsSidebarModalOpen(false);
-				}}
-			>
-				<div className="group-hover:underline">{name}</div>
-
-				{iconName && <Icon name={iconName} fill={1} customClass={'text-color-gray-50 !text-[24px]'} />}
-			</div>
-		);
 	};
 
 	return (
@@ -56,7 +38,7 @@ const FocusHourGoalSidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
 						<div className="font-bold text-[18px]">Focus Hours Goal</div>
-						<ProjectsTickTickSection />
+						<ProjectsTickTickSection page="focus-hours-goal" />
 					</motion.div>
 				</motion.div>
 			)}

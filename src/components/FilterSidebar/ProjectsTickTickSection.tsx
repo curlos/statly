@@ -7,15 +7,23 @@ import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
+import CheckboxOther from './CheckboxOther';
+import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
+import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
+import useHandleError from '../../hooks/useHandleError';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
  */
-const ProjectsTickTickSection = () => {
+const ProjectsTickTickSection = ({ page }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const projectsFromUrl = searchParams.get('projects');
+
+	const {
+		focusHoursGoalPageSettings: { filteredProjects },
+	} = useUserSettingsContext();
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
@@ -24,6 +32,14 @@ const ProjectsTickTickSection = () => {
 	// RTK Query - TickTick 1.0 - Project Groups
 	const { data: fetchedProjectGroups, isLoading: isLoadingGetProjectGroups } = useGetAllProjectGroupsQuery();
 	const { projectGroupsById } = fetchedProjectGroups || {};
+
+	// RTK Query - User Settings
+	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
+	const { userSettings } = fetchedUserSettings || {};
+
+	const [editUserSettings] = useEditUserSettingsMutation();
+
+	const handleError = useHandleError();
 
 	const [groupedProjectsByGroupId, setGroupedProjectsByGroupId] = useState([]);
 	const [sortedProjectGroups, setSortedProjectGroups] = useState([]);
@@ -91,6 +107,25 @@ const ProjectsTickTickSection = () => {
 
 	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
 
+	const handleCheckboxClick = (userSettingProperty, newValue) => {
+		const restOfFocusHoursGoalsKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
+
+		handleError(async () => {
+			const payload = {
+				tickTickOne: {
+					pages: {
+						focusHoursGoal: {
+							...restOfFocusHoursGoalsKeysAndVals,
+							[userSettingProperty]: newValue,
+						},
+					},
+				},
+			};
+
+			await editUserSettings(payload).unwrap();
+		});
+	};
+
 	return (
 		<div>
 			<Accordion
@@ -128,12 +163,33 @@ const ProjectsTickTickSection = () => {
 											nextLightestColorObj,
 											projectsFromUrlById,
 											updateQueryParams,
+											page,
+											filteredProjects,
+											handleCheckboxClick,
 										}}
 									/>
 								);
 							}
 
 							const project = projectOrProjectGroup;
+
+							if (page == 'focus-hours-goal') {
+								const showValue = filteredProjects[project.id];
+
+								return (
+									<CheckboxOther
+										{...{
+											name: project.name,
+											showValue,
+											handleCheckboxClick: () =>
+												handleCheckboxClick('projects', {
+													...filteredProjects,
+													[project.id]: !showValue,
+												}),
+										}}
+									/>
+								);
+							}
 
 							return (
 								<CheckboxMultiSelectForUrl
@@ -159,6 +215,9 @@ const ProjectsTickTickSection = () => {
 								nextLightestColorObj,
 								projectsFromUrlById,
 								updateQueryParams,
+								page,
+								filteredProjects,
+								handleCheckboxClick,
 							}}
 						/>
 					</div>
@@ -181,6 +240,9 @@ const ProjectGroupWithProjects = ({
 	nextLightestColorObj,
 	projectsFromUrlById,
 	updateQueryParams,
+	page,
+	filteredProjects,
+	handleCheckboxClick,
 }) => {
 	const { id } = isArchivedGroup ? 'Archived' : projectGroup;
 	const groupedProjects = isArchivedGroup ? archivedProjects : groupedProjectsByGroupId[id];
@@ -212,19 +274,40 @@ const ProjectGroupWithProjects = ({
 				setIsOpenForParent={setIsOpenForParent}
 			>
 				<div className="pl-4">
-					{groupedProjects?.map((project) => (
-						<CheckboxMultiSelectForUrl
-							key={project.id}
-							{...{
-								project,
-								chosenColorObj,
-								nextLightestColorObj,
-								commaSeparatedObj: projectsFromUrlById,
-								updateQueryParams,
-								urlQueryParamName: 'projects',
-							}}
-						/>
-					))}
+					{groupedProjects?.map((project) => {
+						if (page == 'focus-hours-goal') {
+							const showValue = filteredProjects[project.id];
+
+							return (
+								<CheckboxOther
+									key={project.id}
+									{...{
+										name: project.name,
+										showValue,
+										handleCheckboxClick: () =>
+											handleCheckboxClick('projects', {
+												...filteredProjects,
+												[project.id]: !showValue,
+											}),
+									}}
+								/>
+							);
+						}
+
+						return (
+							<CheckboxMultiSelectForUrl
+								key={project.id}
+								{...{
+									project,
+									chosenColorObj,
+									nextLightestColorObj,
+									commaSeparatedObj: projectsFromUrlById,
+									updateQueryParams,
+									urlQueryParamName: 'projects',
+								}}
+							/>
+						);
+					})}
 				</div>
 			</Accordion>
 		</div>

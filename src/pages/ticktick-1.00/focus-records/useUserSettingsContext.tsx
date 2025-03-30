@@ -19,6 +19,7 @@ const useUserSettings = () => {
 
 	const focusRecordsPageSettings = userSettings?.tickTickOne?.pages?.focusRecords || {};
 	const completedTasksPageSettings = userSettings?.tickTickOne?.pages?.completedTasks || {};
+	const focusHoursGoalPageSettings = userSettings?.tickTickOne?.pages?.focusHoursGoal || {};
 
 	const {
 		showFocusNotes = true,
@@ -38,6 +39,8 @@ const useUserSettings = () => {
 		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
+	const { projects: filteredProjects = {} } = focusHoursGoalPageSettings;
+
 	return {
 		focusRecordsPageSettings: {
 			showFocusNotes,
@@ -54,6 +57,9 @@ const useUserSettings = () => {
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
 			maxDaysPerPage,
+		},
+		focusHoursGoalPageSettings: {
+			filteredProjects,
 		},
 	};
 };

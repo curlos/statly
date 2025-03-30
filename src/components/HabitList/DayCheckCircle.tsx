@@ -12,8 +12,12 @@ import { checkIfIsFocusHoursHabit, getFormattedDuration } from '../../utils/focu
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import { getFocusDataForDayInfo } from '../../utils/focus.utils';
-import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../services/resources/ticktickOneApi';
+import { getFilteredProjectsWithNames, getFocusDataForDayInfo } from '../../utils/focus.utils';
+import {
+	useGetAllProjectsQuery,
+	useGetPomoAndStopwatchFocusRecordsQuery,
+} from '../../services/resources/ticktickOneApi';
+import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 
 const DayCheckCircle = ({
 	isChecked,
@@ -34,6 +38,14 @@ const DayCheckCircle = ({
 	} = useGetPomoAndStopwatchFocusRecordsQuery();
 	const { focusRecordsByDate } = fetchedFocusRecords || {};
 
+	// RTK Query - TickTick 1.0 - Projects
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
+	const {
+		focusHoursGoalPageSettings: { filteredProjects },
+	} = useUserSettingsContext();
+
 	// useState
 	const [contextMenu, setContextMenu] = useState(null);
 	const [isAlertTooltipOpen, setIsAlertTooltipOpen] = useState(false);
@@ -52,7 +64,11 @@ const DayCheckCircle = ({
 	const disableHabitActions = habit.isArchived || dayHasNotHappenedYet;
 	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
 	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } = focusRecordsByDate
-		? getFocusDataForDayInfo(focusRecordsByDate, new Date(checkedInDayKey))
+		? getFocusDataForDayInfo(
+				focusRecordsByDate,
+				new Date(checkedInDayKey),
+				getFilteredProjectsWithNames(filteredProjects, projectsById)
+			)
 		: {};
 
 	const handleClick = () => {
