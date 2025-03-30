@@ -44,8 +44,8 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 						<hr className="border-color-gray-200 my-4" />
 
 						<div className="space-y-4">
-							<ChallengeCard name="Focus" imageSrc="https://i.imgur.com/6xLKg5k.jpeg" />
-							<ChallengeCard name="Tasks" imageSrc="https://i.imgur.com/x084PtQ.png" />
+							<ChallengeCard cardType="Focus" imageSrc="https://i.imgur.com/6xLKg5k.jpeg" />
+							<ChallengeCard cardType="Tasks" imageSrc="https://i.imgur.com/x084PtQ.png" />
 						</div>
 					</motion.div>
 				</motion.div>
@@ -54,13 +54,13 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 	);
 };
 
-const ChallengeCard = ({ name, imageSrc }) => {
+const ChallengeCard = ({ cardType, imageSrc }) => {
 	const [hoverImage, setHoverImage] = useState(false);
 	const [showModalChangeChallengeCardImage, setShowModalChangeChallengeCardImage] = useState(false);
 
 	return (
 		<div>
-			<div className="font-bold mb-1">{name}</div>
+			<div className="font-bold mb-1">{cardType}</div>
 			<div
 				className="relative"
 				onMouseOver={() => setHoverImage(true)}
@@ -79,6 +79,7 @@ const ChallengeCard = ({ name, imageSrc }) => {
 				{...{
 					showModal: showModalChangeChallengeCardImage,
 					setShowModal: setShowModalChangeChallengeCardImage,
+					cardType: cardType,
 				}}
 			/>
 		</div>

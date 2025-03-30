@@ -3,16 +3,34 @@ import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal/Modal';
 import useHandleError from '../../../hooks/useHandleError';
 
-const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal }) => {
+const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, cardType }) => {
 	const handleError = useHandleError();
 
 	const challengeCardImageSrcs = [
+		'https://i.imgur.com/6xLKg5k.jpeg',
+		'https://i.imgur.com/1YgsWfs.jpeg',
+		'https://i.imgur.com/6XxU2gI.jpeg',
+		'https://i.imgur.com/bxbNsXn.jpeg',
 		'https://i.imgur.com/x084PtQ.png',
 		'https://i.imgur.com/wB7IC8I.png',
-		'https://i.imgur.com/QPGlCRU.jpeg',
-		'https://i.imgur.com/6xLKg5k.jpeg',
 		'https://i.imgur.com/RJwESL1.jpeg',
+		'https://i.imgur.com/jWwQMre.jpeg',
+		'https://i.imgur.com/H66q41n.jpeg',
+		'https://i.imgur.com/nVSAETq.jpeg',
+		'https://i.imgur.com/CHc4FZm.jpeg',
+		'https://i.imgur.com/C5XRDHf.png',
+		'https://i.imgur.com/NqLXU5k.png',
+		'https://i.imgur.com/mjQR03J.png',
+		'https://i.imgur.com/QPGlCRU.jpeg',
+		'https://i.imgur.com/JF5yqRY.png',
 		'https://i.imgur.com/xgI5YX3.jpeg',
+		'https://i.imgur.com/ta2Mntd.png',
+		'https://i.imgur.com/uynvJZh.png',
+		'https://i.imgur.com/nmgjNAy.jpeg',
+		'https://i.imgur.com/iy2ZSMF.jpeg',
+		'https://i.imgur.com/TAhBlMG.jpeg',
+		'https://i.imgur.com/crfh1D3.jpeg',
+		'https://i.imgur.com/NUw06Bt.jpeg',
 	];
 
 	const [selectedImageSrc, setSelectedImageSrc] = useState('https://i.imgur.com/6xLKg5k.jpeg');
@@ -35,7 +53,7 @@ const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal }) =>
 				</div>
 
 				<div className="px-5 pb-5">
-					<div className="grid grid-cols-2 gap-2 overflow-auto max-h-[250px]">
+					<div className="grid lg:grid-cols-2 gap-2 overflow-auto max-h-[250px]">
 						{challengeCardImageSrcs.map((imageSrc) => {
 							const isSelected = imageSrc === selectedImageSrc;
 
