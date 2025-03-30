@@ -10,7 +10,7 @@ export default function Page() {
 	const { isLoading: isLoadingGetFocusRecords } = useGetPomoAndStopwatchFocusRecordsQuery();
 
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
-	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
+	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
 	return (
 		<div className="w-screen h-screen bg-color-gray-700 flex justify-center items-center">
@@ -30,15 +30,15 @@ export default function Page() {
 					customClass={
 						'!text-[30px] text-color-gray-100 absolute right-0 top-[15px] mt-[35px] mr-[15px] cursor-pointer'
 					}
-					onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
+					onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
 				/>
 
 				{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
-				{isFilterSidebarModalOpen && (
+				{isSettingsSidebarModalOpen && (
 					<FocusHourGoalSettingsModal
 						{...{
-							isSidebarModalOpen: isFilterSidebarModalOpen,
-							setIsSidebarModalOpen: setIsFilterSidebarModalOpen,
+							isSidebarModalOpen: isSettingsSidebarModalOpen,
+							setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
 						}}
 					/>
 				)}

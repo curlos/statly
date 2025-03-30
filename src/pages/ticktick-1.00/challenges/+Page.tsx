@@ -6,11 +6,14 @@ import useResizeObserver from '../../../hooks/useResizeObserver';
 import ChallengeList from './ChallengeList/ChallengeList';
 import ChosenChallenge from './ChosenChallenge';
 import Modal from '../../../components/Modal/Modal';
+import Icon from '../../../components/Icon';
+import ChallengesSettingsModal from './ChallengesSettingsModal';
 
 const Page = () => {
 	const [chosenChallenge, setChosenChallenge] = useState({});
 	const chosenChallengeRef = useRef(null);
 	const [showChosenChallengeModal, setShowChosenChallengeModal] = useState(false);
+	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
@@ -37,7 +40,14 @@ const Page = () => {
 		<div className="max-w-screen min-h-screen bg-color-gray-700">
 			<div ref={topHeaderRef}>
 				<Navbar />
-				<div className="container text-[28px] font-bold">Challenges</div>
+				<div className="container flex justify-between items-center">
+					<div className="text-[28px] font-bold">Challenges</div>
+					<Icon
+						name="settings"
+						customClass={'!text-[30px] text-color-gray-100 cursor-pointer mr-[15px]'}
+						onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
+					/>
+				</div>
 				<div className="container grid grid-cols-12">
 					<div className="col-span-8">
 						<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
@@ -68,6 +78,15 @@ const Page = () => {
 					</Modal>
 				</div>
 			</div>
+
+			{isSettingsSidebarModalOpen && (
+				<ChallengesSettingsModal
+					{...{
+						isSidebarModalOpen: isSettingsSidebarModalOpen,
+						setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
+					}}
+				/>
+			)}
 		</div>
 	);
 };

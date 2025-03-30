@@ -161,7 +161,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 					);
 				})}
 
-				<AddChallengeCard {...{ setShowAddChallengeModal }} />
+				{/* <AddChallengeCard {...{ setShowAddChallengeModal }} /> */}
 			</div>
 
 			<ModalAddChallenge {...{ showAddChallengeModal, setShowAddChallengeModal }} />
@@ -169,25 +169,25 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 	);
 };
 
-const AddChallengeCard = ({ setShowAddChallengeModal }) => {
-	const { chosenColorObj } = useThemeContext();
+// const AddChallengeCard = ({ setShowAddChallengeModal }) => {
+// 	const { chosenColorObj } = useThemeContext();
 
-	return (
-		<div
-			className={classNames(
-				'border py-1 px-3 flex items-center gap-1 text-color-gray-50 cursor-pointer',
-				chosenColorObj.borderColor
-			)}
-			onClick={() => setShowAddChallengeModal(true)}
-		>
-			<div className="font-bold text-[18px]">Add Challenge</div>
-			<Icon
-				name="add"
-				fill={0}
-				customClass={classNames('text-color-gray-50 !text-[20px] cursor-pointer', chosenColorObj.textColor)}
-			/>
-		</div>
-	);
-};
+// 	return (
+// 		<div
+// 			className={classNames(
+// 				'border py-1 px-3 flex items-center gap-1 text-color-gray-50 cursor-pointer',
+// 				chosenColorObj.borderColor
+// 			)}
+// 			onClick={() => setShowAddChallengeModal(true)}
+// 		>
+// 			<div className="font-bold text-[18px]">Add Challenge</div>
+// 			<Icon
+// 				name="add"
+// 				fill={0}
+// 				customClass={classNames('text-color-gray-50 !text-[20px] cursor-pointer', chosenColorObj.textColor)}
+// 			/>
+// 		</div>
+// 	);
+// };
 
 export default ChallengeList;
