@@ -13,8 +13,8 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 
 	let imgSrc =
 		chosenChallenge.requiredDuration !== undefined
-			? selectedChallengeCardImage['focus']
-			: selectedChallengeCardImage['tasks'];
+			? selectedChallengeCardImage?.focus
+			: selectedChallengeCardImage?.tasks;
 
 	if (fullImageSrc) {
 		imgSrc = fullImageSrc;

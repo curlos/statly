@@ -21,8 +21,8 @@ const ChallengeCard = ({
 
 	let imgSrc =
 		challenge.requiredDuration !== undefined
-			? selectedChallengeCardImage['focus']
-			: selectedChallengeCardImage['tasks'];
+			? selectedChallengeCardImage?.focus
+			: selectedChallengeCardImage?.tasks;
 
 	if (smallImageSrc) {
 		imgSrc = smallImageSrc;
