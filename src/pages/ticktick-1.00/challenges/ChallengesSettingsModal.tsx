@@ -39,6 +39,18 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 					>
 						<div className="font-bold text-[18px]">Challenges - Settings</div>
 						<hr className="border-color-gray-200 my-4" />
+
+						<div className="space-y-4">
+							<div>
+								<div className="font-bold mb-1">Focus</div>
+								<img src="https://i.imgur.com/6xLKg5k.jpeg" />
+							</div>
+
+							<div>
+								<div className="font-bold mb-1">Tasks</div>
+								<img src="https://i.imgur.com/x084PtQ.png" />
+							</div>
+						</div>
 					</motion.div>
 				</motion.div>
 			)}
