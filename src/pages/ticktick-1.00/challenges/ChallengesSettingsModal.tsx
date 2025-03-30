@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import ProjectsTickTickSection from '../../../components/FilterSidebar/ProjectsTickTickSection';
+import Icon from '../../../components/Icon';
+import { useState } from 'react';
+import classNames from 'classnames';
 
 const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -41,20 +43,35 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 						<hr className="border-color-gray-200 my-4" />
 
 						<div className="space-y-4">
-							<div>
-								<div className="font-bold mb-1">Focus</div>
-								<img src="https://i.imgur.com/6xLKg5k.jpeg" />
-							</div>
-
-							<div>
-								<div className="font-bold mb-1">Tasks</div>
-								<img src="https://i.imgur.com/x084PtQ.png" />
-							</div>
+							<ChallengeCard name="Focus" imageSrc="https://i.imgur.com/6xLKg5k.jpeg" />
+							<ChallengeCard name="Tasks" imageSrc="https://i.imgur.com/x084PtQ.png" />
 						</div>
 					</motion.div>
 				</motion.div>
 			)}
 		</AnimatePresence>
+	);
+};
+
+const ChallengeCard = ({ name, imageSrc }) => {
+	const [hoverImage, setHoverImage] = useState(false);
+
+	return (
+		<div>
+			<div className="font-bold mb-1">{name}</div>
+			<div className="relative" onMouseOver={() => setHoverImage(true)} onMouseLeave={() => setHoverImage(false)}>
+				{hoverImage && (
+					<div className="absolute inset-0 flex justify-center items-center">
+						<Icon
+							name="edit"
+							customClass="!text-[30px] text-color-gray-100 cursor-pointer"
+							// onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
+						/>
+					</div>
+				)}
+				<img src={imageSrc} className={classNames('cursor-pointer', hoverImage && 'opacity-50')} />
+			</div>
+		</div>
 	);
 };
 
