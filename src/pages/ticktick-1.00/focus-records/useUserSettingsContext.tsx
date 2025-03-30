@@ -20,6 +20,7 @@ const useUserSettings = () => {
 	const focusRecordsPageSettings = userSettings?.tickTickOne?.pages?.focusRecords || {};
 	const completedTasksPageSettings = userSettings?.tickTickOne?.pages?.completedTasks || {};
 	const focusHoursGoalPageSettings = userSettings?.tickTickOne?.pages?.focusHoursGoal || {};
+	const challengesPageSettings = userSettings?.tickTickOne?.pages?.challenges || {};
 
 	const {
 		showFocusNotes = true,
@@ -41,6 +42,8 @@ const useUserSettings = () => {
 
 	const { projects: filteredProjects = {} } = focusHoursGoalPageSettings;
 
+	const { selectedChallengeCardImage } = challengesPageSettings;
+
 	return {
 		focusRecordsPageSettings: {
 			showFocusNotes,
@@ -60,6 +63,9 @@ const useUserSettings = () => {
 		},
 		focusHoursGoalPageSettings: {
 			filteredProjects,
+		},
+		challengesPageSettings: {
+			selectedChallengeCardImage,
 		},
 	};
 };

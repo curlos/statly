@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import useWindowSize from '../../../../hooks/useWindowSize';
+import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 
 const ChallengeCard = ({
 	challenge,
@@ -14,10 +15,14 @@ const ChallengeCard = ({
 
 	const { chosenColorObj } = useThemeContext();
 
+	const {
+		challengesPageSettings: { selectedChallengeCardImage },
+	} = useUserSettingsContext();
+
 	let imgSrc =
 		challenge.requiredDuration !== undefined
-			? 'https://i.imgur.com/6xLKg5k.jpeg'
-			: 'https://i.imgur.com/x084PtQ.png';
+			? selectedChallengeCardImage['focus']
+			: selectedChallengeCardImage['tasks'];
 
 	if (smallImageSrc) {
 		imgSrc = smallImageSrc;

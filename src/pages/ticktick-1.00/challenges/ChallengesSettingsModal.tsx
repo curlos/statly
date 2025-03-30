@@ -3,6 +3,7 @@ import Icon from '../../../components/Icon';
 import { useState } from 'react';
 import classNames from 'classnames';
 import ModalChangeChallengeCardImage from './ModalChangeChallengeCardImage';
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 
 const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -14,6 +15,10 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
 	};
+
+	const {
+		challengesPageSettings: { selectedChallengeCardImage },
+	} = useUserSettingsContext();
 
 	return (
 		<AnimatePresence>
@@ -44,8 +49,8 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 						<hr className="border-color-gray-200 my-4" />
 
 						<div className="space-y-4">
-							<ChallengeCard cardType="Focus" imageSrc="https://i.imgur.com/6xLKg5k.jpeg" />
-							<ChallengeCard cardType="Tasks" imageSrc="https://i.imgur.com/x084PtQ.png" />
+							<ChallengeCard cardType="Focus" imageSrc={selectedChallengeCardImage.focus} />
+							<ChallengeCard cardType="Tasks" imageSrc={selectedChallengeCardImage.tasks} />
 						</div>
 					</motion.div>
 				</motion.div>
@@ -79,7 +84,7 @@ const ChallengeCard = ({ cardType, imageSrc }) => {
 				{...{
 					showModal: showModalChangeChallengeCardImage,
 					setShowModal: setShowModalChangeChallengeCardImage,
-					cardType: cardType,
+					cardType: cardType.toLowerCase(),
 				}}
 			/>
 		</div>

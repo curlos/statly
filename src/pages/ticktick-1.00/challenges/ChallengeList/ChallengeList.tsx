@@ -5,9 +5,6 @@ import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import ChallengeCard from './ChallengeCard';
 import { DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES } from '../../../../utils/constants/tasks/tasksChallenges.utils';
-import Icon from '../../../../components/Icon';
-import classNames from 'classnames';
-import { useThemeContext } from '../../../../contexts/useThemeContext';
 import ModalAddChallenge from '../ModalAddChallenge';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {

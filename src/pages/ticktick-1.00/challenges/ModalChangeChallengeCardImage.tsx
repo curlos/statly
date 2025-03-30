@@ -2,38 +2,48 @@ import { useEffect, useState } from 'react';
 import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal/Modal';
 import useHandleError from '../../../hooks/useHandleError';
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 
 const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, cardType }) => {
 	const handleError = useHandleError();
 
-	const challengeCardImageSrcs = [
-		'https://i.imgur.com/6xLKg5k.jpeg',
-		'https://i.imgur.com/1YgsWfs.jpeg',
-		'https://i.imgur.com/6XxU2gI.jpeg',
-		'https://i.imgur.com/bxbNsXn.jpeg',
-		'https://i.imgur.com/x084PtQ.png',
-		'https://i.imgur.com/wB7IC8I.png',
-		'https://i.imgur.com/RJwESL1.jpeg',
-		'https://i.imgur.com/jWwQMre.jpeg',
-		'https://i.imgur.com/H66q41n.jpeg',
-		'https://i.imgur.com/nVSAETq.jpeg',
-		'https://i.imgur.com/CHc4FZm.jpeg',
-		'https://i.imgur.com/C5XRDHf.png',
-		'https://i.imgur.com/NqLXU5k.png',
-		'https://i.imgur.com/mjQR03J.png',
-		'https://i.imgur.com/QPGlCRU.jpeg',
-		'https://i.imgur.com/JF5yqRY.png',
-		'https://i.imgur.com/xgI5YX3.jpeg',
-		'https://i.imgur.com/ta2Mntd.png',
-		'https://i.imgur.com/uynvJZh.png',
-		'https://i.imgur.com/nmgjNAy.jpeg',
-		'https://i.imgur.com/iy2ZSMF.jpeg',
-		'https://i.imgur.com/TAhBlMG.jpeg',
-		'https://i.imgur.com/crfh1D3.jpeg',
-		'https://i.imgur.com/NUw06Bt.jpeg',
-	];
+	// RTK Query - User Settings
+	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
+	const { userSettings } = fetchedUserSettings || {};
 
-	const [selectedImageSrc, setSelectedImageSrc] = useState('https://i.imgur.com/6xLKg5k.jpeg');
+	const [editUserSettings] = useEditUserSettingsMutation();
+
+	const {
+		challengesPageSettings: { selectedChallengeCardImage },
+	} = useUserSettingsContext();
+
+	const [selectedImageSrc, setSelectedImageSrc] = useState(selectedChallengeCardImage[cardType]);
+
+	const handleChangeImageUserSetting = () => {
+		const restOfChallengesKeysAndVals = userSettings?.tickTickOne?.pages?.challenges;
+		const restOfSelectedChallengeCardImages =
+			userSettings?.tickTickOne?.pages?.challenges?.selectedChallengeCardImage;
+
+		handleError(async () => {
+			const payload = {
+				tickTickOne: {
+					pages: {
+						challenges: {
+							...restOfChallengesKeysAndVals,
+							selectedChallengeCardImage: {
+								...restOfSelectedChallengeCardImages,
+								[cardType]: selectedImageSrc,
+							},
+						},
+					},
+				},
+			};
+
+			await editUserSettings(payload).unwrap();
+			setShowModal(false);
+		});
+	};
 
 	return (
 		<Modal
@@ -59,6 +69,7 @@ const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, card
 
 							return (
 								<div
+									key={imageSrc}
 									className="cursor-pointer flex items-end"
 									onClick={() => setSelectedImageSrc(imageSrc)}
 								>
@@ -89,7 +100,10 @@ const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, card
 							Close
 						</button>
 
-						<button className="bg-blue-500 rounded py-1 cursor-pointer hover:bg-blue-600 min-w-[114px] disabled:opacity-50 disabled:cursor-not-allowed">
+						<button
+							className="bg-blue-500 rounded py-1 cursor-pointer hover:bg-blue-600 min-w-[114px] disabled:opacity-50 disabled:cursor-not-allowed"
+							onClick={handleChangeImageUserSetting}
+						>
 							Ok
 						</button>
 					</div>
@@ -98,5 +112,32 @@ const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, card
 		</Modal>
 	);
 };
+
+const challengeCardImageSrcs = [
+	'https://i.imgur.com/6xLKg5k.jpeg',
+	'https://i.imgur.com/1YgsWfs.jpeg',
+	'https://i.imgur.com/6XxU2gI.jpeg',
+	'https://i.imgur.com/bxbNsXn.jpeg',
+	'https://i.imgur.com/x084PtQ.png',
+	'https://i.imgur.com/wB7IC8I.png',
+	'https://i.imgur.com/RJwESL1.jpeg',
+	'https://i.imgur.com/jWwQMre.jpeg',
+	'https://i.imgur.com/H66q41n.jpeg',
+	'https://i.imgur.com/nVSAETq.jpeg',
+	'https://i.imgur.com/CHc4FZm.jpeg',
+	'https://i.imgur.com/C5XRDHf.png',
+	'https://i.imgur.com/NqLXU5k.png',
+	'https://i.imgur.com/mjQR03J.png',
+	'https://i.imgur.com/QPGlCRU.jpeg',
+	'https://i.imgur.com/JF5yqRY.png',
+	'https://i.imgur.com/xgI5YX3.jpeg',
+	'https://i.imgur.com/ta2Mntd.png',
+	'https://i.imgur.com/uynvJZh.png',
+	'https://i.imgur.com/nmgjNAy.jpeg',
+	'https://i.imgur.com/iy2ZSMF.jpeg',
+	'https://i.imgur.com/TAhBlMG.jpeg',
+	'https://i.imgur.com/crfh1D3.jpeg',
+	'https://i.imgur.com/NUw06Bt.jpeg',
+];
 
 export default ModalChangeChallengeCardImage;

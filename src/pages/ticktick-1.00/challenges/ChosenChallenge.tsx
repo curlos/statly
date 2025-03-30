@@ -1,14 +1,20 @@
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+
 const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => {
 	if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
 		return null;
 	}
 
+	const {
+		challengesPageSettings: { selectedChallengeCardImage },
+	} = useUserSettingsContext();
+
 	const { name, completedDate, startDate, deadline, fullImageSrc, rewardName } = chosenChallenge;
 
 	let imgSrc =
 		chosenChallenge.requiredDuration !== undefined
-			? 'https://i.imgur.com/6xLKg5k.jpeg'
-			: 'https://i.imgur.com/x084PtQ.png';
+			? selectedChallengeCardImage['focus']
+			: selectedChallengeCardImage['tasks'];
 
 	if (fullImageSrc) {
 		imgSrc = fullImageSrc;
