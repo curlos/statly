@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../../../components/Icon';
 import { useState } from 'react';
 import classNames from 'classnames';
+import ModalChangeChallengeCardImage from './ModalChangeChallengeCardImage';
 
 const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -55,22 +56,31 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 
 const ChallengeCard = ({ name, imageSrc }) => {
 	const [hoverImage, setHoverImage] = useState(false);
+	const [showModalChangeChallengeCardImage, setShowModalChangeChallengeCardImage] = useState(false);
 
 	return (
 		<div>
 			<div className="font-bold mb-1">{name}</div>
-			<div className="relative" onMouseOver={() => setHoverImage(true)} onMouseLeave={() => setHoverImage(false)}>
+			<div
+				className="relative"
+				onMouseOver={() => setHoverImage(true)}
+				onMouseLeave={() => setHoverImage(false)}
+				onClick={() => setShowModalChangeChallengeCardImage(!showModalChangeChallengeCardImage)}
+			>
 				{hoverImage && (
 					<div className="absolute inset-0 flex justify-center items-center">
-						<Icon
-							name="edit"
-							customClass="!text-[30px] text-color-gray-100 cursor-pointer"
-							// onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
-						/>
+						<Icon name="edit" customClass="!text-[30px] text-color-gray-100 cursor-pointer" />
 					</div>
 				)}
 				<img src={imageSrc} className={classNames('cursor-pointer', hoverImage && 'opacity-50')} />
 			</div>
+
+			<ModalChangeChallengeCardImage
+				{...{
+					showModal: showModalChangeChallengeCardImage,
+					setShowModal: setShowModalChangeChallengeCardImage,
+				}}
+			/>
 		</div>
 	);
 };
