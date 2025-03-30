@@ -49,8 +49,8 @@ const ChallengesSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) 
 						<hr className="border-color-gray-200 my-4" />
 
 						<div className="space-y-4">
-							<ChallengeCard cardType="Focus" imageSrc={selectedChallengeCardImage.focus} />
-							<ChallengeCard cardType="Tasks" imageSrc={selectedChallengeCardImage.tasks} />
+							<ChallengeCard cardType="Focus" imageSrc={selectedChallengeCardImage?.focus} />
+							<ChallengeCard cardType="Tasks" imageSrc={selectedChallengeCardImage?.tasks} />
 						</div>
 					</motion.div>
 				</motion.div>

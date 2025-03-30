@@ -18,7 +18,9 @@ const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, card
 		challengesPageSettings: { selectedChallengeCardImage },
 	} = useUserSettingsContext();
 
-	const [selectedImageSrc, setSelectedImageSrc] = useState(selectedChallengeCardImage[cardType]);
+	const [selectedImageSrc, setSelectedImageSrc] = useState(
+		selectedChallengeCardImage && selectedChallengeCardImage[cardType]
+	);
 
 	const handleChangeImageUserSetting = () => {
 		const restOfChallengesKeysAndVals = userSettings?.tickTickOne?.pages?.challenges;
