@@ -178,6 +178,7 @@ const ProjectsTickTickSection = ({ page }) => {
 
 								return (
 									<CheckboxOther
+										key={project.id}
 										{...{
 											name: project.name,
 											showValue,

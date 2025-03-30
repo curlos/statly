@@ -19,10 +19,10 @@ const Page = () => {
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
-		{
-			name: 'Custom',
-			urlName: 'custom',
-		},
+		// {
+		// 	name: 'Custom',
+		// 	urlName: 'custom',
+		// },
 		{
 			name: 'Focus',
 			urlName: 'focus',

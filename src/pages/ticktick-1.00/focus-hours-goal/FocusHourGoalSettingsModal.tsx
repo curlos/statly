@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import ProjectsTickTickSection from '../../../components/FilterSidebar/ProjectsTickTickSection';
 
-const FocusHourGoalSidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
+const FocusHourGoalSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -38,6 +38,7 @@ const FocusHourGoalSidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
 						<div className="font-bold text-[18px]">Focus Hours Goal</div>
+						<hr className="border-color-gray-200 my-4" />
 						<ProjectsTickTickSection page="focus-hours-goal" />
 					</motion.div>
 				</motion.div>
@@ -46,4 +47,4 @@ const FocusHourGoalSidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }
 	);
 };
 
-export default FocusHourGoalSidebarModal;
+export default FocusHourGoalSettingsModal;

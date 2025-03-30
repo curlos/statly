@@ -4,7 +4,7 @@ import Icon from '../../../components/Icon.js';
 import SidebarModal from '../../../components/SidebarModal/SidebarModal.js';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi.js';
 import LoaderBottomRightBO3Medal from '../../../components/Loaders/LoaderBottomRightBO3Medal.js';
-import FocusHourGoalSidebarModal from './FocusHourGoalSidebarModal.js';
+import FocusHourGoalSettingsModal from './FocusHourGoalSettingsModal.js';
 
 export default function Page() {
 	const { isLoading: isLoadingGetFocusRecords } = useGetPomoAndStopwatchFocusRecordsQuery();
@@ -26,7 +26,7 @@ export default function Page() {
 				/>
 
 				<Icon
-					name="page_info"
+					name="settings"
 					customClass={
 						'!text-[30px] text-color-gray-100 absolute right-0 top-[15px] mt-[35px] mr-[15px] cursor-pointer'
 					}
@@ -35,7 +35,7 @@ export default function Page() {
 
 				{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
 				{isFilterSidebarModalOpen && (
-					<FocusHourGoalSidebarModal
+					<FocusHourGoalSettingsModal
 						{...{
 							isSidebarModalOpen: isFilterSidebarModalOpen,
 							setIsSidebarModalOpen: setIsFilterSidebarModalOpen,

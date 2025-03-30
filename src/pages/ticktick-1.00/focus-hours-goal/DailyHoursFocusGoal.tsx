@@ -49,7 +49,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 		filteredProjects &&
 		getFocusDataForDayInfo(
 			focusRecordsByDate,
-			new Date('March 26, 2025'),
+			new Date(),
 			getFilteredProjectsWithNames(filteredProjects, projectsById),
 			tasksById
 		);
