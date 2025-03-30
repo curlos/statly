@@ -15,6 +15,7 @@ import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-pro
 import { getFilteredProjectsWithNames, getFocusDataForDayInfo } from '../../utils/focus.utils';
 import {
 	useGetAllProjectsQuery,
+	useGetAllTasksQuery,
 	useGetPomoAndStopwatchFocusRecordsQuery,
 } from '../../services/resources/ticktickOneApi';
 import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
@@ -42,6 +43,10 @@ const DayCheckCircle = ({
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
+	const { tasksById } = fetchedTasks || {};
+
 	const {
 		focusHoursGoalPageSettings: { filteredProjects },
 	} = useUserSettingsContext();
@@ -63,13 +68,15 @@ const DayCheckCircle = ({
 	const dayHasNotHappenedYet = isFutureDate(day);
 	const disableHabitActions = habit.isArchived || dayHasNotHappenedYet;
 	const isFocusHoursHabit = checkIfIsFocusHoursHabit(habit._id);
-	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } = focusRecordsByDate
-		? getFocusDataForDayInfo(
-				focusRecordsByDate,
-				new Date(checkedInDayKey),
-				getFilteredProjectsWithNames(filteredProjects, projectsById)
-			)
-		: {};
+	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
+		focusRecordsByDate && filteredProjects && projectsById && tasksById
+			? getFocusDataForDayInfo(
+					focusRecordsByDate,
+					new Date(checkedInDayKey),
+					getFilteredProjectsWithNames(filteredProjects, projectsById),
+					tasksById
+				)
+			: {};
 
 	const handleClick = () => {
 		if (disableHabitActions) {

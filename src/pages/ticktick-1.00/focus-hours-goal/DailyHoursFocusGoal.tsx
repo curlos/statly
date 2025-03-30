@@ -7,6 +7,7 @@ import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants/constants.utils';
 import classNames from 'classnames';
 import {
 	useGetAllProjectsQuery,
+	useGetAllTasksQuery,
 	useGetPomoAndStopwatchFocusRecordsQuery,
 } from '../../../services/resources/ticktickOneApi';
 import { getStreaksInfo, getFocusDataForDayInfo, getFilteredProjectsWithNames } from '../../../utils/focus.utils';
@@ -27,6 +28,10 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
+	const { tasksById } = fetchedTasks || {};
+
 	const {
 		focusHoursGoalPageSettings: { filteredProjects },
 	} = useUserSettingsContext();
@@ -34,16 +39,19 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const streaksInfo =
 		focusRecords &&
 		projectsById &&
+		tasksById &&
 		filteredProjects &&
-		getStreaksInfo(focusRecords, getFilteredProjectsWithNames(filteredProjects, projectsById));
+		getStreaksInfo(focusRecords, getFilteredProjectsWithNames(filteredProjects, projectsById), tasksById);
 	const focusDataForTodayInfo =
 		focusRecordsByDate &&
 		projectsById &&
+		tasksById &&
 		filteredProjects &&
 		getFocusDataForDayInfo(
 			focusRecordsByDate,
 			new Date('March 26, 2025'),
-			getFilteredProjectsWithNames(filteredProjects, projectsById)
+			getFilteredProjectsWithNames(filteredProjects, projectsById),
+			tasksById
 		);
 	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
 		focusDataForTodayInfo || defaultFocusData;

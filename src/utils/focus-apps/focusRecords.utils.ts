@@ -100,12 +100,18 @@ export const getFocusDuration = ({
 	}
 };
 
-export const getFocusDurationFilteredByProjects = (focusRecord, filteredProjects) => {
+export const getFocusDurationFilteredByProjects = (focusRecord, filteredProjects, tasksById) => {
 	const { tasks } = focusRecord;
 	let totalDurationSeconds = 0;
 
 	const filteredTasks = tasks.filter((task) => {
-		const taskIsFromFilteredProjects = filteredProjects[task.projectName];
+		let taskIsFromFilteredProjects = filteredProjects[task.projectName]
+
+		if (tasksById[task.taskId]) {
+			const { projectId } = tasksById[task.taskId]
+			taskIsFromFilteredProjects = filteredProjects[projectId];
+		}
+		
 		return taskIsFromFilteredProjects;
 	});
 

@@ -35,17 +35,17 @@ export const getGoalSeconds = (date) => {
 	return goalSecondsForToday;
 };
 
-export const getDurationForFocusRecordsFilteredByProjects = (focusRecords, filteredProjects) => {
+export const getDurationForFocusRecordsFilteredByProjects = (focusRecords, filteredProjects, tasksById) => {
 	let totalFocusDuration = 0;
 
 	focusRecords?.forEach((focusRecord) => {
-		totalFocusDuration += getFocusDurationFilteredByProjects(focusRecord, filteredProjects);
+		totalFocusDuration += getFocusDurationFilteredByProjects(focusRecord, filteredProjects, tasksById);
 	});
 
 	return totalFocusDuration;
 };
 
-export const getStreaksInfo = (focusRecords, filteredProjects) => {
+export const getStreaksInfo = (focusRecords, filteredProjects, tasksById) => {
 	const focusRecordsByDate = {};
 
 	focusRecords.forEach((focusRecord) => {
@@ -74,7 +74,7 @@ export const getStreaksInfo = (focusRecords, filteredProjects) => {
 	} else {
 		Object.keys(focusRecordsByDate).map((dayKey) => {
 			const focusRecordsForDay = focusRecordsByDate[dayKey];
-			const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay, filteredProjects);
+			const durationForDay = getDurationForFocusRecordsFilteredByProjects(focusRecordsForDay, filteredProjects, tasksById);
 			totalFocusDurationByDate[dayKey] = durationForDay;
 		});
 	}
@@ -163,7 +163,7 @@ export const getFocusRecordsFromToday = (focusRecords) => {
 	return focusRecordsFromToday;
 };
 
-export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProjects) => {
+export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProjects, tasksById) => {
 	const dayKey = getFormattedLongDay(date);
 	const focusRecordsForTheDay = focusRecordsByDate[dayKey];
 	const includeAllProjects = Object.values(filteredProjects).every(value => value === false)
@@ -172,15 +172,12 @@ export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProject
 		return getFocusDurationFromArray(focusRecordsForTheDay);
 	}
 	
-	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay, filteredProjects);
+	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay, filteredProjects, tasksById);
 };
 
-export const getFocusDataForDayInfo = (focusRecordsByDate, date, filteredProjects) => {
-	console.log(filteredProjects)
-	debugger
-
+export const getFocusDataForDayInfo = (focusRecordsByDate, date, filteredProjects, tasksById) => {
 	const goalSeconds = getGoalSeconds(date);
-	const totalFocusDurationForDay = getFocusDurationForDay(focusRecordsByDate, date, filteredProjects);
+	const totalFocusDurationForDay = getFocusDurationForDay(focusRecordsByDate, date, filteredProjects, tasksById);
 	const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalSeconds) * 100;
 
 	return {
@@ -277,7 +274,6 @@ export const getFilteredProjectsWithNames = (filteredProjects, projectsById) => 
 	const filteredProjectsWithNames = { ...filteredProjects };
 
 	for (const [projectId, checked] of Object.entries(filteredProjects)) {
-		console.log(projectId);
 		const { name } = projectsById[projectId];
 		filteredProjectsWithNames[name] = checked;
 	}
