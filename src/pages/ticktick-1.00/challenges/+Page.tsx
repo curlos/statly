@@ -7,7 +7,7 @@ import ChallengeList from './ChallengeList/ChallengeList';
 import ChosenChallenge from './ChosenChallenge';
 import Modal from '../../../components/Modal/Modal';
 import Icon from '../../../components/Icon';
-import ChallengesSettingsModal from './ChallengesSettingsModal';
+import ChallengesAndMedalsSettingsModal from './ChallengesAndMedalsSettingsModal';
 
 const Page = () => {
 	const [chosenChallenge, setChosenChallenge] = useState({});
@@ -80,10 +80,11 @@ const Page = () => {
 			</div>
 
 			{isSettingsSidebarModalOpen && (
-				<ChallengesSettingsModal
+				<ChallengesAndMedalsSettingsModal
 					{...{
 						isSidebarModalOpen: isSettingsSidebarModalOpen,
 						setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
+						page: 'challenges',
 					}}
 				/>
 			)}

@@ -6,11 +6,14 @@ import TopButtonList from './TopButtonList';
 import MedalList from './MedalList/MedalList';
 import ChosenMedal from './ChosenMedal';
 import Modal from '../../../components/Modal/Modal';
+import Icon from '../../../components/Icon';
+import ChallengesAndMedalsSettingsModal from '../challenges/ChallengesAndMedalsSettingsModal';
 
 const Page = () => {
 	const [chosenMedal, setChosenMedal] = useState({});
 	const chosenMedalRef = useRef(null);
 	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
+	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
@@ -57,7 +60,14 @@ const Page = () => {
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<div ref={topHeaderRef}>
 					<Navbar />
-					<div className="container text-[28px] font-bold">Medals</div>
+					<div className="container flex justify-between items-center">
+						<div className="text-[28px] font-bold">Medals</div>
+						<Icon
+							name="settings"
+							customClass={'!text-[30px] text-color-gray-100 cursor-pointer mr-[15px]'}
+							onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
+						/>
+					</div>
 					<div className="container grid grid-cols-12">
 						<div className="flex flex-col lg:flex-row lg:items-center justify-between col-span-8">
 							<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
@@ -88,6 +98,16 @@ const Page = () => {
 					</div>
 				</div>
 			</div>
+
+			{isSettingsSidebarModalOpen && (
+				<ChallengesAndMedalsSettingsModal
+					{...{
+						isSidebarModalOpen: isSettingsSidebarModalOpen,
+						setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
+						page: 'medals',
+					}}
+				/>
+			)}
 		</div>
 	);
 };

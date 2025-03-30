@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal/Modal';
 import useHandleError from '../../../hooks/useHandleError';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 
-const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, cardType }) => {
+const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isForChallengesPage }) => {
 	const handleError = useHandleError();
 
 	// RTK Query - User Settings
@@ -56,7 +56,9 @@ const ModalChangeChallengeCardImage: React.FC = ({ showModal, setShowModal, card
 		>
 			<div className="bg-color-gray-600 rounded-lg">
 				<div className="flex items-center justify-between p-5">
-					<h3 className="font-bold text-[16px]">Change Challenge Card Image</h3>
+					<h3 className="font-bold text-[16px]">
+						Change {isForChallengesPage ? 'Challenges' : 'Medals'} Card Image
+					</h3>
 					<Icon
 						name="close"
 						customClass={'!text-[20px] text-color-gray-100 hover:text-white cursor-pointer'}
@@ -142,4 +144,4 @@ const challengeCardImageSrcs = [
 	'https://i.imgur.com/NUw06Bt.jpeg',
 ];
 
-export default ModalChangeChallengeCardImage;
+export default ModalChangeCardImage;
