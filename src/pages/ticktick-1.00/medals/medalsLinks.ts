@@ -5,29 +5,217 @@
  */
 
 export const BATTLEFIELD_1 = {
-    "VEHICLES": [],
-    "CLASS": [],
-    "WEAPONS": [],
-    "GAMEMODE": [],
-    "COMBAT": [],
-    "SQUAD": []
+    "VEHICLES": [
+        "https://i.imgur.com/qQZBT0J.png",
+        "https://i.imgur.com/IiuUuoF.png",
+        "https://i.imgur.com/ga2A0bK.png",
+        "https://i.imgur.com/IhJADIe.png",
+        "https://i.imgur.com/YZ42fan.png",
+        "https://i.imgur.com/D3qhlhf.png",
+        "https://i.imgur.com/eCfp6lZ.png"
+    ],
+    "CLASS": [
+        "https://i.imgur.com/rw0FgrZ.png",
+        "https://i.imgur.com/FwKHURW.png",
+        "https://i.imgur.com/C3WbKuH.png",
+        "https://i.imgur.com/xn8zhui.png",
+        "https://i.imgur.com/InNdpBV.png",
+        "https://i.imgur.com/2WLLZxc.png",
+        "https://i.imgur.com/gLYVuhz.png",
+        "https://i.imgur.com/bsTUyi5.png",
+        "https://i.imgur.com/vj3zQ9L.png"
+    ],
+    "WEAPONS": [
+        "https://i.imgur.com/rcsqD8g.png",
+        "https://i.imgur.com/z0TKXnH.png",
+        "https://i.imgur.com/rkGCc5j.png",
+        "https://i.imgur.com/j53CaLi.png",
+        "https://i.imgur.com/yc9s1oB.png",
+        "https://i.imgur.com/kZmyz6e.png",
+        "https://i.imgur.com/Bn2Tq2N.png",
+        "https://i.imgur.com/wVPztXW.png",
+        "https://i.imgur.com/FV3X7Nr.png",
+        "https://i.imgur.com/EGMF8j6.png",
+        "https://i.imgur.com/WMQQh47.png",
+        "https://i.imgur.com/5HFD732.png"
+    ],
+    "GAMEMODE": [
+        "https://i.imgur.com/4Dn14jh.png",
+        "https://i.imgur.com/Ep3Ufhd.png",
+        "https://i.imgur.com/tjpI50K.png",
+        "https://i.imgur.com/QcSga7n.png",
+        "https://i.imgur.com/jPE8jF8.png",
+        "https://i.imgur.com/nu2qMoP.png",
+        "https://i.imgur.com/xAmMnml.png",
+        "https://i.imgur.com/qvPOQYc.png",
+        "https://i.imgur.com/YpbBJAd.png",
+        "https://i.imgur.com/mbuNxpN.png",
+        "https://i.imgur.com/TjSN655.png",
+        "https://i.imgur.com/Y09YTx2.png"
+    ],
+    "COMBAT": [
+        "https://i.imgur.com/A7m3D7y.png",
+        "https://i.imgur.com/305hxZs.png",
+        "https://i.imgur.com/67KRGxE.png",
+        "https://i.imgur.com/ahjosIT.png",
+        "https://i.imgur.com/43BejvD.png",
+        "https://i.imgur.com/SQOm6nX.png",
+        "https://i.imgur.com/zdvB60S.png",
+        "https://i.imgur.com/iuWiC5Q.png",
+        "https://i.imgur.com/dIvJYlX.png",
+        "https://i.imgur.com/lyawN1p.png",
+        "https://i.imgur.com/5ahcYAx.png",
+        "https://i.imgur.com/tpWA4L7.png",
+        "https://i.imgur.com/suPUG4M.png",
+        "https://i.imgur.com/NdRr5Ol.png",
+        "https://i.imgur.com/BJq6OgJ.png",
+        "https://i.imgur.com/91AMzBS.png"
+    ],
+    "SQUAD": [
+        "https://i.imgur.com/fuyMHRU.png",
+        "https://i.imgur.com/4E9FHj4.png",
+        "https://i.imgur.com/Cv3wZ12.png",
+        "https://i.imgur.com/Zy36esq.png"
+    ]
 }
 
 export const BATTLEFIELD_3 = {
-    "GENERAL": [],
-    "WEAPONS AND BONUSES": [],
-    "KITS": [],
-    "VEHICLES": [],
-    "PERFORMANCE": [],
-    "OBJECTIVES": []
+    "GENERAL": [
+        "https://i.imgur.com/KS9eJwz.png",
+        "https://i.imgur.com/PfFSgkI.png"
+    ],
+    "WEAPONS AND BONUSES": [
+        "https://i.imgur.com/NoXlbVz.png",
+        "https://i.imgur.com/cyknHe1.png",
+        "https://i.imgur.com/zwhR0PW.png",
+        "https://i.imgur.com/mZPau5n.png",
+        "https://i.imgur.com/BzWRCpg.png",
+        "https://i.imgur.com/EVqaeNa.png",
+        "https://i.imgur.com/PooBB1m.png",
+        "https://i.imgur.com/oHfzTfr.png",
+        "https://i.imgur.com/ie8Ij5o.png",
+        "https://i.imgur.com/l5FSrXd.png",
+        "https://i.imgur.com/ZXF53bs.png",
+        "https://i.imgur.com/di75Lvj.png",
+        "https://i.imgur.com/sPHkIOf.png",
+        "https://i.imgur.com/C056v5W.png"
+    ],
+    "KITS": [
+        "https://i.imgur.com/6RT27ut.png",
+        "https://i.imgur.com/Ws0v0vZ.png",
+        "https://i.imgur.com/OqsOLBh.png",
+        "https://i.imgur.com/8PTI0Zv.png",
+        "https://i.imgur.com/p1q8D9L.png",
+        "https://i.imgur.com/4JfGVal.png",
+        "https://i.imgur.com/pZolpwr.png",
+        "https://i.imgur.com/OrhmNvA.png",
+        "https://i.imgur.com/yw1wD1E.png",
+        "https://i.imgur.com/kWbbGjn.png",
+        "https://i.imgur.com/C2ElXdt.png",
+        "https://i.imgur.com/ESOl9vU.png"
+    ],
+    "VEHICLES": [
+        "https://i.imgur.com/1aLL0dI.png",
+        "https://i.imgur.com/1oAFhZw.png",
+        "https://i.imgur.com/1q3pGFP.png",
+        "https://i.imgur.com/nuVgrBY.png",
+        "https://i.imgur.com/9BaAEeH.png",
+        "https://i.imgur.com/XSTn7XI.png",
+        "https://i.imgur.com/8sZA2Wl.png",
+        "https://i.imgur.com/y8sADrZ.png",
+        "https://i.imgur.com/v3m5BKL.png"
+    ],
+    "PERFORMANCE": [
+        "https://i.imgur.com/fBrzBLB.png",
+        "https://i.imgur.com/x2HWoyl.png",
+        "https://i.imgur.com/tE4aXMN.png",
+        "https://i.imgur.com/LB72elu.png"
+    ],
+    "OBJECTIVES": [
+        "https://i.imgur.com/1Wa8UmI.png",
+        "https://i.imgur.com/7yWuh9E.png",
+        "https://i.imgur.com/pMNOO7r.png",
+        "https://i.imgur.com/LVqOzyC.png",
+        "https://i.imgur.com/oKLQR2n.png",
+        "https://i.imgur.com/SSOqwhT.png",
+        "https://i.imgur.com/BVaIqWz.png",
+        "https://i.imgur.com/VfPiLj6.png",
+        "https://i.imgur.com/lKq6YaK.png",
+        "https://i.imgur.com/ifxfQfE.png",
+        "https://i.imgur.com/3lDLTmY.png",
+        "https://i.imgur.com/Cn0f7Br.png",
+        "https://i.imgur.com/66ShHOk.png",
+        "https://i.imgur.com/FfEaGLG.png",
+        "https://i.imgur.com/YCQDJZq.png",
+        "https://i.imgur.com/knmIfHd.png"
+    ]
 }
 
 export const BATTLEFIELD_4 = {
-    "KITS": [],
-    "GAME MODE": [],
-    "WEAPONS": [],
-    "VEHICLES": [],
-    "TEAM": [],
+    "KITS": [
+        "https://i.imgur.com/cPZdJHw.png",
+        "https://i.imgur.com/eqElC4b.png",
+        "https://i.imgur.com/EUZ3VtN.png",
+        "https://i.imgur.com/repxN9u.png",
+        "https://i.imgur.com/qkDt7Ng.png",
+        "https://i.imgur.com/Hnx4OPC.png",
+        "https://i.imgur.com/5EYPtgs.png",
+        "https://i.imgur.com/mjWZxbQ.png",
+        "https://i.imgur.com/x4AxY44.png",
+        "https://i.imgur.com/ANFKi5q.png"
+    ],
+    "GAME MODE": [
+        "https://i.imgur.com/xPFlgrS.png",
+        "https://i.imgur.com/XZpFonL.png",
+        "https://i.imgur.com/C3obhw9.png",
+        "https://i.imgur.com/6xdIkVR.png",
+        "https://i.imgur.com/Swztrga.png",
+        "https://i.imgur.com/kd2ilfO.png",
+        "https://i.imgur.com/mzckhKi.png",
+        "https://i.imgur.com/j149JWe.png",
+        "https://i.imgur.com/V2mLboC.png",
+        "https://i.imgur.com/NRmHG5K.png",
+        "https://i.imgur.com/fnJzmbh.png",
+        "https://i.imgur.com/epE6jCq.png",
+        "https://i.imgur.com/0pVerO5.png",
+        "https://i.imgur.com/X2LUj4l.png",
+        "https://i.imgur.com/RruTYo2.png",
+        "https://i.imgur.com/Bt26oRP.png",
+        "https://i.imgur.com/VSusJSN.png"
+    ],
+    "WEAPONS": [
+        "https://i.imgur.com/4gswzm8.png",
+        "https://i.imgur.com/ZN6cewF.png",
+        "https://i.imgur.com/bUrFNXd.png",
+        "https://i.imgur.com/OeKdtJJ.png",
+        "https://i.imgur.com/sZohKA3.png",
+        "https://i.imgur.com/ak1lr86.png",
+        "https://i.imgur.com/LBwRyXN.png",
+        "https://i.imgur.com/bP2cPmY.png",
+        "https://i.imgur.com/AQsyQvB.png",
+        "https://i.imgur.com/nrUorFo.png"
+    ],
+    "VEHICLES": [
+        "https://i.imgur.com/YtF2glJ.png",
+        "https://i.imgur.com/pOK3nHV.png",
+        "https://i.imgur.com/w6typ4u.png",
+        "https://i.imgur.com/P7gmZ1r.png",
+        "https://i.imgur.com/YpYy5Qv.png",
+        "https://i.imgur.com/0pGlPe0.png",
+        "https://i.imgur.com/7SFNmhI.png",
+        "https://i.imgur.com/7KdbsTt.png"
+    ],
+    "TEAM": [
+        "https://i.imgur.com/uyzY22i.png",
+        "https://i.imgur.com/ChzbLLh.png",
+        "https://i.imgur.com/TJm3SFh.png",
+        "https://i.imgur.com/NN4Eucc.png",
+        "https://i.imgur.com/HM8lTZ5.png",
+        "https://i.imgur.com/dndOd6j.png",
+        "https://i.imgur.com/QFEyGdm.png",
+        "https://i.imgur.com/MjB9Qme.png",
+        "https://i.imgur.com/CMmjk77.png"
+    ],
 }
 
 export const MEDALS_GAMES = {

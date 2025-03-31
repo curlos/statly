@@ -50,10 +50,12 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 		});
 	};
 
-	const cardImagesToUse = isForChallengesPage ? challengeCardImageSrcs : medalCardImageSrcs;
-
 	const [selectedGame, setSelectedGame] = useState('BATTLEFIELD 1');
 	const [selectedMedalType, setSelectedMedalType] = useState('COMBAT');
+
+	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
+
+	const cardImagesToUse = isForChallengesPage ? challengeCardImageSrcs : medalCardImageSrcs;
 
 	return (
 		<Modal
@@ -99,8 +101,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 
 					<div
 						className={classNames(
-							'grid gap-2 overflow-auto max-h-[250px]',
-							isForChallengesPage ? 'lg:grid-cols-2' : 'lg:grid-cols-4'
+							'grid gap-2 overflow-auto max-h-[250px] lg:max-h-[400px]',
+							isForChallengesPage ? 'lg:grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'
 						)}
 					>
 						{cardImagesToUse.map((imageSrc) => {
@@ -179,6 +181,6 @@ const challengeCardImageSrcs = [
 	'https://i.imgur.com/NUw06Bt.jpeg',
 ];
 
-const medalCardImageSrcs = ['https://i.imgur.com/dIvJYlX.png', 'https://i.imgur.com/91AMzBS.png'];
+// const medalCardImageSrcs = ['https://i.imgur.com/dIvJYlX.png', 'https://i.imgur.com/91AMzBS.png'];
 
 export default ModalChangeCardImage;
