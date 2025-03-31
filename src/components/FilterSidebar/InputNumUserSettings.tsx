@@ -42,9 +42,12 @@ const InputNumUserSettings = ({
 				return;
 			}
 
+			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+
 			payload = {
 				tickTickOne: {
 					pages: {
+						...restOfPagesKeysAndVals,
 						focusRecords: {
 							...restOfFocusRecordsKeysAndVals,
 							maxFocusRecordsPerPage: localValue,
@@ -60,9 +63,12 @@ const InputNumUserSettings = ({
 				return;
 			}
 
+			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+
 			payload = {
 				tickTickOne: {
 					pages: {
+						...restOfPagesKeysAndVals,
 						completedTasks: {
 							...restOfCompletedTasksPageKeysAndVals,
 							maxDaysPerPage: localValue,

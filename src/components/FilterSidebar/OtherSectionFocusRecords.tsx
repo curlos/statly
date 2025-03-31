@@ -31,11 +31,13 @@ const OtherSectionFocusRecords = () => {
 		const newShowValue = !showValue;
 
 		const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 
 		handleError(async () => {
 			const payload = {
 				tickTickOne: {
 					pages: {
+						...restOfPagesKeysAndVals,
 						focusRecords: {
 							...restOfFocusRecordsKeysAndVals,
 							[userSettingProperty]: newShowValue,

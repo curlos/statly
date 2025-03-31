@@ -108,12 +108,14 @@ const ProjectsTickTickSection = ({ page }) => {
 	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
 
 	const handleCheckboxClick = (userSettingProperty, newValue) => {
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 		const restOfFocusHoursGoalsKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
 
 		handleError(async () => {
 			const payload = {
 				tickTickOne: {
 					pages: {
+						...restOfPagesKeysAndVals,
 						focusHoursGoal: {
 							...restOfFocusHoursGoalsKeysAndVals,
 							[userSettingProperty]: newValue,

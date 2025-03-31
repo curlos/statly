@@ -27,11 +27,13 @@ const OtherSectionFocusRecords = () => {
 		const newShowValue = !showValue;
 
 		const restOfCompletedTasksPageKeysAndVals = userSettings?.tickTickOne?.pages?.completedTasks;
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 
 		handleError(async () => {
 			const payload = {
 				tickTickOne: {
 					pages: {
+						...restOfPagesKeysAndVals,
 						completedTasks: {
 							...restOfCompletedTasksPageKeysAndVals,
 							[userSettingProperty]: newShowValue,

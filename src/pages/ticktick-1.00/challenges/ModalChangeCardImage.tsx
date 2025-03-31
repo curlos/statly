@@ -186,7 +186,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 						<button
 							className={classNames(
 								chosenColorObj.bgColor,
-								'rounded py-1 cursor-pointer hover:bg-blue-600 min-w-[114px] disabled:opacity-50 disabled:cursor-not-allowed'
+								chosenColorObj.hover.bgColorHalfOpacity,
+								'rounded py-1 cursor-pointer min-w-[114px] disabled:opacity-50 disabled:cursor-not-allowed'
 							)}
 							onClick={handleChangeImageUserSetting}
 						>
