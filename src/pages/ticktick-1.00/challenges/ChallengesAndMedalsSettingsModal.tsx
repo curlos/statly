@@ -103,7 +103,10 @@ const CardImage = ({ cardType, imageSrc, isForChallengesPage }) => {
 						<Icon name="edit" customClass="!text-[30px] text-color-gray-100 cursor-pointer" />
 					</div>
 				)}
-				<img src={imageSrc} className={classNames('cursor-pointer', hoverImage && 'opacity-50')} />
+				<img
+					src={imageSrc}
+					className={classNames('cursor-pointer max-h-[250px]', hoverImage && 'opacity-50')}
+				/>
 			</div>
 
 			<ModalChangeCardImage

@@ -50,7 +50,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 		});
 	};
 
-	const [selectedGame, setSelectedGame] = useState('BATTLEFIELD 1');
+	const [selectedGame, setSelectedGame] = useState('BF1');
 	const [selectedMedalType, setSelectedMedalType] = useState('COMBAT');
 
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
@@ -80,7 +80,14 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 					<MedalsGameButtonList
 						{...{
 							medalGameButtonType: 'GAME',
-							buttonNamesList: ['BATTLEFIELD 1', 'BATTLEFIELD 3', 'BATTLEFIELD 4'],
+							buttonNamesList: [
+								'BF1',
+								'BF3 (MEDALS)',
+								'BF3 (RIBBONS)',
+								'BF4',
+								'BO2 (CALLING CARDS)',
+								'BO2 (MEDALS)',
+							],
 							selectedGame,
 							setSelectedGame,
 							selectedMedalType,
@@ -99,38 +106,40 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 						}}
 					/>
 
-					<div
-						className={classNames(
-							'grid gap-2 overflow-auto max-h-[250px] lg:max-h-[400px]',
-							isForChallengesPage ? 'lg:grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'
-						)}
-					>
-						{cardImagesToUse.map((imageSrc) => {
-							const isSelected = imageSrc === selectedImageSrc;
+					<div className="overflow-auto h-[250px] lg:h-[350px]">
+						<div
+							className={classNames(
+								'grid gap-2',
+								isForChallengesPage ? 'lg:grid-cols-2' : 'grid-cols-2 lg:grid-cols-3'
+							)}
+						>
+							{cardImagesToUse.map((imageSrc) => {
+								const isSelected = imageSrc === selectedImageSrc;
 
-							return (
-								<div
-									key={imageSrc}
-									className="cursor-pointer flex items-end"
-									onClick={() => setSelectedImageSrc(imageSrc)}
-								>
-									<img src={imageSrc} />
+								return (
+									<div
+										key={imageSrc}
+										className="cursor-pointer flex items-end"
+										onClick={() => setSelectedImageSrc(imageSrc)}
+									>
+										<img src={imageSrc} />
 
-									{isSelected && (
-										<div className="ml-[-25px] mb-[10px]">
-											<div className="bg-blue-500 rounded-full h-[20px] w-[20px] flex items-center justify-center">
-												<Icon
-													name="check"
-													customClass={
-														'!text-[20px] text-white group-hover:text-white cursor-pointer'
-													}
-												/>
+										{isSelected && (
+											<div className="ml-[-25px] mb-[10px]">
+												<div className="bg-blue-500 rounded-full h-[20px] w-[20px] flex items-center justify-center">
+													<Icon
+														name="check"
+														customClass={
+															'!text-[20px] text-white group-hover:text-white cursor-pointer'
+														}
+													/>
+												</div>
 											</div>
-										</div>
-									)}
-								</div>
-							);
-						})}
+										)}
+									</div>
+								);
+							})}
+						</div>
 					</div>
 
 					<div className="flex justify-end gap-2 mt-4">
@@ -153,34 +162,5 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 		</Modal>
 	);
 };
-
-const challengeCardImageSrcs = [
-	'https://i.imgur.com/6xLKg5k.jpeg',
-	'https://i.imgur.com/1YgsWfs.jpeg',
-	'https://i.imgur.com/6XxU2gI.jpeg',
-	'https://i.imgur.com/bxbNsXn.jpeg',
-	'https://i.imgur.com/x084PtQ.png',
-	'https://i.imgur.com/wB7IC8I.png',
-	'https://i.imgur.com/RJwESL1.jpeg',
-	'https://i.imgur.com/jWwQMre.jpeg',
-	'https://i.imgur.com/H66q41n.jpeg',
-	'https://i.imgur.com/nVSAETq.jpeg',
-	'https://i.imgur.com/CHc4FZm.jpeg',
-	'https://i.imgur.com/C5XRDHf.png',
-	'https://i.imgur.com/NqLXU5k.png',
-	'https://i.imgur.com/mjQR03J.png',
-	'https://i.imgur.com/QPGlCRU.jpeg',
-	'https://i.imgur.com/JF5yqRY.png',
-	'https://i.imgur.com/xgI5YX3.jpeg',
-	'https://i.imgur.com/ta2Mntd.png',
-	'https://i.imgur.com/uynvJZh.png',
-	'https://i.imgur.com/nmgjNAy.jpeg',
-	'https://i.imgur.com/iy2ZSMF.jpeg',
-	'https://i.imgur.com/TAhBlMG.jpeg',
-	'https://i.imgur.com/crfh1D3.jpeg',
-	'https://i.imgur.com/NUw06Bt.jpeg',
-];
-
-// const medalCardImageSrcs = ['https://i.imgur.com/dIvJYlX.png', 'https://i.imgur.com/91AMzBS.png'];
 
 export default ModalChangeCardImage;
