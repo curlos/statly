@@ -7,9 +7,11 @@ import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../s
 import classNames from 'classnames';
 import MedalsGameButtonList from '../medals/MedalsGameButtonList';
 import { MEDALS_GAMES } from '../medals/medalsLinks';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isForChallengesPage }) => {
 	const handleError = useHandleError();
+	const { chosenColorObj } = useThemeContext();
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
@@ -126,7 +128,12 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 
 										{isSelected && (
 											<div className="ml-[-25px] mb-[10px]">
-												<div className="bg-blue-500 rounded-full h-[20px] w-[20px] flex items-center justify-center">
+												<div
+													className={classNames(
+														chosenColorObj.bgColor,
+														'rounded-full h-[20px] w-[20px] flex items-center justify-center'
+													)}
+												>
 													<Icon
 														name="check"
 														customClass={
