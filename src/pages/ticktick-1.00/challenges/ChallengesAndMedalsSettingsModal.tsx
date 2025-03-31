@@ -18,7 +18,13 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
+		// medalsPageSettings: { selectedMedalCardImage },
 	} = useUserSettingsContext();
+
+	const selectedMedalCardImage = {
+		focus: 'https://i.imgur.com/dIvJYlX.png',
+		tasks: 'https://i.imgur.com/91AMzBS.png',
+	};
 
 	const isForChallengesPage = page === 'challenges';
 
@@ -53,14 +59,22 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 						<hr className="border-color-gray-200 my-4" />
 
 						<div className="space-y-4">
-							<ChallengeCard
+							<CardImage
 								cardType="Focus"
-								imageSrc={selectedChallengeCardImage?.focus}
+								imageSrc={
+									isForChallengesPage
+										? selectedChallengeCardImage?.focus
+										: selectedMedalCardImage?.focus
+								}
 								isForChallengesPage={isForChallengesPage}
 							/>
-							<ChallengeCard
+							<CardImage
 								cardType="Tasks"
-								imageSrc={selectedChallengeCardImage?.tasks}
+								imageSrc={
+									isForChallengesPage
+										? selectedChallengeCardImage?.tasks
+										: selectedMedalCardImage?.tasks
+								}
 								isForChallengesPage={isForChallengesPage}
 							/>
 						</div>
@@ -71,7 +85,7 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 	);
 };
 
-const ChallengeCard = ({ cardType, imageSrc, isForChallengesPage }) => {
+const CardImage = ({ cardType, imageSrc, isForChallengesPage }) => {
 	const [hoverImage, setHoverImage] = useState(false);
 	const [showModalChangeCardImage, setShowModalChangeCardImage] = useState(false);
 

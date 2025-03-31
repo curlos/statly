@@ -4,6 +4,9 @@ import Modal from '../../../components/Modal/Modal';
 import useHandleError from '../../../hooks/useHandleError';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
+import classNames from 'classnames';
+import MedalsGameButtonList from '../medals/MedalsGameButtonList';
+import { MEDALS_GAMES } from '../medals/medalsLinks';
 
 const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isForChallengesPage }) => {
 	const handleError = useHandleError();
@@ -47,6 +50,11 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 		});
 	};
 
+	const cardImagesToUse = isForChallengesPage ? challengeCardImageSrcs : medalCardImageSrcs;
+
+	const [selectedGame, setSelectedGame] = useState('BATTLEFIELD 1');
+	const [selectedMedalType, setSelectedMedalType] = useState('COMBAT');
+
 	return (
 		<Modal
 			isOpen={showModal}
@@ -67,8 +75,35 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 				</div>
 
 				<div className="px-5 pb-5">
-					<div className="grid lg:grid-cols-2 gap-2 overflow-auto max-h-[250px]">
-						{challengeCardImageSrcs.map((imageSrc) => {
+					<MedalsGameButtonList
+						{...{
+							medalGameButtonType: 'GAME',
+							buttonNamesList: ['BATTLEFIELD 1', 'BATTLEFIELD 3', 'BATTLEFIELD 4'],
+							selectedGame,
+							setSelectedGame,
+							selectedMedalType,
+							setSelectedMedalType,
+						}}
+					/>
+
+					<MedalsGameButtonList
+						{...{
+							medalGameButtonType: 'MEDAL TYPE',
+							buttonNamesList: MEDALS_GAMES[selectedGame]['MEDALS_ORDER'],
+							selectedGame,
+							setSelectedGame,
+							selectedMedalType,
+							setSelectedMedalType,
+						}}
+					/>
+
+					<div
+						className={classNames(
+							'grid gap-2 overflow-auto max-h-[250px]',
+							isForChallengesPage ? 'lg:grid-cols-2' : 'lg:grid-cols-4'
+						)}
+					>
+						{cardImagesToUse.map((imageSrc) => {
 							const isSelected = imageSrc === selectedImageSrc;
 
 							return (
@@ -143,5 +178,7 @@ const challengeCardImageSrcs = [
 	'https://i.imgur.com/crfh1D3.jpeg',
 	'https://i.imgur.com/NUw06Bt.jpeg',
 ];
+
+const medalCardImageSrcs = ['https://i.imgur.com/dIvJYlX.png', 'https://i.imgur.com/91AMzBS.png'];
 
 export default ModalChangeCardImage;
