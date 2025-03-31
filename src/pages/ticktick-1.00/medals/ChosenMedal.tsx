@@ -1,7 +1,13 @@
+import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+
 const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 	if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
 		return null;
 	}
+
+	const {
+		medalsPageSettings: { selectedMedalCardImage },
+	} = useUserSettingsContext();
 
 	const { name, intervalsEarned, interval } = chosenMedal;
 
@@ -34,9 +40,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 	};
 
 	const imgSrc =
-		chosenMedal.requiredDuration !== undefined
-			? '/Brusilovs_Star.webp'
-			: '/Eternal_Order_of_the_Gladiator_Medal.webp';
+		chosenMedal.requiredDuration !== undefined ? selectedMedalCardImage?.focus : selectedMedalCardImage?.tasks;
 
 	return (
 		<div
@@ -46,7 +50,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 		>
 			<div>
 				<div className="flex justify-center mb-2">
-					<img src={imgSrc} />
+					<img src={imgSrc} className="max-h-[300px] max-w-[350px]" />
 				</div>
 				<div>
 					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-2 sticky">

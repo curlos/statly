@@ -21,43 +21,74 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
+		medalsPageSettings: { selectedMedalCardImage },
 	} = useUserSettingsContext();
 
 	const [selectedImageSrc, setSelectedImageSrc] = useState(
-		selectedChallengeCardImage && selectedChallengeCardImage[cardType]
+		isForChallengesPage
+			? selectedChallengeCardImage && selectedChallengeCardImage[cardType]
+			: selectedMedalCardImage && selectedMedalCardImage[cardType]
 	);
 
 	const handleChangeImageUserSetting = () => {
-		const restOfChallengesKeysAndVals = userSettings?.tickTickOne?.pages?.challenges;
-		const restOfSelectedChallengeCardImages =
-			userSettings?.tickTickOne?.pages?.challenges?.selectedChallengeCardImage;
-
 		handleError(async () => {
-			const payload = {
-				tickTickOne: {
-					pages: {
-						challenges: {
-							...restOfChallengesKeysAndVals,
-							selectedChallengeCardImage: {
-								...restOfSelectedChallengeCardImages,
-								[cardType]: selectedImageSrc,
-							},
-						},
-					},
-				},
-			};
+			const payload = isForChallengesPage ? getChallengesPagePayload() : getMedalsPagePayload();
 
 			await editUserSettings(payload).unwrap();
 			setShowModal(false);
 		});
 	};
 
-	const [selectedGame, setSelectedGame] = useState('BF1');
-	const [selectedMedalType, setSelectedMedalType] = useState('COMBAT');
+	const getChallengesPagePayload = () => {
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+		const restOfChallengesKeysAndVals = userSettings?.tickTickOne?.pages?.challenges;
+		const restOfSelectedChallengeCardImages =
+			userSettings?.tickTickOne?.pages?.challenges?.selectedChallengeCardImage;
 
+		const payload = {
+			tickTickOne: {
+				pages: {
+					...restOfPagesKeysAndVals,
+					challenges: {
+						...restOfChallengesKeysAndVals,
+						selectedChallengeCardImage: {
+							...restOfSelectedChallengeCardImages,
+							[cardType]: selectedImageSrc,
+						},
+					},
+				},
+			},
+		};
+
+		return payload;
+	};
+
+	const getMedalsPagePayload = () => {
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+		const restOfMedalsKeysAndVals = userSettings?.tickTickOne?.pages?.medals;
+		const restOfSelectedMedalCardImages = userSettings?.tickTickOne?.pages?.medals?.selectedMedalCardImage;
+
+		const payload = {
+			tickTickOne: {
+				pages: {
+					...restOfPagesKeysAndVals,
+					medals: {
+						...restOfMedalsKeysAndVals,
+						selectedMedalCardImage: {
+							...restOfSelectedMedalCardImages,
+							[cardType]: selectedImageSrc,
+						},
+					},
+				},
+			},
+		};
+
+		return payload;
+	};
+
+	const [selectedGame, setSelectedGame] = useState(isForChallengesPage ? 'BO2 (CALLING CARDS)' : 'BF1');
+	const [selectedMedalType, setSelectedMedalType] = useState(isForChallengesPage ? 'GENERAL' : 'COMBAT');
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
-
-	const cardImagesToUse = isForChallengesPage ? challengeCardImageSrcs : medalCardImageSrcs;
 
 	return (
 		<Modal
@@ -109,13 +140,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 					/>
 
 					<div className="overflow-auto h-[250px] lg:h-[350px]">
-						<div
-							className={classNames(
-								'grid gap-2',
-								isForChallengesPage ? 'lg:grid-cols-2' : 'grid-cols-2 lg:grid-cols-3'
-							)}
-						>
-							{cardImagesToUse.map((imageSrc) => {
+						<div className={classNames('grid gap-2 grid-cols-2 lg:grid-cols-3')}>
+							{medalCardImageSrcs.map((imageSrc) => {
 								const isSelected = imageSrc === selectedImageSrc;
 
 								return (
@@ -158,7 +184,10 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 						</button>
 
 						<button
-							className="bg-blue-500 rounded py-1 cursor-pointer hover:bg-blue-600 min-w-[114px] disabled:opacity-50 disabled:cursor-not-allowed"
+							className={classNames(
+								chosenColorObj.bgColor,
+								'rounded py-1 cursor-pointer hover:bg-blue-600 min-w-[114px] disabled:opacity-50 disabled:cursor-not-allowed'
+							)}
 							onClick={handleChangeImageUserSetting}
 						>
 							Ok

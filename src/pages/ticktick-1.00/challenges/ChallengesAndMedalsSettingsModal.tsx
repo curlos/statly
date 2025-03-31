@@ -18,13 +18,8 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
-		// medalsPageSettings: { selectedMedalCardImage },
+		medalsPageSettings: { selectedMedalCardImage },
 	} = useUserSettingsContext();
-
-	const selectedMedalCardImage = {
-		focus: 'https://i.imgur.com/dIvJYlX.png',
-		tasks: 'https://i.imgur.com/91AMzBS.png',
-	};
 
 	const isForChallengesPage = page === 'challenges';
 

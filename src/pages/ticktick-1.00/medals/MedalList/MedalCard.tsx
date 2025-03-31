@@ -1,16 +1,19 @@
 import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import useWindowSize from '../../../../hooks/useWindowSize';
+import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 
 const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData, setShowChosenMedalModal }) => {
 	const { name, intervalsEarned } = medal;
 
 	const { chosenColorObj } = useThemeContext();
+	const {
+		medalsPageSettings: { selectedMedalCardImage },
+	} = useUserSettingsContext();
 
 	const timesEarned = !intervalsEarned ? 0 : intervalsEarned.length;
 
-	const imgSrc =
-		medal.requiredDuration !== undefined ? '/Brusilovs_Star.webp' : '/Eternal_Order_of_the_Gladiator_Medal.webp';
+	const imgSrc = medal.requiredDuration !== undefined ? selectedMedalCardImage?.focus : selectedMedalCardImage?.tasks;
 
 	const { width } = useWindowSize();
 
@@ -34,7 +37,7 @@ const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksDa
 				{name}
 			</div>
 			<div className="flex justify-center">
-				<img src={imgSrc} className="w-[150px] my-2" />
+				<img src={imgSrc} className="my-2" />
 			</div>
 			<div className="flex justify-end px-2 text-[16px] sm:text-[20px] font-bold">
 				x{timesEarned.toLocaleString()}
