@@ -106,13 +106,13 @@ const UserForm = ({ mode }) => {
 					</div>
 				) : (
 					<div>
-						Don't have an account?{' '}
+						{/* Don't have an account?{' '}
 						<Link
 							href="/signup"
 							className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
 						>
 							Sign Up
-						</Link>
+						</Link> */}
 					</div>
 				)}
 			</div>
