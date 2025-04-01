@@ -34,6 +34,20 @@ const ProviderList = ({ children }) => {
 		navigate('/login');
 	}
 
+	if (!isLoggedIn) {
+		return (
+			<div className="text-white select-none">
+				{children}
+
+				{/* Modals */}
+				<GlobalModalList />
+
+				{/* Alerts */}
+				<GlobalAlertList />
+			</div>
+		);
+	}
+
 	return (
 		<SearchParamsProvider>
 			<ThemeProvider>

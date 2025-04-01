@@ -5,8 +5,8 @@ import { setModalState } from '../slices/modalSlice';
 import { useLoginUserMutation, useRegisterUserMutation } from '../services/resources/usersApi';
 import { navigate } from 'vike/client/router';
 import Link from './Link';
-import { useThemeContext } from '../contexts/useThemeContext';
 import classNames from 'classnames';
+import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 
 const UserForm = ({ mode }) => {
 	const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const UserForm = ({ mode }) => {
 		}
 	};
 
-	const { chosenColorObj } = useThemeContext();
+	const chosenColorObj = TAILWIND_COLORS_OBJ['red']['red-500'];
 
 	return (
 		<form
@@ -101,16 +101,19 @@ const UserForm = ({ mode }) => {
 							href="/login"
 							className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
 						>
-							Sign in
+							Login
 						</Link>
 					</div>
 				) : (
-					<Link
-						href="/signup"
-						className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
-					>
-						Sign Up for Free
-					</Link>
+					<div>
+						Don't have an account?{' '}
+						<Link
+							href="/signup"
+							className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
+						>
+							Sign Up
+						</Link>
+					</div>
 				)}
 			</div>
 		</form>

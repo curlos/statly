@@ -91,7 +91,7 @@ const Page = () => {
 							onClose={() => setShowChosenMedalModal(false)}
 							position="top-center"
 						>
-							<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
+							<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">
 								<ChosenMedal {...{ chosenMedal, maxHeight, chosenMedalRef }} />
 							</div>
 						</Modal>

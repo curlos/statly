@@ -4,7 +4,7 @@ import { isFromServer } from '../utils/focus-apps/helpers.utils';
 const initialState = {
 	user: null,
 	token: isFromServer() ? null : localStorage.getItem('token'),
-	isLoggedIn: false,
+	isLoggedIn: isFromServer() ? null : (localStorage.getItem('token') ? true : false),
 };
 
 const userSlice = createSlice({
@@ -22,6 +22,7 @@ const userSlice = createSlice({
 			state.token = null;
 			state.isLoggedIn = false;
 			localStorage.removeItem('token');
+			localStorage.removeItem('theme-color')
 		},
 	},
 });
