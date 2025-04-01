@@ -116,7 +116,7 @@ const useStats = () => {
 		}
 
 		setFocusRecordsGroupedByDate(getGroupedFocusRecordsByDate(allFocusRecords));
-		setTotalFocusDuration(getFocusDurationFromArray(allFocusRecords));
+		setTotalFocusDuration(getFocusDurationFromArray({ focusRecords: allFocusRecords }));
 	}, [isLoading]);
 
 	useEffect(() => {
@@ -133,7 +133,9 @@ const useStats = () => {
 		}
 
 		setCompletedTasksForToday(completedTasksGroupedByDate[todayDateKey]);
-		setFocusDurationForToday(getFocusDurationFromArray(focusRecordsFromToday));
+		setFocusDurationForToday(
+			getFocusDurationFromArray({ focusRecords: focusRecordsFromToday, startDate: todayDate })
+		);
 		setStatsForLastSevenDays(getStatsForLast7Days());
 		setStatsForLastSevenWeeks(getStatsForLast7Weeks());
 		setStatsForLastSevenMonths(getStatsForLast7Months());
@@ -149,7 +151,7 @@ const useStats = () => {
 
 			const completedTasks = completedTasksGroupedByDate[dayKey];
 			const focusRecords = focusRecordsGroupedByDate[dayKey];
-			const focusDuration = (focusRecords && getFocusDurationFromArray(focusRecords)) || 0;
+			const focusDuration = (focusRecords && getFocusDurationFromArray({ focusRecords, startDate: day })) || 0;
 
 			lastSevenDaysData.push({
 				name: day.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
@@ -192,7 +194,7 @@ const useStats = () => {
 
 				const completedTasks = completedTasksGroupedByDate[dayKey] || [];
 				const focusRecords = focusRecordsGroupedByDate[dayKey] || [];
-				const focusDuration = (focusRecords && getFocusDurationFromArray(focusRecords)) || 0;
+				const focusDuration = (focusRecords && getFocusDurationFromArray({ focusRecords })) || 0;
 
 				currentWeekData.completedTasks.push(...completedTasks);
 				currentWeekData.focusRecords.push(...focusRecords);
@@ -232,7 +234,7 @@ const useStats = () => {
 
 				const completedTasks = completedTasksGroupedByDate[dayKey] || [];
 				const focusRecords = focusRecordsGroupedByDate[dayKey] || [];
-				const focusDuration = (focusRecords && getFocusDurationFromArray(focusRecords)) || 0;
+				const focusDuration = (focusRecords && getFocusDurationFromArray({ focusRecords })) || 0;
 
 				currentMonthData.completedTasks.push(...completedTasks);
 				currentMonthData.focusRecords.push(...focusRecords);

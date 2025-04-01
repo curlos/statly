@@ -37,7 +37,10 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ focusRecords }) => {
 
 				const today = new Date();
 
-				if (areDatesEqual(new Date(startTime), today)) {
+				if (
+					areDatesEqual(new Date(startTime), today) ||
+					areDatesEqual(new Date(startTime), new Date('March 31, 2025'))
+				) {
 					todaysPomo += pomos;
 					todaysFocus += duration;
 				}

@@ -62,7 +62,7 @@ const MedalsCard = () => {
 						}
 
 						return (
-							<div>
+							<div key={name}>
 								<img src={imgSrc} className="w-[150px]" />
 								<div className="text-center font-semibold text-[18px]">x1</div>
 								<div className="text-center font-semibold">{name}</div>

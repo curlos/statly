@@ -17,13 +17,14 @@ import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
 		"percentage": 53.38
 	}, ...]
  */
-export const getDataByProjects = (
+export const getDataByProjects = ({
 	allFocusRecordsForInterval,
 	focusDurationForInterval,
 	tasksById,
 	projectsById,
-	sessionCategoriesById
-) => {
+	sessionCategoriesById,
+	startDate
+}) => {
 	const focusRecordsGroupedByProject = {};
 
 	// Default it to the "Inbox" project if the focus record has no task with a project.
@@ -83,7 +84,7 @@ export const getDataByProjects = (
 
 	const dataByProjects = Object.keys(focusRecordsGroupedByProject).map((projectId) => {
 		const focusRecordsArr = focusRecordsGroupedByProject[projectId];
-		const focusDurationForProject = getFocusDurationFromArray(focusRecordsArr);
+		const focusDurationForProject = getFocusDurationFromArray({ focusRecords: focusRecordsArr, startDate });
 
 		const percentage = Number(((focusDurationForProject / focusDurationForInterval) * 100).toFixed(2));
 
@@ -152,7 +153,7 @@ export const getDataByProjects = (
 		"percentage": 18.01
 	}, ...]
  */
-export const getDataByTasks = (allFocusRecordsForInterval, focusDurationForInterval, tasksById) => {
+export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInterval, tasksById }) => {
 	const focusRecordsGroupedByTask = {};
 	const NO_TASK_KEY = 'No Task';
 
@@ -183,7 +184,7 @@ export const getDataByTasks = (allFocusRecordsForInterval, focusDurationForInter
 	// Go through all the "taskId" keys and get the name, color, value, and percentage of that taskId.
 	const dataByTasks = Object.keys(focusRecordsGroupedByTask).map((taskId) => {
 		const focusRecordsArr = focusRecordsGroupedByTask[taskId];
-		const focusDurationForProject = getFocusDurationFromArray(focusRecordsArr);
+		const focusDurationForProject = getFocusDurationFromArray({ focusRecords: focusRecordsArr, startDate });
 
 		const percentage = Number(((focusDurationForProject / focusDurationForInterval) * 100).toFixed(2));
 
@@ -221,7 +222,7 @@ const addFocusRecordToUnclassified = (taskFromFocusRecord, focusRecordsGroupedBy
 	focusRecordsGroupedByTag[UNCLASSIFIED_KEY].push(taskFromFocusRecord);
 };
 
-export const getDataByTags = (allFocusRecordsForInterval, focusDurationForInterval, tasksById) => {
+export const getDataByTags = ({ allFocusRecordsForInterval, focusDurationForInterval, tasksById, startDate }) => {
 	const focusRecordsGroupedByTag = {};
 
 	allFocusRecordsForInterval.forEach((focusRecord) => {
@@ -265,8 +266,8 @@ export const getDataByTags = (allFocusRecordsForInterval, focusDurationForInterv
 						const { tasks } = focusRecord;
 						return focusRecord;
 					});
-		const focusDurationForTag = getFocusDurationFromArray(focusRecordsArr);
-		const totalFocusDuration = getFocusDurationFromArray(allFocusRecordsForInterval);
+		const focusDurationForTag = getFocusDurationFromArray({ focusRecords: focusRecordsArr, startDate });
+		const totalFocusDuration = getFocusDurationFromArray({ focusRecords: allFocusRecordsForInterval, startDate });
 		const percentage = Number(((focusDurationForTag / focusDurationForInterval) * 100).toFixed(2));
 
 		const isUnclassifiedTag = tagName === 'UNCLASSIFIED';

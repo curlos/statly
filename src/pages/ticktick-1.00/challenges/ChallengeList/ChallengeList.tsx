@@ -27,7 +27,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 
 		// Get the focus duration for each day.
 		Object.entries(focusRecordsGroupedByDate).forEach(([dateKey, focusRecords]) => {
-			focusDurationByDate[dateKey] = getFocusDurationFromArray(focusRecords);
+			focusDurationByDate[dateKey] = getFocusDurationFromArray({ focusRecords });
 		});
 
 		const newFocusHoursChallenges = JSON.parse(JSON.stringify(DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES));

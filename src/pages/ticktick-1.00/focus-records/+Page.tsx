@@ -17,6 +17,7 @@ import {
 } from '../../../services/resources/oldFocusAppsApi';
 import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
+import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 
 const Page = () => {
 	return <FocusRecordsPage />;
@@ -113,14 +114,23 @@ const FocusRecordsPage = () => {
 
 	const getFilterBarHeaderContent = () => {
 		const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
-		const totalFocusDuration = getFocusDurationFromArray(
-			filteredFocusRecords,
-			true,
-			filterByTaskId,
+
+		const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+		const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+
+		const startDateFromUrlDate = new Date(startDateFromUrl);
+		const endDateFromUrlDate = new Date(endDateFromUrl);
+
+		const totalFocusDuration = getFocusDurationFromArray({
+			focusRecords: filteredFocusRecords,
+			onlyTasks: true,
+			taskId: filterByTaskId,
 			ancestorTasksById,
 			showTaskAncestors,
-			taskIdIncludeFocusRecordsFromSubtasks
-		);
+			taskIdIncludeFocusRecordsFromSubtasks,
+			startDate: startDateFromUrlDate,
+			endDate: endDateFromUrlDate,
+		});
 
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">

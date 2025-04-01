@@ -103,7 +103,7 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 
 	const dateKey = getFormattedLongDay(date);
 	const focusRecordsFromDate = (focusRecordsGroupedByDate && focusRecordsGroupedByDate[dateKey]) || [];
-	const focusDurationForDay = getFocusDurationFromArray(focusRecordsFromDate);
+	const focusDurationForDay = getFocusDurationFromArray({ focusRecords: focusRecordsFromDate });
 	const { hours, minutes } = secondsToHoursAndMinutes(focusDurationForDay);
 	const rangeClass = getRangeClass(hours, minutes, themeContext);
 

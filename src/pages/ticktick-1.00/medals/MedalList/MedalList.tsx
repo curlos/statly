@@ -87,7 +87,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 
 		// Get the focus duration for each day.
 		Object.entries(focusRecordsGroupedByDate).forEach(([dateKey, focusRecords]) => {
-			newFocusDurationByDate[dateKey] = getFocusDurationFromArray(focusRecords);
+			newFocusDurationByDate[dateKey] = getFocusDurationFromArray({ focusRecords });
 		});
 
 		const newDailyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_DAILY_FOCUS_HOURS_MEDALS));

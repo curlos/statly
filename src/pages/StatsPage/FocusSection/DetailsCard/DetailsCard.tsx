@@ -57,25 +57,42 @@ const DetailsCard = () => {
 		// Get all the completed tasks from the selected interval of dates
 		const allFocusRecordsForInterval =
 			selectedInterval === 'All' ? focusRecords : getFocusRecordsFromSelectedDates(selectedDates);
-		const newFocusDurationForInterval = getFocusDurationFromArray(allFocusRecordsForInterval);
+		const newFocusDurationForInterval =
+			selectedInterval === 'All'
+				? getFocusDurationFromArray({ focusRecords: allFocusRecordsForInterval })
+				: getFocusDurationFromArray({
+						focusRecords: allFocusRecordsForInterval,
+						startDate: selectedDates[0],
+					});
 
 		let newProgressBarData = progressBarData;
 
 		switch (selected) {
 			case 'Project':
-				newProgressBarData = getDataByProjects(
+				newProgressBarData = getDataByProjects({
 					allFocusRecordsForInterval,
-					newFocusDurationForInterval,
+					focusDurationForInterval: newFocusDurationForInterval,
 					tasksById,
 					projectsById,
-					sessionCategoriesById
-				);
+					sessionCategoriesById,
+					startDate: selectedInterval === 'All' ? null : selectedDates[0],
+				});
 				break;
 			case 'Task':
-				newProgressBarData = getDataByTasks(allFocusRecordsForInterval, newFocusDurationForInterval, tasksById);
+				newProgressBarData = getDataByTasks({
+					allFocusRecordsForInterval,
+					focusDurationForInterval: newFocusDurationForInterval,
+					tasksById,
+					startDate: selectedInterval === 'All' ? null : selectedDates[0],
+				});
 				break;
 			case 'Tag':
-				newProgressBarData = getDataByTags(allFocusRecordsForInterval, newFocusDurationForInterval, tasksById);
+				newProgressBarData = getDataByTags({
+					allFocusRecordsForInterval,
+					focusDurationForInterval: newFocusDurationForInterval,
+					tasksById,
+					startDate: selectedInterval === 'All' ? null : selectedDates[0],
+				});
 				break;
 		}
 

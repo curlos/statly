@@ -57,7 +57,7 @@ const TrendsCard = () => {
 				const dateKey = getFormattedLongDay(date);
 
 				const focusRecordsForDay = focusRecordsGroupedByDate[dateKey];
-				focusDurationForGroup += getFocusDurationFromArray(focusRecordsForDay);
+				focusDurationForGroup += getFocusDurationFromArray({ focusRecords: focusRecordsForDay });
 			}
 
 			newData.push({

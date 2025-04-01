@@ -49,8 +49,6 @@ export const getStreaksInfo = (focusRecords, filteredProjects, tasksById) => {
 	const focusRecordsByDate = {};
 
 	focusRecords.forEach((focusRecord) => {
-
-
 		const { startTime } = focusRecord;
 
 		const dayKey = getFormattedLongDay(new Date(startTime));
@@ -68,7 +66,7 @@ export const getStreaksInfo = (focusRecords, filteredProjects, tasksById) => {
 	if (includeAllProjects) {
 		Object.keys(focusRecordsByDate).map((dayKey) => {
 			const focusRecordsForDay = focusRecordsByDate[dayKey];
-			const durationForDay = getFocusDurationFromArray(focusRecordsForDay);
+			const durationForDay = getFocusDurationFromArray({ focusRecords: focusRecordsForDay, startDate: new Date(dayKey) });
 			totalFocusDurationByDate[dayKey] = durationForDay;
 		});
 	} else {
@@ -169,11 +167,15 @@ export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProject
 	const includeAllProjects = Object.values(filteredProjects).every(value => value === false)
 
 	if (includeAllProjects) {
-		return getFocusDurationFromArray(focusRecordsForTheDay);
+		return getFocusDurationFromArray({
+			focusRecords: focusRecordsForTheDay,
+			startDate: date
+		});
 	}
 	
 	return getDurationForFocusRecordsFilteredByProjects(focusRecordsForTheDay, filteredProjects, tasksById);
 };
+
 
 export const getFocusDataForDayInfo = (focusRecordsByDate, date, filteredProjects, tasksById) => {
 	const goalSeconds = getGoalSeconds(date);

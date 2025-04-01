@@ -210,11 +210,18 @@ export const useFilterFocusRecords = ({
 		}
 
 		const startTime = getFocusRecordProperty(focusRecord, 'startTime');
+		const endTime = getFocusRecordProperty(focusRecord, 'endTime');
+
 		const startTimeDate = new Date(startTime);
+		const endTimeDate = new Date(endTime);
+
 		const startDateFromUrlDate = new Date(startDateFromUrl);
 		const endDateFromUrlDate = new Date(endDateFromUrl);
 
-		return isDateBetween(startTimeDate, startDateFromUrlDate, endDateFromUrlDate);
+		return (
+			isDateBetween(startTimeDate, startDateFromUrlDate, endDateFromUrlDate) ||
+			isDateBetween(endTimeDate, startDateFromUrlDate, endDateFromUrlDate)
+		);
 	};
 
 	useEffect(() => {

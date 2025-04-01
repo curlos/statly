@@ -29,7 +29,10 @@ const OverviewCard = () => {
 		const yesterdayDateKey = getFormattedLongDay(yesterdayDate);
 
 		const yesterdayFocusRecords = focusRecordsGroupedByDate[yesterdayDateKey] || [];
-		const yesterdayFocusDuration = getFocusDurationFromArray(yesterdayFocusRecords);
+		const yesterdayFocusDuration = getFocusDurationFromArray({
+			focusRecords: yesterdayFocusRecords,
+			startDate: yesterdayDate,
+		});
 
 		setDiffTodayFromYesterdayFocusRecords({
 			numDiff: Math.abs(today.numOfFocusRecords - yesterdayFocusRecords.length),

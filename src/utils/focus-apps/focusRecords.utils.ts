@@ -1,4 +1,4 @@
-import { getFormattedLongDay, sortObjectByDateKeys, sortArrayByProperty, isTimeBetween } from '../date.utils';
+import { getFormattedLongDay, sortObjectByDateKeys, sortArrayByProperty, isTimeBetween, areDatesEqual } from '../date.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from './multiFocusApps.utils';
 import { findMatchingTaskOrAncestor } from './tasks.utils';
 
@@ -12,6 +12,7 @@ export const getFocusDuration = ({
 	showTaskAncestors,
 	ancestorTasksById,
 	taskIdIncludeFocusRecordsFromSubtasks,
+	startDate
 }) => {
 	const focusApp = getFocusRecordFocusApp(focusRecord);
 
@@ -26,6 +27,12 @@ export const getFocusDuration = ({
 			// Convert ISO string times to Date objects
 			const start = new Date(startTime);
 			const end = new Date(endTime);
+
+			const durationSecondsBasedOnStartDate = getDurationSecondsBasedOnStartDate(startDate, start, end)
+
+			if (durationSecondsBasedOnStartDate > 0) {
+				return durationSecondsBasedOnStartDate
+			}
 
 			// Calculate the total duration in seconds
 			const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
@@ -63,6 +70,14 @@ export const getFocusDuration = ({
 				// Convert ISO string times to Date objects
 				const start = new Date(startTime);
 				const end = new Date(endTime);
+
+				const durationSecondsBasedOnStartDate = getDurationSecondsBasedOnStartDate(startDate, start, end)
+
+				if (durationSecondsBasedOnStartDate > 0) {
+					totalDurationSeconds += durationSecondsBasedOnStartDate
+					continue
+				}
+
 				// Calculate the total duration in seconds
 				const durationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
 				totalDurationSeconds += durationSeconds;
@@ -76,6 +91,12 @@ export const getFocusDuration = ({
 		// Convert ISO string times to Date objects
 		const start = new Date(startTime);
 		const end = new Date(endTime);
+
+		const durationSecondsBasedOnStartDate = getDurationSecondsBasedOnStartDate(startDate, start, end)
+
+		if (durationSecondsBasedOnStartDate > 0) {
+			return durationSecondsBasedOnStartDate
+		}
 
 		// Calculate the total duration in seconds
 		const totalDurationSeconds = (end - start) / 1000; // Convert milliseconds to seconds
@@ -99,6 +120,23 @@ export const getFocusDuration = ({
 			return focusRecord.Duration * 60;
 	}
 };
+
+const getDurationSecondsBasedOnStartDate = (startDate, start, end) => {
+	let durationSeconds = 0
+
+	if (startDate) {
+		const midnightDate = new Date(end.getTime())
+		midnightDate.setHours(0,0,0,0)
+
+		if (areDatesEqual(start, startDate) && !areDatesEqual(end, startDate)) {
+			durationSeconds = (midnightDate.getTime() - start.getTime()) / 1000
+		} else if (!areDatesEqual(start, startDate) && areDatesEqual(end, startDate)) {
+			durationSeconds = (end.getTime() - midnightDate.getTime()) / 1000
+		}
+	}
+
+	return durationSeconds
+}
 
 export const getFocusDurationFilteredByProjects = (focusRecord, filteredProjects, tasksById) => {
 	const { tasks } = focusRecord;
@@ -148,8 +186,10 @@ export const getGroupedFocusRecordsByDate = (focusRecords) => {
 		groupedFocusRecordsByDate[dayTitle].push(focusRecord);
 	});
 
+	const focusRecordsIncludingDayBeforeAndAfter = getFocusRecordsIncludingDayBeforeAndAfter(groupedFocusRecordsByDate)
+
 	// Sort all the items by their date key (from oldest to most recent)
-	const sortedGroupedFocusDataByDate = groupedFocusRecordsByDate && sortObjectByDateKeys(groupedFocusRecordsByDate);
+	const sortedGroupedFocusDataByDate = focusRecordsIncludingDayBeforeAndAfter && sortObjectByDateKeys(focusRecordsIncludingDayBeforeAndAfter);
 
 	const sortedGroupedFocusRecordsAsc = {};
 
@@ -161,6 +201,67 @@ export const getGroupedFocusRecordsByDate = (focusRecords) => {
 
 	return sortedGroupedFocusRecordsAsc;
 };
+
+const getFocusRecordsIncludingDayBeforeAndAfter = (groupedFocusRecordsByDate) => {
+	const focusRecordsIncludingDayBeforeAndAfter = {}
+
+	for (let dayKey of Object.keys(groupedFocusRecordsByDate)) {
+		const currentDay = new Date(dayKey)
+	
+		const dayBefore = new Date(currentDay.getTime())
+		dayBefore.setDate(currentDay.getDate() - 1)
+		
+		const dayAfter = new Date(currentDay.getTime())
+		dayAfter.setDate(currentDay.getDate() + 1)
+
+		const currentDayKey = getFormattedLongDay(currentDay);
+		const dayBeforeKey = getFormattedLongDay(dayBefore);
+		const dayAfterKey = getFormattedLongDay(dayAfter);
+		const dayBeforeFocusRecords = groupedFocusRecordsByDate[dayBeforeKey];
+		const dayAfterFocusRecords = groupedFocusRecordsByDate[dayAfterKey];
+
+		const focusRecordsForTheDay = [];
+
+		const dayBeforeFocusRecordsThatEndAtDate = getFocusRecordsThatEndAtDate(dayBeforeFocusRecords, currentDay)
+		const dayAfterFocusRecordsThatEndAtDate = getFocusRecordsThatEndAtDate(dayAfterFocusRecords, currentDay)
+
+		if (dayBeforeFocusRecordsThatEndAtDate?.length > 0) {
+			focusRecordsForTheDay.push(...dayBeforeFocusRecordsThatEndAtDate)
+		}
+
+		if (groupedFocusRecordsByDate[currentDayKey]?.length > 0) {
+			focusRecordsForTheDay.push(...groupedFocusRecordsByDate[currentDayKey])
+		}
+
+		if (dayAfterFocusRecordsThatEndAtDate?.length > 0) {
+			focusRecordsForTheDay.push(...dayAfterFocusRecordsThatEndAtDate)
+		}
+
+		focusRecordsIncludingDayBeforeAndAfter[dayKey] = focusRecordsForTheDay
+	}
+
+	return focusRecordsIncludingDayBeforeAndAfter
+}
+
+export const getFocusRecordsThatEndAtDate = (focusRecords, date) => {
+	if (!focusRecords) {
+		return []
+	}
+
+	const focusRecordsThatEndAtDate = []
+
+	for (const focusRecord of focusRecords) {
+		const { startTime, endTime } = focusRecord
+
+		const partOfFocusRecordInCurrentDay = areDatesEqual(date, new Date(startTime)) || areDatesEqual(date, new Date(endTime))
+
+		if (partOfFocusRecordInCurrentDay) {
+			focusRecordsThatEndAtDate.push(focusRecord)
+		}
+	}
+
+	return focusRecordsThatEndAtDate
+}
 
 /**
  * @description Gets the array of focus records and groups them by a unique taskId. Each taskId will a value that is the array of sorted focus records in ascending order by start time for the day.
@@ -222,14 +323,16 @@ export const getGroupedFocusRecordsByTask = (focusRecords, tasksById) => {
 	return sortedGroupedFocusRecordsAsc;
 };
 
-export const getFocusDurationFromArray = (
+export const getFocusDurationFromArray = ({
 	focusRecords,
 	onlyTasks,
 	taskId,
 	ancestorTasksById,
 	showTaskAncestors,
-	taskIdIncludeFocusRecordsFromSubtasks
-) => {
+	taskIdIncludeFocusRecordsFromSubtasks,
+	startDate,
+	endDate
+}) => {
 	let totalFocusDuration = 0;
 
 	focusRecords?.forEach((focusRecord) => {
@@ -240,6 +343,8 @@ export const getFocusDurationFromArray = (
 			ancestorTasksById,
 			showTaskAncestors,
 			taskIdIncludeFocusRecordsFromSubtasks,
+			startDate,
+			endDate
 		});
 	});
 
