@@ -95,7 +95,8 @@ export const getFocusDuration = ({
 		const durationSecondsBasedOnStartDate = getDurationSecondsBasedOnStartDate(startDate, start, end)
 
 		if (durationSecondsBasedOnStartDate > 0) {
-			return durationSecondsBasedOnStartDate
+			// Subtracting the pause duration here will not necessarily be 100% accurate because TickTick does not tell me when the pause duration starts and ends. It only tells me the total amount of time the focus record was paused for without telling me the specific affected days. Thus, there is potential for some inaccuracies. However, this is better than not subtracting the pause duration. Days like November 10, 2020 had 1 focus record where I paused for a whole day (55,000 seconds) so that needs to be subtracted.
+			return (durationSecondsBasedOnStartDate - pauseDuration)
 		}
 
 		// Calculate the total duration in seconds
