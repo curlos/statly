@@ -15,7 +15,7 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 
 const defaultFocusData = {
-	goalSeconds: 21600,
+	goalSeconds: 16200,
 	totalFocusDurationForDay: 0,
 	percentageOfFocusedGoalHours: 0,
 };
