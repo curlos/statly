@@ -414,6 +414,30 @@ export const getFormattedDuration = (duration, includeSeconds = true) => {
 	return `${hoursStr}${minutesStr}${secondsStr}`;
 };
 
+export const parseFormattedDuration = (formatted: string): number => {
+	if (!formatted || typeof formatted !== 'string') return 0;
+
+	let totalSeconds = 0;
+
+	// Match patterns like 4h, 30m, 16s (case-sensitive to match your original)
+	const hoursMatch = formatted.match(/(\d+)\s*h/);
+	const minutesMatch = formatted.match(/(\d+)\s*m/);
+	const secondsMatch = formatted.match(/(\d+)\s*s/);
+
+	if (hoursMatch) {
+		totalSeconds += parseInt(hoursMatch[1], 10) * 3600;
+	}
+	if (minutesMatch) {
+		totalSeconds += parseInt(minutesMatch[1], 10) * 60;
+	}
+	if (secondsMatch) {
+		totalSeconds += parseInt(secondsMatch[1], 10);
+	}
+
+	return totalSeconds;
+};
+
+
 export const formatSeconds = (seconds: number) => {
 	// Calculate the number of minutes and the remaining seconds
 	const minutes = Math.floor(seconds / 60);

@@ -7,6 +7,7 @@ import {
 	getFormattedShortMonthDay,
 } from './date.utils';
 import { getFocusDurationFilteredByProjects, getFocusDurationFromArray } from './focus-apps/focusRecords.utils';
+import { parseFormattedDuration } from './focus-apps/helpers.utils';
 
 export const CRUCIAL_PROJECTS = {
 	'LeetCode': true,
@@ -30,8 +31,14 @@ export const GOAL_FOR_DAYS = {
 };
 
 export const getGoalSeconds = (date) => {
+	if (!localStorage.getItem('focus-hours-goal')) {
+		localStorage.setItem('focus-hours-goal', '6h');
+	}
+
+	const defaultGoalSeconds = parseFormattedDuration(localStorage.getItem('focus-hours-goal'))
+
 	const currentDayString = getDayString(date);
-	const goalSecondsForToday = 16200 || GOAL_FOR_DAYS[currentDayString];
+	const goalSecondsForToday = defaultGoalSeconds || GOAL_FOR_DAYS[currentDayString];
 	return goalSecondsForToday;
 };
 
@@ -143,6 +150,14 @@ export const getStreaksInfo = (focusRecords, filteredProjects, tasksById) => {
 
 	return newStreaksInfo;
 };
+
+export const getStreakGoalDays = () => {
+	if (!localStorage.getItem('streak-goal-days')) {
+		localStorage.setItem('streak-goal-days', '6');
+	}
+
+	return localStorage.getItem('streak-goal-days')
+}
 
 export const getFocusRecordsFromToday = (focusRecords) => {
 	const focusRecordsFromToday = [];

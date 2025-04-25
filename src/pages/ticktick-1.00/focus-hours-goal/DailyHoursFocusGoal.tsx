@@ -1,8 +1,8 @@
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import Icon from '../../../components/Icon';
-import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration, parseFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import ModalHabitDetails from '../../../components/Modal/ModalHabitDetails/ModalHabitDetails';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants/constants.utils';
 import classNames from 'classnames';
 import {
@@ -10,12 +10,18 @@ import {
 	useGetAllTasksQuery,
 	useGetPomoAndStopwatchFocusRecordsQuery,
 } from '../../../services/resources/ticktickOneApi';
-import { getStreaksInfo, getFocusDataForDayInfo, getFilteredProjectsWithNames } from '../../../utils/focus.utils';
+import {
+	getStreaksInfo,
+	getFocusDataForDayInfo,
+	getFilteredProjectsWithNames,
+	getGoalSeconds,
+	getStreakGoalDays,
+} from '../../../utils/focus.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 
 const defaultFocusData = {
-	goalSeconds: 16200,
+	goalSeconds: getGoalSeconds(new Date()),
 	totalFocusDurationForDay: 0,
 	percentageOfFocusedGoalHours: 0,
 };
@@ -79,7 +85,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					<span className={classNames(isLargeType ? '!text-[36px]' : '!text-[28px]', 'font-bold')}>
 						{streaksInfo?.currentStreak?.days || 0}
 					</span>
-					/90
+					<span className="text-[24px]">/{getStreakGoalDays()}</span>
 				</span>
 			</div>
 			<CircularProgressbarWithChildren
