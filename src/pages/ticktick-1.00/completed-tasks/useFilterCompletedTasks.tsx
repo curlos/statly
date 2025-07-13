@@ -99,7 +99,9 @@ export const useFilterCompletedTasks = ({
 			}
 
 			if (projectsTodoistFromUrl) {
-				const isTaskFromASelectedProject = projectTodoistIdsFromUrlObj[task.project_id];
+				const projectId = task['v2_project_id'] || task['project_id'];
+
+				const isTaskFromASelectedProject = projectTodoistIdsFromUrlObj[projectId];
 				return isTaskFromASelectedProject;
 			}
 		});
@@ -225,7 +227,8 @@ export const useFilterCompletedTasks = ({
 
 					// Todoist
 					if (projectsTodoistFromUrl) {
-						const taskIsFromASelectedProject = projectTodoistIdsFromUrlObj[task.project_id];
+						const projectId = task['v2_project_id'] || task['project_id'];
+						const taskIsFromASelectedProject = projectTodoistIdsFromUrlObj[projectId];
 						return taskIsFromASelectedProject;
 					}
 				});

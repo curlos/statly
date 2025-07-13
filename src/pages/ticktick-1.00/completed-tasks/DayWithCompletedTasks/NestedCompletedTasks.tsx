@@ -55,8 +55,6 @@ const NestedCompletedTasks = ({
 		);
 	};
 
-	console.log(parentDirectChildrenTaskIdsByParentId);
-
 	/**
 	 * @description
 	 * @param {String} parentTaskId

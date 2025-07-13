@@ -52,19 +52,19 @@ const AppliedFilterItemList = () => {
 	);
 
 	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
+	const { data: fetchedTasks, isLoading: isLoadingTickTckTasks } = useGetAllTasksQuery();
 	const { tasksById } = fetchedTasks || {};
 
 	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const { data: fetchedProjects, isLoading: isLoadingGetTickTickProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
 	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistAllTasks } = useGetTodoistAllTasksQuery();
+	const { data: fetchedTodoistAllTasks, isLoading: isLoadingGetTodoistTasks } = useGetTodoistAllTasksQuery();
 	const { todoistAllTasksById } = fetchedTodoistAllTasks || {};
 
 	// RTK Query - Todoist - Projects
-	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
+	const { data: fetchedTodoistAllProjects, isLoading: isLoadingGetTodoistProjects } = useGetTodoistAllProjectsQuery();
 	const { todoistAllProjectsById } = fetchedTodoistAllProjects || {};
 
 	// RTK Query - Session App - Focus Records
@@ -73,7 +73,14 @@ const AppliedFilterItemList = () => {
 	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
 
 	useEffect(() => {
-		if (isLoadingGetProjects) {
+		const isResourceLoading =
+			isLoadingTickTckTasks ||
+			isLoadingGetTickTickProjects ||
+			isLoadingGetTodoistTasks ||
+			isLoadingGetTodoistProjects ||
+			isLoadingGetSessionFocusRecords;
+
+		if (isResourceLoading) {
 			return;
 		}
 
@@ -89,13 +96,19 @@ const AppliedFilterItemList = () => {
 		setToDoListAppNamesStr(newToDoListAppNamesStr);
 		setProjectTodoistNamesStr(newProjectTodoistNamesStr);
 	}, [
-		isLoadingGetProjects,
 		projectsFromUrl,
 		isLoadingGetSessionFocusRecords,
 		categoriesFromUrl,
 		focusAppsFromUrl,
 		toDoListAppsFromUrl,
 		projectsTodoistFromUrl,
+		isLoadingTickTckTasks,
+		isLoadingGetTickTickProjects,
+		isLoadingGetTodoistTasks,
+		isLoadingGetTodoistProjects,
+		projectsById,
+		sessionCategoriesById,
+		todoistAllProjectsById,
 	]);
 
 	const getUrlNamesStr = (commaSeparatedStr, obj, entityPropToGetValue) => {

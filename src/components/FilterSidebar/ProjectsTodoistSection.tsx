@@ -1,7 +1,6 @@
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../services/resources/ticktickOneApi';
 import { useEffect, useState } from 'react';
 import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
@@ -52,7 +51,13 @@ const ProjectsTodoistSection = () => {
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
 
 	const isFromQLinkAccount = (project) => {
-		return project.id === '2289588215' || project.id === '2295853642';
+		// Checks both the "sync" and "api/v1" ids for the "Inbox" and "Address" projects, the only two projects I actively used on my Q Link account.
+		return (
+			project.id === '2289588215' ||
+			project.id === '2295853642' ||
+			project.id == '6Hhh3pxXG5JF3gjc' ||
+			project.id == '6JVxw766pXHWcXgv'
+		);
 	};
 
 	return (
