@@ -4,6 +4,7 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import ModalChangeCardImage from './ModalChangeCardImage';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen, page }) => {
 	const sidebarVariants = {
@@ -22,6 +23,16 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 	} = useUserSettingsContext();
 
 	const isForChallengesPage = page === 'challenges';
+
+	const [selectedTab, setSelectedTab] = useState('Filter');
+
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+	const { textColor, bgColorHalfOpacity } = chosenColorObj;
+
+	const sharedButtonStyle = `text-[13.5px] sm:text-[16px] py-1 px-3 cursor-pointer`;
+	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
+	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
 	return (
 		<AnimatePresence>
@@ -53,26 +64,46 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 						</div>
 						<hr className="border-color-gray-200 my-4" />
 
-						<div className="space-y-4">
-							<CardImage
-								cardType="Focus"
-								imageSrc={
-									isForChallengesPage
-										? selectedChallengeCardImage?.focus
-										: selectedMedalCardImage?.focus
-								}
-								isForChallengesPage={isForChallengesPage}
-							/>
-							<CardImage
-								cardType="Tasks"
-								imageSrc={
-									isForChallengesPage
-										? selectedChallengeCardImage?.tasks
-										: selectedMedalCardImage?.tasks
-								}
-								isForChallengesPage={isForChallengesPage}
-							/>
+						<div className="flex gap-2 my-4">
+							<div
+								className={selectedTab === 'Filter' ? selectedButtonStyle : unselectedButtonStyle}
+								onClick={() => setSelectedTab('Filter')}
+							>
+								Filter
+							</div>
+
+							<div
+								className={selectedTab === 'Images' ? selectedButtonStyle : unselectedButtonStyle}
+								onClick={() => setSelectedTab('Images')}
+							>
+								Images
+							</div>
 						</div>
+
+						{selectedTab === 'Filter' && <div className="space-y-4">Filter By Something</div>}
+
+						{selectedTab === 'Images' && (
+							<div className="space-y-4">
+								<CardImage
+									cardType="Focus"
+									imageSrc={
+										isForChallengesPage
+											? selectedChallengeCardImage?.focus
+											: selectedMedalCardImage?.focus
+									}
+									isForChallengesPage={isForChallengesPage}
+								/>
+								<CardImage
+									cardType="Tasks"
+									imageSrc={
+										isForChallengesPage
+											? selectedChallengeCardImage?.tasks
+											: selectedMedalCardImage?.tasks
+									}
+									isForChallengesPage={isForChallengesPage}
+								/>
+							</div>
+						)}
 					</motion.div>
 				</motion.div>
 			)}

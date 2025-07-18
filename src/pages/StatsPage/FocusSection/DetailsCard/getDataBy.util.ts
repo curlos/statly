@@ -1,7 +1,7 @@
 import { FOCUS_APPS } from '../../../../utils/constants/constants.utils';
 import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import { getRandomColor, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { getFocusRecordFocusApp } from '../../../../utils/focus-apps/multiFocusApps.utils';
+import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../../utils/focus-apps/multiFocusApps.utils';
 import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
 
 /**
@@ -153,7 +153,7 @@ export const getDataByProjects = ({
 		"percentage": 18.01
 	}, ...]
  */
-export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInterval, tasksById }) => {
+export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInterval, tasksById, startDate }) => {
 	const focusRecordsGroupedByTask = {};
 	const NO_TASK_KEY = 'No Task';
 
@@ -172,12 +172,26 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 				focusRecordsGroupedByTask[taskId].push(task);
 			}
 		} else {
-			// If there are no tasks in the focus records, put it in the default "NO TASK" array.
-			if (!focusRecordsGroupedByTask[NO_TASK_KEY]) {
-				focusRecordsGroupedByTask[NO_TASK_KEY] = [];
-			}
+			// console.log(focusRecord)
+			// debugger
+			
+			const taskId = getFocusRecordProperty(focusRecord, 'taskId')
 
-			focusRecordsGroupedByTask[NO_TASK_KEY].push(focusRecord);
+			if (taskId) {
+				// If there are no tasks in the focus records, put it in the default "NO TASK" array.
+				if (!focusRecordsGroupedByTask[taskId]) {
+					focusRecordsGroupedByTask[taskId] = [];
+				}
+
+				focusRecordsGroupedByTask[taskId].push(focusRecord);
+			} else {
+				// If there are no tasks in the focus records, put it in the default "NO TASK" array.
+				if (!focusRecordsGroupedByTask[NO_TASK_KEY]) {
+					focusRecordsGroupedByTask[NO_TASK_KEY] = [];
+				}
+
+				focusRecordsGroupedByTask[NO_TASK_KEY].push(focusRecord);
+			}
 		}
 	});
 
