@@ -14,7 +14,7 @@ import ShowDaysFromToDoListAppSection from './ShowDaysFromToDoListAppSection';
 import ProjectsTickTickSection from './ProjectsTickTickSection';
 import ProjectsTodoistSection from './ProjectsTodoistSection';
 
-const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
+const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingMotion = true }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -56,10 +56,11 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 			initial="hidden"
 			animate="visible"
 			exit="hidden"
-			variants={sidebarVariants}
+			variants={useSlidingMotion && sidebarVariants}
 			className={classNames(
-				'inset-y-0 bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar',
-				isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : ''
+				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar',
+				isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : '',
+				page !== 'medals' && page !== 'challenges' ? 'p-4' : ''
 			)}
 			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 		>
@@ -95,11 +96,19 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 				</>
 			)}
 
-			<hr className="border-color-gray-200 my-4" />
-			<SearchSection />
+			{page !== 'medals' && page != 'challenges' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<SearchSection />
+				</>
+			)}
 
-			<hr className="border-color-gray-200 my-4" />
-			<SortBySection {...{ sortByOptions }} />
+			{page !== 'medals' && page != 'challenges' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<SortBySection {...{ sortByOptions }} />
+				</>
+			)}
 
 			<hr className="border-color-gray-200 my-4" />
 			<DateRangeSection />
@@ -118,14 +127,14 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page }) => {
 				</>
 			)}
 
-			{page === 'focus-records-page' && (
+			{page !== 'completed-tasks-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<ShowRecordsFromFocusAppSection />
 				</>
 			)}
 
-			{page === 'completed-tasks-page' && (
+			{page !== 'focus-records-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<ShowDaysFromToDoListAppSection />

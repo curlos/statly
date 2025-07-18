@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import ModalChangeCardImage from './ModalChangeCardImage';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import FilterSidebar from '../../../components/FilterSidebar/FilterSidebar';
 
 const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen, page }) => {
 	const sidebarVariants = {
@@ -80,7 +81,18 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 							</div>
 						</div>
 
-						{selectedTab === 'Filter' && <div className="space-y-4">Filter By Something</div>}
+						{selectedTab === 'Filter' && (
+							<div className="space-y-4">
+								<FilterSidebar
+									{...{
+										setIsOpen: setIsSidebarModalOpen,
+										isForModal: false,
+										useSlidingMotion: false,
+										page,
+									}}
+								/>
+							</div>
+						)}
 
 						{selectedTab === 'Images' && (
 							<div className="space-y-4">
