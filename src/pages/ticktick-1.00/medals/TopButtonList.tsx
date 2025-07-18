@@ -30,6 +30,8 @@ const TopButton = ({ buttonObj, selectedButtonStyle, unselectedButtonStyle, isFo
 	const pageContext = usePageContext();
 	const { type, interval } = pageContext.routeParams;
 
+	const queryParams = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : null;
+
 	const { name, urlName } = buttonObj;
 
 	const isSelected = isForInterval ? urlName === interval : urlName === type;
@@ -40,6 +42,10 @@ const TopButton = ({ buttonObj, selectedButtonStyle, unselectedButtonStyle, isFo
 
 	if (pageContext.urlParsed.pathname.includes('/challenges')) {
 		buttonUrl = `/ticktick-1.00/challenges/${newType}`;
+	}
+
+	if (queryParams) {
+		buttonUrl += `?${new URLSearchParams(queryParams).toString()}`;
 	}
 
 	return (

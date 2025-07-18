@@ -6,7 +6,10 @@ import {
 	DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS,
 	DEFAULT_YEARLY_FOCUS_HOURS_MEDALS,
 } from '../../../../utils/constants/focus/focusHoursMedals.utils';
-import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
+import {
+	getFocusDurationFromArray,
+	getGroupedFocusRecordsByDate,
+} from '../../../../utils/focus-apps/focusRecords.utils';
 import MedalCard from './MedalCard';
 import { sumNumsByPeriod } from '../../../../utils/focus.utils';
 import { usePageContext } from 'vike-react/usePageContext';
@@ -16,10 +19,12 @@ import {
 	DEFAULT_WEEKLY_COMPLETED_TASKS_MEDALS,
 	DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS,
 } from '../../../../utils/constants/tasks/tasksMedals.utils';
+import { useFilterFocusRecords } from '../../focus-records/useFilterFocusRecords';
 
 const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
-	const { focusRecordsGroupedByDate, allCompletedTasksGroupedByDate } = useStatsContext();
+	const { allCompletedTasksGroupedByDate } = useStatsContext();
+	const { filteredFocusRecords } = useFilterFocusRecords();
 
 	// Focus Medals
 	const [dailyFocusHoursMedals, setDailyFocusHoursMedals] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS);
@@ -35,7 +40,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 	);
 	const [yearlyCompletedTasksMedals, setYearlyCompletedTasksMedals] = useState(DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS);
 
-	const isLoadingFocusOrTasksData = !focusRecordsGroupedByDate || !allCompletedTasksGroupedByDate;
+	const isLoadingFocusOrTasksData = !filteredFocusRecords || !allCompletedTasksGroupedByDate;
 
 	useEffect(() => {
 		if (isLoadingFocusOrTasksData) {
@@ -80,9 +85,10 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 
 			setChosenMedal(newChosenMedal);
 		}
-	}, [focusRecordsGroupedByDate, pageContext]);
+	}, [filteredFocusRecords, allCompletedTasksGroupedByDate, pageContext]);
 
 	const updateFocusMedalsData = () => {
+		const focusRecordsGroupedByDate = getGroupedFocusRecordsByDate(filteredFocusRecords);
 		const newFocusDurationByDate = {};
 
 		// Get the focus duration for each day.
