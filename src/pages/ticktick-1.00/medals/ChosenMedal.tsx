@@ -1,9 +1,15 @@
+import { usePageContext } from 'vike-react/usePageContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import { parseDateRange } from '../../../utils/focus.utils';
+import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 	if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
 		return null;
 	}
+
+	const { updateQueryParams } = useSearchParamsContext();
 
 	const {
 		medalsPageSettings: { selectedMedalCardImage },
@@ -41,6 +47,30 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 
 	const imgSrc =
 		chosenMedal.requiredDuration !== undefined ? selectedMedalCardImage?.focus : selectedMedalCardImage?.tasks;
+
+	const pageContext = usePageContext();
+
+	const handleGoToSelectedDateRange = (dateRange) => {
+		const nonDateQueryParams = pageContext.urlParsed.search;
+		delete nonDateQueryParams['start-date'];
+		delete nonDateQueryParams['end-date'];
+
+		console.log(pageContext.urlParsed.search);
+
+		const parseDateRangeObj = parseDateRange(getIntervalText(), dateRange);
+
+		console.log(parseDateRangeObj);
+		const { startDate, endDate } = parseDateRangeObj;
+
+		updateQueryParams(
+			{
+				'start-date': getFormattedShortMonthDay(startDate),
+				'end-date': getFormattedShortMonthDay(endDate),
+				...nonDateQueryParams,
+			},
+			'/ticktick-1.00/focus-records'
+		);
+	};
 
 	return (
 		<div
@@ -81,10 +111,14 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 
 											return new Date(startDateB) - new Date(startDateA);
 										})
-										?.map((interval) => {
+										?.map((dateRange) => {
 											return (
-												<li key={interval} className="list-disc ml-5">
-													{interval}
+												<li
+													key={dateRange}
+													className="list-disc ml-5 cursor-pointer hover:underline"
+													onClick={() => handleGoToSelectedDateRange(dateRange)}
+												>
+													{dateRange}
 												</li>
 											);
 										})}

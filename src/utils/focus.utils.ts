@@ -297,3 +297,45 @@ export const getFilteredProjectsWithNames = (filteredProjects, projectsById) => 
 
 	return filteredProjectsWithNames;
 };
+
+export const parseDateRange = (rangeType, rangeValue) => {
+  const parseMonthYear = (str) => {
+    const [monthName, year] = str.split(" ");
+    const month = new Date(`${monthName} 1, ${year}`).getMonth();
+    return { month, year: parseInt(year) };
+  };
+
+  const parseWeek = (str) => {
+    const [startStr, endStr] = str.split(" - ");
+    return [new Date(startStr), new Date(endStr)];
+  };
+
+  switch (rangeType.toLowerCase()) {
+    case "day": {
+      const date = new Date(rangeValue);
+      return { startDate: date, endDate: date };
+    }
+
+    case "week": {
+      const [start, end] = parseWeek(rangeValue);
+      return { startDate: start, endDate: end };
+    }
+
+    case "month": {
+      const { month, year } = parseMonthYear(rangeValue);
+      const startDate = new Date(year, month, 1);
+      const endDate = new Date(year, month + 1, 0); // last day of the month
+      return { startDate, endDate };
+    }
+
+    case "year": {
+      const year = parseInt(rangeValue);
+      const startDate = new Date(year, 0, 1);
+      const endDate = new Date(year, 11, 31);
+      return { startDate, endDate };
+    }
+
+    default:
+      throw new Error("Unsupported range type: " + rangeType);
+  }
+}
