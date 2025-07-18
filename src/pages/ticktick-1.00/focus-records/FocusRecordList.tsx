@@ -3,8 +3,6 @@ import { getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord';
 import { useUserSettingsContext } from './useUserSettingsContext';
-import { useFilterFocusRecords } from './useFilterFocusRecords';
-import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const FocusRecordList = ({
 	filteredFocusRecords,
@@ -13,25 +11,10 @@ const FocusRecordList = ({
 	sortByOptions,
 	showFilterSidebar,
 	setShowFilterSidebar,
-	setFilteredFocusRecords,
-	defaultFocusRecords,
-	setSortByOptions,
-	DEFAULT_SORT_BY_OPTIONS,
 }) => {
-	const { searchParams } = useSearchParamsContext();
 	const {
 		focusRecordsPageSettings: { maxFocusRecordsPerPage },
 	} = useUserSettingsContext();
-
-	const taskIdFromUrl = searchParams.get('task-id');
-
-	useFilterFocusRecords({
-		taskIdToFilterBy: taskIdFromUrl,
-		setFilteredFocusRecords,
-		defaultFocusRecords,
-		setSortByOptions,
-		DEFAULT_SORT_BY_OPTIONS,
-	});
 
 	/**
 	 * @description Sorts the focus records by the selected sorting option and also only shows X amount of focus records per page based on the MAX number that is set.
@@ -76,8 +59,6 @@ const FocusRecordList = ({
 	};
 
 	const shownFocusRecords = getShownFocusRecords();
-
-	// console.log(filteredFocusRecords);
 
 	return (
 		<div>

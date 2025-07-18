@@ -1,23 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import FocusRecordList from './FocusRecordList';
-import {
-	useGetAllTasksQuery,
-	useGetPomoAndStopwatchFocusRecordsQuery,
-} from '../../../services/resources/ticktickOneApi';
+import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import Pagination from '../../../components/Pagination';
 import Navbar from '../../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
-import {
-	useGetBeFocusedAppFocusRecordsQuery,
-	useGetForestAppFocusRecordsQuery,
-	useGetSessionAppFocusRecordsQuery,
-	useGetTideAppFocusRecordsQuery,
-} from '../../../services/resources/oldFocusAppsApi';
 import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import { useFilterFocusRecords } from './useFilterFocusRecords';
 
 const Page = () => {
 	return <FocusRecordsPage />;
@@ -47,53 +39,14 @@ const FocusRecordsPage = () => {
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { ancestorTasksById } = fetchedTasks || {};
 
-	// RTK Query - TickTick 1.0 - Focus Records
-	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
-		useGetPomoAndStopwatchFocusRecordsQuery();
-	const { focusRecords } = fetchedFocusRecords || {};
-
-	// RTK Query - Session App - Focus Records
-	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionAppFocusRecordsQuery();
-	const { sessionFocusRecords } = fetchedSessionFocusRecords || {};
-
-	// RTK Query - BeFocused App - Focus Records
-	const { data: fetchedBeFocusedAppFocusRecords, isLoading: isLoadingGetBeFocusedAppFocusRecords } =
-		useGetBeFocusedAppFocusRecordsQuery();
-	const { beFocusedAppFocusRecords } = fetchedBeFocusedAppFocusRecords || {};
-
-	// RTK Query - Forest App - Focus Records
-	const { data: fetchedForestAppFocusRecords, isLoading: isLoadingGetForestAppFocusRecords } =
-		useGetForestAppFocusRecordsQuery();
-	const { forestAppFocusRecords } = fetchedForestAppFocusRecords || {};
-
-	// RTK Query - Tide App - Focus Records
-	const { data: fetchedTideFocusRecords, isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
-	const { tideAppFocusRecords } = fetchedTideFocusRecords || {};
-
 	const focusRecordListRef = useRef(null);
-
 	const [totalPages, setTotalPages] = useState(null);
 
-	const allFocusRecordsAreHere: any =
-		focusRecords && sessionFocusRecords && beFocusedAppFocusRecords && forestAppFocusRecords && tideAppFocusRecords;
-
-	const defaultFocusRecords = allFocusRecordsAreHere
-		? [
-				...focusRecords,
-				...sessionFocusRecords,
-				...beFocusedAppFocusRecords,
-				...forestAppFocusRecords,
-				...tideAppFocusRecords,
-			]
-		: [];
-
-	const [filteredFocusRecords, setFilteredFocusRecords] = useState(defaultFocusRecords);
-
 	// For Filter Sidebar and Filter Bar
-	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
-	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
+
+	const { filteredFocusRecords, isLoadingGetFocusRecords, sortByOptions, allFocusRecordsAreHere } =
+		useFilterFocusRecords();
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
@@ -171,18 +124,12 @@ const FocusRecordsPage = () => {
 								<FocusRecordList
 									{...{
 										filteredFocusRecords,
-										isLoadingGetFocusRecords:
-											isLoadingGetFocusRecords || isLoadingGetSessionFocusRecords,
 										sortBy,
 										currentPage: currentPageFromUrl,
 										sortByOptions,
 										showFilterSidebar,
 										setShowFilterSidebar,
 										focusRecordListRef,
-										setFilteredFocusRecords,
-										defaultFocusRecords,
-										setSortByOptions,
-										DEFAULT_SORT_BY_OPTIONS,
 									}}
 								/>
 							)}

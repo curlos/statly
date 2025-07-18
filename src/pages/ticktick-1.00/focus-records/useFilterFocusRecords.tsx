@@ -1,20 +1,84 @@
 import Fuse from 'fuse.js';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
-import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
+import {
+	useGetAllTasksQuery,
+	useGetPomoAndStopwatchFocusRecordsQuery,
+} from '../../../services/resources/ticktickOneApi';
 import { getFocusRecordProperty, getFocusRecordFocusApp } from '../../../utils/focus-apps/multiFocusApps.utils';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
 import { useUserSettingsContext } from './useUserSettingsContext';
+import {
+	useGetSessionAppFocusRecordsQuery,
+	useGetBeFocusedAppFocusRecordsQuery,
+	useGetForestAppFocusRecordsQuery,
+	useGetTideAppFocusRecordsQuery,
+} from '../../../services/resources/oldFocusAppsApi';
 
-export const useFilterFocusRecords = ({
-	taskIdToFilterBy,
+export const useFilterFocusRecords = () => {
+	// RTK Query - TickTick 1.0 - Focus Records
+	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
+		useGetPomoAndStopwatchFocusRecordsQuery();
+	const { focusRecords } = fetchedFocusRecords || {};
+
+	// RTK Query - Session App - Focus Records
+	const { data: fetchedSessionFocusRecords } = useGetSessionAppFocusRecordsQuery();
+	const { sessionFocusRecords } = fetchedSessionFocusRecords || {};
+
+	// RTK Query - BeFocused App - Focus Records
+	const { data: fetchedBeFocusedAppFocusRecords } = useGetBeFocusedAppFocusRecordsQuery();
+	const { beFocusedAppFocusRecords } = fetchedBeFocusedAppFocusRecords || {};
+
+	// RTK Query - Forest App - Focus Records
+	const { data: fetchedForestAppFocusRecords } = useGetForestAppFocusRecordsQuery();
+	const { forestAppFocusRecords } = fetchedForestAppFocusRecords || {};
+
+	// RTK Query - Tide App - Focus Records
+	const { data: fetchedTideFocusRecords } = useGetTideAppFocusRecordsQuery();
+	const { tideAppFocusRecords } = fetchedTideFocusRecords || {};
+
+	const allFocusRecordsAreHere: any =
+		focusRecords && sessionFocusRecords && beFocusedAppFocusRecords && forestAppFocusRecords && tideAppFocusRecords;
+
+	const defaultFocusRecords = allFocusRecordsAreHere
+		? [
+				...focusRecords,
+				...sessionFocusRecords,
+				...beFocusedAppFocusRecords,
+				...forestAppFocusRecords,
+				...tideAppFocusRecords,
+			]
+		: [];
+
+	const [filteredFocusRecords, setFilteredFocusRecords] = useState(defaultFocusRecords);
+
+	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
+	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
+
+	useHandleFilterFocusRecords({
+		setFilteredFocusRecords,
+		defaultFocusRecords,
+		setSortByOptions,
+		DEFAULT_SORT_BY_OPTIONS,
+	});
+
+	return {
+		filteredFocusRecords,
+		isLoadingGetFocusRecords,
+		sortByOptions,
+		allFocusRecordsAreHere,
+	};
+};
+
+const useHandleFilterFocusRecords = ({
 	setFilteredFocusRecords,
 	defaultFocusRecords,
 	setSortByOptions,
 	DEFAULT_SORT_BY_OPTIONS,
 }) => {
 	const { searchParams } = useSearchParamsContext();
+	const taskIdFromUrl = searchParams.get('task-id');
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
@@ -83,10 +147,12 @@ export const useFilterFocusRecords = ({
 	});
 
 	const filterBySearch = () => {
-		if (searchTextFromUrl.trim() === '') {
-			setSortByOptions(DEFAULT_SORT_BY_OPTIONS);
-		} else {
-			setSortByOptions(['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS]);
+		if (setSortByOptions) {
+			if (searchTextFromUrl.trim() === '') {
+				setSortByOptions(DEFAULT_SORT_BY_OPTIONS);
+			} else {
+				setSortByOptions(['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS]);
+			}
 		}
 
 		setFilteredFocusRecords(getFilteredFocusRecords());
@@ -97,11 +163,11 @@ export const useFilterFocusRecords = ({
 	}, [searchTextFromUrl]);
 
 	const focusRecordContainsTaskId = (focusRecord) => {
-		if (!taskIdToFilterBy) {
+		if (!taskIdFromUrl) {
 			return true;
 		}
 
-		const taskIdToFilterByStr = String(taskIdToFilterBy);
+		const taskIdToFilterByStr = String(taskIdFromUrl);
 
 		const focusApp = getFocusRecordFocusApp(focusRecord);
 
@@ -228,7 +294,7 @@ export const useFilterFocusRecords = ({
 		const newFilteredFocusRecords = getFilteredFocusRecords();
 		setFilteredFocusRecords(newFilteredFocusRecords);
 	}, [
-		taskIdToFilterBy,
+		taskIdFromUrl,
 		startDateFromUrl,
 		endDateFromUrl,
 		projectsFromUrl,
