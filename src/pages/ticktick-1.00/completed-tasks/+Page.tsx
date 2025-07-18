@@ -11,8 +11,6 @@ import { useUserSettingsContext } from '../focus-records/useUserSettingsContext'
 
 const Page = () => {
 	// For Filter Sidebar and Filter Bar
-	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
-	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -27,26 +25,9 @@ const Page = () => {
 	const projectsFromUrl = searchParams.get('projects');
 	const currentPageFromUrl = searchParams.get('page') || 1;
 
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { completedTasksGroupedByDate } = fetchedTasks || {};
-
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistTasks } = useGetTodoistAllTasksQuery();
-	const { todoistCompletedTasksGroupedByDate, todoistAllTasksById } = fetchedTodoistTasks || {};
-
-	const allCompletedTasksAreHere =
-		completedTasksGroupedByDate && todoistCompletedTasksGroupedByDate && todoistAllTasksById;
-
 	const [totalPages, setTotalPages] = useState(null);
 
-	const defaultDaysWithCompletedTasks = allCompletedTasksAreHere
-		? getCompletedTasksByDate({
-				...completedTasksGroupedByDate,
-				...todoistCompletedTasksGroupedByDate,
-			})
-		: [];
-	const [filteredDaysWithCompletedTasks, setFilteredDaysWithCompletedTasks] = useState(defaultDaysWithCompletedTasks);
+	const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
 
 	const getFilterBarHeaderContent = () => {
 		return (
@@ -83,13 +64,6 @@ const Page = () => {
 		const newTotalPages = Math.ceil(filteredDaysWithCompletedTasks.length / maxDaysPerPage);
 		setTotalPages(newTotalPages);
 	}, [allCompletedTasksAreHere, filteredDaysWithCompletedTasks, maxDaysPerPage]);
-
-	useFilterCompletedTasks({
-		setFilteredDaysWithCompletedTasks,
-		defaultDaysWithCompletedTasks,
-		setSortByOptions,
-		DEFAULT_SORT_BY_OPTIONS,
-	});
 
 	return (
 		<div className="max-w-screen min-h-screen bg-color-gray-700">
@@ -137,17 +111,6 @@ const Page = () => {
 			</div>
 		</div>
 	);
-};
-
-const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
-	return Object.keys(completedTasksGroupedByDate).map((dateStr) => {
-		const completedTasksForDay = completedTasksGroupedByDate[dateStr];
-
-		return {
-			dateStr,
-			completedTasksForDay,
-		};
-	});
 };
 
 export default Page;

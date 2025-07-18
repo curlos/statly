@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay, isDateBetween } from '../../../utils/date.utils';
 import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
@@ -7,7 +7,44 @@ import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.util
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 
-export const useFilterCompletedTasks = ({
+export const useFilterCompletedTasks = () => {
+	// RTK Query - TickTick 1.0 - Tasks
+	const { data: fetchedTasks } = useGetAllTasksQuery();
+	const { completedTasksGroupedByDate } = fetchedTasks || {};
+
+	// RTK Query - Todoist - Tasks
+	const { data: fetchedTodoistTasks } = useGetTodoistAllTasksQuery();
+	const { todoistCompletedTasksGroupedByDate, todoistAllTasksById } = fetchedTodoistTasks || {};
+
+	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
+	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
+
+	const allCompletedTasksAreHere =
+		completedTasksGroupedByDate && todoistCompletedTasksGroupedByDate && todoistAllTasksById;
+
+	const defaultDaysWithCompletedTasks = allCompletedTasksAreHere
+		? getCompletedTasksByDate({
+				...completedTasksGroupedByDate,
+				...todoistCompletedTasksGroupedByDate,
+			})
+		: [];
+	const [filteredDaysWithCompletedTasks, setFilteredDaysWithCompletedTasks] = useState(defaultDaysWithCompletedTasks);
+
+	useHandleFilterCompletedTasks({
+		setFilteredDaysWithCompletedTasks,
+		defaultDaysWithCompletedTasks,
+		setSortByOptions,
+		DEFAULT_SORT_BY_OPTIONS,
+	});
+
+	return {
+		filteredDaysWithCompletedTasks,
+		sortByOptions,
+		allCompletedTasksAreHere,
+	};
+};
+
+const useHandleFilterCompletedTasks = ({
 	setFilteredDaysWithCompletedTasks,
 	defaultDaysWithCompletedTasks,
 	setSortByOptions,
@@ -254,4 +291,15 @@ export const useFilterCompletedTasks = ({
 
 		return newFilteredDaysWithCompletedTasks;
 	};
+};
+
+const getCompletedTasksByDate = (completedTasksGroupedByDate) => {
+	return Object.keys(completedTasksGroupedByDate).map((dateStr) => {
+		const completedTasksForDay = completedTasksGroupedByDate[dateStr];
+
+		return {
+			dateStr,
+			completedTasksForDay,
+		};
+	});
 };
