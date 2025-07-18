@@ -470,7 +470,19 @@ export const getAllCompletedTasksDuringFocusRecord = ({
 		}
 	}
 
-	return [...completedTasksDuringFocusSession, ...todoistCompletedTasksDuringFocusSession];
+	const allCompletedTasksDuringFocusRecord = [...completedTasksDuringFocusSession, ...todoistCompletedTasksDuringFocusSession]
+
+	allCompletedTasksDuringFocusRecord.sort((taskA, taskB) => {
+		const taskACompletedTime = taskA.completedTime || taskA['completed_at'];
+		const taskACompletedTimeDate = new Date(taskACompletedTime);
+
+		const taskBCompletedTime = taskB.completedTime || taskB['completed_at'];
+		const taskBCompletedTimeDate = new Date(taskBCompletedTime);
+
+		return taskACompletedTimeDate - taskBCompletedTimeDate
+	})
+
+	return allCompletedTasksDuringFocusRecord;
 };
 
 export const getCompletedTasksBetweenTimes = (completedTasksInTimeDay, startTimeDate, endTimeDate) => {
