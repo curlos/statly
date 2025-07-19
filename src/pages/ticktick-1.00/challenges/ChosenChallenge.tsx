@@ -1,4 +1,8 @@
+import { usePageContext } from 'vike-react/usePageContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import { parseDateRange } from '../../../utils/focus.utils';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => {
 	if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
@@ -8,6 +12,8 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
 	} = useUserSettingsContext();
+
+	const { updateQueryParams } = useSearchParamsContext();
 
 	const { name, completedDate, startDate, deadline, fullImageSrc, rewardName } = chosenChallenge;
 
@@ -21,6 +27,28 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 	}
 
 	const isCustomChallenge = chosenChallenge.fullImageSrc !== undefined;
+
+	const pageContext = usePageContext();
+
+	const handleGoToSelectedDateRange = (dateRange) => {
+		const nonDateQueryParams = pageContext.urlParsed.search;
+		delete nonDateQueryParams['start-date'];
+		delete nonDateQueryParams['end-date'];
+
+		const isForFocusChallenges = pageContext.routeParams.type === 'focus';
+
+		const parseDateRangeObj = parseDateRange('day', dateRange);
+		const { endDate } = parseDateRangeObj;
+
+		updateQueryParams(
+			{
+				'start-date': getFormattedShortMonthDay(new Date('Nov 2, 2020')),
+				'end-date': getFormattedShortMonthDay(endDate),
+				...nonDateQueryParams,
+			},
+			`/ticktick-1.00/${isForFocusChallenges ? 'focus-records' : 'completed-tasks'}`
+		);
+	};
 
 	return (
 		<div
@@ -61,7 +89,12 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 						)}
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Completion Date: </span>
-							<span className="text-color-gray-50">{completedDate ? completedDate : 'N/A'}</span>
+							<span
+								className="text-color-gray-50 cursor-pointer hover:underline"
+								onClick={() => handleGoToSelectedDateRange(completedDate)}
+							>
+								{completedDate ? completedDate : 'N/A'}
+							</span>
 						</div>
 					</div>
 				</div>
