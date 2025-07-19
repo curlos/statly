@@ -148,6 +148,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 								isIncomplete: false,
 								isLoadingFocusOrTasksData,
 								setShowChosenChallengeModal,
+								completedChallenges,
 							}}
 						/>
 					);
@@ -164,6 +165,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 								isIncomplete: true,
 								isLoadingFocusOrTasksData,
 								setShowChosenChallengeModal,
+								completedChallenges,
 							}}
 						/>
 					);

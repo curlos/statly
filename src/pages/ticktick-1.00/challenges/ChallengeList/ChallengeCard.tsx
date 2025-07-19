@@ -10,6 +10,7 @@ const ChallengeCard = ({
 	isIncomplete = false,
 	isLoadingFocusOrTasksData,
 	setShowChosenChallengeModal,
+	completedChallenges,
 }) => {
 	const { name, smallImageSrc } = challenge;
 
@@ -29,6 +30,15 @@ const ChallengeCard = ({
 	}
 
 	const { width } = useWindowSize();
+
+	if (isChosenChallenge) {
+		if (!challenge.completedDate && completedChallenges) {
+			const newChosenChallenge = completedChallenges[0];
+			setChosenChallenge(newChosenChallenge);
+		} else {
+			setChosenChallenge(challenge);
+		}
+	}
 
 	return (
 		<div
