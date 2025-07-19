@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import useWindowSize from '../../../../hooks/useWindowSize';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
+import { useEffect } from 'react';
 
 const ChallengeCard = ({
 	challenge,
@@ -31,14 +32,16 @@ const ChallengeCard = ({
 
 	const { width } = useWindowSize();
 
-	if (isChosenChallenge) {
-		if (!challenge.completedDate && completedChallenges) {
-			const newChosenChallenge = completedChallenges[0];
-			setChosenChallenge(newChosenChallenge);
-		} else {
-			setChosenChallenge(challenge);
+	useEffect(() => {
+		if (isChosenChallenge) {
+			if (!challenge.completedDate && completedChallenges) {
+				const newChosenChallenge = completedChallenges[0];
+				setChosenChallenge(newChosenChallenge);
+			} else {
+				setChosenChallenge(challenge);
+			}
 		}
-	}
+	}, [isChosenChallenge, challenge, isChosenChallenge, completedChallenges]);
 
 	return (
 		<div
