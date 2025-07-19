@@ -47,7 +47,6 @@ const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, st
 				break;
 			case 'Year':
 				date.setFullYear(date.getFullYear() + (arrowType === 'left' ? -1 : 1));
-
 				setSelectedDates(getAllDaysInYearFromDate(date)); // Depending on your app's need, adjust this line
 				break;
 			default:

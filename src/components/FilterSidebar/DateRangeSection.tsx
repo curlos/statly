@@ -11,13 +11,16 @@ const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const intervalFromUrl = searchParams.get('date-interval') || 'All';
 	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
 
-	const [startDate, setStartDate] = useState(new Date(startDateFromUrl));
-	const [endDate, setEndDate] = useState(new Date(endDateFromUrl));
+	const [startDate] = useState(new Date(startDateFromUrl));
+	const [endDate] = useState(new Date(endDateFromUrl));
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
-	const [selectedInterval, setSelectedInterval] = useState(selectedIntervalOptions[0]);
-	const [selectedDates, setSelectedDates] = useState([new Date()]);
+	const [selectedInterval, setSelectedInterval] = useState(intervalFromUrl);
+	const [selectedDates, setSelectedDates] = useState([startDate]);
+
+	console.log(selectedDates);
 
 	const getDateRangePicker = () => {
 		return (
@@ -34,12 +37,18 @@ const DateRangeSection = () => {
 	};
 
 	useEffect(() => {
-		updateQueryParams({ 'start-date': getFormattedShortMonthDay(startDate), page: '' });
-	}, [startDate]);
+		const newStartDate = selectedInterval === 'All' ? '' : getFormattedShortMonthDay(selectedDates[0]);
+		const newEndDate =
+			selectedInterval === 'All' ? '' : getFormattedShortMonthDay(selectedDates[selectedDates.length - 1]);
+		const newInterval = selectedInterval === 'All' ? '' : selectedInterval;
 
-	useEffect(() => {
-		updateQueryParams({ 'end-date': getFormattedShortMonthDay(endDate), page: '' });
-	}, [endDate]);
+		updateQueryParams({
+			'start-date': newStartDate,
+			'end-date': newEndDate,
+			'date-interval': newInterval,
+			page: '',
+		});
+	}, [selectedDates, selectedInterval]);
 
 	return (
 		<div>
@@ -57,8 +66,7 @@ const DateRangeSection = () => {
 				openByDefault={true}
 				isChildDropdownOpen={isDropdownOpenForParent}
 			>
-				<div className="flex items-center gap-2 mb-3">
-					<div className="flex-1">{getDateRangePicker()}</div>
+				<div className="flex items-center gap-4 mb-3">
 					<div>
 						<GeneralSelectButtonAndDropdown
 							selected={selectedInterval}
@@ -68,16 +76,18 @@ const DateRangeSection = () => {
 								if (name?.toLowerCase() !== 'custom') {
 									return;
 								}
-
+								// TODO: Show FormPickDateRange potentially when "Custom" is clicked.
 								// setIsModalPickDateRangeOpen(true);
 							}}
 							isDropdownOpenForParent={isDropdownOpenForParent}
 							setIsDropdownOpenForParent={setIsDropdownOpenForParent}
 						/>
 					</div>
+
+					<div className="flex-1">{getDateRangePicker()}</div>
 				</div>
 
-				<FormPickDateRange
+				{/* <FormPickDateRange
 					{...{
 						startDate: new Date(startDateFromUrl),
 						setStartDate,
@@ -95,7 +105,7 @@ const DateRangeSection = () => {
 						setIsDropdownCalendarOpenForParent: setIsDropdownOpenForParent,
 						showTime: true,
 					}}
-				/>
+				/> */}
 			</Accordion>
 		</div>
 	);
