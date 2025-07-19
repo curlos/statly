@@ -130,17 +130,20 @@ const useHandleFilterCompletedTasks = ({
 		const { completedTasksForDay } = dayWithCompletedTasks;
 
 		const oneOfTheTasksHasASelectedProject = completedTasksForDay.find((task) => {
+			let matchesTickTickOrTodoistProject = false;
+
 			if (projectsFromUrl) {
 				const isTaskFromASelectedProject = projectIdsFromUrlObj[task.projectId];
-				return isTaskFromASelectedProject;
+				matchesTickTickOrTodoistProject = matchesTickTickOrTodoistProject || isTaskFromASelectedProject;
 			}
 
 			if (projectsTodoistFromUrl) {
 				const projectId = task['v2_project_id'] || task['project_id'];
-
 				const isTaskFromASelectedProject = projectTodoistIdsFromUrlObj[projectId];
-				return isTaskFromASelectedProject;
+				matchesTickTickOrTodoistProject = matchesTickTickOrTodoistProject || isTaskFromASelectedProject;
 			}
+
+			return matchesTickTickOrTodoistProject;
 		});
 
 		return oneOfTheTasksHasASelectedProject;
@@ -256,18 +259,23 @@ const useHandleFilterCompletedTasks = ({
 		if (projectsFromUrl || projectsTodoistFromUrl) {
 			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
+					let matchesTickTickOrTodoistProject = false;
+
 					// TickTick
 					if (projectsFromUrl) {
 						const taskIsFromASelectedProject = projectIdsFromUrlObj[task.projectId];
-						return taskIsFromASelectedProject;
+
+						matchesTickTickOrTodoistProject = matchesTickTickOrTodoistProject || taskIsFromASelectedProject;
 					}
 
 					// Todoist
 					if (projectsTodoistFromUrl) {
 						const projectId = task['v2_project_id'] || task['project_id'];
 						const taskIsFromASelectedProject = projectTodoistIdsFromUrlObj[projectId];
-						return taskIsFromASelectedProject;
+						matchesTickTickOrTodoistProject = matchesTickTickOrTodoistProject || taskIsFromASelectedProject;
 					}
+
+					return matchesTickTickOrTodoistProject;
 				});
 
 				return {
