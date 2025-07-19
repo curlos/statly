@@ -55,11 +55,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
 
-		console.log(pageContext.urlParsed.search);
-
 		const parseDateRangeObj = parseDateRange(getIntervalText(), dateRange);
-
-		console.log(parseDateRangeObj);
 		const { startDate, endDate } = parseDateRangeObj;
 
 		updateQueryParams(

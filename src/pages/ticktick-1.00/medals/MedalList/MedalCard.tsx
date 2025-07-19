@@ -2,20 +2,43 @@ import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import useWindowSize from '../../../../hooks/useWindowSize';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
+import { usePageContext } from 'vike-react/usePageContext';
 
-const MedalCard = ({ medal, chosenMedal, setChosenMedal, isLoadingFocusOrTasksData, setShowChosenMedalModal }) => {
-	const { name, intervalsEarned } = medal;
+const MedalCard = ({
+	medal,
+	chosenMedal,
+	setChosenMedal,
+	isLoadingFocusOrTasksData,
+	setShowChosenMedalModal,
+	allMedals,
+}) => {
+	const pageContext = usePageContext();
+	const { type, interval } = pageContext.routeParams;
 
 	const { chosenColorObj } = useThemeContext();
 	const {
 		medalsPageSettings: { selectedMedalCardImage },
 	} = useUserSettingsContext();
 
+	const { name, intervalsEarned } = medal;
+
 	const timesEarned = !intervalsEarned ? 0 : intervalsEarned.length;
 
 	const imgSrc = medal.requiredDuration !== undefined ? selectedMedalCardImage?.focus : selectedMedalCardImage?.tasks;
 
 	const { width } = useWindowSize();
+
+	if (medal.name === chosenMedal.name && medal.interval === chosenMedal.interval) {
+		if (medal.intervalsEarned == 0 && allMedals) {
+			const newChosenMedal = allMedals[type][interval].find((medal) => {
+				const timesEarned = !medal.intervalsEarned || medal.intervalsEarned.length;
+				return timesEarned > 0;
+			});
+			setChosenMedal(newChosenMedal);
+		} else {
+			setChosenMedal(medal);
+		}
+	}
 
 	return (
 		<div

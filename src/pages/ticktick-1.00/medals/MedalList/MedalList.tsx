@@ -42,6 +42,8 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 
 	const isLoadingFocusOrTasksData = !filteredFocusRecords || !allCompletedTasksGroupedByDate;
 
+	const [allMedals, setAllMedals] = useState([]);
+
 	useEffect(() => {
 		if (isLoadingFocusOrTasksData) {
 			return;
@@ -60,32 +62,36 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 			newYearlyCompletedTasksMedals,
 		} = updateCompletedTasksMedalsData();
 
+		const newAllMedals = {
+			focus: {
+				daily: newDailyFocusHoursMedals,
+				weekly: newWeeklyFocusHoursMedals,
+				monthly: newMonthlyFocusHoursMedals,
+				yearly: newYearlyFocusHoursMedals,
+			},
+			tasks: {
+				daily: newDailyCompletedTasksMedals,
+				weekly: newWeeklyCompletedTasksMedals,
+				monthly: newMonthlyCompletedTasksMedals,
+				yearly: newYearlyCompletedTasksMedals,
+			},
+		};
+
+		const { type, interval } = pageContext.routeParams;
+
+		const newChosenMedal = newAllMedals[type][interval].find((medal) => {
+			const timesEarned = !medal.intervalsEarned || medal.intervalsEarned.length;
+			return timesEarned > 0;
+		});
+
 		if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
-			const allMedals = {
-				focus: {
-					daily: newDailyFocusHoursMedals,
-					weekly: newWeeklyFocusHoursMedals,
-					monthly: newMonthlyFocusHoursMedals,
-					yearly: newYearlyFocusHoursMedals,
-				},
-				tasks: {
-					daily: newDailyCompletedTasksMedals,
-					weekly: newWeeklyCompletedTasksMedals,
-					monthly: newMonthlyCompletedTasksMedals,
-					yearly: newYearlyCompletedTasksMedals,
-				},
-			};
-
-			const { type, interval } = pageContext.routeParams;
-
-			const newChosenMedal = allMedals[type][interval].find((medal) => {
-				const timesEarned = !medal.intervalsEarned || medal.intervalsEarned.length;
-				return timesEarned > 0;
-			});
-
-			setChosenMedal(newChosenMedal);
+			if (newChosenMedal) {
+				setChosenMedal(newChosenMedal);
+			}
 		}
-	}, [filteredFocusRecords, allCompletedTasksGroupedByDate, pageContext]);
+
+		setAllMedals(newAllMedals);
+	}, [isLoadingFocusOrTasksData, filteredFocusRecords, allCompletedTasksGroupedByDate, pageContext]);
 
 	const updateFocusMedalsData = () => {
 		const focusRecordsGroupedByDate = getGroupedFocusRecordsByDate(filteredFocusRecords);
@@ -231,6 +237,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 								setChosenMedal,
 								isLoadingFocusOrTasksData,
 								setShowChosenMedalModal,
+								allMedals,
 							}}
 						/>
 					);
@@ -246,6 +253,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 								setChosenMedal,
 								isLoadingFocusOrTasksData,
 								setShowChosenMedalModal,
+								allMedals,
 							}}
 						/>
 					);

@@ -31,6 +31,10 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 		case 'completed-tasks-page':
 			allPossibleFilterStrings.push('to-do-list-apps', 'projects-todoist');
 			break;
+		case 'medals':
+		case 'challenges':
+			allPossibleFilterStrings.push('categories', 'focus-apps', 'to-do-list-apps', 'projects-todoist');
+			break;
 	}
 
 	const clearAllFilters = () => {

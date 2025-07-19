@@ -116,6 +116,18 @@ export const DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS = [
 		interval: 'weekly',
 		intervalsEarned: [],
 	},
+	{
+		name: 'Focus 5 Hours',
+		requiredDuration: 18000, // 5 hours * 3600 = 18000 seconds
+		interval: 'weekly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 1 Hour',
+		requiredDuration: 3600, // 1 hour * 3600 = 3600 seconds
+		interval: 'weekly',
+		intervalsEarned: [],
+	}
 ];
 
 export const DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS = [
@@ -221,6 +233,37 @@ export const DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS = [
 		interval: 'monthly',
 		intervalsEarned: [],
 	},
+	{
+		name: 'Focus 30 Hours',
+		requiredDuration: 108000, // 30 hours * 3600 = 108000 seconds
+		interval: 'monthly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 20 Hours',
+		requiredDuration: 72000, // 20 hours * 3600 = 72000 seconds
+		interval: 'monthly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 10 Hours',
+		requiredDuration: 36000, // 10 hours * 3600 = 36000 seconds
+		interval: 'monthly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 5 Hours',
+		requiredDuration: 18000, // 5 hours * 3600 = 18000 seconds
+		interval: 'monthly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 1 Hour',
+		requiredDuration: 3600, // 1 hour * 3600 = 3600 seconds
+		interval: 'monthly',
+		intervalsEarned: [],
+	}
+
 ];
 
 export const DEFAULT_YEARLY_FOCUS_HOURS_MEDALS = [
@@ -320,4 +363,59 @@ export const DEFAULT_YEARLY_FOCUS_HOURS_MEDALS = [
 		interval: 'yearly',
 		intervalsEarned: [],
 	},
+	{
+		name: 'Focus 400 Hours',
+		requiredDuration: 1440000, // 400 hours * 3600 = 1440000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 300 Hours',
+		requiredDuration: 1080000, // 300 hours * 3600 = 1080000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 200 Hours',
+		requiredDuration: 720000, // 200 hours * 3600 = 720000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 100 Hours',
+		requiredDuration: 360000, // 100 hours * 3600 = 360000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 50 Hours',
+		requiredDuration: 180000, // 50 hours * 3600 = 180000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 25 Hours',
+		requiredDuration: 90000, // 25 hours * 3600 = 90000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 10 Hours',
+		requiredDuration: 36000, // 10 hours * 3600 = 36000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 5 Hours',
+		requiredDuration: 18000, // 5 hours * 3600 = 18000 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Focus 1 Hour',
+		requiredDuration: 3600, // 1 hour * 3600 = 3600 seconds
+		interval: 'yearly',
+		intervalsEarned: [],
+	}
+
 ];
