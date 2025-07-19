@@ -24,7 +24,7 @@ const GeneralSelectButtonAndDropdown = ({
 			<div
 				ref={dropdownRef}
 				className={classNames(
-					'flex gap-[2px] items-center px-2 py-[2px] pl-3 border border-color-gray-100 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer',
+					'flex gap-[2px] items-center justify-between px-2 py-[2px] pl-3 border border-color-gray-100 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer',
 					`${hover.textColor} ${hover.borderColor}`
 				)}
 				onClick={() => {
@@ -42,7 +42,13 @@ const GeneralSelectButtonAndDropdown = ({
 			<DropdownGeneralSelect
 				toggleRef={dropdownRef}
 				isVisible={isDropdownVisible}
-				setIsVisible={setIsDropdownVisible}
+				setIsVisible={(value) => {
+					setIsDropdownVisible(value);
+
+					if (isDropdownOpenForParent !== undefined) {
+						setIsDropdownOpenForParent(value);
+					}
+				}}
 				selected={selected}
 				setSelected={setSelected}
 				selectedOptions={selectedOptions}

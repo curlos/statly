@@ -58,8 +58,8 @@ const DateRangeSection = () => {
 				isChildDropdownOpen={isDropdownOpenForParent}
 			>
 				<div className="flex items-center gap-2 mb-3">
-					<div className="flex-[2]">{getDateRangePicker()}</div>
-					<div className="flex-[1]">
+					<div className="flex-1">{getDateRangePicker()}</div>
+					<div>
 						<GeneralSelectButtonAndDropdown
 							selected={selectedInterval}
 							setSelected={setSelectedInterval}
