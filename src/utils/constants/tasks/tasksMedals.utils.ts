@@ -164,6 +164,19 @@ export const DEFAULT_WEEKLY_COMPLETED_TASKS_MEDALS = [
 		interval: 'weekly',
 		intervalsEarned: [],
 	},
+	{
+		name: 'Complete 5 Tasks',
+		requiredCompletedTasks: 5,
+		interval: 'weekly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Complete 1 Task',
+		requiredCompletedTasks: 1,
+		interval: 'weekly',
+		intervalsEarned: [],
+	}
+
 ];
 
 export const DEFAULT_MONTHLY_COMPLETED_TASKS_MEDALS = [
@@ -266,6 +279,12 @@ export const DEFAULT_MONTHLY_COMPLETED_TASKS_MEDALS = [
 	{
 		name: 'Complete 50 Tasks',
 		requiredCompletedTasks: 50,
+		interval: 'monthly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Complete 25 Tasks',
+		requiredCompletedTasks: 25,
 		interval: 'monthly',
 		intervalsEarned: [],
 	},
@@ -383,6 +402,12 @@ export const DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS = [
 	{
 		name: 'Complete 50 Tasks',
 		requiredCompletedTasks: 50,
+		interval: 'yearly',
+		intervalsEarned: [],
+	},
+	{
+		name: 'Complete 25 Tasks',
+		requiredCompletedTasks: 25,
 		interval: 'yearly',
 		intervalsEarned: [],
 	},

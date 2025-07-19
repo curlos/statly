@@ -20,11 +20,13 @@ import {
 	DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS,
 } from '../../../../utils/constants/tasks/tasksMedals.utils';
 import { useFilterFocusRecords } from '../../focus-records/useFilterFocusRecords';
+import { useFilterCompletedTasks } from '../../completed-tasks/useFilterCompletedTasks';
+import { groupTasksByDateStr } from '../../../../utils/focus-apps/tasks.utils';
 
 const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
-	const { allCompletedTasksGroupedByDate } = useStatsContext();
 	const { filteredFocusRecords } = useFilterFocusRecords();
+	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
 
 	// Focus Medals
 	const [dailyFocusHoursMedals, setDailyFocusHoursMedals] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS);
@@ -40,7 +42,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 	);
 	const [yearlyCompletedTasksMedals, setYearlyCompletedTasksMedals] = useState(DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS);
 
-	const isLoadingFocusOrTasksData = !filteredFocusRecords || !allCompletedTasksGroupedByDate;
+	const isLoadingFocusOrTasksData = !filteredFocusRecords || !filteredDaysWithCompletedTasks;
 
 	const [allMedals, setAllMedals] = useState([]);
 
@@ -91,7 +93,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 		}
 
 		setAllMedals(newAllMedals);
-	}, [isLoadingFocusOrTasksData, filteredFocusRecords, allCompletedTasksGroupedByDate, pageContext]);
+	}, [isLoadingFocusOrTasksData, filteredFocusRecords, filteredDaysWithCompletedTasks, pageContext]);
 
 	const updateFocusMedalsData = () => {
 		const focusRecordsGroupedByDate = getGroupedFocusRecordsByDate(filteredFocusRecords);
@@ -148,6 +150,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 	};
 
 	const updateCompletedTasksMedalsData = () => {
+		const filteredCompletedTasksByDay = groupTasksByDateStr(filteredDaysWithCompletedTasks);
 		const newCompletedTasksByDate = {};
 
 		const newDailyCompletedTasksMedals = JSON.parse(JSON.stringify(DEFAULT_DAILY_COMPLETED_TASKS_MEDALS));
@@ -156,7 +159,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 		const newYearlyCompletedTasksMedals = JSON.parse(JSON.stringify(DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS));
 
 		// Get the focus duration for each day.
-		Object.entries(allCompletedTasksGroupedByDate).forEach(([dateKey, completedTasks]) => {
+		Object.entries(filteredCompletedTasksByDay).forEach(([dateKey, completedTasks]) => {
 			newCompletedTasksByDate[dateKey] = completedTasks.length;
 		});
 

@@ -185,3 +185,12 @@ export const findMatchingTaskOrAncestor = (task, taskIdToMatch, ancestorTasksByI
 		}
 	}
 };
+
+export const groupTasksByDateStr = (data) => {
+	return data.reduce((acc, item) => {
+		if (item.dateStr && Array.isArray(item.completedTasksForDay)) {
+			acc[item.dateStr] = item.completedTasksForDay;
+		}
+		return acc;
+	}, {});
+}

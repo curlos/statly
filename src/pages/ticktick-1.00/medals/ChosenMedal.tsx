@@ -55,6 +55,8 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
 
+		const isForFocusMedals = pageContext.routeParams.type === 'focus';
+
 		const parseDateRangeObj = parseDateRange(getIntervalText(), dateRange);
 		const { startDate, endDate } = parseDateRangeObj;
 
@@ -64,7 +66,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 				'end-date': getFormattedShortMonthDay(endDate),
 				...nonDateQueryParams,
 			},
-			'/ticktick-1.00/focus-records'
+			`/ticktick-1.00/${isForFocusMedals ? 'focus-records' : 'completed-tasks'}`
 		);
 	};
 
