@@ -4,7 +4,14 @@ import DropdownGeneralSelect from './DropdownGeneralSelect';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 
-const GeneralSelectButtonAndDropdown = ({ selected, setSelected, selectedOptions, onClick }) => {
+const GeneralSelectButtonAndDropdown = ({
+	selected,
+	setSelected,
+	selectedOptions,
+	onClick,
+	isDropdownOpenForParent,
+	setIsDropdownOpenForParent,
+}) => {
 	const dropdownRef = useRef(null);
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -20,7 +27,13 @@ const GeneralSelectButtonAndDropdown = ({ selected, setSelected, selectedOptions
 					'flex gap-[2px] items-center px-2 py-[2px] pl-3 border border-color-gray-100 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer',
 					`${hover.textColor} ${hover.borderColor}`
 				)}
-				onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+				onClick={() => {
+					setIsDropdownVisible(!isDropdownVisible);
+
+					if (isDropdownOpenForParent !== undefined) {
+						setIsDropdownOpenForParent(!isDropdownOpenForParent);
+					}
+				}}
 			>
 				<div>{selected}</div>
 				<Icon name="keyboard_arrow_down" customClass="!text-[18px] mt-[2px]" />

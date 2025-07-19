@@ -1,15 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Accordion from '../Accordion/Accordion';
 import FormPickDateRange from '../FormPickDateRange';
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
+import GeneralSelectButtonAndDropdown from '../../pages/StatsPage/GeneralSelectButtonAndDropdown';
+import DateRangePicker from '../../pages/StatsPage/FocusSection/DateRangePicker';
 
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
-	const [isDropdownCalendarOpenForParent, setIsDropdownCalendarOpenForParent] = useState(false);
+	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
+
+	const [startDate, setStartDate] = useState(new Date(startDateFromUrl));
+	const [endDate, setEndDate] = useState(new Date(endDateFromUrl));
+	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
+	const [selectedInterval, setSelectedInterval] = useState(selectedIntervalOptions[0]);
+	const [selectedDates, setSelectedDates] = useState([new Date()]);
+
+	const getDateRangePicker = () => {
+		return (
+			selectedInterval !== 'All' && (
+				<DateRangePicker
+					selectedDates={selectedDates}
+					setSelectedDates={setSelectedDates}
+					selectedInterval={selectedInterval}
+					startDate={startDate}
+					endDate={endDate}
+				/>
+			)
+		);
+	};
+
+	useEffect(() => {
+		updateQueryParams({ 'start-date': getFormattedShortMonthDay(startDate), page: '' });
+	}, [startDate]);
+
+	useEffect(() => {
+		updateQueryParams({ 'end-date': getFormattedShortMonthDay(endDate), page: '' });
+	}, [endDate]);
 
 	return (
 		<div>
@@ -25,31 +55,44 @@ const DateRangeSection = () => {
 					</div>
 				}
 				openByDefault={true}
-				isChildDropdownOpen={isDropdownCalendarOpenForParent}
+				isChildDropdownOpen={isDropdownOpenForParent}
 			>
+				<div className="flex items-center gap-2 mb-3">
+					<div className="flex-[2]">{getDateRangePicker()}</div>
+					<div className="flex-[1]">
+						<GeneralSelectButtonAndDropdown
+							selected={selectedInterval}
+							setSelected={setSelectedInterval}
+							selectedOptions={selectedIntervalOptions}
+							onClick={(name) => {
+								if (name?.toLowerCase() !== 'custom') {
+									return;
+								}
+
+								// setIsModalPickDateRangeOpen(true);
+							}}
+							isDropdownOpenForParent={isDropdownOpenForParent}
+							setIsDropdownOpenForParent={setIsDropdownOpenForParent}
+						/>
+					</div>
+				</div>
+
 				<FormPickDateRange
 					{...{
 						startDate: new Date(startDateFromUrl),
-						setStartDate: (value) => {
-							updateQueryParams({ 'start-date': value, page: '' });
-						},
+						setStartDate,
 						endDate: new Date(endDateFromUrl),
-						setEndDate: (value) => {
-							updateQueryParams({ 'end-date': value, page: '' });
-						},
+						setEndDate,
 						confirmBeforeUpdating: false,
 						onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 							if (newStartDate) {
-								updateQueryParams({
-									'start-date': getFormattedShortMonthDay(newStartDate),
-									page: '',
-								});
+								setStartDate(newStartDate);
 							} else if (newEndDate) {
-								updateQueryParams({ 'end-date': getFormattedShortMonthDay(newEndDate), page: '' });
+								setEndDate(newEndDate);
 							}
 						},
-						isDropdownCalendarOpenForParent,
-						setIsDropdownCalendarOpenForParent,
+						isDropdownCalendarOpenForParent: isDropdownOpenForParent,
+						setIsDropdownCalendarOpenForParent: setIsDropdownOpenForParent,
 						showTime: true,
 					}}
 				/>
