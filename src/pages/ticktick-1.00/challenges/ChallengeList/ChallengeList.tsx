@@ -1,27 +1,36 @@
 import { usePageContext } from 'vike-react/usePageContext';
 import { DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES } from '../../../../utils/constants/focus/focusHoursChallenges.utils';
 import { useEffect, useState } from 'react';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
-import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
+import {
+	getFocusDurationFromArray,
+	getGroupedFocusRecordsByDate,
+} from '../../../../utils/focus-apps/focusRecords.utils';
 import ChallengeCard from './ChallengeCard';
 import { DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES } from '../../../../utils/constants/tasks/tasksChallenges.utils';
 import ModalAddChallenge from '../ModalAddChallenge';
+import { useFilterFocusRecords } from '../../focus-records/useFilterFocusRecords';
+import { useFilterCompletedTasks } from '../../completed-tasks/useFilterCompletedTasks';
+import { groupTasksByDateStr } from '../../../../utils/focus-apps/tasks.utils';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
 	const pageContext = usePageContext();
-	const { focusRecordsGroupedByDate, allCompletedTasksGroupedByDate } = useStatsContext();
+
+	const { filteredFocusRecords } = useFilterFocusRecords();
+	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
 
 	const [focusHoursChallenges, setFocusHoursChallenges] = useState(DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES);
 	const [completedTasksChallenges, setCompletedTasksChallenges] = useState(DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES);
 
 	const [showAddChallengeModal, setShowAddChallengeModal] = useState(false);
 
-	const isLoadingFocusOrTasksData = !focusRecordsGroupedByDate || !allCompletedTasksGroupedByDate;
+	const isLoadingFocusOrTasksData = !filteredFocusRecords || !filteredDaysWithCompletedTasks;
 
 	useEffect(() => {
 		if (isLoadingFocusOrTasksData) {
 			return;
 		}
+
+		const focusRecordsGroupedByDate = getGroupedFocusRecordsByDate(filteredFocusRecords);
 
 		const focusDurationByDate = {};
 
@@ -51,8 +60,10 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 		// Tasks
 		let totalCompletedTasks = 0;
 
+		const filteredCompletedTasksByDay = groupTasksByDateStr(filteredDaysWithCompletedTasks);
+
 		// Convert the object into an array of entries
-		const sortedEntries = Object.entries(allCompletedTasksGroupedByDate).sort(
+		const sortedEntries = Object.entries(filteredCompletedTasksByDay).sort(
 			(a, b) => new Date(a[0]) - new Date(b[0])
 		);
 
@@ -84,7 +95,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 
 			setChosenChallenge(newChosenChallenge);
 		}
-	}, [focusRecordsGroupedByDate, allCompletedTasksGroupedByDate]);
+	}, [filteredFocusRecords, filteredDaysWithCompletedTasks]);
 
 	const getChallengesToUse = () => {
 		const { type } = pageContext.routeParams;
