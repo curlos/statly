@@ -34,8 +34,6 @@ const DateRangeSection = () => {
 		});
 	}, [selectedDates, selectedInterval]);
 
-	console.log('Hell');
-
 	return (
 		<div>
 			<Accordion
@@ -71,7 +69,7 @@ const DateRangeSection = () => {
 					</div>
 
 					<div className="flex-1">
-						{selectedInterval !== 'All' && selectedInterval !== 'Custom' && (
+						<div className={selectedInterval === 'All' || selectedInterval === 'Custom' ? 'hidden' : ''}>
 							<DateRangePicker
 								selectedDates={selectedDates}
 								setSelectedDates={setSelectedDates}
@@ -79,26 +77,24 @@ const DateRangeSection = () => {
 								startDate={startDate}
 								endDate={endDate}
 							/>
-						)}
+						</div>
 					</div>
 				</div>
 
 				{selectedInterval === 'Custom' && (
 					<FormPickDateRange
 						{...{
-							startDate: new Date(startDateFromUrl),
+							startDate: startDate,
 							setStartDate,
-							endDate: new Date(endDateFromUrl),
+							endDate: endDate,
 							setEndDate,
 							confirmBeforeUpdating: false,
 							onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 								if (newStartDate) {
 									console.log('Updating start date...');
 									setStartDate(newStartDate);
-									setSelectedDates(getAllDaysInRange(newStartDate, endDate));
 								} else if (newEndDate) {
 									setEndDate(newEndDate);
-									setSelectedDates(getAllDaysInRange(startDate, newEndDate));
 								}
 							},
 							isDropdownCalendarOpenForParent: isDropdownOpenForParent,

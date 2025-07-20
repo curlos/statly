@@ -5,8 +5,6 @@ import OverviewSection from './OverviewSection/OverviewSection';
 import TaskSection from './TaskSection/TaskSection';
 import TopBar from './TopBar';
 import { usePageContext } from 'vike-react/usePageContext';
-import SidebarButtonAndModal from '../../components/SidebarModal/SidebarButtonAndModal';
-
 const StatsPage = () => {
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;
@@ -27,8 +25,6 @@ const StatsPage = () => {
 			</div>
 
 			{!focusRecords && <LoaderBottomRightBO3Medal />}
-
-			<SidebarButtonAndModal />
 		</div>
 	);
 };

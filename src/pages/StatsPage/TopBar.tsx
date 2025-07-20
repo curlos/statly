@@ -2,6 +2,9 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
+import Icon from '../../components/Icon';
+import SidebarModal from '../../components/SidebarModal/SidebarModal';
+import { useState } from 'react';
 
 const TopBar = () => {
 	const pageContext = usePageContext();
@@ -14,6 +17,8 @@ const TopBar = () => {
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
+
+	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 
 	return (
 		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
@@ -42,7 +47,15 @@ const TopBar = () => {
 				</div>
 			</div>
 
-			<div></div>
+			<div>
+				<Icon
+					name="menu"
+					customClass={'!text-[30px] text-white mt-[15px] mr-[15px] cursor-pointer'}
+					onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
+				/>
+
+				{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
+			</div>
 		</div>
 	);
 };

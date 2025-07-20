@@ -159,7 +159,7 @@ const AppliedFilterItemList = () => {
 		name: `Date Range`,
 		value: `${startDateFromUrl} - ${endDateFromUrl}`,
 		handleRemove: () => {
-			updateQueryParams({ 'start-date': '', 'end-date': '', page: '' });
+			updateQueryParams({ 'start-date': '', 'end-date': '', 'date-interval': '', page: '' });
 		},
 	};
 
