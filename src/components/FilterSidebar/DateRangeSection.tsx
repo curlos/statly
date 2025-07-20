@@ -9,18 +9,16 @@ import DateRangePicker from '../../pages/StatsPage/FocusSection/DateRangePicker'
 
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const startDateFromUrl = searchParams.get('start-date');
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
 	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
 
-	const [startDate] = useState(new Date(startDateFromUrl));
+	const [startDate] = useState(startDateFromUrl ? new Date(startDateFromUrl) : new Date());
 	const [endDate] = useState(new Date(endDateFromUrl));
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 	const [selectedInterval, setSelectedInterval] = useState(intervalFromUrl);
 	const [selectedDates, setSelectedDates] = useState([startDate]);
-
-	console.log(selectedDates);
 
 	const getDateRangePicker = () => {
 		return (
