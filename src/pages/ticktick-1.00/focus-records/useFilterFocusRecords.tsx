@@ -322,8 +322,7 @@ const useHandleFilterFocusRecords = ({
 		const newFilteredFocusRecords = searchedItemsFocusRecords.filter(
 			(focusRecord) =>
 				focusRecordContainsTaskId(focusRecord) &&
-				focusRecordContainsProjectId(focusRecord) &&
-				focusRecordContainsCategoryId(focusRecord) &&
+				(focusRecordContainsProjectId(focusRecord) || focusRecordContainsCategoryId(focusRecord)) &&
 				focusRecordInDateRange(focusRecord) &&
 				focusRecordIsNotABreak(focusRecord) &&
 				focusRecordContainsFocusApp(focusRecord)
