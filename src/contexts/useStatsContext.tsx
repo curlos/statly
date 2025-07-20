@@ -13,6 +13,7 @@ import {
 	useGetForestAppFocusRecordsQuery,
 	useGetTideAppFocusRecordsQuery,
 	useGetTodoistAllTasksQuery,
+	useGetTodoistAllProjectsQuery,
 } from '../services/resources/oldFocusAppsApi';
 import { useFilterFocusRecords } from '../pages/ticktick-1.00/focus-records/useFilterFocusRecords';
 import { useFilterCompletedTasks } from '../pages/ticktick-1.00/completed-tasks/useFilterCompletedTasks';
@@ -52,6 +53,10 @@ const useStats = () => {
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects, projectsById } = fetchedProjects || {};
+
+	// RTK Query - Todoist - Projects
+	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
+	const { todoistAllProjectsById } = fetchedTodoistAllProjects || {};
 
 	// RTK Query - TickTick 1.0 - Tags
 	const { data: fetchedTags } = useGetAllTagsQuery();
@@ -297,6 +302,7 @@ const useStats = () => {
 		filteredDaysWithCompletedTasks,
 		tasksById,
 		projectsById,
+		todoistAllProjectsById,
 		sessionCategoriesById,
 		tags,
 		tagsByRawName,

@@ -16,14 +16,13 @@ const noData = [
 	},
 ];
 
-const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
+const CompletionStatsCard = () => {
 	const {
-		allCompletedTasks,
 		completedTasksGroupedByDate,
-		getCompletedTasksFromSelectedDates,
 		projectsById,
-		tags,
+		todoistAllProjectsById,
 		tagsByRawName,
+		filteredDaysWithCompletedTasks,
 	} = useStatsContext() || {};
 
 	const selectedOptions = ['Project', 'Tag'];
@@ -34,26 +33,31 @@ const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
 	const [thereIsNoData, setThereIsNoData] = useState(true);
 
 	useEffect(() => {
-		if (!completedTasksGroupedByDate || !projectsById) {
+		if (
+			!completedTasksGroupedByDate ||
+			!filteredDaysWithCompletedTasks ||
+			!projectsById ||
+			!todoistAllProjectsById
+		) {
 			return;
 		}
 
-		// Get all the completed tasks from the selected interval of dates
-		const allCompletedTasksForInterval =
-			selectedTimeInterval === 'All' ? allCompletedTasks : getCompletedTasksFromSelectedDates(selectedDates);
-		const newNumOfCompletedTasks = allCompletedTasksForInterval.length;
+		const allFilteredCompletedTasks = filteredDaysWithCompletedTasks.flatMap((day) => day.completedTasksForDay);
+		const newNumOfCompletedTasks = allFilteredCompletedTasks.length;
 
 		let newProgressBarData = progressBarData;
 
 		switch (selected) {
 			case 'Project':
-				newProgressBarData = getDataByProjects(allCompletedTasksForInterval, newNumOfCompletedTasks);
+				newProgressBarData = getDataByProjects(allFilteredCompletedTasks, newNumOfCompletedTasks);
+				console.log(newProgressBarData);
+
 				break;
 			case 'Tag':
-				newProgressBarData = getDataByTags(allCompletedTasksForInterval, newNumOfCompletedTasks);
+				newProgressBarData = getDataByTags(allFilteredCompletedTasks, newNumOfCompletedTasks);
 				break;
 			default:
-				newProgressBarData = getDataByProjects(allCompletedTasksForInterval, newNumOfCompletedTasks);
+				newProgressBarData = getDataByProjects(allFilteredCompletedTasks, newNumOfCompletedTasks);
 		}
 
 		const thereIsNoData = !newProgressBarData || newProgressBarData.length === 0;
@@ -70,13 +74,20 @@ const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
 
 		const sortedProgressBarData = newProgressBarData.sort((a, b) => b.value - a.value);
 		setProgressBarData(sortedProgressBarData);
-	}, [completedTasksGroupedByDate, selectedDates, projectsById, tagsByRawName, selected, selectedTimeInterval]);
+	}, [
+		completedTasksGroupedByDate,
+		projectsById,
+		todoistAllProjectsById,
+		tagsByRawName,
+		selected,
+		filteredDaysWithCompletedTasks,
+	]);
 
-	const getDataByProjects = (allCompletedTasksForInterval, newNumOfCompletedTasks) => {
+	const getDataByProjects = (allFilteredCompletedTasks, newNumOfCompletedTasks) => {
 		const completedTasksGroupedByProject = {};
 
-		allCompletedTasksForInterval.forEach((task) => {
-			const { projectId } = task;
+		allFilteredCompletedTasks.forEach((task) => {
+			const projectId = task['projectId'] || task['v2_project_id'] || task['project_id'];
 
 			if (!completedTasksGroupedByProject[projectId]) {
 				completedTasksGroupedByProject[projectId] = [];
@@ -94,11 +105,22 @@ const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
 
 			let name = 'Inbox';
 			let color = 'green';
+			let id = name;
 
 			if (!isFromInboxProject) {
-				const project = projectsById[projectId];
-				name = project.name;
+				const project = projectsById[projectId] || todoistAllProjectsById[projectId];
+
+				if (projectsById[projectId]) {
+					name = project.name;
+				} else {
+					name = `${project.name} (Todoist)`;
+					id = name;
+				}
+
 				color = project.color;
+				id = project.id;
+			} else {
+				id = projectId;
 			}
 
 			return {
@@ -106,15 +128,16 @@ const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
 				color,
 				value: numOfCompletedTasks,
 				percentage,
+				id,
 			};
 		});
 	};
 
-	const getDataByTags = (allCompletedTasksForInterval, newNumOfCompletedTasks) => {
+	const getDataByTags = (allFilteredCompletedTasks, newNumOfCompletedTasks) => {
 		const completedTasksGroupedByTags = {};
 		const UNCLASSIFIED_KEY = 'UNCLASSIFIED';
 
-		allCompletedTasksForInterval.forEach((task) => {
+		allFilteredCompletedTasks.forEach((task) => {
 			const { tags } = task;
 
 			if (tags && tags.length > 0) {
@@ -144,11 +167,13 @@ const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
 
 			let name = 'Unclassified';
 			let color = 'black';
+			let id = name;
 
 			if (!isUnclassifiedTag) {
 				const tag = tagsByRawName[tagName];
 				name = tag.name;
 				color = tag.color;
+				id = tag.id;
 			}
 
 			return {
@@ -156,6 +181,7 @@ const CompletionStatsCard = ({ selectedTimeInterval, selectedDates }) => {
 				color,
 				value: numOfCompletedTasks,
 				percentage,
+				id,
 			};
 		});
 	};
@@ -259,9 +285,9 @@ const SmallLabelList = ({ progressBarData }) => {
 	return (
 		<div>
 			<div className="space-y-2 w-full">
-				{progressBarData.slice(0, 5).map((data) => (
-					<SmallLabel key={data.name} data={data} />
-				))}
+				{progressBarData.slice(0, 5).map((data) => {
+					return <SmallLabel key={data.id} data={data} />;
+				})}
 			</div>
 
 			{progressBarData?.length > 5 && (

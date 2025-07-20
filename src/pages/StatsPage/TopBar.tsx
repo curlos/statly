@@ -22,6 +22,9 @@ const TopBar = () => {
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
+	const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : '';
+	const queryParamsStr = `?${new URLSearchParams(queryParamsObj).toString()}`;
+
 	return (
 		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
 			<h1 className="text-[24px] font-medium">Statistics</h1>
@@ -29,21 +32,21 @@ const TopBar = () => {
 			<div className="flex justify-center gap-1 sm:mr-[110px]">
 				<div
 					className={location.pathname.includes('overview') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={() => navigate('/stats/overview')}
+					onClick={() => navigate('/stats/overview' + queryParamsStr)}
 				>
 					Overview
 				</div>
 
 				<div
 					className={location.pathname.includes('task') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={() => navigate('/stats/task')}
+					onClick={() => navigate('/stats/task' + queryParamsStr)}
 				>
 					Task
 				</div>
 
 				<div
 					className={location.pathname.includes('focus') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={() => navigate('/stats/focus')}
+					onClick={() => navigate('/stats/focus' + queryParamsStr)}
 				>
 					Focus
 				</div>

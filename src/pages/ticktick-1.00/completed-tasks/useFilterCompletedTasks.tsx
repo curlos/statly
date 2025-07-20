@@ -199,8 +199,8 @@ const useHandleFilterCompletedTasks = ({
 	};
 
 	useEffect(() => {
-		const newFilteredFocusRecords = getFilteredCompletedTasksByDay();
-		setFilteredDaysWithCompletedTasks(newFilteredFocusRecords);
+		const newFilteredDaysWithCompletedTasks = getFilteredCompletedTasksByDay();
+		setFilteredDaysWithCompletedTasks(newFilteredDaysWithCompletedTasks);
 	}, [
 		startDateFromUrl,
 		endDateFromUrl,
