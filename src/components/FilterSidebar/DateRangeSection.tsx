@@ -3,7 +3,7 @@ import Accordion from '../Accordion/Accordion';
 import FormPickDateRange from '../FormPickDateRange';
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
-import { getFormattedShortMonthDay } from '../../utils/date.utils';
+import { getAllDaysInRange, getFormattedShortMonthDay } from '../../utils/date.utils';
 import GeneralSelectButtonAndDropdown from '../../pages/StatsPage/GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../../pages/StatsPage/FocusSection/DateRangePicker';
 
@@ -14,25 +14,11 @@ const DateRangeSection = () => {
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
 	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
 
-	const [startDate] = useState(startDateFromUrl ? new Date(startDateFromUrl) : new Date());
-	const [endDate] = useState(new Date(endDateFromUrl));
+	const [startDate, setStartDate] = useState(startDateFromUrl ? new Date(startDateFromUrl) : new Date());
+	const [endDate, setEndDate] = useState(new Date(endDateFromUrl));
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 	const [selectedInterval, setSelectedInterval] = useState(intervalFromUrl);
 	const [selectedDates, setSelectedDates] = useState([startDate]);
-
-	const getDateRangePicker = () => {
-		return (
-			selectedInterval !== 'All' && (
-				<DateRangePicker
-					selectedDates={selectedDates}
-					setSelectedDates={setSelectedDates}
-					selectedInterval={selectedInterval}
-					startDate={startDate}
-					endDate={endDate}
-				/>
-			)
-		);
-	};
 
 	useEffect(() => {
 		const newStartDate = selectedInterval === 'All' ? '' : getFormattedShortMonthDay(selectedDates[0]);
@@ -47,6 +33,8 @@ const DateRangeSection = () => {
 			page: '',
 		});
 	}, [selectedDates, selectedInterval]);
+
+	console.log('Hell');
 
 	return (
 		<div>
@@ -71,9 +59,9 @@ const DateRangeSection = () => {
 							setSelected={setSelectedInterval}
 							selectedOptions={selectedIntervalOptions}
 							onClick={(name) => {
-								if (name?.toLowerCase() !== 'custom') {
-									return;
-								}
+								// if (name?.toLowerCase() !== 'custom') {
+								// 	return;
+								// }
 								// TODO: Show FormPickDateRange potentially when "Custom" is clicked.
 								// setIsModalPickDateRangeOpen(true);
 							}}
@@ -82,28 +70,43 @@ const DateRangeSection = () => {
 						/>
 					</div>
 
-					<div className="flex-1">{getDateRangePicker()}</div>
+					<div className="flex-1">
+						{selectedInterval !== 'All' && selectedInterval !== 'Custom' && (
+							<DateRangePicker
+								selectedDates={selectedDates}
+								setSelectedDates={setSelectedDates}
+								selectedInterval={selectedInterval}
+								startDate={startDate}
+								endDate={endDate}
+							/>
+						)}
+					</div>
 				</div>
 
-				{/* <FormPickDateRange
-					{...{
-						startDate: new Date(startDateFromUrl),
-						setStartDate,
-						endDate: new Date(endDateFromUrl),
-						setEndDate,
-						confirmBeforeUpdating: false,
-						onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
-							if (newStartDate) {
-								setStartDate(newStartDate);
-							} else if (newEndDate) {
-								setEndDate(newEndDate);
-							}
-						},
-						isDropdownCalendarOpenForParent: isDropdownOpenForParent,
-						setIsDropdownCalendarOpenForParent: setIsDropdownOpenForParent,
-						showTime: true,
-					}}
-				/> */}
+				{selectedInterval === 'Custom' && (
+					<FormPickDateRange
+						{...{
+							startDate: new Date(startDateFromUrl),
+							setStartDate,
+							endDate: new Date(endDateFromUrl),
+							setEndDate,
+							confirmBeforeUpdating: false,
+							onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
+								if (newStartDate) {
+									console.log('Updating start date...');
+									setStartDate(newStartDate);
+									setSelectedDates(getAllDaysInRange(newStartDate, endDate));
+								} else if (newEndDate) {
+									setEndDate(newEndDate);
+									setSelectedDates(getAllDaysInRange(startDate, newEndDate));
+								}
+							},
+							isDropdownCalendarOpenForParent: isDropdownOpenForParent,
+							setIsDropdownCalendarOpenForParent: setIsDropdownOpenForParent,
+							showTime: true,
+						}}
+					/>
+				)}
 			</Accordion>
 		</div>
 	);
