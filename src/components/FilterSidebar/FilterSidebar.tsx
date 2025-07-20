@@ -22,7 +22,17 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 
 	const { searchParams, updateQueryParams } = useSearchParamsCustom();
 
-	const allPossibleFilterStrings = ['task-id', 'sort-by', 'search', 'start-date', 'end-date', 'projects'];
+	const allPossibleFilterStrings = [
+		'task-id',
+		'sort-by',
+		'search',
+		'start-date',
+		'end-date',
+		'projects',
+		'projects-todoist',
+		'categories',
+		'date-interval',
+	];
 
 	switch (page) {
 		case 'focus-records-page':

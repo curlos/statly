@@ -188,7 +188,7 @@ const DetailsCard = () => {
 							dataKey="percentage"
 						>
 							{progressBarData.map((entry, index) => (
-								<Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+								<Cell key={entry.id ? `${entry.id}-index` : index} fill={entry.color} stroke="none" />
 							))}
 
 							<Label

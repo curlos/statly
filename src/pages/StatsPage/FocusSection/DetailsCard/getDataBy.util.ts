@@ -196,20 +196,22 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 	});
 
 	// Go through all the "taskId" keys and get the name, color, value, and percentage of that taskId.
-	const dataByTasks = Object.keys(focusRecordsGroupedByTask).map((taskId) => {
+	const dataByTasks = Object.keys(focusRecordsGroupedByTask).map((taskId, i) => {
 		const focusRecordsArr = focusRecordsGroupedByTask[taskId];
 		const focusDurationForProject = getFocusDurationFromArray({ focusRecords: focusRecordsArr, startDate });
 
 		const percentage = Number(((focusDurationForProject / focusDurationForInterval) * 100).toFixed(2));
 
-		let name = 'No Task';
+		let name = taskId;
 		const color = getRandomColor();
+		let id = `${taskId}-${i}`
 
 		if (taskId !== 'No Task') {
 			const task = tasksById[taskId];
 
 			if (task) {
 				name = task.title;
+				id = `${taskId}-${i}`
 			}
 		}
 
@@ -218,6 +220,7 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 			color,
 			value: getFormattedDuration(focusDurationForProject, false),
 			percentage,
+			id
 		};
 	});
 
