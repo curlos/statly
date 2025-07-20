@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Icon from '../../components/Icon';
 import SidebarModal from '../../components/SidebarModal/SidebarModal';
 import { useState } from 'react';
+import StatsFilterModal from './StatsFilterModal';
 
 const TopBar = () => {
 	const pageContext = usePageContext();
@@ -19,6 +20,7 @@ const TopBar = () => {
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
+	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
 	return (
 		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
@@ -49,13 +51,27 @@ const TopBar = () => {
 
 			<div>
 				<Icon
+					name="page_info"
+					customClass={'!text-[30px] text-color-gray-100 cursor-pointer mr-[15px]'}
+					onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
+				/>
+				<Icon
 					name="menu"
 					customClass={'!text-[30px] text-white mt-[15px] mr-[15px] cursor-pointer'}
 					onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
 				/>
-
-				{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
 			</div>
+
+			{isSettingsSidebarModalOpen && (
+				<StatsFilterModal
+					{...{
+						isSidebarModalOpen: isSettingsSidebarModalOpen,
+						setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
+						page: 'stats',
+					}}
+				/>
+			)}
+			{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
 		</div>
 	);
 };

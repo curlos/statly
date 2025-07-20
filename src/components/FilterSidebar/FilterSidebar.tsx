@@ -55,6 +55,8 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 
 	const isAtLeastOneFilterApplied = atLeastOneFilterApplied();
 
+	const isFocusRecordsOrCompletedTasksPage = page === 'focus-records-page' || page === 'completed-tasks-page';
+
 	return (
 		<motion.div
 			initial="hidden"
@@ -64,7 +66,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			className={classNames(
 				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar',
 				isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : '',
-				page !== 'medals' && page !== 'challenges' ? 'p-4' : ''
+				isFocusRecordsOrCompletedTasksPage ? 'p-4' : ''
 			)}
 			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 		>
@@ -100,14 +102,14 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 				</>
 			)}
 
-			{page !== 'medals' && page != 'challenges' && (
+			{isFocusRecordsOrCompletedTasksPage && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<SearchSection />
 				</>
 			)}
 
-			{page !== 'medals' && page != 'challenges' && (
+			{isFocusRecordsOrCompletedTasksPage && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<SortBySection {...{ sortByOptions }} />
