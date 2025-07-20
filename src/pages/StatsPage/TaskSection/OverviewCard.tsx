@@ -8,28 +8,43 @@ import {
 } from '../../../utils/date.utils';
 import classNames from 'classnames';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
-const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
-	const { allCompletedTasks, completedTasksGroupedByDate, getCompletedTasksFromSelectedDates } =
-		useStatsContext() || {};
+const OverviewCard = () => {
+	const {
+		allCompletedTasks,
+		completedTasksGroupedByDate,
+		getCompletedTasksFromSelectedDates,
+		filteredDaysWithCompletedTasks,
+	} = useStatsContext() || {};
 	const [numOfCompletedTasksForInterval, setNumOfCompletedTasksForInterval] = useState(0);
 	const [diffOfCompletedTasksFromPrevInterval, setDiffOfCompletedTasksFromPrevInterval] = useState({
 		numDiff: 0,
 		lessThanPrev: false,
 	});
 
+	const { searchParams } = useSearchParamsContext();
+
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || '';
+	const intervalFromUrl = searchParams.get('date-interval') || 'All';
+
+	console.log(startDateFromUrl);
+
 	useEffect(() => {
-		if (!completedTasksGroupedByDate) {
+		if (!completedTasksGroupedByDate || !filteredDaysWithCompletedTasks) {
 			return;
 		}
 
-		if (selectedTimeInterval === 'All') {
+		if (intervalFromUrl === 'All') {
 			setNumOfCompletedTasksForInterval(allCompletedTasks.length);
 		} else {
 			const prevIntervalDates = getPrevIntervalDates();
-			const currIntervalDates = selectedDates;
 			const prevIntervalCompletedTasks = getCompletedTasksFromSelectedDates(prevIntervalDates).length;
-			const currIntervalCompletedTasks = getCompletedTasksFromSelectedDates(currIntervalDates).length;
+			const currIntervalCompletedTasks = filteredDaysWithCompletedTasks.reduce(
+				(sum, day) => sum + day.completedTasksForDay.length,
+				0
+			);
 
 			setNumOfCompletedTasksForInterval(currIntervalCompletedTasks);
 			setDiffOfCompletedTasksFromPrevInterval({
@@ -37,12 +52,18 @@ const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 				lessThanPrev: currIntervalCompletedTasks < prevIntervalCompletedTasks,
 			});
 		}
-	}, [completedTasksGroupedByDate, selectedDates, selectedTimeInterval]);
+	}, [
+		completedTasksGroupedByDate,
+		startDateFromUrl,
+		endDateFromUrl,
+		intervalFromUrl,
+		filteredDaysWithCompletedTasks,
+	]);
 
 	const getPrevIntervalDates = () => {
-		const date = new Date(selectedDates[0]);
+		const date = new Date(startDateFromUrl);
 
-		switch (selectedTimeInterval) {
+		switch (intervalFromUrl) {
 			case 'Day':
 				date.setDate(date.getDate() - 1);
 				return [date];
@@ -61,7 +82,7 @@ const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 	};
 
 	const getPrevIntervalName = () => {
-		switch (selectedTimeInterval) {
+		switch (intervalFromUrl) {
 			case 'Day':
 				return 'yesterday';
 			case 'Week':
@@ -89,7 +110,7 @@ const OverviewCard = ({ selectedTimeInterval, selectedDates }) => {
 						<div className="text-color-gray-100 font-medium">
 							{numOfCompletedTasksForInterval > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>
-						{selectedTimeInterval !== 'All' && selectedTimeInterval !== 'Custom' && (
+						{intervalFromUrl !== 'All' && intervalFromUrl !== 'Custom' && (
 							<div className="text-color-gray-100 flex items-center gap-1">
 								<div>
 									{diffOfCompletedTasksFromPrevInterval.numDiff} from {getPrevIntervalName()}

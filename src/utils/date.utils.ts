@@ -840,7 +840,7 @@ export const fillInHourBlocksWithSeconds = (focusRecords, newDailyHourBlocks) =>
 			}
 		} else {
 			// TODO: Handle focus records without tasks?
-			console.log('TODO:');
+			// console.log('TODO:');
 		}
 	}
 };

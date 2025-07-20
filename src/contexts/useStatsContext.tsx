@@ -14,6 +14,9 @@ import {
 	useGetTideAppFocusRecordsQuery,
 	useGetTodoistAllTasksQuery,
 } from '../services/resources/oldFocusAppsApi';
+import { useFilterFocusRecords } from '../pages/ticktick-1.00/focus-records/useFilterFocusRecords';
+import { useFilterCompletedTasks } from '../pages/ticktick-1.00/completed-tasks/useFilterCompletedTasks';
+import { groupTasksByDateStr } from '../utils/focus-apps/tasks.utils';
 
 const StatsContext = createContext();
 
@@ -28,19 +31,23 @@ export const StatsProvider = ({ children }) => {
 
 const useStats = () => {
 	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks, isLoading: isLoadingGetTasks, error: errorGetTasks } = useGetAllTasksQuery();
+	const { data: fetchedTasks, isLoading: isLoadingGetTasks } = useGetAllTasksQuery();
 	const {
 		tasksById,
 		allTasksAndItems,
 		totalCompletedTasks,
 		allCompletedTasks,
-		completedTasksGroupedByDate,
-		completedTasksGroupedByProject,
+		completedTasksGroupedByDate: tickTickCompletedTasksGroupedByDate,
 	} = fetchedTasks || {};
 
 	// RTK Query - Todoist - Tasks
 	const { data: fetchedTodoistTasks } = useGetTodoistAllTasksQuery();
 	const { todoistCompletedTasksGroupedByDate } = fetchedTodoistTasks || {};
+
+	const allCompletedTasksGroupedByDate = {
+		...tickTickCompletedTasksGroupedByDate,
+		...todoistCompletedTasksGroupedByDate,
+	};
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
@@ -52,28 +59,21 @@ const useStats = () => {
 
 	// FOCUS RECORDS FROM ALL APPS
 	// RTK Query - TickTick 1.0 - Focus Records
-	const { data: fetchedFocusRecords, isLoading: isLoadingGetFocusRecords } =
-		useGetPomoAndStopwatchFocusRecordsQuery();
-	const { focusRecords } = fetchedFocusRecords || {};
+	const { isLoading: isLoadingGetFocusRecords } = useGetPomoAndStopwatchFocusRecordsQuery();
 
 	// RTK Query - Session App - Focus Records
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
 		useGetSessionAppFocusRecordsQuery();
-	const { sessionFocusRecords, sessionCategoriesById } = fetchedSessionFocusRecords || {};
+	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
 
 	// RTK Query - BeFocused App - Focus Records
-	const { data: fetchedBeFocusedAppFocusRecords, isLoading: isLoadingGetBeFocusedAppFocusRecords } =
-		useGetBeFocusedAppFocusRecordsQuery();
-	const { beFocusedAppFocusRecords } = fetchedBeFocusedAppFocusRecords || {};
+	const { isLoading: isLoadingGetBeFocusedAppFocusRecords } = useGetBeFocusedAppFocusRecordsQuery();
 
 	// RTK Query - Forest App - Focus Records
-	const { data: fetchedForestAppFocusRecords, isLoading: isLoadingGetForestAppFocusRecords } =
-		useGetForestAppFocusRecordsQuery();
-	const { forestAppFocusRecords } = fetchedForestAppFocusRecords || {};
+	const { isLoading: isLoadingGetForestAppFocusRecords } = useGetForestAppFocusRecordsQuery();
 
 	// RTK Query - Tide App - Focus Records
-	const { data: fetchedTideFocusRecords, isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
-	const { tideAppFocusRecords } = fetchedTideFocusRecords || {};
+	const { isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
 
 	const accountCreatedDate = new Date('November 3, 2020');
 	const timeSinceAccountCreated = getTimeSince(accountCreatedDate);
@@ -81,9 +81,12 @@ const useStats = () => {
 
 	const [focusRecordsGroupedByDate, setFocusRecordsGroupedByDate] = useState(null);
 	const [focusRecordsFromToday, setFocusRecordsFromToday] = useState(null);
-	const [completedTasksForToday, setCompletedTasksForToday] = useState(null);
 	const [totalFocusDuration, setTotalFocusDuration] = useState(0);
 	const [focusDurationForToday, setFocusDurationForToday] = useState(0);
+
+	const [completedTasksGroupedByDate, setCompletedTasksGroupedByDate] = useState(null);
+	const [completedTasksForToday, setCompletedTasksForToday] = useState(null);
+
 	const [statsForLastSevenDays, setStatsForLastSevenDays] = useState(null);
 	const [statsForLastSevenWeeks, setStatsForLastSevenWeeks] = useState(null);
 	const [statsForLastSevenMonths, setStatsForLastSevenMonths] = useState(null);
@@ -100,24 +103,25 @@ const useStats = () => {
 		isLoadingGetTideFocusRecords ||
 		isLoadingGetProjects;
 
-	const allFocusRecords = isLoading
-		? []
-		: [
-				...focusRecords,
-				...sessionFocusRecords,
-				...beFocusedAppFocusRecords,
-				...forestAppFocusRecords,
-				...tideAppFocusRecords,
-			];
+	const { filteredFocusRecords } = useFilterFocusRecords();
+	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
 
 	useEffect(() => {
 		if (isLoading) {
 			return;
 		}
 
-		setFocusRecordsGroupedByDate(getGroupedFocusRecordsByDate(allFocusRecords));
-		setTotalFocusDuration(getFocusDurationFromArray({ focusRecords: allFocusRecords }));
-	}, [isLoading]);
+		setFocusRecordsGroupedByDate(getGroupedFocusRecordsByDate(filteredFocusRecords));
+		setTotalFocusDuration(getFocusDurationFromArray({ focusRecords: filteredFocusRecords }));
+	}, [isLoading, filteredFocusRecords]);
+
+	useEffect(() => {
+		if (isLoading || !filteredDaysWithCompletedTasks) {
+			return;
+		}
+
+		setCompletedTasksGroupedByDate(groupTasksByDateStr(filteredDaysWithCompletedTasks));
+	}, [filteredDaysWithCompletedTasks]);
 
 	useEffect(() => {
 		if (!focusRecordsGroupedByDate) {
@@ -250,7 +254,7 @@ const useStats = () => {
 
 		for (let date of datesArr) {
 			const dateKey = getFormattedLongDay(date);
-			const completedTasksForDateArr = completedTasksGroupedByDate[dateKey] || [];
+			const completedTasksForDateArr = allCompletedTasksGroupedByDate[dateKey] || [];
 			completedTasks.push(...completedTasksForDateArr);
 		}
 
@@ -275,7 +279,7 @@ const useStats = () => {
 			numOfCompletedTasks: totalCompletedTasks || 0,
 			numOfProjects: projects?.length || 0,
 			numOfDaysSinceAccountCreated: days || 0,
-			numOfFocusRecords: allFocusRecords?.length || 0,
+			numOfFocusRecords: filteredFocusRecords?.length || 0,
 			focusDuration: totalFocusDuration || 0,
 		},
 		today: {
@@ -290,16 +294,14 @@ const useStats = () => {
 		// From RTK Query
 		allCompletedTasks,
 		completedTasksGroupedByDate,
-		completedTasksGroupedByProject,
+		filteredDaysWithCompletedTasks,
 		tasksById,
 		projectsById,
 		sessionCategoriesById,
 		tags,
 		tagsByRawName,
-		focusRecords: allFocusRecords,
+		focusRecords: filteredFocusRecords,
 		focusRecordsGroupedByDate,
-
-		allCompletedTasksGroupedByDate: { ...completedTasksGroupedByDate, ...todoistCompletedTasksGroupedByDate },
 
 		// Functions
 		getCompletedTasksFromSelectedDates,
