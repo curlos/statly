@@ -1,12 +1,23 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useStatsContext } from '../../../contexts/useStatsContext';
-import { getFormattedLongDay, getLast7Days } from '../../../utils/date.utils';
+import {
+	getAllDaysInMonthFromDate,
+	getAllDaysInRange,
+	getAllDaysInWeekFromDate,
+	getAllDaysInYearFromDate,
+	getFormattedLongDay,
+	getFormattedShortMonthDay,
+	getLast7Days,
+} from '../../../utils/date.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
-const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => {
+const CompletionDistributionCard = () => {
 	const { completedTasksGroupedByDate } = useStatsContext();
+
+	getAllDaysInRange();
 
 	const lastSevenDays = getLast7Days();
 	const defaultData = lastSevenDays.map((day) => ({
@@ -19,19 +30,47 @@ const CompletionDistributionCard = ({ selectedTimeInterval, selectedDates }) => 
 	const themeContext = useThemeContext();
 	const { chosenColorObj, nextLightestColorObj } = themeContext;
 
+	const { searchParams } = useSearchParamsContext();
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const intervalFromUrl = searchParams.get('date-interval') || 'All';
+
 	useEffect(() => {
 		if (!completedTasksGroupedByDate) {
 			return;
 		}
 
-		const newData = getCompletedTasksData();
+		const selectedDates = getSelectedDates(new Date(startDateFromUrl), new Date(endDateFromUrl));
+		console.log(selectedDates);
+
+		const newData = getCompletedTasksData(selectedDates);
 
 		setData(newData);
-	}, [completedTasksGroupedByDate, selectedDates, selectedTimeInterval]);
+	}, [completedTasksGroupedByDate, startDateFromUrl, endDateFromUrl, intervalFromUrl]);
 
-	const getCompletedTasksData = () => {
-		if (selectedTimeInterval === 'All') {
-			return Object.keys(completedTasksGroupedByDate).map((dateKey) => {
+	const getSelectedDates = (startDate, endDate) => {
+		switch (intervalFromUrl) {
+			case 'Day':
+				return [startDate];
+			case 'Week':
+				return getAllDaysInWeekFromDate(startDate);
+			case 'Month':
+				return getAllDaysInMonthFromDate(startDate);
+			case 'Year':
+				return getAllDaysInYearFromDate(startDate);
+			case 'Custom':
+				return getAllDaysInRange(startDate, endDate);
+			default:
+				return [];
+		}
+	};
+
+	const getCompletedTasksData = (selectedDates) => {
+		if (intervalFromUrl === 'All') {
+			const completedTaskDateKeys = Object.keys(completedTasksGroupedByDate);
+			completedTaskDateKeys.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+			return completedTaskDateKeys.map((dateKey) => {
 				const date = new Date(dateKey);
 				const completedTasksForDateArr = completedTasksGroupedByDate[dateKey] || [];
 

@@ -11,12 +11,8 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const OverviewCard = () => {
-	const {
-		allCompletedTasks,
-		completedTasksGroupedByDate,
-		getCompletedTasksFromSelectedDates,
-		filteredDaysWithCompletedTasks,
-	} = useStatsContext() || {};
+	const { allCompletedTasks, getCompletedTasksFromSelectedDates, filteredDaysWithCompletedTasks } =
+		useStatsContext() || {};
 	const [numOfCompletedTasksForInterval, setNumOfCompletedTasksForInterval] = useState(0);
 	const [diffOfCompletedTasksFromPrevInterval, setDiffOfCompletedTasksFromPrevInterval] = useState({
 		numDiff: 0,
@@ -29,14 +25,12 @@ const OverviewCard = () => {
 	const endDateFromUrl = searchParams.get('end-date') || '';
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
 
-	console.log(startDateFromUrl);
-
 	useEffect(() => {
-		if (!completedTasksGroupedByDate || !filteredDaysWithCompletedTasks) {
+		if (!filteredDaysWithCompletedTasks) {
 			return;
 		}
 
-		if (intervalFromUrl === 'All') {
+		if (!intervalFromUrl) {
 			setNumOfCompletedTasksForInterval(allCompletedTasks.length);
 		} else {
 			const prevIntervalDates = getPrevIntervalDates();
@@ -52,13 +46,7 @@ const OverviewCard = () => {
 				lessThanPrev: currIntervalCompletedTasks < prevIntervalCompletedTasks,
 			});
 		}
-	}, [
-		completedTasksGroupedByDate,
-		startDateFromUrl,
-		endDateFromUrl,
-		intervalFromUrl,
-		filteredDaysWithCompletedTasks,
-	]);
+	}, [startDateFromUrl, endDateFromUrl, intervalFromUrl, filteredDaysWithCompletedTasks]);
 
 	const getPrevIntervalDates = () => {
 		const date = new Date(startDateFromUrl);
