@@ -13,7 +13,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({ data, fromModal, setI
 		<div className="space-y-4 w-full p-2">
 			<div className={classNames('space-y-4', fromModal && 'max-h-[500px] overflow-auto gray-scrollbar')}>
 				{sortedData.slice(0, maxDataLen).map((item) => (
-					<ProgressBar key={item.name} item={item} fromModal={fromModal} />
+					<ProgressBar key={item.id} item={item} fromModal={fromModal} />
 				))}
 			</div>
 

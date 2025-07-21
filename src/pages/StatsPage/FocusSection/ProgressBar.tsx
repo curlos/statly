@@ -53,7 +53,7 @@ const ProgressBar = ({ item, fromModal = false }) => {
 					{item.value} • {item.percentage}%
 				</div>
 			</div>
-			<div key={item.name} className="rounded-full dark:bg-[#232323]">
+			<div key={item.id} className="rounded-full dark:bg-[#232323]">
 				<div
 					className={`text-xs font-medium text-blue-100 text-center p-[3px] leading-none rounded-full`}
 					style={{ width: `${item.percentage}%`, backgroundColor: item.color }}

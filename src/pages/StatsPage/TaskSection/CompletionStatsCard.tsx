@@ -13,6 +13,7 @@ const noData = [
 		color: 'gray',
 		value: 0,
 		percentage: 100,
+		id: 'No Data',
 	},
 ];
 
