@@ -22,8 +22,9 @@ const TopBar = () => {
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
-	const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : '';
-	const queryParamsStr = `?${new URLSearchParams(queryParamsObj).toString()}`;
+	const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : {};
+	const queryParams = new URLSearchParams(queryParamsObj).toString();
+	const queryParamsStr = queryParams ? `?${queryParams}` : '';
 
 	return (
 		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">

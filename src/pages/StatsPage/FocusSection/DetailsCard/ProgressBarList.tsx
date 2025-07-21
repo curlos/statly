@@ -1,39 +1,30 @@
-import { useRef, useState } from 'react';
-import DropdownFocusRankingList from '../DropdownFocusRankingList';
 import ProgressBar from '../ProgressBar';
+import classNames from 'classnames';
 
 interface ProgressBarListProps {
 	data: Array<any>;
 }
 
-const ProgressBarList: React.FC<ProgressBarListProps> = ({ data }) => {
-	const dropdownFocusRankingListRef = useRef(null);
-	const [isDropdownFocusRankingListVisible, setIsDropdownFocusRankingListVisible] = useState(false);
-
+const ProgressBarList: React.FC<ProgressBarListProps> = ({ data, fromModal, setIsOpen }) => {
 	const sortedData = data.sort((a, b) => b.percentage - a.percentage);
+	const maxDataLen = fromModal ? sortedData.length : 5;
 
 	return (
-		<div className="space-y-4 w-full">
-			{sortedData.slice(0, 5).map((item) => (
-				<ProgressBar key={item.name} item={item} />
-			))}
+		<div className="space-y-4 w-full p-2">
+			<div className={classNames('space-y-4', fromModal && 'max-h-[500px] overflow-auto gray-scrollbar')}>
+				{sortedData.slice(0, maxDataLen).map((item) => (
+					<ProgressBar key={item.name} item={item} fromModal={fromModal} />
+				))}
+			</div>
 
-			<div className="relative">
+			{!fromModal && (
 				<div
-					ref={dropdownFocusRankingListRef}
-					onClick={() => setIsDropdownFocusRankingListVisible(!isDropdownFocusRankingListVisible)}
 					className="text-color-gray-100 cursor-pointer text-[16px] lg:text-[14px] xl:text-[16px]"
+					onClick={() => setIsOpen(true)}
 				>
 					View More
 				</div>
-
-				<DropdownFocusRankingList
-					toggleRef={dropdownFocusRankingListRef}
-					isVisible={isDropdownFocusRankingListVisible}
-					setIsVisible={setIsDropdownFocusRankingListVisible}
-					progressData={data}
-				/>
-			</div>
+			)}
 		</div>
 	);
 };

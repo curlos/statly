@@ -43,6 +43,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			break;
 		case 'medals':
 		case 'challenges':
+		case 'stats':
 			allPossibleFilterStrings.push('categories', 'focus-apps', 'to-do-list-apps', 'projects-todoist');
 			break;
 	}

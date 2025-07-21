@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 
-const ProgressBar = ({ item, fromDropdown = false }) => {
+const ProgressBar = ({ item, fromModal = false }) => {
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-1 w-full">
 				<div
 					className={classNames(
-						!fromDropdown
+						!fromModal
 							? 'truncate w-[150px] xs:w-[200px] sm:w-[150px] md:w-[200px] lg:w-[110px] xl:w-[200px]'
-							: 'truncate w-[150px] xs:w-[200px] sm:w-[150px] md:w-[200px] lg:w-[110px] xl:w-[200px] break-words',
+							: 'truncate w-[150px] xs:w-[200px] sm:w-[150px] md:w-[350px] break-words',
 						'text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px]'
 					)}
 				>
