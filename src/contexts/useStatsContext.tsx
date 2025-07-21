@@ -108,8 +108,8 @@ const useStats = () => {
 		isLoadingGetTideFocusRecords ||
 		isLoadingGetProjects;
 
-	const { filteredFocusRecords } = useFilterFocusRecords();
-	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
+	const { filteredFocusRecords, allFocusRecordsAreHere } = useFilterFocusRecords();
+	const { filteredDaysWithCompletedTasks, allCompletedTasksAreHere } = useFilterCompletedTasks();
 
 	useEffect(() => {
 		if (isLoading) {
@@ -308,6 +308,9 @@ const useStats = () => {
 		tagsByRawName,
 		focusRecords: filteredFocusRecords,
 		focusRecordsGroupedByDate,
+
+		allFocusRecordsAreHere,
+		allCompletedTasksAreHere,
 
 		// Functions
 		getCompletedTasksFromSelectedDates,

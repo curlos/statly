@@ -8,7 +8,9 @@ import { usePageContext } from 'vike-react/usePageContext';
 const StatsPage = () => {
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;
-	const { focusRecords } = useStatsContext();
+	const { allFocusRecordsAreHere, allCompletedTasksAreHere } = useStatsContext();
+
+	const coreDataHasLoaded = allFocusRecordsAreHere && allCompletedTasksAreHere;
 
 	return (
 		<div className="flex max-w-screen max-h-[100vh] overflow-x-hidden">
@@ -24,7 +26,7 @@ const StatsPage = () => {
 				</div>
 			</div>
 
-			{!focusRecords && <LoaderBottomRightBO3Medal />}
+			{!coreDataHasLoaded && <LoaderBottomRightBO3Medal />}
 		</div>
 	);
 };

@@ -207,44 +207,42 @@ const useHandleFilterFocusRecords = ({
 		}
 	};
 
-	const focusRecordContainsProjectId = (focusRecord) => {
-		if (!projectsFromUrl) {
+	const focusRecordContainsProjectOrCategoryId = (focusRecord) => {
+		if (!projectsFromUrl && !categoriesFromUrl) {
 			return true;
 		}
 
-		if (!focusRecord.tasks || focusRecord.tasks.length === 0 || !tasksById) {
-			return false;
-		}
+		let hasTickTickOrSessionProject = false;
 
-		const { tasks } = focusRecord;
-		const oneOfTheTasksHasASelectedProject = tasks.find((task) => {
-			const taskWithFullInfo = tasksById[task.taskId];
+		if (projectsFromUrl) {
+			if (focusRecord.tasks && focusRecord.tasks.length > 0 && tasksById) {
+				const { tasks } = focusRecord;
+				const oneOfTheTasksHasASelectedProject = tasks.find((task) => {
+					const taskWithFullInfo = tasksById[task.taskId];
 
-			if (!taskWithFullInfo) {
-				return false;
+					if (!taskWithFullInfo) {
+						return false;
+					}
+
+					const taskIsFromASelectedProject = projectIdsFromUrlObj[taskWithFullInfo.projectId];
+					return taskIsFromASelectedProject;
+				});
+
+				hasTickTickOrSessionProject = hasTickTickOrSessionProject || oneOfTheTasksHasASelectedProject;
 			}
-
-			const taskIsFromASelectedProject = projectIdsFromUrlObj[taskWithFullInfo.projectId];
-			return taskIsFromASelectedProject;
-		});
-
-		return oneOfTheTasksHasASelectedProject;
-	};
-
-	const focusRecordContainsCategoryId = (focusRecord) => {
-		if (!categoriesFromUrl) {
-			return true;
 		}
 
-		const focusApp = getFocusRecordFocusApp(focusRecord);
+		if (categoriesFromUrl) {
+			const focusApp = getFocusRecordFocusApp(focusRecord);
 
-		if (focusApp !== 'session-app') {
-			return false;
+			if (focusApp === 'session-app') {
+				const categoryId = focusRecord.category.id || 'General';
+				const categoryIsInUrl = categoryIdsFromUrlObj[categoryId];
+				hasTickTickOrSessionProject = hasTickTickOrSessionProject || categoryIsInUrl;
+			}
 		}
 
-		const categoryId = focusRecord.category.id || 'General';
-		const categoryIsInUrl = categoryIdsFromUrlObj[categoryId];
-		return categoryIsInUrl;
+		return hasTickTickOrSessionProject;
 	};
 
 	const focusRecordContainsFocusApp = (focusRecord) => {
@@ -319,14 +317,15 @@ const useHandleFilterFocusRecords = ({
 
 		const searchedItemsFocusRecords = searchedItems.map((result) => result.item);
 
-		const newFilteredFocusRecords = searchedItemsFocusRecords.filter(
-			(focusRecord) =>
+		const newFilteredFocusRecords = searchedItemsFocusRecords.filter((focusRecord) => {
+			return (
 				focusRecordContainsTaskId(focusRecord) &&
-				(focusRecordContainsProjectId(focusRecord) || focusRecordContainsCategoryId(focusRecord)) &&
+				focusRecordContainsProjectOrCategoryId(focusRecord) &&
 				focusRecordInDateRange(focusRecord) &&
 				focusRecordIsNotABreak(focusRecord) &&
 				focusRecordContainsFocusApp(focusRecord)
-		);
+			);
+		});
 
 		return newFilteredFocusRecords;
 	};
