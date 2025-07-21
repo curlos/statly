@@ -97,6 +97,7 @@ export const getDataByProjects = ({
 
 		let name = 'Inbox';
 		let color = 'green';
+		let id = projectId
 
 		if (!isFromDefaultProject) {
 			const isTickTickProject = projectsById[projectId];
@@ -135,6 +136,8 @@ export const getDataByProjects = ({
 			color,
 			value: getFormattedDuration(focusDurationForProject, false),
 			percentage,
+			id,
+			type: 'project'
 		};
 	});
 
@@ -204,14 +207,14 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 
 		let name = taskId;
 		const color = getRandomColor();
-		let id = `${taskId}-${i}`
+		let id = `${taskId}`
 
 		if (taskId !== 'No Task') {
 			const task = tasksById[taskId];
 
 			if (task) {
 				name = task.title;
-				id = `${taskId}-${i}`
+				id = `${taskId}`
 			}
 		}
 
@@ -220,7 +223,8 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 			color,
 			value: getFormattedDuration(focusDurationForProject, false),
 			percentage,
-			id
+			id,
+			type: 'task'
 		};
 	});
 
