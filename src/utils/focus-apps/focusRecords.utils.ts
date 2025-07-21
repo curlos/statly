@@ -326,7 +326,7 @@ export const getGroupedFocusRecordsByTask = (focusRecords, tasksById) => {
 
 export const getFocusDurationFromArray = ({
 	focusRecords,
-	onlyTasks,
+	onlyTasks=true,
 	taskId,
 	ancestorTasksById,
 	showTaskAncestors,

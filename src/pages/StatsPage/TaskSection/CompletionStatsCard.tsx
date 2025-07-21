@@ -239,7 +239,7 @@ const CompletionStatsCard = () => {
 														dominantBaseline="central"
 														className="text-[24px] font-bold"
 													>
-														{numOfCompletedTasks}
+														{numOfCompletedTasks.toLocaleString()}
 													</text>
 													<text
 														x={cx}

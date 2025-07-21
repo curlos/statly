@@ -11,8 +11,12 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const OverviewCard = () => {
-	const { allCompletedTasks, getCompletedTasksFromSelectedDates, filteredDaysWithCompletedTasks } =
-		useStatsContext() || {};
+	const {
+		allCompletedTasks,
+		getCompletedTasksFromSelectedDates,
+		filteredDaysWithCompletedTasks,
+		total: { numOfCompletedTasks },
+	} = useStatsContext() || {};
 	const [numOfCompletedTasksForInterval, setNumOfCompletedTasksForInterval] = useState(0);
 	const [diffOfCompletedTasksFromPrevInterval, setDiffOfCompletedTasksFromPrevInterval] = useState({
 		numDiff: 0,
@@ -35,10 +39,7 @@ const OverviewCard = () => {
 		} else {
 			const prevIntervalDates = getPrevIntervalDates();
 			const prevIntervalCompletedTasks = getCompletedTasksFromSelectedDates(prevIntervalDates).length;
-			const currIntervalCompletedTasks = filteredDaysWithCompletedTasks.reduce(
-				(sum, day) => sum + day.completedTasksForDay.length,
-				0
-			);
+			const currIntervalCompletedTasks = numOfCompletedTasks;
 
 			setNumOfCompletedTasksForInterval(currIntervalCompletedTasks);
 			setDiffOfCompletedTasksFromPrevInterval({
@@ -93,10 +94,10 @@ const OverviewCard = () => {
 				<div className="grid grid-cols-1 w-full">
 					<div className="flex flex-col items-center p-2">
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
-							{numOfCompletedTasksForInterval}
+							{numOfCompletedTasks.toLocaleString()}
 						</div>
 						<div className="text-color-gray-100 font-medium">
-							{numOfCompletedTasksForInterval > 1 ? 'Completed Tasks' : 'Completed Task'}
+							{numOfCompletedTasks > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>
 						{intervalFromUrl !== 'All' && intervalFromUrl !== 'Custom' && (
 							<div className="text-color-gray-100 flex items-center gap-1">

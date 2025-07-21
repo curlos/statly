@@ -281,7 +281,8 @@ const useStats = () => {
 	return {
 		total: {
 			numOfAllTasks: allTasksAndItems?.length || 0,
-			numOfCompletedTasks: totalCompletedTasks || 0,
+			numOfCompletedTasks:
+				filteredDaysWithCompletedTasks?.reduce((sum, day) => sum + day.completedTasksForDay.length, 0) || 0,
 			numOfProjects: projects?.length || 0,
 			numOfDaysSinceAccountCreated: days || 0,
 			numOfFocusRecords: filteredFocusRecords?.length || 0,
