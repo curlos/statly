@@ -55,6 +55,7 @@ const DetailsCard = () => {
 	const [endDate, setEndDate] = useState(new Date());
 
 	const [isModalOpen, setIsModalOpen] = useState(true);
+	const [showNestedProgressBars, setShowNestedProgressBars] = useState(true);
 	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
 
 	useEffect(() => {
@@ -160,6 +161,16 @@ const DetailsCard = () => {
 
 						<div className={classNames('flex items-center gap-4', selectedInterval === 'All' && 'py-2')}>
 							<div className="flex items-center gap-4">
+								<Icon
+									name={showNestedProgressBars ? 'unknown_med' : 'network_node'}
+									fill={0}
+									customClass={classNames(
+										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+										`${hover.textColor} ${hover.borderColor}`
+									)}
+									onClick={() => setShowNestedProgressBars(!showNestedProgressBars)}
+								/>
+
 								<Icon
 									name="swap_vert"
 									fill={0}
@@ -272,6 +283,7 @@ const DetailsCard = () => {
 							setIsModalOpen={setIsModalOpen}
 							focusDurationForInterval={focusDurationForInterval}
 							sortBy={sortBy}
+							showNestedProgressBars={showNestedProgressBars}
 						/>
 					</div>
 				</div>

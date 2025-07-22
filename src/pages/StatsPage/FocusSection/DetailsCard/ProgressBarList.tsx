@@ -22,11 +22,10 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	setIsModalOpen,
 	focusDurationForInterval,
 	sortBy,
+	showNestedProgressBars,
 }) => {
 	const sortedData = data.sort((a, b) => b.percentage - a.percentage);
 	const maxDataLen = fromModal ? sortedData.length : 5;
-
-	const [showNestedProgressBars, setShowNestedProgressBars] = useState(true);
 
 	return (
 		<div className="space-y-4 w-full p-2">
