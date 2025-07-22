@@ -57,6 +57,7 @@ const DetailsCard = () => {
 	const [isModalOpen, setIsModalOpen] = useState(true);
 	const [showNestedProgressBars, setShowNestedProgressBars] = useState(true);
 	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
+	const [dataByTasks, setDataByTasks] = useState();
 
 	useEffect(() => {
 		const isLoading =
@@ -89,6 +90,16 @@ const DetailsCard = () => {
 					sessionCategoriesById,
 					startDate: selectedInterval === 'All' ? null : selectedDates[0],
 				});
+
+				const newDataByTasks = getDataByTasks({
+					allFocusRecordsForInterval,
+					focusDurationForInterval: newFocusDurationForInterval,
+					tasksById,
+					startDate: selectedInterval === 'All' ? null : selectedDates[0],
+				});
+
+				setDataByTasks(newDataByTasks);
+
 				break;
 			case 'Task':
 				newProgressBarData = getDataByTasks({
@@ -277,6 +288,7 @@ const DetailsCard = () => {
 					<div className="sm:mt-3 flex flex-col gap-2 w-full">
 						<ProgressBarList
 							data={progressBarData}
+							dataByTasks={dataByTasks}
 							dataType={selected}
 							fromModal={fromModal}
 							isModalOpen={isModalOpen}

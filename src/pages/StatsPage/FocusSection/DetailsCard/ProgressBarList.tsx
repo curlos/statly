@@ -16,6 +16,7 @@ interface ProgressBarListProps {
 
 const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	data,
+	dataByTasks,
 	dataType,
 	fromModal,
 	isModalOpen,
@@ -24,7 +25,13 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	sortBy,
 	showNestedProgressBars,
 }) => {
-	const sortedData = data.sort((a, b) => b.percentage - a.percentage);
+	const sortedData = data.sort((a, b) => {
+		if (sortBy === 'Focus Hours: Most-Least') {
+			return b.focusDuration - a.focusDuration;
+		}
+
+		return a.focusDuration - b.focusDuration;
+	});
 	const maxDataLen = fromModal ? sortedData.length : 5;
 
 	return (
@@ -32,7 +39,16 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			<div className={classNames('space-y-4', fromModal && 'max-h-[500px] overflow-auto gray-scrollbar')}>
 				{showNestedProgressBars ? (
 					<NestedProgressBars
-						{...{ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen, sortBy }}
+						{...{
+							data,
+							dataByTasks,
+							dataType,
+							focusDurationForInterval,
+							fromModal,
+							isModalOpen,
+							setIsModalOpen,
+							sortBy,
+						}}
 					/>
 				) : (
 					sortedData
@@ -53,7 +69,16 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	);
 };
 
-const NestedProgressBars = ({ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen, sortBy }) => {
+const NestedProgressBars = ({
+	data,
+	dataByTasks,
+	dataType,
+	focusDurationForInterval,
+	fromModal,
+	isModalOpen,
+	setIsModalOpen,
+	sortBy,
+}) => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
@@ -64,17 +89,19 @@ const NestedProgressBars = ({ data, focusDurationForInterval, fromModal, isModal
 
 	const groupedTasksCollapsedByDefault = useState(false);
 
-	if (!data || !tasksById || !todoistAllTasksById) {
+	if (!data || !tasksById || !todoistAllTasksById || (dataType === 'Project' && !dataByTasks)) {
 		return <div>Loading...</div>;
 	}
 
-	const taskIds = data.map((dataObj) => dataObj.id);
+	const dataToUse = dataType === 'Project' && dataByTasks ? dataByTasks : data;
+
+	const taskIds = dataToUse.map((dataObj) => dataObj.id);
 
 	if (!taskIds) {
 		return;
 	}
 
-	const progressBarDataById = arrayToObjectByKey(data, 'id');
+	const progressBarDataById = arrayToObjectByKey(dataToUse, 'id');
 
 	const focusRecordTasks = taskIds.map((id) => {
 		return tasksById[id] || todoistAllTasksById[id];
@@ -261,6 +288,70 @@ const NestedProgressBars = ({ data, focusDurationForInterval, fromModal, isModal
 	});
 
 	const maxTasksWithNoParent = fromModal ? sortedTasksWithNoParent.length : 4;
+
+	if (dataType === 'Project') {
+		const groupedProjectsAndTasks = {};
+
+		for (const taskId of sortedTasksWithNoParent) {
+			const task = tasksById[taskId] || todoistAllTasksById[taskId];
+
+			if (!task) {
+				continue;
+			}
+
+			const projectId = task['projectId'] || task['v2_project_id'] || task['project_id'];
+
+			if (!groupedProjectsAndTasks[projectId]) {
+				groupedProjectsAndTasks[projectId] = [];
+			}
+
+			groupedProjectsAndTasks[projectId].push(taskId);
+		}
+
+		const sortedProjects = data.sort((projectOne, projectTwo) => {
+			if (sortBy === 'Focus Hours: Most-Least') {
+				return projectTwo.focusDuration - projectOne.focusDuration;
+			}
+
+			return projectOne.focusDuration - projectTwo.focusDuration;
+		});
+
+		return (
+			<div>
+				{sortedProjects.map((project) => {
+					return (
+						<ul>
+							<Accordion
+								title={
+									<li className="text-[18px] cursor-pointer font-bold hover:underline">
+										{/* TickTick tasks = "title", Todoist tasks = "content" */}
+										<span className="">{project.name} </span>
+										<span className="text-color-gray-25">
+											({project.value}, {project.percentage}%)
+										</span>
+									</li>
+								}
+								openByDefault={!groupedTasksCollapsedByDefault}
+								showArrowNextToText={true}
+								customToggleOpen={() => {
+									if (!fromModal) {
+										setIsModalOpen(true);
+									}
+								}}
+								preventOpen={!fromModal}
+							>
+								<div className="pl-6">
+									{groupedProjectsAndTasks[project.id].map((taskId, index) => {
+										return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
+									})}
+								</div>
+							</Accordion>
+						</ul>
+					);
+				})}
+			</div>
+		);
+	}
 
 	return (
 		<div className={classNames(!fromModal && 'overflow-auto max-h-[230px]')}>
