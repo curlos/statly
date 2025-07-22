@@ -21,6 +21,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	isModalOpen,
 	setIsModalOpen,
 	focusDurationForInterval,
+	sortBy,
 }) => {
 	const sortedData = data.sort((a, b) => b.percentage - a.percentage);
 	const maxDataLen = fromModal ? sortedData.length : 5;
@@ -32,7 +33,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			<div className={classNames('space-y-4', fromModal && 'max-h-[500px] overflow-auto gray-scrollbar')}>
 				{showNestedProgressBars ? (
 					<NestedProgressBars
-						{...{ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen }}
+						{...{ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen, sortBy }}
 					/>
 				) : (
 					sortedData
@@ -53,7 +54,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	);
 };
 
-const NestedProgressBars = ({ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen }) => {
+const NestedProgressBars = ({ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen, sortBy }) => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
@@ -253,7 +254,11 @@ const NestedProgressBars = ({ data, focusDurationForInterval, fromModal, isModal
 		const durationOne = totalTimeOnParentTask[taskIdOne].time;
 		const durationTwo = totalTimeOnParentTask[taskIdTwo].time;
 
-		return durationTwo - durationOne;
+		if (sortBy === 'Focus Hours: Most-Least') {
+			return durationTwo - durationOne;
+		}
+
+		return durationOne - durationTwo;
 	});
 
 	const maxTasksWithNoParent = fromModal ? sortedTasksWithNoParent.length : 4;

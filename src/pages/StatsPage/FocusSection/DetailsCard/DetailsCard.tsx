@@ -11,6 +11,8 @@ import ProgressBarList from './ProgressBarList';
 import { getDataByProjects, getDataByTags, getDataByTasks } from './getDataBy.util';
 import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import Modal from '../../../../components/Modal/Modal';
+import Icon from '../../../../components/Icon';
+import { useThemeContext } from '../../../../contexts/useThemeContext';
 
 const noData = [
 	{
@@ -33,6 +35,10 @@ const DetailsCard = () => {
 		tagsByRawName,
 	} = useStatsContext();
 
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+	const { hover } = chosenColorObj;
+
 	const [progressBarData, setProgressBarData] = useState(noData);
 
 	const selectedOptions = ['Project', 'Task'];
@@ -49,6 +55,7 @@ const DetailsCard = () => {
 	const [endDate, setEndDate] = useState(new Date());
 
 	const [isModalOpen, setIsModalOpen] = useState(true);
+	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
 
 	useEffect(() => {
 		const isLoading =
@@ -152,7 +159,23 @@ const DetailsCard = () => {
 						<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
 
 						<div className={classNames('flex items-center gap-4', selectedInterval === 'All' && 'py-2')}>
-							<div className="flex gap-4">
+							<div className="flex items-center gap-4">
+								<Icon
+									name="swap_vert"
+									fill={0}
+									customClass={classNames(
+										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+										`${hover.textColor} ${hover.borderColor}`
+									)}
+									onClick={() =>
+										setSortBy(
+											sortBy === 'Focus Hours: Most-Least'
+												? 'Focus Hours: Least-Most'
+												: 'Focus Hours: Most-Least'
+										)
+									}
+								/>
+
 								<GeneralSelectButtonAndDropdown
 									selected={selected}
 									setSelected={setSelected}
@@ -248,6 +271,7 @@ const DetailsCard = () => {
 							isModalOpen={isModalOpen}
 							setIsModalOpen={setIsModalOpen}
 							focusDurationForInterval={focusDurationForInterval}
+							sortBy={sortBy}
 						/>
 					</div>
 				</div>
