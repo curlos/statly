@@ -6,8 +6,6 @@ const ProgressBar = ({ item, fromModal = false }) => {
 	const { projectsById, sessionCategoriesById } = useStatsContext();
 
 	const handleGoToFocusRecordsPage = () => {
-		console.log(item);
-
 		let queryParams = '';
 
 		const { id } = item;

@@ -28,6 +28,12 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay }) => {
 				parentTasksArr.push(task);
 				parentTasksObj[task.id] = true;
 			}
+
+			if (!groupedSubtasksByParentTask[task.id]) {
+				groupedSubtasksByParentTask[task.id] = [];
+			}
+
+			groupedSubtasksByParentTask[task.id].push(task);
 		}
 	}
 
@@ -47,6 +53,7 @@ export const getTasksWithParentIdAndNoParent = ({
 	todoistAllTasksById,
 	ancestorTasksById,
 	todoistAncestorTasksById,
+	includeDirectParentTasksWithNoChild
 }) => {
 	const tasksWithParentId = {};
 
@@ -67,7 +74,7 @@ export const getTasksWithParentIdAndNoParent = ({
 
 		let groupTaskBreadcrumbs = groupTaskBreadcrumbsTickTick || groupTaskBreadcrumbsTodoist;
 
-		if (groupTaskBreadcrumbs) {
+		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length > 0) {
 			// Need to include any "items" from TickTick here as they are not included above. This is necessary so that "items" are also mapped to a corresponding parent id.
 			groupTaskBreadcrumbs = task.itemParentTaskId
 				? [task.itemParentTaskId, ...groupTaskBreadcrumbs]
@@ -84,6 +91,8 @@ export const getTasksWithParentIdAndNoParent = ({
 					tasksWithParentId[task.id] = null;
 				}
 			});
+		} else if (includeDirectParentTasksWithNoChild) {
+			tasksWithParentId[task.id] = null;
 		}
 	}
 

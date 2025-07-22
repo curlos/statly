@@ -246,6 +246,7 @@ const DetailsCard = () => {
 							dataType={selected}
 							fromModal={fromModal}
 							setIsOpen={setIsModalOpen}
+							focusDurationForInterval={focusDurationForInterval}
 						/>
 					</div>
 				</div>

@@ -8,13 +8,19 @@ import {
 import ProgressBar from '../ProgressBar';
 import classNames from 'classnames';
 import Accordion from '../../../../components/Accordion/Accordion';
-import { arrayToObjectByKey } from '../../../../utils/focus-apps/helpers.utils';
+import { arrayToObjectByKey, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 
 interface ProgressBarListProps {
 	data: Array<any>;
 }
 
-const ProgressBarList: React.FC<ProgressBarListProps> = ({ data, dataType, fromModal, setIsOpen }) => {
+const ProgressBarList: React.FC<ProgressBarListProps> = ({
+	data,
+	dataType,
+	fromModal,
+	setIsOpen,
+	focusDurationForInterval,
+}) => {
 	const sortedData = data.sort((a, b) => b.percentage - a.percentage);
 	const maxDataLen = fromModal ? sortedData.length : 5;
 
@@ -24,7 +30,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({ data, dataType, fromM
 		<div className="space-y-4 w-full p-2">
 			<div className={classNames('space-y-4', fromModal && 'max-h-[500px] overflow-auto gray-scrollbar')}>
 				{showNestedProgressBars ? (
-					<NestedProgressBars {...{ data }} />
+					<NestedProgressBars {...{ data, focusDurationForInterval }} />
 				) : (
 					sortedData
 						.slice(0, maxDataLen)
@@ -44,7 +50,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({ data, dataType, fromM
 	);
 };
 
-const NestedProgressBars = ({ data }) => {
+const NestedProgressBars = ({ data, focusDurationForInterval }) => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
@@ -77,6 +83,7 @@ const NestedProgressBars = ({ data }) => {
 		todoistAllTasksById,
 		ancestorTasksById,
 		todoistAncestorTasksById,
+		includeDirectParentTasksWithNoChild: true,
 	});
 
 	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks({
@@ -111,11 +118,8 @@ const NestedProgressBars = ({ data }) => {
 	 * @param directCompletedSubtasks
 	 */
 	const renderDirectFocusTasks = (directFocusTasks) => {
-		console.log(data);
-		console.log(directFocusTasks);
-
 		return (
-			<ul className="space-y-4">
+			<ul className="space-y-4 pl-6 mb-6">
 				{directFocusTasks?.map((subtask, index) => {
 					const item = progressBarDataById[subtask.id];
 
@@ -129,6 +133,44 @@ const NestedProgressBars = ({ data }) => {
 		);
 	};
 
+	const totalTimeOnParentTask = {};
+
+	const calculateTotalTimeFromChildren = (parentTaskId) => {
+		if (totalTimeOnParentTask[parentTaskId]) {
+			return totalTimeOnParentTask[parentTaskId];
+		}
+
+		let totalTime = 0;
+
+		const directParentChildFocusTasks = groupedSubtasksByParentTask[parentTaskId];
+		const childDirectParentTasks = parentDirectChildrenTaskIdsByParentId[parentTaskId];
+
+		if (directParentChildFocusTasks) {
+			directParentChildFocusTasks.forEach((subtask) => {
+				const item = progressBarDataById[subtask.id];
+
+				totalTime += item.focusDuration;
+			});
+		}
+
+		if (childDirectParentTasks && childDirectParentTasks.length > 0) {
+			childDirectParentTasks.forEach((taskId) => {
+				totalTime += calculateTotalTimeFromChildren(taskId).time;
+			});
+		}
+
+		totalTimeOnParentTask[parentTaskId] = {
+			time: totalTime,
+			percentage: Number(((totalTime / focusDurationForInterval) * 100).toFixed(2)),
+		};
+
+		return totalTimeOnParentTask[parentTaskId];
+	};
+
+	tasksWithNoParent.forEach((taskId) => {
+		calculateTotalTimeFromChildren(taskId);
+	});
+
 	const renderNestedTasks = (parentTaskId) => {
 		const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
 
@@ -139,9 +181,13 @@ const NestedProgressBars = ({ data }) => {
 			<ul key={parentTaskId} className="text-[16px]">
 				<Accordion
 					title={
-						<li className="underline cursor-pointer font-bold text-[18px] hover:text-blue-500">
+						<li className="text-[18px] cursor-pointer font-bold hover:underline">
 							{/* TickTick tasks = "title", Todoist tasks = "content" */}
-							{parentTask.title || parentTask.content}
+							<span className="">{parentTask.title || parentTask.content} </span>
+							<span className="text-color-gray-25">
+								({getFormattedDuration(totalTimeOnParentTask[parentTaskId].time, false)},{' '}
+								{totalTimeOnParentTask[parentTaskId].percentage}%)
+							</span>
 						</li>
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
@@ -167,12 +213,22 @@ const NestedProgressBars = ({ data }) => {
 									<Accordion
 										key={taskId + index}
 										title={
-											<li className="underline cursor-pointer font-bold text-[18px] mt-1 hover:text-blue-500">
-												{task.content || task.title}
+											<li className="cursor-pointer font-bold text-[18px] hover:underline">
+												{task.content || task.title}{' '}
+												<span className="text-color-gray-25">
+													(
+													{totalTimeOnParentTask[taskId] &&
+														getFormattedDuration(totalTimeOnParentTask[taskId].time, false)}
+													,{' '}
+													{totalTimeOnParentTask[taskId] &&
+														totalTimeOnParentTask[taskId].percentage}
+													%)
+												</span>
 											</li>
 										}
 										openByDefault={true}
 										showArrowNextToText={true}
+										customClasses="mt-1"
 									>
 										{directFocusedTasks?.length > 0 && renderDirectFocusTasks(directFocusedTasks)}
 									</Accordion>

@@ -10,6 +10,7 @@ const Accordion = ({
 	openByDefault,
 	isChildDropdownOpen,
 	showArrowNextToText,
+	customClasses,
 }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 
@@ -22,7 +23,7 @@ const Accordion = ({
 	};
 
 	return (
-		<div>
+		<div className={customClasses ? customClasses : ''}>
 			<button
 				onClick={toggleOpen}
 				className={classNames(

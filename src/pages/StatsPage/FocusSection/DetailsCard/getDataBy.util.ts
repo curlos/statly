@@ -137,7 +137,8 @@ export const getDataByProjects = ({
 			value: getFormattedDuration(focusDurationForProject, false),
 			percentage,
 			id,
-			type: 'project'
+			type: 'project',
+			focusDuration: focusDurationForProject
 		};
 	});
 
@@ -224,7 +225,8 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 			value: getFormattedDuration(focusDurationForProject, false),
 			percentage,
 			id,
-			type: 'task'
+			type: 'task',
+			focusDuration: focusDurationForProject
 		};
 	});
 
@@ -321,6 +323,7 @@ export const getDataByTags = ({ allFocusRecordsForInterval, focusDurationForInte
 			color,
 			value: getFormattedDuration(focusDurationForTag, false),
 			percentage,
+			focusDuration: focusDurationForTag
 		};
 	});
 };
