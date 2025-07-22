@@ -7,7 +7,11 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay }) => {
 	const parentTasksArr = [];
 	const parentTasksObj = {};
 
-	completedTasksForDay.forEach((task) => {
+	for (const task of completedTasksForDay) {
+		if (!task) {
+			continue
+		}
+
 		const { itemParentTaskId, parent_id } = task;
 
 		const parentId = itemParentTaskId || parent_id || task.parentId;
@@ -25,7 +29,7 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay }) => {
 				parentTasksObj[task.id] = true;
 			}
 		}
-	});
+	}
 
 	return {
 		groupedSubtasksByParentTask,
@@ -46,7 +50,11 @@ export const getTasksWithParentIdAndNoParent = ({
 }) => {
 	const tasksWithParentId = {};
 
-	completedTasksForDay.forEach((task) => {
+	for (const task of completedTasksForDay) {
+		if (!task) {
+			continue
+		}
+
 		const groupTask = task.itemParentTaskId
 			? tasksById[task.itemParentTaskId]
 			: tasksById[task.id] || todoistAllTasksById[task.id];
@@ -77,7 +85,7 @@ export const getTasksWithParentIdAndNoParent = ({
 				}
 			});
 		}
-	});
+	}
 
 	const tasksWithNoParent = Object.keys(tasksWithParentId).filter((currentTaskId) => {
 		return !tasksWithParentId[currentTaskId];

@@ -68,7 +68,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	const handleClickDay = (e) => {
 		e.stopPropagation();
 		const newDayUrl = getFormattedShortMonthDay(new Date(dateStr));
-		updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
+		updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, 'date-interval': 'Day', page: '' });
 	};
 
 	return (

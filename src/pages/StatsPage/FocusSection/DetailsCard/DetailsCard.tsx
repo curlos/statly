@@ -36,10 +36,10 @@ const DetailsCard = () => {
 	const [progressBarData, setProgressBarData] = useState(noData);
 
 	const selectedOptions = ['Project', 'Task'];
-	const [selected, setSelected] = useState(selectedOptions[0]);
+	const [selected, setSelected] = useState(selectedOptions[1]);
 
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
-	const [selectedInterval, setSelectedInterval] = useState(selectedIntervalOptions[0]);
+	const [selectedInterval, setSelectedInterval] = useState('All');
 	const [selectedDates, setSelectedDates] = useState([new Date()]);
 	const [focusDurationForInterval, setFocusDurationForInterval] = useState(0);
 
@@ -48,7 +48,7 @@ const DetailsCard = () => {
 	const [startDate, setStartDate] = useState(new Date('January 1, 2024'));
 	const [endDate, setEndDate] = useState(new Date());
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(true);
 
 	useEffect(() => {
 		const isLoading =
@@ -241,7 +241,12 @@ const DetailsCard = () => {
 					</div>
 
 					<div className="sm:mt-3 flex flex-col gap-2 w-full">
-						<ProgressBarList data={progressBarData} fromModal={fromModal} setIsOpen={setIsModalOpen} />
+						<ProgressBarList
+							data={progressBarData}
+							dataType={selected}
+							fromModal={fromModal}
+							setIsOpen={setIsModalOpen}
+						/>
 					</div>
 				</div>
 
@@ -265,7 +270,7 @@ const DetailsCard = () => {
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 				position="top-center"
-				customClasses="w-[1000px]"
+				customClasses="!w-[1000px]"
 			>
 				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(true)}</div>
 			</Modal>
