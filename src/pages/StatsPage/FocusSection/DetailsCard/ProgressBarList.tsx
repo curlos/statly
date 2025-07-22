@@ -240,9 +240,16 @@ const NestedProgressBars = ({ data, focusDurationForInterval }) => {
 		);
 	};
 
+	const sortedTasksWithNoParent = tasksWithNoParent.sort((taskIdOne, taskIdTwo) => {
+		const durationOne = totalTimeOnParentTask[taskIdOne].time;
+		const durationTwo = totalTimeOnParentTask[taskIdTwo].time;
+
+		return durationTwo - durationOne;
+	});
+
 	return (
 		<>
-			{tasksWithNoParent.map((taskId, index) => {
+			{sortedTasksWithNoParent.map((taskId, index) => {
 				return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
 			})}
 		</>
