@@ -18,7 +18,8 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	data,
 	dataType,
 	fromModal,
-	setIsOpen,
+	isModalOpen,
+	setIsModalOpen,
 	focusDurationForInterval,
 }) => {
 	const sortedData = data.sort((a, b) => b.percentage - a.percentage);
@@ -30,7 +31,9 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 		<div className="space-y-4 w-full p-2">
 			<div className={classNames('space-y-4', fromModal && 'max-h-[500px] overflow-auto gray-scrollbar')}>
 				{showNestedProgressBars ? (
-					<NestedProgressBars {...{ data, focusDurationForInterval }} />
+					<NestedProgressBars
+						{...{ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen }}
+					/>
 				) : (
 					sortedData
 						.slice(0, maxDataLen)
@@ -41,7 +44,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			{!fromModal && (
 				<div
 					className="text-color-gray-100 cursor-pointer text-[16px] lg:text-[14px] xl:text-[16px]"
-					onClick={() => setIsOpen(true)}
+					onClick={() => setIsModalOpen(true)}
 				>
 					View More
 				</div>
@@ -50,7 +53,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	);
 };
 
-const NestedProgressBars = ({ data, focusDurationForInterval }) => {
+const NestedProgressBars = ({ data, focusDurationForInterval, fromModal, isModalOpen, setIsModalOpen }) => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById } = fetchedTasks || {};
@@ -125,7 +128,7 @@ const NestedProgressBars = ({ data, focusDurationForInterval }) => {
 
 					return (
 						<li key={subtask.id + index} className="flex items-start gap-1">
-							<ProgressBar key={item.id} item={item} fromModal={true} />
+							<ProgressBar key={item.id} item={item} fromModal={fromModal} />
 						</li>
 					);
 				})}
@@ -192,6 +195,12 @@ const NestedProgressBars = ({ data, focusDurationForInterval }) => {
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
 					showArrowNextToText={true}
+					customToggleOpen={() => {
+						if (!fromModal) {
+							setIsModalOpen(true);
+						}
+					}}
+					preventOpen={!fromModal}
 				>
 					{directParentChildFocusTasks?.length > 0 && renderDirectFocusTasks(directParentChildFocusTasks)}
 
@@ -247,12 +256,14 @@ const NestedProgressBars = ({ data, focusDurationForInterval }) => {
 		return durationTwo - durationOne;
 	});
 
+	const maxTasksWithNoParent = fromModal ? sortedTasksWithNoParent.length : 4;
+
 	return (
-		<>
-			{sortedTasksWithNoParent.map((taskId, index) => {
+		<div className={classNames(!fromModal && 'overflow-auto max-h-[230px]')}>
+			{sortedTasksWithNoParent.slice(0, maxTasksWithNoParent).map((taskId, index) => {
 				return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
 			})}
-		</>
+		</div>
 	);
 };
 

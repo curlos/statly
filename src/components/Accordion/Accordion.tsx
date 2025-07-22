@@ -11,10 +11,20 @@ const Accordion = ({
 	isChildDropdownOpen,
 	showArrowNextToText,
 	customClasses,
+	customToggleOpen,
+	preventOpen,
 }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 
 	const toggleOpen = () => {
+		if (customToggleOpen) {
+			customToggleOpen();
+		}
+
+		if (preventOpen) {
+			return;
+		}
+
 		setIsOpen(!isOpen);
 
 		if (setIsOpenForParent) {

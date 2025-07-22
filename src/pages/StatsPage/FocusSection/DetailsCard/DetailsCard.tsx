@@ -245,7 +245,8 @@ const DetailsCard = () => {
 							data={progressBarData}
 							dataType={selected}
 							fromModal={fromModal}
-							setIsOpen={setIsModalOpen}
+							isModalOpen={isModalOpen}
+							setIsModalOpen={setIsModalOpen}
 							focusDurationForInterval={focusDurationForInterval}
 						/>
 					</div>
@@ -273,7 +274,7 @@ const DetailsCard = () => {
 				position="top-center"
 				customClasses="!w-[1000px]"
 			>
-				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(true)}</div>
+				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>
 		</div>
 	);
