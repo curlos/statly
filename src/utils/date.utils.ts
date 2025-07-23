@@ -1,3 +1,5 @@
+import { getFocusRecordProperty } from "./focus-apps/multiFocusApps.utils";
+
 export const isTodayUTC = (date) => {
 	const today = new Date();
 	const inputDate = new Date(date);
@@ -825,22 +827,32 @@ export const getDailyHourBlocks = () => {
 
 export const fillInHourBlocksWithSeconds = (focusRecords, newDailyHourBlocks) => {
 	for (let focusRecord of focusRecords) {
-		const { startTime, endTime, pauseDuration, tasks } = focusRecord;
-
+		const { tasks } = focusRecord;
+		
+		// TickTick - Only use the "tasks" Focus Records
 		if (tasks?.length > 0) {
 			for (let task of tasks) {
 				const { startTime, endTime } = task;
 				const timeInBlocks = getTimeInBlocks(startTime, endTime);
 
 				for (let timeBlock of timeInBlocks) {
-					const { from, to, seconds } = timeBlock;
+					const { from, seconds } = timeBlock;
 
 					newDailyHourBlocks[from].seconds += seconds;
 				}
 			}
 		} else {
-			// TODO: Handle focus records without tasks?
-			// console.log('TODO:');
+			// Handles: TickTick Focus Records without a task, Session App, Forest, Be Focused, Tide.
+			const startTime = getFocusRecordProperty(focusRecord, 'startTime')
+			const endTime = getFocusRecordProperty(focusRecord, 'endTime')
+
+			const timeInBlocks = getTimeInBlocks(startTime, endTime);
+
+			for (let timeBlock of timeInBlocks) {
+				const { from, seconds } = timeBlock;
+
+				newDailyHourBlocks[from].seconds += seconds;
+			}
 		}
 	}
 };
