@@ -41,8 +41,6 @@ const CompletionDistributionCard = () => {
 		}
 
 		const selectedDates = getSelectedDates(new Date(startDateFromUrl), new Date(endDateFromUrl));
-		console.log(selectedDates);
-
 		const newData = getCompletedTasksData(selectedDates);
 
 		setData(newData);

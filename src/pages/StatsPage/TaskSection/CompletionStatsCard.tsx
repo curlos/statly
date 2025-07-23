@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import SmallLabel from './SmallLabel';
 import DropdownCompletedSmallLabeList from './DropdownCompletedSmallLabeList';
 import { navigate } from 'vike/client/router';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const noData = [
 	{
@@ -279,32 +280,34 @@ const CompletionStatsCard = () => {
 };
 
 const SmallLabelList = ({ progressBarData }) => {
+	const pageContext = usePageContext();
 	const dropdownFocusRankingListRef = useRef(null);
 	const [isDropdownCompletedSmallListVisible, setIsDropdownCompletedSmallListVisible] = useState(false);
 
-	const { projectsById, sessionCategoriesById } = useStatsContext() || {};
+	const { projectsById, todoistAllProjectsById, sessionCategoriesById } = useStatsContext() || {};
 
 	if (!projectsById || !sessionCategoriesById) {
 		return;
 	}
 
 	const handleGoToCompletedTasksPage = (project) => {
-		let queryParams = '';
+		let projectsQueryParam = '';
 
 		const { id } = project;
 
 		// If the project is from TickTick.
 		if (projectsById[id]) {
-			queryParams += `?projects=${id}`;
-			// If the project is a category from "Session App".
-		} else if (sessionCategoriesById[id]) {
-			queryParams += `?categories=${id}`;
-			// If the project is one of the focus apps that don't have separate projects (Forest, Tide, and BeFocused).
-		} else if (id === 'forest-app' || id === 'tide-ios-app' || id === 'be-focused-app') {
-			queryParams += `?focus-apps=${id}`;
+			projectsQueryParam = `?projects=${id}`;
+			// If the project is from Todoist.
+		} else if (todoistAllProjectsById[id]) {
+			projectsQueryParam = `?projects-todoist=${id}`;
 		}
 
-		navigate('/ticktick-1.00/completed-tasks' + queryParams);
+		const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : {};
+		let queryParams = new URLSearchParams(queryParamsObj).toString();
+		queryParams = queryParams && projectsQueryParam ? `&${queryParams}` : '';
+
+		navigate('/ticktick-1.00/completed-tasks' + projectsQueryParam + queryParams);
 	};
 
 	return (
