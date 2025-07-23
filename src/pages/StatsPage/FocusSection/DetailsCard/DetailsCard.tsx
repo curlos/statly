@@ -42,10 +42,10 @@ const DetailsCard = () => {
 	const [progressBarData, setProgressBarData] = useState(noData);
 
 	const selectedOptions = ['Project', 'Task'];
-	const [selected, setSelected] = useState(selectedOptions[1]);
+	const [selected, setSelected] = useState(selectedOptions[0]);
 
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
-	const [selectedInterval, setSelectedInterval] = useState('All');
+	const [selectedInterval, setSelectedInterval] = useState('Day');
 	const [selectedDates, setSelectedDates] = useState([new Date()]);
 	const [focusDurationForInterval, setFocusDurationForInterval] = useState(0);
 
@@ -55,7 +55,7 @@ const DetailsCard = () => {
 	const [endDate, setEndDate] = useState(new Date());
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [showNestedProgressBars, setShowNestedProgressBars] = useState(true);
+	const [showNestedProgressBars, setShowNestedProgressBars] = useState(false);
 	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
 	const [dataByTasks, setDataByTasks] = useState();
 
@@ -170,8 +170,8 @@ const DetailsCard = () => {
 					<div className="md:flex justify-between items-center w-full">
 						<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
 
-						<div className={classNames('flex items-center gap-4', selectedInterval === 'All' && 'py-2')}>
-							<div className="flex items-center gap-4">
+						<div className={classNames('flex items-center gap-2', selectedInterval === 'All' && 'py-2')}>
+							<div className="flex items-center gap-2">
 								<Icon
 									name={showNestedProgressBars ? 'unknown_med' : 'network_node'}
 									fill={0}
