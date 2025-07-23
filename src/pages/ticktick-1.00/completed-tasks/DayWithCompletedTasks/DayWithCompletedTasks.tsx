@@ -111,27 +111,6 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 						}
 						openByDefault={true}
 					>
-						<div className="mb-5">
-							{parentTasks && parentTasks.length > 0 && (
-								<Accordion
-									title={<div className="underline font-bold text-[18px]">Tasks With No Parent</div>}
-									openByDefault={true}
-									showArrowNextToText={true}
-								>
-									<div className="space-y-1">
-										{parentTasks.map((task) => (
-											<CompletedTask
-												key={dateStr + task.id}
-												task={task}
-												isFullTask={true}
-												updateTaskIdQueryParam={updateTaskIdQueryParam}
-											/>
-										))}
-									</div>
-								</Accordion>
-							)}
-						</div>
-
 						<div className="space-y-5">
 							{showIndentedTasks ? (
 								<NestedCompletedTasks
