@@ -73,6 +73,11 @@ export const getTasksWithParentIdAndNoParent = ({
 			groupTask && todoistAncestorTasksById[groupTask.id] && Object.keys(todoistAncestorTasksById[groupTask.id]);
 
 		let groupTaskBreadcrumbs = groupTaskBreadcrumbsTickTick || groupTaskBreadcrumbsTodoist;
+		
+		// If there are no breadcrumbs initially but there is a group task, this just means that the group task is an ancestor task itself and the completed task was directly under it which would form a valid breadcrumb.
+		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length == 0 && groupTask) {
+			groupTaskBreadcrumbs = [groupTask.id]
+		}
 
 		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length > 0) {
 			// Need to include any "items" from TickTick here as they are not included above. This is necessary so that "items" are also mapped to a corresponding parent id.
