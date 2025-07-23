@@ -3,7 +3,7 @@ import Accordion from '../Accordion/Accordion';
 import FormPickDateRange from '../FormPickDateRange';
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
-import { getAllDaysInRange, getFormattedShortMonthDay } from '../../utils/date.utils';
+import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import GeneralSelectButtonAndDropdown from '../../pages/StatsPage/GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../../pages/StatsPage/FocusSection/DateRangePicker';
 
@@ -21,9 +21,16 @@ const DateRangeSection = () => {
 	const [selectedDates, setSelectedDates] = useState([startDate]);
 
 	useEffect(() => {
-		const newStartDate = selectedInterval === 'All' ? '' : getFormattedShortMonthDay(selectedDates[0]);
+		const newStartDate =
+			selectedInterval === 'All'
+				? ''
+				: getFormattedShortMonthDay(selectedDates[0] ? selectedDates[0] : new Date());
 		const newEndDate =
-			selectedInterval === 'All' ? '' : getFormattedShortMonthDay(selectedDates[selectedDates.length - 1]);
+			selectedInterval === 'All'
+				? ''
+				: getFormattedShortMonthDay(
+						selectedDates[selectedDates.length - 1] ? selectedDates[selectedDates.length - 1] : new Date()
+					);
 		const newInterval = selectedInterval === 'All' ? '' : selectedInterval;
 
 		updateQueryParams({

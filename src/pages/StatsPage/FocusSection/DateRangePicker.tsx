@@ -11,18 +11,20 @@ import {
 
 const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, startDate, endDate }) => {
 	useEffect(() => {
+		const firstDay = selectedDates[0] || new Date();
+
 		switch (selectedInterval) {
 			case 'Day':
-				setSelectedDates([selectedDates[0]]);
+				setSelectedDates([firstDay]);
 				break;
 			case 'Week':
-				setSelectedDates(getAllDaysInWeekFromDate(selectedDates[0]));
+				setSelectedDates(getAllDaysInWeekFromDate(firstDay));
 				break;
 			case 'Month':
-				setSelectedDates(getAllDaysInMonthFromDate(selectedDates[0]));
+				setSelectedDates(getAllDaysInMonthFromDate(firstDay));
 				break;
 			case 'Year':
-				setSelectedDates(getAllDaysInYearFromDate(selectedDates[0]));
+				setSelectedDates(getAllDaysInYearFromDate(firstDay));
 				break;
 			case 'Custom':
 				setSelectedDates(getAllDaysInRange(startDate, endDate));
@@ -31,7 +33,8 @@ const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, st
 	}, [selectedInterval, startDate, endDate]);
 
 	const handleArrowClick = (arrowType) => {
-		const date = new Date(selectedDates[0]);
+		const firstDay = selectedDates[0] || new Date();
+		const date = new Date(firstDay);
 		switch (selectedInterval) {
 			case 'Day':
 				date.setDate(date.getDate() + (arrowType === 'left' ? -1 : 1));
@@ -55,15 +58,17 @@ const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, st
 	};
 
 	const getFormattedSelectedDates = () => {
+		const firstDay = selectedDates[0] || new Date();
+
 		switch (selectedInterval) {
 			case 'Day':
-				return formatCheckedInDayDate(selectedDates[0]);
+				return formatCheckedInDayDate(firstDay);
 			case 'Week':
-				return `${getFormattedShortMonthDay(selectedDates[0])} - ${getFormattedShortMonthDay(selectedDates[selectedDates.length - 1])}`;
+				return `${getFormattedShortMonthDay(firstDay)} - ${getFormattedShortMonthDay(selectedDates[selectedDates.length - 1])}`;
 			case 'Month':
-				return selectedDates[0].toLocaleString('default', { month: 'long', year: 'numeric' });
+				return firstDay.toLocaleString('default', { month: 'long', year: 'numeric' });
 			case 'Year':
-				return selectedDates[0].toLocaleString('default', { year: 'numeric' });
+				return firstDay.toLocaleString('default', { year: 'numeric' });
 			case 'Custom':
 				return `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`;
 		}
