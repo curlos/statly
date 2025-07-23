@@ -113,7 +113,6 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 						setIsVisible(false);
 
 						if (setSelectedDates && selectedInterval === 'Week') {
-							console.log(connectedCurrentDate);
 							setSelectedDates(getAllDaysInWeekFromDate(connectedCurrentDate));
 						}
 					}}

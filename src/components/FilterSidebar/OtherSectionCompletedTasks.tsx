@@ -95,7 +95,7 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
-						{/* Input - Max Focus Records Per Page */}
+						{/* Input - Max Days Per Page */}
 						<InputNumUserSettings
 							{...{
 								defaultValue: maxDaysPerPage,

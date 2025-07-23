@@ -5,6 +5,9 @@ import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
+import classNames from 'classnames';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import { useState } from 'react';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -21,6 +24,8 @@ const OtherSectionFocusRecords = () => {
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
+
+	const { chosenColorObj } = useThemeContext();
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
@@ -49,6 +54,8 @@ const OtherSectionFocusRecords = () => {
 			await editUserSettings(payload).unwrap();
 		});
 	};
+
+	const [copiedToClipboard, setCopiedToClipboard] = useState(false);
 
 	return (
 		<div>
@@ -133,6 +140,34 @@ const OtherSectionFocusRecords = () => {
 									),
 							}}
 						/>
+
+						{/* Copy Focus Records To Clipboard */}
+						<div
+							className={classNames(
+								'flex items-center gap-2 my-2 cursor-pointer',
+								chosenColorObj.hover.textColor
+							)}
+							onClick={() => {
+								console.log('Copy!');
+								setCopiedToClipboard(true);
+
+								setTimeout(() => {
+									setCopiedToClipboard(false);
+								}, 1000);
+							}}
+						>
+							<Icon
+								name={copiedToClipboard ? 'check' : 'content_copy'}
+								fill={0}
+								customClass={classNames(
+									'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+									copiedToClipboard
+										? 'text-emerald-500'
+										: `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
+								)}
+							/>
+							<div>Copy Focus Records To Clipboard</div>
+						</div>
 
 						{/* Input - Max Focus Records Per Page */}
 						<InputNumUserSettings

@@ -196,8 +196,6 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		});
 	};
 
-	// task.taskId === '6790e7ae80fdd13f212014bf'
-
 	const getTickTickFocusRecordTask = () => {
 		const getTaskTitle = (task, dateStr) => {
 			if (showTaskAncestors) {
