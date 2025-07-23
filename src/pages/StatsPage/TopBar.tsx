@@ -26,11 +26,9 @@ const TopBar = () => {
 	const queryParams = new URLSearchParams(queryParamsObj).toString();
 	const queryParamsStr = queryParams ? `?${queryParams}` : '';
 
-	return (
-		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-			<h1 className="text-[24px] font-medium">Statistics</h1>
-
-			<div className="flex justify-center gap-1 sm:mr-[110px]">
+	const getTabButtons = () => {
+		return (
+			<div className="flex justify-center gap-1">
 				<div
 					className={location.pathname.includes('overview') ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => navigate('/stats/overview' + queryParamsStr)}
@@ -52,7 +50,11 @@ const TopBar = () => {
 					Focus
 				</div>
 			</div>
+		);
+	};
 
+	const getModalButtons = () => {
+		return (
 			<div>
 				<Icon
 					name="page_info"
@@ -64,6 +66,21 @@ const TopBar = () => {
 					customClass={'!text-[30px] text-white mt-[15px] mr-[15px] cursor-pointer'}
 					onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
 				/>
+			</div>
+		);
+	};
+
+	return (
+		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+			<h1 className="text-[24px] font-medium">Statistics</h1>
+
+			<div className="hidden md:flex justify-center sm:mr-[110px]">{getTabButtons()}</div>
+
+			<div className="hidden md:block">{getModalButtons()}</div>
+
+			<div className="md:hidden flex items-center justify-between">
+				<div className="sm:mr-[110px]">{getTabButtons()}</div>
+				{getModalButtons()}
 			</div>
 
 			{isSettingsSidebarModalOpen && (

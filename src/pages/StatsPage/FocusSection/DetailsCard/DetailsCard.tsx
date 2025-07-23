@@ -54,7 +54,7 @@ const DetailsCard = () => {
 	const [startDate, setStartDate] = useState(new Date('January 1, 2024'));
 	const [endDate, setEndDate] = useState(new Date());
 
-	const [isModalOpen, setIsModalOpen] = useState(true);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showNestedProgressBars, setShowNestedProgressBars] = useState(true);
 	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
 	const [dataByTasks, setDataByTasks] = useState();
@@ -167,7 +167,7 @@ const DetailsCard = () => {
 		return (
 			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full">
 				<div className="flex gap-4">
-					<div className="flex justify-between items-center w-full">
+					<div className="md:flex justify-between items-center w-full">
 						<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
 
 						<div className={classNames('flex items-center gap-4', selectedInterval === 'All' && 'py-2')}>
@@ -225,7 +225,7 @@ const DetailsCard = () => {
 
 				<div className="sm:hidden mt-2">{getDateRangePicker()}</div>
 
-				<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 px-4">
+				<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 md:px-4">
 					<div>
 						<PieChart width={220} height={220}>
 							<Pie

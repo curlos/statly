@@ -36,7 +36,12 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 
 	return (
 		<div className="space-y-4 w-full p-2">
-			<div className={classNames('space-y-4', fromModal && 'max-h-[500px] overflow-auto gray-scrollbar')}>
+			<div
+				className={classNames(
+					'space-y-4',
+					fromModal && 'max-h-[300px] md:max-h-[500px] overflow-auto gray-scrollbar'
+				)}
+			>
 				{showNestedProgressBars ? (
 					<NestedProgressBars
 						{...{

@@ -52,8 +52,6 @@ const CompletionStatsCard = () => {
 		switch (selected) {
 			case 'Project':
 				newProgressBarData = getDataByProjects(allFilteredCompletedTasks, newNumOfCompletedTasks);
-				console.log(newProgressBarData);
-
 				break;
 			case 'Tag':
 				newProgressBarData = getDataByTags(allFilteredCompletedTasks, newNumOfCompletedTasks);
