@@ -6,6 +6,7 @@ import { checkIfInboxProject } from '../../../utils/tickTickOne.util';
 import classNames from 'classnames';
 import SmallLabel from './SmallLabel';
 import DropdownCompletedSmallLabeList from './DropdownCompletedSmallLabeList';
+import { navigate } from 'vike/client/router';
 
 const noData = [
 	{
@@ -283,11 +284,36 @@ const SmallLabelList = ({ progressBarData }) => {
 	const dropdownFocusRankingListRef = useRef(null);
 	const [isDropdownCompletedSmallListVisible, setIsDropdownCompletedSmallListVisible] = useState(false);
 
+	const { projectsById, sessionCategoriesById } = useStatsContext() || {};
+
+	if (!projectsById || !sessionCategoriesById) {
+		return;
+	}
+
+	const handleGoToCompletedTasksPage = (project) => {
+		let queryParams = '';
+
+		const { id } = project;
+
+		// If the project is from TickTick.
+		if (projectsById[id]) {
+			queryParams += `?projects=${id}`;
+			// If the project is a category from "Session App".
+		} else if (sessionCategoriesById[id]) {
+			queryParams += `?categories=${id}`;
+			// If the project is one of the focus apps that don't have separate projects (Forest, Tide, and BeFocused).
+		} else if (id === 'forest-app' || id === 'tide-ios-app' || id === 'be-focused-app') {
+			queryParams += `?focus-apps=${id}`;
+		}
+
+		navigate('/ticktick-1.00/completed-tasks' + queryParams);
+	};
+
 	return (
 		<div>
 			<div className="space-y-2 w-full">
-				{progressBarData.slice(0, 5).map((data) => {
-					return <SmallLabel key={data.id} data={data} />;
+				{progressBarData.slice(0, 5).map((data, i) => {
+					return <SmallLabel key={`${data.id}-${i}`} data={data} onClick={handleGoToCompletedTasksPage} />;
 				})}
 			</div>
 
@@ -306,6 +332,7 @@ const SmallLabelList = ({ progressBarData }) => {
 						isVisible={isDropdownCompletedSmallListVisible}
 						setIsVisible={setIsDropdownCompletedSmallListVisible}
 						progressBarData={progressBarData}
+						onClick={handleGoToCompletedTasksPage}
 					/>
 				</div>
 			)}

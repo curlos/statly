@@ -1,10 +1,17 @@
 import classNames from 'classnames';
 
-const SmallLabel = ({ data, fromDropdown = false }) => {
+const SmallLabel = ({ data, fromDropdown = false, onClick }) => {
 	const { name, value, color } = data;
 
 	return (
-		<div className="flex items-center gap-2">
+		<div
+			className="flex items-center gap-2 hover:underline cursor-pointer"
+			onClick={() => {
+				if (onClick) {
+					onClick(data);
+				}
+			}}
+		>
 			<div
 				className="w-[15px] h-[15px] rounded-full"
 				style={{

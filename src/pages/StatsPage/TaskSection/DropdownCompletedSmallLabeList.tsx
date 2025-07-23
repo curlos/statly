@@ -13,6 +13,7 @@ const DropdownCompletedSmallLabeList: React.FC<DropdownPrioritiesProps> = ({
 	setIsVisible,
 	customClasses,
 	progressBarData,
+	onClick,
 }) => {
 	return (
 		<Dropdown
@@ -28,8 +29,8 @@ const DropdownCompletedSmallLabeList: React.FC<DropdownPrioritiesProps> = ({
 				<div className="text-[15px] font-bold mb-4">Completion Stats</div>
 
 				<div className="space-y-2 w-full">
-					{progressBarData.map((data) => (
-						<SmallLabel key={data.name} data={data} fromDropdown={true} />
+					{progressBarData.map((data, i) => (
+						<SmallLabel key={`${data.id}-${i}`} data={data} fromDropdown={true} onClick={onClick} />
 					))}
 				</div>
 			</div>

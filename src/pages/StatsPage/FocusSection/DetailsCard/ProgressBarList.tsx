@@ -9,7 +9,6 @@ import ProgressBar from '../ProgressBar';
 import classNames from 'classnames';
 import Accordion from '../../../../components/Accordion/Accordion';
 import { arrayToObjectByKey, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { getFocusRecordProperty } from '../../../../utils/focus-apps/multiFocusApps.utils';
 
 interface ProgressBarListProps {
 	data: Array<any>;
