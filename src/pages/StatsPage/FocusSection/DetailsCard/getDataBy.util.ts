@@ -176,9 +176,6 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 				focusRecordsGroupedByTask[taskId].push(task);
 			}
 		} else {
-			// console.log(focusRecord)
-			// debugger
-			
 			const taskId = getFocusRecordProperty(focusRecord, 'taskId')
 
 			if (taskId) {
@@ -215,7 +212,6 @@ export const getDataByTasks = ({ allFocusRecordsForInterval, focusDurationForInt
 
 			if (task) {
 				name = task.title;
-				id = `${taskId}`
 			}
 		}
 

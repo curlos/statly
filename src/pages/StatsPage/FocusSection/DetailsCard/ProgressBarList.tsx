@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGetTodoistAllTasksQuery } from '../../../../services/resources/oldFocusAppsApi';
-import { useGetAllTasksQuery } from '../../../../services/resources/ticktickOneApi';
+import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../../services/resources/ticktickOneApi';
 import {
 	getGroupedSubtasksAndParentTasks,
 	getTasksWithParentIdAndNoParent,
@@ -9,6 +9,7 @@ import ProgressBar from '../ProgressBar';
 import classNames from 'classnames';
 import Accordion from '../../../../components/Accordion/Accordion';
 import { arrayToObjectByKey, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFocusRecordProperty } from '../../../../utils/focus-apps/multiFocusApps.utils';
 
 interface ProgressBarListProps {
 	data: Array<any>;
@@ -87,6 +88,10 @@ const NestedProgressBars = ({
 	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
 	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
 
+	// RTK Query - TickTick 1.0 - Projects
+	const { data: fetchedProjects } = useGetAllProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
 	const groupedTasksCollapsedByDefault = useState(false);
 
 	if (!data || !tasksById || !todoistAllTasksById || (dataType === 'Project' && !dataByTasks)) {
@@ -103,12 +108,20 @@ const NestedProgressBars = ({
 
 	const progressBarDataById = arrayToObjectByKey(dataToUse, 'id');
 
-	const focusRecordTasks = taskIds.map((id) => {
-		return tasksById[id] || todoistAllTasksById[id];
+	const tickTickFocusRecordTasks = [];
+	const otherFocusRecordTaskIds = [];
+
+	taskIds.forEach((id) => {
+		const task = tasksById[id];
+		if (task) {
+			tickTickFocusRecordTasks.push(task);
+		} else {
+			otherFocusRecordTaskIds.push(id);
+		}
 	});
 
 	const { tasksWithParentId, tasksWithNoParent } = getTasksWithParentIdAndNoParent({
-		completedTasksForDay: focusRecordTasks,
+		completedTasksForDay: tickTickFocusRecordTasks,
 		tasksById,
 		todoistAllTasksById,
 		ancestorTasksById,
@@ -117,7 +130,7 @@ const NestedProgressBars = ({
 	});
 
 	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks({
-		completedTasksForDay: focusRecordTasks,
+		completedTasksForDay: tickTickFocusRecordTasks,
 	});
 
 	/**
@@ -292,7 +305,7 @@ const NestedProgressBars = ({
 	if (dataType === 'Project') {
 		const groupedProjectsAndTasks = {};
 
-		for (const taskId of sortedTasksWithNoParent) {
+		for (const taskId of [...sortedTasksWithNoParent, ...otherFocusRecordTaskIds]) {
 			const task = tasksById[taskId] || todoistAllTasksById[taskId];
 
 			if (!task) {
@@ -316,11 +329,27 @@ const NestedProgressBars = ({
 			return projectOne.focusDuration - projectTwo.focusDuration;
 		});
 
+		const tickTickProjects = [];
+		const nonTickTickProjects = [];
+
+		sortedProjects.forEach((project) => {
+			if (projectsById[project.id]) {
+				tickTickProjects.push(project);
+			} else {
+				nonTickTickProjects.push(project);
+			}
+		});
+
+		const maxTickTickProjects = fromModal ? tickTickProjects.length : 5; // 3
+		const maxNonTickTickProjects = fromModal
+			? nonTickTickProjects.length
+			: Math.min(5 - tickTickProjects.length, 5);
+
 		return (
 			<div>
-				{sortedProjects.map((project) => {
+				{tickTickProjects.slice(0, maxTickTickProjects).map((project) => {
 					return (
-						<ul>
+						<ul key={project.id}>
 							<Accordion
 								title={
 									<li className="text-[18px] cursor-pointer font-bold hover:underline">
@@ -349,15 +378,42 @@ const NestedProgressBars = ({
 						</ul>
 					);
 				})}
+
+				{nonTickTickProjects.length > 0 && (
+					<div className="space-y-4">
+						{fromModal && <div className="text-[24px] font-bold underline mt-4">Non-TickTick Projects</div>}
+						{nonTickTickProjects.slice(0, maxNonTickTickProjects).map((item) => (
+							<ProgressBar key={item.id} item={item} fromModal={fromModal} />
+						))}
+					</div>
+				)}
 			</div>
 		);
 	}
 
+	const sortedOtherFocusRecordTasksData = otherFocusRecordTaskIds
+		.sort((a, b) => {
+			if (sortBy === 'Focus Hours: Most-Least') {
+				return progressBarDataById[b].focusDuration - progressBarDataById[a].focusDuration;
+			}
+
+			return progressBarDataById[a].focusDuration - progressBarDataById[b].focusDuration;
+		})
+		.map((taskId) => progressBarDataById[taskId]);
+
 	return (
 		<div className={classNames(!fromModal && 'overflow-auto max-h-[230px]')}>
+			{/* TickTick */}
 			{sortedTasksWithNoParent.slice(0, maxTasksWithNoParent).map((taskId, index) => {
 				return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
 			})}
+
+			{/* Other (Session App, etc.) */}
+			<div className="space-y-4">
+				{sortedOtherFocusRecordTasksData.map((item) => (
+					<ProgressBar key={item.id} item={item} fromModal={fromModal} />
+				))}
+			</div>
 		</div>
 	);
 };
