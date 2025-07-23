@@ -3,7 +3,7 @@ import { DropdownProps } from '../../../interfaces/interfaces';
 import SelectCalendar from '../../SelectCalendar';
 import Dropdown from '../Dropdown';
 import DropdownTime from '../DropdownCalendar/DropdownTime';
-import { getTimeString, setTimeOnDateString } from '../../../utils/date.utils';
+import { getAllDaysInWeekFromDate, getTimeString, setTimeOnDateString } from '../../../utils/date.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
 import Icon from '../../Icon';
@@ -21,6 +21,9 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	date,
 	setDate,
 	showTime = true,
+	selectedInterval = null,
+	outerCurrentDate = null,
+	setSelectedDates,
 }) => {
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
@@ -30,7 +33,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	const [isDropdownTimeVisible, setIsDropdownTimeVisible] = useState(false);
 	const dropdownTimeRef = useRef(null);
 
-	const [connectedCurrentDate, setConnectedCurrentDate] = useState();
+	const [connectedCurrentDate, setConnectedCurrentDate] = useState(outerCurrentDate);
 
 	return (
 		<Dropdown
@@ -44,9 +47,11 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 					{...{
 						dueDate: selectedDate,
 						setDueDate: setSelectedDate,
-						time: selectedTime,
 						connectedCurrentDate,
 						setConnectedCurrentDate,
+						time: selectedTime,
+						selectedInterval,
+						outerCurrentDate: connectedCurrentDate,
 					}}
 				/>
 			</div>
@@ -106,6 +111,11 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 
 						setDate(newDueDate);
 						setIsVisible(false);
+
+						if (setSelectedDates && selectedInterval === 'Week') {
+							console.log(connectedCurrentDate);
+							setSelectedDates(getAllDaysInWeekFromDate(connectedCurrentDate));
+						}
 					}}
 				>
 					Ok

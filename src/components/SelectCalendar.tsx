@@ -229,8 +229,6 @@ const MonthView = ({
 										if (setConnectedCurrentDate) {
 											setConnectedCurrentDate(newDueDate);
 										}
-
-										// setOuterCurrentDate(newDueDate);
 									} else {
 										if (setConnectedCurrentDate) {
 											setConnectedCurrentDate(new Date(day.getFullYear(), day.getMonth(), 1));

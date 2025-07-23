@@ -98,7 +98,6 @@ const DateRangeSection = () => {
 							confirmBeforeUpdating: false,
 							onUpdateStartOrEndDate: (newStartDate, newEndDate) => {
 								if (newStartDate) {
-									console.log('Updating start date...');
 									setStartDate(newStartDate);
 								} else if (newEndDate) {
 									setEndDate(newEndDate);
