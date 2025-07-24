@@ -15,6 +15,7 @@ import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
 
 const useGetSterilizedFocusRecords = () => {
 	// RTK Query - TickTick 1.0 - Tasks
@@ -81,6 +82,12 @@ const useGetSterilizedFocusRecords = () => {
 								uniqueProjectIds.add(taskWithFullInfo.projectId);
 							}
 						});
+
+						sterilizedFocusRecord.tasksData.forEach((task) => {
+							task?.ancestorTaskIds?.forEach((taskId) => {
+								uniqueTaskIds.add(taskId);
+							});
+						});
 					}
 
 					if (focusApp === 'session-app') {
@@ -117,17 +124,31 @@ const useGetSterilizedFocusRecords = () => {
 							focusRecord,
 							onlyTasks: true,
 							filterByTaskId: taskId,
+							ancestorTasksById,
+							showTaskAncestors: true,
+							taskIdIncludeFocusRecordsFromSubtasks: true,
 						});
 
 						const sterilizedFocusRecordOnlyWithTaskIds = { ...sterilizedFocusRecord };
 						sterilizedFocusRecordOnlyWithTaskIds.tasksData =
-							sterilizedFocusRecordOnlyWithTaskIds.tasksData.filter((task) => task.id === taskId);
+							sterilizedFocusRecordOnlyWithTaskIds.tasksData.filter((task) => {
+								// If the task is NOT directly in the Focus Record's tasks, then look through all of othe Focus Record's task's breadcrumbs and check if the taskId is an ancestor of one of those tasks.
+								const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+									task,
+									taskId,
+									ancestorTasksById
+								);
+
+								return foundMatchingTaskOrAncestor;
+							});
 
 						sterilizedFocusRecordsByTaskId[taskId].focusRecords.push(sterilizedFocusRecordOnlyWithTaskIds);
 						sterilizedFocusRecordsByTaskId[taskId].focusDuration += taskFocusDuration;
 					});
 				}
 			});
+
+		console.log(sterilizedFocusRecordsByTaskId);
 
 		return {
 			sterilizedFocusRecords,
@@ -168,13 +189,16 @@ const useGetSterilizedFocusRecords = () => {
 
 	const getFocusRecordTaskData = (focusRecord) => {
 		const getTickTickFocusRecordTask = () => {
-			const getTaskTitle = (task) => {
-				const taskBreadCrumbs = getTickTickFocusRecordBreadcrumbs(task);
+			const getAncestorTaskIds = (task) => {
+				const ancestorTaskIds = getTickTickFocusRecordBreadcrumbs(task);
+				return ancestorTaskIds;
+			};
 
+			const getTaskTitle = (task, ancestorTaskIds) => {
 				const taskNamesPath = [task.title || 'No Name'];
 
-				taskBreadCrumbs &&
-					taskBreadCrumbs.forEach((taskId) => {
+				ancestorTaskIds &&
+					ancestorTaskIds.forEach((taskId) => {
 						const breadcrumbTask = tasksById[taskId];
 						taskNamesPath.push(breadcrumbTask.title);
 					});
@@ -203,11 +227,13 @@ const useGetSterilizedFocusRecords = () => {
 				const endTimeObj = formatDateTime(endTime);
 				const dateStr = `${startTimeObj.time} - ${endTimeObj.time}`;
 
-				const taskTitle = getTaskTitle(task);
+				const ancestorTaskIds = getAncestorTaskIds(task);
+				const taskTitle = getTaskTitle(task, ancestorTaskIds);
 				tasksData.push({
 					name: taskTitle,
 					date: dateStr,
 					id: taskId,
+					ancestorTaskIds,
 				});
 			}
 
