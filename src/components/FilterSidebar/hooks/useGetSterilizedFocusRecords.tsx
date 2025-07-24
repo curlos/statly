@@ -1,6 +1,9 @@
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useFilterFocusRecords } from '../../../pages/ticktick-1.00/focus-records/useFilterFocusRecords';
-import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
+import {
+	useGetSessionAppFocusRecordsQuery,
+	useGetTodoistAllTasksQuery,
+} from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { formatDateTime, getFormattedShortMonthDay } from '../../../utils/date.utils';
 import {
@@ -10,6 +13,8 @@ import {
 } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const useGetSterilizedFocusRecords = () => {
 	// RTK Query - TickTick 1.0 - Tasks
@@ -25,12 +30,21 @@ const useGetSterilizedFocusRecords = () => {
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
+	// RTK Query - Session App - Focus Records
+	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
+		useGetSessionAppFocusRecordsQuery();
+	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
+
 	const { searchParams } = useSearchParamsContext();
 
 	const { filteredFocusRecords } = useFilterFocusRecords();
 
-	const getSterilizedFocusRecordList = () => {
-		return filteredFocusRecords
+	const getSterilizedFocusRecordList = (groupById = false) => {
+		const sterilizedFocusRecords = [];
+		const sterilizedFocusRecordsByProjectId = [];
+		const sterilizedFocusRecordsByTaskId = [];
+
+		filteredFocusRecords
 			.sort((focusRecordOne, focusRecordTwo) => {
 				const startTimeOneProperty = getFocusRecordProperty(focusRecordOne, 'startTime');
 				const startTimeTwoProperty = getFocusRecordProperty(focusRecordTwo, 'startTime');
@@ -43,7 +57,83 @@ const useGetSterilizedFocusRecords = () => {
 
 				return startTimeOne - startTimeTwo;
 			})
-			.map((focusRecord) => getSterilizedFocusRecord(focusRecord));
+			.forEach((focusRecord) => {
+				const sterilizedFocusRecord = getSterilizedFocusRecord(focusRecord);
+				sterilizedFocusRecords.push(sterilizedFocusRecord);
+
+				if (groupById) {
+					const duration = getFocusDuration({ focusRecord, onlyTasks: true });
+					const focusApp = getFocusRecordFocusApp(focusRecord);
+					const uniqueProjectIds = new Set();
+					const uniqueTaskIds = new Set();
+
+					if (focusRecord.tasks && focusRecord.tasks.length > 0 && tasksById) {
+						const { tasks } = focusRecord;
+
+						tasks.forEach((task) => {
+							uniqueTaskIds.add(task.taskId);
+
+							const taskWithFullInfo = tasksById[task.taskId];
+
+							if (!taskWithFullInfo) {
+								uniqueProjectIds.add('no-project-id');
+							} else {
+								uniqueProjectIds.add(taskWithFullInfo.projectId);
+							}
+						});
+					}
+
+					if (focusApp === 'session-app') {
+						const categoryId = focusRecord.category.id || 'General';
+						uniqueProjectIds.add(categoryId);
+					}
+
+					if (focusApp !== 'TickTick') {
+						const taskId = getFocusRecordProperty(focusRecord, 'taskId');
+						uniqueTaskIds.add(taskId);
+					}
+
+					uniqueProjectIds.forEach((projectId) => {
+						if (!sterilizedFocusRecordsByProjectId[projectId]) {
+							sterilizedFocusRecordsByProjectId[projectId] = {
+								focusRecords: [],
+								focusDuration: 0,
+							};
+						}
+
+						sterilizedFocusRecordsByProjectId[projectId].focusRecords.push(sterilizedFocusRecord);
+						sterilizedFocusRecordsByProjectId[projectId].focusDuration += duration;
+					});
+
+					uniqueTaskIds.forEach((taskId) => {
+						if (!sterilizedFocusRecordsByTaskId[taskId]) {
+							sterilizedFocusRecordsByTaskId[taskId] = {
+								focusRecords: [],
+								focusDuration: 0,
+							};
+						}
+
+						const taskFocusDuration = getFocusDuration({
+							focusRecord,
+							onlyTasks: true,
+							filterByTaskId: taskId,
+						});
+
+						const sterilizedFocusRecordOnlyWithTaskIds = { ...sterilizedFocusRecord };
+						sterilizedFocusRecordOnlyWithTaskIds.tasksData =
+							sterilizedFocusRecordOnlyWithTaskIds.tasksData.filter((task) => task.id === taskId);
+
+						sterilizedFocusRecordsByTaskId[taskId].focusRecords.push(sterilizedFocusRecordOnlyWithTaskIds);
+						sterilizedFocusRecordsByTaskId[taskId].focusDuration += taskFocusDuration;
+					});
+				}
+			});
+
+		return {
+			sterilizedFocusRecords,
+			sterilizedFocusRecordsByProjectId,
+			sterilizedFocusRecordsByTaskId,
+		};
 	};
 
 	const getSterilizedFocusRecord = (focusRecord) => {
@@ -117,6 +207,7 @@ const useGetSterilizedFocusRecords = () => {
 				tasksData.push({
 					name: taskTitle,
 					date: dateStr,
+					id: taskId,
 				});
 			}
 
@@ -204,7 +295,7 @@ const useGetSterilizedFocusRecords = () => {
 		return lines.join('\n');
 	};
 
-	const getTitleInfo = () => {
+	const getTitleInfo = (focusRecords) => {
 		const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
 		const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 		const taskIdFromUrl = searchParams.get('task-id');
@@ -214,7 +305,7 @@ const useGetSterilizedFocusRecords = () => {
 		const endDateFromUrlDate = new Date(endDateFromUrl);
 
 		const totalFocusDuration = getFocusDurationFromArray({
-			focusRecords: filteredFocusRecords,
+			focusRecords: focusRecords,
 			onlyTasks: true,
 			taskId: filterByTaskId,
 			ancestorTasksById,
@@ -224,35 +315,74 @@ const useGetSterilizedFocusRecords = () => {
 			endDate: endDateFromUrlDate,
 		});
 
-		return `Focus Records (${(filteredFocusRecords?.length || 0).toLocaleString()}) - ${getFormattedDuration(totalFocusDuration, false)}`;
+		return `Focus Records (${(focusRecords?.length || 0).toLocaleString()}) - ${getFormattedDuration(totalFocusDuration, false)}`;
 	};
 
 	const handleCopyToClipboard = () => {
-		const titleInfo = getTitleInfo();
-		const sterilizedFocusRecordList = getSterilizedFocusRecordList();
-		const allFocusRecordsMarkdown = [];
-
-		// Add title as H1 at the beginning
-		allFocusRecordsMarkdown.push(`# ${titleInfo}\n`);
-
-		for (let i = 0; i < sterilizedFocusRecordList.length; i++) {
-			const sterilizedFocusRecord = sterilizedFocusRecordList[i];
-			const focusRecordMarkdown = serializeFocusRecordToMarkdown(sterilizedFocusRecord);
-			allFocusRecordsMarkdown.push(focusRecordMarkdown);
-
-			// Add separator between records (but not after the last one)
-			if (i !== sterilizedFocusRecordList.length - 1) {
-				allFocusRecordsMarkdown.push('---\n');
-			}
-		}
-
-		const finalMarkdown = allFocusRecordsMarkdown.join('\n');
+		const { sterilizedFocusRecords } = getSterilizedFocusRecordList();
+		const finalMarkdown = getFocusRecordsMarkdown(sterilizedFocusRecords);
 
 		// Optional: copy to clipboard
 		navigator.clipboard.writeText(finalMarkdown);
 	};
 
-	return { getSterilizedFocusRecordList, handleCopyToClipboard };
+	const downloadZipFolderOfGroupedFocusRecords = (groupType) => {
+		const { sterilizedFocusRecordsByProjectId, sterilizedFocusRecordsByTaskId } =
+			getSterilizedFocusRecordList(true);
+
+		const zip = new JSZip();
+
+		// Select the correct group
+		const groupedFocusRecords =
+			groupType === 'project' ? sterilizedFocusRecordsByProjectId : sterilizedFocusRecordsByTaskId;
+
+		for (const groupId of Object.keys(groupedFocusRecords)) {
+			const groupName =
+				groupType === 'project'
+					? groupId !== 'no-project-id'
+						? projectsById[groupId]?.name || 'Unnamed Project'
+						: 'No Project ID'
+					: groupId !== 'no-task-id'
+						? tasksById[groupId]?.title || tasksById[groupId]?.content || tasksById[groupId]?.name
+						: 'No Task Id';
+
+			const { focusRecords, focusDuration } = groupedFocusRecords[groupId];
+			const customTitle = `${groupName} - Focus Records (${focusRecords.length}) - ${getFormattedDuration(focusDuration, false)}`;
+			const markdown = getFocusRecordsMarkdown(focusRecords, customTitle); // ← your existing function
+
+			// Replace special characters and add ".md"
+			const sanitizedName = `${groupName}_focus_records`.replace(/[\/\\?%*:|"<>]/g, '-');
+			zip.file(`${sanitizedName}.md`, markdown);
+		}
+
+		zip.generateAsync({ type: 'blob' }).then((blob) => {
+			saveAs(blob, 'FocusRecords.zip');
+		});
+	};
+
+	const getFocusRecordsMarkdown = (sterilizedFocusRecords, customTitle) => {
+		const titleInfo = customTitle || getTitleInfo();
+		const allFocusRecordsMarkdown = [];
+
+		// Add title as H1 at the beginning
+		allFocusRecordsMarkdown.push(`# ${titleInfo}\n`);
+
+		for (let i = 0; i < sterilizedFocusRecords.length; i++) {
+			const sterilizedFocusRecord = sterilizedFocusRecords[i];
+			const focusRecordMarkdown = serializeFocusRecordToMarkdown(sterilizedFocusRecord);
+			allFocusRecordsMarkdown.push(focusRecordMarkdown);
+
+			// Add separator between records (but not after the last one)
+			if (i !== sterilizedFocusRecords.length - 1) {
+				allFocusRecordsMarkdown.push('---\n');
+			}
+		}
+
+		const finalMarkdown = allFocusRecordsMarkdown.join('\n');
+		return finalMarkdown;
+	};
+
+	return { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords };
 };
 
 export default useGetSterilizedFocusRecords;
