@@ -332,11 +332,20 @@ const useGetSterilizedFocusRecords = () => {
 
 		const zip = new JSZip();
 
-		// Select the correct group
 		const groupedFocusRecords =
 			groupType === 'project' ? sterilizedFocusRecordsByProjectId : sterilizedFocusRecordsByTaskId;
 
-		for (const groupId of Object.keys(groupedFocusRecords)) {
+		// 1. Convert grouped object to array and sort by focusDuration (descending)
+		const sortedGroups = Object.entries(groupedFocusRecords)
+			.map(([groupId, { focusRecords, focusDuration }]) => ({
+				groupId,
+				focusRecords,
+				focusDuration,
+			}))
+			.sort((a, b) => b.focusDuration - a.focusDuration);
+
+		// 2. Add files to ZIP
+		sortedGroups.forEach(({ groupId, focusRecords, focusDuration }, index) => {
 			const groupName =
 				groupType === 'project'
 					? groupId !== 'no-project-id'
@@ -346,14 +355,17 @@ const useGetSterilizedFocusRecords = () => {
 						? tasksById[groupId]?.title || tasksById[groupId]?.content || tasksById[groupId]?.name
 						: 'No Task Id';
 
-			const { focusRecords, focusDuration } = groupedFocusRecords[groupId];
-			const customTitle = `${groupName} - Focus Records (${focusRecords.length}) - ${getFormattedDuration(focusDuration, false)}`;
-			const markdown = getFocusRecordsMarkdown(focusRecords, customTitle); // ← your existing function
+			const formattedDuration = getFormattedDuration(focusDuration, false); // e.g. 12h30m
+			const paddedIndex = String(index + 1).padStart(2, '0');
 
-			// Replace special characters and add ".md"
-			const sanitizedName = `${groupName}_focus_records`.replace(/[\/\\?%*:|"<>]/g, '-');
+			// Title used in the markdown content
+			const customTitle = `${groupName} - Focus Records (${focusRecords.length}) - ${formattedDuration}`;
+			const markdown = getFocusRecordsMarkdown(focusRecords, customTitle);
+
+			// Filename for the markdown file
+			const sanitizedName = `${paddedIndex}_${groupName}_${formattedDuration}`.replace(/[\/\\?%*:|"<>]/g, '-');
 			zip.file(`${sanitizedName}.md`, markdown);
-		}
+		});
 
 		zip.generateAsync({ type: 'blob' }).then((blob) => {
 			saveAs(blob, 'FocusRecords.zip');
