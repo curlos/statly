@@ -8,6 +8,8 @@ import InputNumUserSettings from './InputNumUserSettings';
 import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useState } from 'react';
+import useGetSterilizedFocusRecords from './hooks/useGetSterilizedFocusRecords';
+import Spinner from '../Loaders/Spinner';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -55,7 +57,8 @@ const OtherSectionFocusRecords = () => {
 		});
 	};
 
-	const [copiedToClipboard, setCopiedToClipboard] = useState(false);
+	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
+	const { handleCopyToClipboard } = useGetSterilizedFocusRecords();
 
 	return (
 		<div>
@@ -148,24 +151,35 @@ const OtherSectionFocusRecords = () => {
 								chosenColorObj.hover.textColor
 							)}
 							onClick={() => {
-								console.log('Copy!');
-								setCopiedToClipboard(true);
+								setCopiedToClipboardStatus('copying');
 
+								// Let the UI update before doing heavy work
 								setTimeout(() => {
-									setCopiedToClipboard(false);
-								}, 1000);
+									handleCopyToClipboard();
+									setCopiedToClipboardStatus('done');
+
+									setTimeout(() => {
+										setCopiedToClipboardStatus('none');
+									}, 1000);
+								}, 0);
 							}}
 						>
-							<Icon
-								name={copiedToClipboard ? 'check' : 'content_copy'}
-								fill={0}
-								customClass={classNames(
-									'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
-									copiedToClipboard
-										? 'text-emerald-500'
-										: `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
-								)}
-							/>
+							{/* <Spinner /> */}
+
+							{copiedToClipboardStatus === 'copying' ? (
+								<Spinner />
+							) : (
+								<Icon
+									name={copiedToClipboardStatus === 'none' ? 'content_copy' : 'check'}
+									fill={0}
+									customClass={classNames(
+										'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+										copiedToClipboardStatus === 'none'
+											? `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
+											: 'text-emerald-500'
+									)}
+								/>
+							)}
 							<div>Copy Focus Records To Clipboard</div>
 						</div>
 
