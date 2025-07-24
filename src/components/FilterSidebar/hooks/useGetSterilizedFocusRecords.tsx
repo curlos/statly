@@ -1,8 +1,13 @@
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useFilterFocusRecords } from '../../../pages/ticktick-1.00/focus-records/useFilterFocusRecords';
 import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { formatDateTime, getFormattedShortMonthDay } from '../../../utils/date.utils';
-import { getAllCompletedTasksDuringFocusRecord, getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
+import {
+	getAllCompletedTasksDuringFocusRecord,
+	getFocusDuration,
+	getFocusDurationFromArray,
+} from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 
@@ -19,6 +24,8 @@ const useGetSterilizedFocusRecords = () => {
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
+
+	const { searchParams } = useSearchParamsContext();
 
 	const { filteredFocusRecords } = useFilterFocusRecords();
 
@@ -197,9 +204,36 @@ const useGetSterilizedFocusRecords = () => {
 		return lines.join('\n');
 	};
 
+	const getTitleInfo = () => {
+		const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+		const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+		const taskIdFromUrl = searchParams.get('task-id');
+		const filterByTaskId = taskIdFromUrl || false;
+
+		const startDateFromUrlDate = new Date(startDateFromUrl);
+		const endDateFromUrlDate = new Date(endDateFromUrl);
+
+		const totalFocusDuration = getFocusDurationFromArray({
+			focusRecords: filteredFocusRecords,
+			onlyTasks: true,
+			taskId: filterByTaskId,
+			ancestorTasksById,
+			showTaskAncestors: true,
+			taskIdIncludeFocusRecordsFromSubtasks: true,
+			startDate: startDateFromUrlDate,
+			endDate: endDateFromUrlDate,
+		});
+
+		return `Focus Records (${(filteredFocusRecords?.length || 0).toLocaleString()}) - ${getFormattedDuration(totalFocusDuration, false)}`;
+	};
+
 	const handleCopyToClipboard = () => {
+		const titleInfo = getTitleInfo();
 		const sterilizedFocusRecordList = getSterilizedFocusRecordList();
 		const allFocusRecordsMarkdown = [];
+
+		// Add title as H1 at the beginning
+		allFocusRecordsMarkdown.push(`# ${titleInfo}\n`);
 
 		for (let i = 0; i < sterilizedFocusRecordList.length; i++) {
 			const sterilizedFocusRecord = sterilizedFocusRecordList[i];
