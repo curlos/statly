@@ -16,6 +16,7 @@ import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/f
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
+import { useUserSettingsContext } from '../../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 
 const useGetSterilizedFocusRecords = () => {
 	// RTK Query - TickTick 1.0 - Tasks
@@ -35,6 +36,10 @@ const useGetSterilizedFocusRecords = () => {
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
 		useGetSessionAppFocusRecordsQuery();
 	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
+
+	const {
+		focusRecordsPageSettings: { taskIdIncludeFocusRecordsFromSubtasks },
+	} = useUserSettingsContext();
 
 	const { searchParams } = useSearchParamsContext();
 
@@ -83,11 +88,13 @@ const useGetSterilizedFocusRecords = () => {
 							}
 						});
 
-						sterilizedFocusRecord.tasksData.forEach((task) => {
-							task?.ancestorTaskIds?.forEach((taskId) => {
-								uniqueTaskIds.add(taskId);
+						if (taskIdIncludeFocusRecordsFromSubtasks) {
+							sterilizedFocusRecord.tasksData.forEach((task) => {
+								task?.ancestorTaskIds?.forEach((taskId) => {
+									uniqueTaskIds.add(taskId);
+								});
 							});
-						});
+						}
 					}
 
 					if (focusApp === 'session-app') {
@@ -132,14 +139,18 @@ const useGetSterilizedFocusRecords = () => {
 						const sterilizedFocusRecordOnlyWithTaskIds = { ...sterilizedFocusRecord };
 						sterilizedFocusRecordOnlyWithTaskIds.tasksData =
 							sterilizedFocusRecordOnlyWithTaskIds.tasksData.filter((task) => {
-								// If the task is NOT directly in the Focus Record's tasks, then look through all of othe Focus Record's task's breadcrumbs and check if the taskId is an ancestor of one of those tasks.
-								const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
-									task,
-									taskId,
-									ancestorTasksById
-								);
+								if (taskIdIncludeFocusRecordsFromSubtasks) {
+									// If the task is NOT directly in the Focus Record's tasks, then look through all of othe Focus Record's task's breadcrumbs and check if the taskId is an ancestor of one of those tasks.
+									const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+										task,
+										taskId,
+										ancestorTasksById
+									);
 
-								return foundMatchingTaskOrAncestor;
+									return foundMatchingTaskOrAncestor;
+								}
+
+								return task.id === taskId;
 							});
 
 						sterilizedFocusRecordsByTaskId[taskId].focusRecords.push(sterilizedFocusRecordOnlyWithTaskIds);
