@@ -139,7 +139,7 @@ const useGetSterilizedFocusRecords = () => {
 						const sterilizedFocusRecordOnlyWithTaskIds = { ...sterilizedFocusRecord };
 						sterilizedFocusRecordOnlyWithTaskIds.tasksData =
 							sterilizedFocusRecordOnlyWithTaskIds.tasksData.filter((task) => {
-								if (taskIdIncludeFocusRecordsFromSubtasks) {
+								if (focusApp === 'TickTick' && taskIdIncludeFocusRecordsFromSubtasks) {
 									// If the task is NOT directly in the Focus Record's tasks, then look through all of othe Focus Record's task's breadcrumbs and check if the taskId is an ancestor of one of those tasks.
 									const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
 										task,
@@ -158,8 +158,6 @@ const useGetSterilizedFocusRecords = () => {
 					});
 				}
 			});
-
-		console.log(sterilizedFocusRecordsByTaskId);
 
 		return {
 			sterilizedFocusRecords,
@@ -260,11 +258,13 @@ const useGetSterilizedFocusRecords = () => {
 			const dateStr = `${startTimeObj.time} - ${endTimeObj.time}`;
 
 			const focusRecordTitle = getFocusRecordProperty(focusRecord, 'displayTitle');
+			const taskId = getFocusRecordProperty(focusRecord, 'taskId');
 
 			return [
 				{
 					name: focusRecordTitle,
 					date: dateStr,
+					id: taskId,
 				},
 			];
 		};
@@ -301,9 +301,8 @@ const useGetSterilizedFocusRecords = () => {
 
 		const lines = [];
 
-		lines.push(``);
+		// Date and duration
 		lines.push(`### 📅 ${dateAndDurationStr}`);
-		lines.push(``);
 
 		// Tasks
 		tasksData.forEach((task) => {
@@ -311,13 +310,11 @@ const useGetSterilizedFocusRecords = () => {
 			if (task.date) {
 				lines.push(`*${task.date}*`);
 			}
-			lines.push('');
 		});
 
 		// Notes
 		if (note) {
 			lines.push(note.trim());
-			lines.push('');
 		}
 
 		// Completed tasks
@@ -326,7 +323,6 @@ const useGetSterilizedFocusRecords = () => {
 			completedTaskNames.forEach((taskName) => {
 				lines.push(`- [x] ${taskName}`);
 			});
-			lines.push('');
 		}
 
 		return lines.join('\n');
@@ -386,17 +382,20 @@ const useGetSterilizedFocusRecords = () => {
 			const groupName =
 				groupType === 'project'
 					? groupId !== 'no-project-id'
-						? projectsById[groupId]?.name || 'Unnamed Project'
+						? projectsById[groupId]?.name || sessionCategoriesById[groupId]?.title
 						: 'No Project ID'
 					: groupId !== 'no-task-id'
-						? tasksById[groupId]?.title || tasksById[groupId]?.content || tasksById[groupId]?.name
+						? tasksById[groupId]?.title ||
+							tasksById[groupId]?.content ||
+							tasksById[groupId]?.name ||
+							groupId
 						: 'No Task Id';
 
 			const formattedDuration = getFormattedDuration(focusDuration, false); // e.g. 12h30m
 			const paddedIndex = String(index + 1).padStart(2, '0');
 
 			// Title used in the markdown content
-			const customTitle = `${groupName} - Focus Records (${focusRecords.length}) - ${formattedDuration}`;
+			const customTitle = `${groupName} - Focus Records (${focusRecords.length.toLocaleString()}) - ${formattedDuration}`;
 			const markdown = getFocusRecordsMarkdown(focusRecords, customTitle);
 
 			// Filename for the markdown file
@@ -414,7 +413,8 @@ const useGetSterilizedFocusRecords = () => {
 		const allFocusRecordsMarkdown = [];
 
 		// Add title as H1 at the beginning
-		allFocusRecordsMarkdown.push(`# ${titleInfo}\n`);
+		allFocusRecordsMarkdown.push(`# ${titleInfo}`);
+		allFocusRecordsMarkdown.push('---\n\n');
 
 		for (let i = 0; i < sterilizedFocusRecords.length; i++) {
 			const sterilizedFocusRecord = sterilizedFocusRecords[i];
