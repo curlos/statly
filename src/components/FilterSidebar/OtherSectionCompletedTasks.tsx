@@ -5,6 +5,11 @@ import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
+import Spinner from '../Loaders/Spinner';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -95,6 +100,35 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
+						{/* Copy Focus Records To Clipboard */}
+						<CompletedTasksExporter
+							{...{
+								text: 'Copy Completed Tasks To Clipboard',
+								icon: 'content_copy',
+								action: 'handleCopyToClipboard',
+							}}
+						/>
+
+						{/* TODO: Export Focus Records By Project */}
+						{/* <CompletedTasksExporter
+							{...{
+								text: 'Export Completed Tasks By Project',
+								icon: 'download',
+								action: 'downloadZipFolderOfGroupedFocusRecords',
+								params: ['project'],
+							}}
+						/> */}
+
+						{/* TODO: Export Focus Records By Task */}
+						{/* <CompletedTasksExporter
+							{...{
+								text: 'Export Completed Tasks by Parent Task',
+								icon: 'download',
+								action: 'downloadZipFolderOfGroupedFocusRecords',
+								params: ['task'],
+							}}
+						/> */}
+
 						{/* Input - Max Days Per Page */}
 						<InputNumUserSettings
 							{...{
@@ -111,6 +145,55 @@ const OtherSectionFocusRecords = () => {
 					</>
 				)}
 			</Accordion>
+		</div>
+	);
+};
+
+const CompletedTasksExporter = ({ text, icon, action, params = [] }) => {
+	const { chosenColorObj } = useThemeContext();
+
+	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
+	const { handleCopyToClipboard, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
+
+	const actionFunctions = {
+		handleCopyToClipboard: handleCopyToClipboard,
+		downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedCompletedTasks,
+	};
+
+	return (
+		<div
+			className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+			onClick={() => {
+				setCopiedToClipboardStatus('copying');
+
+				// Let the UI update before doing heavy work
+				setTimeout(() => {
+					const actionFunction = actionFunctions[action];
+					actionFunction(...params);
+
+					setCopiedToClipboardStatus('done');
+
+					setTimeout(() => {
+						setCopiedToClipboardStatus('none');
+					}, 1000);
+				}, 0);
+			}}
+		>
+			{copiedToClipboardStatus === 'copying' ? (
+				<Spinner />
+			) : (
+				<Icon
+					name={copiedToClipboardStatus === 'none' ? icon : 'check'}
+					fill={0}
+					customClass={classNames(
+						'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+						copiedToClipboardStatus === 'none'
+							? `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
+							: 'text-emerald-500'
+					)}
+				/>
+			)}
+			<div>{text}</div>
 		</div>
 	);
 };

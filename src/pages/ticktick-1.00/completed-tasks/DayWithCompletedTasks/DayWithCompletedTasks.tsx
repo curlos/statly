@@ -8,7 +8,6 @@ import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 import { useGetTodoistAllTasksQuery } from '../../../../services/resources/oldFocusAppsApi';
 import CompletedTasksWithBreadcrumbs from './CompletedTasksWithBreadcrumbs';
-import CompletedTask from './CompletedTask';
 import NestedCompletedTasks from './NestedCompletedTasks';
 import {
 	getGroupedSubtasksAndParentTasks,
