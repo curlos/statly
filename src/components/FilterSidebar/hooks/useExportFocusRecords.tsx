@@ -18,7 +18,7 @@ import { saveAs } from 'file-saver';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
 import { useUserSettingsContext } from '../../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 
-const useGetSterilizedFocusRecords = () => {
+const useExportFocusRecords = () => {
 	// RTK Query - TickTick 1.0 - Tasks
 	const { data: fetchedTasks } = useGetAllTasksQuery();
 	const { tasksById, ancestorTasksById, completedTasksGroupedByDate } = fetchedTasks || {};
@@ -431,4 +431,4 @@ const useGetSterilizedFocusRecords = () => {
 	return { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords };
 };
 
-export default useGetSterilizedFocusRecords;
+export default useExportFocusRecords;

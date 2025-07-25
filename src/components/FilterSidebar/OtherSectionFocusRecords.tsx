@@ -8,7 +8,7 @@ import InputNumUserSettings from './InputNumUserSettings';
 import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useState } from 'react';
-import useGetSterilizedFocusRecords from './hooks/useGetSterilizedFocusRecords';
+import useExportFocusRecords from './hooks/useExportFocusRecords';
 import Spinner from '../Loaders/Spinner';
 
 const OtherSectionFocusRecords = () => {
@@ -148,6 +148,7 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
+						{/* Export Focus Records By Project */}
 						<FocusRecordsExporter
 							{...{
 								text: 'Export Focus Records By Project',
@@ -157,6 +158,7 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
+						{/* Export Focus Records By Task */}
 						<FocusRecordsExporter
 							{...{
 								text: 'Export Focus Records By Task',
@@ -190,7 +192,7 @@ const FocusRecordsExporter = ({ text, icon, action, params = [] }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	const { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords } = useGetSterilizedFocusRecords();
+	const { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords } = useExportFocusRecords();
 
 	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
