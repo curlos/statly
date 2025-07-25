@@ -134,7 +134,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 												name="check_box"
 												customClass={classNames('!text-[20px] text-white mt-[2px]')}
 											/>
-											<span>{completedTask.title || completedTask.content}</span>
+											<span className="break-words">
+												{completedTask.title || completedTask.content}
+											</span>
 										</li>
 									);
 								})}
