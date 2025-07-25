@@ -322,8 +322,6 @@ const useGetSterilizedFocusRecords = () => {
 			});
 		}
 
-		console.log(lines);
-
 		return lines.join('\n');
 	};
 
@@ -408,7 +406,7 @@ const useGetSterilizedFocusRecords = () => {
 	};
 
 	const getFocusRecordsMarkdown = (sterilizedFocusRecords, customTitle) => {
-		const titleInfo = customTitle || getTitleInfo();
+		const titleInfo = customTitle || getTitleInfo(filteredFocusRecords);
 		const allFocusRecordsMarkdown = [];
 
 		// Add title as H1 at the beginning
