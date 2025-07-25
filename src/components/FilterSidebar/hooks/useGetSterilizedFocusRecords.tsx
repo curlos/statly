@@ -306,10 +306,7 @@ const useGetSterilizedFocusRecords = () => {
 
 		// Tasks
 		tasksData.forEach((task) => {
-			lines.push(`**📝 ${task.name}**`);
-			if (task.date) {
-				lines.push(`*${task.date}*`);
-			}
+			lines.push(`**📝 ${task.name}**` + (task.date ? `: ${task.date}` : ''));
 		});
 
 		// Notes
@@ -324,6 +321,8 @@ const useGetSterilizedFocusRecords = () => {
 				lines.push(`- [x] ${taskName}`);
 			});
 		}
+
+		console.log(lines);
 
 		return lines.join('\n');
 	};
