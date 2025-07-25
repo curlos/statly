@@ -33,6 +33,7 @@ const useExportCompletedTasks = () => {
 
 	const getSterilizedDaysWithCompletedTasks = () => {
 		const sterilizedDaysWithCompletedTasks = {};
+		const numberOfCompletedTasksByDateStr = {};
 
 		filteredDaysWithCompletedTasks.forEach((dateWithCompletedTasks) => {
 			const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
@@ -86,7 +87,14 @@ const useExportCompletedTasks = () => {
 				const name =
 					parentTaskTitle +
 					(ancestorTaskNamesStr ? ` - ${ancestorTaskNamesStr}` : '') +
-					(project ? ` (${project.name})` : '');
+					(project ? ` (${project.name})` : '') +
+					` (${completedSubtasks.length})`;
+
+				if (!numberOfCompletedTasksByDateStr[dateStr]) {
+					numberOfCompletedTasksByDateStr[dateStr] = 0;
+				}
+
+				numberOfCompletedTasksByDateStr[dateStr] += completedSubtasks.length;
 
 				sterilizedDaysWithCompletedTasks[dateStr].push({
 					name: name,
@@ -96,11 +104,15 @@ const useExportCompletedTasks = () => {
 			});
 		});
 
-		return sterilizedDaysWithCompletedTasks;
+		return {
+			sterilizedDaysWithCompletedTasks,
+			numberOfCompletedTasksByDateStr,
+		};
 	};
 
 	const handleCopyToClipboard = () => {
-		const sterilizedDaysWithCompletedTasks = getSterilizedDaysWithCompletedTasks();
+		const { sterilizedDaysWithCompletedTasks, numberOfCompletedTasksByDateStr } =
+			getSterilizedDaysWithCompletedTasks();
 
 		const allDaysWithCompletedTasksMarkdown = [];
 
@@ -111,7 +123,8 @@ const useExportCompletedTasks = () => {
 		oldestToNewestDateStrs.forEach((dateStr) => {
 			const dayWithCompletedTasksMarkdown = serializeDayWithCompletedTasks(
 				dateStr,
-				sterilizedDaysWithCompletedTasks[dateStr]
+				sterilizedDaysWithCompletedTasks[dateStr],
+				numberOfCompletedTasksByDateStr[dateStr]
 			);
 			allDaysWithCompletedTasksMarkdown.push(dayWithCompletedTasksMarkdown);
 		});
@@ -124,9 +137,9 @@ const useExportCompletedTasks = () => {
 		return finalMarkdown;
 	};
 
-	function serializeDayWithCompletedTasks(dateStr, dayWithCompletedTasks) {
+	function serializeDayWithCompletedTasks(dateStr, dayWithCompletedTasks, numberOfCompletedTasks) {
 		const lines = [];
-		lines.push(`### 📅 ${dateStr}\n`);
+		lines.push(`### 📅 ${dateStr} (${numberOfCompletedTasks})\n`);
 
 		dayWithCompletedTasks.forEach((parentTaskData, index) => {
 			const { name, completedSubtasks } = parentTaskData;
@@ -148,8 +161,6 @@ const useExportCompletedTasks = () => {
 	}
 
 	const downloadZipFolderOfGroupedCompletedTasks = (groupType) => {};
-
-	filteredDaysWithCompletedTasks && getSterilizedDaysWithCompletedTasks();
 
 	return {
 		handleCopyToClipboard,
