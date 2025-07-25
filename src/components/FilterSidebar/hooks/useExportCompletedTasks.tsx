@@ -26,14 +26,40 @@ const useExportCompletedTasks = () => {
 
 	// Context
 	const {
-		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
+		completedTasksPageSettings: { showIndentedTasks },
 	} = useUserSettingsContext();
 
 	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
 
-	const getSterilizedDaysWithCompletedTasks = () => {
-		const sterilizedDaysWithCompletedTasks = {};
-		const numberOfCompletedTasksByDateStr = {};
+	const getNestedTasksObj = (taskIds, groupedSubtasksByParentTask, parentDirectChildrenTaskIdsByParentId) => {
+		const dayWithCompletedTasksIndentedObj = {};
+
+		taskIds.forEach((parentTaskId) => {
+			const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
+
+			// These are the tasks who are direct children of the parent task. These will be rendered as completed checkboxes with the content.
+			const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
+
+			const nextIndentedTaskIds = parentDirectChildrenTaskIdsByParentId[parentTaskId];
+
+			dayWithCompletedTasksIndentedObj[parentTaskId] = {
+				directCompletedSubtasks,
+				parentDirectChildrenCompletedTasks:
+					nextIndentedTaskIds &&
+					nextIndentedTaskIds.length > 0 &&
+					getNestedTasksObj(
+						nextIndentedTaskIds,
+						groupedSubtasksByParentTask,
+						parentDirectChildrenTaskIdsByParentId
+					),
+			};
+		});
+
+		return dayWithCompletedTasksIndentedObj;
+	};
+
+	const getSterilizedDaysWithCompletedTasksIndented = () => {
+		const sterilizedDaysWithCompletedTasksIndented = {};
 
 		filteredDaysWithCompletedTasks.forEach((dateWithCompletedTasks) => {
 			const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
@@ -48,6 +74,31 @@ const useExportCompletedTasks = () => {
 				todoistAllTasksById,
 				ancestorTasksById,
 				todoistAncestorTasksById,
+			});
+
+			const parentDirectChildrenTaskIdsByParentId = getParentDirectChildrenTaskIdsByParentId(tasksWithParentId);
+
+			const nestedTasksObj = getNestedTasksObj(
+				tasksWithNoParent,
+				groupedSubtasksByParentTask,
+				parentDirectChildrenTaskIdsByParentId
+			);
+
+			sterilizedDaysWithCompletedTasksIndented[dateStr] = nestedTasksObj;
+		});
+
+		return sterilizedDaysWithCompletedTasksIndented;
+	};
+
+	const getSterilizedDaysWithCompletedTasks = () => {
+		const sterilizedDaysWithCompletedTasks = {};
+		const numberOfCompletedTasksByDateStr = {};
+
+		filteredDaysWithCompletedTasks.forEach((dateWithCompletedTasks) => {
+			const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
+
+			const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks({
+				completedTasksForDay,
 			});
 
 			Object.keys(groupedSubtasksByParentTask).forEach((parentTaskId, i) => {
@@ -84,11 +135,13 @@ const useExportCompletedTasks = () => {
 				const projectId = parentTask['projectId'] || parentTask['v2_project_id'] || parentTask['project_id'];
 				const project = projectsById[projectId] || todoistAllProjectsById[projectId];
 
-				const name =
-					parentTaskTitle +
-					(ancestorTaskNamesStr ? ` - ${ancestorTaskNamesStr}` : '') +
-					(project ? ` (${project.name})` : '') +
-					` (${completedSubtasks.length})`;
+				const additionalTaskNameInfo = showIndentedTasks
+					? ''
+					: (ancestorTaskNamesStr ? ` - ${ancestorTaskNamesStr}` : '') +
+						(project ? ` (${project.name})` : '') +
+						` (${completedSubtasks.length})`;
+
+				const name = parentTaskTitle + additionalTaskNameInfo;
 
 				if (!numberOfCompletedTasksByDateStr[dateStr]) {
 					numberOfCompletedTasksByDateStr[dateStr] = 0;
@@ -100,6 +153,7 @@ const useExportCompletedTasks = () => {
 					name: name,
 					ancestorTaskIds: parentTaskBreadcrumbs,
 					completedSubtasks,
+					id: parentTask.id,
 				});
 			});
 		});
@@ -110,7 +164,52 @@ const useExportCompletedTasks = () => {
 		};
 	};
 
+	/**
+	 * @description Get and map the parent ids to their direct children. The array will contain the list of direct children (who are siblings to each other).
+	 * @returns {Object}
+	 */
+	const getParentDirectChildrenTaskIdsByParentId = (tasksWithParentId) => {
+		const parentDirectChildrenTaskIdsByParentId = {};
+
+		Object.entries(tasksWithParentId).forEach(([currentTaskId, parentTaskId]) => {
+			if (parentTaskId) {
+				if (!parentDirectChildrenTaskIdsByParentId[parentTaskId]) {
+					parentDirectChildrenTaskIdsByParentId[parentTaskId] = [];
+				}
+
+				// This array for the specific key of "parentTaskId" will only contain the taskIds of tasks who have the SAME PARENT ID. If they have the same parent id, then they are siblings. This will only contain the direct children of that parent. It will NOT contain the parent's grandchildren or great-grandchildren and so on.
+				parentDirectChildrenTaskIdsByParentId[parentTaskId].push(currentTaskId);
+			}
+		});
+
+		return parentDirectChildrenTaskIdsByParentId;
+	};
+
 	const handleCopyToClipboard = () => {
+		if (showIndentedTasks) {
+			const sterilizedDaysWithCompletedTasksIndented = getSterilizedDaysWithCompletedTasksIndented();
+
+			const oldestToNewestDateStrs = Object.keys(sterilizedDaysWithCompletedTasksIndented).sort((a, b) => {
+				return new Date(a) - new Date(b);
+			});
+
+			const allDaysMarkdown = [];
+
+			oldestToNewestDateStrs.forEach((dateStr) => {
+				console.log(dateStr);
+
+				const indentedTasks = sterilizedDaysWithCompletedTasksIndented[dateStr];
+				const dayCompletedTasksMarkdown = serializeNestedTasksToMarkdown(indentedTasks);
+				allDaysMarkdown.push(`### 📅  ${dateStr}\n\n` + dayCompletedTasksMarkdown);
+			});
+
+			const finalMarkdown = allDaysMarkdown.join('\n---\n');
+			// Optional: copy to clipboard
+			navigator.clipboard.writeText(finalMarkdown);
+
+			return finalMarkdown;
+		}
+
 		const { sterilizedDaysWithCompletedTasks, numberOfCompletedTasksByDateStr } =
 			getSterilizedDaysWithCompletedTasks();
 
@@ -157,6 +256,41 @@ const useExportCompletedTasks = () => {
 		});
 
 		lines.push('\n---\n');
+		return lines.join('\n');
+	}
+
+	function serializeNestedTasksToMarkdown(data, level = 0) {
+		const lines = [];
+
+		for (const parentTaskId in data) {
+			const entry = data[parentTaskId];
+			const indent = '  '.repeat(level);
+
+			const parentTask = tasksById[parentTaskId] || todoistAllTasksById[parentTaskId];
+			const parentTaskName = parentTask?.title || parentTask?.content || parentTaskId;
+
+			console.log(parentTask);
+
+			// Include the parent task ID as a bold header
+			lines.push(`${indent}**${parentTaskName}**`);
+
+			// Render direct completed subtasks
+			if (entry.directCompletedSubtasks?.length) {
+				for (const task of entry.directCompletedSubtasks) {
+					lines.push(`${indent}- [x] ${task.title}`);
+				}
+			}
+
+			// Recursively render children
+			if (entry.parentDirectChildrenCompletedTasks) {
+				const childMarkdown = serializeNestedTasksToMarkdown(
+					entry.parentDirectChildrenCompletedTasks,
+					level + 1
+				);
+				lines.push(childMarkdown);
+			}
+		}
+
 		return lines.join('\n');
 	}
 
