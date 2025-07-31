@@ -194,6 +194,7 @@ const useExportCompletedTasks = () => {
 			});
 
 			const allDaysMarkdown = [];
+			let totalCompletedTasks = 0;
 
 			oldestToNewestDateStrs.forEach((dateStr) => {
 				console.log(dateStr);
@@ -202,9 +203,13 @@ const useExportCompletedTasks = () => {
 				const dayTotalCompletedTasks = getTotalCompletedTasksFromIndentedData(indentedTasks);
 				const dayCompletedTasksMarkdown = serializeNestedTasksToMarkdown(indentedTasks);
 				allDaysMarkdown.push(`### 📅  ${dateStr} (${dayTotalCompletedTasks})\n\n` + dayCompletedTasksMarkdown);
+
+				totalCompletedTasks += dayTotalCompletedTasks;
 			});
 
-			const finalMarkdown = allDaysMarkdown.join('\n---\n');
+			const titleLine = `# Completed Tasks (${totalCompletedTasks.toLocaleString()})\n`;
+
+			const finalMarkdown = titleLine + allDaysMarkdown.join('\n---\n');
 			// Optional: copy to clipboard
 			navigator.clipboard.writeText(finalMarkdown);
 
@@ -220,16 +225,21 @@ const useExportCompletedTasks = () => {
 			return new Date(a) - new Date(b);
 		});
 
+		let totalCompletedTasks = 0;
+
 		oldestToNewestDateStrs.forEach((dateStr) => {
 			const dayWithCompletedTasksMarkdown = serializeDayWithCompletedTasks(
 				dateStr,
 				sterilizedDaysWithCompletedTasks[dateStr],
 				numberOfCompletedTasksByDateStr[dateStr]
 			);
+
+			totalCompletedTasks += numberOfCompletedTasksByDateStr[dateStr];
 			allDaysWithCompletedTasksMarkdown.push(dayWithCompletedTasksMarkdown);
 		});
 
-		const finalMarkdown = allDaysWithCompletedTasksMarkdown.join('\n');
+		const titleLine = `# Completed Tasks (${totalCompletedTasks.toLocaleString()})\n`;
+		const finalMarkdown = titleLine + allDaysWithCompletedTasksMarkdown.join('\n');
 
 		// Optional: copy to clipboard
 		navigator.clipboard.writeText(finalMarkdown);
