@@ -199,8 +199,9 @@ const useExportCompletedTasks = () => {
 				console.log(dateStr);
 
 				const indentedTasks = sterilizedDaysWithCompletedTasksIndented[dateStr];
+				const dayTotalCompletedTasks = getTotalCompletedTasksFromIndentedData(indentedTasks);
 				const dayCompletedTasksMarkdown = serializeNestedTasksToMarkdown(indentedTasks);
-				allDaysMarkdown.push(`### 📅  ${dateStr}\n\n` + dayCompletedTasksMarkdown);
+				allDaysMarkdown.push(`### 📅  ${dateStr} (${dayTotalCompletedTasks})\n\n` + dayCompletedTasksMarkdown);
 			});
 
 			const finalMarkdown = allDaysMarkdown.join('\n---\n');
@@ -269,15 +270,15 @@ const useExportCompletedTasks = () => {
 			const parentTask = tasksById[parentTaskId] || todoistAllTasksById[parentTaskId];
 			const parentTaskName = parentTask?.title || parentTask?.content || parentTaskId;
 
-			console.log(parentTask);
-
 			// Include the parent task ID as a bold header
-			lines.push(`${indent}**${parentTaskName}**`);
+			lines.push(`${indent}- **${parentTaskName}**`);
 
 			// Render direct completed subtasks
 			if (entry.directCompletedSubtasks?.length) {
 				for (const task of entry.directCompletedSubtasks) {
-					lines.push(`${indent}- [x] ${task.title}`);
+					const taskName = task?.title || task?.content;
+					const subIndent = '  '.repeat(level + 1); // one level deeper
+					lines.push(`${subIndent}- [x] ${taskName}`);
 				}
 			}
 
@@ -293,6 +294,23 @@ const useExportCompletedTasks = () => {
 
 		return lines.join('\n');
 	}
+
+	const getTotalCompletedTasksFromIndentedData = (data) => {
+		let allDirectCompletedTasksTotal = 0;
+
+		for (const parentTaskId in data) {
+			const entry = data[parentTaskId];
+			allDirectCompletedTasksTotal += entry.directCompletedSubtasks ? entry.directCompletedSubtasks.length : 0;
+
+			if (entry.parentDirectChildrenCompletedTasks) {
+				allDirectCompletedTasksTotal += getTotalCompletedTasksFromIndentedData(
+					entry.parentDirectChildrenCompletedTasks
+				);
+			}
+		}
+
+		return allDirectCompletedTasksTotal;
+	};
 
 	const downloadZipFolderOfGroupedCompletedTasks = (groupType) => {};
 
