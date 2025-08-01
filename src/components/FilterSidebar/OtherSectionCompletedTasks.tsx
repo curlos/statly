@@ -110,24 +110,24 @@ const OtherSectionFocusRecords = () => {
 						/>
 
 						{/* TODO: Export Focus Records By Project */}
-						{/* <CompletedTasksExporter
+						<CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks By Project',
 								icon: 'download',
-								action: 'downloadZipFolderOfGroupedFocusRecords',
+								action: 'downloadZipFolderOfGroupedCompletedTasks',
 								params: ['project'],
 							}}
-						/> */}
+						/>
 
 						{/* TODO: Export Focus Records By Task */}
-						{/* <CompletedTasksExporter
+						<CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks by Parent Task',
 								icon: 'download',
-								action: 'downloadZipFolderOfGroupedFocusRecords',
+								action: 'downloadZipFolderOfGroupedCompletedTasks',
 								params: ['task'],
 							}}
-						/> */}
+						/>
 
 						{/* Input - Max Days Per Page */}
 						<InputNumUserSettings
@@ -157,7 +157,7 @@ const CompletedTasksExporter = ({ text, icon, action, params = [] }) => {
 
 	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
-		downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedCompletedTasks,
+		downloadZipFolderOfGroupedCompletedTasks: downloadZipFolderOfGroupedCompletedTasks,
 	};
 
 	return (

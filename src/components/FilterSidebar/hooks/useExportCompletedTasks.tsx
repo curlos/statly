@@ -1,3 +1,4 @@
+import JSZip from 'jszip';
 import {
 	getGroupedSubtasksAndParentTasks,
 	getTasksWithParentIdAndNoParent,
@@ -6,6 +7,7 @@ import { useFilterCompletedTasks } from '../../../pages/ticktick-1.00/completed-
 import { useUserSettingsContext } from '../../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
 import { useGetTodoistAllProjectsQuery, useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
+import { saveAs } from 'file-saver';
 
 const useExportCompletedTasks = () => {
 	// RTK Query - TickTick 1.0 - Tasks
@@ -90,9 +92,18 @@ const useExportCompletedTasks = () => {
 		return sterilizedDaysWithCompletedTasksIndented;
 	};
 
-	const getSterilizedDaysWithCompletedTasks = () => {
+	const getSterilizedDaysWithCompletedTasks = (groupByProjectId = false, groupByTaskId = false) => {
 		const sterilizedDaysWithCompletedTasks = {};
 		const numberOfCompletedTasksByDateStr = {};
+
+		const sterilizedDaysWithCompletedTasksByProjectId = {};
+		const numberOfCompletedTasksByDateStrByProjectId = {};
+
+		// const sterilizedDaysWithCompletedTasksByTaskId = {};
+		// const numberOfCompletedTasksByDateStrByTaskId = {};
+
+		// const uniqueProjectIds = new Set();
+		// const uniqueTaskIds = new Set();
 
 		filteredDaysWithCompletedTasks.forEach((dateWithCompletedTasks) => {
 			const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
@@ -155,12 +166,41 @@ const useExportCompletedTasks = () => {
 					completedSubtasks,
 					id: parentTask.id,
 				});
+
+				if (groupByProjectId) {
+					if (!sterilizedDaysWithCompletedTasksByProjectId[projectId]) {
+						sterilizedDaysWithCompletedTasksByProjectId[projectId] = {};
+					}
+
+					if (!sterilizedDaysWithCompletedTasksByProjectId[projectId][dateStr]) {
+						sterilizedDaysWithCompletedTasksByProjectId[projectId][dateStr] = [];
+					}
+
+					if (!numberOfCompletedTasksByDateStrByProjectId[projectId]) {
+						numberOfCompletedTasksByDateStrByProjectId[projectId] = {};
+					}
+
+					if (!numberOfCompletedTasksByDateStrByProjectId[projectId][dateStr]) {
+						numberOfCompletedTasksByDateStrByProjectId[projectId][dateStr] = 0;
+					}
+
+					sterilizedDaysWithCompletedTasksByProjectId[projectId][dateStr].push({
+						name: name,
+						ancestorTaskIds: parentTaskBreadcrumbs,
+						completedSubtasks,
+						id: parentTask.id,
+					});
+
+					numberOfCompletedTasksByDateStrByProjectId[projectId][dateStr] += completedSubtasks.length;
+				}
 			});
 		});
 
 		return {
 			sterilizedDaysWithCompletedTasks,
 			numberOfCompletedTasksByDateStr,
+			sterilizedDaysWithCompletedTasksByProjectId,
+			numberOfCompletedTasksByDateStrByProjectId,
 		};
 	};
 
@@ -197,8 +237,6 @@ const useExportCompletedTasks = () => {
 			let totalCompletedTasks = 0;
 
 			oldestToNewestDateStrs.forEach((dateStr) => {
-				console.log(dateStr);
-
 				const indentedTasks = sterilizedDaysWithCompletedTasksIndented[dateStr];
 				const dayTotalCompletedTasks = getTotalCompletedTasksFromIndentedData(indentedTasks);
 				const dayCompletedTasksMarkdown = serializeNestedTasksToMarkdown(indentedTasks);
@@ -322,7 +360,95 @@ const useExportCompletedTasks = () => {
 		return allDirectCompletedTasksTotal;
 	};
 
-	const downloadZipFolderOfGroupedCompletedTasks = (groupType) => {};
+	const downloadZipFolderOfGroupedCompletedTasks = (groupType) => {
+		const {
+			sterilizedDaysWithCompletedTasksByProjectId,
+			numberOfCompletedTasksByDateStrByProjectId,
+			sterilizedDaysWithCompletedTasksByTaskId,
+			numberOfCompletedTasksByDateStrByTaskId,
+		} = getSterilizedDaysWithCompletedTasks(true, true);
+
+		console.log(groupType);
+
+		const zip = new JSZip();
+
+		const groupedCompletedTasks =
+			groupType === 'project'
+				? sterilizedDaysWithCompletedTasksByProjectId
+				: sterilizedDaysWithCompletedTasksByTaskId;
+
+		const allCompletedTasksGroups = [];
+
+		Object.keys(groupedCompletedTasks).forEach((groupId) => {
+			const allDaysWithCompletedTasksMarkdown = [];
+
+			const currDaysWithCompletedTasks =
+				groupType === 'project'
+					? sterilizedDaysWithCompletedTasksByProjectId[groupId]
+					: sterilizedDaysWithCompletedTasksByTaskId[groupId];
+			const currNumberOfCompletedTasksByDateStr =
+				groupType === 'project'
+					? numberOfCompletedTasksByDateStrByProjectId[groupId]
+					: numberOfCompletedTasksByDateStrByTaskId[groupId];
+
+			const oldestToNewestDateStrs = Object.keys(currDaysWithCompletedTasks).sort((a, b) => {
+				return new Date(a) - new Date(b);
+			});
+
+			let totalCompletedTasks = 0;
+
+			oldestToNewestDateStrs.forEach((dateStr) => {
+				const dayWithCompletedTasksMarkdown = serializeDayWithCompletedTasks(
+					dateStr,
+					currDaysWithCompletedTasks[dateStr],
+					currNumberOfCompletedTasksByDateStr[dateStr]
+				);
+
+				totalCompletedTasks += currNumberOfCompletedTasksByDateStr[dateStr];
+				allDaysWithCompletedTasksMarkdown.push(dayWithCompletedTasksMarkdown);
+			});
+
+			const groupName =
+				groupType === 'project'
+					? groupId !== 'no-project-id'
+						? projectsById[groupId]?.name || todoistAllProjectsById[groupId]?.name + ' (Todoist)'
+						: 'No Project ID'
+					: groupId !== 'no-task-id'
+						? tasksById[groupId]?.title ||
+							tasksById[groupId]?.content ||
+							tasksById[groupId]?.name ||
+							groupId
+						: 'No Task Id';
+			const titleLine = `# ${groupName} - Completed Tasks (${totalCompletedTasks.toLocaleString()})\n`;
+			const markdown = titleLine + allDaysWithCompletedTasksMarkdown.join('\n');
+
+			allCompletedTasksGroups.push({
+				groupName,
+				markdown,
+				totalCompletedTasks,
+			});
+		});
+
+		const sortedAllCompletedTasksGroups = allCompletedTasksGroups.sort(
+			(a, b) => b.totalCompletedTasks - a.totalCompletedTasks
+		);
+
+		console.log(sortedAllCompletedTasksGroups);
+
+		sortedAllCompletedTasksGroups.forEach((completedTaskGroup, index) => {
+			const { groupName, totalCompletedTasks, markdown } = completedTaskGroup;
+			const paddedIndex = String(index + 1).padStart(2, '0');
+			const fileName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(
+				/[\/\\?%*:|"<>]/g,
+				'-'
+			);
+			zip.file(`${fileName}.md`, markdown);
+		});
+
+		zip.generateAsync({ type: 'blob' }).then((blob) => {
+			saveAs(blob, 'completed_tasks.zip');
+		});
+	};
 
 	return {
 		handleCopyToClipboard,
