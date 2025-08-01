@@ -14,6 +14,7 @@ import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 const OtherSectionFocusRecords = () => {
 	const {
 		completedTasksPageSettings: {
+			taskIdIncludeCompletedTasksFromSubtasks,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
@@ -68,6 +69,18 @@ const OtherSectionFocusRecords = () => {
 			>
 				{!isLoadingGetUserSettings && (
 					<>
+						<CheckboxOther
+							{...{
+								name: 'Task ID: Include Completed Tasks From Subtasks',
+								showValue: taskIdIncludeCompletedTasksFromSubtasks,
+								handleCheckboxClick: () =>
+									handleCheckboxClick(
+										taskIdIncludeCompletedTasksFromSubtasks,
+										'taskIdIncludeCompletedTasksFromSubtasks'
+									),
+							}}
+						/>
+
 						<CheckboxOther
 							{...{
 								name: 'Filter Out Unrelated Tasks When Task ID Is Applied',

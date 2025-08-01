@@ -161,12 +161,19 @@ const useHandleFilterCompletedTasks = ({
 		const { completedTasksForDay } = dayWithCompletedTasks;
 
 		return completedTasksForDay.find((task) => {
-			const isFromTickTick = task.title !== undefined;
-			const foundMatchingTaskOrAncestor = isFromTickTick
-				? findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById)
-				: findMatchingTaskOrAncestor(task, taskIdFromUrl, todoistAncestorTasksById);
+			if (completedTasksPageSettings.taskIdIncludeCompletedTasksFromSubtasks) {
+				const isFromTickTick = task.title !== undefined;
+				const foundMatchingTaskOrAncestor = isFromTickTick
+					? findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById)
+					: findMatchingTaskOrAncestor(task, taskIdFromUrl, todoistAncestorTasksById);
 
-			return foundMatchingTaskOrAncestor;
+				return foundMatchingTaskOrAncestor;
+			}
+
+			const taskId = task.id || task.taskId;
+			const taskParentId = task.parentId || task.itemParentTaskId || task.parent_id;
+
+			return taskId == taskIdFromUrl || taskParentId === taskIdFromUrl;
 		});
 	};
 
@@ -214,6 +221,25 @@ const useHandleFilterCompletedTasks = ({
 		completedTasksPageSettings,
 	]);
 
+	const isMatchingTask = (task) => {
+		const isFromTickTick = task.title !== undefined;
+
+		if (isFromTickTick) {
+			if (completedTasksPageSettings.taskIdIncludeCompletedTasksFromSubtasks) {
+				return findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById);
+			}
+		} else {
+			if (completedTasksPageSettings.taskIdIncludeCompletedTasksFromSubtasks) {
+				return findMatchingTaskOrAncestor(task, taskIdFromUrl, todoistAncestorTasksById);
+			}
+		}
+
+		const taskId = task.id || task.taskId;
+		const taskParentId = task.parentId || task.itemParentTaskId || task.parent_id;
+
+		return taskId == taskIdFromUrl || taskParentId === taskIdFromUrl;
+	};
+
 	const getFilteredCompletedTasksByDay = () => {
 		let searchedItems;
 
@@ -241,12 +267,7 @@ const useHandleFilterCompletedTasks = ({
 		if (taskIdFromUrl && completedTasksPageSettings.filterOutUnrelatedTasksWhenTaskIdIsApplied) {
 			newFilteredDaysWithCompletedTasks = newFilteredDaysWithCompletedTasks.map((dayWithCompletedTasks) => {
 				const filteredCompletedTasksForDay = dayWithCompletedTasks.completedTasksForDay.filter((task) => {
-					const isFromTickTick = task.title !== undefined;
-					const foundMatchingTaskOrAncestor = isFromTickTick
-						? findMatchingTaskOrAncestor(task, taskIdFromUrl, ancestorTasksById)
-						: findMatchingTaskOrAncestor(task, taskIdFromUrl, todoistAncestorTasksById);
-
-					return foundMatchingTaskOrAncestor;
+					return isMatchingTask(task);
 				});
 
 				return {

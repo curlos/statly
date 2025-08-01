@@ -35,6 +35,7 @@ const useUserSettings = () => {
 	} = focusRecordsPageSettings;
 
 	const {
+		taskIdIncludeCompletedTasksFromSubtasks = true,
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage = true,
 		groupedTasksCollapsedByDefault = true,
 		showIndentedTasks = true,
@@ -58,6 +59,7 @@ const useUserSettings = () => {
 			maxFocusRecordsPerPage,
 		},
 		completedTasksPageSettings: {
+			taskIdIncludeCompletedTasksFromSubtasks,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage,
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
