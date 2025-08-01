@@ -28,7 +28,7 @@ const useExportCompletedTasks = () => {
 
 	// Context
 	const {
-		completedTasksPageSettings: { showIndentedTasks },
+		completedTasksPageSettings: { showIndentedTasks, taskIdIncludeCompletedTasksFromSubtasks },
 	} = useUserSettingsContext();
 
 	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
@@ -99,11 +99,8 @@ const useExportCompletedTasks = () => {
 		const sterilizedDaysWithCompletedTasksByProjectId = {};
 		const numberOfCompletedTasksByDateStrByProjectId = {};
 
-		// const sterilizedDaysWithCompletedTasksByTaskId = {};
-		// const numberOfCompletedTasksByDateStrByTaskId = {};
-
-		// const uniqueProjectIds = new Set();
-		// const uniqueTaskIds = new Set();
+		const sterilizedDaysWithCompletedTasksByTaskId = {};
+		const numberOfCompletedTasksByDateStrByTaskId = {};
 
 		filteredDaysWithCompletedTasks.forEach((dateWithCompletedTasks) => {
 			const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
@@ -193,14 +190,52 @@ const useExportCompletedTasks = () => {
 
 					numberOfCompletedTasksByDateStrByProjectId[projectId][dateStr] += completedSubtasks.length;
 				}
+
+				if (groupByTaskId) {
+					const parentAndAncestorTaskIds =
+						taskIdIncludeCompletedTasksFromSubtasks && parentTaskBreadcrumbs
+							? [parentTaskId, ...parentTaskBreadcrumbs]
+							: [parentTaskId];
+
+					parentAndAncestorTaskIds.forEach((taskId) => {
+						if (!sterilizedDaysWithCompletedTasksByTaskId[taskId]) {
+							sterilizedDaysWithCompletedTasksByTaskId[taskId] = {};
+						}
+
+						if (!sterilizedDaysWithCompletedTasksByTaskId[taskId][dateStr]) {
+							sterilizedDaysWithCompletedTasksByTaskId[taskId][dateStr] = [];
+						}
+
+						if (!numberOfCompletedTasksByDateStrByTaskId[taskId]) {
+							numberOfCompletedTasksByDateStrByTaskId[taskId] = {};
+						}
+
+						if (!numberOfCompletedTasksByDateStrByTaskId[taskId][dateStr]) {
+							numberOfCompletedTasksByDateStrByTaskId[taskId][dateStr] = 0;
+						}
+
+						sterilizedDaysWithCompletedTasksByTaskId[taskId][dateStr].push({
+							name: name,
+							ancestorTaskIds: parentTaskBreadcrumbs,
+							completedSubtasks,
+							id: parentTask.id,
+						});
+
+						numberOfCompletedTasksByDateStrByTaskId[taskId][dateStr] += completedSubtasks.length;
+					});
+				}
 			});
 		});
+
+		console.log(sterilizedDaysWithCompletedTasksByTaskId);
 
 		return {
 			sterilizedDaysWithCompletedTasks,
 			numberOfCompletedTasksByDateStr,
 			sterilizedDaysWithCompletedTasksByProjectId,
 			numberOfCompletedTasksByDateStrByProjectId,
+			sterilizedDaysWithCompletedTasksByTaskId,
+			numberOfCompletedTasksByDateStrByTaskId,
 		};
 	};
 
@@ -368,8 +403,6 @@ const useExportCompletedTasks = () => {
 			numberOfCompletedTasksByDateStrByTaskId,
 		} = getSterilizedDaysWithCompletedTasks(true, true);
 
-		console.log(groupType);
-
 		const zip = new JSZip();
 
 		const groupedCompletedTasks =
@@ -415,8 +448,8 @@ const useExportCompletedTasks = () => {
 						: 'No Project ID'
 					: groupId !== 'no-task-id'
 						? tasksById[groupId]?.title ||
-							tasksById[groupId]?.content ||
 							tasksById[groupId]?.name ||
+							todoistAllTasksById[groupId]?.content ||
 							groupId
 						: 'No Task Id';
 			const titleLine = `# ${groupName} - Completed Tasks (${totalCompletedTasks.toLocaleString()})\n`;
