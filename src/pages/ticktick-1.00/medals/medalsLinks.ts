@@ -334,7 +334,12 @@ export const BLACK_OPS_2_KILLSTREAK_MEDALS = {
         "https://i.imgur.com/tFa0En4.png",
         "https://i.imgur.com/q3kMqll.png",
         "https://i.imgur.com/VDC3XrD.png",
-        "https://i.imgur.com/hFmnedG.png"
+        "https://i.imgur.com/hFmnedG.png",
+        "https://i.imgur.com/G4oUON1.png",
+        "https://i.imgur.com/5TYWJTz.png",
+        "https://i.imgur.com/fbXVfEu.png",
+        "https://i.imgur.com/W51APJx.png",
+        "https://i.imgur.com/306twd2.png"
     ]
 }
 
