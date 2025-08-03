@@ -39,6 +39,7 @@ const useUserSettings = () => {
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage = true,
 		groupedTasksCollapsedByDefault = true,
 		showIndentedTasks = true,
+		onlyExportTasksWithNoParent = true,
 		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
@@ -63,6 +64,7 @@ const useUserSettings = () => {
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage,
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
+			onlyExportTasksWithNoParent,
 			maxDaysPerPage,
 		},
 		focusHoursGoalPageSettings: {

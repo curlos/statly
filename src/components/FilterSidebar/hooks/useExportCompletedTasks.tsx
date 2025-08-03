@@ -28,7 +28,11 @@ const useExportCompletedTasks = () => {
 
 	// Context
 	const {
-		completedTasksPageSettings: { showIndentedTasks, taskIdIncludeCompletedTasksFromSubtasks },
+		completedTasksPageSettings: {
+			showIndentedTasks,
+			taskIdIncludeCompletedTasksFromSubtasks,
+			onlyExportTasksWithNoParent,
+		},
 	} = useUserSettingsContext();
 
 	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
@@ -64,17 +68,19 @@ const useExportCompletedTasks = () => {
 					),
 			};
 
-			// GROUP BY TASK ID
-			if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId]) {
-				sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId] = {};
-			}
+			if (!onlyExportTasksWithNoParent) {
+				// GROUP BY TASK ID
+				if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId]) {
+					sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId] = {};
+				}
 
-			if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr]) {
-				sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr] = {};
-			}
+				if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr]) {
+					sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr] = {};
+				}
 
-			sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr][parentTaskId] =
-				dayWithCompletedTasksIndentedObj[parentTaskId];
+				sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr][parentTaskId] =
+					dayWithCompletedTasksIndentedObj[parentTaskId];
+			}
 		});
 
 		return dayWithCompletedTasksIndentedObj;
@@ -127,6 +133,20 @@ const useExportCompletedTasks = () => {
 
 				sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId][dateStr][parentTaskId] =
 					nestedTasksObj[parentTaskId];
+
+				if (onlyExportTasksWithNoParent) {
+					// GROUP BY TASK ID
+					if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId]) {
+						sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId] = {};
+					}
+
+					if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr]) {
+						sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr] = {};
+					}
+
+					sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr][parentTaskId] =
+						nestedTasksObj[parentTaskId];
+				}
 			});
 		});
 

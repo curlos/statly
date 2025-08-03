@@ -19,6 +19,7 @@ const OtherSectionFocusRecords = () => {
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
 			maxDaysPerPage,
+			onlyExportTasksWithNoParent,
 		},
 	} = useUserSettingsContext();
 
@@ -113,7 +114,7 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
-						{/* Copy Focus Records To Clipboard */}
+						{/* Copy Completed Tasks To Clipboard */}
 						<CompletedTasksExporter
 							{...{
 								text: 'Copy Completed Tasks To Clipboard',
@@ -122,7 +123,7 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
-						{/* TODO: Export Focus Records By Project */}
+						{/* Export Completed Tasks By Project */}
 						<CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks By Project',
@@ -132,7 +133,7 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
-						{/* TODO: Export Focus Records By Task */}
+						{/* Export Completed Tasks by Parent Task */}
 						<CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks by Parent Task',
@@ -141,6 +142,17 @@ const OtherSectionFocusRecords = () => {
 								params: ['task'],
 							}}
 						/>
+
+						<div className="pl-9">
+							<CheckboxOther
+								{...{
+									name: 'Only Export Tasks With No Parent',
+									showValue: onlyExportTasksWithNoParent,
+									handleCheckboxClick: () =>
+										handleCheckboxClick(onlyExportTasksWithNoParent, 'onlyExportTasksWithNoParent'),
+								}}
+							/>
+						</div>
 
 						{/* Input - Max Days Per Page */}
 						<InputNumUserSettings
