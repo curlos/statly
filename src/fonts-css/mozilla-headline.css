@@ -1,0 +1,192 @@
+/* === Mozilla Headline Condensed === */
+@font-face {
+  font-family: 'Mozilla Headline Condensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Condensed-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Condensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Condensed-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Condensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Condensed-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Condensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Condensed-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Condensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Condensed-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Condensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Condensed-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* === Mozilla Headline Expanded === */
+@font-face {
+  font-family: 'Mozilla Headline Expanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Expanded-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Expanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Expanded-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Expanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Expanded-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Expanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Expanded-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline Expanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_Expanded-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* === Mozilla Headline SemiCondensed === */
+@font-face {
+  font-family: 'Mozilla Headline SemiCondensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiCondensed-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiCondensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiCondensed-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiCondensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiCondensed-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiCondensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiCondensed-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiCondensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiCondensed-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiCondensed';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiCondensed-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* === Mozilla Headline SemiExpanded === */
+@font-face {
+  font-family: 'Mozilla Headline SemiExpanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiExpanded-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiExpanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiExpanded-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiExpanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiExpanded-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiExpanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiExpanded-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiExpanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiExpanded-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline SemiExpanded';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline_SemiExpanded-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* === Mozilla Headline Standard Width === */
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* === Mozilla Headline Variable === */
+@font-face {
+  font-family: 'Mozilla Headline Variable';
+  src: url('../assets/fonts/Mozilla_Headline/static/MozillaHeadline-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 200 700;
+  font-stretch: 75% 125%;
+  font-style: normal;
+}

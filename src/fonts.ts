@@ -1,0 +1,13 @@
+import './fonts-css/bebas-neue.css';
+import './fonts-css/mozilla-headline.css';
+import './fonts-css/google-sans-code.css';
+import './fonts-css/kanit.css';
+import './fonts-css/lobster.css';
+import './fonts-css/lobster-two.css';
+import './fonts-css/michroma.css';
+import './fonts-css/mozilla-text.css';
+import './fonts-css/noto-sans.css';
+import './fonts-css/oxygen.css';
+import './fonts-css/roboto-condensed.css';
+import './fonts-css/space-mono.css';
+import './fonts-css/bf-modernista.css';

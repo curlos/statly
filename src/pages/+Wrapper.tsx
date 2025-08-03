@@ -1,5 +1,6 @@
 import '../index.css';
 import '../App.css';
+import '../fonts';
 import 'material-symbols';
 
 import { registerSW } from 'virtual:pwa-register';

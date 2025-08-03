@@ -1,0 +1,99 @@
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* Italics */
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+/* Variable fonts (optional) */
+@font-face {
+  font-family: 'Google Sans Code Variable';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans Code Variable Italic';
+  src: url('../assets/fonts/Google_Sans_Code/static/GoogleSansCode-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 800;
+  font-style: italic;
+}
