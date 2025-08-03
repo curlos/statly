@@ -9,7 +9,7 @@ import MedalsGameButtonList from '../medals/MedalsGameButtonList';
 import { MEDALS_GAMES } from '../medals/medalsLinks';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
-const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isForChallengesPage }) => {
+const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page }) => {
 	const handleError = useHandleError();
 	const { chosenColorObj } = useThemeContext();
 
@@ -24,16 +24,27 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 		medalsPageSettings: { selectedMedalCardImage },
 	} = useUserSettingsContext();
 
-	const [selectedImageSrc, setSelectedImageSrc] = useState(
-		isForChallengesPage
-			? selectedChallengeCardImage && selectedChallengeCardImage[cardType]
-			: selectedMedalCardImage && selectedMedalCardImage[cardType]
-	);
+	const defaultSelectedCardImage = {
+		challenges: selectedChallengeCardImage && selectedChallengeCardImage[cardType],
+		medals: selectedMedalCardImage && selectedMedalCardImage[cardType],
+	};
+
+	const [selectedImageSrc, setSelectedImageSrc] = useState(defaultSelectedCardImage[page]);
+
+	const handleGetPayload = () => {
+		switch (page) {
+			case 'challenges':
+				return getChallengesPagePayload();
+			case 'medals':
+				return getMedalsPagePayload();
+			case 'loader':
+				return getLoaderPayload();
+		}
+	};
 
 	const handleChangeImageUserSetting = () => {
 		handleError(async () => {
-			const payload = isForChallengesPage ? getChallengesPagePayload() : getMedalsPagePayload();
-
+			const payload = handleGetPayload();
 			await editUserSettings(payload).unwrap();
 			setShowModal(false);
 		});
@@ -86,9 +97,30 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 		return payload;
 	};
 
-	const [selectedGame, setSelectedGame] = useState(isForChallengesPage ? 'BO2 (CALLING CARDS)' : 'BF1');
-	const [selectedMedalType, setSelectedMedalType] = useState(isForChallengesPage ? 'GENERAL' : 'COMBAT');
+	const getLoaderPayload = () => {
+		const restOfThemeKeysAndVals = userSettings?.theme;
+
+		const payload = {
+			theme: {
+				...restOfThemeKeysAndVals,
+				loaderCardImage: selectedImageSrc,
+			},
+		};
+
+		return payload;
+	};
+
+	const [selectedGame, setSelectedGame] = useState(page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1');
+	const [selectedMedalType, setSelectedMedalType] = useState(page === 'challenges' ? 'GENERAL' : 'COMBAT');
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
+
+	const pageType = {
+		challenges: 'Challenges',
+		medals: 'Medals',
+		loader: 'Loader',
+	};
+
+	const pageName = pageType[page];
 
 	return (
 		<Modal
@@ -99,9 +131,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, isF
 		>
 			<div className="bg-color-gray-600 rounded-lg">
 				<div className="flex items-center justify-between p-5">
-					<h3 className="font-bold text-[16px]">
-						Change {isForChallengesPage ? 'Challenges' : 'Medals'} Card Image
-					</h3>
+					<h3 className="font-bold text-[16px]">Change {pageName} Card Image</h3>
 					<Icon
 						name="close"
 						customClass={'!text-[20px] text-color-gray-100 hover:text-white cursor-pointer'}

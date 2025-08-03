@@ -1,4 +1,5 @@
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import DayWithCompletedTasks from './DayWithCompletedTasks/DayWithCompletedTasks';
 
@@ -53,12 +54,15 @@ const CompletedTaskList = ({
 
 	const shownCompletedTasks = getShownCompletedTasks();
 
+	const themeContext = useThemeContext();
+	const { selectedLoaderCardImage } = themeContext;
+
 	return (
 		<div>
 			{!allCompletedTasksAreHere || !filteredDaysWithCompletedTasks ? (
 				<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
 					<div>
-						<img src="https://i.imgur.com/tFa0En4.png" className="h-[175px] animate-pulse" />
+						<img src={selectedLoaderCardImage} className="h-[175px] animate-pulse" />
 					</div>
 				</div>
 			) : (

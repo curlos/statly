@@ -23,14 +23,26 @@ const useTheme = () => {
 	const chosenColorObj = TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
 	const chosenColorVariantsObj = TAILWIND_COLORS_OBJ[chosenColorName];
 
-	if (userSettings?.theme?.color && !localStorage.getItem('theme-color')) {
+	if (userSettings?.theme?.color && localStorage.getItem('theme-color') !== userSettings?.theme?.color) {
 		localStorage.setItem('theme-color', userSettings?.theme?.color);
 	}
 
 	const selectedFontFamilyKey = userSettings?.theme?.fontFamily || localStorage.getItem('font-family') || 'Default';
 
-	if (userSettings?.theme?.fontFamily && !localStorage.getItem('font-family')) {
+	if (userSettings?.theme?.fontFamily && localStorage.getItem('font-family') !== userSettings?.theme?.fontFamily) {
 		localStorage.setItem('font-family', userSettings?.theme?.fontFamily);
+	}
+
+	const selectedLoaderCardImage =
+		userSettings?.theme?.loaderCardImage ||
+		localStorage.getItem('loader-card-image') ||
+		'https://i.imgur.com/tFa0En4.png';
+
+	if (
+		userSettings?.theme?.loaderCardImage &&
+		localStorage.getItem('loader-card-image') !== userSettings?.theme?.loaderCardImage
+	) {
+		localStorage.setItem('loader-card-image', userSettings?.theme?.loaderCardImage);
 	}
 
 	const getNextLightestAndDarkestColor = () => {
@@ -101,5 +113,6 @@ const useTheme = () => {
 		nextLightestColorObj: getNextLightestOrDarkestColorObj('next-lightest'),
 		nextDarkestColorObj: getNextLightestOrDarkestColorObj('next-darkest'),
 		selectedFontFamilyKey,
+		selectedLoaderCardImage,
 	};
 };

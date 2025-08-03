@@ -3,6 +3,8 @@ import { navigate } from 'vike/client/router';
 import Icon from '../Icon';
 import ThemeColorList from './ThemeColorList';
 import FontFamilyList from './FontFamilyList';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import CardImage from '../../pages/ticktick-1.00/challenges/CardImage';
 
 const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -30,6 +32,9 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 			</div>
 		);
 	};
+
+	const themeContext = useThemeContext();
+	const { selectedLoaderCardImage } = themeContext;
 
 	return (
 		<AnimatePresence>
@@ -84,6 +89,12 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						{/* Font Families */}
 						<hr className="border-color-gray-200 my-4" />
 						<FontFamilyList />
+
+						{/* Loader Images */}
+						<hr className="border-color-gray-200 my-4" />
+						<div>
+							<CardImage cardType="Loader Image" imageSrc={selectedLoaderCardImage} page="loader" />
+						</div>
 					</motion.div>
 				</motion.div>
 			)}

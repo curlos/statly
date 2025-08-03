@@ -64,7 +64,7 @@ const FocusRecordList = ({
 		<div>
 			<div>
 				{filteredFocusRecords.length === 0 ? (
-					<div>No Focus Records</div>
+					<div className="container">No Focus Records</div>
 				) : (
 					<div className="space-y-3">
 						{shownFocusRecords.map((focusRecord, index) => {

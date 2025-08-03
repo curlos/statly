@@ -10,6 +10,7 @@ import { getFocusDurationFromArray } from '../../../utils/focus-apps/focusRecord
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useFilterFocusRecords } from './useFilterFocusRecords';
+import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const Page = () => {
 	return <FocusRecordsPage />;
@@ -93,6 +94,9 @@ const FocusRecordsPage = () => {
 		);
 	};
 
+	const themeContext = useThemeContext();
+	const { selectedLoaderCardImage } = themeContext;
+
 	return (
 		<div>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
@@ -114,10 +118,7 @@ const FocusRecordsPage = () => {
 							{isLoadingGetFocusRecords ? (
 								<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
 									<div>
-										<img
-											src="https://i.imgur.com/tFa0En4.png"
-											className="h-[175px] animate-pulse"
-										/>
+										<img src={selectedLoaderCardImage} className="h-[175px] animate-pulse" />
 									</div>
 								</div>
 							) : (

@@ -1,4 +1,4 @@
-import LoaderBottomRightBO3Medal from '../../components/Loaders/LoaderBottomRightBO3Medal';
+import LoaderBottomRightMedal from '../../components/Loaders/LoaderBottomRightMedal';
 import { useStatsContext } from '../../contexts/useStatsContext';
 import FocusSection from './FocusSection/FocusSection';
 import OverviewSection from './OverviewSection/OverviewSection';
@@ -26,7 +26,7 @@ const StatsPage = () => {
 				</div>
 			</div>
 
-			{!coreDataHasLoaded && <LoaderBottomRightBO3Medal />}
+			{!coreDataHasLoaded && <LoaderBottomRightMedal />}
 		</div>
 	);
 };

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Icon from '../../../components/Icon.js';
 import SidebarModal from '../../../components/SidebarModal/SidebarModal.js';
 import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../../services/resources/ticktickOneApi.js';
-import LoaderBottomRightBO3Medal from '../../../components/Loaders/LoaderBottomRightBO3Medal.js';
+import LoaderBottomRightMedal from '../../../components/Loaders/LoaderBottomRightMedal.js';
 import FocusHourGoalSettingsModal from './FocusHourGoalSettingsModal.js';
 
 export default function Page() {
@@ -16,7 +16,7 @@ export default function Page() {
 		<div className="w-screen h-screen bg-color-gray-700 flex justify-center items-center">
 			<DailyHoursFocusGoal />
 
-			{isLoadingGetFocusRecords && <LoaderBottomRightBO3Medal />}
+			{isLoadingGetFocusRecords && <LoaderBottomRightMedal />}
 
 			<>
 				<Icon

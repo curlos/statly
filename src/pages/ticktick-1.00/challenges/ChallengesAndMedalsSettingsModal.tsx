@@ -1,11 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import Icon from '../../../components/Icon';
 import { useState } from 'react';
 import classNames from 'classnames';
-import ModalChangeCardImage from './ModalChangeCardImage';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import FilterSidebar from '../../../components/FilterSidebar/FilterSidebar';
+import CardImage from './CardImage';
 
 const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModalOpen, page }) => {
 	const sidebarVariants = {
@@ -103,7 +102,7 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 											? selectedChallengeCardImage?.focus
 											: selectedMedalCardImage?.focus
 									}
-									isForChallengesPage={isForChallengesPage}
+									page={page}
 								/>
 								<CardImage
 									cardType="Tasks"
@@ -112,7 +111,7 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 											? selectedChallengeCardImage?.tasks
 											: selectedMedalCardImage?.tasks
 									}
-									isForChallengesPage={isForChallengesPage}
+									page={page}
 								/>
 							</div>
 						)}
@@ -120,42 +119,6 @@ const ChallengesAndMedalsSettingsModal = ({ isSidebarModalOpen, setIsSidebarModa
 				</motion.div>
 			)}
 		</AnimatePresence>
-	);
-};
-
-const CardImage = ({ cardType, imageSrc, isForChallengesPage }) => {
-	const [hoverImage, setHoverImage] = useState(false);
-	const [showModalChangeCardImage, setShowModalChangeCardImage] = useState(false);
-
-	return (
-		<div>
-			<div className="font-bold mb-1">{cardType}</div>
-			<div
-				className="relative"
-				onMouseOver={() => setHoverImage(true)}
-				onMouseLeave={() => setHoverImage(false)}
-				onClick={() => setShowModalChangeCardImage(!showModalChangeCardImage)}
-			>
-				{hoverImage && (
-					<div className="absolute inset-0 flex justify-center items-center">
-						<Icon name="edit" customClass="!text-[30px] text-color-gray-100 cursor-pointer" />
-					</div>
-				)}
-				<img
-					src={imageSrc}
-					className={classNames('cursor-pointer max-h-[250px]', hoverImage && 'opacity-50')}
-				/>
-			</div>
-
-			<ModalChangeCardImage
-				{...{
-					showModal: showModalChangeCardImage,
-					setShowModal: setShowModalChangeCardImage,
-					cardType: cardType.toLowerCase(),
-					isForChallengesPage,
-				}}
-			/>
-		</div>
 	);
 };
 
