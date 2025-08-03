@@ -29,6 +29,7 @@ const FontFamilyList = () => {
 		// 'Lobster Two',
 		// 'Bebas Neue',
 		'BF Modernista',
+		'Kirsty',
 	];
 
 	const handleChangeFontFamily = (fontFamilyKey) => {
