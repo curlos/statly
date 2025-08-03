@@ -33,7 +33,13 @@ const useExportCompletedTasks = () => {
 
 	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
 
-	const getNestedTasksObj = (taskIds, groupedSubtasksByParentTask, parentDirectChildrenTaskIdsByParentId) => {
+	const getNestedTasksObj = (
+		taskIds,
+		groupedSubtasksByParentTask,
+		parentDirectChildrenTaskIdsByParentId,
+		dateStr,
+		sterilizedDaysWithCompletedTasksByTaskIdIndented
+	) => {
 		const dayWithCompletedTasksIndentedObj = {};
 
 		taskIds.forEach((parentTaskId) => {
@@ -52,9 +58,23 @@ const useExportCompletedTasks = () => {
 					getNestedTasksObj(
 						nextIndentedTaskIds,
 						groupedSubtasksByParentTask,
-						parentDirectChildrenTaskIdsByParentId
+						parentDirectChildrenTaskIdsByParentId,
+						dateStr,
+						sterilizedDaysWithCompletedTasksByTaskIdIndented
 					),
 			};
+
+			// GROUP BY TASK ID
+			if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId]) {
+				sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId] = {};
+			}
+
+			if (!sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr]) {
+				sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr] = {};
+			}
+
+			sterilizedDaysWithCompletedTasksByTaskIdIndented[parentTaskId][dateStr][parentTaskId] =
+				dayWithCompletedTasksIndentedObj[parentTaskId];
 		});
 
 		return dayWithCompletedTasksIndentedObj;
@@ -63,12 +83,12 @@ const useExportCompletedTasks = () => {
 	const getSterilizedDaysWithCompletedTasksIndented = () => {
 		const sterilizedDaysWithCompletedTasksIndented = {};
 		const sterilizedDaysWithCompletedTasksByProjectIdIndented = {};
-		// const sterilizedDaysWithCompletedTasksIndented = {};
+		const sterilizedDaysWithCompletedTasksByTaskIdIndented = {};
 
 		filteredDaysWithCompletedTasks.forEach((dateWithCompletedTasks) => {
 			const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
 
-			const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks({
+			const { groupedSubtasksByParentTask } = getGroupedSubtasksAndParentTasks({
 				completedTasksForDay,
 			});
 
@@ -86,7 +106,8 @@ const useExportCompletedTasks = () => {
 				tasksWithNoParent,
 				groupedSubtasksByParentTask,
 				parentDirectChildrenTaskIdsByParentId,
-				sterilizedDaysWithCompletedTasksByProjectIdIndented
+				dateStr,
+				sterilizedDaysWithCompletedTasksByTaskIdIndented
 			);
 
 			sterilizedDaysWithCompletedTasksIndented[dateStr] = nestedTasksObj;
@@ -95,6 +116,7 @@ const useExportCompletedTasks = () => {
 				const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
 				const projectId = parentTask['projectId'] || parentTask['v2_project_id'] || parentTask['project_id'];
 
+				// GROUP BY PROJECT ID
 				if (!sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId]) {
 					sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId] = {};
 				}
@@ -111,6 +133,7 @@ const useExportCompletedTasks = () => {
 		return {
 			sterilizedDaysWithCompletedTasksIndented,
 			sterilizedDaysWithCompletedTasksByProjectIdIndented,
+			sterilizedDaysWithCompletedTasksByTaskIdIndented,
 		};
 	};
 
@@ -419,13 +442,15 @@ const useExportCompletedTasks = () => {
 		const zip = new JSZip();
 
 		if (showIndentedTasks) {
-			const { sterilizedDaysWithCompletedTasksByProjectIdIndented } =
-				getSterilizedDaysWithCompletedTasksIndented();
+			const {
+				sterilizedDaysWithCompletedTasksByProjectIdIndented,
+				sterilizedDaysWithCompletedTasksByTaskIdIndented,
+			} = getSterilizedDaysWithCompletedTasksIndented();
 
 			const sterilizedDaysWithCompletedDaysByGroup =
 				groupType == 'project'
 					? sterilizedDaysWithCompletedTasksByProjectIdIndented
-					: sterilizedDaysWithCompletedTasksByProjectIdIndented;
+					: sterilizedDaysWithCompletedTasksByTaskIdIndented;
 
 			const allCompletedTasksGroups = [];
 
@@ -462,8 +487,6 @@ const useExportCompletedTasks = () => {
 							: 'No Task Id';
 				const titleLine = `# ${groupName} - Completed Tasks (${totalCompletedTasks.toLocaleString()})\n`;
 				const markdown = titleLine + allDaysMarkdown.join('\n---\n');
-
-				console.log(markdown);
 
 				allCompletedTasksGroups.push({
 					groupName,
