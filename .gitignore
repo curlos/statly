@@ -33,3 +33,5 @@ src/assets/fonts/*
 !src/assets/fonts/Mozilla_Headline/**
 !src/assets/fonts/Mozilla_Text/
 !src/assets/fonts/Mozilla_Text/**
+!src/assets/fonts/Mozilla_Text/
+!src/assets/fonts/Kirsty/**
