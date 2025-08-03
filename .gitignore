@@ -27,5 +27,7 @@ dist-ssr
 .vercel
 public/imgur
 ticktick-2.0-web.code-workspace
-src/assets/fonts
+src/assets/fonts/*
 !src/assets/fonts/BF_Modernista/
+!src/assets/fonts/Mozilla_Headline/
+!src/assets/fonts/Mozilla_Headline/**
