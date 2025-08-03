@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { navigate } from 'vike/client/router';
 import Icon from '../Icon';
 import ThemeColorList from './ThemeColorList';
+import FontFamilyList from './FontFamilyList';
 
 const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -79,6 +80,10 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						{/* Theme Color */}
 						<hr className="border-color-gray-200 my-4" />
 						<ThemeColorList />
+
+						{/* Font Families */}
+						<hr className="border-color-gray-200 my-4" />
+						<FontFamilyList />
 					</motion.div>
 				</motion.div>
 			)}

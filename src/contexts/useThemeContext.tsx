@@ -27,6 +27,12 @@ const useTheme = () => {
 		localStorage.setItem('theme-color', userSettings?.theme?.color);
 	}
 
+	const selectedFontFamilyKey = userSettings?.theme?.fontFamily || localStorage.getItem('font-family') || 'Default';
+
+	if (userSettings?.theme?.fontFamily && !localStorage.getItem('font-family')) {
+		localStorage.setItem('font-family', userSettings?.theme?.fontFamily);
+	}
+
 	const getNextLightestAndDarkestColor = () => {
 		const colorVariantNameList = Object.keys(chosenColorVariantsObj);
 		let nextLightestColorObj = null;
@@ -94,5 +100,6 @@ const useTheme = () => {
 		chosenColorName,
 		nextLightestColorObj: getNextLightestOrDarkestColorObj('next-lightest'),
 		nextDarkestColorObj: getNextLightestOrDarkestColorObj('next-darkest'),
+		selectedFontFamilyKey,
 	};
 };

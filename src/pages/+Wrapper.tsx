@@ -8,12 +8,14 @@ import store from '../store/store';
 import { StatsProvider } from '../contexts/useStatsContext';
 import GlobalAlertList from '../components/Alert/GlobalAlertList';
 import GlobalModalList from '../components/Modal/GlobalModalList';
-import { ThemeProvider } from '../contexts/useThemeContext';
+import { ThemeProvider, useThemeContext } from '../contexts/useThemeContext';
 import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
 import { UserSettingsProvider } from './ticktick-1.00/focus-records/useUserSettingsContext';
 import { usePageContext } from 'vike-react/usePageContext';
 import { selectUserToken } from '../slices/userSlice';
 import { navigate } from 'vike/client/router';
+
+const globalClasses = 'text-white select-none';
 
 export const Wrapper = ({ children }) => {
 	return (
@@ -36,7 +38,7 @@ const ProviderList = ({ children }) => {
 
 	if (!isLoggedIn) {
 		return (
-			<div className="text-white select-none">
+			<div className={globalClasses}>
 				{children}
 
 				{/* Modals */}
@@ -53,19 +55,32 @@ const ProviderList = ({ children }) => {
 			<ThemeProvider>
 				<UserSettingsProvider>
 					<StatsProvider>
-						<div className="text-white select-none">
-							{children}
-
-							{/* Modals */}
-							<GlobalModalList />
-
-							{/* Alerts */}
-							<GlobalAlertList />
-						</div>
+						<LoggedInBase children={children} />
 					</StatsProvider>
 				</UserSettingsProvider>
 			</ThemeProvider>
 		</SearchParamsProvider>
+	);
+};
+
+const LoggedInBase = ({ children }) => {
+	const themeContext = useThemeContext();
+	const { selectedFontFamilyKey } = themeContext;
+
+	const globalStyle = {
+		fontFamily: selectedFontFamilyKey !== 'Default' ? selectedFontFamilyKey : '',
+	};
+
+	return (
+		<div className={globalClasses} style={globalStyle}>
+			{children}
+
+			{/* Modals */}
+			<GlobalModalList />
+
+			{/* Alerts */}
+			<GlobalAlertList />
+		</div>
 	);
 };
 

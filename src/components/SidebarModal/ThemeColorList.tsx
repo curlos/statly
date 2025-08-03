@@ -35,11 +35,7 @@ const ThemeColorList = () => {
 		<div>
 			<div className="flex items-center gap-1 mb-2">
 				<h3 className="text-[20px] font-bold">Theme Color</h3>
-				<Icon
-					name="palette"
-					fill={1}
-					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-				/>
+				<Icon name="palette" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
 			</div>
 
 			<div className="mb-3 flex items-center gap-2">
