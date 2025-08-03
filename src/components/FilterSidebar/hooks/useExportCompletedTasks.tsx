@@ -62,6 +62,8 @@ const useExportCompletedTasks = () => {
 
 	const getSterilizedDaysWithCompletedTasksIndented = () => {
 		const sterilizedDaysWithCompletedTasksIndented = {};
+		const sterilizedDaysWithCompletedTasksByProjectIdIndented = {};
+		// const sterilizedDaysWithCompletedTasksIndented = {};
 
 		filteredDaysWithCompletedTasks.forEach((dateWithCompletedTasks) => {
 			const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
@@ -83,13 +85,33 @@ const useExportCompletedTasks = () => {
 			const nestedTasksObj = getNestedTasksObj(
 				tasksWithNoParent,
 				groupedSubtasksByParentTask,
-				parentDirectChildrenTaskIdsByParentId
+				parentDirectChildrenTaskIdsByParentId,
+				sterilizedDaysWithCompletedTasksByProjectIdIndented
 			);
 
 			sterilizedDaysWithCompletedTasksIndented[dateStr] = nestedTasksObj;
+
+			Object.keys(nestedTasksObj).forEach((parentTaskId) => {
+				const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
+				const projectId = parentTask['projectId'] || parentTask['v2_project_id'] || parentTask['project_id'];
+
+				if (!sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId]) {
+					sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId] = {};
+				}
+
+				if (!sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId][dateStr]) {
+					sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId][dateStr] = {};
+				}
+
+				sterilizedDaysWithCompletedTasksByProjectIdIndented[projectId][dateStr][parentTaskId] =
+					nestedTasksObj[parentTaskId];
+			});
 		});
 
-		return sterilizedDaysWithCompletedTasksIndented;
+		return {
+			sterilizedDaysWithCompletedTasksIndented,
+			sterilizedDaysWithCompletedTasksByProjectIdIndented,
+		};
 	};
 
 	const getSterilizedDaysWithCompletedTasks = (groupByProjectId = false, groupByTaskId = false) => {
@@ -227,8 +249,6 @@ const useExportCompletedTasks = () => {
 			});
 		});
 
-		console.log(sterilizedDaysWithCompletedTasksByTaskId);
-
 		return {
 			sterilizedDaysWithCompletedTasks,
 			numberOfCompletedTasksByDateStr,
@@ -262,7 +282,7 @@ const useExportCompletedTasks = () => {
 
 	const handleCopyToClipboard = () => {
 		if (showIndentedTasks) {
-			const sterilizedDaysWithCompletedTasksIndented = getSterilizedDaysWithCompletedTasksIndented();
+			const { sterilizedDaysWithCompletedTasksIndented } = getSterilizedDaysWithCompletedTasksIndented();
 
 			const oldestToNewestDateStrs = Object.keys(sterilizedDaysWithCompletedTasksIndented).sort((a, b) => {
 				return new Date(a) - new Date(b);
@@ -396,14 +416,89 @@ const useExportCompletedTasks = () => {
 	};
 
 	const downloadZipFolderOfGroupedCompletedTasks = (groupType) => {
+		const zip = new JSZip();
+
+		if (showIndentedTasks) {
+			const { sterilizedDaysWithCompletedTasksByProjectIdIndented } =
+				getSterilizedDaysWithCompletedTasksIndented();
+
+			const sterilizedDaysWithCompletedDaysByGroup =
+				groupType == 'project'
+					? sterilizedDaysWithCompletedTasksByProjectIdIndented
+					: sterilizedDaysWithCompletedTasksByProjectIdIndented;
+
+			const allCompletedTasksGroups = [];
+
+			for (const groupId of Object.keys(sterilizedDaysWithCompletedDaysByGroup)) {
+				const sterilizedDaysWithCompletedTasksIndented = sterilizedDaysWithCompletedDaysByGroup[groupId];
+				const oldestToNewestDateStrs = Object.keys(sterilizedDaysWithCompletedTasksIndented).sort((a, b) => {
+					return new Date(a) - new Date(b);
+				});
+
+				const allDaysMarkdown = [];
+				let totalCompletedTasks = 0;
+
+				oldestToNewestDateStrs.forEach((dateStr) => {
+					const indentedTasks = sterilizedDaysWithCompletedTasksIndented[dateStr];
+					const dayTotalCompletedTasks = getTotalCompletedTasksFromIndentedData(indentedTasks);
+					const dayCompletedTasksMarkdown = serializeNestedTasksToMarkdown(indentedTasks);
+					allDaysMarkdown.push(
+						`### 📅  ${dateStr} (${dayTotalCompletedTasks})\n\n` + dayCompletedTasksMarkdown
+					);
+
+					totalCompletedTasks += dayTotalCompletedTasks;
+				});
+
+				const groupName =
+					groupType === 'project'
+						? groupId !== 'no-project-id'
+							? projectsById[groupId]?.name || todoistAllProjectsById[groupId]?.name + ' (Todoist)'
+							: 'No Project ID'
+						: groupId !== 'no-task-id'
+							? tasksById[groupId]?.title ||
+								tasksById[groupId]?.name ||
+								todoistAllTasksById[groupId]?.content ||
+								groupId
+							: 'No Task Id';
+				const titleLine = `# ${groupName} - Completed Tasks (${totalCompletedTasks.toLocaleString()})\n`;
+				const markdown = titleLine + allDaysMarkdown.join('\n---\n');
+
+				console.log(markdown);
+
+				allCompletedTasksGroups.push({
+					groupName,
+					markdown,
+					totalCompletedTasks,
+				});
+			}
+
+			const sortedAllCompletedTasksGroups = allCompletedTasksGroups.sort(
+				(a, b) => b.totalCompletedTasks - a.totalCompletedTasks
+			);
+
+			sortedAllCompletedTasksGroups.forEach((completedTaskGroup, index) => {
+				const { groupName, totalCompletedTasks, markdown } = completedTaskGroup;
+				const paddedIndex = String(index + 1).padStart(2, '0');
+				const fileName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(
+					/[\/\\?%*:|"<>]/g,
+					'-'
+				);
+				zip.file(`${fileName}.md`, markdown);
+			});
+
+			zip.generateAsync({ type: 'blob' }).then((blob) => {
+				saveAs(blob, 'completed_tasks.zip');
+			});
+
+			return;
+		}
+
 		const {
 			sterilizedDaysWithCompletedTasksByProjectId,
 			numberOfCompletedTasksByDateStrByProjectId,
 			sterilizedDaysWithCompletedTasksByTaskId,
 			numberOfCompletedTasksByDateStrByTaskId,
 		} = getSterilizedDaysWithCompletedTasks(true, true);
-
-		const zip = new JSZip();
 
 		const groupedCompletedTasks =
 			groupType === 'project'
@@ -465,8 +560,6 @@ const useExportCompletedTasks = () => {
 		const sortedAllCompletedTasksGroups = allCompletedTasksGroups.sort(
 			(a, b) => b.totalCompletedTasks - a.totalCompletedTasks
 		);
-
-		console.log(sortedAllCompletedTasksGroups);
 
 		sortedAllCompletedTasksGroups.forEach((completedTaskGroup, index) => {
 			const { groupName, totalCompletedTasks, markdown } = completedTaskGroup;
