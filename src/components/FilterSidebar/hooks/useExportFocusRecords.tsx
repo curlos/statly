@@ -38,7 +38,7 @@ const useExportFocusRecords = () => {
 	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
 
 	const {
-		focusRecordsPageSettings: { taskIdIncludeFocusRecordsFromSubtasks },
+		focusRecordsPageSettings: { taskIdIncludeFocusRecordsFromSubtasks, onlyExportTasksWithNoParent },
 	} = useUserSettingsContext();
 
 	const { searchParams } = useSearchParamsContext();
@@ -119,7 +119,7 @@ const useExportFocusRecords = () => {
 						sterilizedFocusRecordsByProjectId[projectId].focusDuration += duration;
 					});
 
-					uniqueTaskIds.forEach((taskId) => {
+					for (const taskId of uniqueTaskIds) {
 						if (!sterilizedFocusRecordsByTaskId[taskId]) {
 							sterilizedFocusRecordsByTaskId[taskId] = {
 								focusRecords: [],
@@ -155,7 +155,7 @@ const useExportFocusRecords = () => {
 
 						sterilizedFocusRecordsByTaskId[taskId].focusRecords.push(sterilizedFocusRecordOnlyWithTaskIds);
 						sterilizedFocusRecordsByTaskId[taskId].focusDuration += taskFocusDuration;
-					});
+					}
 				}
 			});
 
@@ -366,13 +366,28 @@ const useExportFocusRecords = () => {
 			groupType === 'project' ? sterilizedFocusRecordsByProjectId : sterilizedFocusRecordsByTaskId;
 
 		// 1. Convert grouped object to array and sort by focusDuration (descending)
-		const sortedGroups = Object.entries(groupedFocusRecords)
+		let sortedGroups = Object.entries(groupedFocusRecords)
 			.map(([groupId, { focusRecords, focusDuration }]) => ({
 				groupId,
 				focusRecords,
 				focusDuration,
 			}))
 			.sort((a, b) => b.focusDuration - a.focusDuration);
+
+		// If we only want to include tasks with no parent, we need to filter out any TickTick tasks that were included that do have a parent. We don't need to check the other focus apps as they do not have a parent-child substructure with their tasks (Session, Forest, Tide, BeFocused).
+		if (groupType !== 'project' && onlyExportTasksWithNoParent) {
+			sortedGroups = sortedGroups.filter(({ groupId: taskId }) => {
+				// If the task is from TickTick, then only include it if it has no parent task.
+				if (tasksById[taskId]) {
+					const task = tasksById[taskId];
+					const taskParentId = task.parentId || task.itemParentTaskId || task.parent_id;
+
+					return !taskParentId;
+				}
+
+				return true;
+			});
+		}
 
 		// 2. Add files to ZIP
 		sortedGroups.forEach(({ groupId, focusRecords, focusDuration }, index) => {

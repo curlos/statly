@@ -32,6 +32,7 @@ const useUserSettings = () => {
 		taskIdIncludeFocusRecordsFromSubtasks = true,
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage = true,
 		maxFocusRecordsPerPage = 50,
+		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage = true,
 	} = focusRecordsPageSettings;
 
 	const {
@@ -39,7 +40,7 @@ const useUserSettings = () => {
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage = true,
 		groupedTasksCollapsedByDefault = true,
 		showIndentedTasks = true,
-		onlyExportTasksWithNoParent = true,
+		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage = true,
 		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
@@ -58,13 +59,14 @@ const useUserSettings = () => {
 			taskIdIncludeFocusRecordsFromSubtasks,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage,
 			maxFocusRecordsPerPage,
+			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage,
 		},
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage,
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
-			onlyExportTasksWithNoParent,
+			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage,
 			maxDaysPerPage,
 		},
 		focusHoursGoalPageSettings: {

@@ -22,6 +22,7 @@ const OtherSectionFocusRecords = () => {
 			taskIdIncludeFocusRecordsFromSubtasks,
 			maxFocusRecordsPerPage,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
+			onlyExportTasksWithNoParent,
 		},
 	} = useUserSettingsContext();
 
@@ -167,6 +168,17 @@ const OtherSectionFocusRecords = () => {
 								params: ['task'],
 							}}
 						/>
+
+						<div className="pl-9">
+							<CheckboxOther
+								{...{
+									name: 'Only Export Tasks With No Parent',
+									showValue: onlyExportTasksWithNoParent,
+									handleCheckboxClick: () =>
+										handleCheckboxClick(onlyExportTasksWithNoParent, 'onlyExportTasksWithNoParent'),
+								}}
+							/>
+						</div>
 
 						{/* Input - Max Focus Records Per Page */}
 						<InputNumUserSettings
