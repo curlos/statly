@@ -19,6 +19,7 @@ import {
 } from '../../../services/resources/ticktickOneApi';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
+import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
 
 const BackupData = () => {
 	// RTK Query - TickTick 1.0 - Tasks
@@ -127,7 +128,7 @@ const BackupData = () => {
 		}
 
 		zip.generateAsync({ type: 'blob' }).then((blob) => {
-			saveAs(blob, 'Backup_Tasks_FocusRecords_Tags.zip');
+			saveAs(blob, `Backup_Tasks_FocusRecords_Tags_${getFormattedDateAndTimeForFileName()}.zip`);
 		});
 	};
 

@@ -5,7 +5,11 @@ import {
 	useGetTodoistAllTasksQuery,
 } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import { formatDateTime, getFormattedShortMonthDay } from '../../../utils/date.utils';
+import {
+	formatDateTime,
+	getFormattedDateAndTimeForFileName,
+	getFormattedShortMonthDay,
+} from '../../../utils/date.utils';
 import {
 	getAllCompletedTasksDuringFocusRecord,
 	getFocusDuration,
@@ -412,11 +416,11 @@ const useExportFocusRecords = () => {
 
 			// Filename for the markdown file
 			const sanitizedName = `${paddedIndex}_${groupName}_${formattedDuration}`.replace(/[\/\\?%*:|"<>]/g, '-');
-			zip.file(`${sanitizedName}.md`, markdown);
+			zip.file(`${sanitizedName}_.md`, markdown);
 		});
 
 		zip.generateAsync({ type: 'blob' }).then((blob) => {
-			saveAs(blob, 'FocusRecords.zip');
+			saveAs(blob, `FocusRecords_${getFormattedDateAndTimeForFileName()}.zip`);
 		});
 	};
 

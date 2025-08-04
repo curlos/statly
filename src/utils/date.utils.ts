@@ -962,3 +962,24 @@ export const getAllMonths = (date) => {
     return months;
 };
 
+export const getFormattedDateAndTimeForFileName = () => {
+	const now = new Date();
+
+	const formattedDate = now.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+	})
+	.replace(/,?/g, '')        // Remove commas
+	.replace(/\s+/g, '_');     // Replace spaces with underscores
+
+	const formattedTime = now.toLocaleTimeString('en-US', {
+	hour: 'numeric',
+	minute: '2-digit',
+	hour12: true
+	})
+	.replace(':', '_')         // e.g. "2:44 PM" -> "2_44PM"
+	.replace(/\s/g, '');       // Remove space before AM/PM
+
+	return `${formattedDate}_${formattedTime}`
+}

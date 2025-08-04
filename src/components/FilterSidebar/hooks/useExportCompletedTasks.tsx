@@ -8,6 +8,7 @@ import { useUserSettingsContext } from '../../../pages/ticktick-1.00/focus-recor
 import { useGetTodoistAllProjectsQuery, useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { saveAs } from 'file-saver';
+import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
 
 const useExportCompletedTasks = () => {
 	// RTK Query - TickTick 1.0 - Tasks
@@ -530,7 +531,7 @@ const useExportCompletedTasks = () => {
 			});
 
 			zip.generateAsync({ type: 'blob' }).then((blob) => {
-				saveAs(blob, 'completed_tasks.zip');
+				saveAs(blob, `completed_tasks_${getFormattedDateAndTimeForFileName()}.zip`);
 			});
 
 			return;
@@ -615,7 +616,7 @@ const useExportCompletedTasks = () => {
 		});
 
 		zip.generateAsync({ type: 'blob' }).then((blob) => {
-			saveAs(blob, 'completed_tasks.zip');
+			saveAs(blob, `completed_tasks_${getFormattedDateAndTimeForFileName()}.zip`);
 		});
 	};
 
