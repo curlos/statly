@@ -31,6 +31,7 @@ export const baseAPI = createApi({
 		'HabitSection',
 		'HabitLog',
 		'UserSettings',
+		'TickTick-1.0-Task'
 	],
 	endpoints: () => ({}),
 });

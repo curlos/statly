@@ -4,7 +4,10 @@ import Spinner from '../../Loaders/Spinner';
 import classNames from 'classnames';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import useHandleError from '../../../hooks/useHandleError';
-import { useGetAllProjectsQuery } from '../../../services/resources/ticktickOneApi';
+import {
+	useGetAllProjectsQuery,
+	useUpdateActiveAndCompletedTasksFromArchivedProjectsMutation,
+} from '../../../services/resources/ticktickOneApi';
 import Accordion from '../../Accordion/Accordion';
 
 const OtherSection = () => {
@@ -21,12 +24,48 @@ const OtherSection = () => {
 };
 
 const UpdateArchivedProjects = () => {
-	const [updateStatus, setUpdateStatus] = useState('none');
 	const { chosenColorObj } = useThemeContext();
+	const [updateStatus, setUpdateStatus] = useState('none');
+	const [checkedArchivedProjects, setCheckedArchivedProjects] = useState({});
+
+	const handleError = useHandleError();
+
+	const [updateActiveAndCompletedTasksFromArchivedProjects] =
+		useUpdateActiveAndCompletedTasksFromArchivedProjectsMutation();
+
+	const handleClick = () => {
+		handleError(async () => {
+			const checkedArchivedProjectIds = Object.keys(checkedArchivedProjects).filter(
+				(projectId) => checkedArchivedProjects[projectId]
+			);
+
+			const payload = {
+				projectIds: checkedArchivedProjectIds,
+			};
+
+			setUpdateStatus('loading');
+
+			await updateActiveAndCompletedTasksFromArchivedProjects({
+				payload,
+			});
+
+			// Let the UI update before doing heavy work
+			setTimeout(() => {
+				setUpdateStatus('done');
+
+				setTimeout(() => {
+					setUpdateStatus('none');
+				}, 1000);
+			}, 0);
+		});
+	};
 
 	return (
 		<div>
-			<div className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}>
+			<div
+				className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+				onClick={handleClick}
+			>
 				{updateStatus === 'loading' ? (
 					<Spinner />
 				) : (
@@ -42,25 +81,26 @@ const UpdateArchivedProjects = () => {
 					/>
 				)}
 
-				<div>Get Active and Completed Tasks From Archived Projects (TickTick)</div>
+				<div>Update Active and Completed Tasks From Archived Projects (TickTick)</div>
 			</div>
 
 			<div className="mt-4">
-				<ArchivedProjectsCheckboxList />
+				<ArchivedProjectsCheckboxList {...{ checkedArchivedProjects, setCheckedArchivedProjects }} />
 			</div>
 		</div>
 	);
 };
 
-const ArchivedProjectsCheckboxList = () => {
+const ArchivedProjectsCheckboxList = ({ checkedArchivedProjects, setCheckedArchivedProjects }) => {
+	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
+
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
 	const { projects } = fetchedProjects || {};
 
-	const handleError = useHandleError();
-
 	const [sortedArchivedProjects, setSortedArchivedProjects] = useState([]);
-	const [checkedArchivedProjects, setCheckedArchivedProjects] = useState({});
+
+	const selectedAll = sortedArchivedProjects.every((project) => checkedArchivedProjects[project.id]);
 
 	useEffect(() => {
 		if (isLoadingGetProjects) {
@@ -71,6 +111,22 @@ const ArchivedProjectsCheckboxList = () => {
 		const sortedArchivedProjects = archivedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
 		setSortedArchivedProjects(sortedArchivedProjects);
 	}, [projects]);
+
+	const toggleSelectAllArchivedProjects = () => {
+		const newCheckedArchivedProjects = {};
+
+		if (selectedAll) {
+			sortedArchivedProjects.map((project) => {
+				newCheckedArchivedProjects[project.id] = false;
+			});
+		} else {
+			sortedArchivedProjects.map((project) => {
+				newCheckedArchivedProjects[project.id] = true;
+			});
+		}
+
+		setCheckedArchivedProjects(newCheckedArchivedProjects);
+	};
 
 	return (
 		<Accordion
@@ -88,8 +144,44 @@ const ArchivedProjectsCheckboxList = () => {
 			openByDefault={false}
 		>
 			<div className="space-y-2">
+				<div
+					className={classNames(
+						'flex items-center gap-1 mb-2 cursor-pointer',
+						nextLightestColorObj.hover.textColor
+					)}
+					onClick={toggleSelectAllArchivedProjects}
+				>
+					<label
+						className="inline-flex items-center cursor-pointer"
+						onChange={(e) => {
+							e.stopPropagation();
+						}}
+					>
+						<input
+							type="checkbox"
+							checked={selectedAll}
+							onClick={(e) => e.stopPropagation()}
+							onChange={() => {}}
+							className="sr-only"
+						/>
+						<div
+							className={`relative w-11 h-6 rounded-full transition-colors
+							${selectedAll ? chosenColorObj.bgColor : 'bg-color-gray-300'}`}
+						>
+							<div
+								className={`absolute top-[2px] left-[2px] h-5 w-5 bg-white border border-gray-300 rounded-full transition-transform
+							${selectedAll ? 'translate-x-full' : ''}`}
+							></div>
+						</div>
+						<span className="ml-2">Select All</span>
+					</label>
+				</div>
+
 				{sortedArchivedProjects.map((project) => (
-					<CheckboxArchivedProject {...{ project, checkedArchivedProjects, setCheckedArchivedProjects }} />
+					<CheckboxArchivedProject
+						key={project.id}
+						{...{ project, checkedArchivedProjects, setCheckedArchivedProjects }}
+					/>
 				))}
 			</div>
 		</Accordion>

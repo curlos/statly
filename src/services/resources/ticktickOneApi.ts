@@ -59,6 +59,7 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 					ancestorTasksById,
 				};
 			},
+			providesTags: ['TickTick-1.0-Task'],
 		}),
 		getAllProjects: builder.query({
 			query: (queryParams) => {
@@ -104,6 +105,14 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 				return { tags, tagsByRawName };
 			},
 		}),
+		updateActiveAndCompletedTasksFromArchivedProjects: builder.mutation({
+			query: ({ payload }) => ({
+				url: `/ticktick-1.0/update-active-and-completed-tasks-from-archived-projects`,
+				method: 'PUT',
+				body: payload,
+			}),
+			invalidatesTags: () => ['TickTick-1.0-Task'],
+		}),
 	}),
 });
 
@@ -113,4 +122,5 @@ export const {
 	useGetAllProjectsQuery,
 	useGetAllProjectGroupsQuery,
 	useGetAllTagsQuery,
+	useUpdateActiveAndCompletedTasksFromArchivedProjectsMutation
 } = tickTickOneApi;
