@@ -9,6 +9,7 @@ import {
 	useUpdateActiveAndCompletedTasksFromArchivedProjectsMutation,
 } from '../../../services/resources/ticktickOneApi';
 import Accordion from '../../Accordion/Accordion';
+import BackupData from './BackupData';
 
 const OtherSection = () => {
 	return (
@@ -19,6 +20,7 @@ const OtherSection = () => {
 			</div>
 
 			<UpdateArchivedProjects />
+			<BackupData />
 		</div>
 	);
 };
