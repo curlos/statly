@@ -9,7 +9,11 @@ const CardImage = ({ cardType, imageSrc, page }) => {
 
 	return (
 		<div>
-			<div className="font-bold mb-1">{cardType}</div>
+			<div className="flex items-center gap-1 mb-2">
+				<h3 className="text-[20px] font-bold">{cardType}</h3>
+				<Icon name="image" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
+			</div>
+
 			<div
 				className="relative"
 				onMouseOver={() => setHoverImage(true)}

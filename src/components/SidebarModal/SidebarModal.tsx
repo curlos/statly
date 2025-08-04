@@ -5,6 +5,7 @@ import ThemeColorList from './ThemeColorList';
 import FontFamilyList from './FontFamilyList';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import CardImage from '../../pages/ticktick-1.00/challenges/CardImage';
+import OtherSection from './OtherSection/OtherSection';
 
 const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -95,6 +96,10 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						<div>
 							<CardImage cardType="Loader Image" imageSrc={selectedLoaderCardImage} page="loader" />
 						</div>
+
+						{/* Other */}
+						<hr className="border-color-gray-200 my-4" />
+						<OtherSection />
 					</motion.div>
 				</motion.div>
 			)}

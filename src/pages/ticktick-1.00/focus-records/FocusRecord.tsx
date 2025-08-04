@@ -309,13 +309,9 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 
 	// RTK Query - Todoist - Tasks
 	const { data: fetchedTodoistAllTasksById, isLoading: isLoadingGetTodoistAllTasks } = useGetTodoistAllTasksQuery();
-	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
+	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
 
-	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
-	const { projectsById } = fetchedProjects || {};
-
-	if (isLoadingGetTasks || isLoadingGetTodoistAllTasks || isLoadingGetProjects) {
+	if (isLoadingGetTasks || isLoadingGetTodoistAllTasks) {
 		return (
 			<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
 				{task?.title}
@@ -369,7 +365,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 				</span>
 			)}
 
-			<TaskProjectName {...{ taskId: parentTaskId, tasksById, projectsById }} />
+			<TaskProjectName {...{ taskId: parentTaskId, parentTask }} />
 		</div>
 	);
 };
