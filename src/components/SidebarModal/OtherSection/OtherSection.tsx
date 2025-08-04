@@ -84,7 +84,7 @@ const UpdateArchivedProjects = () => {
 				<div>Update Active and Completed Tasks From Archived Projects (TickTick)</div>
 			</div>
 
-			<div className="mt-4">
+			<div className="mt-4 pl-14">
 				<ArchivedProjectsCheckboxList {...{ checkedArchivedProjects, setCheckedArchivedProjects }} />
 			</div>
 		</div>
