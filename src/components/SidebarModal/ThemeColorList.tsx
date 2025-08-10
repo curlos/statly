@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import useHandleError from '../../hooks/useHandleError';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import { useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
+import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import { toTitleCase } from '../../utils/focus-apps/helpers.utils';
 import CustomRadioButton from '../CustomRadioButton';
 import Icon from '../Icon';
@@ -11,6 +11,10 @@ const ThemeColorList = () => {
 	const handleError = useHandleError();
 
 	// RTK Query - User Settings
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
+	const { userSettings } = fetchedUserSettings || {};
+
+	// RTK Query - User Settings
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const themeContext = useThemeContext();
@@ -18,8 +22,11 @@ const ThemeColorList = () => {
 
 	const handleChangeThemeColor = (colorKey) => {
 		handleError(async () => {
+			const restOfThemeKeysAndVals = userSettings?.theme;
+
 			const payload = {
 				theme: {
+					...restOfThemeKeysAndVals,
 					color: colorKey,
 				},
 			};
