@@ -29,7 +29,12 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	// Context
 	const { updateQueryParams } = useSearchParamsContext();
 	const {
-		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
+		completedTasksPageSettings: {
+			groupedTasksCollapsedByDefault,
+			showIndentedTasks,
+			showMedals,
+			selectedMedalImage,
+		},
 	} = useUserSettingsContext();
 
 	// Theme Context
@@ -72,11 +77,24 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
-			<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
-				<Icon name="check_box" customClass={classNames('!text-[20px]', textColor)} />
-			</div>
+			{showMedals && (
+				<div
+					className={classNames(
+						'absolute w-[60px] h-[60px] bg-primary-10 rounded-full flex items-center justify-center',
+						showMedals ? 'ml-[-12px]' : 'ml-[-15px]'
+					)}
+				>
+					<img src={selectedMedalImage} />
+				</div>
+			)}
 
-			{!isLastItemForTheDay && (
+			{!showMedals && (
+				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
+					<Icon name="check_box" customClass={classNames('!text-[20px]', textColor)} />
+				</div>
+			)}
+
+			{!isLastItemForTheDay && !showMedals && (
 				<div
 					className={classNames(
 						'absolute top-[28px] left-[11px] h-full border-solid border-l-[1px]',
@@ -86,8 +104,11 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 				></div>
 			)}
 
-			<div className="relative m-0 ml-[25px] sm:ml-[40px] break-words" style={{ marginTop: 'unset' }}>
-				{!isLastItemForTheDay && (
+			<div
+				className={classNames(showMedals ? 'ml-[40px]' : 'ml-[25px]', 'relative m-0 sm:ml-[40px] break-words')}
+				style={{ marginTop: 'unset' }}
+			>
+				{!isLastItemForTheDay && !showMedals && (
 					<div
 						className={classNames(
 							'absolute left-[-18px] sm:left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600',

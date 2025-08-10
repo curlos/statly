@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import useExportCompletedTasks from './hooks/useExportCompletedTasks';
+import CardImage from '../../pages/ticktick-1.00/challenges/CardImage';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -20,6 +21,8 @@ const OtherSectionFocusRecords = () => {
 			showIndentedTasks,
 			maxDaysPerPage,
 			onlyExportTasksWithNoParent,
+			showMedals,
+			selectedMedalImage,
 		},
 	} = useUserSettingsContext();
 
@@ -113,6 +116,24 @@ const OtherSectionFocusRecords = () => {
 								handleCheckboxClick: () => handleCheckboxClick(showIndentedTasks, 'showIndentedTasks'),
 							}}
 						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Medals',
+								showValue: showMedals,
+								handleCheckboxClick: () => handleCheckboxClick(showMedals, 'showMedals'),
+							}}
+						/>
+
+						{showMedals && (
+							<div className="pl-10">
+								<CardImage
+									cardType="Completed Tasks Day Medal Image"
+									imageSrc={selectedMedalImage}
+									page={'completed-tasks'}
+								/>
+							</div>
+						)}
 
 						{/* Copy Completed Tasks To Clipboard */}
 						<CompletedTasksExporter

@@ -33,8 +33,8 @@ const useUserSettings = () => {
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage = true,
 		maxFocusRecordsPerPage = 50,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage = true,
-		showMedals = false,
-		selectedMedalImage = 'https://i.imgur.com/SQOm6nX.png',
+		showMedals: showMedalsFocusRecordsPage = false,
+		selectedMedalImage: selectedMedalImageFocusRecordsPage = 'https://i.imgur.com/SQOm6nX.png',
 	} = focusRecordsPageSettings;
 
 	const {
@@ -44,6 +44,8 @@ const useUserSettings = () => {
 		showIndentedTasks = true,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage = true,
 		maxDaysPerPage = 7,
+		showMedals: showMedalsCompletedTasksPage = false,
+		selectedMedalImage: selectedMedalImageCompletedTasksPage = 'https://i.imgur.com/SQOm6nX.png',
 	} = completedTasksPageSettings;
 
 	const { projects: filteredProjects = {} } = focusHoursGoalPageSettings;
@@ -62,8 +64,8 @@ const useUserSettings = () => {
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage,
 			maxFocusRecordsPerPage,
 			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage,
-			showMedals,
-			selectedMedalImage,
+			showMedals: showMedalsFocusRecordsPage,
+			selectedMedalImage: selectedMedalImageFocusRecordsPage,
 		},
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
@@ -72,6 +74,8 @@ const useUserSettings = () => {
 			showIndentedTasks,
 			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage,
 			maxDaysPerPage,
+			showMedals: showMedalsCompletedTasksPage,
+			selectedMedalImage: selectedMedalImageCompletedTasksPage,
 		},
 		focusHoursGoalPageSettings: {
 			filteredProjects,
