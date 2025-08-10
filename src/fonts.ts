@@ -12,3 +12,4 @@ import './fonts-css/mozilla-headline.css';
 import './fonts-css/mozilla-text.css';
 import './fonts-css/bf-modernista.css';
 import './fonts-css/kirsty.css'
+import './fonts-css/jost.css'

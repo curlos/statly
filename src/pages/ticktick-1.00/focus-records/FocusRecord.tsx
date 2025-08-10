@@ -51,13 +51,23 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	});
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
 
+	const displayMedals = true;
+
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
-			<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
-				<Icon name="timer" customClass={classNames('!text-[20px]', textColor)} />
-			</div>
+			{displayMedals && (
+				<div className="absolute w-[60px] h-[60px] bg-primary-10 rounded-full flex items-center justify-center ml-[-15px]">
+					<img src="https://i.imgur.com/SQOm6nX.png" />
+				</div>
+			)}
 
-			{!isLastItemForTheDay && (
+			{!displayMedals && (
+				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
+					<Icon name="timer" customClass={classNames('!text-[20px]', textColor)} />
+				</div>
+			)}
+
+			{!isLastItemForTheDay && !displayMedals && (
 				<div
 					className={classNames(
 						'absolute top-[28px] left-[11px] h-full border-solid border-l-[1px]',
@@ -68,7 +78,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			)}
 
 			<div className="relative m-0 ml-[25px] sm:ml-[40px] break-words" style={{ marginTop: 'unset' }}>
-				{!isLastItemForTheDay && (
+				{!isLastItemForTheDay && !displayMedals && (
 					<div
 						className={classNames(
 							'absolute left-[-18px] sm:left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600',

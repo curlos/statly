@@ -30,6 +30,7 @@ const FontFamilyList = () => {
 		// 'Bebas Neue',
 		'BF Modernista',
 		'Kirsty',
+		'Jost',
 	];
 
 	const handleChangeFontFamily = (fontFamilyKey) => {
