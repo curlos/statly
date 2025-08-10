@@ -10,7 +10,7 @@ const CardImage = ({ cardType, imageSrc, page }) => {
 	return (
 		<div>
 			<div className="flex items-center gap-1 mb-2">
-				<h3 className="text-[20px] font-bold">{cardType}</h3>
+				<h3 className={page !== 'focus-records' ? 'text-[20px] font-bold' : ''}>{cardType}</h3>
 				<Icon name="image" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
 			</div>
 
@@ -27,7 +27,11 @@ const CardImage = ({ cardType, imageSrc, page }) => {
 				)}
 				<img
 					src={imageSrc}
-					className={classNames('cursor-pointer max-h-[250px]', hoverImage && 'opacity-50')}
+					className={classNames(
+						'cursor-pointer',
+						hoverImage && 'opacity-50',
+						page === 'focus-records' ? 'max-w-[60px]' : 'max-h-[250px]'
+					)}
 				/>
 			</div>
 

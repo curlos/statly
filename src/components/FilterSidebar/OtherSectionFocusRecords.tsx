@@ -10,6 +10,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import { useState } from 'react';
 import useExportFocusRecords from './hooks/useExportFocusRecords';
 import Spinner from '../Loaders/Spinner';
+import CardImage from '../../pages/ticktick-1.00/challenges/CardImage';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -23,6 +24,8 @@ const OtherSectionFocusRecords = () => {
 			maxFocusRecordsPerPage,
 			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 			onlyExportTasksWithNoParent,
+			showMedals,
+			selectedMedalImage,
 		},
 	} = useUserSettingsContext();
 
@@ -139,6 +142,24 @@ const OtherSectionFocusRecords = () => {
 									),
 							}}
 						/>
+
+						<CheckboxOther
+							{...{
+								name: 'Show Medals',
+								showValue: showMedals,
+								handleCheckboxClick: () => handleCheckboxClick(showMedals, 'showMedals'),
+							}}
+						/>
+
+						{showMedals && (
+							<div className="pl-10">
+								<CardImage
+									cardType="Focus Record Medal Image"
+									imageSrc={selectedMedalImage}
+									page={'focus-records'}
+								/>
+							</div>
+						)}
 
 						{/* Copy Focus Records To Clipboard */}
 						<FocusRecordsExporter

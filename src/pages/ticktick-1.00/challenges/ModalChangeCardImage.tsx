@@ -22,11 +22,13 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
 		medalsPageSettings: { selectedMedalCardImage },
+		focusRecordsPageSettings,
 	} = useUserSettingsContext();
 
 	const defaultSelectedCardImage = {
 		challenges: selectedChallengeCardImage && selectedChallengeCardImage[cardType],
 		medals: selectedMedalCardImage && selectedMedalCardImage[cardType],
+		'focus-records': focusRecordsPageSettings?.selectedMedalImage,
 	};
 
 	const [selectedImageSrc, setSelectedImageSrc] = useState(defaultSelectedCardImage[page]);
@@ -39,6 +41,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 				return getMedalsPagePayload();
 			case 'loader':
 				return getLoaderPayload();
+			case 'focus-records':
+				return getFocusRecordsPagePayload();
 		}
 	};
 
@@ -104,6 +108,25 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 			theme: {
 				...restOfThemeKeysAndVals,
 				loaderCardImage: selectedImageSrc,
+			},
+		};
+
+		return payload;
+	};
+
+	const getFocusRecordsPagePayload = () => {
+		const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+
+		const payload = {
+			tickTickOne: {
+				pages: {
+					...restOfPagesKeysAndVals,
+					focusRecords: {
+						...restOfFocusRecordsKeysAndVals,
+						selectedMedalImage: selectedImageSrc,
+					},
+				},
 			},
 		};
 
