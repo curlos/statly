@@ -54,7 +54,12 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	return (
 		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
 			{showMedals && (
-				<div className="absolute w-[60px] h-[60px] bg-primary-10 rounded-full flex items-center justify-center ml-[-15px]">
+				<div
+					className={classNames(
+						'absolute w-[60px] h-[60px] bg-primary-10 rounded-full flex items-center justify-center',
+						showMedals ? 'ml-[-12px]' : 'ml-[-15px]'
+					)}
+				>
 					<img src={selectedMedalImage} />
 				</div>
 			)}
@@ -75,7 +80,10 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 				></div>
 			)}
 
-			<div className="relative m-0 ml-[25px] sm:ml-[40px] break-words" style={{ marginTop: 'unset' }}>
+			<div
+				className={classNames(showMedals ? 'ml-[40px]' : 'ml-[25px]', 'relative m-0 sm:ml-[40px] break-words')}
+				style={{ marginTop: 'unset' }}
+			>
 				{!isLastItemForTheDay && !showMedals && (
 					<div
 						className={classNames(
