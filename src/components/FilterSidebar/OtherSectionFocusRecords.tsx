@@ -154,7 +154,7 @@ const OtherSectionFocusRecords = () => {
 						{showMedals && (
 							<div className="pl-10">
 								<CardImage
-									cardType="Focus Record Medal Image"
+									cardType="Medal Image"
 									imageSrc={selectedMedalImage}
 									page={'focus-records'}
 								/>

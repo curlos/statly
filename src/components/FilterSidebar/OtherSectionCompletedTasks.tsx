@@ -21,9 +21,8 @@ const OtherSectionFocusRecords = () => {
 			showIndentedTasks,
 			maxDaysPerPage,
 			onlyExportTasksWithNoParent,
-			showMedals,
-			selectedMedalImage,
 		},
+		focusRecordsPageSettings: { showMedals, selectedMedalImage },
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
@@ -128,7 +127,7 @@ const OtherSectionFocusRecords = () => {
 						{showMedals && (
 							<div className="pl-10">
 								<CardImage
-									cardType="Completed Tasks Day Medal Image"
+									cardType="Medal Image"
 									imageSrc={selectedMedalImage}
 									page={'completed-tasks'}
 								/>

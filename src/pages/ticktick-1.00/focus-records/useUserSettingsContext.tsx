@@ -44,8 +44,6 @@ const useUserSettings = () => {
 		showIndentedTasks = true,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage = true,
 		maxDaysPerPage = 7,
-		showMedals: showMedalsCompletedTasksPage = false,
-		selectedMedalImage: selectedMedalImageCompletedTasksPage = 'https://i.imgur.com/SQOm6nX.png',
 	} = completedTasksPageSettings;
 
 	const { projects: filteredProjects = {} } = focusHoursGoalPageSettings;
@@ -74,8 +72,6 @@ const useUserSettings = () => {
 			showIndentedTasks,
 			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage,
 			maxDaysPerPage,
-			showMedals: showMedalsCompletedTasksPage,
-			selectedMedalImage: selectedMedalImageCompletedTasksPage,
 		},
 		focusHoursGoalPageSettings: {
 			filteredProjects,

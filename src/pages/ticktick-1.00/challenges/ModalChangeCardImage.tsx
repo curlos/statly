@@ -30,7 +30,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		challenges: selectedChallengeCardImage && selectedChallengeCardImage[cardType],
 		medals: selectedMedalCardImage && selectedMedalCardImage[cardType],
 		'focus-records': focusRecordsPageSettings?.selectedMedalImage,
-		'completed-tasks': completedTasksPageSettings?.selectedMedalImage,
+		'completed-tasks': focusRecordsPageSettings?.selectedMedalImage,
 	};
 
 	const [selectedImageSrc, setSelectedImageSrc] = useState(defaultSelectedCardImage[page]);
@@ -44,9 +44,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 			case 'loader':
 				return getLoaderPayload();
 			case 'focus-records':
-				return getFocusRecordsPagePayload();
 			case 'completed-tasks':
-				return getCompletedTasksPagePayload();
+				return getFocusRecordsPagePayload();
 		}
 	};
 
@@ -128,25 +127,6 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 					...restOfPagesKeysAndVals,
 					focusRecords: {
 						...restOfFocusRecordsKeysAndVals,
-						selectedMedalImage: selectedImageSrc,
-					},
-				},
-			},
-		};
-
-		return payload;
-	};
-
-	const getCompletedTasksPagePayload = () => {
-		const restOfCompletedTasksPageKeysAndVals = userSettings?.tickTickOne?.pages?.completedTasks;
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
-
-		const payload = {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					completedTasks: {
-						...restOfCompletedTasksPageKeysAndVals,
 						selectedMedalImage: selectedImageSrc,
 					},
 				},

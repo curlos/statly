@@ -29,12 +29,8 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	// Context
 	const { updateQueryParams } = useSearchParamsContext();
 	const {
-		completedTasksPageSettings: {
-			groupedTasksCollapsedByDefault,
-			showIndentedTasks,
-			showMedals,
-			selectedMedalImage,
-		},
+		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
+		focusRecordsPageSettings: { showMedals, selectedMedalImage },
 	} = useUserSettingsContext();
 
 	// Theme Context
