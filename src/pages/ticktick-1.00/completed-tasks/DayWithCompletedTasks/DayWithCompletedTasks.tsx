@@ -13,6 +13,7 @@ import {
 	getGroupedSubtasksAndParentTasks,
 	getTasksWithParentIdAndNoParent,
 } from './getGroupedSubtasksAndParentTasks.util';
+import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../../medals/medalsLinks';
 
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
@@ -30,7 +31,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	const { updateQueryParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
-		focusRecordsPageSettings: { showMedals, selectedMedalImage },
+		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx },
 	} = useUserSettingsContext();
 
 	// Theme Context
@@ -71,18 +72,45 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, 'date-interval': 'Day', page: '' });
 	};
 
+	const isBattlefieldOneOrThreeMedal =
+		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
+
+	const getMedalImageClasses = () => {
+		let medalImageClass = '';
+
+		if (medalImageSizePx === 60) {
+			medalImageClass = 'h-[60px] sm:ml-[-15px]';
+
+			if (isBattlefieldOneOrThreeMedal) {
+				medalImageClass += ' mr-[-5px]';
+			}
+		} else if (medalImageSizePx === 100) {
+			medalImageClass = 'h-[100px] sm:ml-[-25px]';
+
+			if (isBattlefieldOneOrThreeMedal) {
+				medalImageClass += ' mr-[-10px]';
+			}
+		} else {
+			medalImageClass = 'h-[150px] sm:ml-[-30px]';
+
+			if (isBattlefieldOneOrThreeMedal) {
+				medalImageClass += ' mr-[-15px]';
+			}
+		}
+
+		return medalImageClass;
+	};
+
 	return (
-		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
-			{showMedals && (
-				<div
-					className={classNames(
-						'absolute w-[60px] h-[60px] bg-primary-10 rounded-full flex items-center justify-center',
-						showMedals ? 'ml-[-12px]' : 'ml-[-15px]'
-					)}
-				>
-					<img src={selectedMedalImage} />
-				</div>
+		<div
+			className={classNames(
+				'm-0 list-none last:mb-[4px] w-full',
+				showMedals ? 'flex' : 'relative',
+				showMedals && !isBattlefieldOneOrThreeMedal ? 'gap-2' : ''
 			)}
+			style={{ minHeight: '54px' }}
+		>
+			{showMedals && <img src={selectedMedalImage} className={getMedalImageClasses()} />}
 
 			{!showMedals && (
 				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
@@ -101,7 +129,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 			)}
 
 			<div
-				className={classNames(showMedals ? 'ml-[40px]' : 'ml-[25px]', 'relative m-0 sm:ml-[40px] break-words')}
+				className={classNames(showMedals ? 'w-full' : 'ml-[25px] sm:ml-[40px]', 'relative m-0 break-words')}
 				style={{ marginTop: 'unset' }}
 			>
 				{!isLastItemForTheDay && !showMedals && (

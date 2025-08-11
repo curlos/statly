@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import useExportCompletedTasks from './hooks/useExportCompletedTasks';
-import CardImage from '../../pages/ticktick-1.00/challenges/CardImage';
+import MedalImage from './MedalImage';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -23,6 +23,7 @@ const OtherSectionFocusRecords = () => {
 			onlyExportTasksWithNoParent,
 		},
 		focusRecordsPageSettings: { showMedals, selectedMedalImage },
+		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
@@ -34,25 +35,7 @@ const OtherSectionFocusRecords = () => {
 
 	const handleCheckboxClick = (showValue, userSettingProperty) => {
 		const newShowValue = !showValue;
-
-		const restOfCompletedTasksPageKeysAndVals = userSettings?.tickTickOne?.pages?.completedTasks;
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
-
-		handleError(async () => {
-			const payload = {
-				tickTickOne: {
-					pages: {
-						...restOfPagesKeysAndVals,
-						completedTasks: {
-							...restOfCompletedTasksPageKeysAndVals,
-							[userSettingProperty]: newShowValue,
-						},
-					},
-				},
-			};
-
-			await editUserSettings(payload).unwrap();
-		});
+		handleUpdateUserSettingForPage('completedTasks', userSettingProperty, newShowValue);
 	};
 
 	return (
@@ -120,17 +103,15 @@ const OtherSectionFocusRecords = () => {
 							{...{
 								name: 'Show Medals',
 								showValue: showMedals,
-								handleCheckboxClick: () => handleCheckboxClick(showMedals, 'showMedals'),
+								handleCheckboxClick: () => {
+									handleUpdateUserSettingForPage('focusRecords', 'showMedals', !showMedals);
+								},
 							}}
 						/>
 
 						{showMedals && (
 							<div className="pl-10">
-								<CardImage
-									cardType="Medal Image"
-									imageSrc={selectedMedalImage}
-									page={'completed-tasks'}
-								/>
+								<MedalImage />
 							</div>
 						)}
 
