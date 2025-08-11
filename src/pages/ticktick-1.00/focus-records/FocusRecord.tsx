@@ -12,7 +12,7 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import { getAllCompletedTasksDuringFocusRecord, getFocusDuration } from '../../../utils/focus-apps/focusRecords.utils';
-import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration, getMedalImageClasses } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
@@ -60,34 +60,6 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const isBattlefieldOneOrThreeMedal =
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
 
-	const getMedalImageClasses = () => {
-		let medalImageClass = '';
-
-		if (medalImageSizePx === 60) {
-			medalImageClass = 'w-[60px] sm:ml-[-15px]';
-
-			if (isBattlefieldOneOrThreeMedal) {
-				medalImageClass += ' mr-[-5px]';
-			}
-		} else if (medalImageSizePx === 100) {
-			medalImageClass = 'w-[100px] sm:ml-[-25px]';
-
-			if (isBattlefieldOneOrThreeMedal) {
-				medalImageClass += ' mr-[-10px]';
-			}
-		} else {
-			medalImageClass = 'w-[150px] sm:ml-[-30px]';
-
-			if (isBattlefieldOneOrThreeMedal) {
-				medalImageClass += ' mr-[-15px]';
-			}
-		}
-
-		medalImageClass += ' h-full';
-
-		return medalImageClass;
-	};
-
 	const urlRegex = /(https?:\/\/[^\s)]+)/g; // matches http/https URLs
 
 	return (
@@ -99,7 +71,12 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			)}
 			style={{ minHeight: '54px' }}
 		>
-			{showMedals && <img src={selectedMedalImage} className={getMedalImageClasses()} />}
+			{showMedals && (
+				<img
+					src={selectedMedalImage}
+					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal)}
+				/>
+			)}
 
 			{!showMedals && (
 				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">

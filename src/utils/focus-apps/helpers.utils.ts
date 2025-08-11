@@ -568,3 +568,31 @@ export const getCommaSeparatedObj = (commaSeparatedStr) => {
 
 	return commaSeparatedObj;
 };
+
+export const getMedalImageClasses = (medalImageSizePx, isBattlefieldOneOrThreeMedal) => {
+	let medalImageClass = '';
+
+	if (medalImageSizePx === 60) {
+		medalImageClass = 'w-[60px]';
+
+		if (isBattlefieldOneOrThreeMedal) {
+			medalImageClass += ' sm:ml-[-15px] mr-[-5px]';
+		}
+	} else if (medalImageSizePx === 100) {
+		medalImageClass = 'w-[100px]';
+
+		if (isBattlefieldOneOrThreeMedal) {
+			medalImageClass += ' sm:ml-[-25px] mr-[-10px]';
+		}
+	} else {
+		medalImageClass = 'w-[150px]';
+
+		if (isBattlefieldOneOrThreeMedal) {
+			medalImageClass += ' sm:ml-[-30px] mr-[-15px]';
+		}
+	}
+
+	medalImageClass += ' h-full';
+
+	return medalImageClass;
+};

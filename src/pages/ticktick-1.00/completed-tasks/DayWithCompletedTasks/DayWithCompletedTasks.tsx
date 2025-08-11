@@ -14,6 +14,7 @@ import {
 	getTasksWithParentIdAndNoParent,
 } from './getGroupedSubtasksAndParentTasks.util';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../../medals/medalsLinks';
+import { getMedalImageClasses } from '../../../../utils/focus-apps/helpers.utils';
 
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
@@ -75,34 +76,6 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	const isBattlefieldOneOrThreeMedal =
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
 
-	const getMedalImageClasses = () => {
-		let medalImageClass = '';
-
-		if (medalImageSizePx === 60) {
-			medalImageClass = 'w-[60px] sm:ml-[-15px]';
-
-			if (isBattlefieldOneOrThreeMedal) {
-				medalImageClass += ' mr-[-5px]';
-			}
-		} else if (medalImageSizePx === 100) {
-			medalImageClass = 'w-[100px] sm:ml-[-25px]';
-
-			if (isBattlefieldOneOrThreeMedal) {
-				medalImageClass += ' mr-[-10px]';
-			}
-		} else {
-			medalImageClass = 'w-[150px] sm:ml-[-30px]';
-
-			if (isBattlefieldOneOrThreeMedal) {
-				medalImageClass += ' mr-[-15px]';
-			}
-		}
-
-		medalImageClass += ' h-full';
-
-		return medalImageClass;
-	};
-
 	return (
 		<div
 			className={classNames(
@@ -112,7 +85,12 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 			)}
 			style={{ minHeight: '54px' }}
 		>
-			{showMedals && <img src={selectedMedalImage} className={getMedalImageClasses()} />}
+			{showMedals && (
+				<img
+					src={selectedMedalImage}
+					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal)}
+				/>
+			)}
 
 			{!showMedals && (
 				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
