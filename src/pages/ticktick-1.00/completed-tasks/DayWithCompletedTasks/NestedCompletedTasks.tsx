@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import Accordion from '../../../../components/Accordion/Accordion';
 import Icon from '../../../../components/Icon';
+import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 
 const NestedCompletedTasks = ({
 	tasksWithNoParent,
@@ -12,6 +13,10 @@ const NestedCompletedTasks = ({
 	dateStr,
 	updateTaskIdQueryParam,
 }) => {
+	const {
+		focusRecordsPageSettings: { showMedals },
+	} = useUserSettingsContext();
+
 	/**
 	 * @description Get and map the parent ids to their direct children. The array will contain the list of direct children (who are siblings to each other).
 	 * @returns {Object}
@@ -43,7 +48,13 @@ const NestedCompletedTasks = ({
 		return (
 			<ul className="">
 				{directCompletedSubtasks?.map((subtask, index) => (
-					<li key={subtask.id + index + dateStr} className="flex items-start gap-1">
+					<li
+						key={subtask.id + index + dateStr}
+						className={classNames(
+							'flex items-start gap-1',
+							showMedals ? 'break-all sm:break-words sm:break-normal' : 'break-words'
+						)}
+					>
 						<Icon
 							name={subtask.status === -1 ? 'disabled_by_default' : 'check_box'}
 							customClass={classNames('!text-[20px] text-white mt-[2px]')}
@@ -101,7 +112,7 @@ const NestedCompletedTasks = ({
 										key={taskId + index + dateStr}
 										title={
 											<li
-												className="underline cursor-pointer font-bold text-[18px] mt-1 hover:text-blue-500"
+												className="underline cursor-pointer font-bold text-[18px] mt-1 hover:text-blue-500 break-words"
 												onClick={() => updateTaskIdQueryParam(task.id)}
 											>
 												{task.content || task.title}
