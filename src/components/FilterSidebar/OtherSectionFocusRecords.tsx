@@ -11,6 +11,7 @@ import { useState } from 'react';
 import useExportFocusRecords from './hooks/useExportFocusRecords';
 import Spinner from '../Loaders/Spinner';
 import CardImage from '../../pages/ticktick-1.00/challenges/CardImage';
+import CustomRadioButton from '../CustomRadioButton';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -26,6 +27,7 @@ const OtherSectionFocusRecords = () => {
 			onlyExportTasksWithNoParent,
 			showMedals,
 			selectedMedalImage,
+			medalImageSizePx,
 		},
 	} = useUserSettingsContext();
 
@@ -38,7 +40,10 @@ const OtherSectionFocusRecords = () => {
 
 	const handleCheckboxClick = (showValue, userSettingProperty) => {
 		const newShowValue = !showValue;
+		handleUpdateUserSetting(userSettingProperty, newShowValue);
+	};
 
+	const handleUpdateUserSetting = (userSettingProperty, newValue) => {
 		const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
 		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 
@@ -49,7 +54,7 @@ const OtherSectionFocusRecords = () => {
 						...restOfPagesKeysAndVals,
 						focusRecords: {
 							...restOfFocusRecordsKeysAndVals,
-							[userSettingProperty]: newShowValue,
+							[userSettingProperty]: newValue,
 						},
 					},
 				},
@@ -58,6 +63,23 @@ const OtherSectionFocusRecords = () => {
 			await editUserSettings(payload).unwrap();
 		});
 	};
+
+	const medalImageSizeOptions = [
+		{
+			name: 'Small (60px)',
+			px: 60,
+		},
+		{
+			name: 'Medium (100px)',
+			px: 100,
+		},
+		{
+			name: 'Large (150px)',
+			px: 150,
+		},
+	];
+
+	const { chosenColorObj } = useThemeContext();
 
 	return (
 		<div>
@@ -158,6 +180,26 @@ const OtherSectionFocusRecords = () => {
 									imageSrc={selectedMedalImage}
 									page={'focus-records'}
 								/>
+
+								<div className="space-y-1 mt-2">
+									{medalImageSizeOptions.map((imageSizeOption) => {
+										return (
+											<CustomRadioButton
+												key={imageSizeOption.name + 'radio'}
+												label={imageSizeOption.name}
+												name={imageSizeOption.name}
+												checked={imageSizeOption.px === medalImageSizePx}
+												onChange={() => {
+													handleUpdateUserSetting('medalImageSizePx', imageSizeOption.px);
+												}}
+												customOuterCircleClasses={classNames('!w-[20px] !h-[20px]')}
+												customInnerCircleClasses={classNames('!w-[10px] !h-[10px]')}
+												customOuterCircleBorderColorClasses={chosenColorObj.borderColor}
+												customInnerCircleBgColorClasses={chosenColorObj.bgColor}
+											/>
+										);
+									})}
+								</div>
 							</div>
 						)}
 

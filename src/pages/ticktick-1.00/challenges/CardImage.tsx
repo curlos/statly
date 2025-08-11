@@ -32,7 +32,7 @@ const CardImage = ({ cardType, imageSrc, page }) => {
 					className={classNames(
 						'cursor-pointer',
 						hoverImage && 'opacity-50',
-						page === 'focus-records' || page === 'completed-tasks' ? 'max-w-[60px]' : 'max-h-[250px]'
+						page === 'focus-records' || page === 'completed-tasks' ? 'max-w-[150px]' : 'max-h-[250px]'
 					)}
 				/>
 			</div>

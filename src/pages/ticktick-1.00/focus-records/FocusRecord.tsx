@@ -16,6 +16,7 @@ import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
+import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../medals/medalsLinks';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -41,7 +42,13 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
 
 	const {
-		focusRecordsPageSettings: { showCompletedTasks, showFocusNotes, showMedals, selectedMedalImage },
+		focusRecordsPageSettings: {
+			showCompletedTasks,
+			showFocusNotes,
+			showMedals,
+			selectedMedalImage,
+			medalImageSizePx,
+		},
 	} = useUserSettingsContext();
 
 	const completedTasksDuringFocusSession = getAllCompletedTasksDuringFocusRecord({
@@ -50,19 +57,45 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		focusRecord,
 	});
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
+	const isBattlefieldOneOrThreeMedal =
+		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
+
+	const getMedalImageClasses = () => {
+		let medalImageClass = '';
+
+		if (medalImageSizePx === 60) {
+			medalImageClass = 'h-[60px] sm:ml-[-15px]';
+
+			if (isBattlefieldOneOrThreeMedal) {
+				medalImageClass += ' mr-[-5px]';
+			}
+		} else if (medalImageSizePx === 100) {
+			medalImageClass = 'h-[100px] sm:ml-[-25px]';
+
+			if (isBattlefieldOneOrThreeMedal) {
+				medalImageClass += ' mr-[-10px]';
+			}
+		} else {
+			medalImageClass = 'h-[150px] sm:ml-[-30px]';
+
+			if (isBattlefieldOneOrThreeMedal) {
+				medalImageClass += ' mr-[-15px]';
+			}
+		}
+
+		return medalImageClass;
+	};
 
 	return (
-		<div className="relative m-0 list-none last:mb-[4px] w-full" style={{ minHeight: '54px' }}>
-			{showMedals && (
-				<div
-					className={classNames(
-						'absolute w-[60px] h-[60px] bg-primary-10 rounded-full flex items-center justify-center',
-						showMedals ? 'ml-[-12px]' : 'ml-[-15px]'
-					)}
-				>
-					<img src={selectedMedalImage} />
-				</div>
+		<div
+			className={classNames(
+				'm-0 list-none last:mb-[4px] w-full',
+				showMedals ? 'flex' : 'relative',
+				showMedals && !isBattlefieldOneOrThreeMedal ? 'gap-2' : ''
 			)}
+			style={{ minHeight: '54px' }}
+		>
+			{showMedals && <img src={selectedMedalImage} className={getMedalImageClasses()} />}
 
 			{!showMedals && (
 				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
@@ -81,7 +114,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			)}
 
 			<div
-				className={classNames(showMedals ? 'ml-[40px]' : 'ml-[25px]', 'relative m-0 sm:ml-[40px] break-words')}
+				className={classNames(!showMedals && 'ml-[25px] sm:ml-[40px]', 'relative m-0 break-words')}
 				style={{ marginTop: 'unset' }}
 			>
 				{!isLastItemForTheDay && !showMedals && (

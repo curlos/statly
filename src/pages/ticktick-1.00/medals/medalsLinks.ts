@@ -402,3 +402,17 @@ export const MEDALS_GAMES = {
         "MEDALS_OBJ": BLACK_OPS_2_KILLSTREAK_MEDALS
     }
 }
+
+export const BATTLEFIELD_1_MEDALS_BY_URL = Object.entries(BATTLEFIELD_1).reduce((acc, [category, urls]) => {
+  urls.forEach(url => {
+    acc[url] = category; // key = URL, value = category
+  });
+  return acc;
+}, {});
+
+export const BATTLEFIELD_3_MEDALS_BY_URL = Object.entries(BATTLEFIELD_3_MEDALS).reduce((acc, [category, urls]) => {
+  urls.forEach(url => {
+    acc[url] = category; // key = URL, value = category
+  });
+  return acc;
+}, {});

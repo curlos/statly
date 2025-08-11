@@ -33,8 +33,9 @@ const useUserSettings = () => {
 		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage = true,
 		maxFocusRecordsPerPage = 50,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage = true,
-		showMedals: showMedalsFocusRecordsPage = false,
-		selectedMedalImage: selectedMedalImageFocusRecordsPage = 'https://i.imgur.com/SQOm6nX.png',
+		showMedals = false,
+		selectedMedalImage = 'https://i.imgur.com/SQOm6nX.png',
+		medalImageSizePx = 100,
 	} = focusRecordsPageSettings;
 
 	const {
@@ -62,8 +63,9 @@ const useUserSettings = () => {
 			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage,
 			maxFocusRecordsPerPage,
 			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage,
-			showMedals: showMedalsFocusRecordsPage,
-			selectedMedalImage: selectedMedalImageFocusRecordsPage,
+			showMedals,
+			selectedMedalImage,
+			medalImageSizePx,
 		},
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
