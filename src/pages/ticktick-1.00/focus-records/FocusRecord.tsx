@@ -156,7 +156,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							<ul>
 								{completedTasksDuringFocusSession.map((completedTask, index) => {
 									const completedTaskText = completedTask.title || completedTask.content;
-									const containsUrl = completedTaskText.match(urlRegex);
+									const containsUrl = completedTaskText?.match(urlRegex);
 
 									return (
 										<li
