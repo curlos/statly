@@ -79,24 +79,26 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		let medalImageClass = '';
 
 		if (medalImageSizePx === 60) {
-			medalImageClass = 'h-[60px] sm:ml-[-15px]';
+			medalImageClass = 'w-[60px] sm:ml-[-15px]';
 
 			if (isBattlefieldOneOrThreeMedal) {
 				medalImageClass += ' mr-[-5px]';
 			}
 		} else if (medalImageSizePx === 100) {
-			medalImageClass = 'h-[100px] sm:ml-[-25px]';
+			medalImageClass = 'w-[100px] sm:ml-[-25px]';
 
 			if (isBattlefieldOneOrThreeMedal) {
 				medalImageClass += ' mr-[-10px]';
 			}
 		} else {
-			medalImageClass = 'h-[150px] sm:ml-[-30px]';
+			medalImageClass = 'w-[150px] sm:ml-[-30px]';
 
 			if (isBattlefieldOneOrThreeMedal) {
 				medalImageClass += ' mr-[-15px]';
 			}
 		}
+
+		medalImageClass += ' h-full';
 
 		return medalImageClass;
 	};
