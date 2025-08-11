@@ -136,7 +136,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		return payload;
 	};
 
-	const [selectedGame, setSelectedGame] = useState(page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1');
+	const [selectedGame, setSelectedGame] = useState(page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)');
 	const [selectedMedalType, setSelectedMedalType] = useState(page === 'challenges' ? 'GENERAL' : 'COMBAT');
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
 
@@ -170,7 +170,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 						{...{
 							medalGameButtonType: 'GAME',
 							buttonNamesList: [
-								'BF1',
+								'BF1 (MEDALS)',
+								'BF1 (RIBBONS)',
 								'BF3 (MEDALS)',
 								'BF3 (RIBBONS)',
 								'BF4',

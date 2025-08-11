@@ -95,7 +95,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			)}
 
 			<div
-				className={classNames(!showMedals && 'ml-[25px] sm:ml-[40px]', 'relative m-0 break-words')}
+				className={classNames(!showMedals && 'ml-[25px] sm:ml-[40px]', 'relative m-0 break-words w-full')}
 				style={{ marginTop: 'unset' }}
 			>
 				{!isLastItemForTheDay && !showMedals && (

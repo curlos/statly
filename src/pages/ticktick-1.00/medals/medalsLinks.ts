@@ -3,7 +3,7 @@
  * Array.from(document.querySelectorAll('img[src*="https://i.imgur.com"]')).map((elem) => elem.src)
  */
 
-export const BATTLEFIELD_1 = {
+export const BATTLEFIELD_1_MEDALS = {
     "VEHICLES": [
         "https://i.imgur.com/qQZBT0J.png",
         "https://i.imgur.com/IiuUuoF.png",
@@ -75,6 +75,67 @@ export const BATTLEFIELD_1 = {
         "https://i.imgur.com/4E9FHj4.png",
         "https://i.imgur.com/Cv3wZ12.png",
         "https://i.imgur.com/Zy36esq.png"
+    ]
+}
+
+export const BATTLEFIELD_1_RIBBONS = {
+    "VEHICLE": [
+        "https://i.imgur.com/S68Fd6k.png",
+        "https://i.imgur.com/vK8BNpG.png",
+        "https://i.imgur.com/sjAzuRw.png",
+        "https://i.imgur.com/a9cQYzV.png"
+
+    ],
+    "CLASS": [
+        "https://i.imgur.com/YuYQqBm.png",
+        "https://i.imgur.com/gsRNxO3.png",
+        "https://i.imgur.com/oReQ5Yq.png",
+        "https://i.imgur.com/41oda1F.png",
+        "https://i.imgur.com/ikhaqJz.png",
+        "https://i.imgur.com/u865JXP.png",
+        "https://i.imgur.com/Z3MKSlU.png",
+        "https://i.imgur.com/haSTeZP.png",
+        "https://i.imgur.com/L7PpF3z.png"
+    ],
+    "WEAPON": [
+        "https://i.imgur.com/eEVDpGg.png",
+        "https://i.imgur.com/jwClwi0.png",
+        "https://i.imgur.com/Egg3nct.png",
+        "https://i.imgur.com/4JLYt6R.png",
+        "https://i.imgur.com/pykrWZH.png",
+        "https://i.imgur.com/hIoYdeu.png",
+        "https://i.imgur.com/rLeBrvB.png",
+        "https://i.imgur.com/kwU5cPn.png",
+        "https://i.imgur.com/ME8KHAL.png"
+    ],
+    "GAMEMODE": [
+        "https://i.imgur.com/7s9moKy.png",
+        "https://i.imgur.com/B7bmHoE.png",
+        "https://i.imgur.com/FBF3Mgy.png",
+        "https://i.imgur.com/EUHQGBT.png",
+        "https://i.imgur.com/AfXOBEE.png",
+        "https://i.imgur.com/BiwS0YZ.png",
+        "https://i.imgur.com/cfktKoO.png"
+    ],
+    "COMBAT": [
+        "https://i.imgur.com/9VQ0O3D.png",
+        "https://i.imgur.com/IRd0Sv7.png",
+        "https://i.imgur.com/vb2zoOo.png",
+        "https://i.imgur.com/2Jx5Icc.png",
+        "https://i.imgur.com/fVlDKTn.png",
+        "https://i.imgur.com/tlrLqwm.png",
+        "https://i.imgur.com/JSUPvke.png",
+        "https://i.imgur.com/OmQZOmN.png",
+        "https://i.imgur.com/AzeEhmA.png",
+        "https://i.imgur.com/JGunmJO.png",
+        "https://i.imgur.com/5YZhZO0.png",
+        "https://i.imgur.com/R0saODh.png"
+    ],
+    "SQUAD": [
+        "https://i.imgur.com/fMaI8lr.png",
+        "https://i.imgur.com/5ry5oa6.png",
+        "https://i.imgur.com/nnKOLIr.png",
+        "https://i.imgur.com/78qLs6J.png"
     ]
 }
 
@@ -344,7 +405,7 @@ export const BLACK_OPS_2_KILLSTREAK_MEDALS = {
 }
 
 export const MEDALS_GAMES = {
-    "BF1": {
+    "BF1 (MEDALS)": {
         "MEDALS_ORDER": [
             "VEHICLES", 
             "CLASS", 
@@ -353,7 +414,18 @@ export const MEDALS_GAMES = {
             "COMBAT", 
             "SQUAD"
         ],
-        "MEDALS_OBJ": BATTLEFIELD_1
+        "MEDALS_OBJ": BATTLEFIELD_1_MEDALS
+    },
+    "BF1 (RIBBONS)": {
+        "MEDALS_ORDER": [
+            "VEHICLE", 
+            "CLASS", 
+            "WEAPON", 
+            "GAMEMODE", 
+            "COMBAT", 
+            "SQUAD"
+        ],
+        "MEDALS_OBJ": BATTLEFIELD_1_RIBBONS
     },
     "BF3 (MEDALS)": {
         "MEDALS_ORDER": [
@@ -403,7 +475,7 @@ export const MEDALS_GAMES = {
     }
 }
 
-export const BATTLEFIELD_1_MEDALS_BY_URL = Object.entries(BATTLEFIELD_1).reduce((acc, [category, urls]) => {
+export const BATTLEFIELD_1_MEDALS_BY_URL = Object.entries(BATTLEFIELD_1_MEDALS).reduce((acc, [category, urls]) => {
   urls.forEach(url => {
     acc[url] = category; // key = URL, value = category
   });
