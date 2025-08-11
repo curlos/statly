@@ -86,6 +86,8 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		return medalImageClass;
 	};
 
+	const urlRegex = /(https?:\/\/[^\s)]+)/g; // matches http/https URLs
+
 	return (
 		<div
 			className={classNames(
@@ -174,6 +176,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 
 							<ul>
 								{completedTasksDuringFocusSession.map((completedTask, index) => {
+									const completedTaskText = completedTask.title || completedTask.content;
+									const containsUrl = completedTaskText.match(urlRegex);
+
 									return (
 										<li
 											key={`${focusRecord.id} ${completedTask.id} ${index}`}
@@ -183,8 +188,14 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 												name="check_box"
 												customClass={classNames('!text-[20px] text-white mt-[2px]')}
 											/>
-											<span className="break-words">
-												{completedTask.title || completedTask.content}
+											<span
+												className={classNames(
+													containsUrl
+														? 'break-all md:break-normal md:break-words'
+														: 'break-words'
+												)}
+											>
+												{completedTaskText}
 											</span>
 										</li>
 									);
