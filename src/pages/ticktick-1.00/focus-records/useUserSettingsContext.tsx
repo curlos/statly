@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
-import { useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
+import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
+import useHandleError from '../../../hooks/useHandleError';
 
 const UserSettingsContext = createContext();
 
@@ -52,7 +53,32 @@ const useUserSettings = () => {
 	const { selectedChallengeCardImage } = challengesPageSettings;
 	const { selectedMedalCardImage } = medalsPageSettings;
 
+	const handleError = useHandleError();
+	const [editUserSettings] = useEditUserSettingsMutation();
+
+	const handleUpdateUserSettingForPage = (page, userSettingProperty, newValue) => {
+		const restOfPageKeysAndVals = userSettings?.tickTickOne?.pages[page];
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+
+		handleError(async () => {
+			const payload = {
+				tickTickOne: {
+					pages: {
+						...restOfPagesKeysAndVals,
+						[page]: {
+							...restOfPageKeysAndVals,
+							[userSettingProperty]: newValue,
+						},
+					},
+				},
+			};
+
+			await editUserSettings(payload).unwrap();
+		});
+	};
+
 	return {
+		handleUpdateUserSettingForPage,
 		focusRecordsPageSettings: {
 			showFocusNotes,
 			showTotalFocusDuration,

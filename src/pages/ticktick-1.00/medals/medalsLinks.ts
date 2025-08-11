@@ -53,7 +53,7 @@ export const BATTLEFIELD_1 = {
         "https://i.imgur.com/Y09YTx2.png"
     ],
     "COMBAT": [
-        "https://i.imgur.com/A7m3D7y.png",
+        "https://i.imgur.com/YBX5t8r.png",
         "https://i.imgur.com/305hxZs.png",
         "https://i.imgur.com/67KRGxE.png",
         "https://i.imgur.com/ahjosIT.png",
