@@ -199,6 +199,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 								'BF4 (MEDALS)',
 								'BF4 (RIBBONS)',
 								'BFV (RIBBONS)',
+								'BF HARDLINE (MEDALS)',
 								'BO2 (CALLING CARDS)',
 								'BO2 (MEDALS)',
 							]}

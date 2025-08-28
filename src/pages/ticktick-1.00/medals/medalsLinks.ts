@@ -460,9 +460,99 @@ export const BATTLEFIELD_V_RIBBONS = {
 }
 
 export const BATTLEFIELD_HARDLINE_MEDALS = {
-    "STRATEGIC": [],
-    "COMBAT SERVICE": [],
-    "TEAMWORK": []
+    "WEAPONS": [
+        "https://i.imgur.com/7mWIOz1.png",
+        "https://i.imgur.com/BYHhV17.png",
+        "https://i.imgur.com/4LIFIHV.png",
+        "https://i.imgur.com/3z6gfm4.png",
+        "https://i.imgur.com/thEfX9S.png",
+        "https://i.imgur.com/XeSwkPH.png",
+        "https://i.imgur.com/5JLiWJk.png",
+        "https://i.imgur.com/sjiHbtG.png",
+        "https://i.imgur.com/UMfBGBR.png"
+    ],
+    "VEHICLES": [
+        "https://i.imgur.com/OrB16Zf.png",
+        "https://i.imgur.com/1E4jLDZ.png",
+        "https://i.imgur.com/YBNLdHE.png",
+        "https://i.imgur.com/IWs5U4L.png",
+        "https://i.imgur.com/qWH91Ql.png",
+        "https://i.imgur.com/8Gm08Tp.png"
+    ],
+    "TEAM": [
+        "https://i.imgur.com/OkY4ObO.png",
+        "https://i.imgur.com/SLLax4H.png",
+        "https://i.imgur.com/YJsxOyW.png",
+        "https://i.imgur.com/vkZr346.png",
+        "https://i.imgur.com/M5vNx38.png",
+        "https://i.imgur.com/0PeKzzk.png"
+    ],
+    "ROBBERY": [
+        "https://i.imgur.com/pQXKpjH.png",
+        "https://i.imgur.com/bGD6ku3.png",
+        "https://i.imgur.com/fBY7D27.png",
+        "https://i.imgur.com/ewSniHL.png"
+    ],
+    "KITS": [
+        "https://i.imgur.com/a67ENfI.png",
+        "https://i.imgur.com/ShOk7lE.png",
+        "https://i.imgur.com/wi4Nbmx.png",
+        "https://i.imgur.com/HKiSehH.png",
+        "https://i.imgur.com/uYvWJMR.png",
+        "https://i.imgur.com/PoMexw6.png"
+    ],
+    "GETAWAY": [
+        "https://i.imgur.com/h1K648U.png",
+        "https://i.imgur.com/Tivs9IN.png",
+        "https://i.imgur.com/jBTTc6m.png"
+    ],
+    "GENERAL": [
+        "https://i.imgur.com/5oep162.png",
+        "https://i.imgur.com/7j0oWwu.png",
+        "https://i.imgur.com/KdXcJtB.png",
+        "https://i.imgur.com/ZXEgXtZ.png",
+        "https://i.imgur.com/ZDU2AZt.png",
+        "https://i.imgur.com/Pi4kL4d.png",
+        "https://i.imgur.com/8E3Sl8Q.png",
+        "https://i.imgur.com/sUa8aBP.png",
+        "https://i.imgur.com/vAFSAby.png",
+        "https://i.imgur.com/tE58etV.png",
+        "https://i.imgur.com/ouZMuOB.png",
+        "https://i.imgur.com/LnJDeSV.png",
+        "https://i.imgur.com/Gr7zKOT.png",
+        "https://i.imgur.com/dItft3T.png",
+        "https://i.imgur.com/ryAnDMj.png",
+        "https://i.imgur.com/ZDhfGfB.png",
+        "https://i.imgur.com/3dVdwWA.png"
+    ],
+    "GAME MODE": [
+        "https://i.imgur.com/jx2Zlh6.png",
+        "https://i.imgur.com/O1CdmPj.png",
+        "https://i.imgur.com/TYErWnw.png",
+        "https://i.imgur.com/HxAA7T8.png",
+        "https://i.imgur.com/bgGSCAY.png",
+        "https://i.imgur.com/oZBamKT.png",
+        "https://i.imgur.com/UuhAKYL.png",
+        "https://i.imgur.com/yzWgpY4.png",
+        "https://i.imgur.com/OOncoal.png",
+        "https://i.imgur.com/ehLhSvZ.png",
+        "https://i.imgur.com/Y1WvGqX.png",
+        "https://i.imgur.com/rWEFLah.png",
+        "https://i.imgur.com/JC0vaFY.png",
+        "https://i.imgur.com/HOSIiG5.png",
+        "https://i.imgur.com/4BpykdY.png",
+        "https://i.imgur.com/okVlFpA.png",
+        "https://i.imgur.com/pQklTMN.png",
+        "https://i.imgur.com/UPlV8VW.png",
+        "https://i.imgur.com/EE4gvRz.png",
+        "https://i.imgur.com/LRAbPP3.png",
+        "https://i.imgur.com/VI4Xkur.png"
+    ],
+    "CRIMINAL ACTIVITY": [
+        "https://i.imgur.com/sfhWE0s.png",
+        "https://i.imgur.com/b6KfsSM.png",
+        "https://i.imgur.com/IiNOx2d.png"
+    ]
 }
 
 export const BLACK_OPS_2_CALLING_CARDS = {
@@ -586,6 +676,20 @@ export const MEDALS_GAMES = {
             "TEAMWORK"
         ],
         "MEDALS_OBJ": BATTLEFIELD_V_RIBBONS
+    },
+    "BF HARDLINE (MEDALS)": {
+        "MEDALS_ORDER": [
+            "WEAPONS",
+            "VEHICLES",
+            "TEAM",
+            "ROBBERY",
+            "KITS",
+            "GETAWAY",
+            "GENERAL",
+            "GAME MODE",
+            "CRIMINAL ACTIVITY"
+        ],
+        "MEDALS_OBJ": BATTLEFIELD_HARDLINE_MEDALS
     },
     "BO2 (CALLING CARDS)": {
         "MEDALS_ORDER": [
