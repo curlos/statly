@@ -357,6 +357,73 @@ export const BATTLEFIELD_4 = {
     ],
 }
 
+export const BATTLEFIELD_4_RIBBONS = {
+    "KITS": [
+        "https://i.imgur.com/G9Xt6Vm.png",
+        "https://i.imgur.com/6yNiHam.png",
+        "https://i.imgur.com/1jzxVnO.png",
+        "https://i.imgur.com/kTMIz4M.png"
+    ],
+    "GAME MODE": [
+        "https://i.imgur.com/iuP7mUd.png",
+        "https://i.imgur.com/IKIYmtP.png",
+        "https://i.imgur.com/BUua7oc.png",
+        "https://i.imgur.com/UqAGmzp.png",
+        "https://i.imgur.com/RtQKjd7.png",
+        "https://i.imgur.com/wQaYCbA.png",
+        "https://i.imgur.com/hSW3KVw.png",
+        "https://i.imgur.com/VtbCs1K.png",
+        "https://i.imgur.com/9ptZj8Z.png",
+        "https://i.imgur.com/WNVsGwQ.png",
+        "https://i.imgur.com/ABdE7rV.png",
+        "https://i.imgur.com/0YjAfuC.png",
+        "https://i.imgur.com/IrpPnDQ.png",
+        "https://i.imgur.com/l9P7u6t.png",
+        "https://i.imgur.com/kWQo1Dr.png",
+        "https://i.imgur.com/fdKh5W3.png",
+        "https://i.imgur.com/ntIJSwT.png",
+        "https://i.imgur.com/dQ095CF.png"
+    ],
+    "WEAPONS": [
+        "https://i.imgur.com/VwK7HE4.png",
+        "https://i.imgur.com/fRjvcQI.png",
+        "https://i.imgur.com/t29jtp8.png",
+        "https://i.imgur.com/FK8HA9V.png",
+        "https://i.imgur.com/sfDOQh7.png",
+        "https://i.imgur.com/esEw4Xa.png",
+        "https://i.imgur.com/FoTyDFX.png",
+        "https://i.imgur.com/uIb51cM.png",
+        "https://i.imgur.com/SbUL6dJ.png"
+    ],
+    "VEHICLES": [
+        "https://i.imgur.com/kjyCjoS.png",
+        "https://i.imgur.com/RubEjS7.png",
+        "https://i.imgur.com/x8uOSmV.png",
+        "https://i.imgur.com/7i4OnH0.png",
+        "https://i.imgur.com/fyiIjhW.png",
+        "https://i.imgur.com/VKvb1p3.png",
+        "https://i.imgur.com/VAQkbdS.png",
+        "https://i.imgur.com/NP4cIcw.png",
+        "https://i.imgur.com/UUOpzQV.png"
+    ],
+    "TEAM": [
+        "https://i.imgur.com/SaIjjlO.png",
+        "https://i.imgur.com/HjQybcd.png",
+        "https://i.imgur.com/fhF4l5f.png",
+        "https://i.imgur.com/XfkFIIp.png",
+        "https://i.imgur.com/WufDA2c.png",
+        "https://i.imgur.com/TAC2UTk.png",
+        "https://i.imgur.com/NF1gAef.png",
+        "https://i.imgur.com/q264Je8.png",
+        "https://i.imgur.com/LuPaw3G.png",
+        "https://i.imgur.com/nHGXnmT.png",
+        "https://i.imgur.com/IdJSLvx.png",
+        "https://i.imgur.com/FbfKxwG.png",
+        "https://i.imgur.com/DoC621M.png",
+        "https://i.imgur.com/TzT7Ek1.png"
+    ]
+}
+
 export const BLACK_OPS_2_CALLING_CARDS = {
     "GENERAL": [
         'https://i.imgur.com/6xLKg5k.jpeg',
@@ -451,7 +518,7 @@ export const MEDALS_GAMES = {
         ],
         "MEDALS_OBJ": BATTLEFIELD_3_RIBBONS
     },
-    "BF4": {
+    "BF4 (MEDALS)": {
         "MEDALS_ORDER": [
             "KITS",
             "GAME MODE",
@@ -460,6 +527,16 @@ export const MEDALS_GAMES = {
             "TEAM"
         ],
         "MEDALS_OBJ": BATTLEFIELD_4
+    },
+    "BF4 (RIBBONS)": {
+        "MEDALS_ORDER": [
+            "KITS",
+            "GAME MODE",
+            "WEAPONS",
+            "VEHICLES",
+            "TEAM"
+        ],
+        "MEDALS_OBJ": BATTLEFIELD_4_RIBBONS
     },
     "BO2 (CALLING CARDS)": {
         "MEDALS_ORDER": [

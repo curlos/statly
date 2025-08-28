@@ -78,7 +78,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 		>
 			<div>
 				<div className="flex justify-center mb-2">
-					<img src={imgSrc} className="max-h-[300px] max-w-[350px]" />
+					<img src={imgSrc} className="max-h-[300px] max-w-[350px] w-full" />
 				</div>
 				<div>
 					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-2 sticky">

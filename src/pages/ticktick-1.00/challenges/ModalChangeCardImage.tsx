@@ -139,7 +139,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		if (!imageSrc) {
 			return {
 				game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
-				medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT'
+				medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT',
 			};
 		}
 
@@ -152,7 +152,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		// Fallback if not found
 		return {
 			game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
-			medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT'
+			medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT',
 		};
 	};
 
@@ -196,7 +196,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 								'BF1 (RIBBONS)',
 								'BF3 (MEDALS)',
 								'BF3 (RIBBONS)',
-								'BF4',
+								'BF4 (MEDALS)',
+								'BF4 (RIBBONS)',
 								'BO2 (CALLING CARDS)',
 								'BO2 (MEDALS)',
 							]}
