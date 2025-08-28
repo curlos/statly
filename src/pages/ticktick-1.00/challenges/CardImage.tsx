@@ -43,6 +43,7 @@ const CardImage = ({ cardType, imageSrc, page }) => {
 					setShowModal: setShowModalChangeCardImage,
 					cardType: cardType.toLowerCase(),
 					page,
+					imageSrc,
 				}}
 			/>
 		</div>

@@ -6,10 +6,10 @@ import { useUserSettingsContext } from '../focus-records/useUserSettingsContext'
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 import classNames from 'classnames';
 import GeneralSelectButtonAndDropdown from '../../StatsPage/GeneralSelectButtonAndDropdown';
-import { MEDALS_GAMES } from '../medals/medalsLinks';
+import { MEDALS_GAMES, URL_TO_GAME_MEDAL_MAP } from '../medals/medalsLinks';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
-const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page }) => {
+const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
 	const handleError = useHandleError();
 	const { chosenColorObj } = useThemeContext();
 
@@ -23,7 +23,6 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		challengesPageSettings: { selectedChallengeCardImage },
 		medalsPageSettings: { selectedMedalCardImage },
 		focusRecordsPageSettings,
-		completedTasksPageSettings,
 	} = useUserSettingsContext();
 
 	const defaultSelectedCardImage = {
@@ -136,8 +135,30 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		return payload;
 	};
 
-	const [selectedGame, setSelectedGame] = useState(page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)');
-	const [selectedMedalType, setSelectedMedalType] = useState(page === 'challenges' ? 'GENERAL' : 'COMBAT');
+	const getGameAndMedalTypeFromImageSrc = (imageSrc: string) => {
+		if (!imageSrc) {
+			return {
+				game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
+				medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT'
+			};
+		}
+
+		// O(1) lookup using the module-level map
+		const result = URL_TO_GAME_MEDAL_MAP.get(imageSrc);
+		if (result) {
+			return result;
+		}
+
+		// Fallback if not found
+		return {
+			game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
+			medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT'
+		};
+	};
+
+	const { game: initialGame, medalType: initialMedalType } = getGameAndMedalTypeFromImageSrc(imageSrc);
+	const [selectedGame, setSelectedGame] = useState(initialGame);
+	const [selectedMedalType, setSelectedMedalType] = useState(initialMedalType);
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
 
 	const pageType = {

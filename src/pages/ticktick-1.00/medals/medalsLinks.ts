@@ -488,3 +488,15 @@ export const BATTLEFIELD_3_MEDALS_BY_URL = Object.entries(BATTLEFIELD_3_MEDALS).
   });
   return acc;
 }, {});
+
+// Comprehensive reverse lookup map for all games and medal types
+export const URL_TO_GAME_MEDAL_MAP = new Map();
+
+// Populate the map once at module load time
+Object.entries(MEDALS_GAMES).forEach(([gameName, gameData]) => {
+  Object.entries(gameData.MEDALS_OBJ).forEach(([medalTypeName, imageUrls]) => {
+    imageUrls.forEach((url) => {
+      URL_TO_GAME_MEDAL_MAP.set(url, { game: gameName, medalType: medalTypeName });
+    });
+  });
+});
