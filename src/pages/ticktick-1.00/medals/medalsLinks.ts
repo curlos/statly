@@ -424,6 +424,47 @@ export const BATTLEFIELD_4_RIBBONS = {
     ]
 }
 
+export const BATTLEFIELD_V_RIBBONS = {
+    "STRATEGIC": [
+        "https://i.imgur.com/20HosHl.jpeg",
+        "https://i.imgur.com/cR31Qqm.jpeg",
+        "https://i.imgur.com/25m6HpN.jpeg",
+        "https://i.imgur.com/gULzLts.jpeg",
+        "https://i.imgur.com/6TSu3WX.jpeg",
+        "https://i.imgur.com/A44erkZ.jpeg",
+        "https://i.imgur.com/KkqQTY2.jpeg",
+        "https://i.imgur.com/xksitjz.jpeg",
+        "https://i.imgur.com/tZZqPoz.jpeg"
+    ],
+    "COMBAT SERVICE": [
+        "https://i.imgur.com/01i6XSZ.jpeg",
+        "https://i.imgur.com/wmCaheC.jpeg",
+        "https://i.imgur.com/BlQAEeQ.jpeg",
+        "https://i.imgur.com/UTWGagE.jpeg",
+        "https://i.imgur.com/XagUBf2.jpeg",
+        "https://i.imgur.com/MIVCIvE.jpeg",
+        "https://i.imgur.com/SkkYxuf.jpeg",
+        "https://i.imgur.com/zc5FI9v.jpeg",
+        "https://i.imgur.com/brLpX3q.jpeg",
+        "https://i.imgur.com/PZgI4gT.jpeg"
+    ],
+    "TEAMWORK": [
+        "https://i.imgur.com/6k6zUCl.jpeg",
+        "https://i.imgur.com/HtHIPso.jpeg",
+        "https://i.imgur.com/r7oBM08.jpeg",
+        "https://i.imgur.com/mUT0BUk.jpeg",
+        "https://i.imgur.com/2Xv0f2Q.jpeg",
+        "https://i.imgur.com/yg51wcu.jpeg",
+        "https://i.imgur.com/xv9PEEA.jpeg"
+    ]
+}
+
+export const BATTLEFIELD_HARDLINE_MEDALS = {
+    "STRATEGIC": [],
+    "COMBAT SERVICE": [],
+    "TEAMWORK": []
+}
+
 export const BLACK_OPS_2_CALLING_CARDS = {
     "GENERAL": [
         'https://i.imgur.com/6xLKg5k.jpeg',
@@ -537,6 +578,14 @@ export const MEDALS_GAMES = {
             "TEAM"
         ],
         "MEDALS_OBJ": BATTLEFIELD_4_RIBBONS
+    },
+    "BFV (RIBBONS)": {
+        "MEDALS_ORDER": [
+            "STRATEGIC",
+            "COMBAT SERVICE",
+            "TEAMWORK"
+        ],
+        "MEDALS_OBJ": BATTLEFIELD_V_RIBBONS
     },
     "BO2 (CALLING CARDS)": {
         "MEDALS_ORDER": [
