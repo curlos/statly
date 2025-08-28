@@ -5,7 +5,7 @@ import useHandleError from '../../../hooks/useHandleError';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 import classNames from 'classnames';
-import MedalsGameButtonList from '../medals/MedalsGameButtonList';
+import GeneralSelectButtonAndDropdown from '../../StatsPage/GeneralSelectButtonAndDropdown';
 import { MEDALS_GAMES } from '../medals/medalsLinks';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
@@ -166,10 +166,11 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 				</div>
 
 				<div className="px-5 pb-5">
-					<MedalsGameButtonList
-						{...{
-							medalGameButtonType: 'GAME',
-							buttonNamesList: [
+					<div className="flex gap-4 mb-4">
+						<GeneralSelectButtonAndDropdown
+							selected={selectedGame}
+							setSelected={setSelectedGame}
+							selectedOptions={[
 								'BF1 (MEDALS)',
 								'BF1 (RIBBONS)',
 								'BF3 (MEDALS)',
@@ -177,24 +178,19 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 								'BF4',
 								'BO2 (CALLING CARDS)',
 								'BO2 (MEDALS)',
-							],
-							selectedGame,
-							setSelectedGame,
-							selectedMedalType,
-							setSelectedMedalType,
-						}}
-					/>
+							]}
+							onClick={(selectedOption: string) => {
+								setSelectedGame(selectedOption);
+								setSelectedMedalType(MEDALS_GAMES[selectedOption]['MEDALS_ORDER'][0]);
+							}}
+						/>
 
-					<MedalsGameButtonList
-						{...{
-							medalGameButtonType: 'MEDAL TYPE',
-							buttonNamesList: MEDALS_GAMES[selectedGame]['MEDALS_ORDER'],
-							selectedGame,
-							setSelectedGame,
-							selectedMedalType,
-							setSelectedMedalType,
-						}}
-					/>
+						<GeneralSelectButtonAndDropdown
+							selected={selectedMedalType}
+							setSelected={setSelectedMedalType}
+							selectedOptions={MEDALS_GAMES[selectedGame]['MEDALS_ORDER']}
+						/>
+					</div>
 
 					<div className="overflow-auto h-[250px] lg:h-[350px]">
 						<div className={classNames('grid gap-2 grid-cols-2 lg:grid-cols-3')}>

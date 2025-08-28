@@ -4,7 +4,16 @@ import DropdownGeneralSelect from './DropdownGeneralSelect';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 
-const GeneralSelectButtonAndDropdown = ({
+interface GeneralSelectButtonAndDropdownProps {
+	selected: string;
+	setSelected: (value: string) => void;
+	selectedOptions: string[];
+	onClick?: (selectedOption: string) => void;
+	isDropdownOpenForParent?: boolean;
+	setIsDropdownOpenForParent?: (value: boolean) => void;
+}
+
+const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownProps> = ({
 	selected,
 	setSelected,
 	selectedOptions,
