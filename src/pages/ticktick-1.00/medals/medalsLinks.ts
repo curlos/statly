@@ -602,6 +602,51 @@ export const BLACK_OPS_2_KILLSTREAK_MEDALS = {
     ]
 }
 
+export const ACE_COMBAT_7_MEDALS = {
+    "CAMPAIGN": [
+        "https://i.imgur.com/s2OrFQl.png",
+        "https://i.imgur.com/7kY8X9H.png",
+        "https://i.imgur.com/34r81Zn.png",
+        "https://i.imgur.com/th5uiX6.png",
+        "https://i.imgur.com/kat2il9.png",
+        "https://i.imgur.com/l2Qtvsu.png",
+        "https://i.imgur.com/xlzRPMq.png",
+        "https://i.imgur.com/u65Wm4q.png",
+        "https://i.imgur.com/6ZJemOf.png",
+        "https://i.imgur.com/4IHAFaC.png",
+        "https://i.imgur.com/SJAQOGn.png",
+        "https://i.imgur.com/QDr4nGG.png",
+        "https://i.imgur.com/sRrSUEv.png",
+        "https://i.imgur.com/EWFj18m.png",
+        "https://i.imgur.com/0jLOFcW.png",
+        "https://i.imgur.com/zT7g3pc.png",
+        "https://i.imgur.com/3eDQ0W1.png",
+        "https://i.imgur.com/iNr7eY9.png"
+    ],
+    "VR MODE": [
+        "https://i.imgur.com/qoTa4o3.png",
+        "https://i.imgur.com/0u9Dlkq.png",
+        "https://i.imgur.com/vGQpAc4.png",
+        "https://i.imgur.com/WaCM13J.png",
+        "https://i.imgur.com/ItD3dZD.png",
+        "https://i.imgur.com/frhUy0r.png",
+        "https://i.imgur.com/K5YJNvE.png",
+        "https://i.imgur.com/vliIpaN.png",
+        "https://i.imgur.com/quF5aPe.png",
+        "https://i.imgur.com/eLDzVLF.png"
+    ],
+    "MULTIPLAYER": [
+        "https://i.imgur.com/4YwMZLO.png",
+        "https://i.imgur.com/ztL1gWu.png",
+        "https://i.imgur.com/RR3xpkP.png",
+        "https://i.imgur.com/w90mhMd.png",
+        "https://i.imgur.com/wcbQR9g.png",
+        "https://i.imgur.com/IT2WbUU.png",
+        "https://i.imgur.com/4ZG5l0m.png",
+        "https://i.imgur.com/e2G9YH8.png"
+    ],
+}
+
 export const MEDALS_GAMES = {
     "BF1 (MEDALS)": {
         "MEDALS_ORDER": [
@@ -702,6 +747,14 @@ export const MEDALS_GAMES = {
             "KILLSTREAKS"
         ],
         "MEDALS_OBJ": BLACK_OPS_2_KILLSTREAK_MEDALS
+    },
+    "AC7 (MEDALS)": {
+        "MEDALS_ORDER": [
+            "CAMPAIGN",
+            "VR MODE",
+            "MULTIPLAYER"
+        ],
+        "MEDALS_OBJ": ACE_COMBAT_7_MEDALS
     }
 }
 

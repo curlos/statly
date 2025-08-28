@@ -202,6 +202,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 								'BF HARDLINE (MEDALS)',
 								'BO2 (CALLING CARDS)',
 								'BO2 (MEDALS)',
+								'AC7 (MEDALS)',
 							]}
 							onClick={(selectedOption: string) => {
 								setSelectedGame(selectedOption);
