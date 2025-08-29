@@ -772,14 +772,14 @@ export const MEDALS_GAMES = {
     },
 }
 
-export const BATTLEFIELD_1_MEDALS_BY_URL = Object.entries(BATTLEFIELD_1_MEDALS).reduce((acc, [category, urls]) => {
+export const BATTLEFIELD_1_MEDALS_BY_URL = Object.entries(BATTLEFIELD_1_MEDALS).reduce((acc: Record<string, string>, [category, urls]) => {
   urls.forEach(url => {
     acc[url] = category; // key = URL, value = category
   });
   return acc;
 }, {});
 
-export const BATTLEFIELD_3_MEDALS_BY_URL = Object.entries(BATTLEFIELD_3_MEDALS).reduce((acc, [category, urls]) => {
+export const BATTLEFIELD_3_MEDALS_BY_URL = Object.entries(BATTLEFIELD_3_MEDALS).reduce((acc: Record<string, string>, [category, urls]) => {
   urls.forEach(url => {
     acc[url] = category; // key = URL, value = category
   });
@@ -792,7 +792,7 @@ export const URL_TO_GAME_MEDAL_MAP = new Map();
 // Populate the map once at module load time
 Object.entries(MEDALS_GAMES).forEach(([gameName, gameData]) => {
   Object.entries(gameData.MEDALS_OBJ).forEach(([medalTypeName, imageUrls]) => {
-    imageUrls.forEach((url) => {
+    imageUrls.forEach((url: string) => {
       URL_TO_GAME_MEDAL_MAP.set(url, { game: gameName, medalType: medalTypeName });
     });
   });

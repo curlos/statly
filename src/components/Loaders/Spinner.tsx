@@ -1,12 +1,23 @@
 import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 
-const Spinner = () => {
+interface SpinnerProps {
+	size?: 'sm' | 'md' | 'lg';
+	customClass?: string;
+}
+
+const Spinner: React.FC<SpinnerProps> = ({ size = 'sm', customClass = '' }) => {
 	const { chosenColorObj } = useThemeContext();
+
+	const sizeClasses = {
+		sm: 'h-5 w-5',
+		md: 'h-7 w-7',
+		lg: 'h-10 w-10'
+	};
 
 	return (
 		<svg
-			className={classNames('animate-spin h-5 w-5', chosenColorObj.textColor)}
+			className={classNames('animate-spin', sizeClasses[size], chosenColorObj.textColor, customClass)}
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"

@@ -6,6 +6,7 @@ import {
 	isTimeBetween,
 } from '../../../utils/date.utils';
 import Icon from '../../../components/Icon';
+import LazyImage from '../../../components/LazyImage';
 import classNames from 'classnames';
 import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../contexts/useThemeContext';
@@ -72,8 +73,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			style={{ minHeight: '54px' }}
 		>
 			{showMedals && (
-				<img
+				<LazyImage
 					src={selectedMedalImage}
+					alt="Medal image"
 					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal)}
 				/>
 			)}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal/Modal';
+import LazyImage from '../../../components/LazyImage';
 import useHandleError from '../../../hooks/useHandleError';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
@@ -230,7 +231,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 										className="cursor-pointer flex items-end"
 										onClick={() => setSelectedImageSrc(imageSrc)}
 									>
-										<img src={imageSrc} />
+										<LazyImage src={imageSrc} alt="Medal/Card image" />
 
 										{isSelected && (
 											<div className="ml-[-25px] mb-[10px]">

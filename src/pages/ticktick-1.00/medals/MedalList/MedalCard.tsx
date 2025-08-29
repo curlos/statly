@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import LazyImage from '../../../../components/LazyImage';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import useWindowSize from '../../../../hooks/useWindowSize';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
@@ -64,8 +65,8 @@ const MedalCard = ({
 			<div className="bg-color-gray-150 border-l-[5px] border-white pl-1 font-semibold text-[14px] sm:text-[16px]">
 				{name}
 			</div>
-			<div className="flex justify-center">
-				<img src={imgSrc} className="my-2" />
+			<div className="flex justify-center mx-2 my-2">
+				<LazyImage src={imgSrc} alt="Medal image" />
 			</div>
 			<div className="flex justify-end px-2 text-[16px] sm:text-[20px] font-bold">
 				x{timesEarned.toLocaleString()}

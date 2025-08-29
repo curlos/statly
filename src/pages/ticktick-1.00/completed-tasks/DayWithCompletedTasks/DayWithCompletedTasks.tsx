@@ -1,4 +1,5 @@
 import Icon from '../../../../components/Icon';
+import LazyImage from '../../../../components/LazyImage';
 import classNames from 'classnames';
 import { useGetAllTasksQuery } from '../../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
@@ -86,8 +87,9 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 			style={{ minHeight: '54px' }}
 		>
 			{showMedals && (
-				<img
+				<LazyImage
 					src={selectedMedalImage}
+					alt="Medal image"
 					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal)}
 				/>
 			)}
