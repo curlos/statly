@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal/Modal';
 import LazyImage from '../../../components/LazyImage';
@@ -164,6 +164,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	const [selectedMedalType, setSelectedMedalType] = useState(initialMedalType);
 	const [searchText, setSearchText] = useState('');
 	const [filteredCardImageSrcs, setFilteredCardImageSrcs] = useState([]);
+	const scrollContainerRef = useRef(null);
 
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
 
@@ -187,6 +188,11 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 			searchedItems = fuse?.search(searchText) || [];
 		}
 		setFilteredCardImageSrcs(searchedItems.map((result) => result.item));
+		
+		// Scroll to top after search results are updated
+		if (scrollContainerRef.current) {
+			scrollContainerRef.current.scrollTop = 0;
+		}
 	}, 300);
 
 	// Effect to handle search
@@ -290,7 +296,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 						</div>
 					)}
 
-					<div className="overflow-auto h-[250px] lg:h-[420px] gray-scrollbar">
+					<div ref={scrollContainerRef} className="overflow-auto h-[250px] lg:h-[420px] gray-scrollbar">
 						<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
 							{(selectedGame === 'POKEMON TCG CARDS' && searchText.trim() !== ''
 								? filteredCardImageSrcs
@@ -298,10 +304,11 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 							).map((obj) => {
 								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? obj : obj.imgurImageUrl;
 								const isSelected = imageSrc === selectedImageSrc;
+								const uniqueKey = selectedGame === 'POKEMON TCG CARDS' ? `${obj.name}-${imageSrc}` : imageSrc;
 
 								return (
 									<div
-										key={imageSrc}
+										key={uniqueKey}
 										className="cursor-pointer relative"
 										onClick={() => setSelectedImageSrc(imageSrc)}
 									>

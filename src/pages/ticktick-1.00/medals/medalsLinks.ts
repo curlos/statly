@@ -4,6 +4,7 @@
  */
 
 import { fullArtPokemonCardImages } from "./fullArtPokemonCardImages";
+import { googleSheetsPokemonCardImages } from "./googleSheetsPokemonCardImages";
 
 export const BATTLEFIELD_1_MEDALS = {
     "VEHICLES": [
@@ -651,7 +652,7 @@ export const ACE_COMBAT_7_MEDALS = {
 
 export const POKEMON_TCG_CARDS = {
     "FULL ART": fullArtPokemonCardImages,
-    "GOOGLE SHEETS": []
+    "GOOGLE SHEETS": googleSheetsPokemonCardImages
 }
 
 export const MEDALS_GAMES = {
