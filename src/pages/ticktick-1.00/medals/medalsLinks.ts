@@ -792,7 +792,8 @@ export const URL_TO_GAME_MEDAL_MAP = new Map();
 // Populate the map once at module load time
 Object.entries(MEDALS_GAMES).forEach(([gameName, gameData]) => {
   Object.entries(gameData.MEDALS_OBJ).forEach(([medalTypeName, imageUrls]) => {
-    imageUrls.forEach((url: string) => {
+    imageUrls.forEach((urlOrObj: any) => {
+      const url = gameName === 'POKEMON TCG CARDS' ? urlOrObj.imgurImageUrl : urlOrObj;
       URL_TO_GAME_MEDAL_MAP.set(url, { game: gameName, medalType: medalTypeName });
     });
   });
