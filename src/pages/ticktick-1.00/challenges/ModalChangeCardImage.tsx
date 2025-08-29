@@ -203,6 +203,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 								'BO2 (CALLING CARDS)',
 								'BO2 (MEDALS)',
 								'AC7 (MEDALS)',
+								'POKEMON TCG CARDS',
 							]}
 							onClick={(selectedOption: string) => {
 								setSelectedGame(selectedOption);
@@ -219,7 +220,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 
 					<div className="overflow-auto h-[250px] lg:h-[350px]">
 						<div className={classNames('grid gap-2 grid-cols-2 lg:grid-cols-3')}>
-							{medalCardImageSrcs.map((imageSrc) => {
+							{medalCardImageSrcs.map((obj) => {
+								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? obj : obj.imgurImageUrl;
 								const isSelected = imageSrc === selectedImageSrc;
 
 								return (

@@ -3,6 +3,8 @@
  * Array.from(document.querySelectorAll('img[src*="https://i.imgur.com"]')).map((elem) => elem.src)
  */
 
+import { fullArtPokemonCardImages } from "./fullArtPokemonCardImages";
+
 export const BATTLEFIELD_1_MEDALS = {
     "VEHICLES": [
         "https://i.imgur.com/qQZBT0J.png",
@@ -647,6 +649,11 @@ export const ACE_COMBAT_7_MEDALS = {
     ],
 }
 
+export const POKEMON_TCG_CARDS = {
+    "FULL ART": fullArtPokemonCardImages,
+    "GOOGLE SHEETS": []
+}
+
 export const MEDALS_GAMES = {
     "BF1 (MEDALS)": {
         "MEDALS_ORDER": [
@@ -755,7 +762,14 @@ export const MEDALS_GAMES = {
             "MULTIPLAYER"
         ],
         "MEDALS_OBJ": ACE_COMBAT_7_MEDALS
-    }
+    },
+    "POKEMON TCG CARDS": {
+        "MEDALS_ORDER": [
+            "FULL ART",
+            "GOOGLE SHEETS",
+        ],
+        "MEDALS_OBJ": POKEMON_TCG_CARDS
+    },
 }
 
 export const BATTLEFIELD_1_MEDALS_BY_URL = Object.entries(BATTLEFIELD_1_MEDALS).reduce((acc, [category, urls]) => {
