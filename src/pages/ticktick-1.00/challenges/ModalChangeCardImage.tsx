@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal/Modal';
 import LazyImage from '../../../components/LazyImage';
@@ -9,6 +9,8 @@ import classNames from 'classnames';
 import GeneralSelectButtonAndDropdown from '../../StatsPage/GeneralSelectButtonAndDropdown';
 import { MEDALS_GAMES, URL_TO_GAME_MEDAL_MAP } from '../medals/medalsLinks';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import Fuse from 'fuse.js';
+import { debounce } from '../../../utils/focus-apps/helpers.utils';
 
 const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
 	const handleError = useHandleError();
@@ -160,7 +162,49 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	const { game: initialGame, medalType: initialMedalType } = getGameAndMedalTypeFromImageSrc(imageSrc);
 	const [selectedGame, setSelectedGame] = useState(initialGame);
 	const [selectedMedalType, setSelectedMedalType] = useState(initialMedalType);
+	const [searchText, setSearchText] = useState('');
+	const [filteredCardImageSrcs, setFilteredCardImageSrcs] = useState([]);
+
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
+
+	// Initialize Fuse.js for Pokemon card search
+	const fuse =
+		selectedGame === 'POKEMON TCG CARDS'
+			? new Fuse(medalCardImageSrcs, {
+					includeScore: true,
+					keys: ['name'],
+				})
+			: null;
+
+	// Debounced search function
+	const handleDebouncedSearch = debounce(() => {
+		if (selectedGame !== 'POKEMON TCG CARDS') return;
+
+		let searchedItems;
+		if (searchText.trim() === '') {
+			searchedItems = medalCardImageSrcs.map((item) => ({ item }));
+		} else {
+			searchedItems = fuse?.search(searchText) || [];
+		}
+		setFilteredCardImageSrcs(searchedItems.map((result) => result.item));
+	}, 300);
+
+	// Effect to handle search
+	useEffect(() => {
+		if (selectedGame === 'POKEMON TCG CARDS') {
+			handleDebouncedSearch();
+		}
+
+		return () => {
+			handleDebouncedSearch.cancel();
+		};
+	}, [searchText, selectedGame, selectedMedalType]);
+
+	// Reset search when game or medal type changes
+	useEffect(() => {
+		setSearchText('');
+		setFilteredCardImageSrcs([]);
+	}, [selectedGame, selectedMedalType]);
 
 	const getGridClasses = (selectedGame: string) => {
 		switch (selectedGame) {
@@ -230,9 +274,28 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 						/>
 					</div>
 
+					{selectedGame === 'POKEMON TCG CARDS' && (
+						<div className="flex items-center gap-1 p-1 px-2 mb-2 border border-color-gray-100 rounded-full">
+							<Icon
+								name="search"
+								fill={0}
+								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							/>
+							<input
+								placeholder={'Search Pokemon cards...'}
+								value={searchText}
+								onChange={(e) => setSearchText(e.target.value)}
+								className="text-[16px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
+							/>
+						</div>
+					)}
+
 					<div className="overflow-auto h-[250px] lg:h-[420px] gray-scrollbar">
 						<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
-							{medalCardImageSrcs.map((obj) => {
+							{(selectedGame === 'POKEMON TCG CARDS' && searchText.trim() !== ''
+								? filteredCardImageSrcs
+								: medalCardImageSrcs
+							).map((obj) => {
 								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? obj : obj.imgurImageUrl;
 								const isSelected = imageSrc === selectedImageSrc;
 
