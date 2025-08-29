@@ -50,7 +50,7 @@ const DropdownGeneralSelect = ({
 			setIsVisible={setIsVisible}
 			customClasses={classNames('shadow-2xl border border-color-gray-200 rounded-lg w-[175px]', customClasses)}
 		>
-			<div className="p-1">
+			<div className="p-1 max-h-[230px] overflow-y-auto gray-scrollbar">
 				{selectedOptions.map((name) => (
 					<SelectOption key={name} name={name} />
 				))}

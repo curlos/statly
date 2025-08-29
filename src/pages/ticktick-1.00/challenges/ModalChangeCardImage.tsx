@@ -162,6 +162,17 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	const [selectedMedalType, setSelectedMedalType] = useState(initialMedalType);
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
 
+	const getGridClasses = (selectedGame: string) => {
+		switch (selectedGame) {
+			case 'POKEMON TCG CARDS':
+			case 'AC7 (MEDALS)':
+			case 'BO2 (MEDALS)':
+				return 'grid-cols-3 lg:grid-cols-4';
+			default:
+				return 'grid-cols-2 lg:grid-cols-3';
+		}
+	};
+
 	const pageType = {
 		challenges: 'Challenges',
 		medals: 'Medals',
@@ -219,8 +230,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 						/>
 					</div>
 
-					<div className="overflow-auto h-[250px] lg:h-[350px]">
-						<div className={classNames('grid gap-2 grid-cols-2 lg:grid-cols-3')}>
+					<div className="overflow-auto h-[250px] lg:h-[420px] gray-scrollbar">
+						<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
 							{medalCardImageSrcs.map((obj) => {
 								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? obj : obj.imgurImageUrl;
 								const isSelected = imageSrc === selectedImageSrc;
@@ -228,13 +239,13 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 								return (
 									<div
 										key={imageSrc}
-										className="cursor-pointer flex items-end"
+										className="cursor-pointer relative"
 										onClick={() => setSelectedImageSrc(imageSrc)}
 									>
 										<LazyImage src={imageSrc} alt="Medal/Card image" />
 
 										{isSelected && (
-											<div className="ml-[-25px] mb-[10px]">
+											<div className="absolute bottom-[10px] right-[10px] z-10">
 												<div
 													className={classNames(
 														chosenColorObj.bgColor,
