@@ -66,8 +66,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	return (
 		<div
 			className={classNames(
-				'm-0 list-none last:mb-[4px] w-full',
-				showMedals ? 'flex' : 'relative',
+				'm-0 list-none last:mb-[4px] w-full flex',
 				showMedals && !isBattlefieldOneOrThreeMedal ? 'gap-2' : ''
 			)}
 			style={{ minHeight: '54px' }}
