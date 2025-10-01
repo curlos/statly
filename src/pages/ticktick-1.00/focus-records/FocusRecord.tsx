@@ -66,7 +66,8 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	return (
 		<div
 			className={classNames(
-				'm-0 list-none last:mb-[4px] w-full flex',
+				'm-0 list-none last:mb-[4px] w-full',
+				showMedals ? 'flex' : 'relative',
 				showMedals && !isBattlefieldOneOrThreeMedal ? 'gap-2' : ''
 			)}
 			style={{ minHeight: '54px' }}
@@ -96,7 +97,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			)}
 
 			<div
-				className={classNames(!showMedals && 'ml-[25px] sm:ml-[40px]', 'relative m-0 break-words w-full')}
+				className={classNames(showMedals ? 'w-full' : 'ml-[25px] sm:ml-[40px]', 'relative m-0 break-words')}
 				style={{ marginTop: 'unset' }}
 			>
 				{!isLastItemForTheDay && !showMedals && (
