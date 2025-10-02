@@ -159,23 +159,6 @@ export const getStreakGoalDays = () => {
 	return localStorage.getItem('streak-goal-days')
 }
 
-export const getFocusRecordsFromToday = (focusRecords) => {
-	const focusRecordsFromToday = [];
-
-	for (let focusRecord of focusRecords) {
-		const isFocusRecordFromToday = areDatesEqual(new Date(focusRecord.startTime), new Date());
-
-		// The array of focus records is sorted in order from start time so the most recent focus records will show up first. This means that today's focus records will show up first - assuming there is any. So, when you get to the first focus record that is not from today, we have found all possible focus records for today. This prevents the loop from going through thousands of records.
-		if (!isFocusRecordFromToday) {
-			break;
-		}
-
-		focusRecordsFromToday.push(focusRecord);
-	}
-
-	return focusRecordsFromToday;
-};
-
 export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProjects, tasksById) => {
 	const dayKey = getFormattedLongDay(date);
 	const focusRecordsForTheDay = focusRecordsByDate[dayKey];
