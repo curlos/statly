@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Dropdown from '../Dropdown';
 import { DropdownProps } from '../../../interfaces/interfaces';
 import CustomInput from '../../CustomInput';

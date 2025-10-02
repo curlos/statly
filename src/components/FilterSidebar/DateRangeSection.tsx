@@ -4,8 +4,8 @@ import FormPickDateRange from '../FormPickDateRange';
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
-import GeneralSelectButtonAndDropdown from '../../pages/StatsPage/GeneralSelectButtonAndDropdown';
-import DateRangePicker from '../../pages/StatsPage/FocusSection/DateRangePicker';
+import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
+import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangePicker';
 
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();

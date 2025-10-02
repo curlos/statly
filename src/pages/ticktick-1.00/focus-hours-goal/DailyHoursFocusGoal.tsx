@@ -1,9 +1,7 @@
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import Icon from '../../../components/Icon';
-import { getFormattedDuration, parseFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
-import ModalHabitDetails from '../../../components/Modal/ModalHabitDetails/ModalHabitDetails';
-import { useEffect, useState } from 'react';
-import { FOCUS_HOURS_HABIT_ID } from '../../../utils/constants/constants.utils';
+import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
+import { useState } from 'react';
 import classNames from 'classnames';
 import {
 	useGetAllProjectsQuery,
@@ -125,14 +123,6 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					</div>
 				</div>
 			</CircularProgressbarWithChildren>
-
-			{isModalHabitDetailsOpen && (
-				<ModalHabitDetails
-					isOpen={isModalHabitDetailsOpen}
-					setIsOpen={setIsModalHabitDetailsOpen}
-					habitId={FOCUS_HOURS_HABIT_ID}
-				/>
-			)}
 		</div>
 	);
 };

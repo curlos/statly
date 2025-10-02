@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Alert from './Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAlertState } from '../../slices/alertSlice';

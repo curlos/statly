@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../../../components/Navbar/Navbar';
-import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
-import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import FilterBar from '../focus-records/FilterBar';
 import Pagination from '../../../components/Pagination';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';

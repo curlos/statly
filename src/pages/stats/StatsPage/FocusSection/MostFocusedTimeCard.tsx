@@ -1,0 +1,172 @@
+import classNames from 'classnames';
+import { useState, useEffect } from 'react';
+import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Bar } from 'recharts';
+import ModalPickDateRange from '../../../../components/Modal/ModalPickDateRange';
+import { useStatsContext } from '../../../../contexts/useStatsContext';
+import { useThemeContext } from '../../../../contexts/useThemeContext';
+import {
+	getDailyHourBlocks,
+	getFormattedLongDay,
+	fillInHourBlocksWithSeconds,
+	convertTo12HourFormat,
+} from '../../../../utils/date.utils';
+import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
+import DateRangePicker from './DateRangePicker';
+
+const MostFocusedTimeCard = () => {
+	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();
+	const [selectedDates, setSelectedDates] = useState([new Date()]);
+	const [data, setData] = useState([]);
+
+	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
+	const [selectedInterval, setSelectedInterval] = useState('Month');
+
+	// Custom
+	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
+	const [startDate, setStartDate] = useState(new Date());
+	const [endDate, setEndDate] = useState(new Date());
+
+	const themeContext = useThemeContext();
+	const { chosenColorObj, nextLightestColorObj } = themeContext;
+
+	useEffect(() => {
+		if (selectedInterval === 'All' && focusRecords) {
+			getTimeBlockTotalsForInterval();
+		} else if (selectedInterval !== 'All' && selectedDates?.length > 0 && focusRecordsGroupedByDate) {
+			getTimeBlockTotalsForInterval();
+		}
+	}, [selectedDates, focusRecordsGroupedByDate, focusRecords, selectedInterval]);
+
+	const getTimeBlockTotalsForInterval = () => {
+		const newDailyHourBlocks = getDailyHourBlocks();
+
+		// If the selected interval is "Day", "Week", "Month", "Year", or "Custom"
+		if (selectedInterval !== 'All') {
+			for (let date of selectedDates) {
+				const dateKey = getFormattedLongDay(date);
+				const focusRecordsForTheDay = focusRecordsGroupedByDate[dateKey];
+
+				if (focusRecordsForTheDay) {
+					fillInHourBlocksWithSeconds(focusRecordsForTheDay, newDailyHourBlocks);
+				}
+			}
+		} else {
+			if (focusRecords) {
+				fillInHourBlocksWithSeconds(focusRecords, newDailyHourBlocks);
+			}
+		}
+
+		const newData = Object.keys(newDailyHourBlocks).map((timeHourBlockKey) => {
+			const timeHourBlock = newDailyHourBlocks[timeHourBlockKey];
+			const { from, seconds } = timeHourBlock;
+
+			return {
+				name: convertTo12HourFormat(from),
+				seconds,
+			};
+		});
+
+		setData(newData);
+	};
+
+	const getDateRangePicker = () => {
+		return (
+			selectedInterval !== 'All' && (
+				<DateRangePicker
+					selectedDates={selectedDates}
+					setSelectedDates={setSelectedDates}
+					selectedInterval={selectedInterval}
+					startDate={startDate}
+					endDate={endDate}
+				/>
+			)
+		);
+	};
+
+	return (
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
+			<div className="flex justify-between items-center mb-6">
+				<h3 className="font-bold text-[16px]">Most Focused Time</h3>
+
+				<div className="flex items-center gap-2">
+					<GeneralSelectButtonAndDropdown
+						selected={selectedInterval}
+						setSelected={setSelectedInterval}
+						selectedOptions={selectedIntervalOptions}
+						onClick={(name) => {
+							if (name?.toLowerCase() !== 'custom') {
+								return;
+							}
+
+							setIsModalPickDateRangeOpen(true);
+						}}
+					/>
+
+					<div className="hidden sm:block">{getDateRangePicker()}</div>
+				</div>
+			</div>
+
+			<div className="sm:hidden">{getDateRangePicker()}</div>
+
+			<div className="w-full h-full text-[12px] sm:text-[14px] md:text-[16px]">
+				<ResponsiveContainer width="100%" height="100%">
+					<BarChart
+						width={500}
+						height={300}
+						data={data}
+						margin={{
+							top: 5,
+							right: 30,
+							left: 20,
+							bottom: 5,
+						}}
+						barSize={10}
+					>
+						<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} />
+						<YAxis
+							dataKey="seconds"
+							type="number"
+							domain={['dataMin', 'dataMax']}
+							tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
+						/>
+						<Tooltip
+							content={({ payload }) => {
+								// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
+								if (payload && payload[0]) {
+									const { name, seconds } = payload[0].payload;
+									return (
+										<div
+											className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
+										>{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
+									);
+								}
+
+								return null;
+							}}
+						/>
+						<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+						<Bar
+							dataKey="seconds"
+							fill={chosenColorObj.hexColor}
+							background={{ fill: '#3a3a3a' }}
+							// TODO: Write function to get a slightly lighter color to show on hover/active.
+							activeBar={{ fill: nextLightestColorObj.hexColor, cursor: 'pointer' }}
+						/>
+					</BarChart>
+				</ResponsiveContainer>
+			</div>
+
+			<ModalPickDateRange
+				isModalOpen={isModalPickDateRangeOpen}
+				setIsModalOpen={setIsModalPickDateRangeOpen}
+				startDate={startDate}
+				setStartDate={setStartDate}
+				endDate={endDate}
+				setEndDate={setEndDate}
+			/>
+		</div>
+	);
+};
+
+export default MostFocusedTimeCard;

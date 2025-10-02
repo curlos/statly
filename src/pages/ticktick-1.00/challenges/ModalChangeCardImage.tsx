@@ -6,7 +6,7 @@ import useHandleError from '../../../hooks/useHandleError';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../../services/resources/userSettingsApi';
 import classNames from 'classnames';
-import GeneralSelectButtonAndDropdown from '../../StatsPage/GeneralSelectButtonAndDropdown';
+import GeneralSelectButtonAndDropdown from '../../stats/StatsPage/GeneralSelectButtonAndDropdown';
 import { MEDALS_GAMES, URL_TO_GAME_MEDAL_MAP } from '../medals/medalsLinks';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import Fuse from 'fuse.js';
@@ -188,7 +188,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 			searchedItems = fuse?.search(searchText) || [];
 		}
 		setFilteredCardImageSrcs(searchedItems.map((result) => result.item));
-		
+
 		// Scroll to top after search results are updated
 		if (scrollContainerRef.current) {
 			scrollContainerRef.current.scrollTop = 0;
@@ -304,7 +304,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 							).map((obj) => {
 								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? obj : obj.imgurImageUrl;
 								const isSelected = imageSrc === selectedImageSrc;
-								const uniqueKey = selectedGame === 'POKEMON TCG CARDS' ? `${obj.name}-${imageSrc}` : imageSrc;
+								const uniqueKey =
+									selectedGame === 'POKEMON TCG CARDS' ? `${obj.name}-${imageSrc}` : imageSrc;
 
 								return (
 									<div

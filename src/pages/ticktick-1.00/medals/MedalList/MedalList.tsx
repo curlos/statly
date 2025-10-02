@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
 import {
 	DEFAULT_DAILY_FOCUS_HOURS_MEDALS,
 	DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS,
