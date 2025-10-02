@@ -67,7 +67,7 @@ const BackupData = () => {
 			// TASKS
 			{
 				fileName: 'ticktick-tasks',
-				apiEndpointName: '/ticktick-1.0/tasks',
+				apiEndpointName: '/ticktick/tasks',
 				response: fetchedTasks.tasks,
 			},
 			{
@@ -79,7 +79,7 @@ const BackupData = () => {
 			// PROJECTS
 			{
 				fileName: 'ticktick-projects',
-				apiEndpointName: '/ticktick-1.0/projects',
+				apiEndpointName: '/ticktick/projects',
 				response: fetchedProjects.projects,
 			},
 			{
@@ -91,7 +91,7 @@ const BackupData = () => {
 			// FOCUS RECORDS
 			{
 				fileName: 'ticktick-focus-records',
-				apiEndpointName: '/ticktick-1.0/focus-records',
+				apiEndpointName: '/ticktick/focus-records',
 				response: fetchedFocusRecordsTickTick.focusRecords,
 			},
 			{
@@ -118,7 +118,7 @@ const BackupData = () => {
 			// TAGS
 			{
 				fileName: 'ticktick-tags',
-				apiEndpointName: '/ticktick-1.0/tags',
+				apiEndpointName: '/ticktick/tags',
 				response: fetchedTags.tags,
 			},
 		];

@@ -11,7 +11,7 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 		getPomoAndStopwatchFocusRecords: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString ? `/ticktick-1.0/focus-records?${queryString}` : '/ticktick-1.0/focus-records';
+				return queryString ? `/ticktick/focus-records?${queryString}` : '/ticktick/focus-records';
 			},
 			transformResponse: (response) => {
 				const focusRecords = response;
@@ -24,7 +24,7 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 		getAllTasks: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString ? `/ticktick-1.0/tasks?${queryString}` : '/ticktick-1.0/tasks';
+				return queryString ? `/ticktick/tasks?${queryString}` : '/ticktick/tasks';
 			},
 			transformResponse: (response) => {
 				const tasks = response;
@@ -64,7 +64,7 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 		getAllProjects: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString ? `/ticktick-1.0/projects?${queryString}` : '/ticktick-1.0/projects';
+				return queryString ? `/ticktick/projects?${queryString}` : '/ticktick/projects';
 			},
 			transformResponse: (response) => {
 				const projects = response;
@@ -83,7 +83,7 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 		getAllProjectGroups: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString ? `/ticktick-1.0/project-groups?${queryString}` : '/ticktick-1.0/project-groups';
+				return queryString ? `/ticktick/project-groups?${queryString}` : '/ticktick/project-groups';
 			},
 			transformResponse: (response) => {
 				const projectGroups = response;
@@ -95,7 +95,7 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 		getAllTags: builder.query({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString ? `/ticktick-1.0/tags?${queryString}` : '/ticktick-1.0/tags';
+				return queryString ? `/ticktick/tags?${queryString}` : '/ticktick/tags';
 			},
 			transformResponse: (response) => {
 				const tags = response;
@@ -107,7 +107,7 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 		}),
 		updateActiveAndCompletedTasksFromArchivedProjects: builder.mutation({
 			query: ({ payload }) => ({
-				url: `/ticktick-1.0/update-active-and-completed-tasks-from-archived-projects`,
+				url: `/ticktick/update-active-and-completed-tasks-from-archived-projects`,
 				method: 'PUT',
 				body: payload,
 			}),

@@ -1,21 +1,8 @@
 import { loginUserSuccess } from '../../slices/userSlice';
-import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
-import { baseAPI, buildQueryString } from '../api';
+import { baseAPI } from '../api';
 
 export const usersApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
-		getUsers: builder.query({
-			query: (queryParams) => {
-				const queryString = buildQueryString(queryParams);
-				return queryString ? `/users?${queryString}` : '/users';
-			},
-			providesTags: ['User'],
-			transformResponse: (response) => {
-				const usersById = arrayToObjectByKey(response, '_id');
-
-				return { users: response, usersById };
-			},
-		}),
 		getLoggedInUser: builder.query({
 			query: () => '/users/logged-in',
 		}),
@@ -61,4 +48,4 @@ export const usersApi = baseAPI.injectEndpoints({
 	}),
 });
 
-export const { useGetUsersQuery, useGetLoggedInUserQuery, useRegisterUserMutation, useLoginUserMutation } = usersApi;
+export const { useGetLoggedInUserQuery, useRegisterUserMutation, useLoginUserMutation } = usersApi;
