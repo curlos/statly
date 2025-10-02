@@ -9,6 +9,7 @@ import {
 } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import ReactApexChart from 'react-apexcharts';
+import apexchart from 'apexcharts';
 
 const TimelineChart = ({ selectedDates }) => {
 	const { focusRecordsGroupedByDate } = useStatsContext();

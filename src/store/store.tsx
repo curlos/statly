@@ -5,8 +5,6 @@ import alertsReducer from '../slices/alertSlice';
 import userReducer from '../slices/userSlice';
 import timerReducer from '../slices/timerSlice';
 import { baseAPI } from '../services/api';
-import timerMiddleware from '../middleware/timerMiddleware';
-import audioMiddleware from '../middleware/audioMiddleware';
 
 // Create and configure the store
 const store = configureStore({
@@ -17,8 +15,7 @@ const store = configureStore({
 		timer: timerReducer,
 		[baseAPI.reducerPath]: baseAPI.reducer, // RTK Query reducer for users
 	},
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(baseAPI.middleware).concat(timerMiddleware).concat(audioMiddleware), // Add middleware for both APIs
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseAPI.middleware), // Add middleware for both APIs
 });
 
 export default store;
