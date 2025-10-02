@@ -168,9 +168,7 @@ const InBetweenPages = ({ currentPage, setCurrentPage, totalPages }) => {
 	);
 };
 
-interface DropdownAccountDetailsProps extends DropdownProps {}
-
-const DropdownCustomPageNumber: React.FC<DropdownAccountDetailsProps> = ({
+const DropdownCustomPageNumber: React.FC<DropdownProps> = ({
 	toggleRef,
 	isVisible,
 	setIsVisible,

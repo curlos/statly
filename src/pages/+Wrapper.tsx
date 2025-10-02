@@ -7,7 +7,6 @@ import { registerSW } from 'virtual:pwa-register';
 import { Provider, useSelector } from 'react-redux';
 import store from '../store/store';
 import { StatsProvider } from '../contexts/useStatsContext';
-import GlobalAlertList from '../components/Alert/GlobalAlertList';
 import GlobalModalList from '../components/Modal/GlobalModalList';
 import { ThemeProvider, useThemeContext } from '../contexts/useThemeContext';
 import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
@@ -44,9 +43,6 @@ const ProviderList = ({ children }) => {
 
 				{/* Modals */}
 				<GlobalModalList />
-
-				{/* Alerts */}
-				<GlobalAlertList />
 			</div>
 		);
 	}
@@ -78,9 +74,6 @@ const LoggedInBase = ({ children }) => {
 
 			{/* Modals */}
 			<GlobalModalList />
-
-			{/* Alerts */}
-			<GlobalAlertList />
 		</div>
 	);
 };

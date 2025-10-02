@@ -19,17 +19,7 @@ export const baseAPI = createApi({
 		},
 	}),
 	tagTypes: [
-		'Task',
-		'Project',
-		'FocusRecord',
 		'User',
-		'Comment',
-		'Tag',
-		'Filter',
-		'Matrix',
-		'Habit',
-		'HabitSection',
-		'HabitLog',
 		'UserSettings',
 		'TickTick-1.0-Task'
 	],
