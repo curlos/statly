@@ -8,7 +8,7 @@ import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import CheckboxOther from './CheckboxOther';
-import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
+import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import useHandleError from '../../hooks/useHandleError';
 

@@ -5,6 +5,7 @@ import OverviewSection from './OverviewSection/OverviewSection';
 import TaskSection from './TaskSection/TaskSection';
 import TopBar from './TopBar';
 import { usePageContext } from 'vike-react/usePageContext';
+
 const StatsPage = () => {
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;

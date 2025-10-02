@@ -1,4 +1,4 @@
-import DailyHoursFocusGoal from '../../../ticktick-1.00/focus-hours-goal/DailyHoursFocusGoal';
+import DailyHoursFocusGoal from '../../../focus-hours-goal/DailyHoursFocusGoal';
 
 const DailyHoursFocusGoalCard = () => {
 	return (

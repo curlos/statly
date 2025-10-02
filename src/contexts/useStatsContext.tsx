@@ -15,8 +15,8 @@ import {
 	useGetTodoistAllTasksQuery,
 	useGetTodoistAllProjectsQuery,
 } from '../services/resources/oldFocusAppsApi';
-import { useFilterFocusRecords } from '../pages/ticktick-1.00/focus-records/useFilterFocusRecords';
-import { useFilterCompletedTasks } from '../pages/ticktick-1.00/completed-tasks/useFilterCompletedTasks';
+import { useFilterFocusRecords } from '../pages/focus-records/useFilterFocusRecords';
+import { useFilterCompletedTasks } from '../pages/completed-tasks/useFilterCompletedTasks';
 import { groupTasksByDateStr } from '../utils/focus-apps/tasks.utils';
 
 const StatsContext = createContext();

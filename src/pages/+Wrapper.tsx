@@ -3,14 +3,13 @@ import '../App.css';
 import '../fonts';
 import 'material-symbols';
 
-import { registerSW } from 'virtual:pwa-register';
 import { Provider, useSelector } from 'react-redux';
 import store from '../store/store';
 import { StatsProvider } from '../contexts/useStatsContext';
 import GlobalModalList from '../components/Modal/GlobalModalList';
 import { ThemeProvider, useThemeContext } from '../contexts/useThemeContext';
 import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
-import { UserSettingsProvider } from './ticktick-1.00/focus-records/useUserSettingsContext';
+import { UserSettingsProvider } from './focus-records/useUserSettingsContext';
 import { usePageContext } from 'vike-react/usePageContext';
 import { selectUserToken } from '../slices/userSlice';
 import { navigate } from 'vike/client/router';
@@ -77,5 +76,3 @@ const LoggedInBase = ({ children }) => {
 		</div>
 	);
 };
-
-registerSW();

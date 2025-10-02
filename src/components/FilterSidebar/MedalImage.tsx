@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import CardImage from '../../pages/ticktick-1.00/challenges/CardImage';
+import CardImage from '../../pages/challenges/CardImage';
 import CustomRadioButton from '../CustomRadioButton';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
+import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 
 const MedalImage = () => {
 	const {

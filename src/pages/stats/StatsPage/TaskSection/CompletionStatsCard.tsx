@@ -307,7 +307,7 @@ const SmallLabelList = ({ progressBarData }) => {
 		let queryParams = new URLSearchParams(queryParamsObj).toString();
 		queryParams = queryParams && projectsQueryParam ? `&${queryParams}` : '';
 
-		navigate('/ticktick-1.00/completed-tasks' + projectsQueryParam + queryParams);
+		navigate('/completed-tasks' + projectsQueryParam + queryParams);
 	};
 
 	return (

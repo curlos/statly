@@ -2,7 +2,7 @@ import Icon from '../Icon';
 import useHandleError from '../../hooks/useHandleError';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import Accordion from '../Accordion/Accordion';
-import { useUserSettingsContext } from '../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
+import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
 import Spinner from '../Loaders/Spinner';

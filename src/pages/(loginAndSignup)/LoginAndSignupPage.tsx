@@ -12,7 +12,7 @@ const LoginAndSignupPage = () => {
 
 	useEffect(() => {
 		if (isLoggedIn) {
-			navigate('/ticktick-1.00/focus-records');
+			navigate('/focus-records');
 		}
 	}, []);
 

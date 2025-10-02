@@ -31,7 +31,7 @@ const UserForm = ({ mode }) => {
 				await registerUser(data).unwrap();
 			}
 
-			navigate('/ticktick-1.00/focus-records');
+			navigate('/focus-records');
 		} catch (error) {
 			dispatch(setModalState({ modalId: 'ModalErrorMessenger', isOpen: true, props: { error } }));
 		}

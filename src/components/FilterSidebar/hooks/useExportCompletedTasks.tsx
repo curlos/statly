@@ -2,9 +2,9 @@ import JSZip from 'jszip';
 import {
 	getGroupedSubtasksAndParentTasks,
 	getTasksWithParentIdAndNoParent,
-} from '../../../pages/ticktick-1.00/completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
-import { useFilterCompletedTasks } from '../../../pages/ticktick-1.00/completed-tasks/useFilterCompletedTasks';
-import { useUserSettingsContext } from '../../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
+} from '../../../pages/completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
+import { useFilterCompletedTasks } from '../../../pages/completed-tasks/useFilterCompletedTasks';
+import { useUserSettingsContext } from '../../../pages/focus-records/useUserSettingsContext';
 import { useGetTodoistAllProjectsQuery, useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { saveAs } from 'file-saver';

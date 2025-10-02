@@ -1,5 +1,5 @@
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { useFilterFocusRecords } from '../../../pages/ticktick-1.00/focus-records/useFilterFocusRecords';
+import { useFilterFocusRecords } from '../../../pages/focus-records/useFilterFocusRecords';
 import {
 	useGetSessionAppFocusRecordsQuery,
 	useGetTodoistAllTasksQuery,
@@ -20,7 +20,7 @@ import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/f
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
-import { useUserSettingsContext } from '../../../pages/ticktick-1.00/focus-records/useUserSettingsContext';
+import { useUserSettingsContext } from '../../../pages/focus-records/useUserSettingsContext';
 
 const useExportFocusRecords = () => {
 	// RTK Query - TickTick 1.0 - Tasks

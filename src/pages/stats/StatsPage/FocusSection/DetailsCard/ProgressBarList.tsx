@@ -7,7 +7,7 @@ import { arrayToObjectByKey, getFormattedDuration } from '../../../../../utils/f
 import {
 	getTasksWithParentIdAndNoParent,
 	getGroupedSubtasksAndParentTasks,
-} from '../../../../ticktick-1.00/completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
+} from '../../../../completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
 import ProgressBar from '../ProgressBar';
 
 interface ProgressBarListProps {

@@ -29,7 +29,7 @@ const ProgressBar = ({ item, fromModal = false }) => {
 				break;
 		}
 
-		navigate('/ticktick-1.00/focus-records' + queryParams);
+		navigate('/focus-records' + queryParams);
 	};
 
 	return (
