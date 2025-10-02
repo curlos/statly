@@ -27,6 +27,9 @@ dist-ssr
 .vercel
 public/imgur
 ticktick-2.0-web.code-workspace
+
+# Large audio files
+public/IOS Dark Noise Background sound 1 Hour.mp3
 src/assets/fonts/*
 !src/assets/fonts/BF_Modernista/
 !src/assets/fonts/Mozilla_Headline/
