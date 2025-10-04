@@ -4,8 +4,8 @@ import FilterBar from '../focus-records/FilterBar';
 import Pagination from '../../components/Pagination';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import CompletedTaskList from './CompletedTaskList';
-import { useFilterCompletedTasks } from './useFilterCompletedTasks';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import { useGetDaysWithCompletedTasksQuery } from '../../services/resources/documentsTasksApi';
 
 const Page = () => {
 	// For Filter Sidebar and Filter Bar
@@ -23,51 +23,36 @@ const Page = () => {
 	const projectsFromUrl = searchParams.get('projects');
 	const currentPageFromUrl = searchParams.get('page') || 1;
 
-	const [totalPages, setTotalPages] = useState(null);
+	// const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
+	const { data: fetchedDaysWithCompletedTasks, isFetching } = useGetDaysWithCompletedTasksQuery();
+	const { totalPages, data: daysWithCompletedTasks } = fetchedDaysWithCompletedTasks || {}
 
-	const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
+	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
+	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
+
+	console.log(fetchedDaysWithCompletedTasks)
 
 	const getFilterBarHeaderContent = () => {
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Completed Tasks ({getNumOfCompletedTasks().toLocaleString()})
+				Completed Tasks ({(fetchedDaysWithCompletedTasks?.totalTasks).toLocaleString()})
 			</h2>
 		);
 	};
 
-	const getNumOfCompletedTasks = () => {
-		let numOfCompletedTasks = 0;
-
-		filteredDaysWithCompletedTasks.forEach((dayWithCompletedTasks) => {
-			const { completedTasksForDay } = dayWithCompletedTasks;
-			numOfCompletedTasks += completedTasksForDay.length;
-		});
-
-		return numOfCompletedTasks;
-	};
-
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, [filteredDaysWithCompletedTasks, sortBy, searchTextFromUrl, taskIdFromUrl, projectsFromUrl]);
+	}, [fetchedDaysWithCompletedTasks, sortBy, searchTextFromUrl, taskIdFromUrl, projectsFromUrl]);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [currentPageFromUrl]);
 
-	useEffect(() => {
-		if (!allCompletedTasksAreHere) {
-			return;
-		}
-
-		const newTotalPages = Math.ceil(filteredDaysWithCompletedTasks.length / maxDaysPerPage);
-		setTotalPages(newTotalPages);
-	}, [allCompletedTasksAreHere, filteredDaysWithCompletedTasks, maxDaysPerPage]);
-
 	return (
 		<div className="max-w-screen min-h-screen bg-color-gray-700">
 			<Navbar />
 
-			{allCompletedTasksAreHere && (
+			{!isFetching && (
 				<FilterBar
 					{...{
 						showFilterSidebar,
@@ -82,8 +67,8 @@ const Page = () => {
 					<div className="container p-1">
 						<CompletedTaskList
 							{...{
-								filteredDaysWithCompletedTasks,
-								allCompletedTasksAreHere,
+								daysWithCompletedTasks,
+								allCompletedTasksAreHere: !isFetching,
 								sortBy,
 								currentPage: currentPageFromUrl,
 								sortByOptions,

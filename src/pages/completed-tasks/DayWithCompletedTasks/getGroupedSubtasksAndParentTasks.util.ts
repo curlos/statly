@@ -12,9 +12,7 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay }) => {
 			continue
 		}
 
-		const { itemParentTaskId, parent_id } = task;
-
-		const parentId = itemParentTaskId || parent_id || task.parentId;
+		const parentId = task.parentId;
 
 		if (parentId) {
 			if (!groupedSubtasksByParentTask[parentId]) {
@@ -49,10 +47,7 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay }) => {
  */
 export const getTasksWithParentIdAndNoParent = ({
 	completedTasksForDay,
-	tasksById,
-	todoistAllTasksById,
 	ancestorTasksById,
-	todoistAncestorTasksById,
 	includeDirectParentTasksWithNoChild
 }) => {
 	const tasksWithParentId = {};
@@ -62,38 +57,26 @@ export const getTasksWithParentIdAndNoParent = ({
 			continue
 		}
 
-		const groupTask = task.itemParentTaskId
-			? tasksById[task.itemParentTaskId]
-			: tasksById[task.id] || todoistAllTasksById[task.id];
+		const groupTask = task.taskType === 'item'
+			? ancestorTasksById[task.parentId] : task;
 
-		const groupTaskBreadcrumbsTickTick =
-			groupTask && ancestorTasksById[groupTask.id] && Object.keys(ancestorTasksById[groupTask.id]);
-
-		const groupTaskBreadcrumbsTodoist =
-			groupTask && todoistAncestorTasksById[groupTask.id] && Object.keys(todoistAncestorTasksById[groupTask.id]);
-
-		let groupTaskBreadcrumbs = groupTaskBreadcrumbsTickTick || groupTaskBreadcrumbsTodoist;
+		const groupTaskBreadcrumbs = task.ancestorIds
 		
 		// If there are no breadcrumbs initially but there is a group task, this just means that the group task is an ancestor task itself and the completed task was directly under it which would form a valid breadcrumb.
-		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length == 0 && groupTask) {
-			groupTaskBreadcrumbs = [groupTask.id]
-		}
+		// if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length == 0 && groupTask) {
+		// 	groupTaskBreadcrumbs = [groupTask.id]
+		// }
 
 		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length > 0) {
-			// Need to include any "items" from TickTick here as they are not included above. This is necessary so that "items" are also mapped to a corresponding parent id.
-			groupTaskBreadcrumbs = task.itemParentTaskId
-				? [task.itemParentTaskId, ...groupTaskBreadcrumbs]
-				: groupTaskBreadcrumbs;
 
 			// Go through each "taskId" and if it has a parentId, then map it to that parentId, else map it to null.
 			groupTaskBreadcrumbs.forEach((taskId) => {
-				const task = tasksById[taskId] || todoistAllTasksById[taskId];
-				const taskParent = task.parentId || task['parent_id'] || task.itemParentTaskId;
+				const breadcrumbTask = taskId === task.id ? task : ancestorTasksById[taskId];
 
-				if (taskParent) {
-					tasksWithParentId[task.id] = taskParent;
+				if (breadcrumbTask.parentId) {
+					tasksWithParentId[breadcrumbTask.id] = breadcrumbTask.parentId;
 				} else {
-					tasksWithParentId[task.id] = null;
+					tasksWithParentId[breadcrumbTask.id] = null;
 				}
 			});
 		} else if (includeDirectParentTasksWithNoChild) {

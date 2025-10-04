@@ -6,12 +6,11 @@ import { useUserSettingsContext } from '../../focus-records/useUserSettingsConte
 const NestedCompletedTasks = ({
 	tasksWithNoParent,
 	tasksWithParentId,
-	todoistAllTasksById,
 	groupedSubtasksByParentTask,
-	tasksById,
 	groupedTasksCollapsedByDefault,
 	dateStr,
 	updateTaskIdQueryParam,
+	ancestorTasksById
 }) => {
 	const {
 		focusRecordsPageSettings: { showMedals },
@@ -71,7 +70,7 @@ const NestedCompletedTasks = ({
 	 * @param {String} parentTaskId
 	 */
 	const renderNestedTasks = (parentTaskId) => {
-		const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
+		const parentTask = ancestorTasksById[parentTaskId]
 
 		// These are the tasks who are direct children of the parent task. These will be rendered as completed checkboxes with the content.
 		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
@@ -84,8 +83,7 @@ const NestedCompletedTasks = ({
 							className="underline cursor-pointer font-bold text-[18px] hover:text-blue-500"
 							onClick={() => updateTaskIdQueryParam(parentTask.id)}
 						>
-							{/* TickTick tasks = "title", Todoist tasks = "content" */}
-							{parentTask.title || parentTask.content}
+							{parentTask.title}
 						</li>
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
@@ -96,15 +94,18 @@ const NestedCompletedTasks = ({
 					<ul className="pl-6">
 						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
 							parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId, index) => {
-								const task = tasksById[taskId] || todoistAllTasksById[taskId];
+								const task = ancestorTasksById[taskId]
 
 								if (
 									parentDirectChildrenTaskIdsByParentId[taskId] &&
 									parentDirectChildrenTaskIdsByParentId[taskId].length > 0
 								) {
 									return renderNestedTasks(taskId);
+								} else {
+									return null
 								}
-
+								
+								// TODO: Possibly remove if not needed anymore? Do it after some of the other shit is finished
 								const directCompletedSubtasks = groupedSubtasksByParentTask[taskId];
 
 								return (
@@ -115,7 +116,7 @@ const NestedCompletedTasks = ({
 												className="underline cursor-pointer font-bold text-[18px] mt-1 hover:text-blue-500 break-words"
 												onClick={() => updateTaskIdQueryParam(task.id)}
 											>
-												{task.content || task.title}
+												{task.title}
 											</li>
 										}
 										openByDefault={true}

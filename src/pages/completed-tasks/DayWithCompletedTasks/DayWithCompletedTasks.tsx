@@ -1,13 +1,11 @@
 import Icon from '../../../components/Icon';
 import LazyImage from '../../../components/LazyImage';
 import classNames from 'classnames';
-import { useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import Accordion from '../../../components/Accordion/Accordion';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
-import { useGetTodoistAllTasksQuery } from '../../../services/resources/oldFocusAppsApi';
 import CompletedTasksWithBreadcrumbs from './CompletedTasksWithBreadcrumbs';
 import NestedCompletedTasks from './NestedCompletedTasks';
 import {
@@ -16,18 +14,14 @@ import {
 } from './getGroupedSubtasksAndParentTasks.util';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../../medals/medalsLinks';
 import { getMedalImageClasses } from '../../../utils/focus-apps/helpers.utils';
+import { useGetDaysWithCompletedTasksQuery } from '../../../services/resources/documentsTasksApi';
 
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
  */
 const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { tasksById, ancestorTasksById } = fetchedTasks || {};
-
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
-	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
+	const { data: fetchedDaysWithCompletedTasks, isLoading } = useGetDaysWithCompletedTasksQuery();
+	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
 	// Context
 	const { updateQueryParams } = useSearchParamsContext();
@@ -43,16 +37,13 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
 
-	const { groupedSubtasksByParentTask, parentTasks } = getGroupedSubtasksAndParentTasks({
+	const { groupedSubtasksByParentTask } = getGroupedSubtasksAndParentTasks({
 		completedTasksForDay,
 	});
 
 	const { tasksWithParentId, tasksWithNoParent } = getTasksWithParentIdAndNoParent({
 		completedTasksForDay,
-		tasksById,
-		todoistAllTasksById,
-		ancestorTasksById,
-		todoistAncestorTasksById,
+		ancestorTasksById
 	});
 
 	const updateTaskIdQueryParam = (taskId) => {
@@ -143,22 +134,18 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 									{...{
 										tasksWithNoParent,
 										tasksWithParentId,
-										todoistAllTasksById,
 										groupedSubtasksByParentTask,
-										tasksById,
 										groupedTasksCollapsedByDefault,
 										dateStr,
 										updateTaskIdQueryParam,
+										ancestorTasksById
 									}}
 								/>
 							) : (
 								<CompletedTasksWithBreadcrumbs
 									{...{
-										tasksById,
 										ancestorTasksById,
-										todoistAncestorTasksById,
 										groupedSubtasksByParentTask,
-										todoistAllTasksById,
 										dateStr,
 										updateTaskIdQueryParam,
 										groupedTasksCollapsedByDefault,
