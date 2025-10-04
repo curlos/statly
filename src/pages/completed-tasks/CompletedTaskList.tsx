@@ -1,7 +1,7 @@
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
-import { useThemeContext } from '../../contexts/useThemeContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import DayWithCompletedTasks from './DayWithCompletedTasks/DayWithCompletedTasks';
+import DayWithCompletedTasksSkeleton from './DayWithCompletedTasks/DayWithCompletedTasksSkeleton';
 
 const CompletedTaskList = ({
 	daysWithCompletedTasks,
@@ -55,16 +55,13 @@ const CompletedTaskList = ({
 
 	// const shownCompletedTasks = getShownCompletedTasks();
 
-	const themeContext = useThemeContext();
-	const { selectedLoaderCardImage } = themeContext;
-
 	return (
 		<div>
 			{!allCompletedTasksAreHere || !daysWithCompletedTasks ? (
-				<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
-					<div>
-						<img src={selectedLoaderCardImage} className="h-[175px] animate-pulse" />
-					</div>
+				<div className="space-y-3">
+					{Array.from({ length: 7 }).map((_, index) => (
+						<DayWithCompletedTasksSkeleton key={index} isLastItem={index === 6} />
+					))}
 				</div>
 			) : (
 				<>
