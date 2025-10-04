@@ -24,13 +24,11 @@ const Page = () => {
 	const currentPageFromUrl = searchParams.get('page') || 1;
 
 	// const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
-	const { data: fetchedDaysWithCompletedTasks, isFetching } = useGetDaysWithCompletedTasksQuery();
-	const { totalPages, data: daysWithCompletedTasks } = fetchedDaysWithCompletedTasks || {}
+	const { data: fetchedDaysWithCompletedTasks, isFetching } = useGetDaysWithCompletedTasksQuery({ page: Number(currentPageFromUrl) - 1 });
+	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
 	const [sortByOptions, setSortByOptions] = useState(DEFAULT_SORT_BY_OPTIONS);
-
-	console.log(fetchedDaysWithCompletedTasks)
 
 	const getFilterBarHeaderContent = () => {
 		return (
@@ -68,6 +66,7 @@ const Page = () => {
 						<CompletedTaskList
 							{...{
 								daysWithCompletedTasks,
+								ancestorTasksById,
 								allCompletedTasksAreHere: !isFetching,
 								sortBy,
 								currentPage: currentPageFromUrl,

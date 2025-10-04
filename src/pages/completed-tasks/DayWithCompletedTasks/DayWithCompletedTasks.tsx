@@ -19,9 +19,7 @@ import { useGetDaysWithCompletedTasksQuery } from '../../../services/resources/d
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
  */
-const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false }) => {
-	const { data: fetchedDaysWithCompletedTasks, isLoading } = useGetDaysWithCompletedTasksQuery();
-	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
+const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false, ancestorTasksById }) => {
 
 	// Context
 	const { updateQueryParams } = useSearchParamsContext();

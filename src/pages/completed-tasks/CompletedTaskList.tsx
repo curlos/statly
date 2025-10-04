@@ -5,6 +5,7 @@ import DayWithCompletedTasks from './DayWithCompletedTasks/DayWithCompletedTasks
 
 const CompletedTaskList = ({
 	daysWithCompletedTasks,
+	ancestorTasksById,
 	allCompletedTasksAreHere,
 	sortBy,
 	currentPage,
@@ -80,6 +81,7 @@ const CompletedTaskList = ({
 											key={dateWithCompletedTasks.dateStr}
 											dateWithCompletedTasks={dateWithCompletedTasks}
 											isLastItemForTheDay={isLastItem}
+											ancestorTasksById={ancestorTasksById}
 										/>
 									);
 								})}
