@@ -55,12 +55,14 @@ const CompletedTaskList = ({
 
 	// const shownCompletedTasks = getShownCompletedTasks();
 
+	const numberOfDaysForSkeleton = maxDaysPerPage || 7
+
 	return (
 		<div>
 			{isFetching || !daysWithCompletedTasks ? (
 				<div className="space-y-3">
-					{Array.from({ length: 7 }).map((_, index) => (
-						<DayWithCompletedTasksSkeleton key={index} isLastItem={index === 6} />
+					{Array.from({ length: numberOfDaysForSkeleton }).map((_, index) => (
+						<DayWithCompletedTasksSkeleton key={index} isLastItem={index === numberOfDaysForSkeleton - 1} />
 					))}
 				</div>
 			) : (
