@@ -23,7 +23,6 @@ const Page = () => {
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
-	const categoriesFromUrl = searchParams.get('categories') || '';
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps') || '';
 	const taskIdFromUrl = searchParams.get('task-id') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
@@ -40,7 +39,8 @@ const Page = () => {
 		'max-days-per-page': maxDaysPerPage,
 		'to-do-list-apps': toDoListAppsFromUrl,
 		'task-id': taskIdFromUrl,
-		'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks
+		'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
+		'search': searchTextFromUrl
 	});
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
