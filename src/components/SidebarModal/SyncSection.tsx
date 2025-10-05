@@ -26,11 +26,11 @@ const SyncSection = () => {
 	useEffect(() => {
 		const hasAutoSynced = sessionStorage.getItem('automatic-sync-tasks');
 
-		if (!hasAutoSynced) {
+		if (!hasAutoSynced && !isSyncing) {
 			handleSync();
 			sessionStorage.setItem('automatic-sync-tasks', 'true');
 		}
-	}, [handleSync]);
+	}, [handleSync, isSyncing]);
 
 	const formatLastSyncTime = (lastSyncTime: string) => {
 		if (!lastSyncTime) return 'Never';
@@ -49,7 +49,7 @@ const SyncSection = () => {
 					<div className="font-semibold">Tasks</div>
 					{syncMetadata ? (
 						<div className="text-sm text-color-gray-100">
-							Last synced: {formatLastSyncTime((syncMetadata as SyncMetadata).lastSyncTime)}
+							Last sync: {formatLastSyncTime((syncMetadata as SyncMetadata).lastSyncTime)}
 						</div>
 					) : (
 						<div className="text-sm text-color-gray-100">No sync data available</div>

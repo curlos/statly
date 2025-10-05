@@ -1,5 +1,6 @@
 import Icon from '../../components/Icon';
 import AppliedFilterItemList from './AppliedFilterItemList';
+import SyncButton from '../../components/SyncButton';
 
 const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent }) => {
 	return (
@@ -14,7 +15,7 @@ const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent }) =
 						</div>
 					</div>
 
-					<div className="text-nowrap text-[16px] cursor-pointer">
+					<div className="text-nowrap text-[16px] cursor-pointer flex items-center gap-2">
 						<div
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
 							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
@@ -26,6 +27,8 @@ const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent }) =
 								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 							/>
 						</div>
+
+						<SyncButton showText={false} showTooltip={true} customClass="hover:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed h-[20px]" />
 					</div>
 				</div>
 			</div>
