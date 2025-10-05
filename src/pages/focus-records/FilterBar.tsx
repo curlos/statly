@@ -29,7 +29,7 @@ const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isF
 							/>
 						</div>
 
-						<SyncButton showText={false} showTooltip={true} customClass="hover:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed h-[20px]" />
+						<SyncButton showText={false} showTooltip={true} customClass="hover:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed h-[20px] mt-[3px]" />
 					</div>
 				</div>
 			</div>

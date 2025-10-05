@@ -8,6 +8,7 @@ const SearchSection = () => {
 	const searchTextFromUrl = searchParams.get('search') || '';
 
 	const [localSearchText, setLocalSearchText] = useState(searchTextFromUrl);
+	const [isInitialMount, setIsInitialMount] = useState(true);
 
 	const handleDebouncedSearch = debounce(() => {
 		updateQueryParams({
@@ -18,6 +19,11 @@ const SearchSection = () => {
 	}, 1000);
 
 	useEffect(() => {
+		if (isInitialMount) {
+			setIsInitialMount(false);
+			return;
+		}
+
 		handleDebouncedSearch();
 
 		return () => {

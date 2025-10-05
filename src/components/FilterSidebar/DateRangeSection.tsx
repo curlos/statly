@@ -19,8 +19,14 @@ const DateRangeSection = () => {
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 	const [selectedInterval, setSelectedInterval] = useState(intervalFromUrl);
 	const [selectedDates, setSelectedDates] = useState([startDate]);
+	const [isInitialMount, setIsInitialMount] = useState(true);
 
 	useEffect(() => {
+		if (isInitialMount) {
+			setIsInitialMount(false);
+			return;
+		}
+
 		const newStartDate =
 			selectedInterval === 'All'
 				? ''
