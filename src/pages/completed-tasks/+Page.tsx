@@ -14,7 +14,7 @@ const Page = () => {
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const {
-		completedTasksPageSettings: { maxDaysPerPage },
+		completedTasksPageSettings: { maxDaysPerPage, taskIdIncludeCompletedTasksFromSubtasks },
 	} = useUserSettingsContext();
 
 	// Query Params
@@ -38,7 +38,9 @@ const Page = () => {
 		'projects-ticktick': projectsFromUrl,
 		'projects-todoist': projectsTodoistFromUrl,
 		'max-days-per-page': maxDaysPerPage,
-		'to-do-list-apps': toDoListAppsFromUrl
+		'to-do-list-apps': toDoListAppsFromUrl,
+		'task-id': taskIdFromUrl,
+		'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks
 	});
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
