@@ -6,6 +6,7 @@ import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import CompletedTaskList from './CompletedTaskList';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useGetDaysWithCompletedTasksQuery } from '../../services/resources/documentsTasksApi';
+import { getFormattedShortMonthDay } from '../../utils/date.utils';
 
 const Page = () => {
 	// For Filter Sidebar and Filter Bar
@@ -18,13 +19,21 @@ const Page = () => {
 
 	// Query Params
 	const searchTextFromUrl = searchParams.get('search') || '';
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const projectsFromUrl = searchParams.get('projects') || '';
+	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
+	const categoriesFromUrl = searchParams.get('categories') || '';
+	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps') || '';
+	const taskIdFromUrl = searchParams.get('task-id') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
-	const taskIdFromUrl = searchParams.get('task-id');
-	const projectsFromUrl = searchParams.get('projects');
 	const currentPageFromUrl = searchParams.get('page') || 1;
 
 	// const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
-	const { data: fetchedDaysWithCompletedTasks, isLoading, isFetching } = useGetDaysWithCompletedTasksQuery({ page: Number(currentPageFromUrl) - 1 });
+	const { data: fetchedDaysWithCompletedTasks, isLoading, isFetching } = useGetDaysWithCompletedTasksQuery({
+		page: Number(currentPageFromUrl) - 1,
+		'sort-by': sortBy
+	});
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
