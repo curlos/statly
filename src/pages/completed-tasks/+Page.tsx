@@ -35,7 +35,8 @@ const Page = () => {
 		'sort-by': sortBy,
 		'start-date': startDateFromUrl,
 		'end-date': endDateFromUrl,
-		'projects-ticktick': projectsFromUrl
+		'projects-ticktick': projectsFromUrl,
+		'max-days-per-page': maxDaysPerPage
 	});
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
