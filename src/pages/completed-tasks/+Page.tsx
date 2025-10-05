@@ -77,7 +77,7 @@ const Page = () => {
 							{...{
 								daysWithCompletedTasks,
 								ancestorTasksById,
-								allCompletedTasksAreHere: !isFetching,
+								isFetching,
 								sortBy,
 								currentPage: currentPageFromUrl,
 								sortByOptions,

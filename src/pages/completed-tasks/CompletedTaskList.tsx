@@ -6,7 +6,7 @@ import DayWithCompletedTasksSkeleton from './DayWithCompletedTasks/DayWithComple
 const CompletedTaskList = ({
 	daysWithCompletedTasks,
 	ancestorTasksById,
-	allCompletedTasksAreHere,
+	isFetching,
 	sortBy,
 	currentPage,
 	sortByOptions,
@@ -57,7 +57,7 @@ const CompletedTaskList = ({
 
 	return (
 		<div>
-			{!allCompletedTasksAreHere || !daysWithCompletedTasks ? (
+			{isFetching || !daysWithCompletedTasks ? (
 				<div className="space-y-3">
 					{Array.from({ length: 7 }).map((_, index) => (
 						<DayWithCompletedTasksSkeleton key={index} isLastItem={index === 6} />
@@ -85,16 +85,18 @@ const CompletedTaskList = ({
 							</div>
 						)}
 					</div>
-					<ModalFilterSidebar
-						{...{
-							isOpen: showFilterSidebar,
-							setIsOpen: setShowFilterSidebar,
-							sortByOptions,
-							page: 'completed-tasks-page',
-						}}
-					/>
 				</>
 			)}
+
+			<ModalFilterSidebar
+				{...{
+					isOpen: showFilterSidebar,
+					setIsOpen: setShowFilterSidebar,
+					sortByOptions,
+					page: 'completed-tasks-page',
+					isFetching
+				}}
+			/>
 		</div>
 	);
 };
