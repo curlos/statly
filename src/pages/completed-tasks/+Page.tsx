@@ -36,6 +36,7 @@ const Page = () => {
 		'start-date': startDateFromUrl,
 		'end-date': endDateFromUrl,
 		'projects-ticktick': projectsFromUrl,
+		'projects-todoist': projectsTodoistFromUrl,
 		'max-days-per-page': maxDaysPerPage,
 		'to-do-list-apps': toDoListAppsFromUrl
 	});
