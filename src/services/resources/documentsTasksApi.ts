@@ -16,6 +16,7 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 			transformResponse: (response) => {
 				return response;
 			},
+			providesTags: ['DaysWithCompletedTasks'],
 		}),
 		getSyncMetadata: builder.query({
 			query: () => '/documents/tasks/sync-metadata',
@@ -28,6 +29,7 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				url: '/documents/tasks/sync-tasks',
 				method: 'POST',
 			}),
+			invalidatesTags: ['DaysWithCompletedTasks'],
 		}),
 	}),
 	overrideExisting: false,

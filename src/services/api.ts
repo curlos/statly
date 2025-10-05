@@ -21,7 +21,8 @@ export const baseAPI = createApi({
 	tagTypes: [
 		'User',
 		'UserSettings',
-		'TickTick-1.0-Task'
+		'TickTick-1.0-Task',
+		'DaysWithCompletedTasks'
 	],
 	endpoints: () => ({}),
 });
