@@ -24,7 +24,7 @@ const Page = () => {
 	const currentPageFromUrl = searchParams.get('page') || 1;
 
 	// const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
-	const { data: fetchedDaysWithCompletedTasks, isFetching } = useGetDaysWithCompletedTasksQuery({ page: Number(currentPageFromUrl) - 1 });
+	const { data: fetchedDaysWithCompletedTasks, isLoading, isFetching } = useGetDaysWithCompletedTasksQuery({ page: Number(currentPageFromUrl) - 1 });
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
@@ -33,7 +33,7 @@ const Page = () => {
 	const getFilterBarHeaderContent = () => {
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Completed Tasks ({(fetchedDaysWithCompletedTasks?.totalTasks).toLocaleString()})
+				Completed Tasks {!isLoading && `(${(fetchedDaysWithCompletedTasks?.totalTasks).toLocaleString()})`}
 			</h2>
 		);
 	};
@@ -50,15 +50,14 @@ const Page = () => {
 		<div className="max-w-screen min-h-screen bg-color-gray-700">
 			<Navbar />
 
-			{!isFetching && (
-				<FilterBar
-					{...{
-						showFilterSidebar,
-						setShowFilterSidebar,
-						headerContent: getFilterBarHeaderContent(),
-					}}
-				/>
-			)}
+			<FilterBar
+				{...{
+					isFetching,
+					showFilterSidebar,
+					setShowFilterSidebar,
+					headerContent: getFilterBarHeaderContent(),
+				}}
+			/>
 
 			<div className="w-full flex flex-col">
 				<div className="flex-1 flex justify-center bg-color-gray-700">

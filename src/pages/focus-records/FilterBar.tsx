@@ -2,7 +2,7 @@ import Icon from '../../components/Icon';
 import AppliedFilterItemList from './AppliedFilterItemList';
 import SyncButton from '../../components/SyncButton';
 
-const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent }) => {
+const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isFetching = false }) => {
 	return (
 		<div className="bg-color-gray-700 sticky top-0 z-[1] pt-2">
 			<div className="flex justify-between items-center pb-5 container">
@@ -18,7 +18,8 @@ const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent }) =
 					<div className="text-nowrap text-[16px] cursor-pointer flex items-center gap-2">
 						<div
 							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
-							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
+							onClick={() => !isFetching && setShowFilterSidebar(!showFilterSidebar)}
+							style={{ opacity: isFetching ? 0.5 : 1, cursor: isFetching ? 'not-allowed' : 'pointer' }}
 						>
 							<div className="hidden sm:block">Filter & Sort</div>
 							<Icon
