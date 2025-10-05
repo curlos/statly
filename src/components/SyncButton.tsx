@@ -17,7 +17,9 @@ interface SyncMetadata {
 
 const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: SyncButtonProps) => {
 	const { data: syncMetadata, refetch } = useGetSyncMetadataQuery(undefined);
-	const [syncTasks, { isLoading: isSyncing }] = useSyncTasksMutation();
+	const [syncTasks, { isLoading: isSyncing }] = useSyncTasksMutation({
+		fixedCacheKey: 'shared-sync-tasks',
+	});
 
 	const handleSync = useCallback(async () => {
 		if (isSyncing) return;

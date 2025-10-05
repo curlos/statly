@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
 import Icon from '../Icon';
-import { useGetSyncMetadataQuery, useSyncTasksMutation } from '../../services/resources/documentsTasksApi';
+import { useGetSyncMetadataQuery } from '../../services/resources/documentsTasksApi';
 import { formatDistanceToNow } from 'date-fns';
+import SyncButton from '../SyncButton';
 
 interface SyncMetadata {
 	lastSyncTime: string;
@@ -9,28 +9,7 @@ interface SyncMetadata {
 }
 
 const SyncSection = () => {
-	const { data: syncMetadata, refetch } = useGetSyncMetadataQuery(undefined);
-	const [syncTasks, { isLoading: isSyncing }] = useSyncTasksMutation();
-
-	const handleSync = useCallback(async () => {
-		if (isSyncing) return;
-
-		try {
-			await syncTasks(undefined).unwrap();
-			refetch();
-		} catch (error) {
-			console.error('Sync failed:', error);
-		}
-	}, [isSyncing, syncTasks, refetch]);
-
-	useEffect(() => {
-		const hasAutoSynced = sessionStorage.getItem('automatic-sync-tasks');
-
-		if (!hasAutoSynced && !isSyncing) {
-			handleSync();
-			sessionStorage.setItem('automatic-sync-tasks', 'true');
-		}
-	}, [handleSync, isSyncing]);
+	const { data: syncMetadata } = useGetSyncMetadataQuery(undefined);
 
 	const formatLastSyncTime = (lastSyncTime: string) => {
 		if (!lastSyncTime) return 'Never';
@@ -56,18 +35,10 @@ const SyncSection = () => {
 					)}
 				</div>
 
-				<button
-					onClick={handleSync}
-					disabled={isSyncing}
-					className="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-				>
-					<Icon
-						name="sync"
-						fill={1}
-						customClass={`!text-[20px] ${isSyncing ? 'animate-spin' : ''}`}
-					/>
-					<span>{isSyncing ? 'Syncing...' : 'Sync Now'}</span>
-				</button>
+				<SyncButton
+					showText={true}
+					customClass="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+				/>
 			</div>
 		</div>
 	);

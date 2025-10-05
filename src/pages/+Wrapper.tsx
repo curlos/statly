@@ -13,6 +13,7 @@ import { UserSettingsProvider } from './focus-records/useUserSettingsContext';
 import { usePageContext } from 'vike-react/usePageContext';
 import { selectUserToken } from '../slices/userSlice';
 import { navigate } from 'vike/client/router';
+import { useAutoSync } from '../hooks/useAutoSync';
 
 const globalClasses = 'text-white select-none';
 
@@ -62,6 +63,8 @@ const ProviderList = ({ children }) => {
 const LoggedInBase = ({ children }) => {
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey } = themeContext;
+
+	useAutoSync();
 
 	const globalStyle = {
 		fontFamily: selectedFontFamilyKey !== 'Default' ? selectedFontFamilyKey : '',
