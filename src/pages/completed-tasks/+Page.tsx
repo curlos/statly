@@ -32,7 +32,9 @@ const Page = () => {
 	// const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
 	const { data: fetchedDaysWithCompletedTasks, isLoading, isFetching } = useGetDaysWithCompletedTasksQuery({
 		page: Number(currentPageFromUrl) - 1,
-		'sort-by': sortBy
+		'sort-by': sortBy,
+		'start-date': startDateFromUrl,
+		'end-date': endDateFromUrl
 	});
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
