@@ -4,8 +4,8 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 
 const DayWithCompletedTasksSkeleton = ({ isLastItem = false }) => {
 	const themeContext = useThemeContext();
-	const { chosenColorObj } = themeContext;
-	const { textColor, bgColorHalfOpacity, borderColor, bgColor } = chosenColorObj;
+	const { chosenColorObj, nextDarkestColorObj } = themeContext;
+	const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
 
 	return (
 		<div className="m-0 list-none last:mb-[4px] w-full relative" style={{ minHeight: '54px' }}>
@@ -37,15 +37,15 @@ const DayWithCompletedTasksSkeleton = ({ isLastItem = false }) => {
 				<div className={classNames(bgColorHalfOpacity, 'p-2 rounded-lg w-[95%] sm:w-full')}>
 					<div className="space-y-2">
 						{/* Date skeleton */}
-						<div className={classNames("h-[28px] rounded-md w-[200px] animate-pulse", bgColor)}></div>
+						<div className={classNames("h-[28px] rounded-md w-[200px] animate-pulse", nextDarkestColorObj.bgColorHalfOpacity)}></div>
 
 						{/* Task items skeleton */}
 						<div className="space-y-2 pt-2">
-							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", bgColor)}></div>
-							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", bgColor)}></div>
-							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", bgColor)}></div>
-							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", bgColor)}></div>
-							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", bgColor)}></div>
+							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", nextDarkestColorObj.bgColorHalfOpacity)}></div>
+							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", nextDarkestColorObj.bgColorHalfOpacity)}></div>
+							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", nextDarkestColorObj.bgColorHalfOpacity)}></div>
+							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", nextDarkestColorObj.bgColorHalfOpacity)}></div>
+							<div className={classNames("h-[20px] rounded-md w-[80%] animate-pulse", nextDarkestColorObj.bgColorHalfOpacity)}></div>
 						</div>
 					</div>
 				</div>
