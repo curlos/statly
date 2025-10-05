@@ -36,7 +36,8 @@ const Page = () => {
 		'start-date': startDateFromUrl,
 		'end-date': endDateFromUrl,
 		'projects-ticktick': projectsFromUrl,
-		'max-days-per-page': maxDaysPerPage
+		'max-days-per-page': maxDaysPerPage,
+		'to-do-list-apps': toDoListAppsFromUrl
 	});
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
 
