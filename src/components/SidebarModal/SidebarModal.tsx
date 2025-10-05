@@ -6,6 +6,7 @@ import FontFamilyList from './FontFamilyList';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import CardImage from '../../pages/challenges/CardImage';
 import OtherSection from './OtherSection/OtherSection';
+import SyncSection from './SyncSection';
 
 const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 	const sidebarVariants = {
@@ -70,6 +71,10 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 							<LinkLi name="Medals" linkUrl="/medals/focus/daily" iconName="workspace_premium" />
 							<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />
 						</div>
+
+						{/* Sync */}
+						<hr className="border-color-gray-200 my-4" />
+						<SyncSection />
 
 						{/* Theme Color */}
 						<hr className="border-color-gray-200 my-4" />

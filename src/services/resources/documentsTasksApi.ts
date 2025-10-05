@@ -17,8 +17,20 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				return response;
 			},
 		}),
+		getSyncMetadata: builder.query({
+			query: () => '/documents/tasks/sync-metadata',
+			transformResponse: (response) => {
+				return response;
+			},
+		}),
+		syncTasks: builder.mutation({
+			query: () => ({
+				url: '/documents/tasks/sync-tasks',
+				method: 'POST',
+			}),
+		}),
 	}),
 	overrideExisting: false,
 });
 
-export const { useGetDaysWithCompletedTasksQuery } = documentsTasksApi;
+export const { useGetDaysWithCompletedTasksQuery, useGetSyncMetadataQuery, useSyncTasksMutation } = documentsTasksApi;
