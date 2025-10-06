@@ -2,34 +2,20 @@ import Accordion from '../../../components/Accordion/Accordion';
 import CompletedTask from './CompletedTask';
 
 const CompletedTasksWithBreadcrumbs = ({
-	tasksById,
 	ancestorTasksById,
-	todoistAncestorTasksById,
 	groupedSubtasksByParentTask,
-	todoistAllTasksById,
 	dateStr,
 	updateTaskIdQueryParam,
 	groupedTasksCollapsedByDefault,
 }) => {
 	return (
-		tasksById &&
 		ancestorTasksById &&
-		todoistAncestorTasksById &&
 		Object.keys(groupedSubtasksByParentTask).map((parentTaskId, i) => {
 			const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
 			const parentTask =
-				(tasksById && tasksById[parentTaskId]) || (todoistAllTasksById && todoistAllTasksById[parentTaskId]);
-			const parentTaskTitle = parentTask?.title || parentTask?.content || parentTaskId;
-
-			const parentTaskBreadcrumbsTickTick =
-				parentTask && ancestorTasksById[parentTask.id] && Object.keys(ancestorTasksById[parentTask.id]);
-
-			const parentTaskBreadcrumbsTodoist =
-				parentTask &&
-				todoistAncestorTasksById[parentTask.id] &&
-				Object.keys(todoistAncestorTasksById[parentTask.id]);
-
-			const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick || parentTaskBreadcrumbsTodoist;
+				ancestorTasksById && ancestorTasksById[parentTaskId];
+			const parentTaskTitle = parentTask?.title || parentTaskId;
+			const parentTaskBreadcrumbs = parentTask?.ancestorIds
 
 			return (
 				<Accordion
@@ -49,9 +35,8 @@ const CompletedTasksWithBreadcrumbs = ({
 								<span className="ml-1 text-color-gray-25">
 									-{' '}
 									{parentTaskBreadcrumbs.map((taskId, index) => {
-										const taskObj = tasksById[taskId] || todoistAllTasksById[taskId];
-
-										const title = taskObj.title || taskObj.content;
+										const taskObj = ancestorTasksById[taskId];
+										const title = taskObj.title;
 
 										return (
 											<span key={`breadcrumbs-${dateStr}-${taskObj.id}-${index}`}>
