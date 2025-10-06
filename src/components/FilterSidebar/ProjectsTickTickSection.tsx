@@ -1,7 +1,7 @@
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import { useGetAllProjectGroupsQuery, useGetAllProjectsQuery } from '../../services/resources/ticktickOneApi';
+import { useGetProjectsQuery, useGetProjectGroupsQuery } from '../../services/resources/documentsProjectsApi';
 import { useEffect, useState } from 'react';
 import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
@@ -26,11 +26,11 @@ const ProjectsTickTickSection = ({ page }) => {
 	} = useUserSettingsContext();
 
 	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
 	const { projects } = fetchedProjects || {};
 
 	// RTK Query - TickTick 1.0 - Project Groups
-	const { data: fetchedProjectGroups, isLoading: isLoadingGetProjectGroups } = useGetAllProjectGroupsQuery();
+	const { data: fetchedProjectGroups, isLoading: isLoadingGetProjectGroups } = useGetProjectGroupsQuery();
 	const { projectGroupsById } = fetchedProjectGroups || {};
 
 	// RTK Query - User Settings
