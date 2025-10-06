@@ -23,7 +23,15 @@ const Page = () => {
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
-	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps') || '';
+	const toDoListAppsFromUrlRaw = searchParams.get('to-do-list-apps') || '';
+	const toDoListAppsFromUrl = toDoListAppsFromUrlRaw
+		.split(',')
+		.map(app => {
+			if (app === 'TickTick') return 'TaskTickTick';
+			if (app === 'Todoist') return 'TaskTodoist';
+			return app;
+		})
+		.join(',');
 	const taskIdFromUrl = searchParams.get('task-id') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const currentPageFromUrl = searchParams.get('page') || 1;
