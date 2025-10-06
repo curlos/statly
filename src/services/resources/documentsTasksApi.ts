@@ -16,7 +16,7 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 			transformResponse: (response) => {
 				return response;
 			},
-			providesTags: ['DaysWithCompletedTasks'],
+			providesTags: ['DayWithCompletedTasks'],
 		})
 	}),
 	overrideExisting: false,

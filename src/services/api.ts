@@ -22,7 +22,9 @@ export const baseAPI = createApi({
 		'User',
 		'UserSettings',
 		'TickTick-1.0-Task',
-		'DaysWithCompletedTasks'
+		'DayWithCompletedTasks',
+		'Project',
+		'ProjectGroup'
 	],
 	endpoints: () => ({}),
 });

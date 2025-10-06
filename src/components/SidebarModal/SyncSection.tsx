@@ -8,13 +8,40 @@ interface SyncMetadata {
 	tasksUpdated?: number;
 }
 
-const SyncSection = () => {
-	const { data: syncMetadata } = useGetSyncMetadataQuery(undefined);
+interface SyncMetadataByType {
+	tasks?: SyncMetadata;
+	projects?: SyncMetadata;
+	project_groups?: SyncMetadata;
+}
 
+interface SyncItemProps {
+	label: string;
+	metadata?: SyncMetadata;
+}
+
+const SyncItem = ({ label, metadata }: SyncItemProps) => {
 	const formatLastSyncTime = (lastSyncTime: string) => {
 		if (!lastSyncTime) return 'Never';
 		return formatDistanceToNow(new Date(lastSyncTime), { addSuffix: true });
 	};
+
+	return (
+		<div className="flex items-center gap-2">
+			<div className="font-semibold">{label}</div>
+			{metadata ? (
+				<div className="text-sm text-color-gray-100">
+					Last sync: {formatLastSyncTime(metadata.lastSyncTime)}
+				</div>
+			) : (
+				<div className="text-sm text-color-gray-100">No sync data available</div>
+			)}
+		</div>
+	);
+};
+
+const SyncSection = () => {
+	const { data: syncMetadata } = useGetSyncMetadataQuery(undefined);
+	const syncMetadataByType = syncMetadata as SyncMetadataByType;
 
 	return (
 		<div>
@@ -24,16 +51,9 @@ const SyncSection = () => {
 			</div>
 
 			<div className="space-y-2">
-				<div className="flex items-center gap-2">
-					<div className="font-semibold">Tasks</div>
-					{syncMetadata ? (
-						<div className="text-sm text-color-gray-100">
-							Last sync: {formatLastSyncTime((syncMetadata as SyncMetadata).lastSyncTime)}
-						</div>
-					) : (
-						<div className="text-sm text-color-gray-100">No sync data available</div>
-					)}
-				</div>
+				<SyncItem label="Tasks" metadata={syncMetadataByType?.tasks} />
+				<SyncItem label="Projects" metadata={syncMetadataByType?.projects} />
+				<SyncItem label="Project Groups" metadata={syncMetadataByType?.project_groups} />
 
 				<SyncButton
 					showText={true}

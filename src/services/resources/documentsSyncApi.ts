@@ -11,15 +11,18 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 return response;
             },
         }),
-        syncTasks: builder.mutation({
+        syncAll: builder.mutation({
             query: () => ({
-                url: '/documents/sync/ticktick-tasks',
+                url: '/documents/sync/ticktick-all',
                 method: 'POST',
             }),
-            invalidatesTags: ['DaysWithCompletedTasks'],
+            invalidatesTags: ['DayWithCompletedTasks', 'Project', 'ProjectGroup'],
         }),
     }),
     overrideExisting: false,
 });
 
-export const { useGetSyncMetadataQuery, useSyncTasksMutation } = documentsSyncApi;
+export const {
+    useGetSyncMetadataQuery,
+    useSyncAllMutation
+} = documentsSyncApi;

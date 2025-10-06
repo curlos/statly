@@ -1,13 +1,26 @@
 import { useState } from 'react';
 
 interface TooltipProps {
-	content: string;
+	content: string | React.ReactNode;
 	children: React.ReactNode;
 	className?: string;
+	position?: 'top' | 'bottom';
 }
 
-const Tooltip = ({ content, children, className = '' }: TooltipProps) => {
+const Tooltip = ({ content, children, className = '', position = 'top' }: TooltipProps) => {
 	const [isVisible, setIsVisible] = useState(false);
+
+	const positionClasses = position === 'top'
+		? 'bottom-full mb-2'
+		: 'top-full mt-2';
+
+	const arrowClasses = position === 'top'
+		? 'absolute top-full right-2 -mt-1'
+		: 'absolute bottom-full right-2 -mb-1';
+
+	const arrowBorderClasses = position === 'top'
+		? 'border-4 border-transparent border-t-color-gray-300'
+		: 'border-4 border-transparent border-b-color-gray-300';
 
 	return (
 		<div
@@ -17,10 +30,10 @@ const Tooltip = ({ content, children, className = '' }: TooltipProps) => {
 		>
 			{children}
 			{isVisible && (
-				<div className={`absolute bottom-full right-0 mb-2 px-3 py-2 bg-color-gray-300 border border-color-gray-200 text-white text-sm rounded whitespace-nowrap z-50 ${className}`}>
+				<div className={`absolute ${positionClasses} right-0 px-3 py-2 bg-color-gray-300 border border-color-gray-200 text-white text-sm rounded z-50 ${className}`}>
 					{content}
-					<div className="absolute top-full right-2 -mt-1">
-						<div className="border-4 border-transparent border-t-color-gray-300"></div>
+					<div className={arrowClasses}>
+						<div className={arrowBorderClasses}></div>
 					</div>
 				</div>
 			)}

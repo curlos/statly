@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import Icon from './Icon';
-import { useGetSyncMetadataQuery, useSyncTasksMutation } from '../services/resources/documentsSyncApi';
+import { useGetSyncMetadataQuery, useSyncAllMutation } from '../services/resources/documentsSyncApi';
 import { formatDistanceToNow } from 'date-fns';
 import Tooltip from './Tooltip';
 
@@ -15,28 +15,45 @@ interface SyncMetadata {
 	tasksUpdated?: number;
 }
 
+interface SyncMetadataByType {
+	tasks?: SyncMetadata;
+	projects?: SyncMetadata;
+	project_groups?: SyncMetadata;
+}
+
 const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: SyncButtonProps) => {
 	const { data: syncMetadata, refetch } = useGetSyncMetadataQuery(undefined);
-	const [syncTasks, { isLoading: isSyncing }] = useSyncTasksMutation({
-		fixedCacheKey: 'shared-sync-tasks',
+	const [syncAll, { isLoading: isSyncing }] = useSyncAllMutation({
+		fixedCacheKey: 'shared-sync-all',
 	});
 
 	const handleSync = useCallback(async () => {
 		if (isSyncing) return;
 
 		try {
-			await syncTasks(undefined).unwrap();
+			await syncAll(undefined).unwrap();
 			refetch();
 		} catch (error) {
 			console.error('Sync failed:', error);
 		}
-	}, [isSyncing, syncTasks, refetch]);
+	}, [isSyncing, syncAll, refetch]);
 
-	const getTooltipText = () => {
+	const getTooltipContent = () => {
 		if (!syncMetadata) return 'No sync data available';
-		const lastSyncTime = (syncMetadata as SyncMetadata).lastSyncTime;
-		if (!lastSyncTime) return 'Never synced';
-		return `Last sync: ${formatDistanceToNow(new Date(lastSyncTime), { addSuffix: true })}`;
+		const syncMetadataByType = syncMetadata as SyncMetadataByType;
+
+		const formatSync = (metadata?: SyncMetadata) => {
+			if (!metadata?.lastSyncTime) return 'Never';
+			return formatDistanceToNow(new Date(metadata.lastSyncTime), { addSuffix: true });
+		};
+
+		return (
+			<div className="space-y-1">
+				<div><span className="font-bold">Tasks:</span> {formatSync(syncMetadataByType?.tasks)}</div>
+				<div><span className="font-bold">Projects:</span> {formatSync(syncMetadataByType?.projects)}</div>
+				<div><span className="font-bold">Project Groups:</span> {formatSync(syncMetadataByType?.project_groups)}</div>
+			</div>
+		);
 	};
 
 	const buttonContent = (
@@ -55,7 +72,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 	);
 
 	return showTooltip ? (
-		<Tooltip content={getTooltipText()}>
+		<Tooltip content={getTooltipContent()} position="bottom">
 			{buttonContent}
 		</Tooltip>
 	) : (
