@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useSyncTasksMutation, useGetSyncMetadataQuery } from '../services/resources/documentsTasksApi';
+import { useSyncTasksMutation, useGetSyncMetadataQuery } from '../services/resources/documentsSyncApi';
 
 export const useAutoSync = () => {
 	const { refetch } = useGetSyncMetadataQuery(undefined);
@@ -15,8 +15,6 @@ export const useAutoSync = () => {
 			hasTriggeredSync.current = true;
 
 			const performSync = async () => {
-				console.log('Syncing!')
-
 				try {
 					await syncTasks(undefined).unwrap();
 					refetch();

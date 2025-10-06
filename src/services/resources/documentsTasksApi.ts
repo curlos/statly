@@ -17,22 +17,9 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				return response;
 			},
 			providesTags: ['DaysWithCompletedTasks'],
-		}),
-		getSyncMetadata: builder.query({
-			query: () => '/documents/tasks/sync-metadata',
-			transformResponse: (response) => {
-				return response;
-			},
-		}),
-		syncTasks: builder.mutation({
-			query: () => ({
-				url: '/documents/tasks/sync-tasks',
-				method: 'POST',
-			}),
-			invalidatesTags: ['DaysWithCompletedTasks'],
-		}),
+		})
 	}),
 	overrideExisting: false,
 });
 
-export const { useGetDaysWithCompletedTasksQuery, useGetSyncMetadataQuery, useSyncTasksMutation } = documentsTasksApi;
+export const { useGetDaysWithCompletedTasksQuery } = documentsTasksApi;

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import Icon from './Icon';
-import { useGetSyncMetadataQuery, useSyncTasksMutation } from '../services/resources/documentsTasksApi';
+import { useGetSyncMetadataQuery, useSyncTasksMutation } from '../services/resources/documentsSyncApi';
 import { formatDistanceToNow } from 'date-fns';
 import Tooltip from './Tooltip';
 
