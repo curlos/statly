@@ -9,7 +9,11 @@ export const documentsProjectsApi = baseAPI.injectEndpoints({
         getProjects: builder.query({
             query: () => '/documents/projects',
             transformResponse: (response) => {
-                return { projects: response };
+                const projects = response
+                const projectsTickTick = projects.filter((project: any) => project.source === 'ProjectTickTick');
+                const projectsTodoist = projects.filter((project: any) => project.source === 'ProjectTodoist');
+
+                return { projects, projectsTickTick, projectsTodoist };
             },
             providesTags: ['Project'],
         }),

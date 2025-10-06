@@ -6,15 +6,15 @@ import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
-import { useGetTodoistAllProjectsQuery } from '../../services/resources/oldFocusAppsApi';
+import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
  */
 const ProjectsTodoistSection = () => {
 	// RTK Query - Todoist - Projects
-	const { data: fetchedTodoistAllProjects } = useGetTodoistAllProjectsQuery();
-	const { todoistAllProjects } = fetchedTodoistAllProjects || {};
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsTodoist } = fetchedProjects || {};
 
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
@@ -27,17 +27,17 @@ const ProjectsTodoistSection = () => {
 	const [archivedProjects, setArchivedProjects] = useState([]);
 
 	useEffect(() => {
-		if (!todoistAllProjects) {
+		if (!projectsTodoist) {
 			return;
 		}
 
 		const newActiveProjects = [];
 		const newArchivedProjects = [];
 
-		for (let project of todoistAllProjects) {
-			const { is_inbox_project, is_archived } = project;
+		for (let project of projectsTodoist) {
+			const { isInboxProject, isArchived } = project;
 
-			if (!is_inbox_project && is_archived) {
+			if (!isInboxProject && isArchived) {
 				newArchivedProjects.push(project);
 			} else {
 				newActiveProjects.push(project);
@@ -46,7 +46,7 @@ const ProjectsTodoistSection = () => {
 
 		setActiveProjects(newActiveProjects.toSorted((a, b) => a.order - b.order));
 		setArchivedProjects(newArchivedProjects.toSorted((a, b) => a.order - b.order));
-	}, [todoistAllProjects]);
+	}, [projectsTodoist]);
 
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
 

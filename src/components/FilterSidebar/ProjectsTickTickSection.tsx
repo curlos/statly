@@ -27,7 +27,7 @@ const ProjectsTickTickSection = ({ page }) => {
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
-	const { projects } = fetchedProjects || {};
+	const { projectsTickTick } = fetchedProjects || {};
 
 	// RTK Query - TickTick 1.0 - Project Groups
 	const { data: fetchedProjectGroups, isLoading: isLoadingGetProjectGroups } = useGetProjectGroupsQuery();
@@ -54,7 +54,7 @@ const ProjectsTickTickSection = ({ page }) => {
 		}
 
 		// Go through all of the user's projects and separate them into 3 groups: Grouped, Ungrouped, and Archived projects.
-		const { groupedProjects, ungroupedProjects, archivedProjects } = projects.reduce(
+		const { groupedProjects, ungroupedProjects, archivedProjects } = projectsTickTick.reduce(
 			(acc, project) => {
 				if (project.closed) {
 					acc.archivedProjects.push(project);
@@ -98,7 +98,7 @@ const ProjectsTickTickSection = ({ page }) => {
 		setGroupedProjectsByGroupId(groupedProjectsByGroupId);
 		setSortedArchivedProjects(sortedArchivedProjects);
 		setSortedUngroupedProjects(sortedUngroupedProjects);
-	}, [projects, projectGroupsById]);
+	}, [projectsTickTick, projectGroupsById]);
 
 	// This is the combined array of the "Project Groups" and the ungrouped Projects. It's necessary for them to be a combined array because it's possible on TickTick 1.0 for them to be mixed together. You could have a "Project Group" between two ungrouped "Projects". So, to be as accurate as possible, they both need to be in the same array.
 	// Archived Projects don't need to be here as they're technically not an actual Project Group in TickTick 1.0 and are the lowest priority since they're not active anymore.
