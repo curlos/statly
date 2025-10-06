@@ -104,28 +104,6 @@ const NestedCompletedTasks = ({
 								} else {
 									return null
 								}
-								
-								// TODO: Possibly remove if not needed anymore? Do it after some of the other shit is finished
-								const directCompletedSubtasks = groupedSubtasksByParentTask[taskId];
-
-								return (
-									<Accordion
-										key={taskId + index + dateStr}
-										title={
-											<li
-												className="underline cursor-pointer font-bold text-[18px] mt-1 hover:text-blue-500 break-words"
-												onClick={() => updateTaskIdQueryParam(task.id)}
-											>
-												{task.title}
-											</li>
-										}
-										openByDefault={true}
-										showArrowNextToText={true}
-									>
-										{directCompletedSubtasks?.length > 0 &&
-											renderDirectCompletedSubtasks(directCompletedSubtasks)}
-									</Accordion>
-								);
 							})}
 					</ul>
 				</Accordion>
