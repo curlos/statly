@@ -10,10 +10,11 @@ export const documentsProjectsApi = baseAPI.injectEndpoints({
             query: () => '/documents/projects',
             transformResponse: (response) => {
                 const projects = response
+                const projectsById = arrayToObjectByKey(projects, 'id');
                 const projectsTickTick = projects.filter((project: any) => project.source === 'ProjectTickTick');
                 const projectsTodoist = projects.filter((project: any) => project.source === 'ProjectTodoist');
 
-                return { projects, projectsTickTick, projectsTodoist };
+                return { projects, projectsById, projectsTickTick, projectsTodoist };
             },
             providesTags: ['Project'],
         }),

@@ -1,16 +1,15 @@
 import classNames from 'classnames';
 import Icon from '../../components/Icon';
-import { useGetAllProjectsQuery } from '../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
 import {
 	useGetSessionAppFocusRecordsQuery,
-	useGetTodoistAllProjectsQuery
 } from '../../services/resources/oldFocusAppsApi';
 import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
 import { useDaysWithCompletedTasksQuery } from '../completed-tasks/useDaysWithCompletedTasksQuery';
+import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -53,13 +52,8 @@ const AppliedFilterItemList = () => {
 
 	const { ancestorTasksById, isLoading: isLoadingDaysWithCompletedTasks } = useDaysWithCompletedTasksQuery();
 
-	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects, isLoading: isLoadingGetTickTickProjects } = useGetAllProjectsQuery();
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
-
-	// RTK Query - Todoist - Projects
-	const { data: fetchedTodoistAllProjects, isLoading: isLoadingGetTodoistProjects } = useGetTodoistAllProjectsQuery();
-	const { todoistAllProjectsById } = fetchedTodoistAllProjects || {};
 
 	// RTK Query - Session App - Focus Records
 	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
@@ -69,8 +63,7 @@ const AppliedFilterItemList = () => {
 	useEffect(() => {
 		const isResourceLoading =
 			isLoadingDaysWithCompletedTasks ||
-			isLoadingGetTickTickProjects ||
-			isLoadingGetTodoistProjects ||
+			isLoadingGetProjects ||
 			isLoadingGetSessionFocusRecords;
 
 		if (isResourceLoading) {
@@ -81,7 +74,7 @@ const AppliedFilterItemList = () => {
 		const newCategoryNamesStr = getUrlNamesStr(categoriesFromUrl, sessionCategoriesById, 'title');
 		const newFocusAppNamesStr = getUrlNamesStr(focusAppsFromUrl, FOCUS_APPS, 'name');
 		const newToDoListAppNamesStr = getUrlNamesStr(toDoListAppsFromUrl, TO_DO_LIST_APPS, 'name');
-		const newProjectTodoistNamesStr = getUrlNamesStr(projectsTodoistFromUrl, todoistAllProjectsById, 'name');
+		const newProjectTodoistNamesStr = getUrlNamesStr(projectsTodoistFromUrl, projectsById, 'name');
 
 		setProjectNamesStr(newProjectNamesStr);
 		setCategoryNamesStr(newCategoryNamesStr);
@@ -90,17 +83,14 @@ const AppliedFilterItemList = () => {
 		setProjectTodoistNamesStr(newProjectTodoistNamesStr);
 	}, [
 		projectsFromUrl,
-		isLoadingGetSessionFocusRecords,
 		categoriesFromUrl,
 		focusAppsFromUrl,
 		toDoListAppsFromUrl,
 		projectsTodoistFromUrl,
 		isLoadingDaysWithCompletedTasks,
-		isLoadingGetTickTickProjects,
-		isLoadingGetTodoistProjects,
-		projectsById,
+		isLoadingGetProjects,
+		isLoadingGetSessionFocusRecords,
 		sessionCategoriesById,
-		todoistAllProjectsById,
 	]);
 
 	const getUrlNamesStr = (commaSeparatedStr, obj, entityPropToGetValue) => {
