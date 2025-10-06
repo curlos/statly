@@ -4,53 +4,25 @@ import FilterBar from '../focus-records/FilterBar';
 import Pagination from '../../components/Pagination';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import CompletedTaskList from './CompletedTaskList';
-import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
-import { useGetDaysWithCompletedTasksQuery } from '../../services/resources/documentsTasksApi';
-import { getFormattedShortMonthDay } from '../../utils/date.utils';
+import { useDaysWithCompletedTasksQuery } from './useDaysWithCompletedTasksQuery';
 
 const Page = () => {
 	// For Filter Sidebar and Filter Bar
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
-
-	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const { updateQueryParams } = useSearchParamsContext();
 	const {
-		completedTasksPageSettings: { maxDaysPerPage, taskIdIncludeCompletedTasksFromSubtasks },
-	} = useUserSettingsContext();
-
-	// Query Params
-	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
-	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
-	const projectsFromUrl = searchParams.get('projects') || '';
-	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
-	const toDoListAppsFromUrlRaw = searchParams.get('to-do-list-apps') || '';
-	const toDoListAppsFromUrl = toDoListAppsFromUrlRaw
-		.split(',')
-		.map(app => {
-			if (app === 'TickTick') return 'TaskTickTick';
-			if (app === 'Todoist') return 'TaskTodoist';
-			return app;
-		})
-		.join(',');
-	const taskIdFromUrl = searchParams.get('task-id') || '';
-	const sortBy = searchParams.get('sort-by') || 'Newest';
-	const currentPageFromUrl = searchParams.get('page') || 1;
-
-	// const { filteredDaysWithCompletedTasks, sortByOptions, allCompletedTasksAreHere } = useFilterCompletedTasks();
-	const { data: fetchedDaysWithCompletedTasks, isLoading, isFetching } = useGetDaysWithCompletedTasksQuery({
-		page: Number(currentPageFromUrl) - 1,
-		'sort-by': sortBy,
-		'start-date': startDateFromUrl,
-		'end-date': endDateFromUrl,
-		'projects-ticktick': projectsFromUrl,
-		'projects-todoist': projectsTodoistFromUrl,
-		'max-days-per-page': maxDaysPerPage,
-		'to-do-list-apps': toDoListAppsFromUrl,
-		'task-id': taskIdFromUrl,
-		'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
-		'search': searchTextFromUrl
-	});
-	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {}
+		fetchedDaysWithCompletedTasks,
+		totalPages,
+		daysWithCompletedTasks,
+		ancestorTasksById,
+		isLoading,
+		isFetching,
+		searchTextFromUrl,
+		projectsFromUrl,
+		taskIdFromUrl,
+		sortBy,
+		currentPageFromUrl
+	} = useDaysWithCompletedTasksQuery();
 
 	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
 	const sortByOptions = searchTextFromUrl ? ['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS] : DEFAULT_SORT_BY_OPTIONS

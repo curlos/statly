@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import Icon from '../../components/Icon';
-import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../services/resources/ticktickOneApi';
+import { useGetAllProjectsQuery } from '../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
 import {
 	useGetSessionAppFocusRecordsQuery,
-	useGetTodoistAllProjectsQuery,
-	useGetTodoistAllTasksQuery,
+	useGetTodoistAllProjectsQuery
 } from '../../services/resources/oldFocusAppsApi';
 import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
+import { useDaysWithCompletedTasksQuery } from '../completed-tasks/useDaysWithCompletedTasksQuery';
 
 const AppliedFilterItemList = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -51,17 +51,11 @@ const AppliedFilterItemList = () => {
 		toDoListAppsFromUrl ? getStrInBulletPointsMD(toDoListAppsFromUrl.split(',')) : ''
 	);
 
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks, isLoading: isLoadingTickTckTasks } = useGetAllTasksQuery();
-	const { tasksById } = fetchedTasks || {};
+	const { ancestorTasksById, isLoading: isLoadingDaysWithCompletedTasks } = useDaysWithCompletedTasksQuery();
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetTickTickProjects } = useGetAllProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
-
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistAllTasks, isLoading: isLoadingGetTodoistTasks } = useGetTodoistAllTasksQuery();
-	const { todoistAllTasksById } = fetchedTodoistAllTasks || {};
 
 	// RTK Query - Todoist - Projects
 	const { data: fetchedTodoistAllProjects, isLoading: isLoadingGetTodoistProjects } = useGetTodoistAllProjectsQuery();
@@ -74,9 +68,8 @@ const AppliedFilterItemList = () => {
 
 	useEffect(() => {
 		const isResourceLoading =
-			isLoadingTickTckTasks ||
+			isLoadingDaysWithCompletedTasks ||
 			isLoadingGetTickTickProjects ||
-			isLoadingGetTodoistTasks ||
 			isLoadingGetTodoistProjects ||
 			isLoadingGetSessionFocusRecords;
 
@@ -102,9 +95,8 @@ const AppliedFilterItemList = () => {
 		focusAppsFromUrl,
 		toDoListAppsFromUrl,
 		projectsTodoistFromUrl,
-		isLoadingTickTckTasks,
+		isLoadingDaysWithCompletedTasks,
 		isLoadingGetTickTickProjects,
-		isLoadingGetTodoistTasks,
 		isLoadingGetTodoistProjects,
 		projectsById,
 		sessionCategoriesById,
@@ -140,9 +132,9 @@ const AppliedFilterItemList = () => {
 	};
 
 	const getTaskTitle = () => {
-		if (taskIdToFilterBy && tasksById && todoistAllTasksById) {
+		if (taskIdToFilterBy && ancestorTasksById) {
 			return (
-				tasksById[taskIdToFilterBy]?.title || todoistAllTasksById[taskIdToFilterBy]?.content || taskIdToFilterBy
+				ancestorTasksById[taskIdToFilterBy]?.title || taskIdToFilterBy
 			);
 		}
 	};

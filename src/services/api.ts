@@ -2,7 +2,17 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Utility function to build query strings
 export const buildQueryString = (params) => {
-	return params ? new URLSearchParams(params).toString() : '';
+	if (!params) return '';
+
+	// Filter out empty, null, or undefined values
+	const filteredParams = Object.entries(params).reduce((acc, [key, value]) => {
+		if (value !== '' && value !== null && value !== undefined) {
+			acc[key] = value;
+		}
+		return acc;
+	}, {});
+
+	return new URLSearchParams(filteredParams).toString();
 };
 
 // Define the API with tasks endpoints

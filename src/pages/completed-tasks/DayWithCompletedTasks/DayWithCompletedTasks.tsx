@@ -14,7 +14,6 @@ import {
 } from './getGroupedSubtasksAndParentTasks.util';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../../medals/medalsLinks';
 import { getMedalImageClasses } from '../../../utils/focus-apps/helpers.utils';
-import { useGetDaysWithCompletedTasksQuery } from '../../../services/resources/documentsTasksApi';
 
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
