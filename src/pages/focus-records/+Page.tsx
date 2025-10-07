@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import FocusRecordList from './FocusRecordList';
-import { useGetAllTasksQuery } from '../../services/resources/ticktickOneApi';
 import Pagination from '../../components/Pagination';
 import Navbar from '../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
-import { getFocusDurationFromArray } from '../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
-import { useFilterFocusRecords } from './useFilterFocusRecords';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import { useGetFocusRecordsQuery } from '../../services/resources/documentsFocusRecordsApi';
 
 const Page = () => {
 	return <FocusRecordsPage />;
@@ -20,11 +18,15 @@ const FocusRecordsPage = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 
 	// Query Params
-	const searchTextFromUrl = searchParams.get('search') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
-	const taskIdFromUrl = searchParams.get('task-id');
-	const projectsFromUrl = searchParams.get('projects');
 	const currentPageFromUrl = searchParams.get('page') || 1;
+	const taskIdFromUrl = searchParams.get('task-id');
+	const searchTextFromUrl = searchParams.get('search') || '';
+	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const projectsFromUrl = searchParams.get('projects') || '';
+	const categoriesFromUrl = searchParams.get('categories') || '';
+	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
 
 	const {
 		focusRecordsPageSettings: {
@@ -36,60 +38,43 @@ const FocusRecordsPage = () => {
 		},
 	} = useUserSettingsContext();
 
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { ancestorTasksById } = fetchedTasks || {};
+	const { data: fetchedFocusRecords, isLoading, isFetching } = useGetFocusRecordsQuery({
+		page: Number(currentPageFromUrl) - 1,
+		// 'sort-by': sortBy,
+		// 'start-date': startDateFromUrl,
+		// 'end-date': endDateFromUrl,
+		'projects-ticktick': projectsFromUrl,
+		// 'task-id': taskIdFromUrl,
+		// 'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
+		// 'search': searchTextFromUrl
+	});
+
+	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksDuration, ancestorTasksById } = fetchedFocusRecords || {};
 
 	const focusRecordListRef = useRef(null);
-	const [totalPages, setTotalPages] = useState(null);
 
 	// For Filter Sidebar and Filter Bar
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
-	const { filteredFocusRecords, isLoadingGetFocusRecords, sortByOptions, allFocusRecordsAreHere } =
-		useFilterFocusRecords();
-
+	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
+	const sortByOptions = searchTextFromUrl ? ['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS] : DEFAULT_SORT_BY_OPTIONS
+	
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
-	}, [filteredFocusRecords, sortBy, searchTextFromUrl, taskIdFromUrl, projectsFromUrl]);
+	}, [sortBy, searchTextFromUrl, taskIdFromUrl, projectsFromUrl]);
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
 	}, [currentPageFromUrl]);
 
-	useEffect(() => {
-		if (isLoadingGetFocusRecords || !filteredFocusRecords) {
-			return;
-		}
-
-		const newTotalPages = Math.ceil(filteredFocusRecords.length / maxFocusRecordsPerPage);
-		setTotalPages(newTotalPages);
-	}, [isLoadingGetFocusRecords, filteredFocusRecords, maxFocusRecordsPerPage]);
-
 	const getFilterBarHeaderContent = () => {
-		const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
-
-		const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
-		const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
-
-		const startDateFromUrlDate = new Date(startDateFromUrl);
-		const endDateFromUrlDate = new Date(endDateFromUrl);
-
-		const totalFocusDuration = getFocusDurationFromArray({
-			focusRecords: filteredFocusRecords,
-			onlyTasks: true,
-			taskId: filterByTaskId,
-			ancestorTasksById,
-			showTaskAncestors,
-			taskIdIncludeFocusRecordsFromSubtasks,
-			startDate: startDateFromUrlDate,
-			endDate: endDateFromUrlDate,
-		});
+		// TODO: Will need this in a moment.
+		// const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
 
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Focus Records ({(filteredFocusRecords?.length || 0).toLocaleString()})
-				{showTotalFocusDuration && ` - ${getFormattedDuration(totalFocusDuration, false)}`}
+				Focus Records ({(total)?.toLocaleString()})
+				{showTotalFocusDuration && ` - ${getFormattedDuration(totalDuration, false)}`}
 			</h2>
 		);
 	};
@@ -102,38 +87,30 @@ const FocusRecordsPage = () => {
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<Navbar />
 
-				{allFocusRecordsAreHere && (
-					<FilterBar
-						{...{
-							showFilterSidebar,
-							setShowFilterSidebar,
-							headerContent: getFilterBarHeaderContent(),
-						}}
-					/>
-				)}
+				<FilterBar
+					{...{
+						isFetching,
+						showFilterSidebar,
+						setShowFilterSidebar,
+						headerContent: getFilterBarHeaderContent(),
+					}}
+				/>
 
 				<div className="w-full flex flex-col">
 					<div className="flex-1 flex justify-center bg-color-gray-700">
 						<div className="container p-1">
-							{isLoadingGetFocusRecords ? (
-								<div className="flex w-full h-full bg-color-gray-700 flex items-center justify-center">
-									<div>
-										<img src={selectedLoaderCardImage} className="h-[175px] animate-pulse" />
-									</div>
-								</div>
-							) : (
-								<FocusRecordList
-									{...{
-										filteredFocusRecords,
-										sortBy,
-										currentPage: currentPageFromUrl,
-										sortByOptions,
-										showFilterSidebar,
-										setShowFilterSidebar,
-										focusRecordListRef,
-									}}
-								/>
-							)}
+							<FocusRecordList
+								{...{
+									isFetching,
+									focusRecords,
+									sortBy,
+									currentPage: currentPageFromUrl,
+									sortByOptions,
+									showFilterSidebar,
+									setShowFilterSidebar,
+									focusRecordListRef,
+								}}
+							/>
 						</div>
 					</div>
 

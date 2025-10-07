@@ -34,7 +34,8 @@ export const baseAPI = createApi({
 		'TickTick-1.0-Task',
 		'DayWithCompletedTasks',
 		'Project',
-		'ProjectGroup'
+		'ProjectGroup',
+		'FocusRecord'
 	],
 	endpoints: () => ({}),
 });

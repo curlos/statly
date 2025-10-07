@@ -16,7 +16,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 url: '/documents/sync/ticktick-all',
                 method: 'POST',
             }),
-            invalidatesTags: ['DayWithCompletedTasks', 'Project', 'ProjectGroup'],
+            invalidatesTags: ['FocusRecord', 'DayWithCompletedTasks', 'Project', 'ProjectGroup'],
         }),
     }),
     overrideExisting: false,
