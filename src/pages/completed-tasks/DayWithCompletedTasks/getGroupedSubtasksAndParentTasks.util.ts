@@ -57,18 +57,9 @@ export const getTasksWithParentIdAndNoParent = ({
 			continue
 		}
 
-		const groupTask = task.taskType === 'item'
-			? ancestorTasksById[task.parentId] : task;
-
 		const groupTaskBreadcrumbs = task.ancestorIds
-		
-		// If there are no breadcrumbs initially but there is a group task, this just means that the group task is an ancestor task itself and the completed task was directly under it which would form a valid breadcrumb.
-		// if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length == 0 && groupTask) {
-		// 	groupTaskBreadcrumbs = [groupTask.id]
-		// }
 
 		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length > 0) {
-
 			// Go through each "taskId" and if it has a parentId, then map it to that parentId, else map it to null.
 			groupTaskBreadcrumbs.forEach((taskId) => {
 				const breadcrumbTask = taskId === task.id ? task : ancestorTasksById[taskId];

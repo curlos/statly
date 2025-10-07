@@ -64,8 +64,6 @@ const Page = () => {
 								daysWithCompletedTasks,
 								ancestorTasksById,
 								isFetching,
-								sortBy,
-								currentPage: currentPageFromUrl,
 								sortByOptions,
 								showFilterSidebar,
 								setShowFilterSidebar,
