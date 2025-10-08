@@ -56,28 +56,31 @@ const AppliedFilterItemList = () => {
 	const { projectsById } = fetchedProjects || {};
 
 	// RTK Query - Session App - Focus Records
-	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionAppFocusRecordsQuery();
-	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
+	// TODO:
+	// const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
+	// 	useGetSessionAppFocusRecordsQuery();
+	// const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
 
 	useEffect(() => {
 		const isResourceLoading =
 			isLoadingDaysWithCompletedTasks ||
-			isLoadingGetProjects ||
-			isLoadingGetSessionFocusRecords;
+			isLoadingGetProjects
+			// isLoadingGetSessionFocusRecords;
 
 		if (isResourceLoading) {
 			return;
 		}
 
 		const newProjectNamesStr = getUrlNamesStr(projectsFromUrl, projectsById, 'name');
-		const newCategoryNamesStr = getUrlNamesStr(categoriesFromUrl, sessionCategoriesById, 'title');
+		// TODO:
+		// const newCategoryNamesStr = getUrlNamesStr(categoriesFromUrl, sessionCategoriesById, 'title');
 		const newFocusAppNamesStr = getUrlNamesStr(focusAppsFromUrl, FOCUS_APPS, 'name');
 		const newToDoListAppNamesStr = getUrlNamesStr(toDoListAppsFromUrl, TO_DO_LIST_APPS, 'name');
 		const newProjectTodoistNamesStr = getUrlNamesStr(projectsTodoistFromUrl, projectsById, 'name');
 
 		setProjectNamesStr(newProjectNamesStr);
-		setCategoryNamesStr(newCategoryNamesStr);
+		// TODO:
+		// setCategoryNamesStr(newCategoryNamesStr);
 		setFocusAppNamesStr(newFocusAppNamesStr);
 		setToDoListAppNamesStr(newToDoListAppNamesStr);
 		setProjectTodoistNamesStr(newProjectTodoistNamesStr);
@@ -89,8 +92,8 @@ const AppliedFilterItemList = () => {
 		projectsTodoistFromUrl,
 		isLoadingDaysWithCompletedTasks,
 		isLoadingGetProjects,
-		isLoadingGetSessionFocusRecords,
-		sessionCategoriesById,
+		// isLoadingGetSessionFocusRecords,
+		// sessionCategoriesById,
 	]);
 
 	const getUrlNamesStr = (commaSeparatedStr, obj, entityPropToGetValue) => {

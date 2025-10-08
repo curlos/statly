@@ -8,7 +8,7 @@ import InputNumUserSettings from './InputNumUserSettings';
 import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useState } from 'react';
-import useExportFocusRecords from './hooks/useExportFocusRecords';
+// import useExportFocusRecords from './hooks/useExportFocusRecords';
 import Spinner from '../Loaders/Spinner';
 import MedalImage from './MedalImage';
 
@@ -140,33 +140,36 @@ const OtherSectionFocusRecords = () => {
 						)}
 
 						{/* Copy Focus Records To Clipboard */}
-						<FocusRecordsExporter
+						{/* TODO: Bring back later once I'm ready to work on it. */}
+						{/* <FocusRecordsExporter
 							{...{
 								text: 'Copy Focus Records To Clipboard',
 								icon: 'content_copy',
 								action: 'handleCopyToClipboard',
 							}}
-						/>
+						/> */}
 
 						{/* Export Focus Records By Project */}
-						<FocusRecordsExporter
+						{/* TODO: Bring back later once I'm ready to work on it. */}
+						{/* <FocusRecordsExporter
 							{...{
 								text: 'Export Focus Records By Project',
 								icon: 'download',
 								action: 'downloadZipFolderOfGroupedFocusRecords',
 								params: ['project'],
 							}}
-						/>
+						/> */}
 
 						{/* Export Focus Records By Task */}
-						<FocusRecordsExporter
+						{/* TODO: Bring back later once I'm ready to work on it. */}
+						{/* <FocusRecordsExporter
 							{...{
 								text: 'Export Focus Records By Task',
 								icon: 'download',
 								action: 'downloadZipFolderOfGroupedFocusRecords',
 								params: ['task'],
 							}}
-						/>
+						/> */}
 
 						<div className="pl-9">
 							<CheckboxOther
@@ -203,12 +206,12 @@ const FocusRecordsExporter = ({ text, icon, action, params = [] }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	const { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords } = useExportFocusRecords();
+	// const { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords } = useExportFocusRecords();
 
-	const actionFunctions = {
-		handleCopyToClipboard: handleCopyToClipboard,
-		downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedFocusRecords,
-	};
+	// const actionFunctions = {
+	// 	handleCopyToClipboard: handleCopyToClipboard,
+	// 	downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedFocusRecords,
+	// };
 
 	return (
 		<div

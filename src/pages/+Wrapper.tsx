@@ -5,7 +5,7 @@ import 'material-symbols';
 
 import { Provider, useSelector } from 'react-redux';
 import store from '../store/store';
-import { StatsProvider } from '../contexts/useStatsContext';
+// import { StatsProvider } from '../contexts/useStatsContext';
 import GlobalModalList from '../components/Modal/GlobalModalList';
 import { ThemeProvider, useThemeContext } from '../contexts/useThemeContext';
 import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
@@ -51,9 +51,11 @@ const ProviderList = ({ children }) => {
 		<SearchParamsProvider>
 			<ThemeProvider>
 				<UserSettingsProvider>
-					<StatsProvider>
+					{/* <StatsProvider>
 						<LoggedInBase children={children} />
-					</StatsProvider>
+					</StatsProvider> */}
+					
+					<LoggedInBase children={children} />
 				</UserSettingsProvider>
 			</ThemeProvider>
 		</SearchParamsProvider>

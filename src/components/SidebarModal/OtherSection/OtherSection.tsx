@@ -1,5 +1,5 @@
 import Icon from '../../Icon';
-import BackupData from './BackupData';
+// import BackupData from './BackupData';
 import UpdateArchivedProjects from './UpdateArchivedProjects';
 
 const OtherSection = () => {
@@ -11,7 +11,8 @@ const OtherSection = () => {
 			</div>
 
 			<UpdateArchivedProjects />
-			<BackupData />
+			{/* TODO: Bring back later. */}
+			{/* <BackupData /> */}
 		</div>
 	);
 };

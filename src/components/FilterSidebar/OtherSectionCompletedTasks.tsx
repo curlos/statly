@@ -9,7 +9,7 @@ import Spinner from '../Loaders/Spinner';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import useExportCompletedTasks from './hooks/useExportCompletedTasks';
+// import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 import MedalImage from './MedalImage';
 
 const OtherSectionFocusRecords = () => {
@@ -116,33 +116,36 @@ const OtherSectionFocusRecords = () => {
 						)}
 
 						{/* Copy Completed Tasks To Clipboard */}
-						<CompletedTasksExporter
+						{/* TODO: Bring back later once I'm ready to work on it. */}
+						{/* <CompletedTasksExporter
 							{...{
 								text: 'Copy Completed Tasks To Clipboard',
 								icon: 'content_copy',
 								action: 'handleCopyToClipboard',
 							}}
-						/>
+						/> */}
 
 						{/* Export Completed Tasks By Project */}
-						<CompletedTasksExporter
+						{/* TODO: Bring back later once I'm ready to work on it. */}
+						{/* <CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks By Project',
 								icon: 'download',
 								action: 'downloadZipFolderOfGroupedCompletedTasks',
 								params: ['project'],
 							}}
-						/>
+						/> */}
 
 						{/* Export Completed Tasks by Parent Task */}
-						<CompletedTasksExporter
+						{/* TODO: Bring back later once I'm ready to work on it. */}
+						{/* <CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks by Parent Task',
 								icon: 'download',
 								action: 'downloadZipFolderOfGroupedCompletedTasks',
 								params: ['task'],
 							}}
-						/>
+						/> */}
 
 						<div className="pl-9">
 							<CheckboxOther
@@ -179,7 +182,7 @@ const CompletedTasksExporter = ({ text, icon, action, params = [] }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	const { handleCopyToClipboard, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
+	// const { handleCopyToClipboard, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
 
 	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,

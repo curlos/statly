@@ -3,28 +3,18 @@ import { formatDateTime, getFormattedLongDay, getFormattedShortMonthDay } from '
 import Icon from '../../components/Icon';
 import LazyImage from '../../components/LazyImage';
 import classNames from 'classnames';
-import { useGetAllTasksQuery } from '../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
-import { getAllCompletedTasksDuringFocusRecord, getFocusDuration } from '../../utils/focus-apps/focusRecords.utils';
+import { getFocusDuration } from '../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration, getMedalImageClasses } from '../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../utils/focus-apps/multiFocusApps.utils';
-import { useGetTodoistAllTasksQuery } from '../../services/resources/oldFocusAppsApi';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../medals/medalsLinks';
 import { useFocusRecordsQuery } from './useFocusRecordsQuery';
 import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
-
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { completedTasksGroupedByDate } = fetchedTasks || {};
-
-	// RTK Query - Todoist - All Completed Tasks
-	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllTasksQuery();
-	const { todoistCompletedTasksGroupedByDate } = fetchedTodoistAllCompletedTasks || {};
 
 	const startTime = getFocusRecordProperty(focusRecord, 'startTime');
 	const endTime = getFocusRecordProperty(focusRecord, 'endTime');
@@ -48,11 +38,8 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 		},
 	} = useUserSettingsContext();
 
-	const completedTasksDuringFocusSession = getAllCompletedTasksDuringFocusRecord({
-		completedTasksGroupedByDate,
-		todoistCompletedTasksGroupedByDate,
-		focusRecord,
-	});
+	// Get completed tasks from API response
+	const completedTasksDuringFocusSession = focusRecord.completedTasks || [];
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
 	const isBattlefieldOneOrThreeMedal =
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
@@ -152,13 +139,13 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							<h4 className="text-[16px] font-bold underline mt-4">Completed Tasks</h4>
 
 							<ul>
-								{completedTasksDuringFocusSession.map((completedTask, index) => {
-									const completedTaskText = completedTask.title || completedTask.content;
+								{completedTasksDuringFocusSession.map((completedTask: any, index: number) => {
+									const completedTaskText = completedTask.title;
 									const containsUrl = completedTaskText?.match(urlRegex);
 
 									return (
 										<li
-											key={`${focusRecord.id} ${completedTask.id} ${index}`}
+											key={`${focusRecord.id} ${completedTask._id} ${index}`}
 											className="flex items-start gap-1"
 										>
 											<Icon
