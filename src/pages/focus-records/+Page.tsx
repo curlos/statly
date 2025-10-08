@@ -6,50 +6,34 @@ import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
-import { getFormattedShortMonthDay } from '../../utils/date.utils';
-import { useThemeContext } from '../../contexts/useThemeContext';
-import { useGetFocusRecordsQuery } from '../../services/resources/documentsFocusRecordsApi';
+import { useFocusRecordsQuery } from './useFocusRecordsQuery';
 
 const Page = () => {
 	return <FocusRecordsPage />;
 };
 
 const FocusRecordsPage = () => {
-	const { searchParams, updateQueryParams } = useSearchParamsContext();
-
-	// Query Params
-	const sortBy = searchParams.get('sort-by') || 'Newest';
-	const currentPageFromUrl = searchParams.get('page') || 1;
-	const taskIdFromUrl = searchParams.get('task-id');
-	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
-	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
-	const projectsFromUrl = searchParams.get('projects') || '';
-	const categoriesFromUrl = searchParams.get('categories') || '';
-	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+	const { updateQueryParams } = useSearchParamsContext();
 
 	const {
 		focusRecordsPageSettings: {
-			maxFocusRecordsPerPage,
 			showTotalFocusDuration,
-			filterOutUnrelatedTasksWhenTaskIdIsApplied,
-			showTaskAncestors,
-			taskIdIncludeFocusRecordsFromSubtasks,
 		},
 	} = useUserSettingsContext();
 
-	const { data: fetchedFocusRecords, isLoading, isFetching } = useGetFocusRecordsQuery({
-		page: Number(currentPageFromUrl) - 1,
-		// 'sort-by': sortBy,
-		// 'start-date': startDateFromUrl,
-		// 'end-date': endDateFromUrl,
-		'projects-ticktick': projectsFromUrl,
-		// 'task-id': taskIdFromUrl,
-		// 'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
-		// 'search': searchTextFromUrl
-	});
-
-	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksDuration, ancestorTasksById } = fetchedFocusRecords || {};
+	const {
+		focusRecords,
+		total,
+		totalPages,
+		totalDuration,
+		isLoading,
+		isFetching,
+		sortBy,
+		currentPageFromUrl,
+		taskIdFromUrl,
+		searchTextFromUrl,
+		projectsFromUrl,
+	} = useFocusRecordsQuery();
 
 	const focusRecordListRef = useRef(null);
 
@@ -73,14 +57,11 @@ const FocusRecordsPage = () => {
 
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Focus Records ({(total)?.toLocaleString()})
-				{showTotalFocusDuration && ` - ${getFormattedDuration(totalDuration, false)}`}
+				Focus Records {!isLoading && `(${total?.toLocaleString()})`}
+				{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(totalDuration, false)}`}
 			</h2>
 		);
 	};
-
-	const themeContext = useThemeContext();
-	const { selectedLoaderCardImage } = themeContext;
 
 	return (
 		<div>

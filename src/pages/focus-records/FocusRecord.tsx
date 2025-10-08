@@ -3,7 +3,7 @@ import { formatDateTime, getFormattedLongDay, getFormattedShortMonthDay } from '
 import Icon from '../../components/Icon';
 import LazyImage from '../../components/LazyImage';
 import classNames from 'classnames';
-import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../services/resources/ticktickOneApi';
+import { useGetAllTasksQuery } from '../../services/resources/ticktickOneApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
@@ -11,8 +11,9 @@ import { getAllCompletedTasksDuringFocusRecord, getFocusDuration } from '../../u
 import { getFormattedDuration, getMedalImageClasses } from '../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../utils/focus-apps/multiFocusApps.utils';
 import { useGetTodoistAllTasksQuery } from '../../services/resources/oldFocusAppsApi';
-import { findMatchingTaskOrAncestor } from '../../utils/focus-apps/tasks.utils';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../medals/medalsLinks';
+import { useFocusRecordsQuery } from './useFocusRecordsQuery';
+import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -196,10 +197,6 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		},
 	} = useUserSettingsContext();
 
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { ancestorTasksById } = fetchedTasks || {};
-
 	const headerWrapperStyling = 'mt-2 md:mt-0 sm:flex justify-between';
 	const headerStyling =
 		'text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline';
@@ -254,31 +251,32 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 
 		return focusRecord.tasks.map((task, index) => {
 			const { startTime, endTime, taskId } = task;
-			const isNotDirectTask = taskId !== taskIdFromUrl;
+			// const isNotDirectTask = taskId !== taskIdFromUrl;
 
-			if (filterOutUnrelatedTasksWhenTaskIdIsApplied && taskIdFromUrl) {
-				if (!taskId) {
-					return null;
-				}
+			// TODO: Come back to thsi and move the logic to the backend
+			// if (filterOutUnrelatedTasksWhenTaskIdIsApplied && taskIdFromUrl) {
+			// 	if (!taskId) {
+			// 		return null;
+			// 	}
 
-				if (showTaskAncestors && taskIdIncludeFocusRecordsFromSubtasks) {
-					if (!ancestorTasksById) {
-						return null;
-					}
+			// 	if (showTaskAncestors && taskIdIncludeFocusRecordsFromSubtasks) {
+			// 		if (!ancestorTasksById) {
+			// 			return null;
+			// 		}
 
-					const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
-						task,
-						taskIdFromUrl,
-						ancestorTasksById
-					);
+			// 		const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
+			// 			task,
+			// 			taskIdFromUrl,
+			// 			ancestorTasksById
+			// 		);
 
-					if (!foundMatchingTaskOrAncestor) {
-						return null;
-					}
-				} else if (isNotDirectTask) {
-					return null;
-				}
-			}
+			// 		if (!foundMatchingTaskOrAncestor) {
+			// 			return null;
+			// 		}
+			// 	} else if (isNotDirectTask) {
+			// 		return null;
+			// 	}
+			// }
 
 			const startTimeObj = formatDateTime(startTime);
 			const endTimeObj = formatDateTime(endTime);
@@ -339,15 +337,9 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 };
 
 const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling, dateStr }) => {
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks, isLoading: isLoadingGetTasks } = useGetAllTasksQuery();
-	const { tasksById, ancestorTasksById } = fetchedTasks || {};
+	const { ancestorTasksById, isLoading } = useFocusRecordsQuery();
 
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistAllTasksById, isLoading: isLoadingGetTodoistAllTasks } = useGetTodoistAllTasksQuery();
-	const { todoistAllTasksById } = fetchedTodoistAllTasksById || {};
-
-	if (isLoadingGetTasks || isLoadingGetTodoistAllTasks) {
+	if (isLoading) {
 		return (
 			<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
 				{task?.title}
@@ -355,14 +347,11 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 		);
 	}
 
-	const parentTask = task;
-	const parentTaskId = task.id || task.taskId;
-	const parentTaskTitle = parentTask?.title || parentTask?.content || parentTaskId;
+	const parentTask = ancestorTasksById[task.taskId];
+	const parentTaskTitle = parentTask?.title || parentTask?.id;
 
 	// Only checking TickTick because Todoist does not have Focus Records.
-	const parentTaskBreadcrumbsTickTick =
-		parentTask && ancestorTasksById[parentTaskId] && Object.keys(ancestorTasksById[parentTaskId]);
-
+	const parentTaskBreadcrumbsTickTick = parentTask?.ancestorIds;
 	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick;
 
 	return (
@@ -380,8 +369,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 				<span className="ml-1 text-color-gray-25">
 					-{' '}
 					{parentTaskBreadcrumbs.map((taskId, index) => {
-						const taskObj = tasksById[taskId] || todoistAllTasksById[taskId];
-
+						const taskObj = ancestorTasksById[taskId];
 						const title = taskObj.title || taskObj.content;
 
 						return (
@@ -401,18 +389,15 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 				</span>
 			)}
 
-			<TaskProjectName {...{ taskId: parentTaskId, parentTask }} />
+			<TaskProjectName {...{ taskId: parentTask?.id, parentTask }} />
 		</div>
 	);
 };
 
 const TaskProjectName = ({ taskId }) => {
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { tasksById } = fetchedTasks || {};
+	const { ancestorTasksById } = useFocusRecordsQuery();
 
-	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects } = useGetAllProjectsQuery();
+	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
 	const { updateQueryParams } = useSearchParamsContext();
@@ -425,7 +410,7 @@ const TaskProjectName = ({ taskId }) => {
 		return null;
 	}
 
-	const fullTask = tasksById[taskId];
+	const fullTask = ancestorTasksById[taskId];
 	const taskProject = fullTask?.projectId && projectsById[fullTask?.projectId];
 	const taskProjectName = taskProject ? taskProject.name : '';
 
