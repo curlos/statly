@@ -2,7 +2,7 @@ import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useGetFocusRecordsQuery } from '../../services/resources/documentsFocusRecordsApi';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 
-export const useFocusRecordsQuery = () => {
+export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) => {
 	const { searchParams } = useSearchParamsContext();
 
 	// Query Params
@@ -25,7 +25,7 @@ export const useFocusRecordsQuery = () => {
 		// 'task-id': taskIdFromUrl,
 		// 'task-id-include-completed-tasks-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 		// 'search': searchTextFromUrl
-	});
+	}, { skip });
 
 	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksDuration, ancestorTasksById } = fetchedFocusRecords || {};
 

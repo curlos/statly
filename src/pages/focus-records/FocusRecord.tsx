@@ -398,7 +398,7 @@ const TaskProjectName = ({ taskId }) => {
 	}
 
 	const fullTask = ancestorTasksById[taskId];
-	const taskProject = fullTask?.projectId && projectsById[fullTask?.projectId];
+	const taskProject = projectsById && fullTask?.projectId && projectsById[fullTask?.projectId];
 	const taskProjectName = taskProject ? taskProject.name : '';
 
 	return (

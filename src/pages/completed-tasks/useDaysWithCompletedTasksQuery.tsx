@@ -3,7 +3,7 @@ import { useUserSettingsContext } from '../focus-records/useUserSettingsContext'
 import { useGetDaysWithCompletedTasksQuery } from '../../services/resources/documentsTasksApi';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 
-export const useDaysWithCompletedTasksQuery = () => {
+export const useDaysWithCompletedTasksQuery = ({ skip = false }: { skip?: boolean } = {}) => {
 	const { searchParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { maxDaysPerPage, taskIdIncludeCompletedTasksFromSubtasks },
@@ -40,7 +40,7 @@ export const useDaysWithCompletedTasksQuery = () => {
 		'task-id': taskIdFromUrl,
 		'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
 		'search': searchTextFromUrl
-	});
+	}, { skip });
 
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {};
 

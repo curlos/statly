@@ -10,8 +10,14 @@ import {
 import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
 import { useDaysWithCompletedTasksQuery } from '../completed-tasks/useDaysWithCompletedTasksQuery';
 import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
+import { usePageContext } from 'vike-react/usePageContext';
+import { useFocusRecordsQuery } from './useFocusRecordsQuery';
 
 const AppliedFilterItemList = () => {
+	const pageContext = usePageContext();
+	const isCompletedTasksPage = pageContext?.urlParsed?.pathname?.includes('/completed-tasks');
+	const isFocusRecordsPage = pageContext?.urlParsed?.pathname?.includes('/focus-records');
+
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 
 	// For All
@@ -50,7 +56,12 @@ const AppliedFilterItemList = () => {
 		toDoListAppsFromUrl ? getStrInBulletPointsMD(toDoListAppsFromUrl.split(',')) : ''
 	);
 
-	const { ancestorTasksById, isLoading: isLoadingDaysWithCompletedTasks } = useDaysWithCompletedTasksQuery();
+	// Conditionally fetch based on current page
+	const { ancestorTasksById: ancestorTasksByIdCompletedTasks, isLoading: isLoadingDaysWithCompletedTasks } = useDaysWithCompletedTasksQuery({ skip: !isCompletedTasksPage });
+	const { ancestorTasksById: ancestorTasksByIdFocusRecords, isLoading: isLoadingFocusRecords } = useFocusRecordsQuery({ skip: !isFocusRecordsPage });
+
+	// Use the appropriate ancestorTasksById based on current page
+	const ancestorTasksById = isCompletedTasksPage ? ancestorTasksByIdCompletedTasks : ancestorTasksByIdFocusRecords;
 
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
@@ -62,13 +73,16 @@ const AppliedFilterItemList = () => {
 	// const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
 
 	useEffect(() => {
-		const isResourceLoading =
-			isLoadingDaysWithCompletedTasks ||
-			isLoadingGetProjects
-			// isLoadingGetSessionFocusRecords;
-
-		if (isResourceLoading) {
+		if (isLoadingGetProjects) {
 			return;
+		}
+
+		if (isCompletedTasksPage && isLoadingDaysWithCompletedTasks) {
+			return;
+		}
+
+		if (isFocusRecordsPage && isLoadingFocusRecords) {
+			return
 		}
 
 		const newProjectNamesStr = getUrlNamesStr(projectsFromUrl, projectsById, 'name');
@@ -91,6 +105,7 @@ const AppliedFilterItemList = () => {
 		toDoListAppsFromUrl,
 		projectsTodoistFromUrl,
 		isLoadingDaysWithCompletedTasks,
+		isLoadingFocusRecords,
 		isLoadingGetProjects,
 		// isLoadingGetSessionFocusRecords,
 		// sessionCategoriesById,
