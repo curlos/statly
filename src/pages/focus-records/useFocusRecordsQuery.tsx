@@ -22,12 +22,12 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		// 'start-date': startDateFromUrl,
 		// 'end-date': endDateFromUrl,
 		'projects-ticktick': projectsFromUrl,
-		// 'task-id': taskIdFromUrl,
+		'task-id': taskIdFromUrl,
 		// 'task-id-include-completed-tasks-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 		// 'search': searchTextFromUrl
 	}, { skip });
 
-	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksDuration, ancestorTasksById } = fetchedFocusRecords || {};
+	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById } = fetchedFocusRecords || {};
 
 	return {
 		fetchedFocusRecords,
@@ -35,7 +35,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		total,
 		totalPages,
 		totalDuration,
-		onlyTasksDuration,
+		onlyTasksTotalDuration,
 		ancestorTasksById,
 		isLoading,
 		isFetching,

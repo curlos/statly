@@ -335,7 +335,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 	}
 
 	const parentTask = ancestorTasksById[task.taskId];
-	const parentTaskTitle = parentTask?.title || parentTask?.id;
+	const parentTaskTitle = parentTask?.title || task.title || parentTask?.id;
 
 	// Only checking TickTick because Todoist does not have Focus Records.
 	const parentTaskBreadcrumbsTickTick = parentTask?.ancestorIds;

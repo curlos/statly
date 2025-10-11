@@ -26,6 +26,7 @@ const FocusRecordsPage = () => {
 		total,
 		totalPages,
 		totalDuration,
+		onlyTasksTotalDuration,
 		isLoading,
 		isFetching,
 		sortBy,
@@ -58,7 +59,7 @@ const FocusRecordsPage = () => {
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
 				Focus Records {!isLoading && `(${total?.toLocaleString()})`}
-				{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(totalDuration, false)}`}
+				{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(onlyTasksTotalDuration, false)}`}
 			</h2>
 		);
 	};
