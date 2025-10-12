@@ -13,7 +13,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
         }),
         syncAll: builder.mutation({
             query: () => ({
-                url: '/documents/sync/ticktick-all',
+                url: '/documents/sync/ticktick/all',
                 method: 'POST',
             }),
             invalidatesTags: ['FocusRecord', 'DayWithCompletedTasks', 'Project', 'ProjectGroup'],
