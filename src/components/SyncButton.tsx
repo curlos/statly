@@ -19,6 +19,7 @@ interface SyncMetadataByType {
 	tasks?: SyncMetadata;
 	projects?: SyncMetadata;
 	project_groups?: SyncMetadata;
+	'focus-records-ticktick'?: SyncMetadata;
 }
 
 const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: SyncButtonProps) => {
@@ -49,6 +50,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 
 		return (
 			<div className="space-y-1">
+				<div><span className="font-bold">Focus Records:</span> {formatSync(syncMetadataByType?.['focus-records-ticktick'])}</div>
 				<div><span className="font-bold">Tasks:</span> {formatSync(syncMetadataByType?.tasks)}</div>
 				<div><span className="font-bold">Projects:</span> {formatSync(syncMetadataByType?.projects)}</div>
 				<div><span className="font-bold">Project Groups:</span> {formatSync(syncMetadataByType?.project_groups)}</div>
