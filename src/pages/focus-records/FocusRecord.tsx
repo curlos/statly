@@ -192,7 +192,6 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		let taskId = '';
 
 		const focusApp = getFocusRecordFocusApp(focusRecord);
-
 		if (focusApp === 'TickTick') {
 			if (!task) {
 				return;
@@ -334,12 +333,12 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 		);
 	}
 
-	const parentTask = ancestorTasksById[task.taskId];
+	const parentTask = ancestorTasksById[task.taskId] || task;
 	const parentTaskTitle = parentTask?.title || task.title || parentTask?.id;
 
 	// Only checking TickTick because Todoist does not have Focus Records.
 	const parentTaskBreadcrumbsTickTick = parentTask?.ancestorIds;
-	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick;
+	const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick?.filter((ancestorId) => ancestorId !== task.taskId) || [];
 
 	return (
 		<div className="text-[22px] cursor-pointer">
@@ -358,11 +357,6 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 					{parentTaskBreadcrumbs.map((taskId, index) => {
 						const taskObj = ancestorTasksById[taskId];
 						const title = taskObj.title || taskObj.content;
-
-						// Skip if this ancestor is the current task itself
-						if (taskId === task.taskId) {
-							return null;
-						}
 
 						return (
 							<span key={`breadcrumbs-${taskObj.id}-${index}-${dateStr}`}>
