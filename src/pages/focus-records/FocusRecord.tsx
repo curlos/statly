@@ -359,6 +359,11 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 						const taskObj = ancestorTasksById[taskId];
 						const title = taskObj.title || taskObj.content;
 
+						// Skip if this ancestor is the current task itself
+						if (taskId === task.taskId) {
+							return null;
+						}
+
 						return (
 							<span key={`breadcrumbs-${taskObj.id}-${index}-${dateStr}`}>
 								<span
