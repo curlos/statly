@@ -31,7 +31,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		'projects-ticktick': projectsFromUrl,
 		'task-id': taskIdFromUrl,
 		'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
-		// 'search': searchTextFromUrl
+		'search': searchTextFromUrl
 	}, { skip });
 
 	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById } = fetchedFocusRecords || {};
