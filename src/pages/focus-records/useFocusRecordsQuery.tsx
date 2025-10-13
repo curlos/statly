@@ -1,6 +1,7 @@
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useGetFocusRecordsQuery } from '../../services/resources/documentsFocusRecordsApi';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
+import { useUserSettingsContext } from './useUserSettingsContext';
 
 export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) => {
 	const { searchParams } = useSearchParamsContext();
@@ -16,6 +17,12 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
 
+	const {
+			focusRecordsPageSettings: {
+				taskIdIncludeFocusRecordsFromSubtasks,
+			}
+		} = useUserSettingsContext();
+
 	const { data: fetchedFocusRecords, isLoading, isFetching } = useGetFocusRecordsQuery({
 		page: Number(currentPageFromUrl) - 1,
 		'sort-by': sortBy,
@@ -23,7 +30,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		'end-date': endDateFromUrl,
 		'projects-ticktick': projectsFromUrl,
 		'task-id': taskIdFromUrl,
-		// 'task-id-include-completed-tasks-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
+		'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 		// 'search': searchTextFromUrl
 	}, { skip });
 
