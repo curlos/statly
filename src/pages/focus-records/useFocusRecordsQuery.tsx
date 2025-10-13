@@ -18,7 +18,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 
 	const { data: fetchedFocusRecords, isLoading, isFetching } = useGetFocusRecordsQuery({
 		page: Number(currentPageFromUrl) - 1,
-		// 'sort-by': sortBy,
+		'sort-by': sortBy,
 		'start-date': startDateFromUrl,
 		'end-date': endDateFromUrl,
 		'projects-ticktick': projectsFromUrl,
