@@ -29,6 +29,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		'start-date': startDateFromUrl,
 		'end-date': endDateFromUrl,
 		'projects-ticktick': projectsFromUrl,
+		'categories': categoriesFromUrl,
 		'task-id': taskIdFromUrl,
 		'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 		'search': searchTextFromUrl,

@@ -171,8 +171,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			{page !== 'completed-tasks-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
-					{/* TODO: */}
-					{/* <CategoriesSection /> */}
+					<CategoriesSection />
 				</>
 			)}
 		</motion.div>

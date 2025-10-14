@@ -63,12 +63,6 @@ const AppliedFilterItemList = () => {
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
-	// RTK Query - Session App - Focus Records
-	// TODO:
-	// const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-	// 	useGetSessionAppFocusRecordsQuery();
-	// const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
-
 	useEffect(() => {
 		if (isLoadingGetProjects) {
 			return;
@@ -83,15 +77,13 @@ const AppliedFilterItemList = () => {
 		}
 
 		const newProjectNamesStr = getUrlNamesStr(projectsFromUrl, projectsById, 'name');
-		// TODO:
-		// const newCategoryNamesStr = getUrlNamesStr(categoriesFromUrl, sessionCategoriesById, 'title');
+		const newCategoryNamesStr = getUrlNamesStr(categoriesFromUrl, projectsById, 'name');
 		const newFocusAppNamesStr = getUrlNamesStr(focusAppsFromUrl, FOCUS_APPS, 'name');
 		const newToDoListAppNamesStr = getUrlNamesStr(toDoListAppsFromUrl, TO_DO_LIST_APPS, 'name');
 		const newProjectTodoistNamesStr = getUrlNamesStr(projectsTodoistFromUrl, projectsById, 'name');
 
 		setProjectNamesStr(newProjectNamesStr);
-		// TODO:
-		// setCategoryNamesStr(newCategoryNamesStr);
+		setCategoryNamesStr(newCategoryNamesStr);
 		setFocusAppNamesStr(newFocusAppNamesStr);
 		setToDoListAppNamesStr(newToDoListAppNamesStr);
 		setProjectTodoistNamesStr(newProjectTodoistNamesStr);
@@ -104,8 +96,6 @@ const AppliedFilterItemList = () => {
 		isLoadingDaysWithCompletedTasks,
 		isLoadingFocusRecords,
 		isLoadingGetProjects,
-		// isLoadingGetSessionFocusRecords,
-		// sessionCategoriesById,
 	]);
 
 	const getUrlNamesStr = (commaSeparatedStr, obj, entityPropToGetValue) => {

@@ -20,8 +20,10 @@ export const documentsProjectsApi = baseAPI.injectEndpoints({
                 const projectsById = arrayToObjectByKey(projectsWithInbox, 'id');
                 const projectsTickTick = projectsWithInbox.filter((project: any) => project.source === 'ProjectTickTick' || project.id === 'inbox116577688');
                 const projectsTodoist = projects.filter((project: any) => project.source === 'ProjectTodoist');
+                const projectsSession = projects.filter((project: any) => project.source === 'ProjectSession');
+                const projectsSessionById = arrayToObjectByKey(projectsSession, 'id');
 
-                return { projects, projectsById, projectsTickTick, projectsTodoist };
+                return { projects, projectsById, projectsTickTick, projectsTodoist, projectsSession, projectsSessionById };
             },
             providesTags: ['Project'],
         }),

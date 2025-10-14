@@ -4,7 +4,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
-import { useGetSessionAppFocusRecordsQuery } from '../../services/resources/oldFocusAppsApi';
+import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 
 /**
@@ -16,13 +16,12 @@ const CategoriesSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const categoriesFromUrl = searchParams.get('categories');
 
-	// RTK Query - Session App - Focus Records
-	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionAppFocusRecordsQuery();
-	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
+	// RTK Query - Session Projects
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
+	const { projectsSession } = fetchedProjects || {};
 
 	const categoriesFromUrlById = getCommaSeparatedObj(categoriesFromUrl);
-	const sessionCategories = sessionCategoriesById && Object.values(sessionCategoriesById);
+	const sessionCategories = projectsSession
 
 	return (
 		<div>
@@ -35,7 +34,7 @@ const CategoriesSection = () => {
 							fill={0}
 							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 						/>
-						{isLoadingGetSessionFocusRecords && <Spinner />}
+						{isLoadingGetProjects && <Spinner />}
 					</div>
 				}
 				openByDefault={true}

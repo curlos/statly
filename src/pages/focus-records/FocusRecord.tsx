@@ -368,16 +368,16 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 				</span>
 			)}
 
-			<TaskProjectName {...{ taskId: parentTask?.id, parentTask }} />
+			<TaskProjectName {...{ taskId: parentTask?.id || task.taskId, task }} />
 		</div>
 	);
 };
 
-const TaskProjectName = ({ taskId }) => {
+const TaskProjectName = ({ taskId, task }) => {
 	const { ancestorTasksById } = useFocusRecordsQuery();
 
 	const { data: fetchedProjects } = useGetProjectsQuery();
-	const { projectsById } = fetchedProjects || {};
+	const { projectsById, projectsSessionById } = fetchedProjects || {};
 
 	const { updateQueryParams } = useSearchParamsContext();
 
@@ -389,9 +389,17 @@ const TaskProjectName = ({ taskId }) => {
 		return null;
 	}
 
-	const fullTask = ancestorTasksById[taskId];
+	const fullTask = ancestorTasksById[taskId] || task;
 	const taskProject = projectsById && fullTask?.projectId && projectsById[fullTask?.projectId];
 	const taskProjectName = taskProject ? taskProject.name : '';
+
+	if (!taskProject) {
+		return null
+	}
+
+	// Check if this project is a Session category
+	const isSessionProject = projectsSessionById && taskProject?.id && projectsSessionById[taskProject.id];
+	const projectQueryParam = isSessionProject ? 'categories' : 'projects';
 
 	return (
 		<span className="text-color-gray-25">
@@ -401,7 +409,7 @@ const TaskProjectName = ({ taskId }) => {
 				className="hover:underline hover:text-blue-500"
 				onClick={() => {
 					updateQueryParams({
-						projects: taskProject?.id,
+						[projectQueryParam]: taskProject?.id,
 						'task-id': '',
 						'sort-by': '',
 						search: '',
