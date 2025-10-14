@@ -4,9 +4,6 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
-import {
-	useGetSessionAppFocusRecordsQuery,
-} from '../../services/resources/oldFocusAppsApi';
 import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
 import { useDaysWithCompletedTasksQuery } from '../completed-tasks/useDaysWithCompletedTasksQuery';
 import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';

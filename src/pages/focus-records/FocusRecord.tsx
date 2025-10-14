@@ -6,23 +6,17 @@ import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
-import { getFocusDuration } from '../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration, getMedalImageClasses } from '../../utils/focus-apps/helpers.utils';
 import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../utils/focus-apps/multiFocusApps.utils';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../medals/medalsLinks';
 import { useFocusRecordsQuery } from './useFocusRecordsQuery';
 import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
 
-const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false, focusDuration }) => {
+const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
-
-	const startTime = getFocusRecordProperty(focusRecord, 'startTime');
-	const endTime = getFocusRecordProperty(focusRecord, 'endTime');
-	const focusNote = getFocusRecordProperty(focusRecord, 'note');
-
+	const { startTime, endTime, duration, note } = focusRecord
 	const startTimeObj = formatDateTime(startTime);
 	const endTimeObj = formatDateTime(endTime);
-	const duration = focusDuration ? focusDuration : getFocusDuration({ focusRecord });
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -43,7 +37,6 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
 	const isBattlefieldOneOrThreeMedal =
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
-
 	const urlRegex = /(https?:\/\/[^\s)]+)/g; // matches http/https URLs
 
 	return (
@@ -130,7 +123,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 								'text-color-gray-100 text-white text-[15px] break-words react-markdown'
 							)}
 						>
-							<ReactMarkdown>{focusNote}</ReactMarkdown>
+							<ReactMarkdown>{note}</ReactMarkdown>
 						</div>
 					)}
 
