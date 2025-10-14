@@ -24,8 +24,7 @@ const Page = () => {
 		currentPageFromUrl
 	} = useDaysWithCompletedTasksQuery();
 
-	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
-	const sortByOptions = searchTextFromUrl ? ['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS] : DEFAULT_SORT_BY_OPTIONS
+	const sortByOptions = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most']
 
 	const getFilterBarHeaderContent = () => {
 		return (

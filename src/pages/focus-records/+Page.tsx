@@ -40,9 +40,7 @@ const FocusRecordsPage = () => {
 
 	// For Filter Sidebar and Filter Bar
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
-
-	const DEFAULT_SORT_BY_OPTIONS = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
-	const sortByOptions = searchTextFromUrl ? ['Most Relevant', ...DEFAULT_SORT_BY_OPTIONS] : DEFAULT_SORT_BY_OPTIONS
+	const sortByOptions = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
 	
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);

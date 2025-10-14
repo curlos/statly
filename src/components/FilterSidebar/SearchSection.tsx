@@ -13,7 +13,7 @@ const SearchSection = () => {
 	const handleDebouncedSearch = debounce(() => {
 		updateQueryParams({
 			search: localSearchText,
-			'sort-by': localSearchText.length > 0 ? 'Most Relevant' : '',
+			'sort-by': '',
 			page: '',
 		});
 	}, 1000);
