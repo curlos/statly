@@ -17,9 +17,21 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				return response;
 			},
 			providesTags: ['DayWithCompletedTasks'],
+		}),
+		getTasksMedals: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString
+					? `/documents/tasks/medals?${queryString}`
+					: '/documents/tasks/medals';
+			},
+			transformResponse: (response) => {
+				return response;
+			},
+			providesTags: ['TasksMedal'],
 		})
 	}),
 	overrideExisting: false,
 });
 
-export const { useGetDaysWithCompletedTasksQuery } = documentsTasksApi;
+export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery } = documentsTasksApi;

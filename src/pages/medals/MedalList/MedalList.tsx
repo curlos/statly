@@ -1,224 +1,74 @@
-import { useState, useEffect } from 'react';
-import {
-	DEFAULT_DAILY_FOCUS_HOURS_MEDALS,
-	DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS,
-	DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS,
-	DEFAULT_YEARLY_FOCUS_HOURS_MEDALS,
-} from '../../../utils/constants/focus/focusHoursMedals.utils';
-import { getFocusDurationFromArray, getGroupedFocusRecordsByDate } from '../../../utils/focus-apps/focusRecords.utils';
+import { useEffect } from 'react';
 import MedalCard from './MedalCard';
-import { sumNumsByPeriod } from '../../../utils/focus.utils';
+import MedalListSkeleton from './MedalListSkeleton';
 import { usePageContext } from 'vike-react/usePageContext';
-import {
-	DEFAULT_DAILY_COMPLETED_TASKS_MEDALS,
-	DEFAULT_MONTHLY_COMPLETED_TASKS_MEDALS,
-	DEFAULT_WEEKLY_COMPLETED_TASKS_MEDALS,
-	DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS,
-} from '../../../utils/constants/tasks/tasksMedals.utils';
-import { useFilterFocusRecords } from '../../focus-records/useFilterFocusRecords';
-import { useFilterCompletedTasks } from '../../completed-tasks/useFilterCompletedTasks';
-import { groupTasksByDateStr } from '../../../utils/focus-apps/tasks.utils';
+import { useGetFocusMedalsQuery } from '../../../services/resources/documentsFocusRecordsApi';
+import { useGetTasksMedalsQuery } from '../../../services/resources/documentsTasksApi';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 
 const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
-	const { filteredFocusRecords } = useFilterFocusRecords();
-	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
+	const { searchParams } = useSearchParamsContext();
+	const { type, interval } = pageContext.routeParams;
 
-	// Focus Medals
-	const [dailyFocusHoursMedals, setDailyFocusHoursMedals] = useState(DEFAULT_DAILY_FOCUS_HOURS_MEDALS);
-	const [weeklyFocusHoursMedals, setWeeklyFocusHoursMedals] = useState(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS);
-	const [monthlyFocusHoursMedals, setMonthlyFocusHoursMedals] = useState(DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS);
-	const [yearlyFocusHoursMedals, setYearlyFocusHoursMedals] = useState(DEFAULT_YEARLY_FOCUS_HOURS_MEDALS);
+	// Build query params from URL search params
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const queryParams = {
+		interval,
+		timezone,
+		'projects-ticktick': searchParams.get('projects') || '',
+		'projects-todoist': searchParams.get('projects-todoist') || '',
+		'categories': searchParams.get('categories') || '',
+		'task-id': searchParams.get('task-id') || '',
+		'start-date': searchParams.get('start-date') || 'Nov 2, 2020',
+		'end-date': searchParams.get('end-date') || getFormattedShortMonthDay(new Date()),
+		'task-id-include-focus-records-from-subtasks': searchParams.get('task-id-include-focus-records-from-subtasks') || 'false',
+		'search': searchParams.get('search') || '',
+		'focus-apps': searchParams.get('focus-apps') || '',
+	};
 
-	// Tasks Medals
-	const [dailyCompletedTasksMedals, setDailyCompletedTasksMedals] = useState(DEFAULT_DAILY_COMPLETED_TASKS_MEDALS);
-	const [weeklyCompletedTasksMedals, setWeeklyCompletedTasksMedals] = useState(DEFAULT_WEEKLY_COMPLETED_TASKS_MEDALS);
-	const [monthlyCompletedTasksMedals, setMonthlyCompletedTasksMedals] = useState(
-		DEFAULT_MONTHLY_COMPLETED_TASKS_MEDALS
-	);
-	const [yearlyCompletedTasksMedals, setYearlyCompletedTasksMedals] = useState(DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS);
+	// Fetch medals data from backend based on type
+	const { data: focusMedalsData, isLoading: isLoadingFocusMedals } = useGetFocusMedalsQuery(queryParams, {
+		skip: type !== 'focus'
+	});
 
-	const isLoadingFocusOrTasksData = !filteredFocusRecords || !filteredDaysWithCompletedTasks;
+	const { data: tasksMedalsData, isLoading: isLoadingTasksMedals } = useGetTasksMedalsQuery(queryParams, {
+		skip: type !== 'tasks'
+	});
 
-	const [allMedals, setAllMedals] = useState([]);
+	const isLoading = type === 'focus' ? isLoadingFocusMedals : isLoadingTasksMedals;
+	const medalsData = type === 'focus' ? focusMedalsData : tasksMedalsData;
 
+	// Convert backend response to array format for rendering
+	const medalsToUse = medalsData ? Object.entries(medalsData).map(([name, medalData]) => ({
+		name,
+		intervalsEarned: medalData.intervalsEarned || [],
+		interval
+	})) : [];
+
+	// Set default chosen medal
 	useEffect(() => {
-		if (isLoadingFocusOrTasksData) {
+		if (!medalsData || isLoading) {
 			return;
 		}
 
-		const {
-			newDailyFocusHoursMedals,
-			newWeeklyFocusHoursMedals,
-			newMonthlyFocusHoursMedals,
-			newYearlyFocusHoursMedals,
-		} = updateFocusMedalsData();
-		const {
-			newDailyCompletedTasksMedals,
-			newWeeklyCompletedTasksMedals,
-			newMonthlyCompletedTasksMedals,
-			newYearlyCompletedTasksMedals,
-		} = updateCompletedTasksMedalsData();
-
-		const newAllMedals = {
-			focus: {
-				daily: newDailyFocusHoursMedals,
-				weekly: newWeeklyFocusHoursMedals,
-				monthly: newMonthlyFocusHoursMedals,
-				yearly: newYearlyFocusHoursMedals,
-			},
-			tasks: {
-				daily: newDailyCompletedTasksMedals,
-				weekly: newWeeklyCompletedTasksMedals,
-				monthly: newMonthlyCompletedTasksMedals,
-				yearly: newYearlyCompletedTasksMedals,
-			},
-		};
-
-		const { type, interval } = pageContext.routeParams;
-
-		const newChosenMedal = newAllMedals[type][interval].find((medal) => {
-			const timesEarned = !medal.intervalsEarned || medal.intervalsEarned.length;
-			return timesEarned > 0;
-		});
-
+		// Only set if chosenMedal is empty
 		if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
-			if (newChosenMedal) {
-				setChosenMedal(newChosenMedal);
+			// Find first medal that has been earned
+			const firstEarnedMedal = medalsToUse.find((medal) => medal.intervalsEarned.length > 0);
+			if (firstEarnedMedal) {
+				setChosenMedal(firstEarnedMedal);
 			}
 		}
+	}, [medalsData, isLoading, type, interval]);
 
-		setAllMedals(newAllMedals);
-	}, [isLoadingFocusOrTasksData, filteredFocusRecords, filteredDaysWithCompletedTasks, pageContext]);
+	const medalsThatHaveBeenEarned = medalsToUse.filter((medal) => medal.intervalsEarned.length > 0);
+	const medalsThatHaveNotBeenEarned = medalsToUse.filter((medal) => medal.intervalsEarned.length === 0);
 
-	const updateFocusMedalsData = () => {
-		const focusRecordsGroupedByDate = getGroupedFocusRecordsByDate(filteredFocusRecords);
-		const newFocusDurationByDate = {};
-
-		// Get the focus duration for each day.
-		Object.entries(focusRecordsGroupedByDate).forEach(([dateKey, focusRecords]) => {
-			newFocusDurationByDate[dateKey] = getFocusDurationFromArray({ focusRecords, startDate: new Date(dateKey) });
-		});
-
-		const newDailyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_DAILY_FOCUS_HOURS_MEDALS));
-		const newWeeklyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_FOCUS_HOURS_MEDALS));
-		const newMonthlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_FOCUS_HOURS_MEDALS));
-		const newYearlyFocusHoursMedals = JSON.parse(JSON.stringify(DEFAULT_YEARLY_FOCUS_HOURS_MEDALS));
-
-		const focusDurationByWeek = sumNumsByPeriod(newFocusDurationByDate, 'week');
-		const focusDurationByMonth = sumNumsByPeriod(newFocusDurationByDate, 'month');
-		const focusDurationByYear = sumNumsByPeriod(newFocusDurationByDate, 'year');
-
-		// Calculate the number of times a medal for each interval was earned.
-		getTimesEarnedForInterval(newFocusDurationByDate, newDailyFocusHoursMedals, 'requiredDuration');
-		getTimesEarnedForInterval(focusDurationByWeek, newWeeklyFocusHoursMedals, 'requiredDuration');
-		getTimesEarnedForInterval(focusDurationByMonth, newMonthlyFocusHoursMedals, 'requiredDuration');
-		getTimesEarnedForInterval(focusDurationByYear, newYearlyFocusHoursMedals, 'requiredDuration');
-
-		// Update with new focus durations
-		setDailyFocusHoursMedals(newDailyFocusHoursMedals);
-		setWeeklyFocusHoursMedals(newWeeklyFocusHoursMedals);
-		setMonthlyFocusHoursMedals(newMonthlyFocusHoursMedals);
-		setYearlyFocusHoursMedals(newYearlyFocusHoursMedals);
-
-		return {
-			newDailyFocusHoursMedals,
-			newWeeklyFocusHoursMedals,
-			newMonthlyFocusHoursMedals,
-			newYearlyFocusHoursMedals,
-		};
-	};
-
-	const getTimesEarnedForInterval = (valueForInterval, medals, minValueProp) => {
-		Object.entries(valueForInterval).forEach(([dateKey, value]) => {
-			medals.forEach((medal) => {
-				const minValue = medal[minValueProp];
-
-				if (value >= minValue) {
-					if (!medal.intervalsEarned) {
-						medal.intervalsEarned = [];
-					}
-
-					medal.intervalsEarned.push(dateKey);
-				}
-			});
-		});
-	};
-
-	const updateCompletedTasksMedalsData = () => {
-		const filteredCompletedTasksByDay = groupTasksByDateStr(filteredDaysWithCompletedTasks);
-		const newCompletedTasksByDate = {};
-
-		const newDailyCompletedTasksMedals = JSON.parse(JSON.stringify(DEFAULT_DAILY_COMPLETED_TASKS_MEDALS));
-		const newWeeklyCompletedTasksMedals = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_COMPLETED_TASKS_MEDALS));
-		const newMonthlyCompletedTasksMedals = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_COMPLETED_TASKS_MEDALS));
-		const newYearlyCompletedTasksMedals = JSON.parse(JSON.stringify(DEFAULT_YEARLY_COMPLETED_TASKS_MEDALS));
-
-		// Get the focus duration for each day.
-		Object.entries(filteredCompletedTasksByDay).forEach(([dateKey, completedTasks]) => {
-			newCompletedTasksByDate[dateKey] = completedTasks.length;
-		});
-
-		const completedTasksNumByWeek = sumNumsByPeriod(newCompletedTasksByDate, 'week');
-		const completedTasksNumByMonth = sumNumsByPeriod(newCompletedTasksByDate, 'month');
-		const completedTasksNumByYear = sumNumsByPeriod(newCompletedTasksByDate, 'year');
-
-		// Calculate the number of times a medal for each interval was earned.
-		getTimesEarnedForInterval(newCompletedTasksByDate, newDailyCompletedTasksMedals, 'requiredCompletedTasks');
-		getTimesEarnedForInterval(completedTasksNumByWeek, newWeeklyCompletedTasksMedals, 'requiredCompletedTasks');
-		getTimesEarnedForInterval(completedTasksNumByMonth, newMonthlyCompletedTasksMedals, 'requiredCompletedTasks');
-		getTimesEarnedForInterval(completedTasksNumByYear, newYearlyCompletedTasksMedals, 'requiredCompletedTasks');
-
-		// Update with new focus durations
-		setDailyCompletedTasksMedals(newDailyCompletedTasksMedals);
-		setWeeklyCompletedTasksMedals(newWeeklyCompletedTasksMedals);
-		setMonthlyCompletedTasksMedals(newMonthlyCompletedTasksMedals);
-		setYearlyCompletedTasksMedals(newYearlyCompletedTasksMedals);
-
-		return {
-			newDailyCompletedTasksMedals,
-			newWeeklyCompletedTasksMedals,
-			newMonthlyCompletedTasksMedals,
-			newYearlyCompletedTasksMedals,
-		};
-	};
-
-	const getMedalsToUse = () => {
-		const focusHoursMedals = {
-			daily: dailyFocusHoursMedals,
-			weekly: weeklyFocusHoursMedals,
-			monthly: monthlyFocusHoursMedals,
-			yearly: yearlyFocusHoursMedals,
-		};
-
-		const completedTasksMedals = {
-			daily: dailyCompletedTasksMedals,
-			weekly: weeklyCompletedTasksMedals,
-			monthly: monthlyCompletedTasksMedals,
-			yearly: yearlyCompletedTasksMedals,
-		};
-
-		const { type } = pageContext.routeParams;
-		const medalsToLookThrough = type === 'focus' ? focusHoursMedals : completedTasksMedals;
-
-		for (const [interval, medals] of Object.entries(medalsToLookThrough)) {
-			if (location.pathname.includes(interval)) {
-				return medals;
-			}
-		}
-	};
-
-	const medalsToUse = getMedalsToUse();
-
-	const medalsThatHaveBeenEarned = medalsToUse.filter((medal) => {
-		const timesEarned = !medal.intervalsEarned || medal.intervalsEarned.length;
-		return timesEarned > 0;
-	});
-
-	const medalsThatHaveNotBeenEarned = medalsToUse.filter((medal) => {
-		const timesEarned = !medal.intervalsEarned || medal.intervalsEarned.length;
-		return timesEarned === 0;
-	});
+	if (isLoading) {
+		return <MedalListSkeleton maxHeight={maxHeight} />;
+	}
 
 	return (
 		<div className="col-span-12 sm:col-span-8">
@@ -234,9 +84,8 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 								medal: medal,
 								chosenMedal,
 								setChosenMedal,
-								isLoadingFocusOrTasksData,
+								isLoadingFocusOrTasksData: isLoading,
 								setShowChosenMedalModal,
-								allMedals,
 							}}
 						/>
 					);
@@ -250,9 +99,8 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 								medal: medal,
 								chosenMedal,
 								setChosenMedal,
-								isLoadingFocusOrTasksData,
+								isLoadingFocusOrTasksData: isLoading,
 								setShowChosenMedalModal,
-								allMedals,
 							}}
 						/>
 					);

@@ -3,8 +3,6 @@ import LazyImage from '../../../components/LazyImage';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
-import { usePageContext } from 'vike-react/usePageContext';
-import { useEffect } from 'react';
 
 const MedalCard = ({
 	medal,
@@ -12,10 +10,7 @@ const MedalCard = ({
 	setChosenMedal,
 	isLoadingFocusOrTasksData,
 	setShowChosenMedalModal,
-	allMedals,
 }) => {
-	const pageContext = usePageContext();
-	const { type, interval } = pageContext.routeParams;
 
 	const { chosenColorObj } = useThemeContext();
 	const {
@@ -31,22 +26,6 @@ const MedalCard = ({
 
 	const imgSrc = '/cloudinary/battlefield-1-medals/combat/41_YBX5t8r.webp'
 	const { width } = useWindowSize();
-
-	useEffect(() => {
-		if (medal.name === chosenMedal.name && medal.interval === chosenMedal.interval) {
-			if (medal.intervalsEarned == 0 && allMedals) {
-				const newChosenMedal = allMedals[type][interval].find((medal) => {
-					const timesEarned = !medal.intervalsEarned || medal.intervalsEarned.length;
-					return timesEarned > 0;
-				});
-				if (newChosenMedal && newChosenMedal !== chosenMedal) {
-					setChosenMedal(newChosenMedal);
-				}
-			} else if (medal !== chosenMedal) {
-				setChosenMedal(medal);
-			}
-		}
-	}, [medal, chosenMedal, allMedals, type, interval]);
 
 	return (
 		<div

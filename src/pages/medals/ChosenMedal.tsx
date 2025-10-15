@@ -29,6 +29,8 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 				return 'month';
 			case 'yearly':
 				return 'year';
+			default:
+				return 'day';
 		}
 	};
 
@@ -42,6 +44,8 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 				return 'Months';
 			case 'yearly':
 				return 'Years';
+			default:
+				return 'Days';
 		}
 	};
 

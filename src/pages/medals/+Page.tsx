@@ -5,11 +5,21 @@ import useResizeObserver from '../../hooks/useResizeObserver';
 import TopButtonList from './TopButtonList';
 import MedalList from './MedalList/MedalList';
 import ChosenMedal from './ChosenMedal';
+import ChosenMedalSkeleton from './ChosenMedalSkeleton';
 import Modal from '../../components/Modal/Modal';
 import Icon from '../../components/Icon';
 import ChallengesAndMedalsSettingsModal from '../challenges/ChallengesAndMedalsSettingsModal';
+import { usePageContext } from 'vike-react/usePageContext';
+import { useGetFocusMedalsQuery } from '../../services/resources/documentsFocusRecordsApi';
+import { useGetTasksMedalsQuery } from '../../services/resources/documentsTasksApi';
+import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { getFormattedShortMonthDay } from '../../utils/date.utils';
 
 const Page = () => {
+	const pageContext = usePageContext();
+	const { searchParams } = useSearchParamsContext();
+	const { type, interval } = pageContext.routeParams;
+
 	const [chosenMedal, setChosenMedal] = useState({});
 	const chosenMedalRef = useRef(null);
 	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
@@ -20,6 +30,33 @@ const Page = () => {
 	const topHeaderRef = useRef(null);
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
+
+	// Build query params from URL search params
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const queryParams = {
+		interval,
+		timezone,
+		'projects-ticktick': searchParams.get('projects') || '',
+		'projects-todoist': searchParams.get('projects-todoist') || '',
+		'categories': searchParams.get('categories') || '',
+		'task-id': searchParams.get('task-id') || '',
+		'start-date': searchParams.get('start-date') || 'Nov 2, 2020',
+		'end-date': searchParams.get('end-date') || getFormattedShortMonthDay(new Date()),
+		'task-id-include-focus-records-from-subtasks': searchParams.get('task-id-include-focus-records-from-subtasks') || 'false',
+		'search': searchParams.get('search') || '',
+		'focus-apps': searchParams.get('focus-apps') || '',
+	};
+
+	// Fetch medals data from backend based on type
+	const { isLoading: isLoadingFocusMedals } = useGetFocusMedalsQuery(queryParams, {
+		skip: type !== 'focus'
+	});
+
+	const { isLoading: isLoadingTasksMedals } = useGetTasksMedalsQuery(queryParams, {
+		skip: type !== 'tasks'
+	});
+
+	const isLoading = type === 'focus' ? isLoadingFocusMedals : isLoadingTasksMedals;
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
 		{
@@ -82,7 +119,11 @@ const Page = () => {
 					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }} />
 
 					<div className="hidden sm:block col-span-4">
-						<ChosenMedal {...{ chosenMedal, maxHeight, chosenMedalRef }} />
+						{isLoading ? (
+							<ChosenMedalSkeleton {...{ maxHeight, chosenMedalRef }} />
+						) : (
+							<ChosenMedal {...{ chosenMedal, maxHeight, chosenMedalRef }} />
+						)}
 					</div>
 
 					<div className="sm:hidden">
@@ -92,7 +133,11 @@ const Page = () => {
 							position="top-center"
 						>
 							<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">
-								<ChosenMedal {...{ chosenMedal, maxHeight, chosenMedalRef }} />
+								{isLoading ? (
+									<ChosenMedalSkeleton {...{ maxHeight, chosenMedalRef }} />
+								) : (
+									<ChosenMedal {...{ chosenMedal, maxHeight, chosenMedalRef }} />
+								)}
 							</div>
 						</Modal>
 					</div>
