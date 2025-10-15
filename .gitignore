@@ -44,3 +44,5 @@ src/assets/fonts/*
 !src/assets/fonts/Kirsty/
 !src/assets/fonts/Jost/**
 !src/assets/fonts/Jost/
+
+public/cloudinary

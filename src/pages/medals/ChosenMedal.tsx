@@ -45,8 +45,11 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 		}
 	};
 
-	const imgSrc =
-		chosenMedal.requiredDuration !== undefined ? selectedMedalCardImage?.focus : selectedMedalCardImage?.tasks;
+	// TODO: Bring back later.
+	// const imgSrc =
+	// 	chosenMedal.requiredDuration !== undefined ? selectedMedalCardImage?.focus : selectedMedalCardImage?.tasks;
+
+	const imgSrc = '/cloudinary/battlefield-1-medals/combat/41_YBX5t8r.webp'
 
 	const pageContext = usePageContext();
 
