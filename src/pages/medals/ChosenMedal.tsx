@@ -58,7 +58,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 	const pageContext = usePageContext();
 
 	const handleGoToSelectedDateRange = (dateRange) => {
-		const nonDateQueryParams = pageContext.urlParsed.search;
+		const nonDateQueryParams = { ...pageContext.urlParsed.search };
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
 
@@ -69,9 +69,9 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 
 		updateQueryParams(
 			{
+				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(startDate),
 				'end-date': getFormattedShortMonthDay(endDate),
-				...nonDateQueryParams,
 			},
 			`/${isForFocusMedals ? 'focus-records' : 'completed-tasks'}`
 		);

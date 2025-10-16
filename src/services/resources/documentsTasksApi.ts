@@ -29,9 +29,21 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				return response;
 			},
 			providesTags: ['TasksMedal'],
+		}),
+		getTasksChallenges: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString
+					? `/documents/tasks/challenges?${queryString}`
+					: '/documents/tasks/challenges';
+			},
+			transformResponse: (response) => {
+				return response;
+			},
+			providesTags: ['TasksChallenge'],
 		})
 	}),
 	overrideExisting: false,
 });
 
-export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery } = documentsTasksApi;
+export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery, useGetTasksChallengesQuery } = documentsTasksApi;

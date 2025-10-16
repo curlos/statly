@@ -1,11 +1,15 @@
+import Icon from '../../../components/Icon';
+
 const MedalCardSkeleton = () => {
 	return (
-		<div className="bg-color-gray-600 border-2 border-transparent animate-pulse">
-			<div className="bg-color-gray-150 border-l-[5px] border-white pl-1 h-[24px] sm:h-[28px]" />
+		<div className="bg-color-gray-600 border-2 border-transparent">
+			<div className="bg-color-gray-150 border-l-[5px] border-white pl-1 h-[24px] sm:h-[28px] animate-pulse" />
 			<div className="flex justify-center mx-2 my-2">
-				<div className="w-full aspect-square bg-color-gray-400 rounded" />
+				<div className="w-full aspect-square bg-color-gray-400 rounded flex items-center justify-center">
+					<Icon name="military_tech" customClass="!text-[120px] text-color-gray-200 animate-pulse" fill={1} />
+				</div>
 			</div>
-			<div className="flex justify-end px-2 h-[24px] sm:h-[30px] bg-color-gray-400 rounded mx-2 mb-2" style={{ width: '60px', marginLeft: 'auto' }} />
+			<div className="flex justify-end px-2 h-[24px] sm:h-[30px] bg-color-gray-400 rounded mx-2 mb-2 animate-pulse" style={{ width: '60px', marginLeft: 'auto' }} />
 		</div>
 	);
 };

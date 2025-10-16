@@ -28,9 +28,21 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
                 return response;
             },
             providesTags: ['FocusMedal'],
+        }),
+        getFocusChallenges: builder.query({
+            query: (queryParams) => {
+                const queryString = buildQueryString(queryParams);
+                return queryString
+                    ? `/documents/focus-records/challenges?${queryString}`
+                    : '/documents/focus-records/challenges';
+            },
+            transformResponse: (response) => {
+                return response;
+            },
+            providesTags: ['FocusChallenge'],
         })
     }),
     overrideExisting: false,
 });
 
-export const { useGetFocusRecordsQuery, useGetFocusMedalsQuery } = documentsFocusRecordsApi;
+export const { useGetFocusRecordsQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery } = documentsFocusRecordsApi;

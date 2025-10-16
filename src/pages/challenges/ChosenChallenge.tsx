@@ -31,7 +31,7 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 	const pageContext = usePageContext();
 
 	const handleGoToSelectedDateRange = (dateRange) => {
-		const nonDateQueryParams = pageContext.urlParsed.search;
+		const nonDateQueryParams = { ...pageContext.urlParsed.search };
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
 
@@ -42,9 +42,9 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 
 		updateQueryParams(
 			{
+				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(new Date('Nov 2, 2020')),
 				'end-date': getFormattedShortMonthDay(endDate),
-				...nonDateQueryParams,
 			},
 			`/${isForFocusChallenges ? 'focus-records' : 'completed-tasks'}`
 		);

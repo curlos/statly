@@ -4,28 +4,17 @@ import MedalListSkeleton from './MedalListSkeleton';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useGetFocusMedalsQuery } from '../../../services/resources/documentsFocusRecordsApi';
 import { useGetTasksMedalsQuery } from '../../../services/resources/documentsTasksApi';
-import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 
 const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
 	const pageContext = usePageContext();
-	const { searchParams } = useSearchParamsContext();
 	const { type, interval } = pageContext.routeParams;
 
-	// Build query params from URL search params
-	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	// Build query params using shared hook
+	const sharedQueryParams = useSharedQueryParams();
 	const queryParams = {
+		...sharedQueryParams,
 		interval,
-		timezone,
-		'projects-ticktick': searchParams.get('projects') || '',
-		'projects-todoist': searchParams.get('projects-todoist') || '',
-		'categories': searchParams.get('categories') || '',
-		'task-id': searchParams.get('task-id') || '',
-		'start-date': searchParams.get('start-date') || 'Nov 2, 2020',
-		'end-date': searchParams.get('end-date') || getFormattedShortMonthDay(new Date()),
-		'task-id-include-focus-records-from-subtasks': searchParams.get('task-id-include-focus-records-from-subtasks') || 'false',
-		'search': searchParams.get('search') || '',
-		'focus-apps': searchParams.get('focus-apps') || '',
 	};
 
 	// Fetch medals data from backend based on type

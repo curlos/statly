@@ -1,107 +1,56 @@
 import { usePageContext } from 'vike-react/usePageContext';
-import { DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES } from '../../../utils/constants/focus/focusHoursChallenges.utils';
 import { useEffect, useState } from 'react';
-import { getFocusDurationFromArray, getGroupedFocusRecordsByDate } from '../../../utils/focus-apps/focusRecords.utils';
 import ChallengeCard from './ChallengeCard';
-import { DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES } from '../../../utils/constants/tasks/tasksChallenges.utils';
+import ChallengeListSkeleton from './ChallengeListSkeleton';
 import ModalAddChallenge from '../ModalAddChallenge';
-import { useFilterFocusRecords } from '../../focus-records/useFilterFocusRecords';
-import { useFilterCompletedTasks } from '../../completed-tasks/useFilterCompletedTasks';
-import { groupTasksByDateStr } from '../../../utils/focus-apps/tasks.utils';
+import { useGetFocusChallengesQuery } from '../../../services/resources/documentsFocusRecordsApi';
+import { useGetTasksChallengesQuery } from '../../../services/resources/documentsTasksApi';
+import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
 	const pageContext = usePageContext();
-
-	const { filteredFocusRecords } = useFilterFocusRecords();
-	const { filteredDaysWithCompletedTasks } = useFilterCompletedTasks();
-
-	const [focusHoursChallenges, setFocusHoursChallenges] = useState(DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES);
-	const [completedTasksChallenges, setCompletedTasksChallenges] = useState(DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES);
+	const { type } = pageContext.routeParams;
 
 	const [showAddChallengeModal, setShowAddChallengeModal] = useState(false);
 
-	const isLoadingFocusOrTasksData = !filteredFocusRecords || !filteredDaysWithCompletedTasks;
+	// Build query params using shared hook
+	const queryParams = useSharedQueryParams();
 
+	// Fetch challenges data from backend based on type
+	const { data: focusChallengesData, isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {
+		skip: type !== 'focus'
+	});
+
+	const { data: tasksChallengesData, isLoading: isLoadingTasksChallenges } = useGetTasksChallengesQuery(queryParams, {
+		skip: type !== 'tasks'
+	});
+
+	const isLoadingFocusOrTasksData = type === 'focus' ? isLoadingFocusChallenges : isLoadingTasksChallenges;
+	const challengesData = type === 'focus' ? focusChallengesData : tasksChallengesData;
+
+	// Set default chosen challenge
 	useEffect(() => {
-		if (isLoadingFocusOrTasksData) {
+		if (!challengesData || isLoadingFocusOrTasksData) {
 			return;
 		}
 
-		const focusRecordsGroupedByDate = getGroupedFocusRecordsByDate(filteredFocusRecords);
-
-		const focusDurationByDate = {};
-
-		// Get the focus duration for each day.
-		Object.entries(focusRecordsGroupedByDate).forEach(([dateKey, focusRecords]) => {
-			focusDurationByDate[dateKey] = getFocusDurationFromArray({ focusRecords });
-		});
-
-		const newFocusHoursChallenges = JSON.parse(JSON.stringify(DEFAULT_TOTAL_FOCUS_HOURS_CHALLENGES));
-		const newCompletedTasksChallenges = JSON.parse(JSON.stringify(DEFAULT_TOTAL_COMPLETED_TASKS_CHALLENGES));
-
-		// Focus
-		let totalFocusHours = 0;
-
-		Object.entries(focusDurationByDate).forEach(([dateKey, focusHoursForDay]) => {
-			totalFocusHours += focusHoursForDay;
-
-			newFocusHoursChallenges.forEach((challenge) => {
-				if (!challenge.completedDate && totalFocusHours >= challenge.requiredDuration) {
-					challenge.completedDate = dateKey;
-				}
-			});
-		});
-
-		setFocusHoursChallenges(newFocusHoursChallenges);
-
-		// Tasks
-		let totalCompletedTasks = 0;
-
-		const filteredCompletedTasksByDay = groupTasksByDateStr(filteredDaysWithCompletedTasks);
-
-		// Convert the object into an array of entries
-		const sortedEntries = Object.entries(filteredCompletedTasksByDay).sort(
-			(a, b) => new Date(a[0]) - new Date(b[0])
-		);
-
-		// Convert the array of entries back into an object
-		const sortedAllCompletedTasksGroupedByDate = Object.fromEntries(sortedEntries);
-
-		Object.entries(sortedAllCompletedTasksGroupedByDate).forEach(([dateKey, completedTasksForDay]) => {
-			totalCompletedTasks += completedTasksForDay.length;
-
-			newCompletedTasksChallenges.forEach((challenge) => {
-				if (!challenge.completedDate && totalCompletedTasks >= challenge.requiredCompletedTasks) {
-					challenge.completedDate = dateKey;
-				}
-			});
-		});
-
-		setCompletedTasksChallenges(newCompletedTasksChallenges);
-
+		// Only set if chosenChallenge is empty
 		if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
-			const allChallenges = {
-				focus: newFocusHoursChallenges,
-				tasks: newCompletedTasksChallenges,
-				custom: [],
-			};
-
-			const { type } = pageContext.routeParams;
-
-			const newChosenChallenge = allChallenges[type].find((challenge) => challenge.completedDate);
-
-			setChosenChallenge(newChosenChallenge);
+			// Find first challenge that has been completed
+			const firstCompletedChallenge = challengesData.find((challenge) => challenge.completedDate);
+			if (firstCompletedChallenge) {
+				setChosenChallenge(firstCompletedChallenge);
+			}
 		}
-	}, [filteredFocusRecords, filteredDaysWithCompletedTasks]);
+	}, [challengesData, isLoadingFocusOrTasksData, type]);
 
 	const getChallengesToUse = () => {
 		const { type } = pageContext.routeParams;
 
 		switch (type) {
 			case 'focus':
-				return focusHoursChallenges;
 			case 'tasks':
-				return completedTasksChallenges;
+				return challengesData || [];
 			case 'custom':
 				return [
 					{
@@ -123,6 +72,8 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 						fullImageSrc: '/mg_strike_rouge_large.jpg',
 					},
 				];
+			default:
+				return [];
 		}
 	};
 
@@ -130,6 +81,10 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 
 	const completedChallenges = challengesToUse.filter((challenge) => challenge.completedDate);
 	const incompleteChallenges = challengesToUse.filter((challenge) => !challenge.completedDate);
+
+	if (isLoadingFocusOrTasksData) {
+		return <ChallengeListSkeleton maxHeight={maxHeight} />;
+	}
 
 	return (
 		<div className="overflow-auto gray-scrollbar">
