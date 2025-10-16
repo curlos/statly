@@ -113,12 +113,8 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 				</>
 			)}
 
-			{isFocusRecordsOrCompletedTasksPage && (
-				<>
-					<hr className="border-color-gray-200 my-4" />
-					<SearchSection />
-				</>
-			)}
+			<hr className="border-color-gray-200 my-4" />
+			<SearchSection />
 
 			{isFocusRecordsOrCompletedTasksPage && (
 				<>
