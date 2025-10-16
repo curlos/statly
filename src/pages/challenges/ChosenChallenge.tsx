@@ -1,7 +1,6 @@
 import { usePageContext } from 'vike-react/usePageContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
-import { parseDateRange } from '../../utils/focus.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 
 const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => {
@@ -30,21 +29,20 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 
 	const pageContext = usePageContext();
 
-	const handleGoToSelectedDateRange = (dateRange) => {
+	const handleGoToCompletedDate = (completedDate) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
+		const startDate = pageContext.urlParsed.search['start-date'] || 'Nov 2, 2020'
+
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
 
 		const isForFocusChallenges = pageContext.routeParams.type === 'focus';
 
-		const parseDateRangeObj = parseDateRange('day', dateRange);
-		const { endDate } = parseDateRangeObj;
-
 		updateQueryParams(
 			{
 				...nonDateQueryParams,
-				'start-date': getFormattedShortMonthDay(new Date('Nov 2, 2020')),
-				'end-date': getFormattedShortMonthDay(endDate),
+				'start-date': getFormattedShortMonthDay(new Date(startDate)),
+				'end-date': getFormattedShortMonthDay(new Date(completedDate)),
 			},
 			`/${isForFocusChallenges ? 'focus-records' : 'completed-tasks'}`
 		);
@@ -91,7 +89,7 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 							<span className="font-bold">Completion Date: </span>
 							<span
 								className="text-color-gray-50 cursor-pointer hover:underline"
-								onClick={() => handleGoToSelectedDateRange(completedDate)}
+								onClick={() => handleGoToCompletedDate(completedDate)}
 							>
 								{completedDate ? completedDate : 'N/A'}
 							</span>
