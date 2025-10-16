@@ -37,7 +37,9 @@ export const baseAPI = createApi({
 		'ProjectGroup',
 		'FocusRecord',
 		'FocusMedal',
-		'TasksMedal'
+		'TasksMedal',
+		'FocusChallenge',
+		'TasksChallenge'
 	],
 	endpoints: () => ({}),
 });
