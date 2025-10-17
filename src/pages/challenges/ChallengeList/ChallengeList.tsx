@@ -1,5 +1,5 @@
 import { usePageContext } from 'vike-react/usePageContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ChallengeCard from './ChallengeCard';
 import ChallengeListSkeleton from './ChallengeListSkeleton';
 import ModalAddChallenge from '../ModalAddChallenge';
@@ -8,6 +8,7 @@ import { useGetTasksChallengesQuery } from '../../../services/resources/document
 import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
+	const scrollContainerRef = useRef(null);
 	const pageContext = usePageContext();
 	const { type } = pageContext.routeParams;
 
@@ -28,19 +29,21 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 	const isLoadingFocusOrTasksData = type === 'focus' ? isLoadingFocusChallenges : isLoadingTasksChallenges;
 	const challengesData = type === 'focus' ? focusChallengesData : tasksChallengesData;
 
-	// Set default chosen challenge
+	// Set default chosen challenge - always update when type/filters change
 	useEffect(() => {
 		if (!challengesData || isLoadingFocusOrTasksData) {
 			return;
 		}
 
-		// Only set if chosenChallenge is empty
-		if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
-			// Find first challenge that has been completed
-			const firstCompletedChallenge = challengesData.find((challenge) => challenge.completedDate);
-			if (firstCompletedChallenge) {
-				setChosenChallenge(firstCompletedChallenge);
-			}
+		// Scroll to top of container
+		if (scrollContainerRef.current) {
+			scrollContainerRef.current.scrollTop = 0;
+		}
+
+		// Find first challenge that has been completed
+		const firstCompletedChallenge = challengesData.find((challenge) => challenge.completedDate);
+		if (firstCompletedChallenge) {
+			setChosenChallenge(firstCompletedChallenge);
 		}
 	}, [challengesData, isLoadingFocusOrTasksData, type]);
 
@@ -87,7 +90,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 	}
 
 	return (
-		<div className="overflow-auto gray-scrollbar">
+		<div ref={scrollContainerRef} className="overflow-auto gray-scrollbar">
 			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2 " style={{ maxHeight }}>
 				{completedChallenges.map((challenge) => {
 					return (
