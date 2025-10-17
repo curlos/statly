@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import MedalCard from './MedalCard';
 import MedalListSkeleton from './MedalListSkeleton';
 import { usePageContext } from 'vike-react/usePageContext';
@@ -7,6 +7,7 @@ import { useGetTasksMedalsQuery } from '../../../services/resources/documentsTas
 import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 
 const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
+	const scrollContainerRef = useRef(null);
 	const pageContext = usePageContext();
 	const { type, interval } = pageContext.routeParams;
 
@@ -36,19 +37,21 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 		interval
 	})) : [];
 
-	// Set default chosen medal
+	// Set default chosen medal - always update when interval/type/filters change
 	useEffect(() => {
 		if (!medalsData || isLoading) {
 			return;
 		}
 
-		// Only set if chosenMedal is empty
-		if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
-			// Find first medal that has been earned
-			const firstEarnedMedal = medalsToUse.find((medal) => medal.intervalsEarned.length > 0);
-			if (firstEarnedMedal) {
-				setChosenMedal(firstEarnedMedal);
-			}
+		// Scroll to top of container
+		if (scrollContainerRef.current) {
+			scrollContainerRef.current.scrollTop = 0;
+		}
+
+		// Find first medal that has been earned
+		const firstEarnedMedal = medalsToUse.find((medal) => medal.intervalsEarned.length > 0);
+		if (firstEarnedMedal) {
+			setChosenMedal(firstEarnedMedal);
 		}
 	}, [medalsData, isLoading, type, interval]);
 
@@ -62,6 +65,7 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 	return (
 		<div className="col-span-12 sm:col-span-8">
 			<div
+				ref={scrollContainerRef}
 				className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 overflow-auto gray-scrollbar"
 				style={{ maxHeight }}
 			>
