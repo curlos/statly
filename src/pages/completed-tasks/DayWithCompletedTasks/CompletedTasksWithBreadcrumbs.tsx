@@ -1,4 +1,6 @@
 import Accordion from '../../../components/Accordion/Accordion';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
 import CompletedTask from './CompletedTask';
 
 const CompletedTasksWithBreadcrumbs = ({
@@ -8,6 +10,11 @@ const CompletedTasksWithBreadcrumbs = ({
 	updateTaskIdQueryParam,
 	groupedTasksCollapsedByDefault,
 }) => {
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
+	const { updateQueryParams } = useSearchParamsContext();
+
 	return (
 		ancestorTasksById &&
 		Object.keys(groupedSubtasksByParentTask).map((parentTaskId, i) => {
@@ -16,6 +23,9 @@ const CompletedTasksWithBreadcrumbs = ({
 				ancestorTasksById && ancestorTasksById[parentTaskId];
 			const parentTaskTitle = parentTask?.title || parentTaskId;
 			const parentTaskBreadcrumbs = parentTask?.ancestorIds
+
+			const taskProject = projectsById && parentTask?.projectId && projectsById[parentTask?.projectId]
+			const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
 
 			return (
 				<Accordion
@@ -52,6 +62,28 @@ const CompletedTasksWithBreadcrumbs = ({
 											</span>
 										);
 									})}
+								</span>
+							)}
+
+							{taskProject && (
+								<span className="ml-1 text-color-gray-25">
+									{' > '}
+								</span>
+							)}
+
+							{taskProject && (
+								<span className="ml-1 text-color-gray-25 hover:underline hover:text-blue-500" onClick={() => {
+									updateQueryParams({
+										[projectQueryParam]: taskProject?.id,
+										'task-id': '',
+										'sort-by': '',
+										search: '',
+										'start-date': '',
+										'end-date': '',
+										page: '',
+									});
+								}}>
+									({taskProject.name})
 								</span>
 							)}
 						</div>

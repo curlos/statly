@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import Accordion from '../../../components/Accordion/Accordion';
 import Icon from '../../../components/Icon';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
+import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
+import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const NestedCompletedTasks = ({
 	tasksWithNoParent,
@@ -15,6 +17,11 @@ const NestedCompletedTasks = ({
 	const {
 		focusRecordsPageSettings: { showMedals },
 	} = useUserSettingsContext();
+
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
+
+	const { updateQueryParams } = useSearchParamsContext();
 
 	/**
 	 * @description Get and map the parent ids to their direct children. The array will contain the list of direct children (who are siblings to each other).
@@ -74,17 +81,37 @@ const NestedCompletedTasks = ({
 
 		// These are the tasks who are direct children of the parent task. These will be rendered as completed checkboxes with the content.
 		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
+		const taskProject = projectsById && parentTask?.projectId && projectsById[parentTask?.projectId]
+		const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
 
 		return (
 			<ul key={parentTaskId} className="text-[16px]">
 				<Accordion
 					title={
-						<li
-							className="underline cursor-pointer font-bold text-[18px] hover:text-blue-500"
-							onClick={() => updateTaskIdQueryParam(parentTask.id)}
-						>
-							{parentTask.title}
-						</li>
+						<div className="flex items-center gap-2 text-[18px]">
+							<li
+								className="underline cursor-pointer hover:text-blue-500 font-bold"
+								onClick={() => updateTaskIdQueryParam(parentTask.id)}
+							>
+								{parentTask.title}
+							</li>
+
+							{taskProject && (
+								<li className="text-color-gray-25 hover:underline hover:text-blue-500" onClick={() => {
+									updateQueryParams({
+										[projectQueryParam]: taskProject?.id,
+										'task-id': '',
+										'sort-by': '',
+										search: '',
+										'start-date': '',
+										'end-date': '',
+										page: '',
+									});
+								}}>
+									({taskProject.name})
+								</li>
+							)}
+						</div>
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
 					showArrowNextToText={true}

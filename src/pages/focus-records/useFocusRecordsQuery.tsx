@@ -1,39 +1,20 @@
-import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useGetFocusRecordsQuery } from '../../services/resources/documentsFocusRecordsApi';
-import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import { useUserSettingsContext } from './useUserSettingsContext';
+import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 
 export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) => {
-	const { searchParams } = useSearchParamsContext();
-
-	// Query Params
-	const sortBy = searchParams.get('sort-by') || 'Newest';
-	const currentPageFromUrl = searchParams.get('page') || 1;
-	const taskIdFromUrl = searchParams.get('task-id');
-	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
-	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
-	const projectsFromUrl = searchParams.get('projects') || '';
-	const categoriesFromUrl = searchParams.get('categories') || '';
-	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+	const { urlValues, queryParams } = useSharedQueryParams();
 
 	const {
-			focusRecordsPageSettings: {
-				taskIdIncludeFocusRecordsFromSubtasks,
-			}
-		} = useUserSettingsContext();
+		focusRecordsPageSettings: {
+			taskIdIncludeFocusRecordsFromSubtasks,
+		}
+	} = useUserSettingsContext();
 
 	const { data: fetchedFocusRecords, isLoading, isFetching } = useGetFocusRecordsQuery({
-		page: Number(currentPageFromUrl) - 1,
-		'sort-by': sortBy,
-		'start-date': startDateFromUrl,
-		'end-date': endDateFromUrl,
-		'projects-ticktick': projectsFromUrl,
-		'categories': categoriesFromUrl,
-		'task-id': taskIdFromUrl,
+		...queryParams,
+		page: Number(urlValues.currentPageFromUrl) - 1,
 		'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
-		'search': searchTextFromUrl,
-		'focus-apps': focusAppsFromUrl
 	}, { skip });
 
 	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById } = fetchedFocusRecords || {};
@@ -48,14 +29,6 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		ancestorTasksById,
 		isLoading,
 		isFetching,
-		sortBy,
-		currentPageFromUrl,
-		taskIdFromUrl,
-		searchTextFromUrl,
-		startDateFromUrl,
-		endDateFromUrl,
-		projectsFromUrl,
-		categoriesFromUrl,
-		focusAppsFromUrl,
+		...urlValues,
 	};
 };
