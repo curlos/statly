@@ -14,7 +14,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 	const [showAddChallengeModal, setShowAddChallengeModal] = useState(false);
 
 	// Build query params using shared hook
-	const queryParams = useSharedQueryParams();
+	const { queryParams } = useSharedQueryParams();
 
 	// Fetch challenges data from backend based on type
 	const { data: focusChallengesData, isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {

@@ -30,7 +30,7 @@ const Page = () => {
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
 	// Build query params using shared hook
-	const queryParams = useSharedQueryParams();
+	const { queryParams } = useSharedQueryParams();
 
 	// Fetch challenges data from backend based on type
 	const { isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {

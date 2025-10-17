@@ -32,7 +32,7 @@ const Page = () => {
 	// Build query params using shared hook
 	const sharedQueryParams = useSharedQueryParams();
 	const queryParams = {
-		...sharedQueryParams,
+		...sharedQueryParams.queryParams,
 		interval,
 	};
 
