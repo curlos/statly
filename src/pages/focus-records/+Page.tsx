@@ -25,7 +25,6 @@ const FocusRecordsPage = () => {
 		focusRecords,
 		total,
 		totalPages,
-		totalDuration,
 		onlyTasksTotalDuration,
 		isLoading,
 		isFetching,

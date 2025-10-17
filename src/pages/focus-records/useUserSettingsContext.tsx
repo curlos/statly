@@ -15,7 +15,7 @@ export const UserSettingsProvider = ({ children }) => {
 
 const useUserSettings = () => {
 	// RTK Query - User Settings
-	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
+	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
 	const focusRecordsPageSettings = userSettings?.tickTickOne?.pages?.focusRecords || {};
@@ -110,5 +110,6 @@ const useUserSettings = () => {
 		medalsPageSettings: {
 			selectedMedalCardImage,
 		},
+		isLoadingGetUserSettings
 	};
 };
