@@ -14,7 +14,7 @@ import { useGetProjectsQuery } from '../../services/resources/documentsProjectsA
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
-	const { startTime, endTime, duration, note } = focusRecord
+	const { startTime, endTime, duration, note, crossesMidnight } = focusRecord
 	const startTimeObj = formatDateTime(startTime);
 	const endTimeObj = formatDateTime(endTime);
 
@@ -96,8 +96,23 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							}}
 						>
 							{getFormattedLongDay(new Date(startTime))}
-						</span>{' '}
-						- {startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
+						</span>
+						{crossesMidnight && (
+							<>
+								{' - '}
+								<span
+									className="font-bold hover:underline cursor-pointer"
+									onClick={() => {
+										const newDayUrl = getFormattedShortMonthDay(new Date(endTime));
+										updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
+									}}
+								>
+									{getFormattedLongDay(new Date(endTime))}
+								</span>
+							</>
+						)}
+						{' - '}
+						{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
 					</div>
 
 					<div className="sm:hidden text-gray-200">
@@ -109,6 +124,21 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							}}
 						>
 							{getFormattedShortMonthDay(new Date(startTime))}
+							{crossesMidnight && (
+								<>
+									{' - '}
+									<span
+										className="hover:underline cursor-pointer"
+										onClick={(e) => {
+											e.stopPropagation();
+											const newDayUrl = getFormattedShortMonthDay(new Date(endTime));
+											updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, page: '' });
+										}}
+									>
+										{getFormattedShortMonthDay(new Date(endTime))}
+									</span>
+								</>
+							)}
 						</div>
 						<div>
 							{startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})

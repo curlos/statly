@@ -21,6 +21,7 @@ export const useSharedQueryParams = () => {
 	const taskIdFromUrl = searchParams.get('task-id') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const currentPageFromUrl = searchParams.get('page') || 1;
+	const crossesMidnight = searchParams.get('crosses-midnight') === 'true';
 
 	return {
 		// Raw values for display/state
@@ -52,6 +53,7 @@ export const useSharedQueryParams = () => {
 			'focus-apps': focusAppsFromUrl,
 			'to-do-list-apps': toDoListAppsFromUrl,
 			'sort-by': sortBy,
+			'crosses-midnight': crossesMidnight
 		}
 	};
 };

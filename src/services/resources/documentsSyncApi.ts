@@ -12,10 +12,15 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
             },
         }),
         syncAll: builder.mutation({
-            query: () => ({
-                url: '/documents/sync/ticktick/all',
-                method: 'POST',
-            }),
+            query: () => {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                
+                return {
+                    url: '/documents/sync/ticktick/all',
+                    method: 'POST',
+                    body: { timezone },
+                };
+            },
             invalidatesTags: ['FocusRecord', 'DayWithCompletedTasks', 'Project', 'ProjectGroup', 'FocusMedal', 'TasksMedal', 'FocusChallenge', 'TasksChallenge'],
         }),
     }),

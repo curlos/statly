@@ -11,6 +11,7 @@ import { useState } from 'react';
 // import useExportFocusRecords from './hooks/useExportFocusRecords';
 import Spinner from '../Loaders/Spinner';
 import MedalImage from './MedalImage';
+import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -30,15 +31,23 @@ const OtherSectionFocusRecords = () => {
 	} = useUserSettingsContext();
 
 	const handleError = useHandleError();
+	const { searchParams, updateQueryParams } = useSearchParamsContext();
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 	const [editUserSettings] = useEditUserSettingsMutation();
 
+	// Get crosses-midnight from query params (defaults to false)
+	const crossesMidnight = searchParams.get('crosses-midnight') === 'true';
+
 	const handleCheckboxClick = (showValue, userSettingProperty) => {
 		const newShowValue = !showValue;
 		handleUpdateUserSettingForPage('focusRecords', userSettingProperty, newShowValue);
+	};
+
+	const handleCrossesMidnightToggle = () => {
+		updateQueryParams({ 'crosses-midnight': crossesMidnight ? '' : 'true' });
 	};
 
 	return (
@@ -138,6 +147,14 @@ const OtherSectionFocusRecords = () => {
 								<MedalImage />
 							</div>
 						)}
+
+						<CheckboxOther
+							{...{
+								name: 'Crosses Midnight',
+								showValue: crossesMidnight,
+								handleCheckboxClick: handleCrossesMidnightToggle,
+							}}
+						/>
 
 						{/* Copy Focus Records To Clipboard */}
 						{/* TODO: Bring back later once I'm ready to work on it. */}
