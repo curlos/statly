@@ -33,6 +33,7 @@ const AppliedFilterItemList = () => {
 
 	// Session (Focus Records Page)
 	const categoriesFromUrl = searchParams.get('categories') || '';
+	const crossesMidnightFromUrl = searchParams.get('crosses-midnight') || '';
 
 	// TickTick & Todoist (Completed Tasks Page)
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
@@ -190,6 +191,14 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	const crossesMidnightFilter = {
+		name: 'Crosses Midnight',
+		value: crossesMidnightFromUrl === 'true' ? 'True' : '',
+		handleRemove: () => {
+			updateQueryParams({ 'crosses-midnight': '', page: '' });
+		},
+	};
+
 	const allFilters = [
 		taskIdFilter,
 		dateRangeFilter,
@@ -200,6 +209,7 @@ const AppliedFilterItemList = () => {
 		focusAppFilter,
 		toDoListAppFilter,
 		projectsTodoistFilter,
+		crossesMidnightFilter,
 	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
 

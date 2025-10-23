@@ -32,6 +32,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 		'projects-todoist',
 		'categories',
 		'date-interval',
+		'crosses-midnight'
 	];
 
 	switch (page) {
