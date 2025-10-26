@@ -23,8 +23,8 @@ const FocusSection = () => {
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
 				<TrendsCard />
-				{/* <TimelineCard />
-				<MostFocusedTimeCard />
+				<TimelineCard />
+				{/* <MostFocusedTimeCard />
 				<YearGridsCard /> */}
 			</div>
 		</div>

@@ -3,11 +3,13 @@ import { useState, useRef } from 'react';
 import DropdownTimeCalendar from '../../../../components/Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
 import Icon from '../../../../components/Icon';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
+import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import DateRangePicker from './DateRangePicker';
 import TimelineChart from './TimelineChart';
 
 const TimelineCard = () => {
-	const [selectedDates, setSelectedDates] = useState([new Date()]);
+	// Initialize with Week range to match selectedInterval='Week'
+	const [selectedDates, setSelectedDates] = useState(getAllDaysInWeekFromDate(new Date()));
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] sm:h-[350px]">
