@@ -18,6 +18,7 @@ interface UseFocusRecordsQueryParamsOptions {
  */
 export const useFocusRecordsQueryParams = (options: UseFocusRecordsQueryParamsOptions) => {
 	const { searchParams } = useSearchParamsCustom();
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 	const queryParams = useMemo(() => {
 		return {
@@ -36,13 +37,15 @@ export const useFocusRecordsQueryParams = (options: UseFocusRecordsQueryParamsOp
 			'categories': searchParams.get('categories') || undefined,
 			'to-do-list-apps': searchParams.get('to-do-list-apps') || undefined,
 			'crosses-midnight': searchParams.get('crosses-midnight') || undefined,
+			'timezone': timezone,
 		};
 	}, [
 		options['group-by'],
 		options['start-date'],
 		options['end-date'],
 		options['nested'],
-		searchParams
+		searchParams,
+		timezone
 	]);
 
 	return queryParams;

@@ -1,72 +1,106 @@
 import classNames from 'classnames';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
-import ModalPickDateRange from '../../../../components/Modal/ModalPickDateRange';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { groupDatesByInterval, getFormattedLongDay } from '../../../../utils/date.utils';
-import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
+import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
-import DateRangePicker from './DateRangePicker';
 
 const TrendsCard = () => {
-	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();
-
-	const [data, setData] = useState([]);
-
 	const selectedIntervalOptions = ['Week', 'Month', 'Year', 'All', 'Custom'];
-	const [selectedInterval, setSelectedInterval] = useState(selectedIntervalOptions[0]);
-	const [selectedDates, setSelectedDates] = useState([new Date()]);
+
+	// Use custom hook for date range management
+	const {
+		selectedInterval,
+		setSelectedInterval,
+		apiStartDate,
+		apiEndDate,
+		setIsModalPickDateRangeOpen,
+		renderDateRangePicker,
+		renderCustomDateModal,
+	} = useStatsDateRange({
+		initialInterval: 'Week',
+		initialDates: getAllDaysInWeekFromDate(new Date()),
+	});
 
 	const selectedGroupedIntervalOptions = ['Days', 'Weeks', 'Months'];
 	const [selectedGroupedInterval, setSelectedGroupedInterval] = useState('Days');
 
-	// Custom
-	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
-	const [startDate, setStartDate] = useState(new Date('January 1, 2024'));
-	const [endDate, setEndDate] = useState(new Date());
-
-	useEffect(() => {
-		if (selectedInterval === 'All' && focusRecords) {
-			const allFocusRecordDates = Object.keys(focusRecordsGroupedByDate).map((dateKey) => new Date(dateKey));
-			const newData = getUpdatedData(allFocusRecordDates);
-			setData(newData);
-		} else if (selectedInterval !== 'All' && selectedDates?.length > 0 && focusRecordsGroupedByDate) {
-			const newData = getUpdatedData(selectedDates);
-			setData(newData);
+	// Map selectedGroupedInterval to API group-by parameter
+	const getGroupByParam = () => {
+		switch (selectedGroupedInterval) {
+			case 'Days':
+				return 'day';
+			case 'Weeks':
+				return 'week';
+			case 'Months':
+				return 'month';
+			default:
+				return 'day';
 		}
-	}, [selectedDates, selectedInterval, selectedGroupedInterval, focusRecordsGroupedByDate, focusRecords]);
+	};
 
-	useEffect(() => {
-		if (selectedInterval === 'Month') {
-			setSelectedGroupedInterval('Days');
-		}
-	}, [selectedInterval]);
+	// Build query params for API using custom hook
+	const queryParams = useFocusRecordsQueryParams({
+		'group-by': getGroupByParam(),
+		'start-date': apiStartDate,
+		'end-date': apiEndDate,
+	});
 
-	const getUpdatedData = (selectedDates) => {
-		const newData = [];
+	// Fetch stats from API
+	const { data: statsData } = useGetFocusRecordsStatsQuery(queryParams);
 
-		const groupedDates = groupDatesByInterval(selectedDates, selectedGroupedInterval);
+	// Transform API data to chart format based on grouping
+	const transformDataForChart = () => {
+		if (!statsData) return [];
 
-		Object.keys(groupedDates).forEach((groupedKey) => {
-			const daysInGroupedInterval = groupedDates[groupedKey];
-			let focusDurationForGroup = 0;
+		// Get the appropriate data array based on group-by parameter
+		const rawData = statsData.byDay || statsData.byWeek || statsData.byMonth || [];
 
-			for (let date of daysInGroupedInterval) {
-				const dateKey = getFormattedLongDay(date);
+		return rawData.map((item: any) => {
+			let name = '';
 
-				const focusRecordsForDay = focusRecordsGroupedByDate[dateKey];
-				focusDurationForGroup += getFocusDurationFromArray({ focusRecords: focusRecordsForDay });
+			if (selectedGroupedInterval === 'Days') {
+				// Backend returns YYYY-MM-DD format for days
+				const [year, month, dayNum] = item.date.split('-').map(Number);
+				const date = new Date(year, month - 1, dayNum);
+				name = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+			} else if (selectedGroupedInterval === 'Weeks') {
+				// Backend returns "January 1, 2025" format (Monday of the week)
+				// Display as "Jan 1 - Jan 7, 2025" (start of week to end of week)
+				const startDate = new Date(item.date);
+				const endDate = new Date(startDate);
+				endDate.setDate(endDate.getDate() + 6); // Add 6 days to get Sunday
+
+				const startStr = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+				const endStr = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+				name = `${startStr} - ${endStr}`;
+			} else if (selectedGroupedInterval === 'Months') {
+				// Backend returns "January 2025" format
+				name = item.date;
 			}
 
-			newData.push({
-				name: groupedKey,
-				seconds: focusDurationForGroup,
-			});
+			return {
+				name,
+				seconds: item.duration
+			};
 		});
+	};
 
-		return newData;
+	const data = transformDataForChart();
+
+	const getStrokeWidth = () => {
+		// Use thinner stroke for "Days" + large date ranges to handle many data points
+		if (selectedGroupedInterval === 'Days' && selectedInterval === 'All') {
+			return 0.5;
+		}
+		if (selectedGroupedInterval === 'Days' && selectedInterval === 'Year') {
+			return 1;
+		}
+		return 2;
 	};
 
 	const getAverage = () => {
@@ -85,20 +119,6 @@ const TrendsCard = () => {
 		const averageSeconds = totalSeconds / daysWithAtLeastOneFocusRecord;
 
 		return `Daily Average: ${getFormattedDuration(averageSeconds, false)}`;
-	};
-
-	const getDateRangePicker = () => {
-		return (
-			selectedInterval !== 'All' && (
-				<DateRangePicker
-					selectedDates={selectedDates}
-					setSelectedDates={setSelectedDates}
-					selectedInterval={selectedInterval}
-					startDate={startDate}
-					endDate={endDate}
-				/>
-			)
-		);
 	};
 
 	const themeContext = useThemeContext();
@@ -133,11 +153,11 @@ const TrendsCard = () => {
 						}}
 					/>
 
-					<div className="hidden sm:block">{getDateRangePicker()}</div>
+					<div className="hidden sm:block">{renderDateRangePicker()}</div>
 				</div>
 			</div>
 
-			<div className="sm:hidden">{getDateRangePicker()}</div>
+			<div className="sm:hidden">{renderDateRangePicker()}</div>
 
 			<div className="text-color-gray-100 mb-2">{getAverage()}</div>
 
@@ -167,7 +187,7 @@ const TrendsCard = () => {
 						dataKey="seconds"
 						type="number"
 						domain={['dataMin', 'dataMax']}
-						tickFormatter={(seconds) => getFormattedDuration(seconds, false)}
+						tickFormatter={(seconds) => getFormattedDuration(seconds, false, false)}
 					/>
 					<Tooltip
 						offset={10}
@@ -192,20 +212,13 @@ const TrendsCard = () => {
 						type="monotone"
 						dataKey="seconds"
 						stroke={chosenColorObj.hexColor}
-						strokeWidth={3}
+						strokeWidth={getStrokeWidth()}
 						fill="url(#colorPv)"
 					/>
 				</AreaChart>
 			</ResponsiveContainer>
 
-			<ModalPickDateRange
-				isModalOpen={isModalPickDateRangeOpen}
-				setIsModalOpen={setIsModalPickDateRangeOpen}
-				startDate={startDate}
-				setStartDate={setStartDate}
-				endDate={endDate}
-				setEndDate={setEndDate}
-			/>
+			{renderCustomDateModal()}
 		</div>
 	);
 };

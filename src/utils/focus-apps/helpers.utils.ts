@@ -64,15 +64,15 @@ export function formatTimeToHoursMinutesSeconds(seconds: number) {
 	return { hours, minutes, seconds: secondsRemaining };
 }
 
-export const getFormattedDuration = (duration, includeSeconds = true) => {
+export const getFormattedDuration = (duration, includeSeconds = true, includeMinutes = true) => {
 	if (!duration) {
-		return includeSeconds ? '0s' : '0m';
+		return includeSeconds ? '0s' : includeMinutes ? '0m' : '0h';
 	}
 
 	const { hours, minutes, seconds } = formatTimeToHoursMinutesSeconds(duration);
 
 	const hoursStr = hours !== 0 ? `${hours.toLocaleString()}h` : '';
-	const minutesStr = minutes !== 0 ? `${minutes}m` : '';
+	const minutesStr = minutes !== 0 && includeMinutes ? `${minutes}m` : '';
 	const secondsStr = seconds !== 0 && includeSeconds ? `${seconds}s` : '';
 
 	// Should only be possible with non-TickTick focus records like Session App. TickTick demands a minimum of 5 minutes for Focus Records but other apps like Session do not so you could have a focus record that is 16 seconds for example.
