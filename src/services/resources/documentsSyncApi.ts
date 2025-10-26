@@ -21,7 +21,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                     body: { timezone },
                 };
             },
-            invalidatesTags: ['FocusRecord', 'DayWithCompletedTasks', 'Project', 'ProjectGroup', 'FocusMedal', 'TasksMedal', 'FocusChallenge', 'TasksChallenge'],
+            invalidatesTags: ['FocusRecord', 'DayWithCompletedTasks', 'Project', 'ProjectGroup', 'FocusMedal', 'TasksMedal', 'FocusChallenge', 'TasksChallenge', 'FocusStats'],
         }),
     }),
     overrideExisting: false,

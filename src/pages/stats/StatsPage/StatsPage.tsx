@@ -1,5 +1,3 @@
-import LoaderBottomRightMedal from '../../../components/Loaders/LoaderBottomRightMedal';
-import { useStatsContext } from '../../../contexts/useStatsContext';
 import FocusSection from './FocusSection/FocusSection';
 import OverviewSection from './OverviewSection/OverviewSection';
 import TaskSection from './TaskSection/TaskSection';
@@ -9,9 +7,6 @@ import { usePageContext } from 'vike-react/usePageContext';
 const StatsPage = () => {
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;
-	const { allFocusRecordsAreHere, allCompletedTasksAreHere } = useStatsContext();
-
-	const coreDataHasLoaded = allFocusRecordsAreHere && allCompletedTasksAreHere;
 
 	return (
 		<div className="flex max-w-screen max-h-[100vh] overflow-x-hidden">
@@ -26,8 +21,6 @@ const StatsPage = () => {
 					</div>
 				</div>
 			</div>
-
-			{!coreDataHasLoaded && <LoaderBottomRightMedal />}
 		</div>
 	);
 };

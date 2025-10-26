@@ -1,18 +1,17 @@
 import classNames from 'classnames';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import Icon from '../../../../../components/Icon';
 import Modal from '../../../../../components/Modal/Modal';
-import ModalPickDateRange from '../../../../../components/Modal/ModalPickDateRange';
-import { useStatsContext } from '../../../../../contexts/useStatsContext';
 import { useThemeContext } from '../../../../../contexts/useThemeContext';
-import { getFocusDurationFromArray } from '../../../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../../../utils/focus-apps/helpers.utils';
+import { useGetFocusRecordsStatsQuery } from '../../../../../services/resources/documentsFocusRecordsApi';
+import { useFocusRecordsQueryParams } from '../../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsDateRange } from '../../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown';
-import DateRangePicker from '../DateRangePicker';
 import CustomPieChartTooltip from './CustomPieChartTooltip';
-import { getDataByProjects, getDataByTasks, getDataByTags } from './getDataBy.util';
 import ProgressBarList from './ProgressBarList';
+import { useGetProjectsQuery } from '../../../../../services/resources/documentsProjectsApi';
 
 const noData = [
 	{
@@ -25,118 +24,81 @@ const noData = [
 ];
 
 const DetailsCard = () => {
-	const {
-		focusRecords,
-		focusRecordsGroupedByDate,
-		getFocusRecordsFromSelectedDates,
-		tasksById,
-		projectsById,
-		sessionCategoriesById,
-		tagsByRawName,
-	} = useStatsContext();
-
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { hover } = chosenColorObj;
-
-	const [progressBarData, setProgressBarData] = useState(noData);
 
 	const selectedOptions = ['Project', 'Task'];
 	const [selected, setSelected] = useState(selectedOptions[0]);
 
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
-	const [selectedInterval, setSelectedInterval] = useState('Day');
-	const [selectedDates, setSelectedDates] = useState([new Date()]);
-	const [focusDurationForInterval, setFocusDurationForInterval] = useState(0);
 
-	// Custom
-	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
-	const [startDate, setStartDate] = useState(new Date('January 1, 2024'));
-	const [endDate, setEndDate] = useState(new Date());
+	// Use custom hook for date range management
+	const {
+		selectedInterval,
+		setSelectedInterval,
+		apiStartDate,
+		apiEndDate,
+		setIsModalPickDateRangeOpen,
+		renderDateRangePicker,
+		renderCustomDateModal,
+	} = useStatsDateRange({
+		initialInterval: 'Day',
+		initialDates: [new Date()],
+	});
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showNestedProgressBars, setShowNestedProgressBars] = useState(false);
 	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
-	const [dataByTasks, setDataByTasks] = useState();
 
-	useEffect(() => {
-		const isLoading =
-			!focusRecords || !focusRecordsGroupedByDate || !projectsById || !tasksById || !sessionCategoriesById;
+	// Build query params for API using custom hook
+	const queryParams = useFocusRecordsQueryParams({
+		'group-by': selected === 'Project' ? 'project' : 'task',
+		'start-date': apiStartDate,
+		'end-date': apiEndDate,
+		'nested': showNestedProgressBars,
+	});
 
-		if (isLoading) {
-			return;
-		}
+	// Fetch metadata needed for ProgressBar navigation
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
 
-		// Get all the completed tasks from the selected interval of dates
-		const allFocusRecordsForInterval =
-			selectedInterval === 'All' ? focusRecords : getFocusRecordsFromSelectedDates(selectedDates);
-		const newFocusDurationForInterval =
-			selectedInterval === 'All'
-				? getFocusDurationFromArray({ focusRecords: allFocusRecordsForInterval })
-				: getFocusDurationFromArray({
-						focusRecords: allFocusRecordsForInterval,
-						startDate: selectedDates[0],
-					});
+	// Fetch stats from API
+	const { data: statsData } = useGetFocusRecordsStatsQuery(queryParams);
+	const { ancestorTasksById } = statsData || {}
 
-		let newProgressBarData = progressBarData;
+	// Extract data from API response
+	let progressBarData = selected === 'Project'
+		? statsData?.byProject?.length > 0 ? statsData?.byProject : noData
+		: (statsData?.byTask?.length > 0 ? statsData?.byTask : noData);
+	
+	if (progressBarData && progressBarData[0]?.id !== 'No Data') {
+		progressBarData = [...progressBarData].map((item) => {
+			const projectId = item.type === 'project' ? item.id : item.projectId
 
-		switch (selected) {
-			case 'Project':
-				newProgressBarData = getDataByProjects({
-					allFocusRecordsForInterval,
-					focusDurationForInterval: newFocusDurationForInterval,
-					tasksById,
-					projectsById,
-					sessionCategoriesById,
-					startDate: selectedInterval === 'All' ? null : selectedDates[0],
-				});
+			let name = item.type === 'project' ? projectsById && projectsById[projectId]?.name : item.name
 
-				const newDataByTasks = getDataByTasks({
-					allFocusRecordsForInterval,
-					focusDurationForInterval: newFocusDurationForInterval,
-					tasksById,
-					startDate: selectedInterval === 'All' ? null : selectedDates[0],
-				});
+			// If no projectName, it's from a non-TickTick/Session app - use the app name
+			if (!name && item.value !== 'No Data') {
+				const sourceToAppName: Record<string, string> = {
+					'FocusRecordSession': 'Session',
+					'FocusRecordBeFocused': 'Be Focused',
+					'FocusRecordForest': 'Forest',
+					'FocusRecordTide': 'Tide'
+				};
+				name = sourceToAppName[projectId] || 'Inbox';
+			}
 
-				setDataByTasks(newDataByTasks);
+			const color = projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080'
 
-				break;
-			case 'Task':
-				newProgressBarData = getDataByTasks({
-					allFocusRecordsForInterval,
-					focusDurationForInterval: newFocusDurationForInterval,
-					tasksById,
-					startDate: selectedInterval === 'All' ? null : selectedDates[0],
-				});
-				break;
-			case 'Tag':
-				newProgressBarData = getDataByTags({
-					allFocusRecordsForInterval,
-					focusDurationForInterval: newFocusDurationForInterval,
-					tasksById,
-					startDate: selectedInterval === 'All' ? null : selectedDates[0],
-				});
-				break;
-		}
-
-		if (!newFocusDurationForInterval) {
-			setProgressBarData(noData);
-		} else {
-			setProgressBarData(newProgressBarData);
-		}
-
-		setFocusDurationForInterval(newFocusDurationForInterval);
-	}, [
-		focusRecords,
-		focusRecordsGroupedByDate,
-		selectedDates,
-		projectsById,
-		sessionCategoriesById,
-		tagsByRawName,
-		selected,
-		selectedInterval,
-		tasksById,
-	]);
+			return {
+				...item,
+				name,
+				color
+			}
+		})
+	}
+	const focusDurationForInterval = statsData?.summary?.totalDuration || 0;
 
 	const getPaddingAngle = () => {
 		switch (selectedInterval) {
@@ -147,20 +109,6 @@ const DetailsCard = () => {
 			default:
 				return 5;
 		}
-	};
-
-	const getDateRangePicker = () => {
-		return (
-			selectedInterval !== 'All' && (
-				<DateRangePicker
-					selectedDates={selectedDates}
-					setSelectedDates={setSelectedDates}
-					selectedInterval={selectedInterval}
-					startDate={startDate}
-					endDate={endDate}
-				/>
-			)
-		);
 	};
 
 	const getCoreDetailsCard = (fromModal) => {
@@ -218,12 +166,12 @@ const DetailsCard = () => {
 								/>
 							</div>
 
-							<div className="hidden sm:block">{getDateRangePicker()}</div>
+							<div className="hidden sm:block">{renderDateRangePicker()}</div>
 						</div>
 					</div>
 				</div>
 
-				<div className="sm:hidden mt-2">{getDateRangePicker()}</div>
+				<div className="sm:hidden mt-2">{renderDateRangePicker()}</div>
 
 				<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 md:px-4">
 					<div>
@@ -288,7 +236,7 @@ const DetailsCard = () => {
 					<div className="sm:mt-3 flex flex-col gap-2 w-full">
 						<ProgressBarList
 							data={progressBarData}
-							dataByTasks={dataByTasks}
+							dataByTasks={statsData?.byTask}
 							dataType={selected}
 							fromModal={fromModal}
 							isModalOpen={isModalOpen}
@@ -296,18 +244,12 @@ const DetailsCard = () => {
 							focusDurationForInterval={focusDurationForInterval}
 							sortBy={sortBy}
 							showNestedProgressBars={showNestedProgressBars}
+							ancestorTasksById={ancestorTasksById}
 						/>
 					</div>
 				</div>
 
-				<ModalPickDateRange
-					isModalOpen={isModalPickDateRangeOpen}
-					setIsModalOpen={setIsModalPickDateRangeOpen}
-					startDate={startDate}
-					setStartDate={setStartDate}
-					endDate={endDate}
-					setEndDate={setEndDate}
-				/>
+				{renderCustomDateModal()}
 			</div>
 		);
 	};

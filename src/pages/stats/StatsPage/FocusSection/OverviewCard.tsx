@@ -1,49 +1,71 @@
 import classNames from 'classnames';
-import { useState, useEffect } from 'react';
 import Icon from '../../../../components/Icon';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getFormattedLongDay } from '../../../../utils/date.utils';
-import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 
 const OverviewCard = () => {
-	const { total, today, focusRecordsGroupedByDate } = useStatsContext();
+	// Get today's date
+	const today = new Date();
+	const todayDateKey = getFormattedLongDay(today);
 
-	const [diffTodayFromYesterdayFocusRecords, setDiffTodayFromYesterdayFocusRecords] = useState({
-		numDiff: 0,
-		lessThanYesterday: false,
+	// Get yesterday's date
+	const yesterday = new Date();
+	yesterday.setDate(yesterday.getDate() - 1);
+	const yesterdayDateKey = getFormattedLongDay(yesterday);
+
+	// Build query params for API using custom hook
+	const todayQueryParams = useFocusRecordsQueryParams({
+		'group-by': 'day',
+		'start-date': todayDateKey,
+		'end-date': todayDateKey,
 	});
-	const [diffTodayFromYesterdayFocusDuration, setDiffTodayFromYesterdayFocusDuration] = useState({
-		numDiff: 0,
-		lessThanYesterday: false,
+
+	const yesterdayQueryParams = useFocusRecordsQueryParams({
+		'group-by': 'day',
+		'start-date': yesterdayDateKey,
+		'end-date': yesterdayDateKey,
 	});
 
-	useEffect(() => {
-		if (!focusRecordsGroupedByDate || !today) {
-			return;
-		}
+	const allTimeQueryParams = useFocusRecordsQueryParams({
+		'group-by': 'day',
+		'start-date': '2020-11-02', // Account creation date
+		'end-date': todayDateKey,
+	});
 
-		const yesterdayDate = new Date();
-		yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-		const yesterdayDateKey = getFormattedLongDay(yesterdayDate);
+	// Fetch today's stats
+	const { data: todayStats } = useGetFocusRecordsStatsQuery(todayQueryParams);
 
-		const yesterdayFocusRecords = focusRecordsGroupedByDate[yesterdayDateKey] || [];
-		const yesterdayFocusDuration = getFocusDurationFromArray({
-			focusRecords: yesterdayFocusRecords,
-			startDate: yesterdayDate,
-		});
+	// Fetch yesterday's stats
+	const { data: yesterdayStats } = useGetFocusRecordsStatsQuery(yesterdayQueryParams);
 
-		setDiffTodayFromYesterdayFocusRecords({
-			numDiff: Math.abs(today.numOfFocusRecords - yesterdayFocusRecords.length),
-			lessThanYesterday: today.numOfFocusRecords < yesterdayFocusRecords.length,
-		});
+	// Fetch all-time stats
+	const { data: allTimeStats } = useGetFocusRecordsStatsQuery(allTimeQueryParams);
 
-		setDiffTodayFromYesterdayFocusDuration({
-			numDiff: Math.abs(today.focusDuration - yesterdayFocusDuration),
-			lessThanYesterday: today.focusDuration < yesterdayFocusDuration,
-		});
-	}, [focusRecordsGroupedByDate, today]);
+	// Extract values
+	const todayData = todayStats?.byDay?.[0] || { duration: 0, count: 0 };
+	const yesterdayData = yesterdayStats?.byDay?.[0] || { duration: 0, count: 0 };
+
+	const todayFocusRecords = todayData.count;
+	const todayFocusDuration = todayData.duration;
+	const yesterdayFocusRecords = yesterdayData.count;
+	const yesterdayFocusDuration = yesterdayData.duration;
+
+	const totalFocusRecords = allTimeStats?.summary?.totalRecords || 0;
+	const totalFocusDuration = allTimeStats?.summary?.totalDuration || 0;
+
+	// Calculate differences
+	const diffTodayFromYesterdayFocusRecords = {
+		numDiff: Math.abs(todayFocusRecords - yesterdayFocusRecords),
+		lessThanYesterday: todayFocusRecords < yesterdayFocusRecords,
+	};
+
+	const diffTodayFromYesterdayFocusDuration = {
+		numDiff: Math.abs(todayFocusDuration - yesterdayFocusDuration),
+		lessThanYesterday: todayFocusDuration < yesterdayFocusDuration,
+	};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -57,7 +79,7 @@ const OverviewCard = () => {
 					{/* Today's Focus Records */}
 					<div className="flex flex-col items-center p-2">
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
-							{today.numOfFocusRecords}
+							{todayFocusRecords}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus Records</div>
 						<div className="text-color-gray-100 flex items-center gap-1">
@@ -84,7 +106,7 @@ const OverviewCard = () => {
 					{/* Total Focus Records */}
 					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
-							{total.numOfFocusRecords.toLocaleString()}
+							{totalFocusRecords.toLocaleString()}
 						</div>
 						<div className="text-color-gray-100 font-medium">Total Focus Records</div>
 					</div>
@@ -92,7 +114,7 @@ const OverviewCard = () => {
 					{/* Today Focus Duration */}
 					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
-							{getFormattedDuration(today.focusDuration, false)}
+							{getFormattedDuration(todayFocusDuration, false)}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus</div>
 						<div className="text-color-gray-100 flex items-center gap-1">
@@ -120,7 +142,7 @@ const OverviewCard = () => {
 					{/* Total Focus Duration */}
 					<div className="flex flex-col items-center p-2 lg:border-l border-color-gray-150">
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
-							{getFormattedDuration(total.focusDuration, false)}
+							{getFormattedDuration(totalFocusDuration, false)}
 						</div>
 						<div className="text-color-gray-100 font-medium">Total Focus Duration</div>
 					</div>

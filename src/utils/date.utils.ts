@@ -577,3 +577,22 @@ export const getFormattedDateAndTimeForFileName = () => {
 
 	return `${formattedDate}_${formattedTime}`
 }
+
+/**
+ * Convert selected dates array to start/end date strings for API queries
+ * @param selectedDates Array of dates from the date range picker
+ * @returns Object with startDate and endDate as ISO strings (YYYY-MM-DD)
+ */
+export const getDateRangeFromSelectedDates = (selectedDates) => {
+	if (!selectedDates || selectedDates.length === 0) {
+		return { startDate: null, endDate: null };
+	}
+
+	const startDate = selectedDates[0];
+	const endDate = selectedDates[selectedDates.length - 1];
+
+	return {
+		startDate: getFormattedLongDay(startDate),
+		endDate: getFormattedLongDay(endDate)
+	};
+};

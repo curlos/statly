@@ -1,14 +1,13 @@
 import classNames from 'classnames';
 import { useState } from 'react';
 import Accordion from '../../../../../components/Accordion/Accordion';
-import { useGetTodoistAllTasksQuery } from '../../../../../services/resources/oldFocusAppsApi';
-import { useGetAllTasksQuery, useGetAllProjectsQuery } from '../../../../../services/resources/ticktickOneApi';
 import { arrayToObjectByKey, getFormattedDuration } from '../../../../../utils/focus-apps/helpers.utils';
 import {
 	getTasksWithParentIdAndNoParent,
 	getGroupedSubtasksAndParentTasks,
 } from '../../../../completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
 import ProgressBar from '../ProgressBar';
+import { useGetProjectsQuery } from '../../../../../services/resources/documentsProjectsApi';
 
 interface ProgressBarListProps {
 	data: Array<any>;
@@ -24,13 +23,21 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	focusDurationForInterval,
 	sortBy,
 	showNestedProgressBars,
+	ancestorTasksById
 }) => {
-	const sortedData = data.sort((a, b) => {
+	// Fetch metadata needed for ProgressBar navigation
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsById, projectsSessionById } = fetchedProjects || {};
+
+	// Session categories are stored as projects with source='ProjectSession'
+	const sessionCategoriesById = projectsSessionById || {};
+
+	const sortedData = [...data].sort((a, b) => {
 		if (sortBy === 'Focus Hours: Most-Least') {
-			return b.focusDuration - a.focusDuration;
+			return b.duration - a.duration;
 		}
 
-		return a.focusDuration - b.focusDuration;
+		return a.duration - b.duration;
 	});
 	const maxDataLen = fromModal ? sortedData.length : 5;
 
@@ -42,7 +49,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 					fromModal && 'max-h-[300px] md:max-h-[500px] overflow-auto gray-scrollbar'
 				)}
 			>
-				{showNestedProgressBars ? (
+				{showNestedProgressBars && ancestorTasksById ? (
 					<NestedProgressBars
 						{...{
 							data,
@@ -53,12 +60,15 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 							isModalOpen,
 							setIsModalOpen,
 							sortBy,
+							projectsById,
+							sessionCategoriesById,
+							ancestorTasksById
 						}}
 					/>
 				) : (
 					sortedData
 						.slice(0, maxDataLen)
-						.map((item) => <ProgressBar key={item.id} item={item} fromModal={fromModal} />)
+						.map((item) => <ProgressBar key={item.id} item={item} fromModal={fromModal} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} />)
 				)}
 			</div>
 
@@ -80,25 +90,15 @@ const NestedProgressBars = ({
 	dataType,
 	focusDurationForInterval,
 	fromModal,
-	isModalOpen,
 	setIsModalOpen,
 	sortBy,
+	projectsById,
+	sessionCategoriesById,
+	ancestorTasksById
 }) => {
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { tasksById, ancestorTasksById } = fetchedTasks || {};
-
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistAllTasksById } = useGetTodoistAllTasksQuery();
-	const { todoistAllTasksById, todoistAncestorTasksById } = fetchedTodoistAllTasksById || {};
-
-	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects } = useGetAllProjectsQuery();
-	const { projectsById } = fetchedProjects || {};
-
 	const groupedTasksCollapsedByDefault = useState(false);
 
-	if (!data || !tasksById || !todoistAllTasksById || (dataType === 'Project' && !dataByTasks)) {
+	if (!data || !ancestorTasksById || (dataType === 'Project' && !dataByTasks)) {
 		return <div>Loading...</div>;
 	}
 
@@ -116,7 +116,8 @@ const NestedProgressBars = ({
 	const otherFocusRecordTaskIds = [];
 
 	taskIds.forEach((id) => {
-		const task = tasksById[id];
+		const task = ancestorTasksById[id];
+
 		if (task) {
 			tickTickFocusRecordTasks.push(task);
 		} else {
@@ -126,10 +127,7 @@ const NestedProgressBars = ({
 
 	const { tasksWithParentId, tasksWithNoParent } = getTasksWithParentIdAndNoParent({
 		completedTasksForDay: tickTickFocusRecordTasks,
-		tasksById,
-		todoistAllTasksById,
 		ancestorTasksById,
-		todoistAncestorTasksById,
 		includeDirectParentTasksWithNoChild: true,
 	});
 
@@ -170,9 +168,13 @@ const NestedProgressBars = ({
 				{directFocusTasks?.map((subtask, index) => {
 					const item = progressBarDataById[subtask.id];
 
+					if (!item) {
+						return null;
+					}
+
 					return (
-						<li key={subtask.id + index} className="flex items-start gap-1">
-							<ProgressBar key={item.id} item={item} fromModal={fromModal} />
+						<li key={subtask.id} className="flex items-start gap-1">
+							<ProgressBar item={item} fromModal={fromModal} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} />
 						</li>
 					);
 				})}
@@ -196,7 +198,7 @@ const NestedProgressBars = ({
 			directParentChildFocusTasks.forEach((subtask) => {
 				const item = progressBarDataById[subtask.id];
 
-				totalTime += item.focusDuration;
+				totalTime += item.duration;
 			});
 		}
 
@@ -219,7 +221,7 @@ const NestedProgressBars = ({
 	});
 
 	const renderNestedTasks = (parentTaskId) => {
-		const parentTask = todoistAllTasksById[parentTaskId] || tasksById[parentTaskId];
+		const parentTask = ancestorTasksById[parentTaskId];
 
 		// These are the tasks who are direct children of the parent task. These will be rendered as completed checkboxes with the content.
 		const directParentChildFocusTasks = groupedSubtasksByParentTask[parentTask.id];
@@ -251,41 +253,12 @@ const NestedProgressBars = ({
 					<ul className="pl-6">
 						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
 							parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId, index) => {
-								const task = tasksById[taskId] || todoistAllTasksById[taskId];
-
 								if (
 									parentDirectChildrenTaskIdsByParentId[taskId] &&
 									parentDirectChildrenTaskIdsByParentId[taskId].length > 0
 								) {
-									return renderNestedTasks(taskId);
+									return <div key={taskId}>{renderNestedTasks(taskId)}</div>;
 								}
-
-								const directFocusedTasks = groupedSubtasksByParentTask[taskId];
-
-								return (
-									<Accordion
-										key={taskId + index}
-										title={
-											<li className="cursor-pointer font-bold text-[18px] hover:underline">
-												{task.content || task.title}{' '}
-												<span className="text-color-gray-25">
-													(
-													{totalTimeOnParentTask[taskId] &&
-														getFormattedDuration(totalTimeOnParentTask[taskId].time, false)}
-													,{' '}
-													{totalTimeOnParentTask[taskId] &&
-														totalTimeOnParentTask[taskId].percentage}
-													%)
-												</span>
-											</li>
-										}
-										openByDefault={true}
-										showArrowNextToText={true}
-										customClasses="mt-1"
-									>
-										{directFocusedTasks?.length > 0 && renderDirectFocusTasks(directFocusedTasks)}
-									</Accordion>
-								);
 							})}
 					</ul>
 				</Accordion>
@@ -310,7 +283,7 @@ const NestedProgressBars = ({
 		const groupedProjectsAndTasks = {};
 
 		for (const taskId of [...sortedTasksWithNoParent, ...otherFocusRecordTaskIds]) {
-			const task = tasksById[taskId] || todoistAllTasksById[taskId];
+			const task = ancestorTasksById[taskId];
 
 			if (!task) {
 				continue;
@@ -325,19 +298,19 @@ const NestedProgressBars = ({
 			groupedProjectsAndTasks[projectId].push(taskId);
 		}
 
-		const sortedProjects = data.sort((projectOne, projectTwo) => {
+		const sortedProjects = [...data].sort((projectOne, projectTwo) => {
 			if (sortBy === 'Focus Hours: Most-Least') {
-				return projectTwo.focusDuration - projectOne.focusDuration;
+				return projectTwo.duration - projectOne.duration;
 			}
 
-			return projectOne.focusDuration - projectTwo.focusDuration;
+			return projectOne.duration - projectTwo.duration;
 		});
 
 		const tickTickProjects = [];
 		const nonTickTickProjects = [];
 
 		sortedProjects.forEach((project) => {
-			if (projectsById[project.id]) {
+			if (projectsById[project.id]?.source === 'ProjectTickTick' || project.id === "inbox116577688") {
 				tickTickProjects.push(project);
 			} else {
 				nonTickTickProjects.push(project);
@@ -360,7 +333,7 @@ const NestedProgressBars = ({
 										{/* TickTick tasks = "title", Todoist tasks = "content" */}
 										<span className="">{project.name} </span>
 										<span className="text-color-gray-25">
-											({project.value}, {project.percentage}%)
+											({getFormattedDuration(project.duration, false)}, {project.percentage}%)
 										</span>
 									</li>
 								}
@@ -387,7 +360,7 @@ const NestedProgressBars = ({
 					<div className="space-y-4">
 						{fromModal && <div className="text-[24px] font-bold underline mt-4">Non-TickTick Projects</div>}
 						{nonTickTickProjects.slice(0, maxNonTickTickProjects).map((item) => (
-							<ProgressBar key={item.id} item={item} fromModal={fromModal} />
+							<ProgressBar key={item.id} item={item} fromModal={fromModal} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} />
 						))}
 					</div>
 				)}
@@ -398,10 +371,10 @@ const NestedProgressBars = ({
 	const sortedOtherFocusRecordTasksData = otherFocusRecordTaskIds
 		.sort((a, b) => {
 			if (sortBy === 'Focus Hours: Most-Least') {
-				return progressBarDataById[b].focusDuration - progressBarDataById[a].focusDuration;
+				return progressBarDataById[b].duration - progressBarDataById[a].duration;
 			}
 
-			return progressBarDataById[a].focusDuration - progressBarDataById[b].focusDuration;
+			return progressBarDataById[a].duration - progressBarDataById[b].duration;
 		})
 		.map((taskId) => progressBarDataById[taskId]);
 
@@ -415,7 +388,7 @@ const NestedProgressBars = ({
 			{/* Other (Session App, etc.) */}
 			<div className="space-y-4">
 				{sortedOtherFocusRecordTasksData.map((item) => (
-					<ProgressBar key={item.id} item={item} fromModal={fromModal} />
+					<ProgressBar key={item.id} item={item} fromModal={fromModal} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} />
 				))}
 			</div>
 		</div>

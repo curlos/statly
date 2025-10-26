@@ -17,15 +17,15 @@ const FocusSection = () => {
 				</div>
 
 				<div className="flex-[4] w-full h-[380px]">
-					<DailyHoursFocusGoalCard />
+					{/* <DailyHoursFocusGoalCard /> */}
 				</div>
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
-				<TrendsCard />
+				{/* <TrendsCard />
 				<TimelineCard />
 				<MostFocusedTimeCard />
-				<YearGridsCard />
+				<YearGridsCard /> */}
 			</div>
 		</div>
 	);

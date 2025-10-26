@@ -1,10 +1,8 @@
 import classNames from 'classnames';
 import { navigate } from 'vike/client/router';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
+import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 
-const ProgressBar = ({ item, fromModal = false }) => {
-	const { projectsById, sessionCategoriesById } = useStatsContext();
-
+const ProgressBar = ({ item, fromModal = false, projectsById, sessionCategoriesById }) => {
 	const handleGoToFocusRecordsPage = () => {
 		let queryParams = '';
 
@@ -32,6 +30,8 @@ const ProgressBar = ({ item, fromModal = false }) => {
 		navigate('/focus-records' + queryParams);
 	};
 
+	const color = item.type === 'task' ? (projectsById[item?.projectId]?.color || item.color) : item.color
+
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-1 w-full">
@@ -48,13 +48,13 @@ const ProgressBar = ({ item, fromModal = false }) => {
 					{item.name}
 				</div>
 				<div className="text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px] text-[#8C8C8C] truncate">
-					{item.value} • {item.percentage}%
+					{getFormattedDuration(item.duration, false)} • {item.percentage}%
 				</div>
 			</div>
 			<div key={item.id} className="rounded-full dark:bg-[#232323]">
 				<div
 					className={`text-xs font-medium text-blue-100 text-center p-[3px] leading-none rounded-full`}
-					style={{ width: `${item.percentage}%`, backgroundColor: item.color }}
+					style={{ width: `${item.percentage}%`, backgroundColor: color }}
 				/>
 			</div>
 		</div>

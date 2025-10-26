@@ -66,7 +66,7 @@ export function formatTimeToHoursMinutesSeconds(seconds: number) {
 
 export const getFormattedDuration = (duration, includeSeconds = true) => {
 	if (!duration) {
-		return includeSeconds ? '0h0m0s' : '0h0m';
+		return includeSeconds ? '0s' : '0m';
 	}
 
 	const { hours, minutes, seconds } = formatTimeToHoursMinutesSeconds(duration);

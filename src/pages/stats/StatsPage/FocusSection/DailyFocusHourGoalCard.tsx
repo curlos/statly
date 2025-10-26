@@ -6,11 +6,12 @@ const DailyHoursFocusGoalCard = () => {
 			<h3 className="font-bold text-[16px]">Today's Focus Hour Goal</h3>
 
 			<div className="flex justify-center items-center">
-				<DailyHoursFocusGoal
+			{/* TODO: Bring and fix later. */}
+				{/* <DailyHoursFocusGoal
 					{...{
 						type: 'small',
 					}}
-				/>
+				/> */}
 			</div>
 		</div>
 	);
