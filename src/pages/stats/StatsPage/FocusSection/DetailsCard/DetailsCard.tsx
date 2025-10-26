@@ -12,6 +12,7 @@ import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown
 import CustomPieChartTooltip from './CustomPieChartTooltip';
 import ProgressBarList from './ProgressBarList';
 import { useGetProjectsQuery } from '../../../../../services/resources/documentsProjectsApi';
+import Spinner from '../../../../../components/Loaders/Spinner';
 
 const noData = [
 	{
@@ -64,7 +65,7 @@ const DetailsCard = () => {
 	const { projectsById } = fetchedProjects || {};
 
 	// Fetch stats from API
-	const { data: statsData } = useGetFocusRecordsStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
 	const { ancestorTasksById } = statsData || {}
 
 	// Extract data from API response
@@ -113,7 +114,7 @@ const DetailsCard = () => {
 
 	const getCoreDetailsCard = (fromModal) => {
 		return (
-			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full">
+			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative">
 				<div className="flex gap-4">
 					<div className="md:flex justify-between items-center w-full">
 						<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
@@ -250,6 +251,12 @@ const DetailsCard = () => {
 				</div>
 
 				{renderCustomDateModal()}
+
+				{(isLoading || isFetching) && (
+					<div className="absolute bottom-3 right-3">
+						<Spinner size="lg" />
+					</div>
+				)}
 			</div>
 		);
 	};

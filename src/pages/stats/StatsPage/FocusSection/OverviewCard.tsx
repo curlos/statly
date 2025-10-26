@@ -5,6 +5,7 @@ import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
 import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
+import Spinner from '../../../../components/Loaders/Spinner';
 
 const OverviewCard = () => {
 	// Get today's date
@@ -36,13 +37,16 @@ const OverviewCard = () => {
 	});
 
 	// Fetch today's stats
-	const { data: todayStats } = useGetFocusRecordsStatsQuery(todayQueryParams);
+	const { data: todayStats, isLoading: isTodayLoading, isFetching: isTodayFetching } = useGetFocusRecordsStatsQuery(todayQueryParams);
 
 	// Fetch yesterday's stats
-	const { data: yesterdayStats } = useGetFocusRecordsStatsQuery(yesterdayQueryParams);
+	const { data: yesterdayStats, isLoading: isYesterdayLoading, isFetching: isYesterdayFetching } = useGetFocusRecordsStatsQuery(yesterdayQueryParams);
 
 	// Fetch all-time stats
-	const { data: allTimeStats } = useGetFocusRecordsStatsQuery(allTimeQueryParams);
+	const { data: allTimeStats, isLoading: isAllTimeLoading, isFetching: isAllTimeFetching } = useGetFocusRecordsStatsQuery(allTimeQueryParams);
+
+	// Check if any query is loading or fetching
+	const isLoading = isTodayLoading || isYesterdayLoading || isAllTimeLoading || isTodayFetching || isYesterdayFetching || isAllTimeFetching;
 
 	// Extract values
 	const todayData = todayStats?.byDay?.[0] || { duration: 0, count: 0 };
@@ -71,7 +75,7 @@ const OverviewCard = () => {
 	const { chosenColorObj } = themeContext;
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[16px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[16px] relative">
 			<h3 className="font-bold text-[16px]">Overview</h3>
 
 			<div className="flex-1 flex flex-col justify-center gap-7">
@@ -148,6 +152,12 @@ const OverviewCard = () => {
 					</div>
 				</div>
 			</div>
+
+			{isLoading && (
+				<div className="absolute bottom-3 right-3">
+					<Spinner size="lg" />
+				</div>
+			)}
 		</div>
 	);
 };
