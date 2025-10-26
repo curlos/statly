@@ -1,33 +1,36 @@
 import classNames from 'classnames';
 import { navigate } from 'vike/client/router';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const ProgressBar = ({ item, fromModal = false, projectsById, sessionCategoriesById }) => {
-	const handleGoToFocusRecordsPage = () => {
-		let queryParams = '';
+	const pageContext = usePageContext();
+	const searchParams = new URLSearchParams(pageContext.urlParsed.search);
 
+	const handleGoToFocusRecordsPage = () => {
 		const { id } = item;
 
 		switch (item.type) {
 			case 'task':
-				queryParams += `?task-id=${id}`;
+				searchParams.set('task-id', id);
 				break;
 			case 'project':
 				// If the project is from TickTick.
 				if (projectsById[id]) {
-					queryParams += `?projects=${id}`;
+					searchParams.set('projects', id);
 					// If the project is a category from "Session App".
 				} else if (sessionCategoriesById[id]) {
-					queryParams += `?categories=${id}`;
+					searchParams.set('categories', id);
 					// If the project is one of the focus apps that don't have separate projects (Forest, Tide, and BeFocused).
 				} else if (id === 'forest-app' || id === 'tide-ios-app' || id === 'be-focused-app') {
-					queryParams += `?focus-apps=${id}`;
+					searchParams.set('focus-apps', id);
 				}
 
 				break;
 		}
 
-		navigate('/focus-records' + queryParams);
+		const queryString = searchParams.toString();
+		navigate('/focus-records' + (queryString ? `?${queryString}` : ''));
 	};
 
 	const color = item.type === 'task' ? (projectsById[item?.projectId]?.color || item.color) : item.color
