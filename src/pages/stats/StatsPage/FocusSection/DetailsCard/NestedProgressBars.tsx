@@ -84,9 +84,19 @@ const NestedProgressBars = ({
      * @param directCompletedSubtasks
      */
     const renderDirectFocusTasks = (directFocusTasks) => {
+        const sortedDirectFocusTasks = [...directFocusTasks].sort((subtaskOne, subtaskTwo) => {
+            const itemOne = progressBarDataById[subtaskOne.id];
+            const itemTwo = progressBarDataById[subtaskTwo.id];
+
+            const durationOne = itemOne?.duration || 0;
+            const durationTwo = itemTwo?.duration || 0;
+
+            return durationTwo - durationOne; // Sort from highest to lowest
+        });
+
         return (
             <ul className="space-y-4 pl-6 mb-6">
-                {directFocusTasks?.map((subtask, index) => {
+                {sortedDirectFocusTasks?.map((subtask, index) => {
                     const item = progressBarDataById[subtask.id];
 
                     if (!item) {
@@ -173,7 +183,13 @@ const NestedProgressBars = ({
 
                     <ul className="pl-6">
                         {parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
-                            parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId, index) => {
+                            parentDirectChildrenTaskIdsByParentId[parentTaskId]
+                                .sort((taskIdOne, taskIdTwo) => {
+                                    const timeOne = totalTimeOnParentTask[taskIdOne]?.time || 0;
+                                    const timeTwo = totalTimeOnParentTask[taskIdTwo]?.time || 0;
+                                    return timeTwo - timeOne; // Sort from highest to lowest
+                                })
+                                .map((taskId, index) => {
                                 if (
                                     parentDirectChildrenTaskIdsByParentId[taskId] &&
                                     parentDirectChildrenTaskIdsByParentId[taskId].length > 0
