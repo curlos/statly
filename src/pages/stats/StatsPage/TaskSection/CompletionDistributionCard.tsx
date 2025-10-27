@@ -31,7 +31,7 @@ const CompletionDistributionCard = () => {
 	const { chosenColorObj, nextLightestColorObj } = themeContext;
 
 	const { searchParams } = useSearchParamsContext();
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
 

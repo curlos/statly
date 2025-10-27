@@ -27,7 +27,7 @@ export const useStatsDateRange = (options: UseStatsDateRangeOptions) => {
 	const getApiDateRange = () => {
 		if (selectedInterval === 'All') {
 			return {
-				startDate: 'Nov 2, 2020', // Account creation date
+				startDate: 'Jan 1, 1900', // Account creation date
 				endDate: getFormattedShortMonthDay(new Date()),
 			};
 		}

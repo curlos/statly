@@ -52,7 +52,7 @@ const useHandleFilterCompletedTasks = ({
 }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
@@ -149,7 +149,7 @@ const useHandleFilterCompletedTasks = ({
 		return oneOfTheTasksHasASelectedProject;
 	};
 
-	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
+	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
 	const includesAllDates = firstDayToTodayString === currentDateRangeString;
 

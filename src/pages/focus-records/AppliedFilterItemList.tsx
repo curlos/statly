@@ -20,7 +20,7 @@ const AppliedFilterItemList = () => {
 	// For All
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const taskIdToFilterBy = searchParams.get('task-id');
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
@@ -211,7 +211,7 @@ const AppliedFilterItemList = () => {
 		projectsTodoistFilter,
 		crossesMidnightFilter,
 	];
-	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
+	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
 		const { name, value } = focusRecordsFilter;

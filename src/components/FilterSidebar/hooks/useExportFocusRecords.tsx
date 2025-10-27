@@ -330,7 +330,7 @@ const useExportFocusRecords = () => {
 	};
 
 	const getTitleInfo = (focusRecords) => {
-		const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+		const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 		const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 		const taskIdFromUrl = searchParams.get('task-id');
 		const filterByTaskId = taskIdFromUrl || false;

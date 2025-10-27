@@ -11,7 +11,7 @@ export const useSharedQueryParams = () => {
 
 	// Extract raw values from URL
 	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';

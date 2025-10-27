@@ -31,7 +31,7 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 
 	const handleGoToCompletedDate = (completedDate) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
-		const startDate = pageContext.urlParsed.search['start-date'] || 'Nov 2, 2020'
+		const startDate = pageContext.urlParsed.search['start-date'] || 'Jan 1, 1900'
 
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];

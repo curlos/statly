@@ -77,7 +77,7 @@ const useHandleFilterFocusRecords = ({
 	const { searchParams } = useSearchParamsContext();
 	const taskIdFromUrl = searchParams.get('task-id');
 	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Nov 2, 2020';
+	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
@@ -261,7 +261,7 @@ const useHandleFilterFocusRecords = ({
 		return focusRecord['type'] === 'fullFocus';
 	};
 
-	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('November 2, 2020'))} - ${getFormattedShortMonthDay(new Date())}`;
+	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 	const currentDateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
 	const includesAllDates = firstDayToTodayString === currentDateRangeString;
 
