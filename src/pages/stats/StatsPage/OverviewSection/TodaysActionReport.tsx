@@ -3,7 +3,7 @@ import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 
-const MedalsCard = () => {
+const TodaysActionReport = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor } = chosenColorObj;
@@ -91,4 +91,4 @@ const MedalsCard = () => {
 	);
 };
 
-export default MedalsCard;
+export default TodaysActionReport;

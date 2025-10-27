@@ -1,4 +1,4 @@
-import MedalsCard from './MedalsCard';
+import TodaysActionReport from './TodaysActionReport';
 import OverviewCard from './OverviewCard';
 import RecentCompletionCurveCard from './RecentCompletionCurveCard';
 import RecentFocusedDurationCurveCard from './RecentFocusedDurationCurveCard';
@@ -42,7 +42,7 @@ const OverviewSection = () => {
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
 				<OverviewCard />
-				<MedalsCard />
+				<TodaysActionReport />
 			</div>
 
 			{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
