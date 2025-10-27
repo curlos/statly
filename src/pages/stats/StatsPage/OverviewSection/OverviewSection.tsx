@@ -45,12 +45,12 @@ const OverviewSection = () => {
 				<TodaysActionReport />
 			</div>
 
-			{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 				<RecentFocusRecordsCurveCard />
-				<RecentFocusedDurationCurveCard />
+				{/* <RecentFocusedDurationCurveCard /> */}
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+			{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 				<RecentCompletionCurveCard />
 			</div> */}
 		</div>

@@ -1,97 +1,33 @@
 import classNames from 'classnames';
-import { useState } from 'react';
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
-import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
-import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
+import { useGetFocusStatsForInterval } from '../hooks/useGetFocusStatsForInterval';
 
 const TrendsCard = () => {
-	const selectedIntervalOptions = ['Week', 'Month', 'Year', 'All', 'Custom'];
-
-	// Use custom hook for date range management
+	// Use custom hook for focus stats with duration data type
 	const {
 		selectedInterval,
 		setSelectedInterval,
-		apiStartDate,
-		apiEndDate,
+		selectedIntervalOptions,
+		selectedGroupedInterval,
+		setSelectedGroupedInterval,
+		selectedGroupedIntervalOptions,
+		data,
+		isLoading,
+		isFetching,
 		setIsModalPickDateRangeOpen,
 		renderDateRangePicker,
 		renderCustomDateModal,
-	} = useStatsDateRange({
+		shouldShowGroupedInterval,
+	} = useGetFocusStatsForInterval({
+		dataType: 'duration',
 		initialInterval: 'Week',
 		initialDates: getAllDaysInWeekFromDate(new Date()),
 	});
-
-	const selectedGroupedIntervalOptions = ['Days', 'Weeks', 'Months'];
-	const [selectedGroupedInterval, setSelectedGroupedInterval] = useState('Days');
-
-	// Map selectedGroupedInterval to API group-by parameter
-	const getGroupByParam = () => {
-		switch (selectedGroupedInterval) {
-			case 'Days':
-				return 'day';
-			case 'Weeks':
-				return 'week';
-			case 'Months':
-				return 'month';
-			default:
-				return 'day';
-		}
-	};
-
-	// Build query params for API using custom hook
-	const queryParams = useStatsQueryParams({
-		'group-by': getGroupByParam(),
-		'interval-start-date': apiStartDate,
-		'interval-end-date': apiEndDate,
-	});
-
-	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
-
-	// Transform API data to chart format based on grouping
-	const transformDataForChart = () => {
-		if (!statsData) return [];
-
-		// Get the appropriate data array based on group-by parameter
-		const rawData = statsData.byDay || statsData.byWeek || statsData.byMonth || [];
-
-		return rawData.map((item: any) => {
-			let name = '';
-
-			if (selectedGroupedInterval === 'Days') {
-				// Backend returns YYYY-MM-DD format for days
-				const [year, month, dayNum] = item.date.split('-').map(Number);
-				const date = new Date(year, month - 1, dayNum);
-				name = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-			} else if (selectedGroupedInterval === 'Weeks') {
-				// Backend returns "January 1, 2025" format (Monday of the week)
-				// Display as "Jan 1 - Jan 7, 2025" (start of week to end of week)
-				const startDate = new Date(item.date);
-				const endDate = new Date(startDate);
-				endDate.setDate(endDate.getDate() + 6); // Add 6 days to get Sunday
-
-				const startStr = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-				const endStr = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-				name = `${startStr} - ${endStr}`;
-			} else if (selectedGroupedInterval === 'Months') {
-				// Backend returns "January 2025" format
-				name = item.date;
-			}
-
-			return {
-				name,
-				seconds: item.duration
-			};
-		});
-	};
-
-	const data = transformDataForChart();
 
 	const getStrokeWidth = () => {
 		// Use thinner stroke for "Days" + large date ranges to handle many data points
@@ -134,7 +70,7 @@ const TrendsCard = () => {
 				</div>
 
 				<div className={classNames('flex gap-2 items-center', selectedInterval === 'All' && 'py-2')}>
-					{selectedInterval !== 'Week' && (
+					{shouldShowGroupedInterval && (
 						<GeneralSelectButtonAndDropdown
 							selected={selectedGroupedInterval}
 							setSelected={setSelectedGroupedInterval}
