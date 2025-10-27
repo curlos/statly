@@ -1,12 +1,13 @@
-import { useStatsContext } from '../../../../contexts/useStatsContext';
 import MedalsCard from './MedalsCard';
 import OverviewCard from './OverviewCard';
 import RecentCompletionCurveCard from './RecentCompletionCurveCard';
 import RecentFocusedDurationCurveCard from './RecentFocusedDurationCurveCard';
 import RecentFocusRecordsCurveCard from './RecentFocusRecordsCurveCard';
+import { useGetOverviewStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import Spinner from '../../../../components/Loaders/Spinner';
 
 const OverviewSection = () => {
-	const { total } = useStatsContext();
+	const { data: overviewStats, isLoading, isFetching } = useGetOverviewStatsQuery();
 
 	return (
 		<div>
@@ -14,27 +15,28 @@ const OverviewSection = () => {
 				<div className="flex justify-between items-center">
 					<div className="grid grid-cols-2 sm:flex gap-6">
 						<div>
-							<span className="font-bold">{total.numOfAllTasks.toLocaleString()}</span> Tasks
+							<span className="font-bold">{(overviewStats?.numOfAllTasks ?? 0).toLocaleString()}</span> <span className="text-gray-400">Tasks</span>
 						</div>
 
 						<div>
-							<span className="font-bold">{total.numOfCompletedTasks.toLocaleString()}</span> Completed
+							<span className="font-bold">{(overviewStats?.numOfCompletedTasks ?? 0).toLocaleString()}</span> <span className="text-gray-400">Completed</span>
 						</div>
 
 						<div>
-							<span className="font-bold">{total.numOfProjects.toLocaleString()}</span> Projects
+							<span className="font-bold">{(overviewStats?.numOfProjects ?? 0).toLocaleString()}</span> <span className="text-gray-400">Projects</span>
 						</div>
 
-						{/* TODO: Populate with real user account data after TickTick 2.0 is done. Use the date the account was created in to do so. */}
 						<div>
-							<span className="font-bold">{total.numOfDaysSinceAccountCreated.toLocaleString()}</span>{' '}
-							Days
+							<span className="font-bold">{(overviewStats?.numOfDaysSinceAccountCreated ?? 0).toLocaleString()}</span>{' '}
+							<span className="text-gray-400">Days</span>
 						</div>
 					</div>
+
+					{isLoading || isFetching && <Spinner size="sm" />}
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
+			{/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
 				<OverviewCard />
 				<MedalsCard />
 			</div>
@@ -46,7 +48,7 @@ const OverviewSection = () => {
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 				<RecentCompletionCurveCard />
-			</div>
+			</div> */}
 		</div>
 	);
 };
