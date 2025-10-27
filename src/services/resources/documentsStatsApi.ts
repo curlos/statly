@@ -6,7 +6,12 @@ import { baseAPI, buildQueryString } from '../api';
 export const documentsStatsApi = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getOverviewStats: builder.query({
-            query: () => '/documents/stats/overview',
+            query: (queryParams) => {
+                const queryString = buildQueryString(queryParams);
+                return queryString
+                    ? `/documents/stats/overview?${queryString}`
+                    : '/documents/stats/overview';
+            },
             transformResponse: (response) => {
                 return response;
             },

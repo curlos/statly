@@ -4,10 +4,14 @@ import RecentCompletionCurveCard from './RecentCompletionCurveCard';
 import RecentFocusedDurationCurveCard from './RecentFocusedDurationCurveCard';
 import RecentFocusRecordsCurveCard from './RecentFocusRecordsCurveCard';
 import { useGetOverviewStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';
 
 const OverviewSection = () => {
-	const { data: overviewStats, isLoading, isFetching } = useGetOverviewStatsQuery();
+	// Build query params for overview stats (respects FilterSidebar selections)
+	const overviewQueryParams = useStatsQueryParams();
+
+	const { data: overviewStats, isLoading, isFetching } = useGetOverviewStatsQuery(overviewQueryParams);
 
 	return (
 		<div>
@@ -36,12 +40,12 @@ const OverviewSection = () => {
 				</div>
 			</div>
 
-			{/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
 				<OverviewCard />
-				<MedalsCard />
+				{/* <MedalsCard /> */}
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+			{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 				<RecentFocusRecordsCurveCard />
 				<RecentFocusedDurationCurveCard />
 			</div>
