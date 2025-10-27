@@ -4,7 +4,7 @@ import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
-import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';
 
 const OverviewCard = () => {
@@ -18,22 +18,22 @@ const OverviewCard = () => {
 	const yesterdayDateKey = getFormattedLongDay(yesterday);
 
 	// Build query params for API using custom hook
-	const todayQueryParams = useFocusRecordsQueryParams({
+	const todayQueryParams = useStatsQueryParams({
 		'group-by': 'day',
-		'start-date': todayDateKey,
-		'end-date': todayDateKey,
+		'interval-start-date': todayDateKey,
+		'interval-end-date': todayDateKey,
 	});
 
-	const yesterdayQueryParams = useFocusRecordsQueryParams({
+	const yesterdayQueryParams = useStatsQueryParams({
 		'group-by': 'day',
-		'start-date': yesterdayDateKey,
-		'end-date': yesterdayDateKey,
+		'interval-start-date': yesterdayDateKey,
+		'interval-end-date': yesterdayDateKey,
 	});
 
-	const allTimeQueryParams = useFocusRecordsQueryParams({
+	const allTimeQueryParams = useStatsQueryParams({
 		'group-by': 'day',
-		'start-date': '2020-11-02', // Account creation date
-		'end-date': todayDateKey,
+		'interval-start-date': '2020-11-02', // Account creation date
+		'interval-end-date': todayDateKey,
 	});
 
 	// Fetch today's stats

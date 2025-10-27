@@ -4,7 +4,7 @@ import CalendarHeatmap from './CalendarHeatmap';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
-import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 
 const YearGridsCard = () => {
 	const [selectedDates, setSelectedDates] = useState([new Date()]);
@@ -17,10 +17,10 @@ const YearGridsCard = () => {
 	const yearEndDate = getFormattedLongDay(yearEnd);
 
 	// Build query params for API using custom hook
-	const queryParams = useFocusRecordsQueryParams({
+	const queryParams = useStatsQueryParams({
 		'group-by': 'day',
-		'start-date': yearStartDate,
-		'end-date': yearEndDate,
+		'interval-start-date': yearStartDate,
+		'interval-end-date': yearEndDate,
 	});
 
 	// Fetch stats from API

@@ -8,7 +8,7 @@ import DateRangePicker from './DateRangePicker';
 import TimelineChart from './TimelineChart';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
-import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 
 const TimelineCard = () => {
 	// Initialize with Week range to match selectedInterval='Week'
@@ -18,10 +18,10 @@ const TimelineCard = () => {
 	const { startDate: apiStartDate, endDate: apiEndDate } = getDateRangeFromSelectedDates(selectedDates);
 
 	// Build query params for API using custom hook
-	const queryParams = useFocusRecordsQueryParams({
+	const queryParams = useStatsQueryParams({
 		'group-by': 'timeline',
-		'start-date': apiStartDate,
-		'end-date': apiEndDate,
+		'interval-start-date': apiStartDate,
+		'interval-end-date': apiEndDate,
 	});
 
 	// Fetch stats from API

@@ -6,7 +6,7 @@ import Modal from '../../../../../components/Modal/Modal';
 import { useThemeContext } from '../../../../../contexts/useThemeContext';
 import { getFormattedDuration } from '../../../../../utils/focus-apps/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../../services/resources/documentsStatsApi';
-import { useFocusRecordsQueryParams } from '../../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsQueryParams } from '../../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown';
 import CustomPieChartTooltip from './CustomPieChartTooltip';
@@ -53,10 +53,10 @@ const DetailsCard = () => {
 	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
 
 	// Build query params for API using custom hook
-	const queryParams = useFocusRecordsQueryParams({
+	const queryParams = useStatsQueryParams({
 		'group-by': selected === 'Project' ? 'project' : 'task',
-		'start-date': apiStartDate,
-		'end-date': apiEndDate,
+		'interval-start-date': apiStartDate,
+		'interval-end-date': apiEndDate,
 		'nested': showNestedProgressBars,
 	});
 

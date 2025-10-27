@@ -1,34 +1,34 @@
 import { useMemo } from 'react';
 import { useSearchParamsCustom } from '../contexts/useSearchParamsContext';
 
-interface UseFocusRecordsQueryParamsOptions {
-	'group-by': string;
-	'start-date': string;
-	'end-date': string;
+interface UseStatsQueryParamsOptions {
+	'group-by'?: string;
+	'interval-start-date'?: string;
+	'interval-end-date'?: string;
 	'nested'?: boolean;
 }
 
 /**
- * Custom hook to build query params for focus records API calls
+ * Custom hook to build query params for stats API calls
  * Automatically includes common search params filters and allows passing unique params per component
  *
  * Two-tier date filtering:
  * 1. 'start-date' and 'end-date' from URL (Filter Sidebar) - broad filter
  * 2. 'interval-start-date' and 'interval-end-date' from options (Interval Dropdown) - further narrows results
  */
-export const useFocusRecordsQueryParams = (options: UseFocusRecordsQueryParamsOptions) => {
+export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) => {
 	const { searchParams } = useSearchParamsCustom();
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 	const queryParams = useMemo(() => {
 		return {
-			'group-by': options['group-by'],
+			'group-by': options['group-by'] || undefined,
 			// Filter Sidebar dates (from URL params) - first tier filter
 			'start-date': searchParams.get('start-date') || undefined,
 			'end-date': searchParams.get('end-date') || undefined,
 			// Interval Dropdown dates (from component options) - second tier filter
-			'interval-start-date': options['start-date'],
-			'interval-end-date': options['end-date'],
+			'interval-start-date': options['interval-start-date'] || undefined,
+			'interval-end-date': options['interval-end-date'] || undefined,
 			'nested': options['nested'] || undefined,
 			'search': searchParams.get('search') || undefined,
 			'focus-apps': searchParams.get('focus-apps') || undefined,
@@ -41,8 +41,8 @@ export const useFocusRecordsQueryParams = (options: UseFocusRecordsQueryParamsOp
 		};
 	}, [
 		options['group-by'],
-		options['start-date'],
-		options['end-date'],
+		options['interval-start-date'],
+		options['interval-end-date'],
 		options['nested'],
 		searchParams,
 		timezone

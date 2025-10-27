@@ -4,7 +4,7 @@ import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { convertTo12HourFormat, getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
-import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
@@ -30,10 +30,10 @@ const MostFocusedTimeCard = () => {
 	const { chosenColorObj, nextLightestColorObj } = themeContext;
 
 	// Build query params for API using custom hook
-	const queryParams = useFocusRecordsQueryParams({
+	const queryParams = useStatsQueryParams({
 		'group-by': 'hour',
-		'start-date': apiStartDate,
-		'end-date': apiEndDate,
+		'interval-start-date': apiStartDate,
+		'interval-end-date': apiEndDate,
 	});
 
 	// Fetch stats from API
