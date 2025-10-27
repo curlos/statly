@@ -14,7 +14,10 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 	// Convert API data to grouped by date format
 	const focusRecordsGroupedByDate: Record<string, { duration: number }> = {};
 	(statsData?.byDay || []).forEach((day: any) => {
-		focusRecordsGroupedByDate[getFormattedLongDay(new Date(day.date))] = { duration: day.duration };
+		// Parse date as local date (YYYY-MM-DD format from backend)
+		const [year, month, dayNum] = day.date.split('-').map(Number);
+		const localDate = new Date(year, month - 1, dayNum);
+		focusRecordsGroupedByDate[getFormattedLongDay(localDate)] = { duration: day.duration };
 	});
 
 	const allDatesInYear = getAllDatesInYear(selectedDates[0].getFullYear());

@@ -140,89 +140,95 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 	};
 
 	useEffect(() => {
-		if (focusRecords.length > 0) {
-			const newSeries = DEFAULT_SERIES.map(s => ({ ...s, data: [...s.data] }));
+		if (focusRecords.length === 0) {
+			// Reset to empty data when no records
+			const emptySeries = DEFAULT_SERIES.map(s => ({ ...s, data: [...s.data] }));
+			apexchart.exec(chartId, 'updateSeries', emptySeries);
+			setSeries(emptySeries);
+			return;
+		}
 
-			// Group records by date - a record can span multiple days, so add it to all affected days
-			const recordsByDate: Record<string, any[]> = {};
-			focusRecords.forEach((record: any) => {
+		const newSeries = DEFAULT_SERIES.map(s => ({ ...s, data: [...s.data] }));
+
+		// Group records by date - a record can span multiple days, so add it to all affected days
+		const recordsByDate: Record<string, any[]> = {};
+		focusRecords.forEach((record: any) => {
+			const startTime = new Date(record.startTime);
+			const endTime = new Date(record.endTime);
+
+			// Iterate through all days this record spans
+			const currentDate = new Date(startTime);
+			currentDate.setHours(0, 0, 0, 0); // Start at beginning of start day
+
+			const endDate = new Date(endTime);
+			endDate.setHours(0, 0, 0, 0); // Get beginning of end day
+
+			// Add record to each day it overlaps
+			while (currentDate <= endDate) {
+				const dateKey = getFormattedLongDay(currentDate);
+				if (!recordsByDate[dateKey]) {
+					recordsByDate[dateKey] = [];
+				}
+				recordsByDate[dateKey].push(record);
+
+				// Move to next day
+				currentDate.setDate(currentDate.getDate() + 1);
+			}
+		});
+
+		// For all 7 days of the week, process each day
+		for (let dayIndex = 0; dayIndex < selectedDates.length; dayIndex++) {
+			const selectedDate = selectedDates[dayIndex];
+			const dateKey = getFormattedLongDay(selectedDate);
+			const recordsForTheDay = recordsByDate[dateKey] || [];
+
+			// Create hour blocks for the day
+			const newDailyHourBlocks = getDailyHourBlocks();
+
+			// Fill hour blocks with durations from records
+			recordsForTheDay.forEach((record: any) => {
 				const startTime = new Date(record.startTime);
 				const endTime = new Date(record.endTime);
 
-				// Iterate through all days this record spans
-				const currentDate = new Date(startTime);
-				currentDate.setHours(0, 0, 0, 0); // Start at beginning of start day
+				// Process each hour of the current day (0-23)
+				for (let hour = 0; hour < 24; hour++) {
+					const hourBlockKey = `${hour.toString().padStart(2, '0')}:00`;
+					if (newDailyHourBlocks[hourBlockKey]) {
+						// Create hour boundaries using the selected date (not the record's start date)
+						const hourStart = new Date(selectedDate);
+						hourStart.setHours(hour, 0, 0, 0);
 
-				const endDate = new Date(endTime);
-				endDate.setHours(0, 0, 0, 0); // Get beginning of end day
+						const hourEnd = new Date(selectedDate);
+						hourEnd.setHours(hour + 1, 0, 0, 0);
 
-				// Add record to each day it overlaps
-				while (currentDate <= endDate) {
-					const dateKey = getFormattedLongDay(currentDate);
-					if (!recordsByDate[dateKey]) {
-						recordsByDate[dateKey] = [];
+						// Find the overlap between [startTime, endTime] and [hourStart, hourEnd]
+						const overlapStart = startTime > hourStart ? startTime : hourStart;
+						const overlapEnd = endTime < hourEnd ? endTime : hourEnd;
+
+						// Calculate duration in seconds (will be 0 if no overlap)
+						const overlapDuration = Math.max(0, (overlapEnd.getTime() - overlapStart.getTime()) / 1000);
+
+						if (overlapDuration > 0) {
+							newDailyHourBlocks[hourBlockKey].seconds += overlapDuration;
+						}
 					}
-					recordsByDate[dateKey].push(record);
-
-					// Move to next day
-					currentDate.setDate(currentDate.getDate() + 1);
 				}
 			});
 
-			// For all 7 days of the week, process each day
-			for (let dayIndex = 0; dayIndex < selectedDates.length; dayIndex++) {
-				const selectedDate = selectedDates[dayIndex];
-				const dateKey = getFormattedLongDay(selectedDate);
-				const recordsForTheDay = recordsByDate[dateKey] || [];
-
-				// Create hour blocks for the day
-				const newDailyHourBlocks = getDailyHourBlocks();
-
-				// Fill hour blocks with durations from records
-				recordsForTheDay.forEach((record: any) => {
-					const startTime = new Date(record.startTime);
-					const endTime = new Date(record.endTime);
-
-					// Process each hour of the current day (0-23)
-					for (let hour = 0; hour < 24; hour++) {
-						const hourBlockKey = `${hour.toString().padStart(2, '0')}:00`;
-						if (newDailyHourBlocks[hourBlockKey]) {
-							// Create hour boundaries using the selected date (not the record's start date)
-							const hourStart = new Date(selectedDate);
-							hourStart.setHours(hour, 0, 0, 0);
-
-							const hourEnd = new Date(selectedDate);
-							hourEnd.setHours(hour + 1, 0, 0, 0);
-
-							// Find the overlap between [startTime, endTime] and [hourStart, hourEnd]
-							const overlapStart = startTime > hourStart ? startTime : hourStart;
-							const overlapEnd = endTime < hourEnd ? endTime : hourEnd;
-
-							// Calculate duration in seconds (will be 0 if no overlap)
-							const overlapDuration = Math.max(0, (overlapEnd.getTime() - overlapStart.getTime()) / 1000);
-
-							if (overlapDuration > 0) {
-								newDailyHourBlocks[hourBlockKey].seconds += overlapDuration;
-							}
-						}
-					}
-				});
-
-				// Update series data
-				// Since series is reversed (12 AM at top), we need to reverse the index mapping
-				Object.values(newDailyHourBlocks).forEach((dailyHourBlock: any, index: number) => {
-					const reversedIndex = 23 - index; // Hour 0 -> index 23, Hour 23 -> index 0
-					newSeries[reversedIndex].data[dayIndex] = dailyHourBlock.seconds;
-				});
-			}
-
-			// Force re-render of heatmap
-			apexchart.exec(chartId, 'updateSeries', newSeries);
-			apexchart.exec(chartId, 'updateOptions', {
-				tooltip: options.tooltip
-			}, false, false);
-			setSeries(newSeries);
+			// Update series data
+			// Since series is reversed (12 AM at top), we need to reverse the index mapping
+			Object.values(newDailyHourBlocks).forEach((dailyHourBlock: any, index: number) => {
+				const reversedIndex = 23 - index; // Hour 0 -> index 23, Hour 23 -> index 0
+				newSeries[reversedIndex].data[dayIndex] = dailyHourBlock.seconds;
+			});
 		}
+
+		// Force re-render of heatmap
+		apexchart.exec(chartId, 'updateSeries', newSeries);
+		apexchart.exec(chartId, 'updateOptions', {
+			tooltip: options.tooltip
+		}, false, false);
+		setSeries(newSeries);
 	}, [focusRecords, selectedDates]);
 
 	return (
