@@ -6,7 +6,7 @@ import { useGetFocusStatsForInterval } from '../hooks/useGetFocusStatsForInterva
 import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
 
-const RecentFocusRecordsCurveCard = () => {
+const FocusRecordsCurveCard = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, hexColor } = chosenColorObj;
@@ -121,4 +121,4 @@ const RecentFocusRecordsCurveCard = () => {
 	);
 };
 
-export default RecentFocusRecordsCurveCard;
+export default FocusRecordsCurveCard;

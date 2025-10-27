@@ -2,7 +2,7 @@ import TodaysActionReport from './TodaysActionReport';
 import OverviewCard from './OverviewCard';
 import RecentCompletionCurveCard from './RecentCompletionCurveCard';
 import RecentFocusedDurationCurveCard from './RecentFocusedDurationCurveCard';
-import RecentFocusRecordsCurveCard from './RecentFocusRecordsCurveCard';
+import FocusRecordsCurveCard from './FocusRecordsCurveCard';
 import { useGetOverviewStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';
@@ -46,7 +46,7 @@ const OverviewSection = () => {
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-				<RecentFocusRecordsCurveCard />
+				<FocusRecordsCurveCard />
 				{/* <RecentFocusedDurationCurveCard /> */}
 			</div>
 

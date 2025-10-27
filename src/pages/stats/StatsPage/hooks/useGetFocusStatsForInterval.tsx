@@ -13,7 +13,7 @@ interface UseGetFocusStatsForIntervalOptions {
 /**
  * Custom hook to fetch and transform focus stats data for interval-based charts
  * Handles API fetching, date range management, grouped intervals, and data transformation
- * Used by both TrendsCard (duration) and RecentFocusRecordsCurveCard (count)
+ * Used by both TrendsCard (duration) and FocusRecordsCurveCard (count)
  */
 export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForIntervalOptions) => {
 	const { dataType, initialInterval, initialDates, showGroupedIntervalForWeek = false } = options;
