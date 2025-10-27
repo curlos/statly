@@ -1,4 +1,4 @@
-import { baseAPI } from '../api';
+import { baseAPI, buildQueryString } from '../api';
 
 /**
  * @description API for fetching documents/stats data from the backend
@@ -11,9 +11,21 @@ export const documentsStatsApi = baseAPI.injectEndpoints({
                 return response;
             },
             providesTags: ['OverviewStats'],
+        }),
+        getFocusStats: builder.query({
+            query: (queryParams) => {
+                const queryString = buildQueryString(queryParams);
+                return queryString
+                    ? `/documents/stats/focus?${queryString}`
+                    : '/documents/stats/focus';
+            },
+            transformResponse: (response) => {
+                return response;
+            },
+            providesTags: ['FocusStats'],
         })
     }),
     overrideExisting: false,
 });
 
-export const { useGetOverviewStatsQuery } = documentsStatsApi;
+export const { useGetOverviewStatsQuery, useGetFocusStatsQuery } = documentsStatsApi;

@@ -5,7 +5,7 @@ import Icon from '../../../../../components/Icon';
 import Modal from '../../../../../components/Modal/Modal';
 import { useThemeContext } from '../../../../../contexts/useThemeContext';
 import { getFormattedDuration } from '../../../../../utils/focus-apps/helpers.utils';
-import { useGetFocusRecordsStatsQuery } from '../../../../../services/resources/documentsFocusRecordsApi';
+import { useGetFocusStatsQuery } from '../../../../../services/resources/documentsStatsApi';
 import { useFocusRecordsQueryParams } from '../../../../../hooks/useFocusRecordsQueryParams';
 import { useStatsDateRange } from '../../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown';
@@ -65,7 +65,7 @@ const DetailsCard = () => {
 	const { projectsById } = fetchedProjects || {};
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
 	const { ancestorTasksById } = statsData || {}
 
 	// Extract data from API response

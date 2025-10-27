@@ -3,7 +3,7 @@ import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Ba
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { convertTo12HourFormat, getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
@@ -37,7 +37,7 @@ const MostFocusedTimeCard = () => {
 	});
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
 
 	// Transform API data to chart format
 	const data = (statsData?.byHour || []).map((hourData: any) => ({

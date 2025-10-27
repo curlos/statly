@@ -7,7 +7,7 @@ import { getAllDaysInWeekFromDate, getDateRangeFromSelectedDates } from '../../.
 import DateRangePicker from './DateRangePicker';
 import TimelineChart from './TimelineChart';
 import Spinner from '../../../../components/Loaders/Spinner';
-import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 
 const TimelineCard = () => {
@@ -25,7 +25,7 @@ const TimelineCard = () => {
 	});
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] sm:h-[350px]">

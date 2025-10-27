@@ -3,7 +3,7 @@ import Icon from '../../../../components/Icon';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';
 
@@ -37,13 +37,13 @@ const OverviewCard = () => {
 	});
 
 	// Fetch today's stats
-	const { data: todayStats, isLoading: isTodayLoading, isFetching: isTodayFetching } = useGetFocusRecordsStatsQuery(todayQueryParams);
+	const { data: todayStats, isLoading: isTodayLoading, isFetching: isTodayFetching } = useGetFocusStatsQuery(todayQueryParams);
 
 	// Fetch yesterday's stats
-	const { data: yesterdayStats, isLoading: isYesterdayLoading, isFetching: isYesterdayFetching } = useGetFocusRecordsStatsQuery(yesterdayQueryParams);
+	const { data: yesterdayStats, isLoading: isYesterdayLoading, isFetching: isYesterdayFetching } = useGetFocusStatsQuery(yesterdayQueryParams);
 
 	// Fetch all-time stats
-	const { data: allTimeStats, isLoading: isAllTimeLoading, isFetching: isAllTimeFetching } = useGetFocusRecordsStatsQuery(allTimeQueryParams);
+	const { data: allTimeStats, isLoading: isAllTimeLoading, isFetching: isAllTimeFetching } = useGetFocusStatsQuery(allTimeQueryParams);
 
 	// Check if any query is loading or fetching
 	const isLoading = isTodayLoading || isYesterdayLoading || isAllTimeLoading || isTodayFetching || isYesterdayFetching || isAllTimeFetching;

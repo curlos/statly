@@ -4,7 +4,7 @@ import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, A
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
@@ -52,7 +52,7 @@ const TrendsCard = () => {
 	});
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
 
 	// Transform API data to chart format based on grouping
 	const transformDataForChart = () => {
