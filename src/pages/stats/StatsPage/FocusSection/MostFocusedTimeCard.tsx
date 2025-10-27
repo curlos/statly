@@ -1,88 +1,48 @@
 import classNames from 'classnames';
-import { useState, useEffect } from 'react';
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Bar } from 'recharts';
-import ModalPickDateRange from '../../../../components/Modal/ModalPickDateRange';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import {
-	getDailyHourBlocks,
-	getFormattedLongDay,
-	fillInHourBlocksWithSeconds,
-	convertTo12HourFormat,
-} from '../../../../utils/date.utils';
+import { convertTo12HourFormat, getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
+import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
-import DateRangePicker from './DateRangePicker';
 
 const MostFocusedTimeCard = () => {
-	const { focusRecords, focusRecordsGroupedByDate } = useStatsContext();
-	const [selectedDates, setSelectedDates] = useState([new Date()]);
-	const [data, setData] = useState([]);
-
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
-	const [selectedInterval, setSelectedInterval] = useState('Month');
 
-	// Custom
-	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
-	const [startDate, setStartDate] = useState(new Date());
-	const [endDate, setEndDate] = useState(new Date());
+	// Use custom hook for date range management
+	const {
+		selectedInterval,
+		setSelectedInterval,
+		apiStartDate,
+		apiEndDate,
+		setIsModalPickDateRangeOpen,
+		renderDateRangePicker,
+		renderCustomDateModal,
+	} = useStatsDateRange({
+		initialInterval: 'Month',
+		initialDates: getAllDaysInMonthFromDate(new Date()),
+	});
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj, nextLightestColorObj } = themeContext;
 
-	useEffect(() => {
-		if (selectedInterval === 'All' && focusRecords) {
-			getTimeBlockTotalsForInterval();
-		} else if (selectedInterval !== 'All' && selectedDates?.length > 0 && focusRecordsGroupedByDate) {
-			getTimeBlockTotalsForInterval();
-		}
-	}, [selectedDates, focusRecordsGroupedByDate, focusRecords, selectedInterval]);
+	// Build query params for API using custom hook
+	const queryParams = useFocusRecordsQueryParams({
+		'group-by': 'hour',
+		'start-date': apiStartDate,
+		'end-date': apiEndDate,
+	});
 
-	const getTimeBlockTotalsForInterval = () => {
-		const newDailyHourBlocks = getDailyHourBlocks();
+	// Fetch stats from API
+	const { data: statsData } = useGetFocusRecordsStatsQuery(queryParams);
 
-		// If the selected interval is "Day", "Week", "Month", "Year", or "Custom"
-		if (selectedInterval !== 'All') {
-			for (let date of selectedDates) {
-				const dateKey = getFormattedLongDay(date);
-				const focusRecordsForTheDay = focusRecordsGroupedByDate[dateKey];
-
-				if (focusRecordsForTheDay) {
-					fillInHourBlocksWithSeconds(focusRecordsForTheDay, newDailyHourBlocks);
-				}
-			}
-		} else {
-			if (focusRecords) {
-				fillInHourBlocksWithSeconds(focusRecords, newDailyHourBlocks);
-			}
-		}
-
-		const newData = Object.keys(newDailyHourBlocks).map((timeHourBlockKey) => {
-			const timeHourBlock = newDailyHourBlocks[timeHourBlockKey];
-			const { from, seconds } = timeHourBlock;
-
-			return {
-				name: convertTo12HourFormat(from),
-				seconds,
-			};
-		});
-
-		setData(newData);
-	};
-
-	const getDateRangePicker = () => {
-		return (
-			selectedInterval !== 'All' && (
-				<DateRangePicker
-					selectedDates={selectedDates}
-					setSelectedDates={setSelectedDates}
-					selectedInterval={selectedInterval}
-					startDate={startDate}
-					endDate={endDate}
-				/>
-			)
-		);
-	};
+	// Transform API data to chart format
+	const data = (statsData?.byHour || []).map((hourData: any) => ({
+		name: convertTo12HourFormat(`${hourData.hour.toString().padStart(2, '0')}:00`),
+		seconds: hourData.duration
+	}));
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
@@ -103,11 +63,11 @@ const MostFocusedTimeCard = () => {
 						}}
 					/>
 
-					<div className="hidden sm:block">{getDateRangePicker()}</div>
+					<div className="hidden sm:block">{renderDateRangePicker()}</div>
 				</div>
 			</div>
 
-			<div className="sm:hidden">{getDateRangePicker()}</div>
+			<div className="sm:hidden">{renderDateRangePicker()}</div>
 
 			<div className="w-full h-full text-[12px] sm:text-[14px] md:text-[16px]">
 				<ResponsiveContainer width="100%" height="100%">
@@ -157,14 +117,7 @@ const MostFocusedTimeCard = () => {
 				</ResponsiveContainer>
 			</div>
 
-			<ModalPickDateRange
-				isModalOpen={isModalPickDateRangeOpen}
-				setIsModalOpen={setIsModalPickDateRangeOpen}
-				startDate={startDate}
-				setStartDate={setStartDate}
-				endDate={endDate}
-				setEndDate={setEndDate}
-			/>
+			{renderCustomDateModal()}
 		</div>
 	);
 };
