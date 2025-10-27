@@ -45,9 +45,7 @@ const FocusRecordsCurveCard = () => {
 						<GeneralSelectButtonAndDropdown
 							selected={selectedGroupedInterval}
 							setSelected={setSelectedGroupedInterval}
-							selectedOptions={
-								selectedInterval === 'Month' ? ['Days', 'Weeks'] : selectedGroupedIntervalOptions
-							}
+							selectedOptions={selectedGroupedIntervalOptions}
 						/>
 					)}
 
@@ -105,7 +103,7 @@ const FocusRecordsCurveCard = () => {
 								return (
 									<div
 										className={classNames(textColor, 'bg-black p-2 rounded-md')}
-									>{`${nameToUse}, ${score}`}</div>
+									>{`${nameToUse}, ${score.toLocaleString()}`}</div>
 								);
 							}
 

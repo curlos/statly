@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
@@ -34,8 +34,28 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 		initialDates,
 	});
 
-	const selectedGroupedIntervalOptions = ['Days', 'Weeks', 'Months'];
+	const selectedGroupedIntervalOptions = ['Days', 'Weeks', 'Months', 'Years'];
 	const [selectedGroupedInterval, setSelectedGroupedInterval] = useState('Days');
+
+	// Determine which grouped interval options to show based on selected interval
+	const getGroupedIntervalOptions = () => {
+		if (selectedInterval === 'All' || selectedInterval === 'Custom') {
+			return selectedGroupedIntervalOptions; // Show all options including 'Years'
+		} else if (selectedInterval === 'Month') {
+			return ['Days', 'Weeks']; // Month can only be grouped by Days or Weeks
+		} else {
+			return ['Days', 'Weeks', 'Months']; // Other intervals exclude 'Years'
+		}
+	};
+
+	const availableGroupedIntervalOptions = getGroupedIntervalOptions();
+
+	// Auto-reset selectedGroupedInterval if it's not available in current options
+	useEffect(() => {
+		if (!availableGroupedIntervalOptions.includes(selectedGroupedInterval)) {
+			setSelectedGroupedInterval(availableGroupedIntervalOptions[0]);
+		}
+	}, [selectedInterval, selectedGroupedInterval, availableGroupedIntervalOptions]);
 
 	// Map selectedGroupedInterval to API group-by parameter
 	const getGroupByParam = () => {
@@ -46,6 +66,8 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 				return 'week';
 			case 'Months':
 				return 'month';
+			case 'Years':
+				return 'year';
 			default:
 				return 'day';
 		}
@@ -66,7 +88,7 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 		if (!statsData) return [];
 
 		// Get the appropriate data array based on group-by parameter
-		const rawData = statsData.byDay || statsData.byWeek || statsData.byMonth || [];
+		const rawData = statsData.byDay || statsData.byWeek || statsData.byMonth || statsData.byYear || [];
 
 		return rawData.map((item: any) => {
 			let name = '';
@@ -88,6 +110,9 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 				name = `${startStr} - ${endStr}`;
 			} else if (selectedGroupedInterval === 'Months') {
 				// Backend returns "January 2025" format
+				name = item.date;
+			} else if (selectedGroupedInterval === 'Years') {
+				// Backend returns year as string (e.g., "2025")
 				name = item.date;
 			}
 
@@ -119,7 +144,7 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 		selectedIntervalOptions,
 		selectedGroupedInterval,
 		setSelectedGroupedInterval,
-		selectedGroupedIntervalOptions,
+		selectedGroupedIntervalOptions: availableGroupedIntervalOptions,
 
 		// API data
 		data,

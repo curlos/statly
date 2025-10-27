@@ -55,7 +55,7 @@ const TrendsCard = () => {
 
 		const averageSeconds = totalSeconds / daysWithAtLeastOneFocusRecord;
 
-		return `Daily Average: ${getFormattedDuration(averageSeconds, false)}`;
+		return `Average: ${getFormattedDuration(averageSeconds, false)}`;
 	};
 
 	const themeContext = useThemeContext();
@@ -74,9 +74,7 @@ const TrendsCard = () => {
 						<GeneralSelectButtonAndDropdown
 							selected={selectedGroupedInterval}
 							setSelected={setSelectedGroupedInterval}
-							selectedOptions={
-								selectedInterval === 'Month' ? ['Days', 'Weeks'] : selectedGroupedIntervalOptions
-							}
+							selectedOptions={selectedGroupedIntervalOptions}
 						/>
 					)}
 
