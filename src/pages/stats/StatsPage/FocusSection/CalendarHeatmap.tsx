@@ -1,18 +1,21 @@
 import classNames from 'classnames';
 import { useState, useRef } from 'react';
 import Dropdown from '../../../../components/Dropdown/Dropdown';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDatesInYear, getFormattedLongDay } from '../../../../utils/date.utils';
-import { getFocusDurationFromArray } from '../../../../utils/focus-apps/focusRecords.utils';
 import { secondsToHoursAndMinutes, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 
 interface CalendarHeatmapProps {
-	data: number[]; // Array of numbers (0-4)
+	selectedDates: Date[];
+	statsData: any;
 }
 
-const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates }) => {
-	const { focusRecordsGroupedByDate } = useStatsContext();
+const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsData }) => {
+	// Convert API data to grouped by date format
+	const focusRecordsGroupedByDate: Record<string, { duration: number }> = {};
+	(statsData?.byDay || []).forEach((day: any) => {
+		focusRecordsGroupedByDate[getFormattedLongDay(new Date(day.date))] = { duration: day.duration };
+	});
 
 	const allDatesInYear = getAllDatesInYear(selectedDates[0].getFullYear());
 
@@ -102,8 +105,8 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 	const { chosenColorObj } = themeContext;
 
 	const dateKey = getFormattedLongDay(date);
-	const focusRecordsFromDate = (focusRecordsGroupedByDate && focusRecordsGroupedByDate[dateKey]) || [];
-	const focusDurationForDay = getFocusDurationFromArray({ focusRecords: focusRecordsFromDate });
+	const focusDataForDate = focusRecordsGroupedByDate?.[dateKey];
+	const focusDurationForDay = focusDataForDate?.duration || 0;
 	const { hours, minutes } = secondsToHoursAndMinutes(focusDurationForDay);
 	const rangeClass = getRangeClass(hours, minutes, themeContext);
 

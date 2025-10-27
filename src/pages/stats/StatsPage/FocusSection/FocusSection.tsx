@@ -25,7 +25,7 @@ const FocusSection = () => {
 				<TrendsCard />
 				<TimelineCard />
 				<MostFocusedTimeCard />
-				{/* <YearGridsCard /> */}
+				<YearGridsCard />
 			</div>
 		</div>
 	);
