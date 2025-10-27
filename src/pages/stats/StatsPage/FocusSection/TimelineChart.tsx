@@ -4,28 +4,12 @@ import {
 	convertTo12HourFormat,
 	getFormattedLongDay,
 	getDailyHourBlocks,
-	getDateRangeFromSelectedDates,
 } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
-import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 import ReactApexChart from 'react-apexcharts';
 import apexchart from 'apexcharts';
-import Spinner from '../../../../components/Loaders/Spinner';
 
-const TimelineChart = ({ selectedDates }) => {
-	// Get date range from selected dates
-	const { startDate: apiStartDate, endDate: apiEndDate } = getDateRangeFromSelectedDates(selectedDates);
-
-	// Build query params for API using custom hook
-	const queryParams = useFocusRecordsQueryParams({
-		'group-by': 'timeline',
-		'start-date': apiStartDate,
-		'end-date': apiEndDate,
-	});
-
-	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
+const TimelineChart = ({ selectedDates, statsData }) => {
 	const focusRecords = statsData?.records || [];
 
 	// Create series in reverse order (12:00 AM at top, 11:00 PM at bottom)
@@ -244,11 +228,6 @@ const TimelineChart = ({ selectedDates }) => {
 	return (
 		<div className="relative">
 			<ReactApexChart options={options} series={series} type="heatmap" height={310} />
-			{(isLoading || isFetching) && (
-				<div className="absolute top-3 right-3">
-					<Spinner size="lg" />
-				</div>
-			)}
 		</div>
 	);
 };

@@ -117,7 +117,10 @@ const DetailsCard = () => {
 			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative">
 				<div className="flex gap-4">
 					<div className="md:flex justify-between items-center w-full">
-						<h3 className="font-bold text-[16px] mb-3 sm:mb-0">Details</h3>
+						<div className="flex items-center gap-2 mb-3 sm:mb-0">
+							<h3 className="font-bold text-[16px]">Details</h3>
+							{(isLoading || isFetching) && <Spinner size="md" />}
+						</div>
 
 						<div className={classNames('flex items-center gap-2', selectedInterval === 'All' && 'py-2')}>
 							<div className="flex items-center gap-2">
@@ -251,12 +254,6 @@ const DetailsCard = () => {
 				</div>
 
 				{renderCustomDateModal()}
-
-				{(isLoading || isFetching) && (
-					<div className="absolute bottom-3 right-3">
-						<Spinner size="lg" />
-					</div>
-				)}
 			</div>
 		);
 	};

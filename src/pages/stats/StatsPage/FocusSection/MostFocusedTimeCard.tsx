@@ -7,6 +7,7 @@ import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/doc
 import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
+import Spinner from '../../../../components/Loaders/Spinner';
 
 const MostFocusedTimeCard = () => {
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
@@ -36,7 +37,7 @@ const MostFocusedTimeCard = () => {
 	});
 
 	// Fetch stats from API
-	const { data: statsData } = useGetFocusRecordsStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
 
 	// Transform API data to chart format
 	const data = (statsData?.byHour || []).map((hourData: any) => ({
@@ -47,7 +48,10 @@ const MostFocusedTimeCard = () => {
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
 			<div className="flex justify-between items-center mb-6">
-				<h3 className="font-bold text-[16px]">Most Focused Time</h3>
+				<div className="flex items-center gap-2">
+					<h3 className="font-bold text-[16px]">Most Focused Time</h3>
+					{(isLoading || isFetching) && <Spinner size="md" />}
+				</div>
 
 				<div className="flex items-center gap-2">
 					<GeneralSelectButtonAndDropdown

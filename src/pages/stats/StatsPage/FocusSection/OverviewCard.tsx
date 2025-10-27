@@ -76,7 +76,10 @@ const OverviewCard = () => {
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[16px] relative">
-			<h3 className="font-bold text-[16px]">Overview</h3>
+			<div className="flex items-center gap-2 mb-2">
+				<h3 className="font-bold text-[16px]">Overview</h3>
+				{isLoading && <Spinner size="md" />}
+			</div>
 
 			<div className="flex-1 flex flex-col justify-center gap-7">
 				<div className="grid grid-cols-2 lg:grid-cols-4 w-full text-center">
@@ -152,12 +155,6 @@ const OverviewCard = () => {
 					</div>
 				</div>
 			</div>
-
-			{isLoading && (
-				<div className="absolute bottom-3 right-3">
-					<Spinner size="lg" />
-				</div>
-			)}
 		</div>
 	);
 };

@@ -3,18 +3,37 @@ import { useState, useRef } from 'react';
 import DropdownTimeCalendar from '../../../../components/Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
 import Icon from '../../../../components/Icon';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
+import { getAllDaysInWeekFromDate, getDateRangeFromSelectedDates } from '../../../../utils/date.utils';
 import DateRangePicker from './DateRangePicker';
 import TimelineChart from './TimelineChart';
+import Spinner from '../../../../components/Loaders/Spinner';
+import { useGetFocusRecordsStatsQuery } from '../../../../services/resources/documentsFocusRecordsApi';
+import { useFocusRecordsQueryParams } from '../../../../hooks/useFocusRecordsQueryParams';
 
 const TimelineCard = () => {
 	// Initialize with Week range to match selectedInterval='Week'
 	const [selectedDates, setSelectedDates] = useState(getAllDaysInWeekFromDate(new Date()));
 
+	// Get date range from selected dates
+	const { startDate: apiStartDate, endDate: apiEndDate } = getDateRangeFromSelectedDates(selectedDates);
+
+	// Build query params for API using custom hook
+	const queryParams = useFocusRecordsQueryParams({
+		'group-by': 'timeline',
+		'start-date': apiStartDate,
+		'end-date': apiEndDate,
+	});
+
+	// Fetch stats from API
+	const { data: statsData, isLoading, isFetching } = useGetFocusRecordsStatsQuery(queryParams);
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] sm:h-[350px]">
 			<div className="flex flex-col sm:flex-row justify-between sm:items-center">
-				<h3 className="font-bold text-[16px]">Timeline</h3>
+				<div className="flex items-center gap-2">
+					<h3 className="font-bold text-[16px]">Timeline</h3>
+					{(isLoading || isFetching) && <Spinner size="md" />}
+				</div>
 
 				<div className="flex gap-2 items-center">
 					<CustomWeekPicker {...{ selectedDates, setSelectedDates }} />
@@ -28,7 +47,7 @@ const TimelineCard = () => {
 			</div>
 
 			<div className="mt-[-10px]">
-				<TimelineChart {...{ selectedDates }} />
+				<TimelineChart selectedDates={selectedDates} statsData={statsData} />
 			</div>
 		</div>
 	);
