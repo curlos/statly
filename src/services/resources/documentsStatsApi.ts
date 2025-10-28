@@ -28,9 +28,21 @@ export const documentsStatsApi = baseAPI.injectEndpoints({
                 return response;
             },
             providesTags: ['FocusStats'],
+        }),
+        getTasksStats: builder.query({
+            query: (queryParams) => {
+                const queryString = buildQueryString(queryParams);
+                return queryString
+                    ? `/documents/stats/tasks?${queryString}`
+                    : '/documents/stats/tasks';
+            },
+            transformResponse: (response) => {
+                return response;
+            },
+            providesTags: ['TasksStats'],
         })
     }),
     overrideExisting: false,
 });
 
-export const { useGetOverviewStatsQuery, useGetFocusStatsQuery } = documentsStatsApi;
+export const { useGetOverviewStatsQuery, useGetFocusStatsQuery, useGetTasksStatsQuery } = documentsStatsApi;

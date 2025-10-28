@@ -41,7 +41,8 @@ export const baseAPI = createApi({
 		'FocusChallenge',
 		'TasksChallenge',
 		'OverviewStats',
-		'FocusStats'
+		'FocusStats',
+		'TasksStats'
 	],
 	endpoints: () => ({}),
 });

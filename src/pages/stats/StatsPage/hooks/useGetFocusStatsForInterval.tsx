@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useGetFocusStatsQuery, useGetTasksStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 
 interface UseGetFocusStatsForIntervalOptions {
-	dataType: 'duration' | 'count';
+	dataType: 'duration' | 'count' | 'completedTasks';
 	initialInterval: string;
 	initialDates: Date[];
 	showGroupedIntervalForWeek?: boolean;
 }
 
 /**
- * Custom hook to fetch and transform focus stats data for interval-based charts
+ * Custom hook to fetch and transform stats data for interval-based charts
  * Handles API fetching, date range management, grouped intervals, and data transformation
- * Used by both TrendsCard (duration) and FocusRecordsCurveCard (count)
+ * Used by TrendsCard (duration), FocusRecordsCurveCard (count), and RecentCompletionCurveCard (completedTasks)
  */
 export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForIntervalOptions) => {
 	const { dataType, initialInterval, initialDates, showGroupedIntervalForWeek = false } = options;
@@ -39,7 +39,9 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 
 	// Determine which grouped interval options to show based on selected interval
 	const getGroupedIntervalOptions = () => {
-		if (selectedInterval === 'All' || selectedInterval === 'Custom') {
+		if (selectedInterval === 'Week') {
+			return ['Days']; // Week can only be grouped by Days
+		} else if (selectedInterval === 'All' || selectedInterval === 'Custom') {
 			return selectedGroupedIntervalOptions; // Show all options including 'Years'
 		} else if (selectedInterval === 'Month') {
 			return ['Days', 'Weeks']; // Month can only be grouped by Days or Weeks
@@ -80,8 +82,18 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 		'interval-end-date': apiEndDate,
 	});
 
-	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
+	// Fetch stats from API - use different query based on dataType
+	const isFocusData = dataType === 'duration' || dataType === 'count';
+	const { data: focusStatsData, isLoading: isFocusLoading, isFetching: isFocusFetching } = useGetFocusStatsQuery(queryParams, {
+		skip: !isFocusData
+	});
+	const { data: tasksStatsData, isLoading: isTasksLoading, isFetching: isTasksFetching } = useGetTasksStatsQuery(queryParams, {
+		skip: isFocusData
+	});
+
+	const statsData = isFocusData ? focusStatsData : tasksStatsData;
+	const isLoading = isFocusData ? isFocusLoading : isTasksLoading;
+	const isFetching = isFocusData ? isFocusFetching : isTasksFetching;
 
 	// Transform API data to chart format based on grouping
 	const transformDataForChart = () => {
@@ -122,7 +134,14 @@ export const useGetFocusStatsForInterval = (options: UseGetFocusStatsForInterval
 					name,
 					seconds: item.duration,
 				};
+			} else if (dataType === 'count') {
+				return {
+					name,
+					fullName: name,
+					score: item.count || 0,
+				};
 			} else {
+				// dataType === 'completedTasks'
 				return {
 					name,
 					fullName: name,
