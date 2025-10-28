@@ -1,77 +1,68 @@
 import classNames from 'classnames';
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import Icon from '../../../../components/Icon';
-import { useSearchParamsContext } from '../../../../contexts/useSearchParamsContext';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import {
-	getAllDaysInWeekFromDate,
-	getAllDaysInMonthFromDate,
-	getAllDaysInYearFromDate,
-} from '../../../../utils/date.utils';
+import { useGetTasksStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
+import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
+import GeneralSelectButtonAndDropdown from '../../StatsPage/GeneralSelectButtonAndDropdown';
+import Spinner from '../../../../components/Loaders/Spinner';
+import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
 
 const OverviewCard = () => {
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+
+	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
+
+	// Use custom hook for date range management
 	const {
-		allCompletedTasks,
-		getCompletedTasksFromSelectedDates,
-		filteredDaysWithCompletedTasks,
-		total: { numOfCompletedTasks },
-	} = useStatsContext() || {};
-	const [numOfCompletedTasksForInterval, setNumOfCompletedTasksForInterval] = useState(0);
-	const [diffOfCompletedTasksFromPrevInterval, setDiffOfCompletedTasksFromPrevInterval] = useState({
-		numDiff: 0,
-		lessThanPrev: false,
+		selectedInterval,
+		setSelectedInterval,
+		apiStartDate,
+		apiEndDate,
+		setIsModalPickDateRangeOpen,
+		renderDateRangePicker,
+		renderCustomDateModal,
+	} = useStatsDateRange({
+		initialInterval: 'Day',
+		initialDates: [new Date()],
 	});
 
-	const { searchParams } = useSearchParamsContext();
+	// Helper function to get previous interval date range
+	const getPrevIntervalDateRange = () => {
+		const start = new Date(apiStartDate);
+		const end = new Date(apiEndDate);
 
-	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
-	const endDateFromUrl = searchParams.get('end-date') || '';
-	const intervalFromUrl = searchParams.get('date-interval') || 'All';
-
-	useEffect(() => {
-		if (!filteredDaysWithCompletedTasks) {
-			return;
-		}
-
-		if (!intervalFromUrl) {
-			setNumOfCompletedTasksForInterval(allCompletedTasks.length);
-		} else {
-			const prevIntervalDates = getPrevIntervalDates();
-			const prevIntervalCompletedTasks = getCompletedTasksFromSelectedDates(prevIntervalDates).length;
-			const currIntervalCompletedTasks = numOfCompletedTasks;
-
-			setNumOfCompletedTasksForInterval(currIntervalCompletedTasks);
-			setDiffOfCompletedTasksFromPrevInterval({
-				numDiff: Math.abs(currIntervalCompletedTasks - prevIntervalCompletedTasks),
-				lessThanPrev: currIntervalCompletedTasks < prevIntervalCompletedTasks,
-			});
-		}
-	}, [startDateFromUrl, endDateFromUrl, intervalFromUrl, filteredDaysWithCompletedTasks]);
-
-	const getPrevIntervalDates = () => {
-		const date = new Date(startDateFromUrl);
-
-		switch (intervalFromUrl) {
+		switch (selectedInterval) {
 			case 'Day':
-				date.setDate(date.getDate() - 1);
-				return [date];
+				start.setDate(start.getDate() - 1);
+				end.setDate(end.getDate() - 1);
+				break;
 			case 'Week':
-				date.setDate(date.getDate() - 7);
-				return getAllDaysInWeekFromDate(date);
+				start.setDate(start.getDate() - 7);
+				end.setDate(end.getDate() - 7);
+				break;
 			case 'Month':
-				date.setMonth(date.getMonth() + -1);
-				return getAllDaysInMonthFromDate(date);
+				start.setMonth(start.getMonth() - 1);
+				end.setMonth(end.getMonth() - 1);
+				break;
 			case 'Year':
-				date.setFullYear(date.getFullYear() + -1);
-				return getAllDaysInYearFromDate(date);
+				start.setFullYear(start.getFullYear() - 1);
+				end.setFullYear(end.getFullYear() - 1);
+				break;
 			default:
-				return [];
+				return { startDate: undefined, endDate: undefined };
 		}
+
+		return {
+			startDate: getFormattedShortMonthDay(start),
+			endDate: getFormattedShortMonthDay(end),
+		};
 	};
 
 	const getPrevIntervalName = () => {
-		switch (intervalFromUrl) {
+		switch (selectedInterval) {
 			case 'Day':
 				return 'yesterday';
 			case 'Week':
@@ -80,15 +71,78 @@ const OverviewCard = () => {
 				return 'last month';
 			case 'Year':
 				return 'last year';
+			default:
+				return '';
 		}
 	};
 
-	const themeContext = useThemeContext();
-	const { chosenColorObj } = themeContext;
+	// Build query params for current interval
+	const currentQueryParams = useStatsQueryParams({
+		'group-by': 'day',
+		'interval-start-date': apiStartDate,
+		'interval-end-date': apiEndDate,
+	});
+
+	// Build query params for previous interval
+	const prevIntervalDateRange = useMemo(() => getPrevIntervalDateRange(), [apiStartDate, apiEndDate, selectedInterval]);
+	const prevQueryParams = useStatsQueryParams({
+		'group-by': 'day',
+		'interval-start-date': prevIntervalDateRange.startDate,
+		'interval-end-date': prevIntervalDateRange.endDate,
+	});
+
+	// Fetch current interval stats
+	const { data: currentStats, isLoading, isFetching } = useGetTasksStatsQuery(currentQueryParams);
+
+	// Fetch previous interval stats (skip if All or Custom interval)
+	const shouldFetchPrevInterval = selectedInterval !== 'All' && selectedInterval !== 'Custom';
+	const { data: prevStats } = useGetTasksStatsQuery(prevQueryParams, {
+		skip: !shouldFetchPrevInterval,
+	});
+
+	// Calculate counts
+	const numOfCompletedTasks = currentStats?.summary?.totalCount || 0;
+	const prevIntervalCount = prevStats?.summary?.totalCount || 0;
+
+	// Calculate difference
+	const diffOfCompletedTasksFromPrevInterval = useMemo(() => {
+		if (!shouldFetchPrevInterval) {
+			return { numDiff: 0, lessThanPrev: false };
+		}
+
+		return {
+			numDiff: Math.abs(numOfCompletedTasks - prevIntervalCount),
+			lessThanPrev: numOfCompletedTasks < prevIntervalCount,
+		};
+	}, [numOfCompletedTasks, prevIntervalCount, shouldFetchPrevInterval]);
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[280px]">
-			<h3 className="font-bold text-[16px]">Overview</h3>
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col">
+			<div className="flex justify-between items-center mb-4">
+				<div className="flex items-center gap-2">
+					<h3 className="font-bold text-[16px]">Overview</h3>
+					{(isLoading || isFetching) && <Spinner size="md" />}
+				</div>
+
+				<div className={classNames('flex gap-2 items-center', selectedInterval === 'All' && 'py-2')}>
+					<GeneralSelectButtonAndDropdown
+						selected={selectedInterval}
+						setSelected={setSelectedInterval}
+						selectedOptions={selectedIntervalOptions}
+						onClick={(name) => {
+							if (name?.toLowerCase() !== 'custom') {
+								return;
+							}
+
+							setIsModalPickDateRangeOpen(true);
+						}}
+					/>
+
+					<div className="hidden sm:block">{renderDateRangePicker()}</div>
+				</div>
+			</div>
+
+			<div className="sm:hidden mb-2">{renderDateRangePicker()}</div>
 
 			<div className="flex-1 flex flex-col justify-center gap-7">
 				<div className="grid grid-cols-1 w-full">
@@ -99,7 +153,7 @@ const OverviewCard = () => {
 						<div className="text-color-gray-100 font-medium">
 							{numOfCompletedTasks > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>
-						{intervalFromUrl !== 'All' && intervalFromUrl !== 'Custom' && (
+						{shouldFetchPrevInterval && (
 							<div className="text-color-gray-100 flex items-center gap-1">
 								<div>
 									{diffOfCompletedTasksFromPrevInterval.numDiff} from {getPrevIntervalName()}
@@ -123,6 +177,8 @@ const OverviewCard = () => {
 					</div>
 				</div>
 			</div>
+
+			{renderCustomDateModal()}
 		</div>
 	);
 };

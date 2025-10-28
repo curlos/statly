@@ -3,7 +3,7 @@ import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, A
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
-import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
+import { getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
@@ -30,11 +30,11 @@ const CompletedTasksCurveCard = () => {
 	} = useGetStatsForInterval({
 		dataType: 'completedTasks',
 		initialInterval: 'Month',
-		initialDates: getAllDaysInWeekFromDate(new Date()),
+		initialDates: getAllDaysInMonthFromDate(new Date()),
 	});
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px]">
 			<div className="flex justify-between items-center mb-6">
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Completed Tasks Curve</h3>
