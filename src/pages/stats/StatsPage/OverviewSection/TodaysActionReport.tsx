@@ -64,28 +64,38 @@ const TodaysActionReport = () => {
 		},
 	];
 
+	// Check if any medals have been earned
+	const earnedMedals = medals.filter((medal) => todayFocusDuration >= medal.requiredDuration);
+	const hasEarnedMedals = earnedMedals.length > 0;
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
 			<h3 className="font-bold text-[16px]">Today's Action Report</h3>
 
 			<div className="flex-1 flex flex-col justify-center gap-7 overflow-auto gray-scrollbar">
-				<div className="flex flex-wrap justify-center w-full h-full text-[14px] sm:text-[16px]">
-					{medals.map((medal) => {
-						const { name, requiredDuration, imgSrc } = medal;
+				{!hasEarnedMedals ? (
+					<div className="flex items-center justify-center h-full text-center text-color-gray-100">
+						<p>No medals earned yet today. Keep focusing to unlock your first medal!</p>
+					</div>
+				) : (
+					<div className="flex flex-wrap justify-center w-full h-full text-[14px] sm:text-[16px]">
+						{medals.map((medal) => {
+							const { name, requiredDuration, imgSrc } = medal;
 
-						if (todayFocusDuration < requiredDuration) {
-							return null;
-						}
+							if (todayFocusDuration < requiredDuration) {
+								return null;
+							}
 
-						return (
-							<div key={name}>
-								<img src={imgSrc} className="w-[150px]" />
-								<div className="text-center font-semibold text-[18px]">x1</div>
-								<div className="text-center font-semibold">{name}</div>
-							</div>
-						);
-					})}
-				</div>
+							return (
+								<div key={name}>
+									<img src={imgSrc} className="w-[150px]" />
+									<div className="text-center font-semibold text-[18px]">x1</div>
+									<div className="text-center font-semibold">{name}</div>
+								</div>
+							);
+						})}
+					</div>
+				)}
 			</div>
 		</div>
 	);
