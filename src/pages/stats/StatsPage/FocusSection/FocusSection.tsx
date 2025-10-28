@@ -4,7 +4,7 @@ import DetailsCard from './DetailsCard/DetailsCard';
 import MostFocusedTimeCard from './MostFocusedTimeCard';
 import OverviewCard from './OverviewCard';
 import TimelineCard from './TimelineCard';
-import TrendsCard from './TrendsCard';
+import FocusDurationCurveCard from './FocusDurationCurveCard';
 import YearGridsCard from './YearGridsCard';
 
 const FocusSection = () => {
@@ -23,7 +23,7 @@ const FocusSection = () => {
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
-				<TrendsCard />
+				<FocusDurationCurveCard />
 				<FocusRecordsCurveCard />
 				<TimelineCard />
 				<MostFocusedTimeCard />

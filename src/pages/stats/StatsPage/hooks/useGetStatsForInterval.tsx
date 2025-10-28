@@ -13,7 +13,7 @@ interface UseGetStatsForIntervalOptions {
 /**
  * Custom hook to fetch and transform stats data for interval-based charts
  * Handles API fetching, date range management, grouped intervals, and data transformation
- * Used by TrendsCard (duration), FocusRecordsCurveCard (count), and CompletedTasksCurveCard (completedTasks)
+ * Used by FocusDurationCurveCard (duration), FocusRecordsCurveCard (count), and CompletedTasksCurveCard (completedTasks)
  */
 export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) => {
 	const { dataType, initialInterval, initialDates, showGroupedIntervalForWeek = false } = options;

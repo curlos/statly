@@ -8,7 +8,7 @@ import Spinner from '../../../../components/Loaders/Spinner';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
-const TrendsCard = () => {
+const FocusDurationCurveCard = () => {
 	// Use custom hook for focus stats with duration data type
 	const {
 		selectedInterval,
@@ -56,7 +56,7 @@ const TrendsCard = () => {
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px]">
 			<div className="flex justify-between items-center mb-4">
 				<div className="flex items-center gap-2">
-					<h3 className="font-bold text-[16px]">Trends</h3>
+					<h3 className="font-bold text-[16px]">Focus Durations Curve</h3>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -152,4 +152,4 @@ const TrendsCard = () => {
 	);
 };
 
-export default TrendsCard;
+export default FocusDurationCurveCard;
