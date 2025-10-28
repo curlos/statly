@@ -33,18 +33,18 @@ const TrendsCard = () => {
 
 	const getAverage = () => {
 		let totalSeconds = 0;
-		let daysWithAtLeastOneFocusRecord = 0;
+		let intervalsWithAtLeastOneFocusRecord = 0;
 
 		data.forEach((day) => {
 			const { seconds } = day;
 			totalSeconds += seconds;
 
 			if (seconds) {
-				daysWithAtLeastOneFocusRecord += 1;
+				intervalsWithAtLeastOneFocusRecord += 1;
 			}
 		});
 
-		const averageSeconds = totalSeconds / daysWithAtLeastOneFocusRecord;
+		const averageSeconds = totalSeconds / intervalsWithAtLeastOneFocusRecord;
 
 		return `Average: ${getFormattedDuration(averageSeconds, false)}`;
 	};

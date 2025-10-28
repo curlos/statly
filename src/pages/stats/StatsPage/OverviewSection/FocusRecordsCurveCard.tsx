@@ -33,6 +33,24 @@ const FocusRecordsCurveCard = () => {
 		initialDates: getAllDaysInWeekFromDate(new Date()),
 	});
 
+	const getAverage = () => {
+		let totalCount = 0;
+		let intervalsWithAtLeastOneFocusRecord = 0;
+
+		data.forEach((day) => {
+			const { score } = day;
+			totalCount += score;
+
+			if (score) {
+				intervalsWithAtLeastOneFocusRecord += 1;
+			}
+		});
+
+		const averageCount = totalCount / intervalsWithAtLeastOneFocusRecord;
+
+		return `Average: ${averageCount.toFixed(2)} records`;
+	};
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
 			<div className="flex justify-between items-center mb-6">
@@ -68,6 +86,8 @@ const FocusRecordsCurveCard = () => {
 			</div>
 
 			<div className="sm:hidden mb-2">{renderDateRangePicker()}</div>
+
+			<div className="text-color-gray-100 mb-2">{getAverage()}</div>
 
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart
