@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
-import { useGetFocusStatsForInterval } from '../hooks/useGetFocusStatsForInterval';
+import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
 
@@ -26,7 +26,7 @@ const RecentCompletionCurveCard = () => {
 		renderDateRangePicker,
 		renderCustomDateModal,
 		shouldShowGroupedInterval,
-	} = useGetFocusStatsForInterval({
+	} = useGetStatsForInterval({
 		dataType: 'completedTasks',
 		initialInterval: 'Week',
 		initialDates: getAllDaysInWeekFromDate(new Date()),

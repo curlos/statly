@@ -5,7 +5,7 @@ import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
-import { useGetFocusStatsForInterval } from '../hooks/useGetFocusStatsForInterval';
+import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 
 const TrendsCard = () => {
 	// Use custom hook for focus stats with duration data type
@@ -23,7 +23,7 @@ const TrendsCard = () => {
 		renderDateRangePicker,
 		renderCustomDateModal,
 		shouldShowGroupedInterval,
-	} = useGetFocusStatsForInterval({
+	} = useGetStatsForInterval({
 		dataType: 'duration',
 		initialInterval: 'Week',
 		initialDates: getAllDaysInWeekFromDate(new Date()),
