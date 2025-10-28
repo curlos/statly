@@ -6,7 +6,7 @@ import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
 
-const RecentCompletionCurveCard = () => {
+const CompletedTasksCurveCard = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, hexColor } = chosenColorObj;
@@ -119,4 +119,4 @@ const RecentCompletionCurveCard = () => {
 	);
 };
 
-export default RecentCompletionCurveCard;
+export default CompletedTasksCurveCard;
