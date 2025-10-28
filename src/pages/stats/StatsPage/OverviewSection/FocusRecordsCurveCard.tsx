@@ -29,7 +29,7 @@ const FocusRecordsCurveCard = () => {
 		shouldShowGroupedInterval,
 	} = useGetStatsForInterval({
 		dataType: 'count',
-		initialInterval: 'Week',
+		initialInterval: 'Month',
 		initialDates: getAllDaysInWeekFromDate(new Date()),
 	});
 
