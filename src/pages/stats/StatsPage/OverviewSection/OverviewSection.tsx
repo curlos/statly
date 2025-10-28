@@ -43,11 +43,6 @@ const OverviewSection = () => {
 				<OverviewCard />
 				<TodaysActionReport />
 			</div>
-
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-				<FocusRecordsCurveCard />
-				<CompletedTasksCurveCard />
-			</div>
 		</div>
 	);
 };

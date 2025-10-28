@@ -26,7 +26,7 @@ const TrendsCard = () => {
 		shouldShowGroupedInterval,
 	} = useGetStatsForInterval({
 		dataType: 'duration',
-		initialInterval: 'Week',
+		initialInterval: 'Month',
 		initialDates: getAllDaysInWeekFromDate(new Date()),
 	});
 

@@ -3,6 +3,7 @@ import ModalPickDateRange from '../../../../components/Modal/ModalPickDateRange'
 import CompletionDistributionCard from './CompletionDistributionCard';
 import CompletionStatsCard from './CompletionStatsCard';
 import OverviewCard from './OverviewCard';
+import CompletedTasksCurveCard from '../OverviewSection/CompletedTasksCurveCard';
 
 const TaskSection = () => {
 	// Custom
@@ -13,19 +14,20 @@ const TaskSection = () => {
 	return (
 		<div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-3">
-				<OverviewCard />
+				{/* <OverviewCard />
 				<CompletionDistributionCard />
-				<CompletionStatsCard />
+				<CompletionStatsCard /> */}
+				<CompletedTasksCurveCard />
 			</div>
 
-			<ModalPickDateRange
+			{/* <ModalPickDateRange
 				isModalOpen={isModalPickDateRangeOpen}
 				setIsModalOpen={setIsModalPickDateRangeOpen}
 				startDate={startDate}
 				setStartDate={setStartDate}
 				endDate={endDate}
 				setEndDate={setEndDate}
-			/>
+			/> */}
 		</div>
 	);
 };
