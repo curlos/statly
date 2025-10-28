@@ -134,7 +134,7 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 				setIsVisible={setIsHovering}
 				customClasses={'!bg-black'}
 			>
-				<div className={classNames(chosenColorObj.textColor, 'p-2 text-[12px] bg-black text-nowrap rounded')}>
+				<div className={classNames(chosenColorObj.textColor, 'p-2 text-[16px] bg-black text-nowrap rounded')}>
 					{dateKey} - {formattedDurationForTheDay}
 				</div>
 			</Dropdown>
