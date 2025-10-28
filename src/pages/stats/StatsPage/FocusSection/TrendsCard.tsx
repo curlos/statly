@@ -6,6 +6,7 @@ import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
+import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
 const TrendsCard = () => {
 	// Use custom hook for focus stats with duration data type
@@ -29,16 +30,6 @@ const TrendsCard = () => {
 		initialDates: getAllDaysInWeekFromDate(new Date()),
 	});
 
-	const getStrokeWidth = () => {
-		// Use thinner stroke for "Days" + large date ranges to handle many data points
-		if (selectedGroupedInterval === 'Days' && selectedInterval === 'All') {
-			return 0.5;
-		}
-		if (selectedGroupedInterval === 'Days' && selectedInterval === 'Year') {
-			return 1;
-		}
-		return 2;
-	};
 
 	const getAverage = () => {
 		let totalSeconds = 0;
@@ -150,7 +141,7 @@ const TrendsCard = () => {
 						type="monotone"
 						dataKey="seconds"
 						stroke={chosenColorObj.hexColor}
-						strokeWidth={getStrokeWidth()}
+						strokeWidth={getStrokeWidthByDataLength(data.length)}
 						fill="url(#colorPv)"
 					/>
 				</AreaChart>

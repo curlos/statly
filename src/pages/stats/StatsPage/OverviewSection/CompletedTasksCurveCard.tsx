@@ -5,6 +5,7 @@ import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
+import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
 const CompletedTasksCurveCard = () => {
 	const themeContext = useThemeContext();
@@ -110,7 +111,7 @@ const CompletedTasksCurveCard = () => {
 							return null;
 						}}
 					/>
-					<Area type="monotone" dataKey="score" stroke={hexColor} strokeWidth={3} fill="url(#colorPv)" />
+					<Area type="monotone" dataKey="score" stroke={hexColor} strokeWidth={getStrokeWidthByDataLength(data.length)} fill="url(#colorPv)" />
 				</AreaChart>
 			</ResponsiveContainer>
 
