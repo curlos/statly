@@ -28,6 +28,8 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 		'search',
 		'start-date',
 		'end-date',
+		'interval-start-date',
+		'interval-end-date',
 		'projects',
 		'projects-todoist',
 		'categories',

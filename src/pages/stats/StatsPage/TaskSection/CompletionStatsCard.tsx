@@ -275,6 +275,8 @@ const CompletionStatsCard = () => {
 							ancestorTasksById={ancestorTasksById as any}
 							metricType="count"
 							aggregationResults={aggregationResults as any}
+							intervalStartDate={apiStartDate}
+							intervalEndDate={apiEndDate}
 						/>
 					</div>
 				</div>

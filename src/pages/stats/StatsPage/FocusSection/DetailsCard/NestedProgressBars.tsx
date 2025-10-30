@@ -17,7 +17,9 @@ const NestedProgressBars = ({
     sessionCategoriesById,
     ancestorTasksById,
     metricType = 'duration',
-    aggregationResults
+    aggregationResults,
+    intervalStartDate,
+    intervalEndDate
 }) => {
     const groupedTasksCollapsedByDefault = useState(false);
 
@@ -81,7 +83,7 @@ const NestedProgressBars = ({
             return (
                 <ul className="space-y-4 pl-6 mb-6">
                     <li className="flex items-start gap-1">
-                        <ProgressBar item={consolidatedItem} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} />
+                        <ProgressBar item={consolidatedItem} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
                     </li>
                 </ul>
             );
@@ -109,7 +111,7 @@ const NestedProgressBars = ({
 
                     return (
                         <li key={subtask.id} className="flex items-start gap-1">
-                            <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} />
+                            <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
                         </li>
                     );
                 })}
@@ -178,6 +180,9 @@ const NestedProgressBars = ({
                                     projectsById={projectsById}
                                     sessionCategoriesById={sessionCategoriesById}
                                     metricType={metricType}
+                                    ancestorTasksById={ancestorTasksById}
+                                    intervalStartDate={intervalStartDate}
+                                    intervalEndDate={intervalEndDate}
                                 />
                             </li>
                         </ul>

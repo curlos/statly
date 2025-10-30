@@ -19,7 +19,9 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	showNestedProgressBars,
 	ancestorTasksById,
 	metricType = 'duration',
-	aggregationResults
+	aggregationResults,
+	intervalStartDate,
+	intervalEndDate
 }) => {
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -73,13 +75,15 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 							sessionCategoriesById,
 							ancestorTasksById,
 							metricType,
-							aggregationResults
+							aggregationResults,
+							intervalStartDate,
+							intervalEndDate
 						}}
 					/>
 				) : (
 					sortedData
 						.slice(0, maxDataLen)
-						.map((item) => <ProgressBar key={item.id} item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} />)
+						.map((item) => <ProgressBar key={item.id} item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />)
 				)}
 			</div>
 

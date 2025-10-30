@@ -22,6 +22,8 @@ const AppliedFilterItemList = () => {
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const intervalStartDateFromUrl = searchParams.get('interval-start-date') || '';
+	const intervalEndDateFromUrl = searchParams.get('interval-end-date') || '';
 	const taskIdToFilterBy = searchParams.get('task-id');
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
 
@@ -151,6 +153,14 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	const intervalDateRangeFilter = {
+		name: `Interval Date Range`,
+		value: intervalStartDateFromUrl && intervalEndDateFromUrl ? `${intervalStartDateFromUrl} - ${intervalEndDateFromUrl}` : '',
+		handleRemove: () => {
+			updateQueryParams({ 'interval-start-date': '', 'interval-end-date': '', page: '' });
+		},
+	};
+
 	const projectsTickTickFilter = {
 		name: 'Projects (TickTick)',
 		value: projectNamesStr,
@@ -202,6 +212,7 @@ const AppliedFilterItemList = () => {
 	const allFilters = [
 		taskIdFilter,
 		dateRangeFilter,
+		intervalDateRangeFilter,
 		sortByFilter,
 		searchTextFilter,
 		projectsTickTickFilter,

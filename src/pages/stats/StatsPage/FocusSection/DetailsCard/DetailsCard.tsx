@@ -280,6 +280,8 @@ const DetailsCard = () => {
 							showNestedProgressBars={showNestedProgressBars}
 							ancestorTasksById={ancestorTasksById}
 							aggregationResults={aggregationResults}
+							intervalStartDate={apiStartDate}
+							intervalEndDate={apiEndDate}
 						/>
 					</div>
 				</div>

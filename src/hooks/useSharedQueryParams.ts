@@ -13,6 +13,8 @@ export const useSharedQueryParams = () => {
 	const searchTextFromUrl = searchParams.get('search') || '';
 	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const intervalStartDateFromUrl = searchParams.get('interval-start-date') || '';
+	const intervalEndDateFromUrl = searchParams.get('interval-end-date') || '';
 	const projectsFromUrl = searchParams.get('projects') || '';
 	const projectsTodoistFromUrl = searchParams.get('projects-todoist') || '';
 	const categoriesFromUrl = searchParams.get('categories') || '';
@@ -49,6 +51,8 @@ export const useSharedQueryParams = () => {
 			'task-id': taskIdFromUrl,
 			'start-date': startDateFromUrl,
 			'end-date': endDateFromUrl,
+			'interval-start-date': intervalStartDateFromUrl,
+			'interval-end-date': intervalEndDateFromUrl,
 			'search': searchTextFromUrl,
 			'focus-apps': focusAppsFromUrl,
 			'to-do-list-apps': toDoListAppsFromUrl,

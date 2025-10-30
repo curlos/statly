@@ -4,7 +4,7 @@ import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils
 import { usePageContext } from 'vike-react/usePageContext';
 import { shouldBreakAllText } from '../../../../utils/text.utils';
 
-const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById }) => {
+const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate }) => {
 	const pageContext = usePageContext();
 	const searchParams = new URLSearchParams(pageContext.urlParsed.search);
 
@@ -31,6 +31,14 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 				}
 
 				break;
+		}
+
+		// Add interval date params if they exist (for two-tier filtering)
+		if (intervalStartDate) {
+			searchParams.set('interval-start-date', intervalStartDate);
+		}
+		if (intervalEndDate) {
+			searchParams.set('interval-end-date', intervalEndDate);
 		}
 
 		const queryString = searchParams.toString();
