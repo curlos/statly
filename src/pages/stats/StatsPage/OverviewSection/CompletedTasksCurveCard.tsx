@@ -33,9 +33,27 @@ const CompletedTasksCurveCard = () => {
 		initialDates: getAllDaysInMonthFromDate(new Date()),
 	});
 
+	const getAverage = () => {
+		let totalCount = 0;
+		let intervalsWithAtLeastOneCompletedTask = 0;
+
+		data.forEach((day) => {
+			const { score } = day;
+			totalCount += score;
+
+			if (score) {
+				intervalsWithAtLeastOneCompletedTask += 1;
+			}
+		});
+
+		const averageCount = totalCount / intervalsWithAtLeastOneCompletedTask;
+
+		return `Average: ${averageCount.toFixed(2)} tasks`;
+	};
+
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px]">
-			<div className="flex justify-between items-center mb-6">
+			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Completed Tasks Curve</h3>
 					{(isLoading || isFetching) && <Spinner size="md" />}
@@ -68,6 +86,8 @@ const CompletedTasksCurveCard = () => {
 			</div>
 
 			<div className="sm:hidden mb-2">{renderDateRangePicker()}</div>
+
+			<div className="text-color-gray-100 mb-2">{getAverage()}</div>
 
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart

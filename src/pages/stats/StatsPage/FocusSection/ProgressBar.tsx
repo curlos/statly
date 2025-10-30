@@ -2,12 +2,16 @@ import classNames from 'classnames';
 import { navigate } from 'vike/client/router';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import { usePageContext } from 'vike-react/usePageContext';
+import { shouldBreakAllText } from '../../../../utils/text.utils';
 
-const ProgressBar = ({ item, fromModal = false, projectsById, sessionCategoriesById }) => {
+const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById }) => {
 	const pageContext = usePageContext();
 	const searchParams = new URLSearchParams(pageContext.urlParsed.search);
 
-	const handleGoToFocusRecordsPage = () => {
+	const isFocusDuration = metricType === 'duration';
+	const isCompletedTasks = metricType === 'count';
+
+	const handleGoToPage = () => {
 		const { id } = item;
 
 		switch (item.type) {
@@ -30,28 +34,58 @@ const ProgressBar = ({ item, fromModal = false, projectsById, sessionCategoriesB
 		}
 
 		const queryString = searchParams.toString();
-		navigate('/focus-records' + (queryString ? `?${queryString}` : ''));
+		const targetPage = isCompletedTasks ? '/completed-tasks' : '/focus-records';
+		navigate(targetPage + (queryString ? `?${queryString}` : ''));
 	};
 
-	const color = item.type === 'task' ? (projectsById[item?.projectId]?.color || item.color) : item.color
+	const formattedMetric = isFocusDuration
+		? getFormattedDuration(item.duration, false)
+		: `${item.count?.toLocaleString() || 0} task${item.count !== 1 ? 's' : ''}`;
+
+	const color = item.type === 'task' ? (projectsById[item?.projectId]?.color || item.color || '#808080') : (item.color || '#808080')
+
+	let topMostAncestorTaskName = null
+	let projectName = null
+
+	// For "Stats - Focus", the tasks that are displayed can be unclear since it could be a task like "BUILD" which is the task's name BUT I need more context like "BUILD - MG JUSTICE (GUNPLA)" which'll tell me which GUNPLA this "BUILD" task is for.
+	if (item.type === 'task' && ancestorTasksById) {
+		const fullTask = ancestorTasksById[item.id]
+		const topMostAncestorTaskId = fullTask?.ancestorIds[fullTask.ancestorIds.length - 1]
+		const fullTopMostAncestorTask = ancestorTasksById[topMostAncestorTaskId]
+
+		if (topMostAncestorTaskId !== item.id) {
+			topMostAncestorTaskName = fullTopMostAncestorTask?.title
+		}
+
+		const taskProject = projectsById[item.projectId]
+		projectName = taskProject?.name
+	}
+
+	const shouldBreakAll = shouldBreakAllText(item.name);
 
 	return (
-		<div>
+		<div className="w-full">
 			<div className="flex justify-between items-center mb-1 w-full">
-				<div
-					className={classNames(
-						!fromModal
-							? 'truncate w-[150px] xs:w-[200px] sm:w-[150px] md:w-[200px] lg:w-[110px] xl:w-[200px]'
-							: 'truncate w-[150px] xs:w-[200px] sm:w-[150px] md:w-[350px] break-words',
-						'text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px]',
-						'cursor-pointer hover:underline'
-					)}
-					onClick={handleGoToFocusRecordsPage}
-				>
-					{item.name}
+				<div>
+					<div
+						className={classNames(
+							'text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px]',
+							'cursor-pointer hover:underline',
+							{ 'break-all': shouldBreakAll }
+						)}
+						onClick={handleGoToPage}
+					>
+						{item.name}
+					</div>
+
+					<div className="text-color-gray-100">
+						{topMostAncestorTaskName && <span>{topMostAncestorTaskName}{" - "}</span>}
+						{projectName && (topMostAncestorTaskName ? <span>({projectName})</span> : (<span>{projectName}</span>))}
+					</div>
 				</div>
-				<div className="text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px] text-[#8C8C8C] truncate">
-					{getFormattedDuration(item.duration, false)} • {item.percentage}%
+
+				<div className="text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px] text-[#8C8C8C] text-nowrap">
+					{formattedMetric} • {item.percentage}%
 				</div>
 			</div>
 			<div key={item.id} className="rounded-full dark:bg-[#232323]">

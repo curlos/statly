@@ -53,7 +53,7 @@ const FocusRecordsCurveCard = () => {
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px]">
-			<div className="flex justify-between items-center mb-6">
+			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Focus Records Curve</h3>
 					{(isLoading || isFetching) && <Spinner size="md" />}

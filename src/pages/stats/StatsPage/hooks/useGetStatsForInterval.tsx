@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useGetFocusStatsQuery, useGetTasksStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
@@ -35,10 +35,10 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 	});
 
 	const selectedGroupedIntervalOptions = ['Days', 'Weeks', 'Months', 'Years'];
-	const [selectedGroupedInterval, setSelectedGroupedInterval] = useState('Days');
 
 	// Determine which grouped interval options to show based on selected interval
-	const getGroupedIntervalOptions = () => {
+	// Memoize to prevent recalculation on every render
+	const availableGroupedIntervalOptions = useMemo(() => {
 		if (selectedInterval === 'Week') {
 			return ['Days']; // Week can only be grouped by Days
 		} else if (selectedInterval === 'All' || selectedInterval === 'Custom') {
@@ -48,9 +48,10 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 		} else {
 			return ['Days', 'Weeks', 'Months']; // Other intervals exclude 'Years'
 		}
-	};
+	}, [selectedInterval]);
 
-	const availableGroupedIntervalOptions = getGroupedIntervalOptions();
+	// Initialize with first available option instead of hard-coded 'Days'
+	const [selectedGroupedInterval, setSelectedGroupedInterval] = useState(availableGroupedIntervalOptions[0]);
 
 	// Auto-reset selectedGroupedInterval if it's not available in current options
 	useEffect(() => {

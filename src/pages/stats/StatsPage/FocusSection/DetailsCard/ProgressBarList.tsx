@@ -17,7 +17,9 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	focusDurationForInterval,
 	sortBy,
 	showNestedProgressBars,
-	ancestorTasksById
+	ancestorTasksById,
+	metricType = 'duration',
+	aggregationResults
 }) => {
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -26,12 +28,25 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	// Session categories are stored as projects with source='ProjectSession'
 	const sessionCategoriesById = projectsSessionById || {};
 
+	const isFocusDuration = metricType === 'duration';
+	const metricKey = isFocusDuration ? 'duration' : 'count';
+
+	// Data is already grouped by parent in CompletionStatsCard for completed tasks
+	// So we just sort and display it here
 	const sortedData = [...data].sort((a, b) => {
-		if (sortBy === 'Focus Hours: Most-Least') {
-			return b.duration - a.duration;
+		// Primary sort: by metric value
+		const metricDiff = sortBy === 'Focus Hours: Most-Least' || sortBy === 'Tasks: Most-Least'
+			? b[metricKey] - a[metricKey]
+			: a[metricKey] - b[metricKey];
+
+		// If metrics are equal, sort alphabetically by name
+		if (metricDiff === 0) {
+			const nameA = (a.name || '').toLowerCase();
+			const nameB = (b.name || '').toLowerCase();
+			return nameA.localeCompare(nameB);
 		}
 
-		return a.duration - b.duration;
+		return metricDiff;
 	});
 	const maxDataLen = fromModal ? sortedData.length : 5;
 
@@ -39,11 +54,11 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 		<div className="space-y-4 w-full p-2">
 			<div
 				className={classNames(
-					'space-y-4 overflow-auto gray-scrollbar',
+					'space-y-4 w-full overflow-auto gray-scrollbar',
 					fromModal ? 'max-h-[300px] md:max-h-[500px]' : 'md:max-h-[230px]'
 				)}
 			>
-				{showNestedProgressBars && ancestorTasksById ? (
+				{showNestedProgressBars && ancestorTasksById && aggregationResults ? (
 					<NestedProgressBars
 						{...{
 							data,
@@ -56,13 +71,15 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 							sortBy,
 							projectsById,
 							sessionCategoriesById,
-							ancestorTasksById
+							ancestorTasksById,
+							metricType,
+							aggregationResults
 						}}
 					/>
 				) : (
 					sortedData
 						.slice(0, maxDataLen)
-						.map((item) => <ProgressBar key={item.id} item={item} fromModal={fromModal} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} />)
+						.map((item) => <ProgressBar key={item.id} item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} />)
 				)}
 			</div>
 

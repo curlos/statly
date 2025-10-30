@@ -1,13 +1,20 @@
 import classNames from 'classnames';
-import { useState, useEffect, useRef } from 'react';
-import { PieChart, Pie, Cell, Label } from 'recharts';
-import { usePageContext } from 'vike-react/usePageContext';
-import { navigate } from 'vike/client/router';
-import { useStatsContext } from '../../../../contexts/useStatsContext';
-import { checkIfInboxProject } from '../../../../utils/tickTickOne.util';
+import { useState, useMemo } from 'react';
+import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
+import Icon from '../../../../components/Icon';
+import Modal from '../../../../components/Modal/Modal';
+import { useThemeContext } from '../../../../contexts/useThemeContext';
+import { useGetTasksStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
+import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
-import DropdownCompletedSmallLabeList from './DropdownCompletedSmallLabeList';
-import SmallLabel from './SmallLabel';
+import CustomPieChartTooltip from '../FocusSection/DetailsCard/CustomPieChartTooltip';
+import ProgressBarList from '../FocusSection/DetailsCard/ProgressBarList';
+import { useGetProjectsQuery } from '../../../../services/resources/documentsProjectsApi';
+import Spinner from '../../../../components/Loaders/Spinner';
+import { groupTasksByParent } from '../../../../utils/taskGrouping.utils';
+import { aggregateNestedTasksByParent } from '../../../../utils/nestedTaskAggregation.utils';
+import { getPieChartPaddingAngle } from '../../../../utils/pieChart.utils';
 
 const noData = [
 	{
@@ -20,323 +27,275 @@ const noData = [
 ];
 
 const CompletionStatsCard = () => {
-	const {
-		completedTasksGroupedByDate,
-		projectsById,
-		todoistAllProjectsById,
-		tagsByRawName,
-		filteredDaysWithCompletedTasks,
-	} = useStatsContext() || {};
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+	const { hover } = chosenColorObj;
 
-	const selectedOptions = ['Project', 'Tag'];
+	const selectedOptions = ['Project', 'Task'];
 	const [selected, setSelected] = useState(selectedOptions[0]);
 
-	const [progressBarData, setProgressBarData] = useState(noData);
-	const [numOfCompletedTasks, setNumOfCompletedTasks] = useState(0);
-	const [thereIsNoData, setThereIsNoData] = useState(true);
+	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 
-	useEffect(() => {
-		if (
-			!completedTasksGroupedByDate ||
-			!filteredDaysWithCompletedTasks ||
-			!projectsById ||
-			!todoistAllProjectsById
-		) {
-			return;
-		}
+	// Use custom hook for date range management
+	const {
+		selectedInterval,
+		setSelectedInterval,
+		apiStartDate,
+		apiEndDate,
+		setIsModalPickDateRangeOpen,
+		renderDateRangePicker,
+		renderCustomDateModal,
+	} = useStatsDateRange({
+		initialInterval: 'Day',
+		initialDates: [new Date()],
+	});
 
-		const allFilteredCompletedTasks = filteredDaysWithCompletedTasks.flatMap((day) => day.completedTasksForDay);
-		const newNumOfCompletedTasks = allFilteredCompletedTasks.length;
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [showNestedProgressBars, setShowNestedProgressBars] = useState(false);
+	const [sortBy, setSortBy] = useState('Tasks: Most-Least');
 
-		let newProgressBarData = progressBarData;
+	// Build query params for API using custom hook
+	const queryParams = useStatsQueryParams({
+		'group-by': selected === 'Project' ? 'project' : 'task',
+		'interval-start-date': apiStartDate,
+		'interval-end-date': apiEndDate,
+		'nested': showNestedProgressBars,
+	});
 
-		switch (selected) {
-			case 'Project':
-				newProgressBarData = getDataByProjects(allFilteredCompletedTasks, newNumOfCompletedTasks);
-				break;
-			case 'Tag':
-				newProgressBarData = getDataByTags(allFilteredCompletedTasks, newNumOfCompletedTasks);
-				break;
-			default:
-				newProgressBarData = getDataByProjects(allFilteredCompletedTasks, newNumOfCompletedTasks);
-		}
+	// Fetch metadata needed for ProgressBar navigation
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
 
-		const thereIsNoData = !newProgressBarData || newProgressBarData.length === 0;
+	// Fetch stats from API
+	const { data: statsData, isLoading, isFetching } = useGetTasksStatsQuery(queryParams);
+	const { ancestorTasksById } = statsData || {};
 
-		if (thereIsNoData) {
-			newProgressBarData = noData;
+	// Extract and process data from API response
+	const { progressBarData, aggregationResults } = useMemo(() => {
+		let data = selected === 'Project'
+			? statsData?.byProject?.length > 0 ? statsData?.byProject : noData
+			: (statsData?.byTask?.length > 0 ? statsData?.byTask : noData);
 
-			setThereIsNoData(true);
-		} else {
-			setThereIsNoData(false);
-		}
+		let aggregationResults = null;
 
-		setNumOfCompletedTasks(newNumOfCompletedTasks);
+		// Group tasks by parent based on view mode
+		if (selected === 'Task' && ancestorTasksById && data[0]?.id !== 'No Data') {
+			const totalCount = statsData?.summary?.totalCount || 1;
 
-		const sortedProgressBarData = newProgressBarData.sort((a, b) => b.value - a.value);
-		setProgressBarData(sortedProgressBarData);
-	}, [
-		completedTasksGroupedByDate,
-		projectsById,
-		todoistAllProjectsById,
-		tagsByRawName,
-		selected,
-		filteredDaysWithCompletedTasks,
-	]);
-
-	const getDataByProjects = (allFilteredCompletedTasks, newNumOfCompletedTasks) => {
-		const completedTasksGroupedByProject = {};
-
-		allFilteredCompletedTasks.forEach((task) => {
-			const projectId = task['projectId'] || task['v2_project_id'] || task['project_id'];
-
-			if (!completedTasksGroupedByProject[projectId]) {
-				completedTasksGroupedByProject[projectId] = [];
-			}
-
-			completedTasksGroupedByProject[projectId].push(task);
-		});
-
-		return Object.keys(completedTasksGroupedByProject).map((projectId) => {
-			const completedTasksArr = completedTasksGroupedByProject[projectId];
-			const numOfCompletedTasks = completedTasksArr.length;
-			const percentage = Number(((numOfCompletedTasks / newNumOfCompletedTasks) * 100).toFixed(2));
-
-			const isFromInboxProject = checkIfInboxProject(projectId);
-
-			let name = 'Inbox';
-			let color = 'green';
-			let id = name;
-
-			if (!isFromInboxProject) {
-				const project = projectsById[projectId] || todoistAllProjectsById[projectId];
-
-				if (projectsById[projectId]) {
-					name = project.name;
-				} else {
-					name = `${project.name} (Todoist)`;
-					id = name;
-				}
-
-				color = project.color;
-				id = project.id;
+			if (showNestedProgressBars) {
+				// Use recursive aggregation for nested view (shows top-level parents with all descendants)
+				aggregationResults = aggregateNestedTasksByParent(
+					data,
+					ancestorTasksById,
+					totalCount,
+					'count',
+					projectsById
+				);
+				data = aggregationResults.aggregatedData;
 			} else {
-				id = projectId;
+				// Use simple flat aggregation for non-nested view
+				data = groupTasksByParent(data, ancestorTasksById, totalCount, 'count');
 			}
+		}
 
-			return {
-				name,
-				color,
-				value: numOfCompletedTasks,
-				percentage,
-				id,
-			};
-		});
-	};
+		// For Project view with nested progress bars, calculate aggregation from tasks
+		if (selected === 'Project' && showNestedProgressBars && ancestorTasksById && statsData?.byTask) {
+			const taskData = statsData.byTask;
+			const totalCount = statsData?.summary?.totalCount || 1;
 
-	const getDataByTags = (allFilteredCompletedTasks, newNumOfCompletedTasks) => {
-		const completedTasksGroupedByTags = {};
-		const UNCLASSIFIED_KEY = 'UNCLASSIFIED';
+			if (taskData.length > 0) {
+				// Calculate aggregation results from task data
+				aggregationResults = aggregateNestedTasksByParent(
+					taskData,
+					ancestorTasksById,
+					totalCount,
+					'count',
+					projectsById
+				);
+			}
+		}
 
-		allFilteredCompletedTasks.forEach((task) => {
-			const { tags } = task;
+		// Add project names and colors
+		if (data && data[0]?.id !== 'No Data') {
+			data = [...data].map((item) => {
+				const projectId = item.type === 'project' ? item.id : item.projectId
 
-			if (tags && tags.length > 0) {
-				for (let tagName of tags) {
-					if (!completedTasksGroupedByTags[tagName]) {
-						completedTasksGroupedByTags[tagName] = [];
-					}
+				const name = item.type === 'project' ? projectsById && projectsById[projectId]?.name : item.name
+				const color = projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080'
 
-					completedTasksGroupedByTags[tagName].push(task);
+				return {
+					...item,
+					name,
+					color
 				}
-			} else {
-				// If the task is unclassified (no tags)
-				if (!completedTasksGroupedByTags[UNCLASSIFIED_KEY]) {
-					completedTasksGroupedByTags[UNCLASSIFIED_KEY] = [];
-				}
+			})
+		}
 
-				completedTasksGroupedByTags[UNCLASSIFIED_KEY].push(task);
-			}
-		});
+		return { progressBarData: data, aggregationResults };
+	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById]);
 
-		return Object.keys(completedTasksGroupedByTags).map((tagName) => {
-			const completedTasksArr = completedTasksGroupedByTags[tagName];
-			const numOfCompletedTasks = completedTasksArr.length;
-			const percentage = Number(((numOfCompletedTasks / newNumOfCompletedTasks) * 100).toFixed(2));
+	const totalCompletedTasks = statsData?.summary?.totalCount || 0;
 
-			const isUnclassifiedTag = tagName === UNCLASSIFIED_KEY;
+	const getCoreDetailsCard = (fromModal) => {
+		return (
+			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative">
+				<div className="flex gap-4">
+					<div className="md:flex justify-between items-center w-full">
+						<div className="flex items-center gap-2 mb-3 sm:mb-0">
+							<h3 className="font-bold text-[16px]">Completion Stats</h3>
+							{(isLoading || isFetching) && <Spinner size="md" />}
+						</div>
 
-			let name = 'Unclassified';
-			let color = 'black';
-			let id = name;
+						<div className={classNames('flex items-center gap-2', selectedInterval === 'All' && 'py-2')}>
+							<div className="flex items-center gap-2">
+								<Icon
+									name={showNestedProgressBars ? 'unknown_med' : 'network_node'}
+									fill={0}
+									customClass={classNames(
+										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+										`${hover.textColor} ${hover.borderColor}`
+									)}
+									onClick={() => setShowNestedProgressBars(!showNestedProgressBars)}
+								/>
 
-			if (!isUnclassifiedTag) {
-				const tag = tagsByRawName[tagName];
-				name = tag.name;
-				color = tag.color;
-				id = tag.id;
-			}
+								<Icon
+									name="swap_vert"
+									fill={0}
+									customClass={classNames(
+										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+										`${hover.textColor} ${hover.borderColor}`
+									)}
+									onClick={() =>
+										setSortBy(
+											sortBy === 'Tasks: Most-Least'
+												? 'Tasks: Least-Most'
+												: 'Tasks: Most-Least'
+										)
+									}
+								/>
 
-			return {
-				name,
-				color,
-				value: numOfCompletedTasks,
-				percentage,
-				id,
-			};
-		});
-	};
+								<GeneralSelectButtonAndDropdown
+									selected={selected}
+									setSelected={setSelected}
+									selectedOptions={selectedOptions}
+								/>
 
-	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[280px]">
-			<div className="flex justify-between items-center">
-				<h3 className="font-bold text-[16px]">Completion Stats</h3>
+								<GeneralSelectButtonAndDropdown
+									selected={selectedInterval}
+									setSelected={setSelectedInterval}
+									selectedOptions={selectedIntervalOptions}
+									onClick={(name) => {
+										if (name?.toLowerCase() !== 'custom') {
+											return;
+										}
 
-				<GeneralSelectButtonAndDropdown
-					selected={selected}
-					setSelected={setSelected}
-					selectedOptions={selectedOptions}
-				/>
-			</div>
+										setIsModalPickDateRangeOpen(true);
+									}}
+								/>
+							</div>
 
-			<div
-				className={classNames(
-					'flex-1 mt-2 flex flex-col flex-row sm:flex-row md:flex-col lg:flex-row items-center gap-3 xl:gap-10 px-4',
-					thereIsNoData && 'justify-center'
-				)}
-			>
-				<div>
-					<PieChart width={170} height={170}>
-						<Pie
-							data={progressBarData}
-							cx={80}
-							cy={80}
-							innerRadius={70}
-							outerRadius={85}
-							paddingAngle={5}
-							dataKey="percentage"
-						>
-							{progressBarData.map((entry, index) => (
-								<Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
-							))}
+							<div className="hidden sm:block">{renderDateRangePicker()}</div>
+						</div>
+					</div>
+				</div>
 
-							<Label
-								position="center"
-								fill="white"
-								content={({ viewBox }) => {
-									const { cx, cy } = viewBox;
+				<div className="sm:hidden mt-2">{renderDateRangePicker()}</div>
 
-									// In Recharts, the Label component inside a Pie (or other chart types) does not support rendering HTML elements such as <div> directly because it operates within an SVG context. This is why "svg" elements like "<text>" are used instead to display the HTML elements.
+				<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 md:px-1">
+					<div>
+						<PieChart width={220} height={220}>
+							<Pie
+								data={progressBarData}
+								cx={100}
+								cy={100}
+								innerRadius={85}
+								outerRadius={100}
+								paddingAngle={getPieChartPaddingAngle(progressBarData.length)}
+								dataKey="percentage"
+							>
+								{progressBarData.map((entry, index) => (
+									<Cell
+										key={entry.id ? `${entry.id}-index` : index}
+										fill={entry.color}
+										stroke="none"
+									/>
+								))}
 
-									return (
-										<g>
-											{!thereIsNoData ? (
-												<>
-													<text
-														x={cx}
-														y={cy - 10}
-														fill="white"
-														textAnchor="middle"
-														dominantBaseline="central"
-														className="text-[24px] font-bold"
-													>
-														{numOfCompletedTasks.toLocaleString()}
-													</text>
-													<text
-														x={cx}
-														y={cy + 15}
-														fill="#aaa"
-														textAnchor="middle"
-														dominantBaseline="central"
-														className="text-[14px]"
-													>
-														Completed Tasks
-													</text>
-												</>
-											) : (
+								<Label
+									position="center"
+									fill="white"
+									content={({ viewBox }: any) => {
+										const { cx, cy } = viewBox;
+
+										// In Recharts, the Label component inside a Pie (or other chart types) does not support rendering HTML elements such as <div> directly because it operates within an SVG context. This is why "svg" elements like "<text>" are used instead to display the HTML elements.
+
+										return (
+											<g>
 												<text
 													x={cx}
-													y={cy}
+													y={cy - 10}
+													fill="white"
+													textAnchor="middle"
+													dominantBaseline="central"
+													className="text-[24px] font-bold"
+												>
+													{totalCompletedTasks.toLocaleString()}
+												</text>
+												<text
+													x={cx}
+													y={cy + 15}
 													fill="#aaa"
 													textAnchor="middle"
 													dominantBaseline="central"
 													className="text-[14px]"
 												>
-													No Data
+													Completed Tasks
 												</text>
-											)}
-										</g>
-									);
-								}}
-							/>
-						</Pie>
-					</PieChart>
+											</g>
+										);
+									}}
+								/>
+							</Pie>
+
+							<Tooltip content={<CustomPieChartTooltip active={false} payload={[]} />} />
+						</PieChart>
+					</div>
+
+					<div className="sm:mt-3 flex flex-col gap-2 w-full min-w-0">
+						<ProgressBarList
+							data={progressBarData as any}
+							dataByTasks={statsData?.byTask as any}
+							dataType={selected as any}
+							fromModal={fromModal}
+							isModalOpen={isModalOpen}
+							setIsModalOpen={setIsModalOpen as any}
+							focusDurationForInterval={totalCompletedTasks as any}
+							sortBy={sortBy as any}
+							showNestedProgressBars={showNestedProgressBars as any}
+							ancestorTasksById={ancestorTasksById as any}
+							metricType="count"
+							aggregationResults={aggregationResults as any}
+						/>
+					</div>
 				</div>
 
-				{!thereIsNoData && <SmallLabelList progressBarData={progressBarData} />}
+				{renderCustomDateModal()}
 			</div>
-		</div>
-	);
-};
-
-const SmallLabelList = ({ progressBarData }) => {
-	const pageContext = usePageContext();
-	const dropdownFocusRankingListRef = useRef(null);
-	const [isDropdownCompletedSmallListVisible, setIsDropdownCompletedSmallListVisible] = useState(false);
-
-	const { projectsById, todoistAllProjectsById, sessionCategoriesById } = useStatsContext() || {};
-
-	if (!projectsById || !sessionCategoriesById) {
-		return;
-	}
-
-	const handleGoToCompletedTasksPage = (project) => {
-		let projectsQueryParam = '';
-
-		const { id } = project;
-
-		// If the project is from TickTick.
-		if (projectsById[id]) {
-			projectsQueryParam = `?projects=${id}`;
-			// If the project is from Todoist.
-		} else if (todoistAllProjectsById[id]) {
-			projectsQueryParam = `?projects-todoist=${id}`;
-		}
-
-		const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : {};
-		let queryParams = new URLSearchParams(queryParamsObj).toString();
-		queryParams = queryParams && projectsQueryParam ? `&${queryParams}` : '';
-
-		navigate('/completed-tasks' + projectsQueryParam + queryParams);
+		);
 	};
 
 	return (
-		<div>
-			<div className="space-y-2 w-full">
-				{progressBarData.slice(0, 5).map((data, i) => {
-					return <SmallLabel key={`${data.id}-${i}`} data={data} onClick={handleGoToCompletedTasksPage} />;
-				})}
-			</div>
+		<div className="h-full">
+			<div className="h-full">{getCoreDetailsCard(false)}</div>
 
-			{progressBarData?.length > 5 && (
-				<div className="relative">
-					<div
-						ref={dropdownFocusRankingListRef}
-						onClick={() => setIsDropdownCompletedSmallListVisible(!isDropdownCompletedSmallListVisible)}
-						className="text-color-gray-100 cursor-pointer mt-2"
-					>
-						View More
-					</div>
-
-					<DropdownCompletedSmallLabeList
-						toggleRef={dropdownFocusRankingListRef}
-						isVisible={isDropdownCompletedSmallListVisible}
-						setIsVisible={setIsDropdownCompletedSmallListVisible}
-						progressBarData={progressBarData}
-						onClick={handleGoToCompletedTasksPage}
-					/>
-				</div>
-			)}
+			<Modal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				positionClasses="top-center"
+				customClasses="!w-[1000px]"
+			>
+				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
+			</Modal>
 		</div>
 	);
 };

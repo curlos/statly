@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import Icon from '../../../../../components/Icon';
 import Modal from '../../../../../components/Modal/Modal';
@@ -13,6 +13,8 @@ import CustomPieChartTooltip from './CustomPieChartTooltip';
 import ProgressBarList from './ProgressBarList';
 import { useGetProjectsQuery } from '../../../../../services/resources/documentsProjectsApi';
 import Spinner from '../../../../../components/Loaders/Spinner';
+import { getPieChartPaddingAngle } from '../../../../../utils/pieChart.utils';
+import { aggregateNestedTasksByParent } from '../../../../../utils/nestedTaskAggregation.utils';
 
 const noData = [
 	{
@@ -68,49 +70,77 @@ const DetailsCard = () => {
 	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
 	const { ancestorTasksById } = statsData || {}
 
-	// Extract data from API response
-	let progressBarData = selected === 'Project'
-		? statsData?.byProject?.length > 0 ? statsData?.byProject : noData
-		: (statsData?.byTask?.length > 0 ? statsData?.byTask : noData);
-	
-	if (progressBarData && progressBarData[0]?.id !== 'No Data') {
-		progressBarData = [...progressBarData].map((item) => {
-			const projectId = item.type === 'project' ? item.id : item.projectId
+	// Extract and process data from API response
+	const { progressBarData, aggregationResults } = useMemo(() => {
+		let data = selected === 'Project'
+			? statsData?.byProject?.length > 0 ? statsData?.byProject : noData
+			: (statsData?.byTask?.length > 0 ? statsData?.byTask : noData);
 
-			let name = item.type === 'project' ? projectsById && projectsById[projectId]?.name : item.name
+		let aggregationResults = null;
 
-			// If no projectName, it's from a non-TickTick/Session app - use the app name
-			if (!name && item.value !== 'No Data') {
-				const sourceToAppName: Record<string, string> = {
-					'FocusRecordSession': 'Session',
-					'FocusRecordBeFocused': 'Be Focused',
-					'FocusRecordForest': 'Forest',
-					'FocusRecordTide': 'Tide'
-				};
-				name = sourceToAppName[projectId] || 'Inbox';
-			}
+		// Group tasks by parent based on view mode
+		if (selected === 'Task' && showNestedProgressBars && data[0]?.id !== 'No Data') {
+			const totalDuration = statsData?.summary?.totalDuration || 1;
 
-			const color = projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080'
-
-			return {
-				...item,
-				name,
-				color
-			}
-		})
-	}
-	const focusDurationForInterval = statsData?.summary?.totalDuration || 0;
-
-	const getPaddingAngle = () => {
-		switch (selectedInterval) {
-			case 'All':
-				return 0.5;
-			case 'Year':
-				return 2;
-			default:
-				return 5;
+			aggregationResults = aggregateNestedTasksByParent(
+				data,
+				ancestorTasksById,
+				totalDuration,
+				'duration',
+				projectsById
+			);
+			data = aggregationResults.aggregatedData;
 		}
-	};
+
+		// For Project view with nested progress bars, calculate aggregation from tasks
+		if (selected === 'Project' && showNestedProgressBars && ancestorTasksById && statsData?.byTask) {
+			const taskData = statsData.byTask;
+			const totalDuration = statsData?.summary?.totalDuration || 1;
+
+			if (taskData.length > 0) {
+				// Calculate aggregation results from task data
+				aggregationResults = aggregateNestedTasksByParent(
+					taskData,
+					ancestorTasksById,
+					totalDuration,
+					'duration',
+					projectsById
+				);
+			}
+		}
+
+		// Add project names and colors
+		if (data && data[0]?.id !== 'No Data') {
+			data = [...data].map((item) => {
+				const projectId = item.type === 'project' ? item.id : item.projectId
+
+				let name = item.type === 'project' ? projectsById && projectsById[projectId]?.name : item.name
+
+				// If no projectName, it's from a non-TickTick/Session app - use the app name
+				if (!name && item.value !== 'No Data') {
+					const sourceToAppName: Record<string, string> = {
+						'FocusRecordSession': 'Session',
+						'FocusRecordBeFocused': 'Be Focused',
+						'FocusRecordForest': 'Forest',
+						'FocusRecordTide': 'Tide'
+					};
+					name = sourceToAppName[projectId] || 'Inbox';
+				}
+
+				const color = projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080'
+
+				return {
+					...item,
+					name,
+					color
+				}
+			})
+		}
+
+		return { progressBarData: data, aggregationResults };
+	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById]);
+
+	const focusDurationForInterval = statsData?.summary?.totalDuration || 0;
 
 	const getCoreDetailsCard = (fromModal) => {
 		return (
@@ -186,7 +216,7 @@ const DetailsCard = () => {
 								cy={100}
 								innerRadius={85}
 								outerRadius={100}
-								paddingAngle={getPaddingAngle()}
+								paddingAngle={getPieChartPaddingAngle(progressBarData.length)}
 								dataKey="percentage"
 							>
 								{progressBarData.map((entry, index) => (
@@ -249,6 +279,7 @@ const DetailsCard = () => {
 							sortBy={sortBy}
 							showNestedProgressBars={showNestedProgressBars}
 							ancestorTasksById={ancestorTasksById}
+							aggregationResults={aggregationResults}
 						/>
 					</div>
 				</div>
