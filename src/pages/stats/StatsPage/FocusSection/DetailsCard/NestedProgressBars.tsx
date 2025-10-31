@@ -320,7 +320,7 @@ const NestedProgressBars = ({
         const groupedProjectsAndTasks = {};
 
         for (const taskId of [...sortedTasksWithNoParent, ...otherFocusRecordTaskIds]) {
-            const task = ancestorTasksById[taskId] || virtualAncestorsById[taskId];
+            const task = ancestorTasksById[taskId] || virtualAncestorsById[taskId] || groupedTasksById[taskId];
 
             if (!task) {
                 continue;
