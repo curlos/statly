@@ -55,69 +55,68 @@ const NestedProgressBars = ({
             otherFocusRecordTaskIds.push(id);
         }
     });
+    
+    const renderDirectTasks = (taskId, parentTaskId, parentTaskIdAndChildrenTaskIds, projectColor) => {
+        // Need to investigate but progressBarDataById should be used here because it somehow gives me the duration and percentage of hte direct tasks. Maybe it's because out of all of the totals, this one is the most pure and just gives me the duration or count for each task directly.
+        const item = progressBarDataById[taskId];
 
-    /**
-     * @description
-     * @param directCompletedSubtasks
-     * @param parentTask
-     */
-    const renderDirectFocusTasks = (directFocusTasks, parentTask) => {
-        // For count metric (CompletionStatsCard), consolidate all direct children into one bar
-        if (metricType === 'count') {
-            // Calculate total count from all direct children
-            const totalCount = directFocusTasks?.length || 0;
-
-            // Calculate percentage
-            const percentage = Number(((totalCount / focusDurationForInterval) * 100).toFixed(2));
-
-            // Create consolidated item
-            const consolidatedItem = {
-                id: parentTask.id,
-                name: `Direct Child Tasks: ${parentTask.title || parentTask.content}`,
-                count: totalCount,
-                percentage: percentage,
-                color: parentTask.color || '#808080',
-                type: 'task'
-            };
-
-            return (
-                <ul className="space-y-4 pl-6 mb-6">
-                    <li className="flex items-start gap-1">
-                        <ProgressBar item={consolidatedItem} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
-                    </li>
-                </ul>
-            );
+        if (!item) {
+            return null;
         }
 
-        // For duration metric (DetailsCard), show individual tasks as before
-        const sortedDirectFocusTasks = [...directFocusTasks].sort((subtaskOne, subtaskTwo) => {
-            const itemOne = progressBarDataById[subtaskOne.id];
-            const itemTwo = progressBarDataById[subtaskTwo.id];
+        const shouldBreakAll = shouldBreakAllText(item?.name);
+        const formattedMetric = isFocusDuration
+        ? getFormattedDuration(item?.[metricType], false)
+        : `${item?.[metricType]?.toLocaleString() || 0} task${totalMetricOnParentTask[parentTaskId].value !== 1 ? 's' : ''}`;
 
-            const metricValueOne = itemOne?.[metricKey] || 0;
-            const metricValueTwo = itemTwo?.[metricKey] || 0;
+        const renderProgressBar = () => (
+            <li className="flex items-start gap-1 mb-6">
+                <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
+            </li>
+        )
 
-            return metricValueTwo - metricValueOne; // Sort from highest to lowest
-        });
+        // If this is a direct task (such as YouTube Bookmark Extension's direct focus task with 46h59m), then it will just show one progress bar when the Accordion is oepned. This is rendered inside the Accordion where the "renderDirectTasks" function is called.
+        if (parentTaskIdAndChildrenTaskIds.length === 1) {
+            return <div key={taskId}>{renderProgressBar()}</div>
+        }
 
         return (
-            <ul className="space-y-4 pl-6 mb-6">
-                {sortedDirectFocusTasks?.map((subtask) => {
-                    const item = progressBarDataById[subtask.id];
+                <Accordion
+                key={taskId}
+                title={
+                    <li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+                        <span
+                            className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+                            style={{ backgroundColor: projectColor }}
+                        />
+                        {" "}
+                        <span className="hover:underline">
+                            <span className={classNames({ 'break-all': shouldBreakAll })}>{`${parentTaskId === taskId ? 'Direct Parent Task: ' : ''}${item.name}`} </span>
+                            {" "}
+                            <span className="text-color-gray-25">
+                                ({formattedMetric},{' '}
+                                {item?.percentage}%)
+                            </span>
+                        </span>
 
-                    if (!item) {
-                        return null;
+                    </li>
+                }
+                openByDefault={!groupedTasksCollapsedByDefault}
+                showArrowNextToText={true}
+                customToggleOpen={() => {
+                    if (!fromModal) {
+                        setIsModalOpen(true);
                     }
+                }}
+                preventOpen={!fromModal}
+            >
 
-                    return (
-                        <li key={subtask.id} className="flex items-start gap-1">
-                            <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
-                        </li>
-                    );
-                })}
-            </ul>
+                <ul className="space-y-4 pl-6 mb-6">
+                    {renderProgressBar()}
+                </ul>
+            </Accordion>
         );
-    };
+    }
 
     const renderNestedTasks = (parentTaskId) => {
         // Check if this is a grouped task (daily habit)
@@ -147,7 +146,7 @@ const NestedProgressBars = ({
                 <ul key={parentTaskId} className="text-[16px] w-full">
                     <Accordion
                         title={
-                            <li className="text-[18px] cursor-pointer font-bold hover:underline break-words w-full">
+                            <li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
                                 <span
                                     className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
                                     style={{ backgroundColor: projectColor }}
@@ -191,24 +190,68 @@ const NestedProgressBars = ({
             );
         }
 
-        // Regular parent task with potential children
-        const directParentChildFocusTasks = groupedSubtasksByParentTask[parentTask.id];
         const projectColor = (projectsById && projectsById[parentTask?.projectId] && projectsById[parentTask?.projectId]?.color) || '#808080'
+        const shouldBreakAll = shouldBreakAllText(parentTask.title || parentTask.content);
+        const parentTaskIdAndChildrenTaskIds = [...(parentDirectChildrenTaskIdsByParentId[parentTaskId] || []), parentTaskId]
+        let tasksToRender = parentTaskIdAndChildrenTaskIds
 
-        const shouldBreakAllParentTask = shouldBreakAllText(parentTask.title || parentTask.content);
+        if (metricType === 'count') {
+            const directTaskIdsToGroup = []
+            const taskIdsWithChildren = []
+
+            parentTaskIdAndChildrenTaskIds?.map((taskId) => {
+                const isTaskWithChildren = parentDirectChildrenTaskIdsByParentId[taskId] && parentDirectChildrenTaskIdsByParentId[taskId].length > 0
+                
+                if (isTaskWithChildren && taskId !== parentTaskId) {
+                    // In this case, this task has children who could either have children or direct completed tasks.
+                    taskIdsWithChildren.push(taskId)
+                } else {
+                    if (progressBarDataById[taskId]) {
+                        // In this case, it must be a direct completed task (either a subtask/item or the parentTask itself being completed).
+                        directTaskIdsToGroup.push(taskId)
+                    }
+                }
+            })
+
+            // Calculate total count from all direct children
+            const totalCount = directTaskIdsToGroup?.length || 0;
+
+            if (totalCount > 0) {
+                // Calculate percentage
+                const percentage = Number(((totalCount / focusDurationForInterval) * 100).toFixed(2));
+
+                const groupId = `grouped-direct-tasks-${parentTaskId}`
+
+                // Create consolidated item
+                const groupedDirectChildTasks = {
+                    id: parentTaskId,
+                    projectId: parentTask.projectId,
+                    name: `Direct Child Tasks: ${parentTask.title || parentTask.content}`,
+                    count: totalCount,
+                    percentage: percentage,
+                    color: parentTask.color || '#808080',
+                    type: 'task',
+                    isGroupedDirectTasksForCount: true
+                };
+                
+                progressBarDataById[groupId] = groupedDirectChildTasks
+                taskIdsWithChildren.push(groupId)
+                tasksToRender = taskIdsWithChildren
+            }
+        }
 
         return (
             <ul key={parentTaskId} className="text-[16px] w-full">
                 <Accordion
                     title={
-                        <li className="text-[18px] cursor-pointer font-bold break-words w-full">
+                        <li className="text-[18px] cursor-pointer font-normal break-words w-full">
                             <span
                                 className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
                                 style={{ backgroundColor: projectColor }}
                             />
                             {" "}
                             <span className="hover:underline">
-                                <span className={classNames({ 'break-all': shouldBreakAllParentTask })}>{parentTask.title || parentTask.content}</span>
+                                <span className={classNames({ 'break-all': shouldBreakAll })}>{parentTask.title || parentTask.content}</span>
                                 {" "}
                                 <span className="text-color-gray-25">
                                     ({formattedMetric},{' '}
@@ -226,23 +269,32 @@ const NestedProgressBars = ({
                     }}
                     preventOpen={!fromModal}
                 >
-                    {directParentChildFocusTasks?.length > 0 && renderDirectFocusTasks(directParentChildFocusTasks, parentTask)}
-
                     <ul className="pl-6">
-                        {parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
-                            parentDirectChildrenTaskIdsByParentId[parentTaskId]
-                                .sort((taskIdOne, taskIdTwo) => {
-                                    const valueOne = totalMetricOnParentTask[taskIdOne]?.value || 0;
-                                    const valueTwo = totalMetricOnParentTask[taskIdTwo]?.value || 0;
+                        {tasksToRender
+                                ?.sort((taskIdOne, taskIdTwo) => {
+                                    // If it's the direct task of the parent displayed, then we need to grab the data from "progressBarDataById" because this'll tell us the actual value of the parent task itself, not the value of the children combined and passed up to the parent. Otherwise, for everyone else, you either use that combined child value (duration/count) or the pure progressBarDataById value on itself.
+                                    const valueOne = taskIdOne === parentTaskId ? progressBarDataById[taskIdOne]?.[metricType] : totalMetricOnParentTask[taskIdOne]?.value || progressBarDataById[taskIdOne]?.[metricType];
+
+                                    const valueTwo = taskIdTwo === parentTaskId ? progressBarDataById[taskIdTwo]?.[metricType] : totalMetricOnParentTask[taskIdTwo]?.value || progressBarDataById[taskIdTwo]?.[metricType];
+
                                     return valueTwo - valueOne; // Sort from highest to lowest
                                 })
                                 ?.map((taskId) => {
-                                if (
-                                    parentDirectChildrenTaskIdsByParentId[taskId] &&
-                                    parentDirectChildrenTaskIdsByParentId[taskId].length > 0
-                                ) {
-                                    return <div key={taskId}>{renderNestedTasks(taskId)}</div>;
-                                }
+                                    const isTaskWithChildren = parentDirectChildrenTaskIdsByParentId[taskId] &&
+                                        parentDirectChildrenTaskIdsByParentId[taskId].length > 0
+
+                                    if (isTaskWithChildren) {
+                                        // For the direct parent task, it needs to be rendered with either an Accordion + one progress bar OR as null if there's no direct parent task in progressBarDataById.
+                                        if (taskId === parentTaskId) {
+                                            return renderDirectTasks(taskId, parentTaskId, tasksToRender, projectColor)
+                                        }
+
+                                        // Otherwise, if it's a task with children that isn't the parent, we need to recursively render the nested tasks.
+                                        return <div key={taskId}>{renderNestedTasks(taskId)}</div>;
+                                    } else {
+                                        // if the task doesn't have children, then we can just render it with an Accordion + one progress bar if it's in progressBarDataById. The reason we don't just render the progressBar directly and have an accordion wrapped around it first is because I need to match the rest of the nested accordions.
+                                        return renderDirectTasks(taskId, parentTaskId, tasksToRender, projectColor)
+                                    }
                             })}
                     </ul>
                 </Accordion>
@@ -306,7 +358,7 @@ const NestedProgressBars = ({
                         <ul key={project.id} className="w-full">
                             <Accordion
                                 title={
-                                    <li className="text-[18px] cursor-pointer font-bold hover:underline break-words w-full">
+                                    <li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
 
                                         <span
                                             className="w-2 h-2 rounded-full flex-shrink-0 inline-block"

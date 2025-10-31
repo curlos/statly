@@ -71,6 +71,17 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 
 	const shouldBreakAll = shouldBreakAllText(item.name);
 
+	// If no projectName, it's from a non-TickTick/Session app - use the app name
+	if (!projectName && item.value !== 'No Data') {
+		const sourceToAppName: Record<string, string> = {
+			'FocusRecordSession': 'Session',
+			'FocusRecordBeFocused': 'Be Focused',
+			'FocusRecordForest': 'Forest',
+			'FocusRecordTide': 'Tide'
+		};
+		projectName = sourceToAppName[item?.projectId] || null;
+	}
+
 	return (
 		<div className="w-full">
 			<div className="flex justify-between items-center mb-1 w-full">

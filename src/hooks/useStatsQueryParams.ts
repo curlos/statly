@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useSearchParamsCustom } from '../contexts/useSearchParamsContext';
+import { useUserSettingsContext } from '../pages/focus-records/useUserSettingsContext';
 
 interface UseStatsQueryParamsOptions {
 	'group-by'?: string;
@@ -20,6 +21,12 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 	const { searchParams } = useSearchParamsCustom();
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+	const {
+		focusRecordsPageSettings: {
+			taskIdIncludeFocusRecordsFromSubtasks
+		}
+	} = useUserSettingsContext();
+
 	const queryParams = useMemo(() => {
 		return {
 			'group-by': options['group-by'] || undefined,
@@ -37,6 +44,8 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 			'categories': searchParams.get('categories') || undefined,
 			'to-do-list-apps': searchParams.get('to-do-list-apps') || undefined,
 			'crosses-midnight': searchParams.get('crosses-midnight') || undefined,
+			'task-id': searchParams.get('task-id') || undefined,
+			'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 			'timezone': timezone,
 		};
 	}, [

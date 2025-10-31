@@ -8,15 +8,11 @@
  * @returns true if the longest word exceeds the threshold
  */
 export const shouldBreakAllText = (text: string | undefined | null, maxWordLength = 26): boolean => {
-	console.log(text)
-
 	if (!text) return false;
 
 	const longestWord = text.split(/\s+/).reduce((longest, word) =>
 		word.length > longest.length ? word : longest, ''
 	);
-
-	console.log(longestWord.length)
 
 	return longestWord.length > maxWordLength;
 };
