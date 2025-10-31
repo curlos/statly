@@ -73,8 +73,6 @@ export function groupTasksByParent(
 
 	const groupedByParent: Record<string, any> = {};
 
-	console.log(data)
-
 	data.forEach((item) => {
 		const taskInfo = ancestorTasksById[item.id];
 		const parentId = taskInfo?.parentId || item.id; // Use task itself if no parent

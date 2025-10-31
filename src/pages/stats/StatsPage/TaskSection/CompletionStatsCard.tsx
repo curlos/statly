@@ -70,6 +70,8 @@ const CompletionStatsCard = () => {
 	const { data: statsData, isLoading, isFetching } = useGetTasksStatsQuery(queryParams);
 	const { ancestorTasksById } = statsData || {};
 
+	const totalCompletedTasks = statsData?.summary?.totalCount || 0;
+
 	// Extract and process data from API response
 	const { progressBarData, aggregationResults } = useMemo(() => {
 		let data = selected === 'Project'
@@ -89,7 +91,8 @@ const CompletionStatsCard = () => {
 					ancestorTasksById,
 					totalCount,
 					'count',
-					projectsById
+					projectsById,
+					totalCompletedTasks
 				);
 				data = aggregationResults.aggregatedData;
 			} else {
@@ -110,7 +113,8 @@ const CompletionStatsCard = () => {
 					ancestorTasksById,
 					totalCount,
 					'count',
-					projectsById
+					projectsById,
+					totalCompletedTasks
 				);
 			}
 		}
@@ -133,8 +137,6 @@ const CompletionStatsCard = () => {
 
 		return { progressBarData: data, aggregationResults };
 	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById]);
-
-	const totalCompletedTasks = statsData?.summary?.totalCount || 0;
 
 	const getCoreDetailsCard = (fromModal) => {
 		return (

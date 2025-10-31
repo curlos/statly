@@ -70,6 +70,8 @@ const DetailsCard = () => {
 	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
 	const { ancestorTasksById } = statsData || {}
 
+	const focusDurationForInterval = statsData?.summary?.totalDuration || 0;
+
 	// Extract and process data from API response
 	const { progressBarData, aggregationResults } = useMemo(() => {
 		let data = selected === 'Project'
@@ -87,7 +89,8 @@ const DetailsCard = () => {
 				ancestorTasksById,
 				totalDuration,
 				'duration',
-				projectsById
+				projectsById,
+				focusDurationForInterval
 			);
 			data = aggregationResults.aggregatedData;
 		}
@@ -104,7 +107,8 @@ const DetailsCard = () => {
 					ancestorTasksById,
 					totalDuration,
 					'duration',
-					projectsById
+					projectsById,
+					focusDurationForInterval
 				);
 			}
 		}
@@ -139,8 +143,6 @@ const DetailsCard = () => {
 
 		return { progressBarData: data, aggregationResults };
 	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById]);
-
-	const focusDurationForInterval = statsData?.summary?.totalDuration || 0;
 
 	const getCoreDetailsCard = (fromModal) => {
 		return (
