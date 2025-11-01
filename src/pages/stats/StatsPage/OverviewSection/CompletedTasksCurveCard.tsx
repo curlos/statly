@@ -45,7 +45,9 @@ const CompletedTasksCurveCard = () => {
 			}
 		});
 
-		const averageCount = totalCount / intervalsWithAtLeastOneCompletedTask;
+		const averageCount = intervalsWithAtLeastOneCompletedTask === 0
+			? 0
+			: totalCount / intervalsWithAtLeastOneCompletedTask;
 
 		return `Average: ${averageCount.toFixed(2)} tasks`;
 	};

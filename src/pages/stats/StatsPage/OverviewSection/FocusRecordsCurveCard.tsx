@@ -45,7 +45,9 @@ const FocusRecordsCurveCard = () => {
 			}
 		});
 
-		const averageCount = totalCount / intervalsWithAtLeastOneFocusRecord;
+		const averageCount = intervalsWithAtLeastOneFocusRecord === 0
+			? 0
+			: totalCount / intervalsWithAtLeastOneFocusRecord;
 
 		return `Average: ${averageCount.toFixed(2)} records`;
 	};
