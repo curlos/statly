@@ -2,17 +2,20 @@ import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 
 interface SpinnerProps {
-	size?: 'sm' | 'md' | 'lg';
+	size?: 'sm' | 'md' | 'lg' | 'xl';
 	customClass?: string;
 }
 
 const Spinner: React.FC<SpinnerProps> = ({ size = 'sm', customClass = '' }) => {
-	const { chosenColorObj } = useThemeContext();
+	const { chosenColorObj } = useThemeContext() || { chosenColorObj: {
+		textColor: 'text-red-500'
+	}};
 
 	const sizeClasses = {
 		sm: 'h-5 w-5',
 		md: 'h-7 w-7',
-		lg: 'h-10 w-10'
+		lg: 'h-10 w-10',
+		xl: 'h-16 w-16'
 	};
 
 	return (

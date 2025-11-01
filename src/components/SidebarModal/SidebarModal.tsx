@@ -35,9 +35,6 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 		);
 	};
 
-	const themeContext = useThemeContext();
-	const { selectedLoaderCardImage } = themeContext;
-
 	return (
 		<AnimatePresence>
 			{isSidebarModalOpen && (
@@ -83,12 +80,6 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						{/* Font Families */}
 						<hr className="border-color-gray-200 my-4" />
 						<FontFamilyList />
-
-						{/* Loader Images */}
-						<hr className="border-color-gray-200 my-4" />
-						<div>
-							<CardImage cardType="Loader Image" imageSrc={selectedLoaderCardImage} page="loader" />
-						</div>
 
 						{/* Other */}
 						<hr className="border-color-gray-200 my-4" />

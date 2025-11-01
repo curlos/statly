@@ -49,11 +49,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 		}
 	};
 
-	// TODO: Bring back later.
-	// const imgSrc =
-	// 	chosenMedal.requiredDuration !== undefined ? selectedMedalCardImage?.focus : selectedMedalCardImage?.tasks;
-
-	const imgSrc = '/cloudinary/battlefield-1-medals/combat/41_YBX5t8r.webp'
+	const imgSrc = selectedMedalCardImage?.[chosenMedal.type]
 
 	const pageContext = usePageContext();
 

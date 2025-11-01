@@ -150,19 +150,19 @@ export const getMedalImageClasses = (medalImageSizePx, isBattlefieldOneOrThreeMe
 		medalImageClass = 'w-[60px]';
 
 		if (isBattlefieldOneOrThreeMedal) {
-			medalImageClass += ' sm:ml-[-15px] mr-[-5px]';
+			medalImageClass += ' sm:ml-[-5px] mr-[-5px]';
 		}
 	} else if (medalImageSizePx === 100) {
 		medalImageClass = 'w-[100px]';
 
 		if (isBattlefieldOneOrThreeMedal) {
-			medalImageClass += ' sm:ml-[-25px] mr-[-10px]';
+			medalImageClass += ' sm:ml-[-10px] mr-[-10px]';
 		}
 	} else {
 		medalImageClass = 'w-[150px]';
 
 		if (isBattlefieldOneOrThreeMedal) {
-			medalImageClass += ' sm:ml-[-30px] mr-[-15px]';
+			medalImageClass += ' sm:ml-[-15px] mr-[-25px]';
 		}
 	}
 

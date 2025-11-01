@@ -33,18 +33,6 @@ const useTheme = () => {
 		localStorage.setItem('font-family', userSettings?.theme?.fontFamily);
 	}
 
-	const selectedLoaderCardImage =
-		userSettings?.theme?.loaderCardImage ||
-		localStorage.getItem('loader-card-image') ||
-		'https://i.imgur.com/tFa0En4.png';
-
-	if (
-		userSettings?.theme?.loaderCardImage &&
-		localStorage.getItem('loader-card-image') !== userSettings?.theme?.loaderCardImage
-	) {
-		localStorage.setItem('loader-card-image', userSettings?.theme?.loaderCardImage);
-	}
-
 	const getNextLightestAndDarkestColor = () => {
 		const colorVariantNameList = Object.keys(chosenColorVariantsObj);
 		let nextLightestColorObj = null;
@@ -113,6 +101,5 @@ const useTheme = () => {
 		nextLightestColorObj: getNextLightestOrDarkestColorObj('next-lightest'),
 		nextDarkestColorObj: getNextLightestOrDarkestColorObj('next-darkest'),
 		selectedFontFamilyKey,
-		selectedLoaderCardImage,
 	};
 };

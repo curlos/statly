@@ -34,7 +34,8 @@ const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalM
 	const medalsToUse = medalsData ? Object.entries(medalsData).map(([name, medalData]) => ({
 		name,
 		intervalsEarned: medalData.intervalsEarned || [],
-		interval
+		interval,
+		type: medalData.type
 	})) : [];
 
 	// Set default chosen medal - always update when interval/type/filters change

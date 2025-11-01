@@ -17,7 +17,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	const { chosenColorObj } = useThemeContext();
 
 	// RTK Query - User Settings
-	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
 	const [editUserSettings] = useEditUserSettingsMutation();
@@ -43,8 +43,6 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 				return getChallengesPagePayload();
 			case 'medals':
 				return getMedalsPagePayload();
-			case 'loader':
-				return getLoaderPayload();
 			case 'focus-records':
 			case 'completed-tasks':
 				return getFocusRecordsPagePayload();
@@ -100,19 +98,6 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 						},
 					},
 				},
-			},
-		};
-
-		return payload;
-	};
-
-	const getLoaderPayload = () => {
-		const restOfThemeKeysAndVals = userSettings?.theme;
-
-		const payload = {
-			theme: {
-				...restOfThemeKeysAndVals,
-				loaderCardImage: selectedImageSrc,
 			},
 		};
 
