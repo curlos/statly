@@ -97,7 +97,7 @@ const FocusDurationCurveCard = () => {
 						top: 10,
 						right: 30,
 						left: 10,
-						bottom: 0,
+						bottom: selectedInterval === 'Week' ? 20 : 5,
 					}}
 				>
 					<defs>
