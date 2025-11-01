@@ -26,7 +26,6 @@ const CompletedTasksCurveCard = () => {
 		setIsModalPickDateRangeOpen,
 		renderDateRangePicker,
 		renderCustomDateModal,
-		shouldShowGroupedInterval,
 	} = useGetStatsForInterval({
 		dataType: 'completedTasks',
 		initialInterval: 'Month',
@@ -60,13 +59,11 @@ const CompletedTasksCurveCard = () => {
 				</div>
 
 				<div className={classNames('flex gap-2 items-center', selectedInterval === 'All' && 'py-2')}>
-					{shouldShowGroupedInterval && (
-						<GeneralSelectButtonAndDropdown
-							selected={selectedGroupedInterval}
-							setSelected={setSelectedGroupedInterval}
-							selectedOptions={selectedGroupedIntervalOptions}
-						/>
-					)}
+					<GeneralSelectButtonAndDropdown
+						selected={selectedGroupedInterval}
+						setSelected={setSelectedGroupedInterval}
+						selectedOptions={selectedGroupedIntervalOptions}
+					/>
 
 					<GeneralSelectButtonAndDropdown
 						selected={selectedInterval}
@@ -109,7 +106,7 @@ const CompletedTasksCurveCard = () => {
 					</defs>
 					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} />
 					<XAxis dataKey="name" dy={7} />
-					<YAxis />
+					<YAxis tickFormatter={(value) => value.toLocaleString()} />
 					<Tooltip
 						offset={10}
 						contentStyle={{
@@ -120,11 +117,13 @@ const CompletedTasksCurveCard = () => {
 							if (payload && payload[0]) {
 								const { name, fullName, score } = payload[0].payload;
 								const nameToUse = fullName ? fullName : name;
+								const unit = score === 1 ? 'task' : 'tasks';
 
 								return (
-									<div
-										className={classNames(textColor, 'bg-black p-2 rounded-md')}
-									>{`${nameToUse} = ${score}`}</div>
+									<div className={classNames(textColor, 'bg-black p-2 rounded-md')}>
+										<div>{nameToUse}</div>
+										<div className="font-bold">{score} {unit}</div>
+									</div>
 								);
 							}
 

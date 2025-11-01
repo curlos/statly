@@ -2,12 +2,13 @@ import { useState, useEffect, useMemo } from 'react';
 import { useGetFocusStatsQuery, useGetTasksStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
+import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
 
 interface UseGetStatsForIntervalOptions {
 	dataType: 'duration' | 'count' | 'completedTasks';
 	initialInterval: string;
 	initialDates: Date[];
-	showGroupedIntervalForWeek?: boolean;
+	showRecordInterval?: boolean;
 }
 
 /**
@@ -16,7 +17,7 @@ interface UseGetStatsForIntervalOptions {
  * Used by FocusDurationCurveCard (duration), FocusRecordsCurveCard (count), and CompletedTasksCurveCard (completedTasks)
  */
 export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) => {
-	const { dataType, initialInterval, initialDates, showGroupedIntervalForWeek = false } = options;
+	const { dataType, initialInterval, initialDates, showRecordInterval = false } = options;
 
 	const selectedIntervalOptions = ['Week', 'Month', 'Year', 'All', 'Custom'];
 
@@ -39,16 +40,25 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 	// Determine which grouped interval options to show based on selected interval
 	// Memoize to prevent recalculation on every render
 	const availableGroupedIntervalOptions = useMemo(() => {
+		let options: string[] = [];
+
 		if (selectedInterval === 'Week') {
-			return ['Days']; // Week can only be grouped by Days
+			options = ['Days']; // Week can only be grouped by Days
 		} else if (selectedInterval === 'All' || selectedInterval === 'Custom') {
-			return selectedGroupedIntervalOptions; // Show all options including 'Years'
+			options = selectedGroupedIntervalOptions; // Show all options including 'Years'
 		} else if (selectedInterval === 'Month') {
-			return ['Days', 'Weeks']; // Month can only be grouped by Days or Weeks
+			options = ['Days', 'Weeks']; // Month can only be grouped by Days or Weeks
 		} else {
-			return ['Days', 'Weeks', 'Months']; // Other intervals exclude 'Years'
+			options = ['Days', 'Weeks', 'Months']; // Other intervals exclude 'Years'
 		}
-	}, [selectedInterval]);
+
+		// Add 'Records' option if showRecordInterval is true
+		if (showRecordInterval) {
+			options.push('Records');
+		}
+
+		return options;
+	}, [selectedInterval, showRecordInterval]);
 
 	// Initialize with first available option instead of hard-coded 'Days'
 	const [selectedGroupedInterval, setSelectedGroupedInterval] = useState(availableGroupedIntervalOptions[0]);
@@ -71,6 +81,8 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 				return 'month';
 			case 'Years':
 				return 'year';
+			case 'Records':
+				return 'record';
 			default:
 				return 'day';
 		}
@@ -101,7 +113,7 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 		if (!statsData) return [];
 
 		// Get the appropriate data array based on group-by parameter
-		const rawData = statsData.byDay || statsData.byWeek || statsData.byMonth || statsData.byYear || [];
+		const rawData = statsData.byDay || statsData.byWeek || statsData.byMonth || statsData.byYear || statsData.byRecord || [];
 
 		return rawData.map((item: any) => {
 			let name = '';
@@ -127,13 +139,34 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 			} else if (selectedGroupedInterval === 'Years') {
 				// Backend returns year as string (e.g., "2025")
 				name = item.date;
+			} else if (selectedGroupedInterval === 'Records') {
+				// For Records: X-axis shows just date, tooltip shows full date + time range
+				const startDate = new Date(item.startTime);
+				const endDate = new Date(item.endTime);
+
+				// Check if record spans multiple days
+				const startDay = getFormattedShortMonthDay(startDate);
+				const endDay = getFormattedShortMonthDay(endDate);
+				const crossesMidnight = startDay !== endDay;
+
+				// Short name for X-axis (just date)
+				if (crossesMidnight) {
+					name = `${startDay} - ${endDay}`;
+				} else {
+					name = startDay;
+				}
 			}
 
 			// Return different data shape based on dataType
 			if (dataType === 'duration') {
 				return {
 					name,
+					fullName: selectedGroupedInterval === 'Records'
+						? `${name}\n${new Date(item.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} - ${new Date(item.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`
+						: name,
 					seconds: item.duration,
+					startTime: item.startTime,
+					endTime: item.endTime,
 				};
 			} else if (dataType === 'count') {
 				return {
@@ -154,9 +187,6 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 
 	const data = transformDataForChart();
 
-	// Determine if grouped interval dropdown should be shown
-	const shouldShowGroupedInterval = showGroupedIntervalForWeek ? true : selectedInterval !== 'Week';
-
 	return {
 		// State
 		selectedInterval,
@@ -176,6 +206,5 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 		setIsModalPickDateRangeOpen,
 		renderDateRangePicker,
 		renderCustomDateModal,
-		shouldShowGroupedInterval,
 	};
 };

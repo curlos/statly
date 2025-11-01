@@ -23,11 +23,11 @@ const FocusDurationCurveCard = () => {
 		setIsModalPickDateRangeOpen,
 		renderDateRangePicker,
 		renderCustomDateModal,
-		shouldShowGroupedInterval,
 	} = useGetStatsForInterval({
 		dataType: 'duration',
 		initialInterval: 'Month',
 		initialDates: getAllDaysInWeekFromDate(new Date()),
+		showRecordInterval: true,
 	});
 
 
@@ -61,13 +61,11 @@ const FocusDurationCurveCard = () => {
 				</div>
 
 				<div className={classNames('flex gap-2 items-center', selectedInterval === 'All' && 'py-2')}>
-					{shouldShowGroupedInterval && (
-						<GeneralSelectButtonAndDropdown
-							selected={selectedGroupedInterval}
-							setSelected={setSelectedGroupedInterval}
-							selectedOptions={selectedGroupedIntervalOptions}
-						/>
-					)}
+					<GeneralSelectButtonAndDropdown
+						selected={selectedGroupedInterval}
+						setSelected={setSelectedGroupedInterval}
+						selectedOptions={selectedGroupedIntervalOptions}
+					/>
 
 					<GeneralSelectButtonAndDropdown
 						selected={selectedInterval}
@@ -98,7 +96,7 @@ const FocusDurationCurveCard = () => {
 					margin={{
 						top: 10,
 						right: 30,
-						left: 0,
+						left: 10,
 						bottom: 0,
 					}}
 				>
@@ -116,7 +114,7 @@ const FocusDurationCurveCard = () => {
 						dataKey="seconds"
 						type="number"
 						domain={['dataMin', 'dataMax']}
-						tickFormatter={(seconds) => getFormattedDuration(seconds, false, false)}
+						tickFormatter={(seconds) => getFormattedDuration(seconds, false, true)}
 					/>
 					<Tooltip
 						offset={10}
@@ -126,11 +124,26 @@ const FocusDurationCurveCard = () => {
 						content={({ payload }) => {
 							// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
 							if (payload && payload[0]) {
-								const { name, seconds } = payload[0].payload;
+								const { fullName, name, seconds } = payload[0].payload;
+
+								// For Records interval, show fullName (with time range) on separate lines
+								if (selectedGroupedInterval === 'Records') {
+									const lines = (fullName || name).split('\n');
+									return (
+										<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
+											{lines.map((line: string, idx: number) => (
+												<div key={idx}>{line}</div>
+											))}
+											<div className="font-bold">{getFormattedDuration(seconds, false)}</div>
+										</div>
+									);
+								}
+
 								return (
-									<div
-										className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
-									>{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
+									<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
+										<div>{name}</div>
+										<div className="font-bold">{getFormattedDuration(seconds, false)}</div>
+									</div>
 								);
 							}
 

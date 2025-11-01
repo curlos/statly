@@ -100,9 +100,10 @@ const MostFocusedTimeCard = () => {
 								if (payload && payload[0]) {
 									const { name, seconds } = payload[0].payload;
 									return (
-										<div
-											className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
-										>{`${name}, ${getFormattedDuration(seconds, false)}`}</div>
+										<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
+											<div>{name}</div>
+											<div className="font-bold">{getFormattedDuration(seconds, false)}</div>
+										</div>
 									);
 								}
 

@@ -135,7 +135,8 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 				customClasses={'!bg-black'}
 			>
 				<div className={classNames(chosenColorObj.textColor, 'p-2 text-[16px] bg-black text-nowrap rounded')}>
-					{dateKey} - {formattedDurationForTheDay}
+					<div>{dateKey}</div>
+					<div className="font-bold">{formattedDurationForTheDay}</div>
 				</div>
 			</Dropdown>
 		</div>

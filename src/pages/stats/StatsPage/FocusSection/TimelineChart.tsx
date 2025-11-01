@@ -24,7 +24,7 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 	const [series, setSeries] = useState(DEFAULT_SERIES);
 
 	const chartId = 'timeline';
-	const { chosenColorName, chosenColorVariantsObj } = useThemeContext();
+	const { chosenColorName, chosenColorVariantsObj, chosenColorObj } = useThemeContext();
 
 	const getColorScaleRanges = () => {
 		return [
@@ -117,8 +117,8 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 					const endHour = `${nextHour}:00 ${nextPeriod}`;
 
 					return `
-						<div style="padding: 8px; background: black; border-radius: 4px;">
-							<div style="margin-bottom: 4px; color: #aaa;">${formattedDate}</div>
+						<div style="padding: 8px; background: black; border-radius: 4px; color: ${chosenColorObj.hexColor};">
+							<div style="margin-bottom: 4px;">${formattedDate}</div>
 							<div style="margin-bottom: 4px;">${hourLabel} - ${endHour}</div>
 							<div style="font-weight: bold;">${getFormattedDuration(value, false)}</div>
 						</div>
@@ -126,8 +126,8 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 				}
 
 				return `
-					<div style="padding: 8px; background: black; border-radius: 4px;">
-						<div style="margin-bottom: 4px; color: #aaa;">${formattedDate}</div>
+					<div style="padding: 8px; background: black; border-radius: 4px; color: ${chosenColorObj.hexColor};">
+						<div style="margin-bottom: 4px;">${formattedDate}</div>
 						<div style="margin-bottom: 4px;">${hourLabel}</div>
 						<div style="font-weight: bold;">${getFormattedDuration(value, false)}</div>
 					</div>

@@ -295,8 +295,8 @@ export const getAllDaysInRange = (startDate, endDate) => {
 };
 
 export const getAllDatesInYear = (year) => {
-	const startDate = new Date(`${year}-01-02`); // Start of the year
-	const endDate = new Date(`${year}-12-31`); // End of the year
+	const startDate = new Date(year, 0, 1); // January 1st (month is 0-indexed)
+	const endDate = new Date(year, 11, 31); // December 31st
 	const dates = [];
 
 	for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
