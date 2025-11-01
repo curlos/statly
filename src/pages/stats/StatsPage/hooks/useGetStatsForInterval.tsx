@@ -19,7 +19,9 @@ interface UseGetStatsForIntervalOptions {
 export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) => {
 	const { dataType, initialInterval, initialDates, showRecordInterval = false } = options;
 
-	const selectedIntervalOptions = ['Week', 'Month', 'Year', 'All', 'Custom'];
+	const selectedIntervalOptions = showRecordInterval
+		? ['Day', 'Week', 'Month', 'Year', 'All', 'Custom']
+		: ['Week', 'Month', 'Year', 'All', 'Custom'];
 
 	// Use custom hook for date range management
 	const {
@@ -42,7 +44,9 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 	const availableGroupedIntervalOptions = useMemo(() => {
 		let options: string[] = [];
 
-		if (selectedInterval === 'Week') {
+		if (selectedInterval === 'Day') {
+			options = ['Records']; // Day can only be grouped by Records
+		} else if (selectedInterval === 'Week') {
 			options = ['Days']; // Week can only be grouped by Days
 		} else if (selectedInterval === 'All' || selectedInterval === 'Custom') {
 			options = selectedGroupedIntervalOptions; // Show all options including 'Years'
@@ -52,8 +56,8 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 			options = ['Days', 'Weeks', 'Months']; // Other intervals exclude 'Years'
 		}
 
-		// Add 'Records' option if showRecordInterval is true
-		if (showRecordInterval) {
+		// Add 'Records' option if showRecordInterval is true (but not for 'Day' since it's already set)
+		if (showRecordInterval && selectedInterval !== 'Day') {
 			options.push('Records');
 		}
 
