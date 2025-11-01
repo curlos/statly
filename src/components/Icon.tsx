@@ -1,3 +1,6 @@
+import { useFontLoadingContext } from '../contexts/useFontLoadingContext';
+import Spinner from './Loaders/Spinner';
+
 interface IconProps {
 	name: string;
 	customClass?: string;
@@ -25,20 +28,35 @@ const Icon: React.FC<IconProps> = ({
 	onMouseOver,
 	onMouseLeave,
 	iconKey,
-}) => (
-	<span
-		ref={toggleRef}
-		key={iconKey}
-		className={'material-symbols-rounded' + (customClass ? ' ' + customClass : '')}
-		style={{
-			fontVariationSettings: `'FILL' ${fill}, 'wght' ${wght}, 'GRAD' ${grad}, 'opsz' ${opsz}`,
-		}}
-		onClick={onClick}
-		onMouseOver={onMouseOver}
-		onMouseLeave={onMouseLeave}
-	>
-		{name}
-	</span>
-);
+}) => {
+	const { fontsLoaded } = useFontLoadingContext() as { fontsLoaded: boolean };
+
+	if (!fontsLoaded) {
+		return (
+			<span
+				key={iconKey}
+				className={"invisible" + (customClass ? ' ' + customClass : '')}
+			>
+				<Spinner size="sm" />
+			</span>
+		);
+	}
+
+	return (
+		<span
+			ref={toggleRef}
+			key={iconKey}
+			className={'material-symbols-rounded' + (customClass ? ' ' + customClass : '')}
+			style={{
+				fontVariationSettings: `'FILL' ${fill}, 'wght' ${wght}, 'GRAD' ${grad}, 'opsz' ${opsz}`,
+			}}
+			onClick={onClick}
+			onMouseOver={onMouseOver}
+			onMouseLeave={onMouseLeave}
+		>
+			{name}
+		</span>
+	);
+};
 
 export default Icon;

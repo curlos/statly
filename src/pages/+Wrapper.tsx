@@ -14,13 +14,16 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { selectUserToken } from '../slices/userSlice';
 import { navigate } from 'vike/client/router';
 import { useAutoSync } from '../hooks/useAutoSync';
+import { FontLoadingProvider } from '../contexts/useFontLoadingContext';
 
 const globalClasses = 'text-white select-none';
 
 export const Wrapper = ({ children }) => {
 	return (
 		<Provider store={store}>
-			<ProviderList>{children}</ProviderList>
+			<FontLoadingProvider>
+				<ProviderList>{children}</ProviderList>
+			</FontLoadingProvider>
 		</Provider>
 	);
 };

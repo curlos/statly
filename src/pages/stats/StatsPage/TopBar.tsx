@@ -28,7 +28,7 @@ const TopBar = () => {
 
 	const getTabButtons = () => {
 		return (
-			<div className="flex justify-center gap-1">
+			<div className="flex justify-center gap-2">
 				<div
 					className={location.pathname.includes('overview') ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => navigate('/stats/overview' + queryParamsStr)}
@@ -55,15 +55,15 @@ const TopBar = () => {
 
 	const getModalButtons = () => {
 		return (
-			<div>
+			<div className="flex items-center gap-2">
 				<Icon
 					name="page_info"
-					customClass={'!text-[30px] text-color-gray-100 cursor-pointer mr-[15px]'}
+					customClass={'!text-[30px] text-color-gray-100 cursor-pointer'}
 					onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
 				/>
 				<Icon
 					name="menu"
-					customClass={'!text-[30px] text-white mt-[15px] mr-[15px] cursor-pointer'}
+					customClass={'!text-[30px] text-white mr-[15px] cursor-pointer'}
 					onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
 				/>
 			</div>
