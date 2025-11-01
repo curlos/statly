@@ -28,39 +28,39 @@ const TodaysActionReport = () => {
 
 	const medals = [
 		{
-			name: 'Focus 7 Hours Or More',
+			name: 'Focus 7h+',
 			requiredDuration: 25200,
-			imgSrc: 'https://i.imgur.com/VDC3XrD.png',
+			imgSrc: 'https://res.cloudinary.com/dvsuz3v37/image/upload/v1762007844/Statly/black-ops-2-killstreak-medals/killstreaks/462_VDC3XrD.webp',
 		},
 		{
-			name: 'Focus 6 Hours',
+			name: 'Focus 6h',
 			requiredDuration: 21600,
-			imgSrc: 'https://i.imgur.com/q3kMqll.png',
+			imgSrc: 'https://res.cloudinary.com/dvsuz3v37/image/upload/v1762007844/Statly/black-ops-2-killstreak-medals/killstreaks/461_q3kMqll.webp',
 		},
 		{
-			name: 'Focus 5 Hours',
+			name: 'Focus 5h',
 			requiredDuration: 18000,
-			imgSrc: 'https://i.imgur.com/tFa0En4.png',
+			imgSrc: 'https://res.cloudinary.com/dvsuz3v37/image/upload/v1762007843/Statly/black-ops-2-killstreak-medals/killstreaks/460_tFa0En4.webp',
 		},
 		{
-			name: 'Focus 4 Hours',
+			name: 'Focus 4h',
 			requiredDuration: 14400,
-			imgSrc: 'https://i.imgur.com/AcWOa0g.png',
+			imgSrc: 'https://res.cloudinary.com/dvsuz3v37/image/upload/v1762007843/Statly/black-ops-2-killstreak-medals/killstreaks/459_AcWOa0g.webp',
 		},
 		{
-			name: 'Focus 3 Hours',
+			name: 'Focus 3h',
 			requiredDuration: 10800,
-			imgSrc: 'https://i.imgur.com/H5znivp.png',
+			imgSrc: 'https://res.cloudinary.com/dvsuz3v37/image/upload/v1762007843/Statly/black-ops-2-killstreak-medals/killstreaks/458_H5znivp.webp',
 		},
 		{
-			name: 'Focus 2 Hours',
+			name: 'Focus 2h',
 			requiredDuration: 7200,
-			imgSrc: 'https://i.imgur.com/hsZCur7.png',
+			imgSrc: 'https://res.cloudinary.com/dvsuz3v37/image/upload/v1762007843/Statly/black-ops-2-killstreak-medals/killstreaks/457_hsZCur7.webp',
 		},
 		{
-			name: 'Focus 1 Hour',
+			name: 'Focus 1h',
 			requiredDuration: 3600,
-			imgSrc: 'https://i.imgur.com/59UYHck.png',
+			imgSrc: 'https://res.cloudinary.com/dvsuz3v37/image/upload/v1762007843/Statly/black-ops-2-killstreak-medals/killstreaks/456_59UYHck.webp',
 		},
 	];
 
