@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import ModalChangeCardImage from './ModalChangeCardImage';
 import Icon from '../../components/Icon';
 import { useState } from 'react';
+import LazyImage from '../../components/LazyImage';
 
-const CardImage = ({ cardType, imageSrc, page }) => {
+const CardImage = ({ cardType, imageSrc, page, showGlow = false }) => {
 	const [hoverImage, setHoverImage] = useState(false);
 	const [showModalChangeCardImage, setShowModalChangeCardImage] = useState(false);
 
@@ -27,13 +28,14 @@ const CardImage = ({ cardType, imageSrc, page }) => {
 						<Icon name="edit" customClass="!text-[30px] text-color-gray-100 cursor-pointer" />
 					</div>
 				)}
-				<img
+				<LazyImage
 					src={imageSrc}
 					className={classNames(
 						'cursor-pointer',
 						hoverImage && 'opacity-50',
 						page === 'focus-records' || page === 'completed-tasks' ? 'max-w-[150px]' : 'max-h-[250px]'
 					)}
+					showGlow={showGlow}
 				/>
 			</div>
 

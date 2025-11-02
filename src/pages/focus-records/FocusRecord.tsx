@@ -29,6 +29,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			showMedals,
 			selectedMedalImage,
 			medalImageSizePx,
+			showMedalGlow,
 		},
 	} = useUserSettingsContext();
 
@@ -53,6 +54,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 					src={selectedMedalImage}
 					alt="Medal image"
 					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal, selectedMedalImage)}
+					showGlow={showMedalGlow}
 				/>
 			)}
 

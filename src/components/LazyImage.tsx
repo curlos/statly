@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import Spinner from './Loaders/Spinner';
 import { isPokemonTcgCard } from '../utils/focus-apps/helpers.utils';
+import { useThemeContext } from '../contexts/useThemeContext';
 
 interface LazyImageProps {
 	src: string;
@@ -10,13 +11,16 @@ interface LazyImageProps {
 	onLoad?: () => void;
 	onError?: () => void;
 	usePokemonCardSkeleton?: boolean;
+	showGlow?: boolean;
 }
 
-const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', onLoad, onError }) => {
+const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', onLoad, onError, showGlow = false }) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [isInView, setIsInView] = useState(false);
 	const [hasError, setHasError] = useState(false);
 	const placeholderRef = useRef<HTMLDivElement>(null);
+	const { chosenColorObj } = useThemeContext();
+	const { hexColor } = chosenColorObj;
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
@@ -97,6 +101,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', on
 					isLoaded ? 'opacity-100' : 'opacity-0',
 					className
 				)}
+				style={showGlow ? { filter: `drop-shadow(0 0 3px ${hexColor}) drop-shadow(0 4px 6px ${hexColor})` } : undefined}
 				onLoad={handleLoad}
 				onError={handleError}
 				loading="lazy"

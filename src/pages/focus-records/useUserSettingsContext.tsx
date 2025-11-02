@@ -37,6 +37,7 @@ const useUserSettings = () => {
 		showMedals = false,
 		selectedMedalImage = 'https://i.imgur.com/SQOm6nX.png',
 		medalImageSizePx = 100,
+		showMedalGlow = false,
 	} = focusRecordsPageSettings;
 
 	const {
@@ -92,6 +93,7 @@ const useUserSettings = () => {
 			showMedals,
 			selectedMedalImage,
 			medalImageSizePx,
+			showMedalGlow,
 		},
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
