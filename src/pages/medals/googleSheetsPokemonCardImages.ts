@@ -2825,976 +2825,968 @@ export const googleSheetsPokemonCardImages = [
         "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1348_kmWve6s.webp"
     },
     {
-        "name": "Ns-Reshiram.JTO.167.56538",
-        "originalImageUrl": "https://den-cards.pokellector.com/409/Ns-Reshiram.JTO.167.56538.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1349_njq3CIA.webp"
-    },
-    {
         "name": "Furret.JTG.168.56829",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Furret.JTG.168.56829.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1350_jtfys4f.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1349_njq3CIA.webp"
     },
     {
         "name": "Noibat.JTG.169.56830",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Noibat.JTG.169.56830.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1351_9qNIB9o.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1350_jtfys4f.webp"
     },
     {
         "name": "Hops-Wooloo.JTG.170.56591",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Hops-Wooloo.JTG.170.56591.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1352_ODxAeb8.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1351_9qNIB9o.webp"
     },
     {
         "name": "Volcanion-ex.JTG.182.56841",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Volcanion-ex.JTG.182.56841.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1353_31TLBLu.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1352_ODxAeb8.webp"
     },
     {
         "name": "Ionos-Bellibolt-ex.JTG.183.56556",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Ionos-Bellibolt-ex.JTG.183.56556.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1354_EFD74Pi.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1353_31TLBLu.webp"
     },
     {
         "name": "Lillies-Clefairy-ex.JTG.184.56593",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Lillies-Clefairy-ex.JTG.184.56593.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1355_XyxGU5e.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1354_EFD74Pi.webp"
     },
     {
         "name": "Ns-Zoroark-ex.JTG.185.56842",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Ns-Zoroark-ex.JTG.185.56842.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1356_iWALLCP.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008013/Statly/pokemon-google-sheets/cards/1355_XyxGU5e.webp"
     },
     {
         "name": "Hops-Zacian-ex.JTG.186.56843",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Hops-Zacian-ex.JTG.186.56843.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1357_z6dNUwg.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1356_iWALLCP.webp"
     },
     {
         "name": "Salamence-ex.JTG.187.56617",
         "originalImageUrl": "https://den-cards.pokellector.com/409/Salamence-ex.JTG.187.56617.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1358_At96fAF.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1357_z6dNUwg.webp"
     },
     {
         "name": "card-placeholder",
         "originalImageUrl": "https://www.pokellector.com/images/card-placeholder.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008014/Statly/pokemon-google-sheets/cards/1359_2O9XKKQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1358_At96fAF.webp"
     },
     {
         "name": "Yanma.DRI.183.57445",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Yanma.DRI.183.57445.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008014/Statly/pokemon-google-sheets/cards/1360_oOKa71R.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008014/Statly/pokemon-google-sheets/cards/1359_2O9XKKQ.webp"
     },
     {
         "name": "Cynthias-Roserade.DRI.184.57446",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Cynthias-Roserade.DRI.184.57446.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1361_bEVVTrY.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008014/Statly/pokemon-google-sheets/cards/1360_oOKa71R.webp"
     },
     {
         "name": "Shaymin.DRI.185.57447",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Shaymin.DRI.185.57447.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1362_gCTXlEY.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1361_bEVVTrY.webp"
     },
     {
         "name": "Crustle.DRI.186.57448",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Crustle.DRI.186.57448.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1363_OEJQzyb.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1362_gCTXlEY.webp"
     },
     {
         "name": "Team-Rockets-Spidops.DRI.187.57449",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Spidops.DRI.187.57449.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1364_Kp6xOUF.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1363_OEJQzyb.webp"
     },
     {
         "name": "Hydrapple.DRI.188.57450",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Hydrapple.DRI.188.57450.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1365_u0eniCe.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1364_Kp6xOUF.webp"
     },
     {
         "name": "Rapidash.DRI.189.57451",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Rapidash.DRI.189.57451.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1366_G11ca63.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008015/Statly/pokemon-google-sheets/cards/1365_u0eniCe.webp"
     },
     {
         "name": "Ethans-Typhlosion.DRI.190.57452",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Ethans-Typhlosion.DRI.190.57452.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1367_ELy45zv.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1366_G11ca63.webp"
     },
     {
         "name": "Team-Rockets-Houndoom.DRI.191.57453",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Houndoom.DRI.191.57453.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1368_2mBe5KA.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1367_ELy45zv.webp"
     },
     {
         "name": "Blaziken.DRI.192.57454",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Blaziken.DRI.192.57454.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1369_kBDd31t.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1368_2mBe5KA.webp"
     },
     {
         "name": "Mistys-Psyduck.DRI.193.57235",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Mistys-Psyduck.DRI.193.57235.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1370_cqdIKLI.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1369_kBDd31t.webp"
     },
     {
         "name": "Mistys-Lapras.DRI.194.57455",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Mistys-Lapras.DRI.194.57455.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1371_xuRuZZd.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008016/Statly/pokemon-google-sheets/cards/1370_cqdIKLI.webp"
     },
     {
         "name": "Clamperl.DRI.195.57456",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Clamperl.DRI.195.57456.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1372_mzZe6jV.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1371_xuRuZZd.webp"
     },
     {
         "name": "Electrike.DRI.196.57457",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Electrike.DRI.196.57457.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1373_pUx8I7v.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1372_mzZe6jV.webp"
     },
     {
         "name": "Rotom.DRI.197.57458",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Rotom.DRI.197.57458.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1374_5yDPnb0.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1373_pUx8I7v.webp"
     },
     {
         "name": "Team-Rockets-Orbeetle.DRI.198.57253",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Orbeetle.DRI.198.57253.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1375_mrIlBUy.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1374_5yDPnb0.webp"
     },
     {
         "name": "Team-Rockets-Weezing.DRI.199.57459",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Weezing.DRI.199.57459.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1376_XaDTTXL.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008017/Statly/pokemon-google-sheets/cards/1375_mrIlBUy.webp"
     },
     {
         "name": "Team-Rockets-Murkrow.DRI.200.57460",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Murkrow.DRI.200.57460.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1377_s4f7Y5b.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1376_XaDTTXL.webp"
     },
     {
         "name": "Zamazenta.DRI.201.57461",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Zamazenta.DRI.201.57461.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1378_wS9CwQm.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1377_s4f7Y5b.webp"
     },
     {
         "name": "Team-Rockets-Raticate.DRI.202.57462",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Raticate.DRI.202.57462.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1379_RcxInPm.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1378_wS9CwQm.webp"
     },
     {
         "name": "Team-Rockets-Meowth.DRI.203.57242",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Meowth.DRI.203.57242.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1380_zypqb8h.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1379_RcxInPm.webp"
     },
     {
         "name": "Kangaskhan.DRI.204.56864",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Kangaskhan.DRI.204.56864.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1381_cTEq2KB.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1380_zypqb8h.webp"
     },
     {
         "name": "Arvens-Greedent.DRI.205.57463",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Arvens-Greedent.DRI.205.57463.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1382_xxFV5Ih.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1381_cTEq2KB.webp"
     },
     {
         "name": "Yanmega-ex.DRI.228.57485",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Yanmega-ex.DRI.228.57485.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1383_0lchctf.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1382_xxFV5Ih.webp"
     },
     {
         "name": "Team-Rockets-Moltres-ex.DRI.229.57486",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Moltres-ex.DRI.229.57486.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1384_ACQi5Yx.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1383_0lchctf.webp"
     },
     {
         "name": "Ethans-Ho-Oh-ex.DRI.230.57487",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Ethans-Ho-Oh-ex.DRI.230.57487.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1385_ay1s0tH.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1384_ACQi5Yx.webp"
     },
     {
         "name": "Team-Rockets-Mewtwo-ex.DRI.231.57254",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Mewtwo-ex.DRI.231.57254.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1386_UBK4LeC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008018/Statly/pokemon-google-sheets/cards/1385_ay1s0tH.webp"
     },
     {
         "name": "Cynthias-Garchomp-ex.DRI.232.57234",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Cynthias-Garchomp-ex.DRI.232.57234.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1387_lG7FHYN.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1386_UBK4LeC.webp"
     },
     {
         "name": "Team-Rockets-Nidoking-ex.DRI.233.57488",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Nidoking-ex.DRI.233.57488.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1388_8uVAAsY.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1387_lG7FHYN.webp"
     },
     {
         "name": "Team-Rockets-Crobat-ex.DRI.234.57243",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Team-Rockets-Crobat-ex.DRI.234.57243.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1389_3AUn7Uq.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1388_8uVAAsY.webp"
     },
     {
         "name": "Arvens-Mabosstiff-ex.DRI.235.57489",
         "originalImageUrl": "https://den-cards.pokellector.com/412/Arvens-Mabosstiff-ex.DRI.235.57489.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1390_p33Xo5J.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1389_3AUn7Uq.webp"
     },
     {
         "name": "Reuniclus.SVPEN.212.57804",
         "originalImageUrl": "https://den-cards.pokellector.com/364/Reuniclus.SVPEN.212.57804.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1391_8FjH8Sh.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008019/Statly/pokemon-google-sheets/cards/1390_p33Xo5J.webp"
     },
     {
         "name": "Snivy.BLK.87.57998",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Snivy.BLK.87.57998.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1392_nfIKz9f.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1391_8FjH8Sh.webp"
     },
     {
         "name": "Servine.BLK.88.58269",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Servine.BLK.88.58269.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1393_p3ryZWf.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1392_nfIKz9f.webp"
     },
     {
         "name": "Pansage.BLK.89.58270",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Pansage.BLK.89.58270.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1394_GG4KD0V.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1393_p3ryZWf.webp"
     },
     {
         "name": "Simisage.BLK.90.58271",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Simisage.BLK.90.58271.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1395_xNxpmfp.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1394_GG4KD0V.webp"
     },
     {
         "name": "Petilil.BLK.91.58272",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Petilil.BLK.91.58272.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1396_Lp0SpYl.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008020/Statly/pokemon-google-sheets/cards/1395_xNxpmfp.webp"
     },
     {
         "name": "Lilligant.BLK.92.58273",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Lilligant.BLK.92.58273.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1397_BK0K1PI.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1396_Lp0SpYl.webp"
     },
     {
         "name": "Maractus.BLK.93.58274",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Maractus.BLK.93.58274.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1398_6WNuvdj.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1397_BK0K1PI.webp"
     },
     {
         "name": "Karrablast.BLK.94.58275",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Karrablast.BLK.94.58275.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1399_cvyUct3.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1398_6WNuvdj.webp"
     },
     {
         "name": "Foongus.BLK.95.58276",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Foongus.BLK.95.58276.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1400_j1yLFJV.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1399_cvyUct3.webp"
     },
     {
         "name": "Amoonguss.BLK.96.58277",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Amoonguss.BLK.96.58277.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1401_88Yo8ky.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008021/Statly/pokemon-google-sheets/cards/1400_j1yLFJV.webp"
     },
     {
         "name": "Darumaka.BLK.97.58278",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Darumaka.BLK.97.58278.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1402_OvBHM5c.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1401_88Yo8ky.webp"
     },
     {
         "name": "Darmanitan.BLK.98.58279",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Darmanitan.BLK.98.58279.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1403_uUSKtCp.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1402_OvBHM5c.webp"
     },
     {
         "name": "Larvesta.BLK.99.58280",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Larvesta.BLK.99.58280.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1404_qWURmMp.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1403_uUSKtCp.webp"
     },
     {
         "name": "Volcarona.BLK.100.58281",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Volcarona.BLK.100.58281.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1405_a749gxT.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1404_qWURmMp.webp"
     },
     {
         "name": "Panpour.BLK.101.58282",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Panpour.BLK.101.58282.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1406_y3kVxy2.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008022/Statly/pokemon-google-sheets/cards/1405_a749gxT.webp"
     },
     {
         "name": "Simipour.BLK.102.58283",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Simipour.BLK.102.58283.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1407_TIpdXNZ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1406_y3kVxy2.webp"
     },
     {
         "name": "Tympole.BLK.103.58284",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Tympole.BLK.103.58284.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1408_eYCCWo8.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1407_TIpdXNZ.webp"
     },
     {
         "name": "Palpitoad.BLK.104.58285",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Palpitoad.BLK.104.58285.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1409_5fNFxqN.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1408_eYCCWo8.webp"
     },
     {
         "name": "Seismitoad.BLK.105.58286",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Seismitoad.BLK.105.58286.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1410_wEKFZHd.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1409_5fNFxqN.webp"
     },
     {
         "name": "Tirtouga.BLK.106.58287",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Tirtouga.BLK.106.58287.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1411_pBqfFLc.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008023/Statly/pokemon-google-sheets/cards/1410_wEKFZHd.webp"
     },
     {
         "name": "Carracosta.BLK.107.58288",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Carracosta.BLK.107.58288.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1412_Xrv9XnS.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1411_pBqfFLc.webp"
     },
     {
         "name": "Alomomola.BLK.108.58289",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Alomomola.BLK.108.58289.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1413_p0gFTWj.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1412_Xrv9XnS.webp"
     },
     {
         "name": "Cubchoo.BLK.109.58290",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Cubchoo.BLK.109.58290.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1414_4tNW7CQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1413_p0gFTWj.webp"
     },
     {
         "name": "Beartic.BLK.110.58291",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Beartic.BLK.110.58291.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1415_mjUfHVI.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1414_4tNW7CQ.webp"
     },
     {
         "name": "Cryogonal.BLK.111.58292",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Cryogonal.BLK.111.58292.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1416_uo9rEFE.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008024/Statly/pokemon-google-sheets/cards/1415_mjUfHVI.webp"
     },
     {
         "name": "Emolga.BLK.112.58293",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Emolga.BLK.112.58293.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1417_LtftXdi.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1416_uo9rEFE.webp"
     },
     {
         "name": "Tynamo.BLK.113.58294",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Tynamo.BLK.113.58294.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1418_SyWrqYB.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1417_LtftXdi.webp"
     },
     {
         "name": "Eelektrik.BLK.114.58295",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Eelektrik.BLK.114.58295.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1419_S7WpFod.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1418_SyWrqYB.webp"
     },
     {
         "name": "Eelektross.BLK.115.58296",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Eelektross.BLK.115.58296.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1420_CLxozsu.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1419_S7WpFod.webp"
     },
     {
         "name": "Munna.BLK.116.58297",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Munna.BLK.116.58297.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1421_EmjjTrl.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1420_CLxozsu.webp"
     },
     {
         "name": "Musharna.BLK.117.58298",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Musharna.BLK.117.58298.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1422_FPIInUC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1421_EmjjTrl.webp"
     },
     {
         "name": "Solosis.BLK.118.58299",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Solosis.BLK.118.58299.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1423_0EHqjWy.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1422_FPIInUC.webp"
     },
     {
         "name": "Duosion.BLK.119.58300",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Duosion.BLK.119.58300.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1424_Cv6rOhk.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1423_0EHqjWy.webp"
     },
     {
         "name": "Elgyem.BLK.120.58301",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Elgyem.BLK.120.58301.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1425_lSbY5Jh.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1424_Cv6rOhk.webp"
     },
     {
         "name": "Beheeyem.BLK.121.58302",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Beheeyem.BLK.121.58302.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1426_PsgGq1X.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008025/Statly/pokemon-google-sheets/cards/1425_lSbY5Jh.webp"
     },
     {
         "name": "Golett.BLK.122.58303",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Golett.BLK.122.58303.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1427_0RIGahr.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1426_PsgGq1X.webp"
     },
     {
         "name": "Golurk.BLK.123.58304",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Golurk.BLK.123.58304.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1428_liUUXDa.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1427_0RIGahr.webp"
     },
     {
         "name": "Drilbur.BLK.124.58305",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Drilbur.BLK.124.58305.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1429_mYsvkGe.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1428_liUUXDa.webp"
     },
     {
         "name": "Timburr.BLK.125.58306",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Timburr.BLK.125.58306.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1430_M7IJhlW.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1429_mYsvkGe.webp"
     },
     {
         "name": "Gurdurr.BLK.126.58307",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Gurdurr.BLK.126.58307.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1431_fg0zxH5.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008026/Statly/pokemon-google-sheets/cards/1430_M7IJhlW.webp"
     },
     {
         "name": "Conkeldurr.BLK.127.58308",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Conkeldurr.BLK.127.58308.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1432_n2NydH3.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1431_fg0zxH5.webp"
     },
     {
         "name": "Throh.BLK.128.58309",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Throh.BLK.128.58309.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1433_hTHGQvl.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1432_n2NydH3.webp"
     },
     {
         "name": "Dwebble.BLK.129.58310",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Dwebble.BLK.129.58310.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1434_aOoqE7V.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1433_hTHGQvl.webp"
     },
     {
         "name": "Crustle.BLK.130.58311",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Crustle.BLK.130.58311.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1435_DjceQK5.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1434_aOoqE7V.webp"
     },
     {
         "name": "Landorus.BLK.131.58312",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Landorus.BLK.131.58312.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1436_NednZdi.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008027/Statly/pokemon-google-sheets/cards/1435_DjceQK5.webp"
     },
     {
         "name": "Venipede.BLK.132.58313",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Venipede.BLK.132.58313.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1437_HyEnRff.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1436_NednZdi.webp"
     },
     {
         "name": "Whirlipede.BLK.133.58314",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Whirlipede.BLK.133.58314.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1438_F72TXXC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1437_HyEnRff.webp"
     },
     {
         "name": "Scolipede.BLK.134.58315",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Scolipede.BLK.134.58315.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1439_rKomHae.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1438_F72TXXC.webp"
     },
     {
         "name": "Sandile.BLK.135.58316",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Sandile.BLK.135.58316.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1440_uvg9nRQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1439_rKomHae.webp"
     },
     {
         "name": "Krokorok.BLK.136.58317",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Krokorok.BLK.136.58317.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1441_Lt1dtWG.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008028/Statly/pokemon-google-sheets/cards/1440_uvg9nRQ.webp"
     },
     {
         "name": "Krookodile.BLK.137.58318",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Krookodile.BLK.137.58318.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1442_5wgwcQL.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1441_Lt1dtWG.webp"
     },
     {
         "name": "Escavalier.BLK.138.58319",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Escavalier.BLK.138.58319.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1443_JbMcXfY.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1442_5wgwcQL.webp"
     },
     {
         "name": "Klink.BLK.139.58320",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Klink.BLK.139.58320.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1444_aKOtQdX.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1443_JbMcXfY.webp"
     },
     {
         "name": "Klang.BLK.140.58321",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Klang.BLK.140.58321.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1445_f72eeoS.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1444_aKOtQdX.webp"
     },
     {
         "name": "Klinklang.BLK.141.58322",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Klinklang.BLK.141.58322.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1446_NssIO3f.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008029/Statly/pokemon-google-sheets/cards/1445_f72eeoS.webp"
     },
     {
         "name": "Pawniard.BLK.142.58323",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Pawniard.BLK.142.58323.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1447_Bbkl9cX.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1446_NssIO3f.webp"
     },
     {
         "name": "Bisharp.BLK.143.58324",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Bisharp.BLK.143.58324.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1448_3ObRPV4.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1447_Bbkl9cX.webp"
     },
     {
         "name": "Cobalion.BLK.144.58325",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Cobalion.BLK.144.58325.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1449_APzNhQ6.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1448_3ObRPV4.webp"
     },
     {
         "name": "Axew.BLK.145.58326",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Axew.BLK.145.58326.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1450_4R0p0GP.webp"
-    },
-    {
-        "name": "Fraxure.BLK.146.58327",
-        "originalImageUrl": "https://den-cards.pokellector.com/420/Fraxure.BLK.146.58327.png                                                                                                                                                                               ",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1451_4e5rdJw.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1449_APzNhQ6.webp"
     },
     {
         "name": "Haxorus.BLK.147.58328",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Haxorus.BLK.147.58328.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1452_cT8WOUp.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008030/Statly/pokemon-google-sheets/cards/1450_4R0p0GP.webp"
     },
     {
         "name": "Pidove.BLK.148.58329",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Pidove.BLK.148.58329.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1453_gzOPRyV.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1451_4e5rdJw.webp"
     },
     {
         "name": "Tranquill.BLK.149.58330",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Tranquill.BLK.149.58330.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1454_N272Uyl.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1452_cT8WOUp.webp"
     },
     {
         "name": "Unfezant.BLK.150.58331",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Unfezant.BLK.150.58331.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1455_f8pfql6.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1453_gzOPRyV.webp"
     },
     {
         "name": "Audino.BLK.151.58332",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Audino.BLK.151.58332.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1456_Owr6vNs.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1454_N272Uyl.webp"
     },
     {
         "name": "Minccino.BLK.152.58333",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Minccino.BLK.152.58333.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1457_6LZtaWk.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008031/Statly/pokemon-google-sheets/cards/1455_f8pfql6.webp"
     },
     {
         "name": "Cinccino.BLK.153.58334",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Cinccino.BLK.153.58334.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1458_EAriY86.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1456_Owr6vNs.webp"
     },
     {
         "name": "Rufflet.BLK.154.58335",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Rufflet.BLK.154.58335.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1459_3SH1HTx.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1457_6LZtaWk.webp"
     },
     {
         "name": "Braviary.BLK.155.58336",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Braviary.BLK.155.58336.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1460_fpRj8Lh.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1458_EAriY86.webp"
     },
     {
         "name": "Serperior-ex.BLK.164.58345",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Serperior-ex.BLK.164.58345.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1461_PykkyL0.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1459_3SH1HTx.webp"
     },
     {
         "name": "Kyurem-ex.BLK.165.58001",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Kyurem-ex.BLK.165.58001.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1462_om2fXHC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008032/Statly/pokemon-google-sheets/cards/1460_fpRj8Lh.webp"
     },
     {
         "name": "Zekrom-ex.BLK.166.58346",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Zekrom-ex.BLK.166.58346.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1463_PTzbICa.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1461_PykkyL0.webp"
     },
     {
         "name": "Meloetta-ex.BLK.167.57997",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Meloetta-ex.BLK.167.57997.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1464_EgYeLTh.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1462_om2fXHC.webp"
     },
     {
         "name": "Excadrill-ex.BLK.168.58347",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Excadrill-ex.BLK.168.58347.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1465_4P8QuQK.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1463_PTzbICa.webp"
     },
     {
         "name": "Genesect-ex.BLK.169.58348",
         "originalImageUrl": "https://den-cards.pokellector.com/420/Genesect-ex.BLK.169.58348.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1466_zZFxab6.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1464_EgYeLTh.webp"
     },
     {
         "name": "Gothitelle.SVPEN.211.57803",
         "originalImageUrl": "https://den-cards.pokellector.com/364/Gothitelle.SVPEN.211.57803.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1467_iMRIqR5.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008033/Statly/pokemon-google-sheets/cards/1465_4P8QuQK.webp"
     },
     {
         "name": "Sewaddle.WHT.87.58097",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Sewaddle.WHT.87.58097.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1468_xOoqz4P.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1466_zZFxab6.webp"
     },
     {
         "name": "Swadloon.WHT.88.58098",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Swadloon.WHT.88.58098.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1469_h8gx7nM.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1467_iMRIqR5.webp"
     },
     {
         "name": "Leavanny.WHT.89.58099",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Leavanny.WHT.89.58099.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1470_MrDJvXn.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1468_xOoqz4P.webp"
     },
     {
         "name": "Cottonee.WHT.90.58100",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Cottonee.WHT.90.58100.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1471_zNGljRX.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1469_h8gx7nM.webp"
     },
     {
         "name": "Deerling.WHT.91.58101",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Deerling.WHT.91.58101.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1472_VxkiQPQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008034/Statly/pokemon-google-sheets/cards/1470_MrDJvXn.webp"
     },
     {
         "name": "Sawsbuck.WHT.92.58102",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Sawsbuck.WHT.92.58102.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1473_hqARJhZ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1471_zNGljRX.webp"
     },
     {
         "name": "Shelmet.WHT.93.58103",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Shelmet.WHT.93.58103.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1474_j0mmdkS.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1472_VxkiQPQ.webp"
     },
     {
         "name": "Accelgor.WHT.94.58104",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Accelgor.WHT.94.58104.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1475_a5Gj3Zu.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1473_hqARJhZ.webp"
     },
     {
         "name": "Virizion.WHT.95.58105",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Virizion.WHT.95.58105.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1476_zl4jXhC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1474_j0mmdkS.webp"
     },
     {
         "name": "Tepig.WHT.96.58106",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Tepig.WHT.96.58106.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1477_gXrg0jC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008035/Statly/pokemon-google-sheets/cards/1475_a5Gj3Zu.webp"
     },
     {
         "name": "Pignite.WHT.97.58107",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Pignite.WHT.97.58107.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1478_n4DrUKI.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1476_zl4jXhC.webp"
     },
     {
         "name": "Emboar.WHT.98.58108",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Emboar.WHT.98.58108.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1479_Is9KwF7.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1477_gXrg0jC.webp"
     },
     {
         "name": "Pansear.WHT.99.58109",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Pansear.WHT.99.58109.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1480_kuYKp3t.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1478_n4DrUKI.webp"
     },
     {
         "name": "Simisear.WHT.100.58110",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Simisear.WHT.100.58110.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1481_LwqsEpg.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1479_Is9KwF7.webp"
     },
     {
         "name": "Litwick.WHT.101.58111",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Litwick.WHT.101.58111.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1482_XwWrNaQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1480_kuYKp3t.webp"
     },
     {
         "name": "Lampent.WHT.102.58112",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Lampent.WHT.102.58112.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1483_89v2jgf.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1481_LwqsEpg.webp"
     },
     {
         "name": "Chandelure.WHT.103.58113",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Chandelure.WHT.103.58113.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1484_CeuZ3Bo.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1482_XwWrNaQ.webp"
     },
     {
         "name": "Heatmor.WHT.104.58114",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Heatmor.WHT.104.58114.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1485_6P2a04h.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1483_89v2jgf.webp"
     },
     {
         "name": "Oshawott.WHT.105.57999",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Oshawott.WHT.105.57999.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1486_flkPwAG.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1484_CeuZ3Bo.webp"
     },
     {
         "name": "Dewott.WHT.106.58115",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Dewott.WHT.106.58115.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1487_hrEKfFq.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008036/Statly/pokemon-google-sheets/cards/1485_6P2a04h.webp"
     },
     {
         "name": "Samurott.WHT.107.58000",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Samurott.WHT.107.58000.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1488_lBLFtSX.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1486_flkPwAG.webp"
     },
     {
         "name": "Basculin.WHT.108.58116",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Basculin.WHT.108.58116.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1489_iG4N9mA.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1487_hrEKfFq.webp"
     },
     {
         "name": "Ducklett.WHT.109.58117",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Ducklett.WHT.109.58117.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1490_MMU5leM.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1488_lBLFtSX.webp"
     },
     {
         "name": "Swanna.WHT.110.58118",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Swanna.WHT.110.58118.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1491_JtVDXCs.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1489_iG4N9mA.webp"
     },
     {
         "name": "Vanillite.WHT.111.58119",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Vanillite.WHT.111.58119.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1492_oOeDSUp.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008037/Statly/pokemon-google-sheets/cards/1490_MMU5leM.webp"
     },
     {
         "name": "Vanillish.WHT.112.58120",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Vanillish.WHT.112.58120.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1493_18uWucV.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1491_JtVDXCs.webp"
     },
     {
         "name": "Vanilluxe.WHT.113.58121",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Vanilluxe.WHT.113.58121.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1494_Ej8K97H.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1492_oOeDSUp.webp"
     },
     {
         "name": "Blitzle.WHT.114.58122",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Blitzle.WHT.114.58122.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1495_uNFb7G2.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1493_18uWucV.webp"
     },
     {
         "name": "Zebstrika.WHT.115.58123",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Zebstrika.WHT.115.58123.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1496_AMh3Khy.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1494_Ej8K97H.webp"
     },
     {
         "name": "Joltik.WHT.116.58124",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Joltik.WHT.116.58124.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1497_BqYbXIf.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1495_uNFb7G2.webp"
     },
     {
         "name": "Galvantula.WHT.117.58125",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Galvantula.WHT.117.58125.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1498_7sBJR3S.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1496_AMh3Khy.webp"
     },
     {
         "name": "Stunfisk.WHT.118.58126",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Stunfisk.WHT.118.58126.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1499_pkUhtAl.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1497_BqYbXIf.webp"
     },
     {
         "name": "Woobat.WHT.119.58127",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Woobat.WHT.119.58127.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1500_reVKW1a.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1498_7sBJR3S.webp"
     },
     {
         "name": "Swoobat.WHT.120.58128",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Swoobat.WHT.120.58128.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1501_CCpJKiw.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1499_pkUhtAl.webp"
     },
     {
         "name": "Sigilyph.WHT.121.58129",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Sigilyph.WHT.121.58129.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1502_KsZPQ9g.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008038/Statly/pokemon-google-sheets/cards/1500_reVKW1a.webp"
     },
     {
         "name": "Yamask.WHT.122.58130",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Yamask.WHT.122.58130.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1503_bTeXjDC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1501_CCpJKiw.webp"
     },
     {
         "name": "Cofagrigus.WHT.123.58131",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Cofagrigus.WHT.123.58131.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1504_IHQ75Sb.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1502_KsZPQ9g.webp"
     },
     {
         "name": "Gothita.WHT.124.58132",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Gothita.WHT.124.58132.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1505_u8nq7t1.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1503_bTeXjDC.webp"
     },
     {
         "name": "Gothorita.WHT.125.58133",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Gothorita.WHT.125.58133.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008041/Statly/pokemon-google-sheets/cards/1506_HyVISek.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1504_IHQ75Sb.webp"
     },
     {
         "name": "Frillish.WHT.126.58134",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Frillish.WHT.126.58134.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1507_ih3LbAj.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008039/Statly/pokemon-google-sheets/cards/1505_u8nq7t1.webp"
     },
     {
         "name": "Roggenrola.WHT.127.58135",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Roggenrola.WHT.127.58135.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1508_40lOXxL.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008041/Statly/pokemon-google-sheets/cards/1506_HyVISek.webp"
     },
     {
         "name": "Boldore.WHT.128.58136",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Boldore.WHT.128.58136.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1509_Ov8RH89.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1507_ih3LbAj.webp"
     },
     {
         "name": "Gigalith.WHT.129.58137",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Gigalith.WHT.129.58137.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1510_20IFfY9.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1508_40lOXxL.webp"
     },
     {
         "name": "Sawk.WHT.130.58138",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Sawk.WHT.130.58138.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008041/Statly/pokemon-google-sheets/cards/1511_TjwLKpd.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1509_Ov8RH89.webp"
     },
     {
         "name": "Archen.WHT.131.58139",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Archen.WHT.131.58139.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1512_Bd2Epj0.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008040/Statly/pokemon-google-sheets/cards/1510_20IFfY9.webp"
     },
     {
         "name": "Archeops.WHT.132.58140",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Archeops.WHT.132.58140.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1513_l53TVuC.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008041/Statly/pokemon-google-sheets/cards/1511_TjwLKpd.webp"
     },
     {
         "name": "Mienfoo.WHT.133.58141",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Mienfoo.WHT.133.58141.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1514_CWVoA99.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1512_Bd2Epj0.webp"
     },
     {
         "name": "Mienshao.WHT.134.58142",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Mienshao.WHT.134.58142.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1515_GWmHE8w.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1513_l53TVuC.webp"
     },
     {
         "name": "Terrakion.WHT.135.58143",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Terrakion.WHT.135.58143.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1516_AFeHo02.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1514_CWVoA99.webp"
     },
     {
         "name": "Purrloin.WHT.136.58144",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Purrloin.WHT.136.58144.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1517_loLe6ij.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1515_GWmHE8w.webp"
     },
     {
         "name": "Liepard.WHT.137.58145",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Liepard.WHT.137.58145.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1518_PDbLQ4l.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1516_AFeHo02.webp"
     },
     {
         "name": "Scraggy.WHT.138.58146",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Scraggy.WHT.138.58146.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1519_JtKaB2L.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1517_loLe6ij.webp"
     },
     {
         "name": "Scrafty.WHT.139.58147",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Scrafty.WHT.139.58147.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1520_V4VJdY6.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1518_PDbLQ4l.webp"
     },
     {
         "name": "Trubbish.WHT.140.58148",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Trubbish.WHT.140.58148.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1521_VHflNzl.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1519_JtKaB2L.webp"
     },
     {
         "name": "Garbodor.WHT.141.58149",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Garbodor.WHT.141.58149.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1522_ljcWqYb.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008042/Statly/pokemon-google-sheets/cards/1520_V4VJdY6.webp"
     },
     {
         "name": "Zorua.WHT.142.58150",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Zorua.WHT.142.58150.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1523_b8PKm1S.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1521_VHflNzl.webp"
     },
     {
         "name": "Zoroark.WHT.143.58151",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Zoroark.WHT.143.58151.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008044/Statly/pokemon-google-sheets/cards/1524_GBh2RDQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1522_ljcWqYb.webp"
     },
     {
         "name": "Vullaby.WHT.144.58152",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Vullaby.WHT.144.58152.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1525_UdMwTFo.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1523_b8PKm1S.webp"
     },
     {
         "name": "Mandibuzz.WHT.145.58153",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Mandibuzz.WHT.145.58153.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1526_kYbrwJs.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008044/Statly/pokemon-google-sheets/cards/1524_GBh2RDQ.webp"
     },
     {
         "name": "Deino.WHT.146.58154",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Deino.WHT.146.58154.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1527_aIqTK0U.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008043/Statly/pokemon-google-sheets/cards/1525_UdMwTFo.webp"
     },
     {
         "name": "Zweilous.WHT.147.58155",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Zweilous.WHT.147.58155.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1528_jrAbPr2.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1526_kYbrwJs.webp"
     },
     {
         "name": "Ferroseed.WHT.148.58156",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Ferroseed.WHT.148.58156.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1529_ctbAIhz.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1527_aIqTK0U.webp"
     },
     {
         "name": "Ferrothorn.WHT.149.58157",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Ferrothorn.WHT.149.58157.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1530_YazDMTs.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1528_jrAbPr2.webp"
     },
     {
         "name": "Durant.WHT.150.58158",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Durant.WHT.150.58158.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1531_aauOinM.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1529_ctbAIhz.webp"
     },
     {
         "name": "Druddigon.WHT.151.58159",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Druddigon.WHT.151.58159.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1532_YslOBWQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008045/Statly/pokemon-google-sheets/cards/1530_YazDMTs.webp"
     },
     {
         "name": "Patrat.WHT.152.58160",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Patrat.WHT.152.58160.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1533_JjCZhRj.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1531_aauOinM.webp"
     },
     {
         "name": "Watchog.WHT.153.58161",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Watchog.WHT.153.58161.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1534_glTAVch.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1532_YslOBWQ.webp"
     },
     {
         "name": "Lillipup.WHT.154.58162",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Lillipup.WHT.154.58162.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1535_nrP5HjQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1533_JjCZhRj.webp"
     },
     {
         "name": "Herdier.WHT.155.58163",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Herdier.WHT.155.58163.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1536_ymGftLf.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1534_glTAVch.webp"
     },
     {
         "name": "Stoutland.WHT.156.58164",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Stoutland.WHT.156.58164.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1537_IuNJZlQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008046/Statly/pokemon-google-sheets/cards/1535_nrP5HjQ.webp"
     },
     {
         "name": "Whimsicott-ex.WHT.165.58173",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Whimsicott-ex.WHT.165.58173.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1538_8ectIeR.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1536_ymGftLf.webp"
     },
     {
         "name": "Reshiram-ex.WHT.166.58174",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Reshiram-ex.WHT.166.58174.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1539_L7e5ik5.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1537_IuNJZlQ.webp"
     },
     {
         "name": "Keldeo-ex.WHT.167.58175",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Keldeo-ex.WHT.167.58175.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1540_IOqPFfQ.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1538_8ectIeR.webp"
     },
     {
         "name": "Jellicent-ex.WHT.168.58176",
         "originalImageUrl": "https://den-cards.pokellector.com/421/Jellicent-ex.WHT.168.58176.png",
-        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1541_Q44Ssbl.webp"
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1539_L7e5ik5.webp"
     },
     {
         "name": "Hydreigon-ex.WHT.169.58177",
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1540_IOqPFfQ.webp",
         "imageUrl": "https://den-cards.pokellector.com/421/Hydreigon-ex.WHT.169.58177.png"
     },
     {
         "name": "Bouffalant-ex.WHT.170.58178",
+        "imgurImageUrl": "https://res.cloudinary.com/dvsuz3v37/image/upload/v1762008047/Statly/pokemon-google-sheets/cards/1541_Q44Ssbl.webp",
         "imageUrl": "https://den-cards.pokellector.com/421/Bouffalant-ex.WHT.170.58178.png"
     }
 ]
