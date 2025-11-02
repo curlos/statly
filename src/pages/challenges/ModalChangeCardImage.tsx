@@ -298,7 +298,10 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 										className="cursor-pointer relative"
 										onClick={() => setSelectedImageSrc(imageSrc)}
 									>
-										<LazyImage src={imageSrc} alt="Medal/Card image" />
+										<LazyImage
+											src={imageSrc}
+											alt="Medal/Card image"
+										/>
 
 										{isSelected && (
 											<div className="absolute bottom-[10px] right-[10px] z-10">

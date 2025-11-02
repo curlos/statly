@@ -52,7 +52,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 				<LazyImage
 					src={selectedMedalImage}
 					alt="Medal image"
-					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal)}
+					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal, selectedMedalImage)}
 				/>
 			)}
 

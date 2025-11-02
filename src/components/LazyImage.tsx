@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import Spinner from './Loaders/Spinner';
+import { isPokemonTcgCard } from '../utils/focus-apps/helpers.utils';
 
 interface LazyImageProps {
 	src: string;
@@ -8,6 +9,7 @@ interface LazyImageProps {
 	className?: string;
 	onLoad?: () => void;
 	onError?: () => void;
+	usePokemonCardSkeleton?: boolean;
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', onLoad, onError }) => {
@@ -47,10 +49,18 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', on
 		onError?.();
 	};
 
+	const usePokemonCardSkeleton = isPokemonTcgCard(src)
+
 	if (!isInView) {
+		const containerStyle = usePokemonCardSkeleton ? { aspectRatio: '162 / 226' } : {};
+
 		return (
-			<div ref={placeholderRef}>
-				<Spinner size="md" />
+			<div ref={placeholderRef} className={classNames('relative', className)} style={containerStyle}>
+				{usePokemonCardSkeleton ? (
+					<div className="bg-color-gray-150 rounded-lg animate-pulse w-full h-full" />
+				) : (
+					<Spinner size="md" />
+				)}
 			</div>
 		);
 	}
@@ -59,14 +69,24 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', on
 		return <span className="text-xs text-red-500">Failed to load</span>;
 	}
 
-	const hasSpecificWidth = className.includes('w-[') || className.includes('w-') || className.includes('max-w') || className.includes('min-w');
-	const containerStyle = hasSpecificWidth ? { minWidth: 'max-content' } : {};
+	// Check if specific width/height classes are provided for Pokemon cards
+	const hasSpecificDimensions = className.includes('w-[');
+
+	const containerStyle = hasSpecificDimensions
+		? { minWidth: 'max-content' }
+		: usePokemonCardSkeleton
+		? { aspectRatio: '162 / 226' }
+		: {};
 
 	return (
 		<div ref={placeholderRef} className={classNames('relative', className)} style={containerStyle}>
 			{!isLoaded && (
-				<div className="absolute inset-0 flex items-center justify-center z-10">
-					<Spinner size="md" />
+				<div className="absolute inset-0">
+					{usePokemonCardSkeleton ? (
+						<div className="bg-color-gray-150 rounded-lg animate-pulse w-full h-full" />
+					) : (
+						<Spinner size="md" />
+					)}
 				</div>
 			)}
 			<img

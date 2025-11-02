@@ -78,7 +78,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 				<LazyImage
 					src={selectedMedalImage}
 					alt="Medal image"
-					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal)}
+					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal, selectedMedalImage)}
 				/>
 			)}
 

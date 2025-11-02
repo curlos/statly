@@ -3,7 +3,7 @@ import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, A
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
-import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
+import { getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
@@ -29,7 +29,7 @@ const FocusRecordsCurveCard = () => {
 	} = useGetStatsForInterval({
 		dataType: 'count',
 		initialInterval: 'Month',
-		initialDates: getAllDaysInWeekFromDate(new Date()),
+		initialDates: getAllDaysInMonthFromDate(new Date()),
 	});
 
 	const getAverage = () => {

@@ -44,7 +44,7 @@ const MedalCard = ({
 				{name}
 			</div>
 			<div className="flex justify-center mx-2 my-2">
-				<LazyImage src={imgSrc} alt="Medal image" />
+				<LazyImage src={imgSrc} alt="Medal image" className="w-full" />
 			</div>
 			<div className="flex justify-end px-2 text-[16px] sm:text-[20px] font-bold">
 				x{timesEarned.toLocaleString()}

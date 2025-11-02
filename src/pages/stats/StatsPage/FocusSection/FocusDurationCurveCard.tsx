@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { getAllDaysInWeekFromDate } from '../../../../utils/date.utils';
+import { getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
@@ -26,7 +26,7 @@ const FocusDurationCurveCard = () => {
 	} = useGetStatsForInterval({
 		dataType: 'duration',
 		initialInterval: 'Month',
-		initialDates: getAllDaysInWeekFromDate(new Date()),
+		initialDates: getAllDaysInMonthFromDate(new Date()),
 		showRecordInterval: true,
 	});
 

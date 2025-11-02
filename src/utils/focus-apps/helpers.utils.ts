@@ -1,3 +1,5 @@
+import { URL_TO_GAME_MEDAL_MAP } from '../../pages/medals/medalsLinks';
+
 export function secondsToHoursAndMinutes(seconds: number) {
 	// Convert seconds to minutes
 	const totalMinutes = Math.floor(seconds / 60);
@@ -143,30 +145,38 @@ export const getCommaSeparatedObj = (commaSeparatedStr) => {
 	return commaSeparatedObj;
 };
 
-export const getMedalImageClasses = (medalImageSizePx, isBattlefieldOneOrThreeMedal) => {
+export const isPokemonTcgCard = (imageUrl: string) => {
+	const gameInfo = URL_TO_GAME_MEDAL_MAP.get(imageUrl);
+	return gameInfo?.game === 'POKEMON TCG CARDS';
+};
+
+export const getMedalImageClasses = (medalImageSizePx: number, isBattlefieldOneOrThreeMedal: boolean, imageUrl: string = '') => {
 	let medalImageClass = '';
+	const isPokemon = isPokemonTcgCard(imageUrl);
 
 	if (medalImageSizePx === 60) {
-		medalImageClass = 'w-[60px]';
+		medalImageClass = isPokemon ? 'w-[60px] h-[83px]' : 'w-[60px]';
 
 		if (isBattlefieldOneOrThreeMedal) {
 			medalImageClass += ' sm:ml-[-5px] mr-[-5px]';
 		}
 	} else if (medalImageSizePx === 100) {
-		medalImageClass = 'w-[100px]';
+		medalImageClass = isPokemon ? 'w-[100px] h-[139px]' : 'w-[100px]';
 
 		if (isBattlefieldOneOrThreeMedal) {
 			medalImageClass += ' sm:ml-[-10px] mr-[-10px]';
 		}
 	} else {
-		medalImageClass = 'w-[150px]';
+		medalImageClass = isPokemon ? 'w-[150px] h-[209px]' : 'w-[150px]';
 
 		if (isBattlefieldOneOrThreeMedal) {
 			medalImageClass += ' sm:ml-[-15px] mr-[-25px]';
 		}
 	}
 
-	medalImageClass += ' h-full';
+	if (isPokemon) {
+		medalImageClass += ' h-full';
+	}
 
 	return medalImageClass;
 };
