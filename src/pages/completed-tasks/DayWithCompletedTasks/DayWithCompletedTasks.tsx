@@ -24,7 +24,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 	const { updateQueryParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
-		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx },
+		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow },
 	} = useUserSettingsContext();
 
 	// Theme Context
@@ -79,6 +79,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 					src={selectedMedalImage}
 					alt="Medal image"
 					className={getMedalImageClasses(medalImageSizePx, isBattlefieldOneOrThreeMedal, selectedMedalImage)}
+					showGlow={showMedalGlow}
 				/>
 			)}
 
