@@ -11,6 +11,7 @@ import { MEDALS_GAMES, URL_TO_GAME_MEDAL_MAP } from '../medals/medalsLinks';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Fuse from 'fuse.js';
 import { debounce } from '../../utils/focus-apps/helpers.utils';
+import Pagination from '../../components/Pagination';
 
 const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
 	const handleError = useHandleError();
@@ -150,6 +151,8 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	const [searchText, setSearchText] = useState('');
 	const [filteredCardImageSrcs, setFilteredCardImageSrcs] = useState([]);
 	const scrollContainerRef = useRef(null);
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 24;
 
 	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
 
@@ -161,6 +164,18 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 					keys: ['name'],
 				})
 			: null;
+
+	// Determine which data to display based on game type and search
+	const allItems =
+		selectedGame === 'POKEMON TCG CARDS' && searchText.trim() !== ''
+			? filteredCardImageSrcs
+			: medalCardImageSrcs;
+
+	// Calculate pagination
+	const totalPages = Math.ceil(allItems.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const currentItems = allItems.slice(startIndex, endIndex);
 
 	// Debounced search function
 	const handleDebouncedSearch = debounce(() => {
@@ -195,16 +210,22 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	useEffect(() => {
 		setSearchText('');
 		setFilteredCardImageSrcs([]);
+		setCurrentPage(1);
 	}, [selectedGame, selectedMedalType]);
+
+	// Reset currentPage when search results change
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchText]);
 
 	const getGridClasses = (selectedGame: string) => {
 		switch (selectedGame) {
 			case 'POKEMON TCG CARDS':
 			case 'AC7 (MEDALS)':
 			case 'BO2 (MEDALS)':
-				return 'grid-cols-3 lg:grid-cols-4';
+				return 'grid-cols-3 md:grid-cols-4';
 			default:
-				return 'grid-cols-2 lg:grid-cols-3';
+				return 'grid-cols-2 md:grid-cols-3';
 		}
 	};
 
@@ -221,7 +242,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 			isOpen={showModal}
 			onClose={() => setShowModal(false)}
 			position="top-center"
-			customClasses="lg:w-[750px]"
+			customClasses="md:w-[700px] lg:w-[750px]"
 		>
 			<div className="bg-color-gray-600 rounded-lg">
 				<div className="flex items-center justify-between p-5">
@@ -273,7 +294,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 							/>
 							<input
-								placeholder={'Search Pokemon cards...'}
+								placeholder={'Search Pokémon cards...'}
 								value={searchText}
 								onChange={(e) => setSearchText(e.target.value)}
 								className="text-[16px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
@@ -281,12 +302,9 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 						</div>
 					)}
 
-					<div ref={scrollContainerRef} className="overflow-auto h-[250px] lg:h-[420px] gray-scrollbar">
+					<div ref={scrollContainerRef} className="overflow-auto h-[250px] md:h-[420px] gray-scrollbar">
 						<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
-							{(selectedGame === 'POKEMON TCG CARDS' && searchText.trim() !== ''
-								? filteredCardImageSrcs
-								: medalCardImageSrcs
-							).map((obj) => {
+							{currentItems.map((obj) => {
 								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? obj : obj.imgurImageUrl;
 								const isSelected = imageSrc === selectedImageSrc;
 								const uniqueKey =
@@ -325,6 +343,17 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 							})}
 						</div>
 					</div>
+
+					{totalPages > 1 && (
+						<div className="flex justify-center mt-4">
+							<Pagination
+								total={totalPages}
+								currentPage={currentPage}
+								setCurrentPage={setCurrentPage}
+								totalPages={totalPages}
+							/>
+						</div>
+					)}
 
 					<div className="flex justify-end gap-2 mt-4">
 						<button
