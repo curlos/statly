@@ -1,317 +1,53 @@
-import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { useFilterFocusRecords } from '../../../pages/focus-records/useFilterFocusRecords';
-import {
-	useGetSessionAppFocusRecordsQuery,
-	useGetTodoistAllTasksQuery,
-} from '../../../services/resources/oldFocusAppsApi';
-import { useGetAllProjectsQuery, useGetAllTasksQuery } from '../../../services/resources/ticktickOneApi';
-import {
-	formatDateTime,
-	getFormattedDateAndTimeForFileName,
-	getFormattedShortMonthDay,
-} from '../../../utils/date.utils';
-import {
-	getAllCompletedTasksDuringFocusRecord,
-	getFocusDuration,
-	getFocusDurationFromArray,
-} from '../../../utils/focus-apps/focusRecords.utils';
+import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
+import { useUserSettingsContext } from '../../../pages/focus-records/useUserSettingsContext';
+import { getFormattedDateAndTimeForFileName, getFormattedLongDay, formatDateTime } from '../../../utils/date.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
-import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../../utils/focus-apps/multiFocusApps.utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { findMatchingTaskOrAncestor } from '../../../utils/focus-apps/tasks.utils';
-import { useUserSettingsContext } from '../../../pages/focus-records/useUserSettingsContext';
+import { baseAPI } from '../../../services/api';
+import { useDispatch } from 'react-redux';
 
 const useExportFocusRecords = () => {
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks } = useGetAllTasksQuery();
-	const { tasksById, ancestorTasksById, completedTasksGroupedByDate } = fetchedTasks || {};
+	const dispatch = useDispatch();
+	const { queryParams } = useSharedQueryParams();
+	const userSettings = useUserSettingsContext();
+	const taskIdIncludeFocusRecordsFromSubtasks = userSettings?.focusRecordsPageSettings?.taskIdIncludeFocusRecordsFromSubtasks ?? true;
+	const onlyExportTasksWithNoParent = userSettings?.focusRecordsPageSettings?.onlyExportTasksWithNoParent ?? true;
 
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistAllCompletedTasks } = useGetTodoistAllTasksQuery();
-	const { todoistAllTasksById, todoistAncestorTasksById, todoistCompletedTasksGroupedByDate } =
-		fetchedTodoistAllCompletedTasks || {};
-
-	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
-	const { projectsById } = fetchedProjects || {};
-
-	// RTK Query - Session App - Focus Records
-	const { data: fetchedSessionFocusRecords, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionAppFocusRecordsQuery();
-	const { sessionCategoriesById } = fetchedSessionFocusRecords || {};
-
-	const {
-		focusRecordsPageSettings: { taskIdIncludeFocusRecordsFromSubtasks, onlyExportTasksWithNoParent },
-	} = useUserSettingsContext();
-
-	const { searchParams } = useSearchParamsContext();
-
-	const { filteredFocusRecords } = useFilterFocusRecords();
-
-	const getSterilizedFocusRecordList = (groupById = false) => {
-		const sterilizedFocusRecords = [];
-		const sterilizedFocusRecordsByProjectId = [];
-		const sterilizedFocusRecordsByTaskId = [];
-
-		filteredFocusRecords
-			.sort((focusRecordOne, focusRecordTwo) => {
-				const startTimeOneProperty = getFocusRecordProperty(focusRecordOne, 'startTime');
-				const startTimeTwoProperty = getFocusRecordProperty(focusRecordTwo, 'startTime');
-
-				const focusRecordOneStartTime = startTimeOneProperty;
-				const focusRecordTwoStartTime = startTimeTwoProperty;
-
-				const startTimeOne = new Date(focusRecordOneStartTime);
-				const startTimeTwo = new Date(focusRecordTwoStartTime);
-
-				return startTimeOne - startTimeTwo;
-			})
-			.forEach((focusRecord) => {
-				const sterilizedFocusRecord = getSterilizedFocusRecord(focusRecord);
-				sterilizedFocusRecords.push(sterilizedFocusRecord);
-
-				if (groupById) {
-					const duration = getFocusDuration({ focusRecord, onlyTasks: true });
-					const focusApp = getFocusRecordFocusApp(focusRecord);
-					const uniqueProjectIds = new Set();
-					const uniqueTaskIds = new Set();
-
-					if (focusRecord.tasks && focusRecord.tasks.length > 0 && tasksById) {
-						const { tasks } = focusRecord;
-
-						tasks.forEach((task) => {
-							uniqueTaskIds.add(task.taskId);
-
-							const taskWithFullInfo = tasksById[task.taskId];
-
-							if (!taskWithFullInfo) {
-								uniqueProjectIds.add('no-project-id');
-							} else {
-								uniqueProjectIds.add(taskWithFullInfo.projectId);
-							}
-						});
-
-						if (taskIdIncludeFocusRecordsFromSubtasks) {
-							sterilizedFocusRecord.tasksData.forEach((task) => {
-								task?.ancestorTaskIds?.forEach((taskId) => {
-									uniqueTaskIds.add(taskId);
-								});
-							});
-						}
-					}
-
-					if (focusApp === 'session-app') {
-						const categoryId = focusRecord.category.id || 'General';
-						uniqueProjectIds.add(categoryId);
-					}
-
-					if (focusApp !== 'TickTick') {
-						const taskId = getFocusRecordProperty(focusRecord, 'taskId');
-						uniqueTaskIds.add(taskId);
-					}
-
-					uniqueProjectIds.forEach((projectId) => {
-						if (!sterilizedFocusRecordsByProjectId[projectId]) {
-							sterilizedFocusRecordsByProjectId[projectId] = {
-								focusRecords: [],
-								focusDuration: 0,
-							};
-						}
-
-						sterilizedFocusRecordsByProjectId[projectId].focusRecords.push(sterilizedFocusRecord);
-						sterilizedFocusRecordsByProjectId[projectId].focusDuration += duration;
-					});
-
-					for (const taskId of uniqueTaskIds) {
-						if (!sterilizedFocusRecordsByTaskId[taskId]) {
-							sterilizedFocusRecordsByTaskId[taskId] = {
-								focusRecords: [],
-								focusDuration: 0,
-							};
-						}
-
-						const taskFocusDuration = getFocusDuration({
-							focusRecord,
-							onlyTasks: true,
-							filterByTaskId: taskId,
-							ancestorTasksById,
-							showTaskAncestors: true,
-							taskIdIncludeFocusRecordsFromSubtasks: true,
-						});
-
-						const sterilizedFocusRecordOnlyWithTaskIds = { ...sterilizedFocusRecord };
-						sterilizedFocusRecordOnlyWithTaskIds.tasksData =
-							sterilizedFocusRecordOnlyWithTaskIds.tasksData.filter((task) => {
-								if (focusApp === 'TickTick' && taskIdIncludeFocusRecordsFromSubtasks) {
-									// If the task is NOT directly in the Focus Record's tasks, then look through all of othe Focus Record's task's breadcrumbs and check if the taskId is an ancestor of one of those tasks.
-									const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
-										task,
-										taskId,
-										ancestorTasksById
-									);
-
-									return foundMatchingTaskOrAncestor;
-								}
-
-								return task.id === taskId;
-							});
-
-						sterilizedFocusRecordsByTaskId[taskId].focusRecords.push(sterilizedFocusRecordOnlyWithTaskIds);
-						sterilizedFocusRecordsByTaskId[taskId].focusDuration += taskFocusDuration;
-					}
-				}
-			});
-
-		return {
-			sterilizedFocusRecords,
-			sterilizedFocusRecordsByProjectId,
-			sterilizedFocusRecordsByTaskId,
-		};
-	};
-
-	const getSterilizedFocusRecord = (focusRecord) => {
-		const startTime = getFocusRecordProperty(focusRecord, 'startTime');
-		const endTime = getFocusRecordProperty(focusRecord, 'endTime');
-		const focusNote = getFocusRecordProperty(focusRecord, 'note');
+	const serializeFocusRecordToMarkdown = (record: any) => {
+		const { startTime, endTime, duration, tasks, completedTasks, note } = record;
 
 		const startTimeObj = formatDateTime(startTime);
 		const endTimeObj = formatDateTime(endTime);
-		const duration = getFocusDuration({ focusRecord });
 
-		const completedTasksDuringFocusSession = getAllCompletedTasksDuringFocusRecord({
-			completedTasksGroupedByDate,
-			todoistCompletedTasksGroupedByDate,
-			focusRecord,
-		});
-		const completedTaskNames =
-			completedTasksDuringFocusSession &&
-			completedTasksDuringFocusSession.map((task) => task.title || task.content);
+		// Check if focus record crosses midnight
+		const startDate = new Date(startTime);
+		const endDate = new Date(endTime);
+		const crossesMidnight = getFormattedLongDay(startDate) !== getFormattedLongDay(endDate);
 
-		const tasksData = getFocusRecordTaskData(focusRecord);
+		// Build date string with both dates if crosses midnight
+		let dateStr = getFormattedLongDay(startDate);
+		if (crossesMidnight) {
+			dateStr += ` - ${getFormattedLongDay(endDate)}`;
+		}
+		dateStr += ` - ${startTimeObj.time} - ${endTimeObj.time} (${getFormattedDuration(duration, false)})`;
 
-		const sterilizedFocusRecord = {
-			dateAndDurationStr: `${getFormattedShortMonthDay(new Date(startTime))} ${startTimeObj.time} - ${endTimeObj.time} (${getFormattedDuration(duration, false)})`,
-			tasksData: tasksData,
-			completedTaskNames,
-			note: focusNote,
-		};
-
-		return sterilizedFocusRecord;
-	};
-
-	const getFocusRecordTaskData = (focusRecord) => {
-		const getTickTickFocusRecordTask = () => {
-			const getAncestorTaskIds = (task) => {
-				const ancestorTaskIds = getTickTickFocusRecordBreadcrumbs(task);
-				return ancestorTaskIds;
-			};
-
-			const getTaskTitle = (task, ancestorTaskIds) => {
-				const taskNamesPath = [task.title || 'No Name'];
-
-				ancestorTaskIds &&
-					ancestorTaskIds.forEach((taskId) => {
-						const breadcrumbTask = tasksById[taskId];
-						taskNamesPath.push(breadcrumbTask.title);
-					});
-
-				const taskId = task.taskId || task.id;
-
-				const fullTask = tasksById[taskId];
-				const taskProject = fullTask?.projectId && projectsById[fullTask?.projectId];
-				const taskProjectName = taskProject ? taskProject.name : '';
-
-				let taskNamePath = taskNamesPath.join(' - ');
-
-				if (taskProjectName) {
-					taskNamePath += ` (${taskProjectName})`;
-				}
-
-				return taskNamePath;
-			};
-
-			const tasksData = [];
-
-			for (const task of focusRecord.tasks) {
-				const { startTime, endTime, taskId } = task;
-
-				const startTimeObj = formatDateTime(startTime);
-				const endTimeObj = formatDateTime(endTime);
-				const dateStr = `${startTimeObj.time} - ${endTimeObj.time}`;
-
-				const ancestorTaskIds = getAncestorTaskIds(task);
-				const taskTitle = getTaskTitle(task, ancestorTaskIds);
-				tasksData.push({
-					name: taskTitle,
-					date: dateStr,
-					id: taskId,
-					ancestorTaskIds,
-				});
-			}
-
-			return tasksData;
-		};
-
-		const getOtherAppsFocusRecordTask = () => {
-			const startTime = getFocusRecordProperty(focusRecord, 'startTime');
-			const endTime = getFocusRecordProperty(focusRecord, 'endTime');
-
-			const startTimeObj = formatDateTime(startTime);
-			const endTimeObj = formatDateTime(endTime);
-			const dateStr = `${startTimeObj.time} - ${endTimeObj.time}`;
-
-			const focusRecordTitle = getFocusRecordProperty(focusRecord, 'displayTitle');
-			const taskId = getFocusRecordProperty(focusRecord, 'taskId');
-
-			return [
-				{
-					name: focusRecordTitle,
-					date: dateStr,
-					id: taskId,
-				},
-			];
-		};
-
-		const getFocusRecordTask = () => {
-			const focusApp = getFocusRecordFocusApp(focusRecord);
-
-			switch (focusApp) {
-				case 'TickTick':
-					return getTickTickFocusRecordTask();
-				default:
-					return getOtherAppsFocusRecordTask();
-			}
-		};
-
-		return getFocusRecordTask();
-	};
-
-	const getTickTickFocusRecordBreadcrumbs = (task) => {
-		const parentTask = task;
-		const parentTaskId = task.id || task.taskId;
-
-		// Only checking TickTick because Todoist does not have Focus Records.
-		const parentTaskBreadcrumbsTickTick =
-			parentTask && ancestorTasksById[parentTaskId] && Object.keys(ancestorTasksById[parentTaskId]);
-
-		const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick;
-
-		return parentTaskBreadcrumbs;
-	};
-
-	const serializeFocusRecordToMarkdown = (record) => {
-		const { dateAndDurationStr, tasksData, completedTaskNames, note } = record;
-
-		const lines = [];
+		const lines: string[] = [];
 
 		// Date and duration
-		lines.push(`### 📅 ${dateAndDurationStr}`);
+		lines.push(`### 📅 ${dateStr}`);
 
 		// Tasks
-		tasksData.forEach((task) => {
-			lines.push(`**📝 ${task.name}**` + (task.date ? `: ${task.date}` : ''));
-		});
+		if (tasks && tasks.length > 0) {
+			tasks.forEach((task: any) => {
+				const taskStartTimeObj = formatDateTime(task.startTime);
+				const taskEndTimeObj = formatDateTime(task.endTime);
+				const taskTimeRange = `${taskStartTimeObj.time} - ${taskEndTimeObj.time}`;
+
+				// Task title already includes breadcrumbs and project name from backend
+				lines.push(`**📝 ${task.title}**: ${taskTimeRange}`);
+			});
+		}
 
 		// Notes
 		if (note) {
@@ -319,132 +55,108 @@ const useExportFocusRecords = () => {
 		}
 
 		// Completed tasks
-		if (completedTaskNames && completedTaskNames.length > 0) {
+		if (completedTasks && completedTasks.length > 0) {
 			lines.push(`**✅ Completed Tasks**`);
-			completedTaskNames.forEach((taskName) => {
-				lines.push(`- [x] ${taskName}`);
+			completedTasks.forEach((task: any) => {
+				lines.push(`- [x] ${task.title}`);
 			});
 		}
 
 		return lines.join('\n');
 	};
 
-	const getTitleInfo = (focusRecords) => {
-		const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
-		const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
-		const taskIdFromUrl = searchParams.get('task-id');
-		const filterByTaskId = taskIdFromUrl || false;
-
-		const startDateFromUrlDate = new Date(startDateFromUrl);
-		const endDateFromUrlDate = new Date(endDateFromUrl);
-
-		const totalFocusDuration = getFocusDurationFromArray({
-			focusRecords: focusRecords,
-			onlyTasks: true,
-			taskId: filterByTaskId,
-			ancestorTasksById,
-			showTaskAncestors: true,
-			taskIdIncludeFocusRecordsFromSubtasks: true,
-			startDate: startDateFromUrlDate,
-			endDate: endDateFromUrlDate,
-		});
-
-		return `Focus Records (${(focusRecords?.length || 0).toLocaleString()}) - ${getFormattedDuration(totalFocusDuration, false)}`;
-	};
-
-	const handleCopyToClipboard = () => {
-		const { sterilizedFocusRecords } = getSterilizedFocusRecordList();
-		const finalMarkdown = getFocusRecordsMarkdown(sterilizedFocusRecords);
-
-		// Optional: copy to clipboard
-		navigator.clipboard.writeText(finalMarkdown);
-	};
-
-	const downloadZipFolderOfGroupedFocusRecords = (groupType) => {
-		const { sterilizedFocusRecordsByProjectId, sterilizedFocusRecordsByTaskId } =
-			getSterilizedFocusRecordList(true);
-
-		const zip = new JSZip();
-
-		const groupedFocusRecords =
-			groupType === 'project' ? sterilizedFocusRecordsByProjectId : sterilizedFocusRecordsByTaskId;
-
-		// 1. Convert grouped object to array and sort by focusDuration (descending)
-		let sortedGroups = Object.entries(groupedFocusRecords)
-			.map(([groupId, { focusRecords, focusDuration }]) => ({
-				groupId,
-				focusRecords,
-				focusDuration,
-			}))
-			.sort((a, b) => b.focusDuration - a.focusDuration);
-
-		// If we only want to include tasks with no parent, we need to filter out any TickTick tasks that were included that do have a parent. We don't need to check the other focus apps as they do not have a parent-child substructure with their tasks (Session, Forest, Tide, BeFocused).
-		if (groupType !== 'project' && onlyExportTasksWithNoParent) {
-			sortedGroups = sortedGroups.filter(({ groupId: taskId }) => {
-				// If the task is from TickTick, then only include it if it has no parent task.
-				if (tasksById[taskId]) {
-					const task = tasksById[taskId];
-					const taskParentId = task.parentId || task.itemParentTaskId || task.parent_id;
-
-					return !taskParentId;
-				}
-
-				return true;
-			});
-		}
-
-		// 2. Add files to ZIP
-		sortedGroups.forEach(({ groupId, focusRecords, focusDuration }, index) => {
-			const groupName =
-				groupType === 'project'
-					? groupId !== 'no-project-id'
-						? projectsById[groupId]?.name || sessionCategoriesById[groupId]?.title
-						: 'No Project ID'
-					: groupId !== 'no-task-id'
-						? tasksById[groupId]?.title ||
-							tasksById[groupId]?.content ||
-							tasksById[groupId]?.name ||
-							groupId
-						: 'No Task Id';
-
-			const formattedDuration = getFormattedDuration(focusDuration, false); // e.g. 12h30m
-			const paddedIndex = String(index + 1).padStart(2, '0');
-
-			// Title used in the markdown content
-			const customTitle = `${groupName} - Focus Records (${focusRecords.length.toLocaleString()}) - ${formattedDuration}`;
-			const markdown = getFocusRecordsMarkdown(focusRecords, customTitle);
-
-			// Filename for the markdown file
-			const sanitizedName = `${paddedIndex}_${groupName}_${formattedDuration}`.replace(/[\/\\?%*:|"<>]/g, '-');
-			zip.file(`${sanitizedName}_.md`, markdown);
-		});
-
-		zip.generateAsync({ type: 'blob' }).then((blob) => {
-			saveAs(blob, `FocusRecords_${getFormattedDateAndTimeForFileName()}.zip`);
-		});
-	};
-
-	const getFocusRecordsMarkdown = (sterilizedFocusRecords, customTitle) => {
-		const titleInfo = customTitle || getTitleInfo(filteredFocusRecords);
-		const allFocusRecordsMarkdown = [];
+	const getFocusRecordsMarkdown = (focusRecords: any[], customTitle: string | null, totalDuration: number) => {
+		const allFocusRecordsMarkdown: string[] = [];
 
 		// Add title as H1 at the beginning
+		const titleInfo = customTitle || `Focus Records (${focusRecords.length.toLocaleString()}) - ${getFormattedDuration(totalDuration, false)}`;
 		allFocusRecordsMarkdown.push(`# ${titleInfo}`);
 		allFocusRecordsMarkdown.push('---\n\n');
 
-		for (let i = 0; i < sterilizedFocusRecords.length; i++) {
-			const sterilizedFocusRecord = sterilizedFocusRecords[i];
-			const focusRecordMarkdown = serializeFocusRecordToMarkdown(sterilizedFocusRecord);
+		for (let i = 0; i < focusRecords.length; i++) {
+			const focusRecord = focusRecords[i];
+			const focusRecordMarkdown = serializeFocusRecordToMarkdown(focusRecord);
 			allFocusRecordsMarkdown.push(focusRecordMarkdown);
 
 			// Add separator between records (but not after the last one)
-			if (i !== sterilizedFocusRecords.length - 1) {
+			if (i !== focusRecords.length - 1) {
 				allFocusRecordsMarkdown.push('---\n');
 			}
 		}
 
 		const finalMarkdown = allFocusRecordsMarkdown.join('\n');
 		return finalMarkdown;
+	};
+
+	const handleCopyToClipboard = async () => {
+		// Trigger the export query manually
+		const result = await dispatch(
+			baseAPI.endpoints.getFocusRecordsExport.initiate({
+				...queryParams,
+				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
+				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
+				'group-by': 'none',
+			})
+		);
+
+		if (result.data) {
+			const { records, totalDuration } = result.data;
+			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration);
+
+			// Copy to clipboard
+			navigator.clipboard.writeText(finalMarkdown);
+		}
+	};
+
+	const downloadZipFolderOfGroupedFocusRecords = async (groupType: 'project' | 'task') => {
+		// Trigger the export query manually
+		const result = await dispatch(
+			baseAPI.endpoints.getFocusRecordsExport.initiate({
+				...queryParams,
+				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
+				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
+				'group-by': groupType,
+			})
+		);
+
+		if (!result.data) {
+			return;
+		}
+
+		const { grouped } = result.data;
+		const zip = new JSZip();
+
+		// Convert grouped object to array and sort by totalDuration (descending)
+		const sortedGroups = Object.values(grouped)
+			.map((groupData: any) => ({
+				records: groupData.records,
+				totalDuration: groupData.totalDuration,
+				groupName: groupData.groupName,
+			}))
+			.sort((a, b) => b.totalDuration - a.totalDuration);
+
+		// Calculate padding width based on total number of groups
+		const totalGroups = sortedGroups.length;
+		const paddingWidth = String(totalGroups).length;
+
+		// Add files to ZIP
+		sortedGroups.forEach(({ records, totalDuration, groupName }, index) => {
+			const formattedDuration = getFormattedDuration(totalDuration, false);
+			const paddedIndex = String(index + 1).padStart(paddingWidth, '0');
+
+			// Title used in the markdown content
+			const customTitle = `${groupName} - Focus Records (${records.length.toLocaleString()}) - ${formattedDuration}`;
+			const markdown = getFocusRecordsMarkdown(records, customTitle, totalDuration);
+
+			// Filename for the markdown file - sanitize forward slashes to prevent folder creation
+			const sanitizedName = `${paddedIndex}_${groupName}_${formattedDuration}`.replace(/[\/\\?%*:|"<>]/g, '-');
+			zip.file(`${sanitizedName}_.md`, markdown);
+		});
+
+		// Wait for ZIP generation to complete before saving
+		await zip.generateAsync({ type: 'blob' }).then((blob) => {
+			saveAs(blob, `FocusRecords_${getFormattedDateAndTimeForFileName()}.zip`);
+		});
 	};
 
 	return { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords };

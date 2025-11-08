@@ -417,21 +417,56 @@ const TaskProjectName = ({ taskId, task }) => {
 		focusRecordsPageSettings: { showTaskProjectName },
 	} = useUserSettingsContext();
 
+	// Map special focus app source IDs to friendly names
+	const sourceToAppName: Record<string, string> = {
+		'FocusRecordSession': 'Session',
+		'FocusRecordBeFocused': 'Be Focused',
+		'FocusRecordForest': 'Forest',
+		'FocusRecordTide': 'Tide'
+	};
+
+	// Map source IDs to focus app filter IDs
+	const sourceToFocusAppId: Record<string, string> = {
+		'FocusRecordSession': 'session-app',
+		'FocusRecordBeFocused': 'be-focused-app',
+		'FocusRecordForest': 'forest-app',
+		'FocusRecordTide': 'tide-ios-app'
+	};
+
 	if (!showTaskProjectName || !taskId) {
 		return null;
 	}
 
 	const fullTask = ancestorTasksById[taskId] || task;
 	const taskProject = projectsById && fullTask?.projectId && projectsById[fullTask?.projectId];
-	const taskProjectName = taskProject ? taskProject.name : '';
+
+	// Try to get the project name, or use source mapping as fallback
+	let taskProjectName = taskProject ? taskProject.name : '';
+	let isMappedFocusApp = false;
 
 	if (!taskProject) {
-		return null
+		// Try to use the source mapping as fallback
+		const mappedAppName = fullTask?.projectId && sourceToAppName[fullTask.projectId];
+		if (!mappedAppName) {
+			return null;
+		}
+		taskProjectName = mappedAppName;
+		isMappedFocusApp = true;
 	}
 
 	// Check if this project is a Session category
 	const isSessionProject = projectsSessionById && taskProject?.id && projectsSessionById[taskProject.id];
 	const projectQueryParam = isSessionProject ? 'categories' : 'projects';
+
+	// Shared query params to reset when filtering
+	const resetQueryParams = {
+		'task-id': '',
+		'sort-by': '',
+		search: '',
+		'start-date': '',
+		'end-date': '',
+		page: '',
+	};
 
 	return (
 		<span className="text-color-gray-25">
@@ -440,15 +475,20 @@ const TaskProjectName = ({ taskId, task }) => {
 			<span
 				className="hover:underline hover:text-blue-500"
 				onClick={() => {
-					updateQueryParams({
-						[projectQueryParam]: taskProject?.id,
-						'task-id': '',
-						'sort-by': '',
-						search: '',
-						'start-date': '',
-						'end-date': '',
-						page: '',
-					});
+					if (isMappedFocusApp) {
+						// Filter by focus app source using the mapped focus app ID
+						const focusAppId = sourceToFocusAppId[fullTask.projectId];
+						updateQueryParams({
+							'focus-apps': focusAppId,
+							...resetQueryParams,
+						});
+					} else {
+						// Filter by project/category
+						updateQueryParams({
+							[projectQueryParam]: taskProject?.id,
+							...resetQueryParams,
+						});
+					}
 				}}
 			>
 				({taskProjectName})

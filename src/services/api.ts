@@ -36,6 +36,7 @@ export const baseAPI = createApi({
 		'Project',
 		'ProjectGroup',
 		'FocusRecord',
+		'ExportFocusRecord',
 		'FocusMedal',
 		'TasksMedal',
 		'FocusChallenge',
