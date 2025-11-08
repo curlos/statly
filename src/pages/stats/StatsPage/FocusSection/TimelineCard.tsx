@@ -88,7 +88,6 @@ const CustomWeekPicker = ({ selectedDates, setSelectedDates }) => {
 					}}
 					date={date}
 					setDate={setDate}
-					showTime={true}
 					selectedInterval="Week"
 					outerCurrentDate={date}
 					selectedDates={selectedDates}

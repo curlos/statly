@@ -24,9 +24,11 @@ export const useSearchParamsCustom = () => {
 		setSearchParams(newSearchParams);
 	}, [location.search]);
 
-	const updateQueryParams = (newParams, customNewUrl) => {
-		// Preserve existing query params
-		const searchParams = new URLSearchParams(location.search);
+	const buildUrlWithQueryParams = (newParams, customNewUrl, preserveExisting = true) => {
+		// Preserve existing query params or start fresh
+		const searchParams = preserveExisting
+			? new URLSearchParams(location.search)
+			: new URLSearchParams();
 
 		// Update or set new parameters
 		Object.keys(newParams).forEach((key) => {
@@ -45,6 +47,11 @@ export const useSearchParamsCustom = () => {
 				? customNewUrl
 				: pageContext.urlParsed.pathname;
 
+		return newUrl;
+	};
+
+	const updateQueryParams = (newParams, customNewUrl) => {
+		const newUrl = buildUrlWithQueryParams(newParams, customNewUrl);
 		// Navigate to the new URL with updated query params
 		navigate(newUrl, { replace: true });
 	};
@@ -52,5 +59,6 @@ export const useSearchParamsCustom = () => {
 	return {
 		searchParams,
 		updateQueryParams,
+		buildUrlWithQueryParams,
 	};
 };

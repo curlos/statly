@@ -20,7 +20,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	setIsVisible,
 	date,
 	setDate,
-	showTime = true,
+	showTime = false,
 	selectedInterval = null,
 	outerCurrentDate = null,
 	setSelectedDates,

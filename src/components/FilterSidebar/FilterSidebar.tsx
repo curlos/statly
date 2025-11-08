@@ -10,6 +10,7 @@ import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
 import OtherSectionFocusRecords from './OtherSectionFocusRecords';
 import OtherSectionCompletedTasks from './OtherSectionCompletedTasks';
+import OtherSectionMedals from './OtherSectionMedals';
 import ShowDaysFromToDoListAppSection from './ShowDaysFromToDoListAppSection';
 import ProjectsTickTickSection from './ProjectsTickTickSection';
 import ProjectsTodoistSection from './ProjectsTodoistSection';
@@ -140,6 +141,13 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<OtherSectionCompletedTasks />
+				</>
+			)}
+
+			{page === 'medals' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<OtherSectionMedals />
 				</>
 			)}
 

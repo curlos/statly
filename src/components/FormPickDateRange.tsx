@@ -15,7 +15,7 @@ const FormPickDateRange = ({
 	confirmBeforeUpdating = true,
 	isDropdownCalendarOpenForParent,
 	setIsDropdownCalendarOpenForParent,
-	showTime = true,
+	hideEndDate = false,
 }) => {
 	const [localStartDate, setLocalStartDate] = useState(startDate);
 	const [localEndDate, setLocalEndDate] = useState(endDate);
@@ -43,28 +43,28 @@ const FormPickDateRange = ({
 						isDropdownCalendarOpenForParent,
 						setIsDropdownCalendarOpenForParent,
 					}}
-					showTime={showTime}
 				/>
-				<DateInput
-					labelName="End"
-					date={localEndDate}
-					setDate={(value) => {
-						setLocalEndDate(value);
+				{!hideEndDate && (
+					<DateInput
+						labelName="End"
+						date={localEndDate}
+						setDate={(value) => {
+							setLocalEndDate(value);
 
-						if (!confirmBeforeUpdating) {
-							setEndDate(value);
-						}
+							if (!confirmBeforeUpdating) {
+								setEndDate(value);
+							}
 
-						if (onUpdateStartOrEndDate) {
-							onUpdateStartOrEndDate(null, value);
-						}
-					}}
-					{...{
-						isDropdownCalendarOpenForParent,
-						setIsDropdownCalendarOpenForParent,
-					}}
-					showTime={showTime}
-				/>
+							if (onUpdateStartOrEndDate) {
+								onUpdateStartOrEndDate(null, value);
+							}
+						}}
+						{...{
+							isDropdownCalendarOpenForParent,
+							setIsDropdownCalendarOpenForParent,
+						}}
+					/>
+				)}
 			</div>
 
 			{confirmBeforeUpdating && (
@@ -108,8 +108,7 @@ const DateInput = ({
 	date,
 	setDate,
 	isDropdownCalendarOpenForParent,
-	setIsDropdownCalendarOpenForParent,
-	showTime,
+	setIsDropdownCalendarOpenForParent
 }) => {
 	const dropdownTimeCalenderRef = useRef(null);
 	const [isDropdownTimeCalendarVisible, setIsDropdownTimeCalendarVisible] = useState(false);
@@ -149,7 +148,6 @@ const DateInput = ({
 					}}
 					date={date}
 					setDate={setDate}
-					showTime={showTime}
 				/>
 			</div>
 		</div>

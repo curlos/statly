@@ -52,7 +52,7 @@ const useUserSettings = () => {
 	const { projects: filteredProjects = {} } = focusHoursGoalPageSettings;
 
 	const { selectedChallengeCardImage } = challengesPageSettings;
-	const { selectedMedalCardImage } = medalsPageSettings;
+	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings;
 
 	const handleError = useHandleError();
 	const [editUserSettings] = useEditUserSettingsMutation();
@@ -111,6 +111,8 @@ const useUserSettings = () => {
 		},
 		medalsPageSettings: {
 			selectedMedalCardImage,
+			defaultMedalInterval,
+			customMedalStartDate,
 		},
 		isLoadingGetUserSettings
 	};

@@ -31,25 +31,82 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 		if (isVisible && dropdownRef.current) {
 			const dropdownRect = dropdownRef.current.getBoundingClientRect();
 			const toggleRect = toggleRef?.current?.getBoundingClientRect();
-			const adjustments = {};
+			const adjustments: Record<string, string> = {};
 
-			// Check if dropdown exceeds the bottom of the viewport
-			if (dropdownRect.bottom > window.innerHeight) {
-				// If the bottom portion of the dropdown exceeds the screen's height, then set a negative margin top to adjust the dropdown so that it fits within the screen.
-				const paddingAboveRelativeButton = 20;
-				const requiredMarginTop = -(
-					dropdownRect.height +
-					(toggleRect?.height || 0) +
-					paddingAboveRelativeButton +
-					(addedAdditionalMargin?.marginTop ? addedAdditionalMargin?.marginTop : 0)
-				);
-				adjustments.marginTop = `${requiredMarginTop}px`;
+			// Find the closest scrollable parent container
+			const findScrollableParent = (element: HTMLElement | null): HTMLElement | null => {
+				let parent = element?.parentElement;
+				while (parent) {
+					const style = window.getComputedStyle(parent);
+					const overflow = style.overflow + style.overflowY + style.overflowX;
+					if (overflow.includes('auto') || overflow.includes('scroll')) {
+						return parent;
+					}
+					parent = parent.parentElement;
+				}
+				return null;
+			};
 
-				const spaceAbove = toggleRect?.top;
+			const scrollableParent = findScrollableParent(dropdownRef.current);
 
-				// If the dropdown's height is greater than the space above it, then set the negative margin to the total space above it. The dropdowns always start off being completely below the relative button where it's opened from so giving it a negative margin of the total screen height ABOVE it should move it enough so that it's NOT BELOW the screen height anymore BUT also so that it doesn't go ABOVE the screen height either. The only dropdowns that will suffer from a condition like this are very tall ones so most of the dropdowns will not apply here. The main one I know will do this is DropdownCalendar because there is A LOT going on there.
-				if (dropdownRect.height > spaceAbove) {
-					adjustments.marginTop = `${-spaceAbove}px`;
+			// Determine the effective viewport (either scrollable parent or window)
+			let effectiveBottom = window.innerHeight;
+			let effectiveTop = 0;
+
+			if (scrollableParent) {
+				const scrollableRect = scrollableParent.getBoundingClientRect();
+				// Use the minimum of scrollableRect.bottom and window.innerHeight
+				// because the scrollable container might extend beyond the viewport
+				effectiveBottom = Math.min(scrollableRect.bottom, window.innerHeight);
+				effectiveTop = Math.max(scrollableRect.top, 0);
+			}
+
+			// Calculate available space above and below the toggle button
+			const toggleBottom = toggleRect?.bottom || 0;
+			const toggleTop = toggleRect?.top || 0;
+			const spaceBelow = effectiveBottom - toggleBottom;
+			const spaceAbove = toggleTop - effectiveTop;
+			const dropdownHeight = dropdownRect.height;
+
+			// Calculate where the dropdown bottom would be if opened below
+			// Add small margin (4px from mt-[4px] in the className)
+			const dropdownMargin = 4;
+			const potentialDropdownBottom = toggleBottom + dropdownMargin + dropdownHeight;
+
+			// Check if dropdown would be fully visible if opened below (without scrolling)
+			const wouldBeFullyVisibleBelow = potentialDropdownBottom <= effectiveBottom;
+			const doesntFitBelow = dropdownHeight > spaceBelow;
+
+			// If dropdown doesn't fit below OR wouldn't be fully visible below
+			if (doesntFitBelow || !wouldBeFullyVisibleBelow) {
+				// Check if there's enough space above to show it there instead
+				const enoughSpaceAbove = spaceAbove >= dropdownHeight;
+				const moreSpaceAbove = spaceAbove > spaceBelow;
+
+				// Prefer above if there's enough space OR if there's more space above
+				if (enoughSpaceAbove || moreSpaceAbove) {
+					// Position above the toggle button
+					const paddingAboveRelativeButton = 20;
+					const requiredMarginTop = -(
+						dropdownRect.height +
+						(toggleRect?.height || 0) +
+						paddingAboveRelativeButton +
+						(addedAdditionalMargin?.marginTop ? addedAdditionalMargin?.marginTop : 0)
+					);
+					adjustments.marginTop = `${requiredMarginTop}px`;
+
+					// If dropdown is taller than available space above, constrain it
+					if (dropdownRect.height > spaceAbove) {
+						adjustments.marginTop = `${-spaceAbove}px`;
+						adjustments.maxHeight = `${spaceAbove - 20}px`;
+						adjustments.overflowY = 'auto';
+					}
+				} else {
+					// Keep it below but constrain height if needed
+					if (dropdownHeight > spaceBelow) {
+						adjustments.maxHeight = `${spaceBelow - 20}px`;
+						adjustments.overflowY = 'auto';
+					}
 				}
 			}
 

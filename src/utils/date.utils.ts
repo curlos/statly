@@ -204,17 +204,21 @@ export const getFormattedShortMonthDay = (inputDate) => {
 
 export const getCalendarMonth = (year, month, weeksInCalendar = 6) => {
 	const calendar = [];
-	const firstDayOfMonth = new Date(year, month, 1);
-	const currentDay = new Date(firstDayOfMonth);
-	const dayOfWeek = currentDay.getDay();
-	currentDay.setDate(currentDay.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+	// Create date at noon to avoid timezone issues
+	const firstDayOfMonth = new Date(year, month, 1, 12, 0, 0);
+	const dayOfWeek = firstDayOfMonth.getDay();
+	const startDayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+
+	// Calculate the starting date (Monday of the first week)
+	const startDate = firstDayOfMonth.getDate() - startDayOffset;
 
 	for (let week = 0; week < weeksInCalendar; week++) {
 		const days = [];
 		for (let i = 0; i < 7; i++) {
-			// 7 days per week
-			days.push(new Date(currentDay));
-			currentDay.setDate(currentDay.getDate() + 1);
+			// 7 days per week - create each date at noon
+			const dayNumber = startDate + (week * 7) + i;
+			const newDate = new Date(year, month, dayNumber, 12, 0, 0);
+			days.push(newDate);
 		}
 		calendar.push(days);
 	}
@@ -284,9 +288,11 @@ export const getAllDaysInYearFromDate = (date) => {
  */
 export const getAllDaysInRange = (startDate, endDate) => {
 	const dates = [];
-	let currentDate = new Date(startDate);
+	// Normalize to noon to avoid timezone issues
+	let currentDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 12, 0, 0);
+	const normalizedEndDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 12, 0, 0);
 
-	while (currentDate <= endDate) {
+	while (currentDate <= normalizedEndDate) {
 		dates.push(new Date(currentDate));
 		currentDate.setDate(currentDate.getDate() + 1);
 	}

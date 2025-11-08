@@ -1,34 +1,9 @@
 import { useEffect, useRef } from 'react';
 import MedalCard from './MedalCard';
 import MedalListSkeleton from './MedalListSkeleton';
-import { usePageContext } from 'vike-react/usePageContext';
-import { useGetFocusMedalsQuery } from '../../../services/resources/documentsFocusRecordsApi';
-import { useGetTasksMedalsQuery } from '../../../services/resources/documentsTasksApi';
-import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 
-const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }) => {
+const MedalList = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal, medalsData, isLoading, type, interval }) => {
 	const scrollContainerRef = useRef(null);
-	const pageContext = usePageContext();
-	const { type, interval } = pageContext.routeParams;
-
-	// Build query params using shared hook
-	const sharedQueryParams = useSharedQueryParams();
-	const queryParams = {
-		...sharedQueryParams.queryParams,
-		interval,
-	};
-
-	// Fetch medals data from backend based on type
-	const { data: focusMedalsData, isLoading: isLoadingFocusMedals } = useGetFocusMedalsQuery(queryParams, {
-		skip: type !== 'focus'
-	});
-
-	const { data: tasksMedalsData, isLoading: isLoadingTasksMedals } = useGetTasksMedalsQuery(queryParams, {
-		skip: type !== 'tasks'
-	});
-
-	const isLoading = type === 'focus' ? isLoadingFocusMedals : isLoadingTasksMedals;
-	const medalsData = type === 'focus' ? focusMedalsData : tasksMedalsData;
 
 	// Convert backend response to array format for rendering
 	const medalsToUse = medalsData ? Object.entries(medalsData).map(([name, medalData]) => ({

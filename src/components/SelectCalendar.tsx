@@ -218,7 +218,7 @@ const MonthView = ({
 								const handleClick = () => {
 									setLocalCurrentDate(new Date(day.getFullYear(), day.getMonth(), 1));
 
-									let newDueDate = day ? day : new Date();
+									let newDueDate = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 12, 0, 0);
 
 									if (time) {
 										const newDateObject = setTimeOnDateString(newDueDate, time);

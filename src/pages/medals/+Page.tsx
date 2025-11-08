@@ -17,7 +17,7 @@ import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 const Page = () => {
 	const pageContext = usePageContext();
 	const { type, interval } = pageContext.routeParams;
-
+ 
 	const [chosenMedal, setChosenMedal] = useState({});
 	const chosenMedalRef = useRef(null);
 	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
@@ -29,23 +29,19 @@ const Page = () => {
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
-	// Build query params using shared hook
-	const sharedQueryParams = useSharedQueryParams();
-	const queryParams = {
-		...sharedQueryParams.queryParams,
-		interval,
-	};
+	const { queryParams } = useSharedQueryParams();
 
 	// Fetch medals data from backend based on type
-	const { isLoading: isLoadingFocusMedals } = useGetFocusMedalsQuery(queryParams, {
+	const { data: focusMedalsData, isLoading: isLoadingFocusMedals } = useGetFocusMedalsQuery(queryParams, {
 		skip: type !== 'focus'
 	});
 
-	const { isLoading: isLoadingTasksMedals } = useGetTasksMedalsQuery(queryParams, {
+	const { data: tasksMedalsData, isLoading: isLoadingTasksMedals } = useGetTasksMedalsQuery(queryParams, {
 		skip: type !== 'tasks'
 	});
 
 	const isLoading = type === 'focus' ? isLoadingFocusMedals : isLoadingTasksMedals;
+	const medalsData = type === 'focus' ? focusMedalsData : tasksMedalsData;
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
 		{
@@ -105,7 +101,7 @@ const Page = () => {
 				</div>
 
 				<div className="container grid grid-cols-12 gap-3">
-					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal }} />
+					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal, medalsData, isLoading, type, interval }} />
 
 					<div className="hidden sm:block col-span-4">
 						{isLoading ? (
