@@ -6,13 +6,17 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { baseAPI } from '../../../services/api';
 import { useDispatch } from 'react-redux';
+import { getAppliedFiltersMarkdown } from './getAppliedFiltersMarkdown';
+import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
 
 const useExportFocusRecords = () => {
 	const dispatch = useDispatch();
-	const { queryParams } = useSharedQueryParams();
+	const { queryParams, urlValues } = useSharedQueryParams();
 	const userSettings = useUserSettingsContext();
 	const taskIdIncludeFocusRecordsFromSubtasks = userSettings?.focusRecordsPageSettings?.taskIdIncludeFocusRecordsFromSubtasks ?? true;
 	const onlyExportTasksWithNoParent = userSettings?.focusRecordsPageSettings?.onlyExportTasksWithNoParent ?? true;
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
 
 	const serializeFocusRecordToMarkdown = (record: any) => {
 		const { startTime, endTime, duration, tasks, completedTasks, note } = record;
@@ -44,8 +48,7 @@ const useExportFocusRecords = () => {
 				const taskEndTimeObj = formatDateTime(task.endTime);
 				const taskTimeRange = `${taskStartTimeObj.time} - ${taskEndTimeObj.time}`;
 
-				// Task title already includes breadcrumbs and project name from backend
-				lines.push(`**📝 ${task.title}**: ${taskTimeRange}`);
+				lines.push(`📝 ${task.title}: ${taskTimeRange}`);
 			});
 		}
 
@@ -56,7 +59,8 @@ const useExportFocusRecords = () => {
 
 		// Completed tasks
 		if (completedTasks && completedTasks.length > 0) {
-			lines.push(`**✅ Completed Tasks**`);
+			lines.push(''); // Add blank line for separation
+			lines.push(`###### ✅ Completed Tasks`);
 			completedTasks.forEach((task: any) => {
 				lines.push(`- [x] ${task.title}`);
 			});
@@ -70,8 +74,11 @@ const useExportFocusRecords = () => {
 
 		// Add title as H1 at the beginning
 		const titleInfo = customTitle || `Focus Records (${focusRecords.length.toLocaleString()}) - ${getFormattedDuration(totalDuration, false)}`;
-		allFocusRecordsMarkdown.push(`# ${titleInfo}`);
-		allFocusRecordsMarkdown.push('---\n\n');
+		allFocusRecordsMarkdown.push(`# ${titleInfo}\n`);
+
+		// Add applied filters section (always shows, displays "None" if no filters)
+		const appliedFiltersMarkdown = getAppliedFiltersMarkdown({ ...urlValues, projectsById });
+		allFocusRecordsMarkdown.push(appliedFiltersMarkdown);
 
 		for (let i = 0; i < focusRecords.length; i++) {
 			const focusRecord = focusRecords[i];
@@ -105,6 +112,27 @@ const useExportFocusRecords = () => {
 
 			// Copy to clipboard
 			navigator.clipboard.writeText(finalMarkdown);
+		}
+	};
+
+	const downloadSingleMarkdownFile = async () => {
+		// Trigger the export query manually
+		const result = await dispatch(
+			baseAPI.endpoints.getFocusRecordsExport.initiate({
+				...queryParams,
+				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
+				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
+				'group-by': 'none',
+			})
+		);
+
+		if (result.data) {
+			const { records, totalDuration } = result.data;
+			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration);
+
+			// Download as single markdown file
+			const blob = new Blob([finalMarkdown], { type: 'text/markdown;charset=utf-8' });
+			saveAs(blob, 'focus_records.md');
 		}
 	};
 
@@ -159,7 +187,7 @@ const useExportFocusRecords = () => {
 		});
 	};
 
-	return { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords };
+	return { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedFocusRecords };
 };
 
 export default useExportFocusRecords;

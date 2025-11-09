@@ -41,6 +41,19 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				return response;
 			},
 			providesTags: ['TasksChallenge'],
+		}),
+		getDaysWithCompletedTasksExport: builder.query({
+			query: (queryParams) => {
+				const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+				const queryString = buildQueryString({ ...queryParams, timezone });
+				return queryString
+					? `/documents/tasks/days-with-completed-tasks/export?${queryString}`
+					: '/documents/tasks/days-with-completed-tasks/export';
+			},
+			transformResponse: (response) => {
+				return response;
+			},
+			providesTags: ['ExportDayWithCompletedTasks'],
 		})
 	}),
 	overrideExisting: false,

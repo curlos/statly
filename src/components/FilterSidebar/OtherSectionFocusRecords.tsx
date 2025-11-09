@@ -166,6 +166,15 @@ const OtherSectionFocusRecords = () => {
 							}}
 						/>
 
+						{/* Download Focus Records (Single File) */}
+						<FocusRecordsExporter
+							{...{
+								text: 'Export Focus Records',
+								icon: 'download',
+								action: 'downloadSingleMarkdownFile',
+							}}
+						/>
+
 						{/* Export Focus Records By Project */}
 						<FocusRecordsExporter
 							{...{
@@ -221,10 +230,11 @@ const FocusRecordsExporter = ({ text, icon, action, params = [] }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	const { handleCopyToClipboard, downloadZipFolderOfGroupedFocusRecords } = useExportFocusRecords();
+	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedFocusRecords } = useExportFocusRecords();
 
 	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
+		downloadSingleMarkdownFile: downloadSingleMarkdownFile,
 		downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedFocusRecords,
 	};
 

@@ -120,7 +120,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 								className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
 								onClick={handleClickDay}
 							>
-								<span>{dateStr}</span>
+								<span>{dateStr.replace(/\b0(\d),/, '$1,')}</span>
 								<span> ({completedTasksForDay.length})</span>
 							</div>
 						}

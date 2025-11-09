@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 // import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 import MedalImage from './MedalImage';
+import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -116,36 +117,42 @@ const OtherSectionFocusRecords = () => {
 						)}
 
 						{/* Copy Completed Tasks To Clipboard */}
-						{/* TODO: Bring back later once I'm ready to work on it. */}
-						{/* <CompletedTasksExporter
+						<CompletedTasksExporter
 							{...{
 								text: 'Copy Completed Tasks To Clipboard',
 								icon: 'content_copy',
 								action: 'handleCopyToClipboard',
 							}}
-						/> */}
+						/>
+
+						{/* Download Completed Tasks (Single File) */}
+						<CompletedTasksExporter
+							{...{
+								text: 'Export Completed Tasks',
+								icon: 'download',
+								action: 'downloadSingleMarkdownFile',
+							}}
+						/>
 
 						{/* Export Completed Tasks By Project */}
-						{/* TODO: Bring back later once I'm ready to work on it. */}
-						{/* <CompletedTasksExporter
+						<CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks By Project',
 								icon: 'download',
 								action: 'downloadZipFolderOfGroupedCompletedTasks',
 								params: ['project'],
 							}}
-						/> */}
+						/>
 
 						{/* Export Completed Tasks by Parent Task */}
-						{/* TODO: Bring back later once I'm ready to work on it. */}
-						{/* <CompletedTasksExporter
+						<CompletedTasksExporter
 							{...{
 								text: 'Export Completed Tasks by Parent Task',
 								icon: 'download',
 								action: 'downloadZipFolderOfGroupedCompletedTasks',
 								params: ['task'],
 							}}
-						/> */}
+						/>
 
 						<div className="pl-9">
 							<CheckboxOther
@@ -182,10 +189,11 @@ const CompletedTasksExporter = ({ text, icon, action, params = [] }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	// const { handleCopyToClipboard, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
+	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
 
 	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
+		downloadSingleMarkdownFile: downloadSingleMarkdownFile,
 		downloadZipFolderOfGroupedCompletedTasks: downloadZipFolderOfGroupedCompletedTasks,
 	};
 
@@ -196,15 +204,21 @@ const CompletedTasksExporter = ({ text, icon, action, params = [] }) => {
 				setCopiedToClipboardStatus('copying');
 
 				// Let the UI update before doing heavy work
-				setTimeout(() => {
+				setTimeout(async () => {
 					const actionFunction = actionFunctions[action];
-					actionFunction(...params);
+					const result = await actionFunction(...params);
 
-					setCopiedToClipboardStatus('done');
+					// Handle clipboard-specific errors
+					if (action === 'handleCopyToClipboard' && result && !result.success) {
+						setCopiedToClipboardStatus('error');
+						console.error('Copy to clipboard failed:', result.error);
+					} else {
+						setCopiedToClipboardStatus('done');
+					}
 
 					setTimeout(() => {
 						setCopiedToClipboardStatus('none');
-					}, 1000);
+					}, 2000);
 				}, 0);
 			}}
 		>
@@ -212,13 +226,15 @@ const CompletedTasksExporter = ({ text, icon, action, params = [] }) => {
 				<Spinner />
 			) : (
 				<Icon
-					name={copiedToClipboardStatus === 'none' ? icon : 'check'}
+					name={copiedToClipboardStatus === 'none' ? icon : copiedToClipboardStatus === 'error' ? 'error' : 'check'}
 					fill={0}
 					customClass={classNames(
 						'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
 						copiedToClipboardStatus === 'none'
 							? `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
-							: 'text-emerald-500'
+							: copiedToClipboardStatus === 'error'
+								? 'text-red-500'
+								: 'text-emerald-500'
 					)}
 				/>
 			)}

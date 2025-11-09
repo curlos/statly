@@ -22,7 +22,7 @@ const CompletedTasksWithBreadcrumbs = ({
 			const parentTask =
 				ancestorTasksById && ancestorTasksById[parentTaskId];
 			const parentTaskTitle = parentTask?.title || parentTaskId;
-			const parentTaskBreadcrumbs = parentTask?.ancestorIds
+			const parentTaskBreadcrumbs = parentTask?.ancestorIds?.slice(1)
 
 			const taskProject = projectsById && parentTask?.projectId && projectsById[parentTask?.projectId]
 			const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
@@ -66,13 +66,13 @@ const CompletedTasksWithBreadcrumbs = ({
 							)}
 
 							{taskProject && (
-								<span className="ml-1 text-color-gray-25">
-									{' > '}
+								<span className="text-color-gray-25">
+									{' - '}
 								</span>
 							)}
 
 							{taskProject && (
-								<span className="ml-1 text-color-gray-25 hover:underline hover:text-blue-500" onClick={() => {
+								<span className="text-color-gray-25 hover:underline hover:text-blue-500" onClick={() => {
 									updateQueryParams({
 										[projectQueryParam]: taskProject?.id,
 										'task-id': '',

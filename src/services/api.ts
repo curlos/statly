@@ -33,6 +33,7 @@ export const baseAPI = createApi({
 		'UserSettings',
 		'TickTick-1.0-Task',
 		'DayWithCompletedTasks',
+		'ExportDayWithCompletedTasks',
 		'Project',
 		'ProjectGroup',
 		'FocusRecord',
