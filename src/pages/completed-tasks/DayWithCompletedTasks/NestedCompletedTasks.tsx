@@ -65,7 +65,7 @@ const NestedCompletedTasks = ({
 							name={subtask.status === -1 ? 'disabled_by_default' : 'check_box'}
 							customClass={classNames('!text-[20px] text-white mt-[2px]')}
 						/>
-						<span>{subtask.content || subtask.title}</span>
+						<span>{subtask.title || subtask.content}</span>
 					</li>
 				))}
 			</ul>
