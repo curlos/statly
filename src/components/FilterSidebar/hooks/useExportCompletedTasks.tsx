@@ -65,7 +65,14 @@ const useExportCompletedTasks = () => {
 	function serializeNestedTaskNode(taskId, node, ancestorTasksById, level) {
 		const lines = [];
 		const indent = '  '.repeat(level);
-		const taskInfo = ancestorTasksById[taskId];
+
+		// Handle grouped task IDs (like "grouped-Check Streaks")
+		let taskInfo = ancestorTasksById[taskId];
+		if (!taskInfo && taskId.startsWith('grouped-')) {
+			// Extract task name from grouped ID
+			const taskName = taskId.replace('grouped-', '');
+			taskInfo = { title: taskName, projectId: null };
+		}
 
 		if (!taskInfo) {
 			return '';
@@ -147,12 +154,12 @@ const useExportCompletedTasks = () => {
 	function serializeNestedDay(dateStr, dayData, ancestorTasksById) {
 		const lines = [];
 
-		// Extract numOfCompletedTasksForDay from backend (already calculated)
-		const { numOfCompletedTasksForDay, ...nestedTasks } = dayData;
+		// Extract taskCount from backend (already calculated)
+		const { taskCount, ...nestedTasks } = dayData;
 
 		// Remove leading zero from day
 		const formattedDateStr = dateStr.replace(/\b0(\d),/, '$1,');
-		lines.push(`### 📅 ${formattedDateStr} (${numOfCompletedTasksForDay})\n`);
+		lines.push(`### 📅 ${formattedDateStr} (${taskCount})\n`);
 
 		// Render each root task
 		const rootTaskIds = Object.keys(nestedTasks);
@@ -321,9 +328,9 @@ const useExportCompletedTasks = () => {
 
 			// Build array for sorting - calculate task counts per group
 			const groupsArray = Object.entries(groupedData).map(([groupId, daysData]) => {
-				// Count tasks in this group by summing numOfCompletedTasksForDay from each day
+				// Count tasks in this group by summing taskCount from each day
 				const totalCompletedTasks = Object.values(daysData).reduce((sum, dayData) => {
-					return sum + (dayData.numOfCompletedTasksForDay || 0);
+					return sum + (dayData.taskCount || 0);
 				}, 0);
 
 				// Get group name (project name or task name)
