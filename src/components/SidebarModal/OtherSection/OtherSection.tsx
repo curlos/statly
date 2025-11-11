@@ -1,4 +1,5 @@
 import Icon from '../../Icon';
+import BackupData from './BackupData';
 // import BackupData from './BackupData';
 import UpdateArchivedProjects from './UpdateArchivedProjects';
 
@@ -11,8 +12,7 @@ const OtherSection = () => {
 			</div>
 
 			<UpdateArchivedProjects />
-			{/* TODO: Bring back later. */}
-			{/* <BackupData /> */}
+			<BackupData />
 		</div>
 	);
 };

@@ -54,9 +54,21 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				return response;
 			},
 			providesTags: ['ExportDayWithCompletedTasks'],
+		}),
+		getAllTasks: builder.query({
+			query: (queryParams?: { page?: number; limit?: number }) => {
+				const queryString = buildQueryString(queryParams || {});
+				return queryString
+					? `/documents/tasks/all?${queryString}`
+					: '/documents/tasks/all';
+			},
+			transformResponse: (response) => {
+				return response;
+			},
+			providesTags: ['AllTasks'],
 		})
 	}),
 	overrideExisting: false,
 });
 
-export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery, useGetTasksChallengesQuery } = documentsTasksApi;
+export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery, useGetTasksChallengesQuery, useGetAllTasksQuery } = documentsTasksApi;

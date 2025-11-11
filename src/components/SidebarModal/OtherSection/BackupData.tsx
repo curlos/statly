@@ -3,168 +3,200 @@ import { saveAs } from 'file-saver';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
-import {
-	useGetTodoistAllTasksQuery,
-	useGetTodoistAllProjectsQuery,
-	useGetSessionAppFocusRecordsQuery,
-	useGetBeFocusedAppFocusRecordsQuery,
-	useGetForestAppFocusRecordsQuery,
-	useGetTideAppFocusRecordsQuery,
-} from '../../../services/resources/oldFocusAppsApi';
-import {
-	useGetAllTasksQuery,
-	useGetAllProjectsQuery,
-	useGetPomoAndStopwatchFocusRecordsQuery,
-	useGetAllTagsQuery,
-} from '../../../services/resources/ticktickOneApi';
+import { documentsTasksApi } from '../../../services/resources/documentsTasksApi';
+import { documentsFocusRecordsApi } from '../../../services/resources/documentsFocusRecordsApi';
+import { documentsProjectsApi } from '../../../services/resources/documentsProjectsApi';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
 import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
 
 const BackupData = () => {
-	// RTK Query - TickTick 1.0 - Tasks
-	const { data: fetchedTasks, isLoading: isLoadingGetTasks } = useGetAllTasksQuery();
+	// RTK Query - Lazy queries that only trigger on button click
+	const [triggerGetAllTasks, { isLoading: isLoadingGetAllTasks }] =
+		documentsTasksApi.useLazyGetAllTasksQuery();
 
-	// RTK Query - Todoist - Tasks
-	const { data: fetchedTodoistTasks, isLoading: isLoadingGetTodoistTasks } = useGetTodoistAllTasksQuery();
+	const [triggerGetAllFocusRecords, { isLoading: isLoadingGetAllFocusRecords }] =
+		documentsFocusRecordsApi.useLazyGetAllFocusRecordsQuery();
 
-	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
+	const [triggerGetProjects, { isLoading: isLoadingGetDocumentsProjects }] =
+		documentsProjectsApi.useLazyGetProjectsQuery();
 
-	// RTK Query - Todoist - Projects
-	const { data: fetchedTodoistAllProjects, isLoading: isLoadingGetTodoistProjects } = useGetTodoistAllProjectsQuery();
-
-	// FOCUS RECORDS FROM ALL APPS
-	// RTK Query - TickTick 1.0 - Focus Records
-	const { data: fetchedFocusRecordsTickTick, isLoading: isLoadingGetFocusRecords } =
-		useGetPomoAndStopwatchFocusRecordsQuery();
-
-	// RTK Query - Session App - Focus Records
-	const { data: fetchedFocusRecordsSession, isLoading: isLoadingGetSessionFocusRecords } =
-		useGetSessionAppFocusRecordsQuery();
-
-	// RTK Query - BeFocused App - Focus Records
-	const { data: fetchedFocusRecordsBeFocused, isLoading: isLoadingGetBeFocusedAppFocusRecords } =
-		useGetBeFocusedAppFocusRecordsQuery();
-
-	// RTK Query - Forest App - Focus Records
-	const { data: fetchedFocusRecordsForest, isLoading: isLoadingGetForestAppFocusRecords } =
-		useGetForestAppFocusRecordsQuery();
-
-	// RTK Query - Tide App - Focus Records
-	const { data: fetchedFocusRecordsTide, isLoading: isLoadingGetTideFocusRecords } = useGetTideAppFocusRecordsQuery();
-
-	// RTK Query - TickTick 1.0 - Tags
-	const { data: fetchedTags, isLoading: isLoadingGetTags } = useGetAllTagsQuery();
+	const [triggerGetProjectGroups, { isLoading: isLoadingGetDocumentsProjectGroups }] =
+		documentsProjectsApi.useLazyGetProjectGroupsQuery();
 
 	const { chosenColorObj } = useThemeContext();
 	const [status, setStatus] = useState('none');
 
+	// Helper function to fetch all pages in parallel
+	const fetchAllPages = async (
+		triggerQuery: any,
+		limit = 5000
+	): Promise<any[]> => {
+		// Fetch first page to get total count
+		const { data: firstPageResponse } = await triggerQuery({ page: 1, limit });
+
+		if (!firstPageResponse) {
+			return [];
+		}
+
+		// If response is not paginated (old format), return as-is
+		if (!firstPageResponse.totalPages) {
+			return firstPageResponse;
+		}
+
+		const { data: firstPageData, totalPages } = firstPageResponse;
+
+		// If only one page, return the data
+		if (totalPages === 1) {
+			return firstPageData;
+		}
+
+		// Fetch remaining pages in parallel
+		const remainingPages = Array.from({ length: totalPages - 1 }, (_, i) => i + 2);
+		const remainingPagesPromises = remainingPages.map((page) =>
+			triggerQuery({ page, limit })
+		);
+
+		const remainingPagesResponses = await Promise.all(remainingPagesPromises);
+
+		// Combine all pages
+		const allData = [
+			firstPageData,
+			...remainingPagesResponses.map((response: any) => response.data?.data || []),
+		].flat();
+
+		return allData;
+	};
+
 	const zip = new JSZip();
 
-	const downloadZipFolderOfImportantData = () => {
+	// Helper function to chunk array into groups of 1000
+	const chunkArray = (arr: any[], chunkSize = 1000) => {
+		const chunks: any[][] = [];
+		for (let i = 0; i < arr.length; i += chunkSize) {
+			chunks.push(arr.slice(i, i + chunkSize));
+		}
+		return chunks;
+	};
+
+	const downloadZipFolderOfImportantData = (
+		allTasks: any,
+		allFocusRecords: any,
+		projects: any,
+		projectGroups: any
+	) => {
 		const importantApiResponsesArr = [
-			// TASKS
+			// ALL TASKS
 			{
-				fileName: 'ticktick-tasks',
-				apiEndpointName: '/ticktick/tasks',
-				response: fetchedTasks.tasks,
+				folderName: 'tasks',
+				fileName: 'tasks',
+				apiEndpointName: '/documents/tasks/all',
+				response: allTasks,
 			},
+
+			// ALL FOCUS RECORDS
 			{
-				fileName: 'todoist-tasks',
-				apiEndpointName: '/old-focus-apps/todoist-all-tasks',
-				response: fetchedTodoistTasks.todoistAllTasks,
+				folderName: 'focus-records',
+				fileName: 'focus-records',
+				apiEndpointName: '/documents/focus-records/all',
+				response: allFocusRecords,
 			},
 
 			// PROJECTS
 			{
-				fileName: 'ticktick-projects',
-				apiEndpointName: '/ticktick/projects',
-				response: fetchedProjects.projects,
-			},
-			{
-				fileName: 'todoist-projects',
-				apiEndpointName: '/old-focus-apps/todoist-all-projects',
-				response: fetchedTodoistAllProjects.todoistAllProjects,
+				folderName: 'projects',
+				fileName: 'projects',
+				apiEndpointName: '/documents/projects',
+				response: projects,
 			},
 
-			// FOCUS RECORDS
+			// PROJECT GROUPS
 			{
-				fileName: 'ticktick-focus-records',
-				apiEndpointName: '/ticktick/focus-records',
-				response: fetchedFocusRecordsTickTick.focusRecords,
-			},
-			{
-				fileName: 'session-app-focus-records',
-				apiEndpointName: '/old-focus-apps/focus-records/session-app?no-breaks=true',
-				response: fetchedFocusRecordsSession.sessionFocusRecords,
-			},
-			{
-				fileName: 'be-focused-app-focus-records',
-				apiEndpointName: '/old-focus-apps/focus-records/be-focused-app',
-				response: fetchedFocusRecordsBeFocused.beFocusedAppFocusRecords,
-			},
-			{
-				fileName: 'forest-app-focus-records',
-				apiEndpointName: '/old-focus-apps/focus-records/forest-app?before-session-app=true',
-				response: fetchedFocusRecordsForest.forestAppFocusRecords,
-			},
-			{
-				fileName: 'tide-app-focus-records',
-				apiEndpointName: '/old-focus-apps/focus-records/tide-app',
-				response: fetchedFocusRecordsTide.tideAppFocusRecords,
-			},
-
-			// TAGS
-			{
-				fileName: 'ticktick-tags',
-				apiEndpointName: '/ticktick/tags',
-				response: fetchedTags.tags,
+				folderName: 'project-groups',
+				fileName: 'project-groups',
+				apiEndpointName: '/documents/projects/project-groups',
+				response: projectGroups,
 			},
 		];
 
 		for (const data of importantApiResponsesArr) {
-			zip.file(`${data.fileName}.json`, JSON.stringify(data, null, 4));
+			const folder = zip.folder(data.folderName);
+
+			// All responses are now arrays, so we can directly chunk them
+			const arrayToChunk = data.response;
+
+			// Chunk the array into groups of 1000
+			const chunks = chunkArray(arrayToChunk, 1000);
+
+			chunks.forEach((chunk, index) => {
+				const fileContent = {
+					fileName: data.fileName,
+					apiEndpointName: data.apiEndpointName,
+					chunkInfo: {
+						chunkNumber: index + 1,
+						totalChunks: chunks.length,
+						itemsInChunk: chunk.length,
+						totalItems: arrayToChunk.length,
+					},
+					response: chunk,
+				};
+
+				folder?.file(
+					`${data.fileName}_${index + 1}.json`,
+					JSON.stringify(fileContent, null, 4)
+				);
+			});
 		}
 
 		zip.generateAsync({ type: 'blob' }).then((blob) => {
-			saveAs(blob, `Backup_Tasks_FocusRecords_Tags_${getFormattedDateAndTimeForFileName()}.zip`);
+			saveAs(blob, `Backup_Tasks_FocusRecords_Projects_${getFormattedDateAndTimeForFileName()}.zip`);
 		});
 	};
 
-	const isLoadingAnyMisc =
-		isLoadingGetTasks ||
-		isLoadingGetTodoistTasks ||
-		isLoadingGetProjects ||
-		isLoadingGetTodoistProjects ||
-		isLoadingGetTags;
-	const isLoadingGetAnyFocusRecords =
-		isLoadingGetFocusRecords ||
-		isLoadingGetSessionFocusRecords ||
-		isLoadingGetBeFocusedAppFocusRecords ||
-		isLoadingGetForestAppFocusRecords ||
-		isLoadingGetTideFocusRecords;
+	const isLoadingAny =
+		isLoadingGetAllTasks ||
+		isLoadingGetAllFocusRecords ||
+		isLoadingGetDocumentsProjects ||
+		isLoadingGetDocumentsProjectGroups;
 
 	return (
 		<div>
 			<div
 				className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
-				onClick={() => {
-					if (isLoadingAnyMisc || isLoadingGetAnyFocusRecords) {
+				onClick={async () => {
+					if (isLoadingAny) {
 						return;
 					}
 
 					setStatus('backing up');
 
-					// Let the UI update before doing heavy work
-					setTimeout(() => {
-						downloadZipFolderOfImportantData();
-						setStatus('done');
+					try {
+						// Fetch all paginated data in parallel
+						const [allTasks, allFocusRecords, projects, projectGroups] = await Promise.all([
+							fetchAllPages(triggerGetAllTasks),
+							fetchAllPages(triggerGetAllFocusRecords),
+							triggerGetProjects(undefined).then((res: any) => res.data?.projects || []),
+							triggerGetProjectGroups(undefined).then((res: any) => res.data?.projectGroups || []),
+						]);
 
+						// Let the UI update before doing heavy work
 						setTimeout(() => {
-							setStatus('none');
-						}, 1000);
-					}, 0);
+							downloadZipFolderOfImportantData(
+								allTasks,
+								allFocusRecords,
+								projects,
+								projectGroups
+							);
+							setStatus('done');
+
+							setTimeout(() => {
+								setStatus('none');
+							}, 1000);
+						}, 0);
+					} catch (error) {
+						console.error('Error fetching backup data:', error);
+						setStatus('none');
+					}
 				}}
 			>
 				{status === 'backing up' ? (
@@ -181,7 +213,7 @@ const BackupData = () => {
 						)}
 					/>
 				)}
-				<div>Backup Focus Records, Tasks, and Tags</div>
+				<div>Backup Focus Records, Tasks, Projects, and Project Groups</div>
 			</div>
 		</div>
 	);
