@@ -54,10 +54,6 @@ const ProviderList = ({ children }) => {
 		<SearchParamsProvider>
 			<ThemeProvider>
 				<UserSettingsProvider>
-					{/* <StatsProvider>
-						<LoggedInBase children={children} />
-					</StatsProvider> */}
-					
 					<LoggedInBase children={children} />
 				</UserSettingsProvider>
 			</ThemeProvider>

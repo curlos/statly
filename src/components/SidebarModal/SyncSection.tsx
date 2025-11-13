@@ -9,10 +9,10 @@ interface SyncMetadata {
 }
 
 interface SyncMetadataByType {
-	tasks?: SyncMetadata;
-	projects?: SyncMetadata;
-	project_groups?: SyncMetadata;
-	'focus-records-ticktick'?: SyncMetadata;
+	tickTickTasks?: SyncMetadata;
+	tickTickProjects?: SyncMetadata;
+	tickTickProjectGroups?: SyncMetadata;
+	tickTickFocusRecords?: SyncMetadata;
 }
 
 interface SyncItemProps {
@@ -52,10 +52,10 @@ const SyncSection = () => {
 			</div>
 
 			<div className="space-y-2">
-				<SyncItem label="Focus Records" metadata={syncMetadataByType?.['focus-records-ticktick']} />
-				<SyncItem label="Tasks" metadata={syncMetadataByType?.tasks} />
-				<SyncItem label="Projects" metadata={syncMetadataByType?.projects} />
-				<SyncItem label="Project Groups" metadata={syncMetadataByType?.project_groups} />
+				<SyncItem label="Focus Records" metadata={syncMetadataByType?.tickTickFocusRecords} />
+				<SyncItem label="Tasks" metadata={syncMetadataByType?.tickTickTasks} />
+				<SyncItem label="Projects" metadata={syncMetadataByType?.tickTickProjects} />
+				<SyncItem label="Project Groups" metadata={syncMetadataByType?.tickTickProjectGroups} />
 
 				<SyncButton
 					showText={true}
