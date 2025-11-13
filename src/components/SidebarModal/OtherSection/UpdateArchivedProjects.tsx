@@ -2,10 +2,8 @@ import classNames from 'classnames';
 import { useState, useEffect } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import useHandleError from '../../../hooks/useHandleError';
-import {
-	useUpdateActiveAndCompletedTasksFromArchivedProjectsMutation,
-	useGetAllProjectsQuery,
-} from '../../../services/resources/ticktickOneApi';
+import { useSyncTasksFromArchivedProjectsMutation } from '../../../services/resources/documentsSyncApi';
+import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
 import Accordion from '../../Accordion/Accordion';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
@@ -17,8 +15,7 @@ const UpdateArchivedProjects = () => {
 
 	const handleError = useHandleError();
 
-	const [updateActiveAndCompletedTasksFromArchivedProjects] =
-		useUpdateActiveAndCompletedTasksFromArchivedProjectsMutation();
+	const [syncTasksFromArchivedProjects] = useSyncTasksFromArchivedProjectsMutation();
 
 	const handleClick = () => {
 		handleError(async () => {
@@ -27,14 +24,12 @@ const UpdateArchivedProjects = () => {
 			);
 
 			const payload = {
-				projectIds: checkedArchivedProjectIds,
+				archivedProjectIds: checkedArchivedProjectIds,
 			};
 
 			setUpdateStatus('loading');
 
-			await updateActiveAndCompletedTasksFromArchivedProjects({
-				payload,
-			});
+			await syncTasksFromArchivedProjects(payload);
 
 			// Let the UI update before doing heavy work
 			setTimeout(() => {
@@ -81,23 +76,23 @@ const UpdateArchivedProjects = () => {
 const ArchivedProjectsCheckboxList = ({ checkedArchivedProjects, setCheckedArchivedProjects }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
-	// RTK Query - TickTick 1.0 - Projects
-	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetAllProjectsQuery();
-	const { projects } = fetchedProjects || {};
+	// RTK Query - Documents - Projects
+	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
+	const { projectsTickTick } = fetchedProjects || {};
 
 	const [sortedArchivedProjects, setSortedArchivedProjects] = useState([]);
 
 	const selectedAll = sortedArchivedProjects.every((project) => checkedArchivedProjects[project.id]);
 
 	useEffect(() => {
-		if (isLoadingGetProjects) {
+		if (isLoadingGetProjects || !projectsTickTick) {
 			return;
 		}
 
-		const archivedProjects = projects.filter((project) => project.closed);
+		const archivedProjects = projectsTickTick.filter((project) => project.closed);
 		const sortedArchivedProjects = archivedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
 		setSortedArchivedProjects(sortedArchivedProjects);
-	}, [projects]);
+	}, [projectsTickTick, isLoadingGetProjects]);
 
 	const toggleSelectAllArchivedProjects = () => {
 		const newCheckedArchivedProjects = {};

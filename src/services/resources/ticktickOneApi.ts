@@ -105,14 +105,6 @@ export const tickTickOneApi = baseAPI.injectEndpoints({
 				return { tags, tagsByRawName };
 			},
 		}),
-		updateActiveAndCompletedTasksFromArchivedProjects: builder.mutation({
-			query: ({ payload }) => ({
-				url: `/ticktick/update-active-and-completed-tasks-from-archived-projects`,
-				method: 'PUT',
-				body: payload,
-			}),
-			invalidatesTags: () => ['TickTick-1.0-Task'],
-		}),
 	}),
 });
 
@@ -121,6 +113,5 @@ export const {
 	useGetAllTasksQuery,
 	useGetAllProjectsQuery,
 	useGetAllProjectGroupsQuery,
-	useGetAllTagsQuery,
-	useUpdateActiveAndCompletedTasksFromArchivedProjectsMutation
+	useGetAllTagsQuery
 } = tickTickOneApi;
