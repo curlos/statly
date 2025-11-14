@@ -9,9 +9,9 @@ export const useSyncStatusHelpers = () => {
 
 	const getStatusIcon = (key: 'projects' | 'projectGroups' | 'tasks' | 'focusRecords') => {
 		const status = syncStatus[key];
-		if (status === 'success') {
+		if (status === 'success' || status === 'idle') {
 			return { name: 'check_circle', color: '#4ade80', text: 'Complete', spin: false };
-		} else if (status === 'loading' || status === 'idle') {
+		} else if (status === 'loading') {
 			return { name: 'sync', color: themeColor, text: 'Syncing...', spin: true };
 		} else if (status === 'error') {
 			return { name: 'error', color: '#ef4444', text: 'Error', spin: false };
