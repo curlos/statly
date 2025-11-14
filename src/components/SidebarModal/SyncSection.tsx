@@ -2,6 +2,7 @@ import Icon from '../Icon';
 import { useGetSyncMetadataQuery } from '../../services/resources/documentsSyncApi';
 import { formatDistanceToNow } from 'date-fns';
 import SyncButton from '../SyncButton';
+import { useSyncStatusHelpers } from '../../hooks/useSyncStatusHelpers';
 
 interface SyncMetadata {
 	lastSyncTime: string;
@@ -17,25 +18,35 @@ interface SyncMetadataByType {
 
 interface SyncItemProps {
 	label: string;
+	syncKey: 'projects' | 'projectGroups' | 'tasks' | 'focusRecords';
 	metadata?: SyncMetadata;
 }
 
-const SyncItem = ({ label, metadata }: SyncItemProps) => {
-	const formatLastSyncTime = (lastSyncTime: string) => {
+const SyncItem = ({ label, syncKey, metadata }: SyncItemProps) => {
+	const { getStatusIcon } = useSyncStatusHelpers();
+	const statusIcon = getStatusIcon(syncKey);
+
+	const formatLastSyncTime = (lastSyncTime: string | undefined) => {
 		if (!lastSyncTime) return 'Never';
 		return formatDistanceToNow(new Date(lastSyncTime), { addSuffix: true });
 	};
 
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex items-center justify-between gap-2">
 			<div className="font-semibold">{label}</div>
-			{metadata ? (
-				<div className="text-sm text-color-gray-100">
-					Last sync: {formatLastSyncTime(metadata.lastSyncTime)}
-				</div>
-			) : (
-				<div className="text-sm text-color-gray-100">No sync data available</div>
-			)}
+			<div className="flex items-center gap-2 text-sm text-color-gray-100">
+				<span className="font-bold">Last sync:</span>
+				<span>{formatLastSyncTime(metadata?.lastSyncTime)}</span>
+				{statusIcon && (
+					<div style={{ color: statusIcon.color }}>
+						<Icon
+							name={statusIcon.name}
+							fill={1}
+							customClass={`!text-[20px] mt-[5px] mb-[-5px] ${statusIcon.spin ? 'animate-spin' : ''}`}
+						/>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
@@ -47,15 +58,15 @@ const SyncSection = () => {
 	return (
 		<div>
 			<div className="flex items-center gap-2 mb-3">
-				<h3 className="text-[20px] font-bold">Sync</h3>
+				<h3 className="text-[20px] font-bold">Sync TickTick Data</h3>
 				<Icon name="sync" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
 			</div>
 
 			<div className="space-y-2">
-				<SyncItem label="Focus Records" metadata={syncMetadataByType?.tickTickFocusRecords} />
-				<SyncItem label="Tasks" metadata={syncMetadataByType?.tickTickTasks} />
-				<SyncItem label="Projects" metadata={syncMetadataByType?.tickTickProjects} />
-				<SyncItem label="Project Groups" metadata={syncMetadataByType?.tickTickProjectGroups} />
+				<SyncItem label="Focus Records" syncKey="focusRecords" metadata={syncMetadataByType?.tickTickFocusRecords} />
+				<SyncItem label="Tasks" syncKey="tasks" metadata={syncMetadataByType?.tickTickTasks} />
+				<SyncItem label="Projects" syncKey="projects" metadata={syncMetadataByType?.tickTickProjects} />
+				<SyncItem label="Project Groups" syncKey="projectGroups" metadata={syncMetadataByType?.tickTickProjectGroups} />
 
 				<SyncButton
 					showText={true}

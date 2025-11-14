@@ -1,28 +1,21 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSyncAllMutation, useGetSyncMetadataQuery } from '../services/resources/documentsSyncApi';
-import { setShowFirstSyncModal, setIsSyncing } from '../slices/syncSlice';
+import { useGetSyncMetadataQuery } from '../services/resources/documentsSyncApi';
+import { setShowFirstSyncModal } from '../slices/syncSlice';
 import { isFirstTimeTickTickSync } from '../utils/syncHelpers';
-import { syncWithRetry } from '../utils/syncRetry';
+import { useSyncOrchestration } from './useSyncOrchestration';
 
 export const useAutoSync = () => {
 	const dispatch = useDispatch();
-	const { data: syncMetadata, isLoading: isLoadingMetadata, refetch } = useGetSyncMetadataQuery(undefined);
-	const [syncAll, { isLoading: isSyncingRTK }] = useSyncAllMutation({
-		fixedCacheKey: 'shared-sync-all',
-	});
+	const { data: syncMetadata, isLoading: isLoadingMetadata } = useGetSyncMetadataQuery(undefined);
+	const { syncTickTickData, isSyncing } = useSyncOrchestration();
 	const hasTriggeredSync = useRef(false);
-
-	// Update Redux state when RTK Query sync state changes
-	useEffect(() => {
-		dispatch(setIsSyncing(isSyncingRTK));
-	}, [isSyncingRTK, dispatch]);
 
 	useEffect(() => {
 		const hasAutoSynced = sessionStorage.getItem('automatic-sync-all');
 
 		// Only proceed if we've finished loading the sync metadata
-		if (!hasAutoSynced && !isSyncingRTK && !hasTriggeredSync.current && !isLoadingMetadata) {
+		if (!hasAutoSynced && !isSyncing && !hasTriggeredSync.current && !isLoadingMetadata) {
 			// Check if this is the first sync by checking if all core TickTick sync metadata exist
 			const needsFirstSync = isFirstTimeTickTickSync(syncMetadata);
 
@@ -34,8 +27,7 @@ export const useAutoSync = () => {
 
 			const performSync = async () => {
 				try {
-					await syncWithRetry(() => syncAll(undefined).unwrap());
-					refetch();
+					await syncTickTickData();
 					sessionStorage.setItem('automatic-sync-all', 'true');
 
 					// Hide modal after sync completes
@@ -53,5 +45,5 @@ export const useAutoSync = () => {
 
 			performSync();
 		}
-	}, [syncAll, isSyncingRTK, refetch, syncMetadata, dispatch, isLoadingMetadata]);
+	}, [syncTickTickData, isSyncing, syncMetadata, dispatch, isLoadingMetadata]);
 };

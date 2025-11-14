@@ -3,11 +3,13 @@ import Modal from './Modal';
 import Icon from '../Icon';
 import { setShowFirstSyncModal, selectShowFirstSyncModal, selectIsSyncing } from '../../slices/syncSlice';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import { useSyncStatusHelpers } from '../../hooks/useSyncStatusHelpers';
 
 const ModalFirstSync = () => {
 	const dispatch = useDispatch();
 	const isOpen = useSelector(selectShowFirstSyncModal);
 	const isSyncing = useSelector(selectIsSyncing);
+	const { getStatusIcon } = useSyncStatusHelpers();
 	const themeContext = useThemeContext() as any;
 	const chosenColorObj = themeContext?.chosenColorObj;
 	const themeColor = chosenColorObj?.hex || '#3b82f6'; // Default to blue-500 if no theme
@@ -20,10 +22,10 @@ const ModalFirstSync = () => {
 	};
 
 	const syncCategories = [
-		{ label: 'Tasks', icon: 'task_alt' },
-		{ label: 'Projects', icon: 'folder' },
-		{ label: 'Project Groups', icon: 'folder_open' },
-		{ label: 'Focus Records', icon: 'timer' },
+		{ label: 'Projects', icon: 'folder', key: 'projects' as const },
+		{ label: 'Project Groups', icon: 'folder_open', key: 'projectGroups' as const },
+		{ label: 'Tasks', icon: 'task_alt', key: 'tasks' as const },
+		{ label: 'Focus Records', icon: 'timer', key: 'focusRecords' as const },
 	];
 
 	return (
@@ -82,50 +84,32 @@ const ModalFirstSync = () => {
 					</div>
 
 					{/* Sync Categories Status */}
-					{isSyncing && (
-						<div className="w-full space-y-2 bg-color-gray-700 rounded p-4">
-							<p className="font-semibold text-white text-left mb-3">Syncing Data:</p>
-							{syncCategories.map((category) => (
+					<div className="w-full space-y-2 bg-color-gray-700 rounded p-4">
+						<p className="font-semibold text-white text-left mb-3">
+							{isSyncing ? 'Syncing Data:' : 'Synced Data:'}
+						</p>
+						{syncCategories.map((category) => {
+							const statusInfo = getStatusIcon(category.key);
+							// For idle state, show "Waiting..." text
+							const displayInfo = statusInfo || { name: 'schedule', color: '#9ca3af', text: 'Waiting...', spin: false };
+							return (
 								<div key={category.label} className="flex items-center justify-between text-sm">
 									<div className="flex items-center gap-2">
 										<Icon name={category.icon} fill={1} customClass="!text-[18px] text-color-gray-100" />
 										<span className="text-color-gray-100">{category.label}</span>
 									</div>
-									<div className="flex items-center gap-2" style={{ color: themeColor }}>
+									<div className="flex items-center gap-2" style={{ color: displayInfo.color }}>
 										<Icon
-											name="sync"
+											name={displayInfo.name}
 											fill={1}
-											customClass="!text-[16px] animate-spin"
+											customClass={`!text-[16px] ${displayInfo.spin ? 'animate-spin' : ''}`}
 										/>
-										<span className="text-xs font-medium">Syncing...</span>
+										<span className="text-xs font-medium">{displayInfo.text}</span>
 									</div>
 								</div>
-							))}
-						</div>
-					)}
-
-					{/* Completed Categories Status */}
-					{!isSyncing && (
-						<div className="w-full space-y-2 bg-color-gray-700 rounded p-4">
-							<p className="font-semibold text-white text-left mb-3">Synced Data:</p>
-							{syncCategories.map((category) => (
-								<div key={category.label} className="flex items-center justify-between text-sm">
-									<div className="flex items-center gap-2">
-										<Icon name={category.icon} fill={1} customClass="!text-[18px] text-color-gray-100" />
-										<span className="text-color-gray-100">{category.label}</span>
-									</div>
-									<div className="flex items-center gap-2 text-green-400">
-										<Icon
-											name="check_circle"
-											fill={1}
-											customClass="!text-[16px]"
-										/>
-										<span className="text-xs font-medium">Complete</span>
-									</div>
-								</div>
-							))}
-						</div>
-					)}
+							);
+						})}
+					</div>
 				</div>
 			</div>
 		</Modal>

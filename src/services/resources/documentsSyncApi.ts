@@ -10,6 +10,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
             transformResponse: (response) => {
                 return response;
             },
+            providesTags: ['SyncMetadata'],
         }),
         syncAll: builder.mutation({
             query: () => {
@@ -21,7 +22,16 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                     body: { timezone },
                 };
             },
-            invalidatesTags: ['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'DayWithCompletedTasks', 'AllTasks', 'Project', 'ProjectGroup', 'FocusMedal', 'TasksMedal', 'FocusChallenge', 'TasksChallenge', 'OverviewStats', 'FocusStats', 'TasksStats'],
+            invalidatesTags: [
+                // General tags that need mostly every group
+                'OverviewStats', 'SyncMetadata',
+                // Projects
+                'Project', 'ProjectGroup',
+                // Tasks
+                'DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats',
+                // Focus Records
+                'FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats'
+            ],
         }),
         syncTasksFromArchivedProjects: builder.mutation({
             query: (payload) => ({
@@ -31,6 +41,38 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
             }),
             invalidatesTags: ['AllTasks', 'DayWithCompletedTasks', 'TasksMedal', 'TasksChallenge', 'OverviewStats', 'TasksStats'],
         }),
+        syncTickTickProjects: builder.mutation({
+            query: () => ({
+                url: '/documents/sync/ticktick/projects',
+                method: 'POST',
+            }),
+            invalidatesTags: ['Project', 'OverviewStats', 'SyncMetadata'],
+        }),
+        syncTickTickProjectGroups: builder.mutation({
+            query: () => ({
+                url: '/documents/sync/ticktick/project-groups',
+                method: 'POST',
+            }),
+            invalidatesTags: ['ProjectGroup', 'OverviewStats', 'SyncMetadata'],
+        }),
+        syncTickTickTasks: builder.mutation({
+            query: () => ({
+                url: '/documents/sync/ticktick/tasks',
+                method: 'POST',
+            }),
+            invalidatesTags: ['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata'],
+        }),
+        syncTickTickFocusRecords: builder.mutation({
+            query: () => {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                return {
+                    url: '/documents/sync/ticktick/focus-records',
+                    method: 'POST',
+                    body: { timezone },
+                };
+            },
+            invalidatesTags: ['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'OverviewStats', 'SyncMetadata'],
+        }),
     }),
     overrideExisting: false,
 });
@@ -38,5 +80,9 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
 export const {
     useGetSyncMetadataQuery,
     useSyncAllMutation,
-    useSyncTasksFromArchivedProjectsMutation
+    useSyncTasksFromArchivedProjectsMutation,
+    useSyncTickTickProjectsMutation,
+    useSyncTickTickProjectGroupsMutation,
+    useSyncTickTickTasksMutation,
+    useSyncTickTickFocusRecordsMutation
 } = documentsSyncApi;

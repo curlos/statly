@@ -1,12 +1,13 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Icon from './Icon';
-import { useGetSyncMetadataQuery, useSyncAllMutation } from '../services/resources/documentsSyncApi';
+import { useGetSyncMetadataQuery } from '../services/resources/documentsSyncApi';
 import { formatDistanceToNow } from 'date-fns';
 import Tooltip from './Tooltip';
-import { setShowFirstSyncModal, setIsSyncing } from '../slices/syncSlice';
+import { setShowFirstSyncModal } from '../slices/syncSlice';
 import { isFirstTimeTickTickSync } from '../utils/syncHelpers';
-import { syncWithRetry } from '../utils/syncRetry';
+import { useSyncOrchestration } from '../hooks/useSyncOrchestration';
+import { useSyncStatusHelpers } from '../hooks/useSyncStatusHelpers';
 
 interface SyncButtonProps {
 	showText?: boolean;
@@ -28,15 +29,9 @@ interface SyncMetadataByType {
 
 const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: SyncButtonProps) => {
 	const dispatch = useDispatch();
-	const { data: syncMetadata, isLoading: isLoadingMetadata, refetch } = useGetSyncMetadataQuery(undefined);
-	const [syncAll, { isLoading: isSyncing }] = useSyncAllMutation({
-		fixedCacheKey: 'shared-sync-all',
-	});
-
-	// Update Redux state when RTK Query sync state changes
-	useEffect(() => {
-		dispatch(setIsSyncing(isSyncing));
-	}, [isSyncing, dispatch]);
+	const { data: syncMetadata, isLoading: isLoadingMetadata } = useGetSyncMetadataQuery(undefined);
+	const { syncTickTickData, isSyncing } = useSyncOrchestration();
+	const { getStatusIcon } = useSyncStatusHelpers();
 
 	const handleSync = useCallback(async () => {
 		if (isSyncing || isLoadingMetadata) return;
@@ -49,8 +44,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 		}
 
 		try {
-			await syncWithRetry(() => syncAll(undefined).unwrap());
-			refetch();
+			await syncTickTickData();
 
 			// Hide modal after sync completes for first-time sync
 			if (needsFirstSync) {
@@ -62,7 +56,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 			console.error('Sync failed:', error);
 			dispatch(setShowFirstSyncModal(false));
 		}
-	}, [isSyncing, isLoadingMetadata, syncAll, refetch, syncMetadata, dispatch]);
+	}, [isSyncing, isLoadingMetadata, syncTickTickData, syncMetadata, dispatch]);
 
 	const getTooltipContent = () => {
 		if (!syncMetadata) return 'No sync data available';
@@ -73,12 +67,36 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 			return formatDistanceToNow(new Date(metadata.lastSyncTime), { addSuffix: true });
 		};
 
+		const syncItems = [
+			{ label: 'Focus Records', key: 'focusRecords' as const, metadata: syncMetadataByType?.tickTickFocusRecords },
+			{ label: 'Tasks', key: 'tasks' as const, metadata: syncMetadataByType?.tickTickTasks },
+			{ label: 'Projects', key: 'projects' as const, metadata: syncMetadataByType?.tickTickProjects },
+			{ label: 'Project Groups', key: 'projectGroups' as const, metadata: syncMetadataByType?.tickTickProjectGroups }
+		];
+
 		return (
-			<div className="space-y-1">
-				<div><span className="font-bold">Focus Records:</span> {formatSync(syncMetadataByType?.tickTickFocusRecords)}</div>
-				<div><span className="font-bold">Tasks:</span> {formatSync(syncMetadataByType?.tickTickTasks)}</div>
-				<div><span className="font-bold">Projects:</span> {formatSync(syncMetadataByType?.tickTickProjects)}</div>
-				<div><span className="font-bold">Project Groups:</span> {formatSync(syncMetadataByType?.tickTickProjectGroups)}</div>
+			<div className="space-y-2 text-[14px]">
+				<div className="font-bold text-[16px] mb-2">Sync TickTick Data</div>
+				{syncItems.map((item) => {
+					const statusIcon = getStatusIcon(item.key);
+					return (
+						<div key={item.key} className="flex items-center justify-between gap-3">
+							<span className="font-bold">{item.label}:</span>
+							<div className="flex items-center gap-2">
+								<span className="text-color-gray-50">{formatSync(item.metadata)}</span>
+								{statusIcon && (
+									<div style={{ color: statusIcon.color }}>
+										<Icon
+											name={statusIcon.name}
+											fill={1}
+											customClass={`!text-[20px] mt-[5px] mb-[-5px] ${statusIcon.spin ? 'animate-spin' : ''}`}
+										/>
+									</div>
+								)}
+							</div>
+						</div>
+					);
+				})}
 			</div>
 		);
 	};
