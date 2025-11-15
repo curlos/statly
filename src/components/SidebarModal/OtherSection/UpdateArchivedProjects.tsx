@@ -63,7 +63,7 @@ const UpdateArchivedProjects = () => {
 					/>
 				)}
 
-				<div>Update Active and Completed Tasks From Archived Projects (TickTick)</div>
+				<div>Update Active and Completed Tasks from Archived Projects (TickTick)</div>
 			</div>
 
 			<div className="mt-4 pl-14">

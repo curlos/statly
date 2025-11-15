@@ -60,7 +60,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 	const pages = getPages();
 
 	return (
-		<div className="flex items-center sm:space-x-2">
+		<div className="flex items-center space-x-1 sm:space-x-2">
 			<button
 				className={classNames(
 					'p-2 rounded',

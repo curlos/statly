@@ -6,7 +6,7 @@ const FocusRecordSkeleton = ({ isLastItem = false }) => {
 			isLastItem={isLastItem}
 			iconName="timer"
 			headerHeight="h-[24px]"
-			headerWidth="w-[300px]"
+			headerWidth="w-[250px]"
 			contentLines={[
 				{ height: 'h-[28px]', width: 'w-[70%]' },
 				{ height: 'h-[20px]', width: 'w-[90%]' },

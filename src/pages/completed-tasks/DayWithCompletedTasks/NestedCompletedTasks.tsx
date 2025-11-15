@@ -97,7 +97,7 @@ const NestedCompletedTasks = ({
 							</li>
 
 							{taskProject && (
-								<li className="text-color-gray-25 hover:underline hover:text-blue-500" onClick={() => {
+								<li className={classNames("text-color-gray-25 hover:underline hover:text-blue-500", parentTask.parentId && "hidden sm:block")} onClick={() => {
 									updateQueryParams({
 										[projectQueryParam]: taskProject?.id,
 										'task-id': '',
@@ -118,11 +118,9 @@ const NestedCompletedTasks = ({
 				>
 					{directCompletedSubtasks?.length > 0 && renderDirectCompletedSubtasks(directCompletedSubtasks)}
 
-					<ul className="pl-6">
+					<ul className="pl-2 sm:pl-6">
 						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
 							parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId, index) => {
-								const task = ancestorTasksById[taskId]
-
 								if (
 									parentDirectChildrenTaskIdsByParentId[taskId] &&
 									parentDirectChildrenTaskIdsByParentId[taskId].length > 0

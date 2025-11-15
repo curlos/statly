@@ -5,7 +5,7 @@ import CompletedTasksCurveCard from '../OverviewSection/CompletedTasksCurveCard'
 const TaskSection = () => {
 	return (
 		<div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-3">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
 				<OverviewCard />
 				<CompletedTasksCurveCard />
 			</div>

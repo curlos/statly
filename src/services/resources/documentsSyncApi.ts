@@ -39,7 +39,12 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 method: 'POST',
                 body: payload,
             }),
-            invalidatesTags: ['AllTasks', 'DayWithCompletedTasks', 'TasksMedal', 'TasksChallenge', 'OverviewStats', 'TasksStats'],
+            invalidatesTags: [
+                // Tasks
+                'AllTasks', 'DayWithCompletedTasks', 'TasksMedal', 'TasksChallenge', 'OverviewStats', 'TasksStats',
+                // The main reason this needs to be here is that focus records have a "completedTasks" array and thus one of these archived project's tasks could show up here so we need to be on top of that.
+                'FocusRecord'
+            ],
         }),
         syncTickTickProjects: builder.mutation({
             query: () => ({
