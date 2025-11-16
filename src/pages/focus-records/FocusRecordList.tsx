@@ -3,6 +3,7 @@ import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSideba
 import FocusRecord from './FocusRecord';
 import FocusRecordSkeleton from './FocusRecordSkeleton';
 import { useUserSettingsContext } from './useUserSettingsContext';
+import Icon from '../../components/Icon';
 
 const FocusRecordList = ({
 	isFetching,
@@ -29,7 +30,11 @@ const FocusRecordList = ({
 				<>
 					<div>
 						{focusRecords.length === 0 ? (
-							<div className="container">No Focus Records</div>
+							<div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+								<Icon name="timer" customClass="!text-[40px]" />
+								<p className="text-lg font-bold">No Focus Records</p>
+								<p className="text-sm mt-1">Start a focus session to see your records here</p>
+							</div>
 						) : (
 							<div className="space-y-3">
 								{focusRecords.map((focusRecord, index) => {

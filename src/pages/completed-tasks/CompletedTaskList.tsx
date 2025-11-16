@@ -2,6 +2,7 @@ import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSideba
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import DayWithCompletedTasks from './DayWithCompletedTasks/DayWithCompletedTasks';
 import DayWithCompletedTasksSkeleton from './DayWithCompletedTasks/DayWithCompletedTasksSkeleton';
+import Icon from '../../components/Icon';
 
 const CompletedTaskList = ({
 	daysWithCompletedTasks,
@@ -29,7 +30,11 @@ const CompletedTaskList = ({
 				<>
 					<div>
 						{daysWithCompletedTasks.length === 0 ? (
-							<div>No Completed Tasks</div>
+							<div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+								<Icon name="task_alt" customClass="!text-[40px]" />
+								<p className="text-lg font-bold">No Completed Tasks</p>
+								<p className="text-sm mt-1">Complete some tasks to see them here</p>
+							</div>
 						) : (
 							<div className="space-y-3">
 								{daysWithCompletedTasks.map((dateWithCompletedTasks, index) => {
