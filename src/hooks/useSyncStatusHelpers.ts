@@ -17,7 +17,7 @@ export const useSyncStatusHelpers = () => {
 			return { name: 'error', color: '#ef4444', text: 'Error', spin: false };
 		}
 
-		return null
+		return { name: 'mode_standby', color: themeColor, text: 'Idle', spin: false }
 	};
 
 	return { getStatusIcon };

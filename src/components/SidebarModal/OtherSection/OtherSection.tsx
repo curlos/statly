@@ -1,6 +1,6 @@
 import Icon from '../../Icon';
 import BackupData from './BackupData';
-// import BackupData from './BackupData';
+import ImportData from './ImportData';
 import UpdateArchivedProjects from './UpdateArchivedProjects';
 
 const OtherSection = () => {
@@ -13,6 +13,7 @@ const OtherSection = () => {
 
 			<UpdateArchivedProjects />
 			<BackupData />
+			<ImportData />
 		</div>
 	);
 };

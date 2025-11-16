@@ -199,13 +199,10 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 };
 
 const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
-	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const taskIdFromUrl = searchParams.get('task-id');
+	const { updateQueryParams } = useSearchParamsContext();
 	const {
 		focusRecordsPageSettings: {
-			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 			showTaskAncestors,
-			taskIdIncludeFocusRecordsFromSubtasks,
 		},
 	} = useUserSettingsContext();
 
@@ -213,24 +210,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 	const headerStyling =
 		'text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline';
 
-	const updateTaskIdQueryParam = (task?: object) => {
-		let taskId = '';
-
-		const focusApp = getFocusRecordFocusApp(focusRecord);
-		if (focusApp === 'TickTick') {
-			if (!task) {
-				return;
-			}
-
-			taskId = task.taskId || task.id;
-		} else {
-			taskId = getFocusRecordProperty(focusRecord, 'taskId');
-		}
-
-		if (!taskId) {
-			return;
-		}
-
+	const updateTaskIdQueryParam = (taskId?: string) => {
 		updateQueryParams({
 			'task-id': taskId,
 			'sort-by': '',
@@ -242,109 +222,44 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		});
 	};
 
-	const getTickTickFocusRecordTask = () => {
-		const getTaskTitle = (task, dateStr) => {
-			if (showTaskAncestors) {
-				return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
-			}
+	const getTaskTitle = (task, dateStr) => {
+		if (showTaskAncestors) {
+			return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
+		}
 
-			const taskId = task?.taskId || task.id;
+		const taskId = task?.taskId || task.id;
 
-			return (
-				<h3 className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
-					<span onClick={() => updateTaskIdQueryParam(task)} className="hover:text-blue-500 hover:underline">
-						{task?.title}
-					</span>
-					<TaskProjectName {...{ taskId: taskId }} />
-				</h3>
-			);
-		};
-
-		return focusRecord.tasks.map((task, index) => {
-			const { startTime, endTime, taskId } = task;
-			// const isNotDirectTask = taskId !== taskIdFromUrl;
-
-			// TODO: Come back to thsi and move the logic to the backend
-			// if (filterOutUnrelatedTasksWhenTaskIdIsApplied && taskIdFromUrl) {
-			// 	if (!taskId) {
-			// 		return null;
-			// 	}
-
-			// 	if (showTaskAncestors && taskIdIncludeFocusRecordsFromSubtasks) {
-			// 		if (!ancestorTasksById) {
-			// 			return null;
-			// 		}
-
-			// 		const foundMatchingTaskOrAncestor = findMatchingTaskOrAncestor(
-			// 			task,
-			// 			taskIdFromUrl,
-			// 			ancestorTasksById
-			// 		);
-
-			// 		if (!foundMatchingTaskOrAncestor) {
-			// 			return null;
-			// 		}
-			// 	} else if (isNotDirectTask) {
-			// 		return null;
-			// 	}
-			// }
-
-			const startTimeObj = formatDateTime(startTime);
-			const endTimeObj = formatDateTime(endTime);
-
-			return (
-				<div key={`${taskId} - ${startTime} - ${endTime} - ${index}`} className={headerWrapperStyling}>
-					{getTaskTitle(
-						task,
-						`${startTimeObj.day + ' ' + startTimeObj.time} - ${endTimeObj.day + ' ' + endTimeObj.time}`
-					)}
-
-					{showSubtaskTime && (
-						<div className="sm:ml-3 text-white min-w-[150px] flex justify-end md:mt-[6px]">
-							{startTimeObj.time} - {endTimeObj.time}
-						</div>
-					)}
-				</div>
-			);
-		});
+		return (
+			<h3 className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
+				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline">
+					{task?.title}
+				</span>
+				<TaskProjectName {...{ taskId: taskId }} />
+			</h3>
+		);
 	};
 
-	const getOtherAppsFocusRecordTask = () => {
-		const startTime = getFocusRecordProperty(focusRecord, 'startTime');
-		const endTime = getFocusRecordProperty(focusRecord, 'endTime');
+	return focusRecord.tasks.map((task, index) => {
+		const { startTime, endTime, taskId } = task;
 
 		const startTimeObj = formatDateTime(startTime);
 		const endTimeObj = formatDateTime(endTime);
 
-		const focusRecordTitle = getFocusRecordProperty(focusRecord, 'displayTitle');
-
 		return (
-			<div key={`${startTimeObj.time} - ${endTimeObj.time}`} className={headerWrapperStyling}>
-				<h3 onClick={() => updateTaskIdQueryParam()} className={headerStyling}>
-					{focusRecordTitle}
-				</h3>
+			<div key={`${taskId} - ${startTime} - ${endTime} - ${index}`} className={headerWrapperStyling}>
+				{getTaskTitle(
+					task,
+					`${startTimeObj.day + ' ' + startTimeObj.time} - ${endTimeObj.day + ' ' + endTimeObj.time}`
+				)}
 
 				{showSubtaskTime && (
-					<div className="sm:ml-3 text-white">
+					<div className="sm:ml-3 text-white min-w-[150px] flex justify-end md:mt-[6px]">
 						{startTimeObj.time} - {endTimeObj.time}
 					</div>
 				)}
 			</div>
 		);
-	};
-
-	const getFocusRecordTask = () => {
-		const focusApp = getFocusRecordFocusApp(focusRecord);
-
-		switch (focusApp) {
-			case 'TickTick':
-				return getTickTickFocusRecordTask();
-			default:
-				return getOtherAppsFocusRecordTask();
-		}
-	};
-
-	return getFocusRecordTask();
+	});
 };
 
 const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling, dateStr }) => {
@@ -352,7 +267,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 
 	if (isLoading) {
 		return (
-			<h3 onClick={() => updateTaskIdQueryParam(task)} className={headerStyling}>
+			<h3 onClick={() => updateTaskIdQueryParam(task.id || task.taskId)} className={headerStyling}>
 				{task?.title}
 			</h3>
 		);
@@ -370,7 +285,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 			<span
 				className="hover:underline font-bold hover:text-blue-500"
 				onClick={() => {
-					updateTaskIdQueryParam(parentTask);
+					updateTaskIdQueryParam(parentTask.id || task.taskId);
 				}}
 			>
 				{parentTaskTitle}
@@ -381,14 +296,14 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 					-{' '}
 					{parentTaskBreadcrumbs.map((taskId, index) => {
 						const taskObj = ancestorTasksById[taskId];
-						const title = taskObj.title || taskObj.content;
+						const title = taskObj?.title || taskObj?.content || taskId;
 
 						return (
-							<span key={`breadcrumbs-${taskObj.id}-${index}-${dateStr}`}>
+							<span key={`breadcrumbs-${taskObj?.id || taskId}-${index}-${dateStr}`}>
 								<span
 									className="hover:text-blue-500 hover:underline"
 									onClick={() => {
-										updateTaskIdQueryParam(taskObj);
+										updateTaskIdQueryParam(taskObj?.id || taskId);
 									}}
 								>
 									{title}
@@ -400,7 +315,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
 				</span>
 			)}
 
-			<TaskProjectName {...{ taskId: parentTask?.id || task.taskId, task }} />
+			<TaskProjectName {...{ taskId: (parentTask?.id || task.taskId), task }} />
 		</div>
 	);
 };
@@ -447,15 +362,20 @@ const TaskProjectName = ({ taskId, task }) => {
 	if (!taskProject) {
 		// Try to use the source mapping as fallback
 		const mappedAppName = fullTask?.projectId && sourceToAppName[fullTask.projectId];
-		if (!mappedAppName) {
-			return null;
+
+		if (mappedAppName) {
+			taskProjectName = mappedAppName;
+			isMappedFocusApp = true;
+		} else if (task?.projectName) {
+			taskProjectName = task?.projectName
+		} else {
+			return null
 		}
-		taskProjectName = mappedAppName;
-		isMappedFocusApp = true;
 	}
 
 	// Check if this project is a Session category
-	const isSessionProject = projectsSessionById && taskProject?.id && projectsSessionById[taskProject.id];
+	// TODO: If there are no projects, this will be mapped incorrectly. Frankly, I probably want to get rid of this separation between categories and projects anyways. So, merge these two together. Probably do the same thing for Todoist. This isn't usually an issue but if I sync only some documents (like only Focus Records and no Tasks or Projects, it becomes an issue due to the incomplete data).
+	const isSessionProject = (projectsSessionById && taskProject?.id && projectsSessionById[taskProject.id]);
 	const projectQueryParam = isSessionProject ? 'categories' : 'projects';
 
 	// Shared query params to reset when filtering
@@ -485,7 +405,7 @@ const TaskProjectName = ({ taskId, task }) => {
 					} else {
 						// Filter by project/category
 						updateQueryParams({
-							[projectQueryParam]: taskProject?.id,
+							[projectQueryParam]: taskProject?.id || task?.projectId,
 							...resetQueryParams,
 						});
 					}

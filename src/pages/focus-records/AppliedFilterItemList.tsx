@@ -106,7 +106,7 @@ const AppliedFilterItemList = () => {
 		const namesArr = [];
 
 		commaSeparatedArr.forEach((key) => {
-			const name = obj[key][entityPropToGetValue];
+			const name = obj?.[key]?.[entityPropToGetValue] || key;
 			namesArr.push(name);
 		});
 
