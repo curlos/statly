@@ -13,6 +13,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useGetFocusChallengesQuery } from '../../services/resources/documentsFocusRecordsApi';
 import { useGetTasksChallengesQuery } from '../../services/resources/documentsTasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
+import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -63,7 +64,14 @@ const Page = () => {
 			<div ref={topHeaderRef}>
 				<Navbar />
 				<div className="container flex justify-between items-center">
-					<div className="text-[28px] font-bold">Challenges</div>
+					<div className="flex items-center gap-4">
+						<div className="text-[28px] font-bold">Challenges</div>
+
+						<div className="hidden lg:block">
+							<AppliedFilterItemList />
+						</div>
+					</div>
+
 					<Icon
 						name="settings"
 						customClass={'!text-[30px] text-color-gray-100 cursor-pointer mr-[15px]'}

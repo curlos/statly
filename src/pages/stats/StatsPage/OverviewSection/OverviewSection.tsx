@@ -1,7 +1,5 @@
 import TodaysActionReport from './TodaysActionReport';
 import OverviewCard from './OverviewCard';
-import CompletedTasksCurveCard from './CompletedTasksCurveCard';
-import FocusRecordsCurveCard from './FocusRecordsCurveCard';
 import { useGetOverviewStatsQuery } from '../../../../services/resources/documentsStatsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';

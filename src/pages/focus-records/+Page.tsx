@@ -50,9 +50,6 @@ const FocusRecordsPage = () => {
 	}, [currentPageFromUrl]);
 
 	const getFilterBarHeaderContent = () => {
-		// TODO: Will need this in a moment.
-		// const filterByTaskId = filterOutUnrelatedTasksWhenTaskIdIsApplied ? taskIdFromUrl : false;
-
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
 				Focus Records {!isLoading && `(${total?.toLocaleString()})`}
