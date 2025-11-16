@@ -210,19 +210,21 @@ const ProjectsTickTickSection = ({ page }) => {
 						})}
 
 						{/* Archived Projects */}
-						<ProjectGroupWithProjects
-							{...{
-								isArchivedGroup: true,
-								archivedProjects: sortedArchivedProjects,
-								chosenColorObj,
-								nextLightestColorObj,
-								projectsFromUrlById,
-								updateQueryParams,
-								page,
-								filteredProjects,
-								handleCheckboxClick,
-							}}
-						/>
+						{sortedArchivedProjects?.length > 0 && (
+							<ProjectGroupWithProjects
+								{...{
+									isArchivedGroup: true,
+									archivedProjects: sortedArchivedProjects,
+									chosenColorObj,
+									nextLightestColorObj,
+									projectsFromUrlById,
+									updateQueryParams,
+									page,
+									filteredProjects,
+									handleCheckboxClick,
+								}}
+							/>
+						)}
 					</div>
 				</div>
 			</Accordion>
