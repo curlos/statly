@@ -39,7 +39,6 @@ const ImportData = () => {
 
 			// File count limits
 			const MAX_FILES = 50;
-			const SOFT_CAP_FILES = 10;
 
 			// Hard cap: Block imports over 50 files
 			if (jsonFiles.length > MAX_FILES) {
@@ -47,16 +46,6 @@ const ImportData = () => {
 					`You cannot import more than ${MAX_FILES} files at once. You selected ${jsonFiles.length} files.\n\nPlease split your import into multiple uploads.`
 				);
 				return;
-			}
-
-			// Soft cap: Warn for 10+ files
-			if (jsonFiles.length >= SOFT_CAP_FILES) {
-				const confirmed = confirm(
-					`You're about to import ${jsonFiles.length} files. This may take a few minutes.\n\nDo you want to continue?`
-				);
-				if (!confirmed) {
-					return;
-				}
 			}
 
 			// Batch files by total size (~4MB limit per request)
