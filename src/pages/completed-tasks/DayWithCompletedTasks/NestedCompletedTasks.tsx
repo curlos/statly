@@ -96,10 +96,10 @@ const NestedCompletedTasks = ({
 								{parentTask.title}
 							</li>
 
-							{taskProject && (
+							{(taskProject || parentTask?.projectId) && (
 								<li className={classNames("text-color-gray-25 hover:underline hover:text-blue-500", parentTask.parentId && "hidden sm:block")} onClick={() => {
 									updateQueryParams({
-										[projectQueryParam]: taskProject?.id,
+										[projectQueryParam]: parentTask?.projectId,
 										'task-id': '',
 										'sort-by': '',
 										search: '',
@@ -108,7 +108,7 @@ const NestedCompletedTasks = ({
 										page: '',
 									});
 								}}>
-									({taskProject.name})
+									({taskProject?.name || parentTask?.projectId})
 								</li>
 							)}
 						</div>

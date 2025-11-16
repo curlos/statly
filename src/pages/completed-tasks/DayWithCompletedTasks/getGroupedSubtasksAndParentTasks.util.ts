@@ -2,7 +2,7 @@
  * @description // Go through all of the Completed Tasks for the day and group them up together by parent. So, all of the tasks with the same parent will be in the same array like "{ "5391586608": [{...}, {...}, ...] }". Also, get the "parentTasks" which are the tasks that have no parent.
  * @returns {Object}
  */
-export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay }) => {
+export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancestorTasksById }) => {
 	const groupedSubtasksByParentTask = {};
 	const parentTasksArr = [];
 	const parentTasksObj = {};
@@ -14,7 +14,8 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay }) => {
 
 		const parentId = task.parentId;
 
-		if (parentId) {
+		// If a task has a parentId and that parentId also has a full task in the DB, then we can group the task under the parent. "ancestorTasksById[parentId]" being false only happens when the parent task is not in the DB which is usually only going to happen if the user only partially imported some tasks but left out some others.
+		if (parentId && ancestorTasksById[parentId]) {
 			if (!groupedSubtasksByParentTask[parentId]) {
 				groupedSubtasksByParentTask[parentId] = [];
 			}
@@ -62,10 +63,16 @@ export const getTasksWithParentIdAndNoParent = ({
 		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length > 0) {
 			// Go through each "taskId" and if it has a parentId, then map it to that parentId, else map it to null.
 			groupTaskBreadcrumbs.forEach((taskId) => {
+				// If the task is not in the DB, then do not store in the grouped tasks as that'll cause trouble later on.
+				if (!ancestorTasksById[taskId]) {
+					return
+				}
+
 				const breadcrumbTask = taskId === task.id ? task : ancestorTasksById[taskId];
 
 				if (breadcrumbTask.parentId) {
-					tasksWithParentId[breadcrumbTask.id] = breadcrumbTask.parentId;
+					// If the task has a parent, that parent also has to be in the DB to properly use it for grouping later on (like putting it under the parent task). If the parent task isn't in the DB, then this task will be treated as a task with no parent.
+					tasksWithParentId[breadcrumbTask.id] = ancestorTasksById[breadcrumbTask.parentId] ? breadcrumbTask.parentId : null;
 				} else {
 					tasksWithParentId[breadcrumbTask.id] = null;
 				}

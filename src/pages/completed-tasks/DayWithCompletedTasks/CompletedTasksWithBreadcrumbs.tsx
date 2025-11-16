@@ -46,14 +46,14 @@ const CompletedTasksWithBreadcrumbs = ({
 									-{' '}
 									{parentTaskBreadcrumbs.map((taskId, index) => {
 										const taskObj = ancestorTasksById[taskId];
-										const title = taskObj.title;
+										const title = taskObj?.title || taskId;
 
 										return (
-											<span key={`breadcrumbs-${dateStr}-${taskObj.id}-${index}`}>
+											<span key={`breadcrumbs-${dateStr}-${taskId}-${index}`}>
 												<span
 													className="hover:text-blue-500 hover:underline"
 													onClick={() => {
-														updateTaskIdQueryParam(taskObj.id);
+														updateTaskIdQueryParam(taskId);
 													}}
 												>
 													{title}
@@ -65,16 +65,16 @@ const CompletedTasksWithBreadcrumbs = ({
 								</span>
 							)}
 
-							{taskProject && (
+							{(taskProject || parentTask?.projectId) && (
 								<span className="text-color-gray-25">
 									{' - '}
 								</span>
 							)}
 
-							{taskProject && (
+							{(taskProject || parentTask?.projectId) && (
 								<span className="text-color-gray-25 hover:underline hover:text-blue-500" onClick={() => {
 									updateQueryParams({
-										[projectQueryParam]: taskProject?.id,
+										[projectQueryParam]: taskProject?.id || parentTask?.projectId,
 										'task-id': '',
 										'sort-by': '',
 										search: '',
@@ -83,7 +83,7 @@ const CompletedTasksWithBreadcrumbs = ({
 										page: '',
 									});
 								}}>
-									({taskProject.name})
+									({taskProject?.name || parentTask?.projectId})
 								</span>
 							)}
 						</div>

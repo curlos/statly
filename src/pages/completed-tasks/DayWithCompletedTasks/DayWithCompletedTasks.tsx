@@ -36,6 +36,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 
 	const { groupedSubtasksByParentTask } = getGroupedSubtasksAndParentTasks({
 		completedTasksForDay,
+		ancestorTasksById
 	});
 
 	const { tasksWithParentId, tasksWithNoParent } = getTasksWithParentIdAndNoParent({

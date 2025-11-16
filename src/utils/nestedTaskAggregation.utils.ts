@@ -217,6 +217,7 @@ export function aggregateNestedTasksByParent(
 	// Group subtasks by their parent task.
 	const { groupedSubtasksByParentTask } = getGroupedSubtasksAndParentTasks({
 		completedTasksForDay: tasksFromTickTickOrTodoist,
+		ancestorTasksById
 	});
 
 	// Map parent IDs to their direct children
