@@ -44,7 +44,7 @@ const Page = () => {
 
 	return (
 		<div className="max-w-screen min-h-screen bg-color-gray-700">
-			<Navbar />
+			<Navbar page="completed-tasks-page" />
 
 			<FilterBar
 				{...{

@@ -5,13 +5,7 @@ import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
-import Spinner from '../Loaders/Spinner';
-import classNames from 'classnames';
-import { useState } from 'react';
-import { useThemeContext } from '../../contexts/useThemeContext';
-// import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 import MedalImage from './MedalImage';
-import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -21,7 +15,6 @@ const OtherSectionFocusRecords = () => {
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
 			maxDaysPerPage,
-			onlyExportTasksWithNoParent,
 		},
 		focusRecordsPageSettings: { showMedals, selectedMedalImage },
 		handleUpdateUserSettingForPage,
@@ -44,15 +37,21 @@ const OtherSectionFocusRecords = () => {
 			<Accordion
 				title={
 					<div className="flex items-center gap-1 mb-3">
-						<h3 className="text-[16px] font-bold">Other</h3>
+						<h3 className="text-[16px] font-bold">Page Settings</h3>
 						<Icon
-							name="other_admission"
+							name="settings"
 							fill={0}
 							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 						/>
 					</div>
 				}
 				openByDefault={true}
+				setIsOpenForParent={undefined}
+				isChildDropdownOpen={false}
+				showArrowNextToText={undefined}
+				customClasses={undefined}
+				customToggleOpen={undefined}
+				preventOpen={false}
 			>
 				{!isLoadingGetUserSettings && (
 					<>
@@ -116,55 +115,6 @@ const OtherSectionFocusRecords = () => {
 							</div>
 						)}
 
-						{/* Copy Completed Tasks To Clipboard */}
-						<CompletedTasksExporter
-							{...{
-								text: 'Copy Completed Tasks To Clipboard',
-								icon: 'content_copy',
-								action: 'handleCopyToClipboard',
-							}}
-						/>
-
-						{/* Download Completed Tasks (Single File) */}
-						<CompletedTasksExporter
-							{...{
-								text: 'Export Completed Tasks',
-								icon: 'download',
-								action: 'downloadSingleMarkdownFile',
-							}}
-						/>
-
-						{/* Export Completed Tasks By Project */}
-						<CompletedTasksExporter
-							{...{
-								text: 'Export Completed Tasks By Project',
-								icon: 'download',
-								action: 'downloadZipFolderOfGroupedCompletedTasks',
-								params: ['project'],
-							}}
-						/>
-
-						{/* Export Completed Tasks by Parent Task */}
-						<CompletedTasksExporter
-							{...{
-								text: 'Export Completed Tasks by Parent Task',
-								icon: 'download',
-								action: 'downloadZipFolderOfGroupedCompletedTasks',
-								params: ['task'],
-							}}
-						/>
-
-						<div className="pl-9">
-							<CheckboxOther
-								{...{
-									name: 'Only Export Tasks With No Parent',
-									showValue: onlyExportTasksWithNoParent,
-									handleCheckboxClick: () =>
-										handleCheckboxClick(onlyExportTasksWithNoParent, 'onlyExportTasksWithNoParent'),
-								}}
-							/>
-						</div>
-
 						{/* Input - Max Days Per Page */}
 						<InputNumUserSettings
 							{...{
@@ -181,64 +131,6 @@ const OtherSectionFocusRecords = () => {
 					</>
 				)}
 			</Accordion>
-		</div>
-	);
-};
-
-const CompletedTasksExporter = ({ text, icon, action, params = [] }) => {
-	const { chosenColorObj } = useThemeContext();
-
-	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
-
-	const actionFunctions = {
-		handleCopyToClipboard: handleCopyToClipboard,
-		downloadSingleMarkdownFile: downloadSingleMarkdownFile,
-		downloadZipFolderOfGroupedCompletedTasks: downloadZipFolderOfGroupedCompletedTasks,
-	};
-
-	return (
-		<div
-			className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
-			onClick={() => {
-				setCopiedToClipboardStatus('copying');
-
-				// Let the UI update before doing heavy work
-				setTimeout(async () => {
-					const actionFunction = actionFunctions[action];
-					const result = await actionFunction(...params);
-
-					// Handle clipboard-specific errors
-					if (action === 'handleCopyToClipboard' && result && !result.success) {
-						setCopiedToClipboardStatus('error');
-						console.error('Copy to clipboard failed:', result.error);
-					} else {
-						setCopiedToClipboardStatus('done');
-					}
-
-					setTimeout(() => {
-						setCopiedToClipboardStatus('none');
-					}, 2000);
-				}, 0);
-			}}
-		>
-			{copiedToClipboardStatus === 'copying' ? (
-				<Spinner />
-			) : (
-				<Icon
-					name={copiedToClipboardStatus === 'none' ? icon : copiedToClipboardStatus === 'error' ? 'error' : 'check'}
-					fill={0}
-					customClass={classNames(
-						'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
-						copiedToClipboardStatus === 'none'
-							? `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
-							: copiedToClipboardStatus === 'error'
-								? 'text-red-500'
-								: 'text-emerald-500'
-					)}
-				/>
-			)}
-			<div>{text}</div>
 		</div>
 	);
 };

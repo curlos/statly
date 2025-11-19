@@ -36,6 +36,7 @@ const AppliedFilterItemList = () => {
 	// Session (Focus Records Page)
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const crossesMidnightFromUrl = searchParams.get('crosses-midnight') || '';
+	const emotionsFromUrl = searchParams.get('emotions') || '';
 
 	// TickTick & Todoist (Completed Tasks Page)
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
@@ -209,6 +210,14 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	const emotionsFilter = {
+		name: 'Emotions',
+		value: emotionsFromUrl ? emotionsFromUrl.split(',').map(e => e.toUpperCase()).join(', ') : '',
+		handleRemove: () => {
+			updateQueryParams({ emotions: '', page: '' });
+		},
+	};
+
 	const allFilters = [
 		taskIdFilter,
 		dateRangeFilter,
@@ -221,11 +230,12 @@ const AppliedFilterItemList = () => {
 		toDoListAppFilter,
 		projectsTodoistFilter,
 		crossesMidnightFilter,
+		emotionsFilter,
 	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
-		const { name, value } = focusRecordsFilter;
+		const { value } = focusRecordsFilter;
 
 		const isDefaultFilter = !value || value === 'Newest' || firstDayToTodayString === value;
 		return !isDefaultFilter;

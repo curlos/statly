@@ -7,10 +7,11 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import { getFormattedDuration, getMedalImageClasses } from '../../utils/focus-apps/helpers.utils';
-import { getFocusRecordFocusApp, getFocusRecordProperty } from '../../utils/focus-apps/multiFocusApps.utils';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../medals/medalsLinks';
 import { useFocusRecordsQuery } from './useFocusRecordsQuery';
 import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
+import EmotionTag from '../../components/EmotionTag';
+import { useHandleEmotionTagClick } from './useHandleEmotionTagClick';
 
 const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false }) => {
 	const { updateQueryParams } = useSearchParamsContext();
@@ -30,12 +31,16 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 			selectedMedalImage,
 			medalImageSizePx,
 			showMedalGlow,
+			showFocusRecordEmotions,
 		},
 	} = useUserSettingsContext();
 
 	// Get completed tasks from API response
 	const completedTasksDuringFocusSession = focusRecord.completedTasks || [];
 	const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
+
+	// Handle emotion tag click
+	const { handleEmotionTagClick } = useHandleEmotionTagClick();
 	const isBattlefieldOneOrThreeMedal =
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
 	const urlRegex = /(https?:\/\/[^\s)]+)/g; // matches http/https URLs
@@ -192,6 +197,22 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 							</ul>
 						</>
 					)}
+
+					{/* Emotion Tags */}
+					{showFocusRecordEmotions && focusRecord.emotions && focusRecord.emotions.length > 0 && (
+						<div className="mt-3">
+							<div className="flex flex-wrap gap-2">
+								{focusRecord.emotions.map((emotionObj: any, index: number) => (
+									<EmotionTag
+										key={`${emotionObj.emotion}-${index}`}
+										emotionObj={emotionObj}
+										onClick={() => handleEmotionTagClick(emotionObj.emotion)}
+										showScore={true}
+									/>
+								))}
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
@@ -230,8 +251,8 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		const taskId = task?.taskId || task.id;
 
 		return (
-			<h3 className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
-				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline">
+			<h3 className="text-[18px] md:text-[22px] truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
+				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline font-bold">
 					{task?.title}
 				</span>
 				<TaskProjectName {...{ taskId: taskId }} />

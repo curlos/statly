@@ -20,6 +20,7 @@ export const useSharedQueryParams = () => {
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps') || '';
 	const focusAppsFromUrl = searchParams.get('focus-apps') || '';
+	const emotionsFromUrl = searchParams.get('emotions') || '';
 	const taskIdFromUrl = searchParams.get('task-id') || '';
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const currentPageFromUrl = searchParams.get('page') || 1;
@@ -36,6 +37,7 @@ export const useSharedQueryParams = () => {
 			categoriesFromUrl,
 			toDoListAppsFromUrl,
 			focusAppsFromUrl,
+			emotionsFromUrl,
 			taskIdFromUrl,
 			sortBy,
 			currentPageFromUrl,
@@ -56,6 +58,7 @@ export const useSharedQueryParams = () => {
 			'search': searchTextFromUrl,
 			'focus-apps': focusAppsFromUrl,
 			'to-do-list-apps': toDoListAppsFromUrl,
+			'emotions': emotionsFromUrl,
 			'sort-by': sortBy,
 			'crosses-midnight': crossesMidnight
 		}

@@ -1,0 +1,78 @@
+import { motion } from 'framer-motion';
+import Icon from '../Icon';
+import classNames from 'classnames';
+import OtherSectionFocusRecords from '../FilterSidebar/OtherSectionFocusRecords';
+import OtherSectionCompletedTasks from '../FilterSidebar/OtherSectionCompletedTasks';
+import ExportBackupSectionFocusRecords from '../FilterSidebar/ExportBackupSectionFocusRecords';
+import ExportBackupSectionCompletedTasks from '../FilterSidebar/ExportBackupSectionCompletedTasks';
+import SyncUpdateSection from './SyncUpdateSection';
+
+const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
+	const sidebarVariants = {
+		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
+		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
+	};
+
+	return (
+		<motion.div
+			initial="hidden"
+			animate="visible"
+			exit="hidden"
+			variants={useSlidingMotion && sidebarVariants}
+			className={classNames(
+				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 w-[85%] max-w-[400px]',
+			)}
+			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
+		>
+			<div className="flex justify-between items-center">
+				<h2 className="font-bold text-[18px]">Settings</h2>
+				<div className="flex items-center gap-3">
+					<Icon
+						name="close"
+						fill={0}
+						customClass={
+							'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1'
+						}
+						onClick={() => setIsOpen(false)}
+					/>
+				</div>
+			</div>
+
+			{/* Focus Records Page */}
+			{page === 'focus-records-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<OtherSectionFocusRecords />
+				</>
+			)}
+			{page === 'focus-records-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<SyncUpdateSection />
+				</>
+			)}
+			{page === 'focus-records-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<ExportBackupSectionFocusRecords />
+				</>
+			)}
+			
+			{/* Completed Tasks Page */}
+			{page === 'completed-tasks-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<OtherSectionCompletedTasks />
+				</>
+			)}
+			{page === 'completed-tasks-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<ExportBackupSectionCompletedTasks />
+				</>
+			)}
+		</motion.div>
+	);
+};
+
+export default SettingsSidebar;

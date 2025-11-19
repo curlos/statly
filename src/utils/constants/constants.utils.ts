@@ -33,3 +33,13 @@ export const TO_DO_LIST_APPS = {
 		name: 'Todoist',
 	},
 };
+
+export const EMOTIONS = {
+	anger: { id: 'anger', name: 'ANGER', bg: 'bg-red-500/70' },
+	disgust: { id: 'disgust', name: 'DISGUST', bg: 'bg-green-500/70' },
+	fear: { id: 'fear', name: 'FEAR', bg: 'bg-purple-500/70' },
+	joy: { id: 'joy', name: 'JOY', bg: 'bg-yellow-500/70' },
+	neutral: { id: 'neutral', name: 'NEUTRAL', bg: 'bg-gray-500/70' },
+	sadness: { id: 'sadness', name: 'SADNESS', bg: 'bg-blue-500/70' },
+	surprise: { id: 'surprise', name: 'SURPRISE', bg: 'bg-orange-500/70' },
+};

@@ -20,7 +20,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		'limit': maxFocusRecordsPerPage
 	}, { skip: skip || isLoadingGetUserSettings });
 
-	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById } = fetchedFocusRecords || {};
+	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById, emotionCounts } = fetchedFocusRecords || {};
 
 	return {
 		fetchedFocusRecords,
@@ -30,6 +30,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		totalDuration,
 		onlyTasksTotalDuration,
 		ancestorTasksById,
+		emotionCounts,
 		isLoading,
 		isFetching,
 		...urlValues,

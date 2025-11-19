@@ -4,10 +4,13 @@ import FocusRecord from './FocusRecord';
 import FocusRecordSkeleton from './FocusRecordSkeleton';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import Icon from '../../components/Icon';
+import EmotionCountDisplay from './EmotionCountDisplay';
 
 const FocusRecordList = ({
 	isFetching,
 	focusRecords,
+	emotionCounts,
+	showEmotionCount,
 	sortByOptions,
 	showFilterSidebar,
 	setShowFilterSidebar,
@@ -20,6 +23,8 @@ const FocusRecordList = ({
 
 	return (
 		<div>
+			{showEmotionCount && emotionCounts && <EmotionCountDisplay emotionCounts={emotionCounts} />}
+
 			{isFetching || !focusRecords ? (
 				<div className="space-y-3">
 					{Array.from({ length: numberOfFocusRecordsForSkeleton }).map((_, index) => (

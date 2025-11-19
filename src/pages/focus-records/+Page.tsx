@@ -18,6 +18,7 @@ const FocusRecordsPage = () => {
 	const {
 		focusRecordsPageSettings: {
 			showTotalFocusDuration,
+			showEmotionCount,
 		},
 	} = useUserSettingsContext();
 
@@ -26,6 +27,7 @@ const FocusRecordsPage = () => {
 		total,
 		totalPages,
 		onlyTasksTotalDuration,
+		emotionCounts,
 		isLoading,
 		isFetching,
 		sortBy,
@@ -39,7 +41,7 @@ const FocusRecordsPage = () => {
 
 	// For Filter Sidebar and Filter Bar
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
-	const sortByOptions = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most'];
+	const sortByOptions = ['Newest', 'Oldest', 'Focus Hours: Most-Least', 'Focus Hours: Least-Most', 'Emotional Intensity: High-Low', 'Emotional Intensity: Low-High'];
 	
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
@@ -61,7 +63,7 @@ const FocusRecordsPage = () => {
 	return (
 		<div>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
-				<Navbar />
+				<Navbar page="focus-records-page" />
 
 				<FilterBar
 					{...{
@@ -79,6 +81,8 @@ const FocusRecordsPage = () => {
 								{...{
 									isFetching,
 									focusRecords,
+									emotionCounts,
+									showEmotionCount,
 									sortBy,
 									currentPage: currentPageFromUrl,
 									sortByOptions,

@@ -8,12 +8,11 @@ import { useSearchParamsCustom } from '../../contexts/useSearchParamsContext';
 import AppliedFilterItemList from '../../pages/focus-records/AppliedFilterItemList';
 import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
-import OtherSectionFocusRecords from './OtherSectionFocusRecords';
-import OtherSectionCompletedTasks from './OtherSectionCompletedTasks';
 import OtherSectionMedals from './OtherSectionMedals';
 import ShowDaysFromToDoListAppSection from './ShowDaysFromToDoListAppSection';
 import ProjectsTickTickSection from './ProjectsTickTickSection';
 import ProjectsTodoistSection from './ProjectsTodoistSection';
+import ShowRecordsFromEmotionSection from './ShowRecordsFromEmotionSection';
 
 const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingMotion = true }) => {
 	const sidebarVariants = {
@@ -35,12 +34,13 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 		'projects-todoist',
 		'categories',
 		'date-interval',
-		'crosses-midnight'
+		'crosses-midnight',
+		'emotions'
 	];
 
 	switch (page) {
 		case 'focus-records-page':
-			allPossibleFilterStrings.push('categories', 'focus-apps');
+			allPossibleFilterStrings.push('categories', 'focus-apps', 'emotions');
 			break;
 		case 'completed-tasks-page':
 			allPossibleFilterStrings.push('to-do-list-apps', 'projects-todoist');
@@ -48,7 +48,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 		case 'medals':
 		case 'challenges':
 		case 'stats':
-			allPossibleFilterStrings.push('categories', 'focus-apps', 'to-do-list-apps', 'projects-todoist');
+			allPossibleFilterStrings.push('categories', 'focus-apps', 'to-do-list-apps', 'projects-todoist', 'emotions');
 			break;
 	}
 
@@ -130,19 +130,6 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			<hr className="border-color-gray-200 my-4" />
 			<DateRangeSection />
 
-			{page === 'focus-records-page' && (
-				<>
-					<hr className="border-color-gray-200 my-4" />
-					<OtherSectionFocusRecords />
-				</>
-			)}
-
-			{page === 'completed-tasks-page' && (
-				<>
-					<hr className="border-color-gray-200 my-4" />
-					<OtherSectionCompletedTasks />
-				</>
-			)}
 
 			{page === 'medals' && (
 				<>
@@ -179,6 +166,13 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<CategoriesSection />
+				</>
+			)}
+
+			{page === 'focus-records-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<ShowRecordsFromEmotionSection />
 				</>
 			)}
 		</motion.div>

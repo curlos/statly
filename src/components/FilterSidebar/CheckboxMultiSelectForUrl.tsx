@@ -53,10 +53,7 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 					commaSeparatedObj[id] = true;
 				}
 
-				// TODO: Check for DB values.
-
 				const commaSeparatedSelectedValues = getCommaSeparatedSelectedValues(commaSeparatedObj);
-
 				updateQueryParams({ [urlQueryParamName]: commaSeparatedSelectedValues, page: '' });
 			}}
 		>

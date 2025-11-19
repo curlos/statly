@@ -7,7 +7,7 @@ import AppliedFilterItemList from '../../focus-records/AppliedFilterItemList';
 
 const StatsPage = () => {
 	const pageContext = usePageContext();
-	const location = pageContext.urlParsed;0
+	const location = pageContext.urlParsed;
 
 	return (
 		<div className="flex max-w-screen max-h-[100vh] overflow-x-hidden">

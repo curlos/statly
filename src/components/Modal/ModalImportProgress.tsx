@@ -3,39 +3,21 @@ import Modal from './Modal';
 import Icon from '../Icon';
 import Spinner from '../Loaders/Spinner';
 import Accordion from '../Accordion/Accordion';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+	selectImportBatches,
+	selectImportModalOpen,
+	selectIsImporting,
+	setModalOpen,
+} from '../../slices/importProgressSlice';
 
-export interface BatchStatus {
-	batchIndex: number;
-	files: File[];
-	status: 'idle' | 'importing' | 'success' | 'error';
-	errorMessage?: string;
-	result?: {
-		summary: {
-			totalCreated: number;
-			totalModified: number;
-			totalMatched: number;
-			totalFailed: number;
-		};
-		details: {
-			focusRecords: { created: number; modified: number; matched: number; failed: number };
-			tasks: { created: number; modified: number; matched: number; failed: number };
-			projects: { created: number; modified: number; matched: number; failed: number };
-			projectGroups: { created: number; modified: number; matched: number; failed: number };
-		};
-	};
-}
 
-interface ModalImportProgressProps {
-	isOpen: boolean;
-	batches: BatchStatus[];
-	onClose: () => void;
-}
-
-const ModalImportProgress: React.FC<ModalImportProgressProps> = ({ isOpen, batches, onClose }) => {
+const ModalImportProgress: React.FC = () => {
+	const dispatch = useDispatch();
+	const batches = useSelector(selectImportBatches);
+	const isOpen = useSelector(selectImportModalOpen);
+	const isImporting = useSelector(selectIsImporting);
 	const { chosenColorObj } = useThemeContext();
-
-	// Check if any batch is still importing or idle
-	const isImporting = batches.some((batch) => batch.status === 'importing' || batch.status === 'idle');
 
 	// Calculate completed batches
 	const completedBatches = batches.filter(
@@ -44,10 +26,7 @@ const ModalImportProgress: React.FC<ModalImportProgressProps> = ({ isOpen, batch
 	const totalBatches = batches.length;
 
 	const handleClose = () => {
-		// Only allow closing when all batches are complete
-		if (!isImporting) {
-			onClose();
-		}
+		dispatch(setModalOpen(false));
 	};
 
 	const getBatchStatusDisplay = (status: string) => {
@@ -105,15 +84,13 @@ const ModalImportProgress: React.FC<ModalImportProgressProps> = ({ isOpen, batch
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!w-[700px]">
 			<div className="bg-color-gray-650 rounded-lg p-6 shadow-xl relative">
-				{/* Close button - only show when all batches complete */}
-				{!isImporting && (
-					<button
-						onClick={handleClose}
-						className="absolute top-4 right-4 text-color-gray-100 hover:text-white transition-colors"
-					>
-						<Icon name="close" fill={1} customClass="!text-[24px]" />
-					</button>
-				)}
+				{/* Close button */}
+				<button
+					onClick={handleClose}
+					className="absolute top-4 right-4 text-color-gray-100 hover:text-white transition-colors"
+				>
+					<Icon name="close" fill={1} customClass="!text-[24px]" />
+				</button>
 
 				{/* Title */}
 				<h2 className="text-xl font-bold mb-2 text-white">Import Files</h2>
@@ -131,6 +108,7 @@ const ModalImportProgress: React.FC<ModalImportProgressProps> = ({ isOpen, batch
 						)
 					)}
 				</div>
+
 
 				{/* Batch list with scrollbar */}
 				<div className="space-y-4 max-h-[500px] overflow-auto pr-2">
@@ -185,9 +163,9 @@ const ModalImportProgress: React.FC<ModalImportProgressProps> = ({ isOpen, batch
 									<div className="mb-3 mt-2">
 										<div className="text-color-gray-100 mb-1 font-bold">Files:</div>
 										<div className="pl-4 space-y-1">
-											{batch.files.map((file, idx) => (
+											{batch.fileNames.map((fileName, idx) => (
 												<div key={idx} className="text-color-gray-100">
-													• {file.name}
+													• {fileName}
 												</div>
 											))}
 										</div>

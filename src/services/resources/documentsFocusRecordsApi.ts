@@ -64,9 +64,23 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
                 return response;
             },
             providesTags: ['AllFocusRecords'],
+        }),
+        getFocusRecordsNeedingSentiment: builder.query({
+            query: () => '/documents/focus-records/analyze-sentiment/ids',
+            transformResponse: (response: { recordIds: string[] }) => {
+                return response;
+            },
+        }),
+        analyzeNoteEmotions: builder.mutation({
+            query: (recordIds: string[]) => ({
+                url: '/documents/focus-records/analyze-note-emotions',
+                method: 'POST',
+                body: { recordIds },
+            }),
+            // Don't automatically invalidate tags - we'll do it manually after all chunks complete
         })
     }),
     overrideExisting: false,
 });
 
-export const { useGetFocusRecordsQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery } = documentsFocusRecordsApi;
+export const { useGetFocusRecordsQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery, useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation } = documentsFocusRecordsApi;

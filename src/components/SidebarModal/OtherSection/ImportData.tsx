@@ -3,27 +3,106 @@ import { useRef, useState } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useImportBackupDataMutation } from '../../../services/resources/documentsImportApi';
 import { baseAPI } from '../../../services/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../../Icon';
 import CustomRadioButton from '../../CustomRadioButton';
-import ModalImportProgress, { BatchStatus } from '../../Modal/ModalImportProgress';
+import ModalImportProgress from '../../Modal/ModalImportProgress';
+import Spinner from '../../Loaders/Spinner';
+import {
+	selectImportBatches,
+	selectIsImporting,
+	setBatches,
+	updateBatch,
+	setModalOpen,
+	resetImport,
+	BatchStatus,
+} from '../../../slices/importProgressSlice';
 
 const ImportData = () => {
 	const { chosenColorObj } = useThemeContext();
 	const dispatch = useDispatch();
 	const [selectionMode, setSelectionMode] = useState<'files' | 'folder'>('files');
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [batches, setBatches] = useState<BatchStatus[]>([]);
+	const batches = useSelector(selectImportBatches);
+	const isImporting = useSelector(selectIsImporting);
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const folderInputRef = useRef<HTMLInputElement>(null);
 
+	// Keep file batches in component state, not Redux
+	const fileBatchesRef = useRef<File[][]>([]);
+
 	const [importBackupData] = useImportBackupDataMutation();
+
+	const processBatches = async (batchesToProcess: BatchStatus[]) => {
+		// Process all batches in parallel
+		const batchPromises = batchesToProcess.map(async (_, i) => {
+			// Update status to 'importing'
+			dispatch(updateBatch({ index: i, batch: { status: 'importing' } }));
+
+			try {
+				// Get the actual files from the ref
+				const files = fileBatchesRef.current[i];
+				const result = await importBackupData(files).unwrap();
+
+				// Update status to 'success' with result
+				dispatch(updateBatch({ index: i, batch: { status: 'success', result } }));
+			} catch (error) {
+				console.error('Error importing backup data:', error);
+
+				// Extract error message from API response
+				let errorMessage = 'Failed to import this batch';
+				if (error && typeof error === 'object') {
+					if ('data' in error) {
+						const errorData = error.data;
+						if (errorData && typeof errorData === 'object' && 'message' in errorData) {
+							errorMessage = String(errorData.message);
+						}
+					}
+				}
+
+				// Update status to 'error' with message
+				dispatch(updateBatch({ index: i, batch: { status: 'error', errorMessage } }));
+			}
+		});
+
+		await Promise.allSettled(batchPromises);
+
+		// Invalidate cache tags after all batches complete
+		dispatch(
+			baseAPI.util.invalidateTags([
+				'OverviewStats',
+				'SyncMetadata',
+				'Project',
+				'ProjectGroup',
+				'DayWithCompletedTasks',
+				'ExportDayWithCompletedTasks',
+				'AllTasks',
+				'TasksMedal',
+				'TasksChallenge',
+				'TasksStats',
+				'FocusRecord',
+				'ExportFocusRecord',
+				'AllFocusRecords',
+				'FocusMedal',
+				'FocusChallenge',
+				'FocusStats',
+			])
+		);
+	};
 
 	const handleFileSelection = async (files: FileList | null) => {
 		if (!files || files.length === 0) {
 			return;
 		}
+
+		// If already importing, just show the modal and don't start new import
+		if (isImporting) {
+			dispatch(setModalOpen(true));
+			return;
+		}
+
+		// Reset previous import state before starting new import
+		dispatch(resetImport());
 
 		try {
 			// Convert FileList to File array
@@ -82,76 +161,21 @@ const ImportData = () => {
 				fileBatches.push(currentBatch);
 			}
 
-			// Initialize batch statuses - all start as 'idle'
+			// Store file batches in ref
+			fileBatchesRef.current = fileBatches;
+
+			// Initialize batch statuses with metadata only - all start as 'idle'
 			const initialBatches: BatchStatus[] = fileBatches.map((files, index) => ({
 				batchIndex: index,
-				files,
+				fileNames: files.map((f) => f.name),
 				status: 'idle',
 			}));
 
-			setBatches(initialBatches);
-			setIsModalOpen(true);
+			dispatch(setBatches(initialBatches));
+			dispatch(setModalOpen(true));
 
-			// Process all batches in parallel
-			const batchPromises = fileBatches.map(async (batch, i) => {
-				// Update status to 'importing'
-				setBatches((prev) =>
-					prev.map((b) => (b.batchIndex === i ? { ...b, status: 'importing' } : b))
-				);
-
-				try {
-					const result = await importBackupData(batch).unwrap();
-
-					// Update status to 'success' with result
-					setBatches((prev) =>
-						prev.map((b) => (b.batchIndex === i ? { ...b, status: 'success', result } : b))
-					);
-				} catch (error) {
-					console.error('Error importing backup data:', error);
-
-					// Extract error message from API response
-					let errorMessage = 'Failed to import this batch';
-					if (error && typeof error === 'object') {
-						// RTK Query error structure
-						if ('data' in error) {
-							const errorData = error.data;
-							if (errorData && typeof errorData === 'object' && 'message' in errorData) {
-								errorMessage = String(errorData.message);
-							}
-						}
-					}
-
-					// Update status to 'error' with message
-					setBatches((prev) =>
-						prev.map((b) => (b.batchIndex === i ? { ...b, status: 'error', errorMessage } : b))
-					);
-				}
-			});
-
-			// Wait for all batches to complete (success or failure)
-			await Promise.allSettled(batchPromises);
-
-			// Invalidate cache tags after all batches complete
-			dispatch(
-				baseAPI.util.invalidateTags([
-					'OverviewStats',
-					'SyncMetadata',
-					'Project',
-					'ProjectGroup',
-					'DayWithCompletedTasks',
-					'ExportDayWithCompletedTasks',
-					'AllTasks',
-					'TasksMedal',
-					'TasksChallenge',
-					'TasksStats',
-					'FocusRecord',
-					'ExportFocusRecord',
-					'AllFocusRecords',
-					'FocusMedal',
-					'FocusChallenge',
-					'FocusStats',
-				])
-			);
+			// Process all batches immediately
+			await processBatches(initialBatches);
 		} catch (error) {
 			console.error('Error importing backup data:', error);
 			const errorMessage =
@@ -173,29 +197,51 @@ const ImportData = () => {
 		}
 	};
 
-	const handleModalClose = () => {
-		setIsModalOpen(false);
-		setBatches([]);
-	};
-
 	return (
 		<>
 			<div className="space-y-2">
 				{/* Main Import Button */}
 				<div
-					className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
-					onClick={handleImportClick}
+					className={classNames(
+						'flex items-center gap-2 my-2',
+						isImporting ? 'cursor-not-allowed opacity-50' : `cursor-pointer ${chosenColorObj.hover.textColor}`
+					)}
+					onClick={isImporting ? undefined : handleImportClick}
 				>
-					<Icon
-						name="upload"
-						fill={0}
-						customClass={classNames(
-							'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
-							`'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
-						)}
-					/>
+					{isImporting ? (
+						<div className="rounded-lg bg-color-gray-300 p-[6px]">
+							<Spinner size="sm" />
+						</div>
+					) : (
+						<Icon
+							name="upload"
+							fill={0}
+							customClass={classNames(
+								'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+								`'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
+							)}
+						/>
+					)}
 					<div>Import Focus Records, Tasks, Projects, and Project Groups</div>
 				</div>
+
+				{/* View Progress button - only show while importing */}
+				{isImporting && batches.length > 0 && (
+					<div
+						className={classNames('flex items-center gap-2 ml-9 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+						onClick={() => dispatch(setModalOpen(true))}
+					>
+						<Icon
+							name="visibility"
+							fill={0}
+							customClass={classNames(
+								'!text-[20px] cursor-pointer rounded-lg bg-color-gray-600 p-[6px]',
+								`'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
+							)}
+						/>
+						<div>View Import Progress</div>
+					</div>
+				)}
 
 				{/* Radio Button Options */}
 				<div className="ml-9 space-y-2">
@@ -247,7 +293,7 @@ const ImportData = () => {
 			</div>
 
 			{/* Import Progress Modal */}
-			<ModalImportProgress isOpen={isModalOpen} batches={batches} onClose={handleModalClose} />
+			<ModalImportProgress />
 		</>
 	);
 };
