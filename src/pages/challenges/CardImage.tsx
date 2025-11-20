@@ -12,7 +12,7 @@ const CardImage = ({ cardType, imageSrc, page, showGlow = false }) => {
 		<div>
 			<div className="flex items-center gap-1 mb-2">
 				<h3 className={page !== 'focus-records' && page !== 'completed-tasks' ? 'text-[20px] font-bold' : ''}>
-					{cardType}
+					{cardType} - Card Image
 				</h3>
 				<Icon name="image" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
 			</div>

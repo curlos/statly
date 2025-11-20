@@ -8,12 +8,12 @@ import ChosenMedal from './ChosenMedal';
 import ChosenMedalSkeleton from './ChosenMedalSkeleton';
 import Modal from '../../components/Modal/Modal';
 import Icon from '../../components/Icon';
-import ChallengesAndMedalsSettingsModal from '../challenges/ChallengesAndMedalsSettingsModal';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useGetFocusMedalsQuery } from '../../services/resources/documentsFocusRecordsApi';
 import { useGetTasksMedalsQuery } from '../../services/resources/documentsTasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
+import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -22,7 +22,7 @@ const Page = () => {
 	const [chosenMedal, setChosenMedal] = useState({});
 	const chosenMedalRef = useRef(null);
 	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
-	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
+	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
@@ -88,7 +88,7 @@ const Page = () => {
 		<div>
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<div ref={topHeaderRef}>
-					<Navbar />
+					<Navbar page="medals-page" />
 					<div className="container flex justify-between items-center">
 						<div className="flex items-center gap-4">
 							<div className="text-[28px] font-bold">Medals</div>
@@ -98,11 +98,18 @@ const Page = () => {
 							</div>
 						</div>
 
-						<Icon
-							name="settings"
-							customClass={'!text-[30px] text-color-gray-100 cursor-pointer mr-[15px]'}
-							onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
-						/>
+						<div
+							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
+							onClick={() => !isLoading && setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
+							style={{ opacity: isLoading ? 0.5 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
+						>
+							<div className="hidden sm:block">Filter</div>
+							<Icon
+								name="page_info"
+								fill={0}
+								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							/>
+						</div>
 					</div>
 					<div className="container grid grid-cols-12">
 						<div className="flex flex-col lg:flex-row lg:items-center justify-between col-span-8">
@@ -143,11 +150,11 @@ const Page = () => {
 				</div>
 			</div>
 
-			{isSettingsSidebarModalOpen && (
-				<ChallengesAndMedalsSettingsModal
+			{isFilterSidebarModalOpen && (
+				<ModalFilterSidebar
 					{...{
-						isSidebarModalOpen: isSettingsSidebarModalOpen,
-						setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
+						isOpen: isFilterSidebarModalOpen,
+						setIsOpen: setIsFilterSidebarModalOpen,
 						page: 'medals',
 					}}
 				/>

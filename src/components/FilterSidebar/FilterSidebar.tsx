@@ -79,14 +79,13 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			exit="hidden"
 			variants={useSlidingMotion && sidebarVariants}
 			className={classNames(
-				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar',
-				isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : '',
-				isFocusRecordsOrCompletedTasksPage ? 'p-4' : ''
+				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4',
+				isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : ''
 			)}
 			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 		>
 			<div className="flex justify-between items-center">
-				<h2 className="font-bold text-[18px]">Filter & Sort</h2>
+				<h2 className="font-bold text-[18px]">{isFocusRecordsOrCompletedTasksPage ? 'Filter & Sort' : `${page.charAt(0).toUpperCase() + page.slice(1).toLowerCase()} - Filter`}</h2>
 				<div className="flex items-center gap-3">
 					{isAtLeastOneFilterApplied && (
 						<div

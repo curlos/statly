@@ -8,12 +8,12 @@ import ChosenChallenge from './ChosenChallenge';
 import ChosenChallengeSkeleton from './ChosenChallengeSkeleton';
 import Modal from '../../components/Modal/Modal';
 import Icon from '../../components/Icon';
-import ChallengesAndMedalsSettingsModal from './ChallengesAndMedalsSettingsModal';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useGetFocusChallengesQuery } from '../../services/resources/documentsFocusRecordsApi';
 import { useGetTasksChallengesQuery } from '../../services/resources/documentsTasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
+import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -22,7 +22,7 @@ const Page = () => {
 	const [chosenChallenge, setChosenChallenge] = useState({});
 	const chosenChallengeRef = useRef(null);
 	const [showChosenChallengeModal, setShowChosenChallengeModal] = useState(false);
-	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
+	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
@@ -45,10 +45,6 @@ const Page = () => {
 	const isLoading = type === 'focus' ? isLoadingFocusChallenges : isLoadingTasksChallenges;
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
-		// {
-		// 	name: 'Custom',
-		// 	urlName: 'custom',
-		// },
 		{
 			name: 'Focus',
 			urlName: 'focus',
@@ -62,7 +58,7 @@ const Page = () => {
 	return (
 		<div className="max-w-screen min-h-screen bg-color-gray-700">
 			<div ref={topHeaderRef}>
-				<Navbar />
+				<Navbar page="challenges-page" />
 				<div className="container flex justify-between items-center">
 					<div className="flex items-center gap-4">
 						<div className="text-[28px] font-bold">Challenges</div>
@@ -72,11 +68,18 @@ const Page = () => {
 						</div>
 					</div>
 
-					<Icon
-						name="settings"
-						customClass={'!text-[30px] text-color-gray-100 cursor-pointer mr-[15px]'}
-						onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
-					/>
+					<div
+						className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
+						onClick={() => !isLoading && setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
+						style={{ opacity: isLoading ? 0.5 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
+					>
+						<div className="hidden sm:block">Filter</div>
+						<Icon
+							name="page_info"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						/>
+					</div>
 				</div>
 				<div className="container grid grid-cols-12">
 					<div className="col-span-8">
@@ -117,11 +120,11 @@ const Page = () => {
 				</div>
 			</div>
 
-			{isSettingsSidebarModalOpen && (
-				<ChallengesAndMedalsSettingsModal
+			{isFilterSidebarModalOpen && (
+				<ModalFilterSidebar
 					{...{
-						isSidebarModalOpen: isSettingsSidebarModalOpen,
-						setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
+						isOpen: isFilterSidebarModalOpen,
+						setIsOpen: setIsFilterSidebarModalOpen,
 						page: 'challenges',
 					}}
 				/>

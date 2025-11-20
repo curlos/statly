@@ -6,12 +6,23 @@ import OtherSectionCompletedTasks from '../FilterSidebar/OtherSectionCompletedTa
 import ExportBackupSectionFocusRecords from '../FilterSidebar/ExportBackupSectionFocusRecords';
 import ExportBackupSectionCompletedTasks from '../FilterSidebar/ExportBackupSectionCompletedTasks';
 import SyncUpdateSection from './SyncUpdateSection';
+import CardImage from '../../pages/challenges/CardImage';
+import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 
 const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
 	};
+
+	const {
+		challengesPageSettings: { selectedChallengeCardImage },
+		medalsPageSettings: { selectedMedalCardImage },
+	} = useUserSettingsContext();
+
+	const isForChallengesPage = page === 'challenges-page';
+	const isForMedalsPage = page === 'medals-page';
+	const showImagesSection = isForChallengesPage || isForMedalsPage;
 
 	return (
 		<motion.div
@@ -69,6 +80,33 @@ const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<ExportBackupSectionCompletedTasks />
+				</>
+			)}
+
+			{/* Challenges & Medals Pages - Images Section */}
+			{showImagesSection && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<div className="space-y-4">
+						<CardImage
+							cardType="Focus"
+							imageSrc={
+								isForChallengesPage
+									? selectedChallengeCardImage?.focus
+									: selectedMedalCardImage?.focus
+							}
+							page={isForChallengesPage ? 'challenges' : 'medals'}
+						/>
+						<CardImage
+							cardType="Tasks"
+							imageSrc={
+								isForChallengesPage
+									? selectedChallengeCardImage?.tasks
+									: selectedMedalCardImage?.tasks
+							}
+							page={isForChallengesPage ? 'challenges' : 'medals'}
+						/>
+					</div>
 				</>
 			)}
 		</motion.div>

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Icon from '../../../components/Icon';
 import SidebarModal from '../../../components/SidebarModal/SidebarModal';
 import { useState } from 'react';
-import StatsFilterModal from './StatsFilterModal';
+import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
 
 const TopBar = () => {
 	const pageContext = usePageContext();
@@ -20,7 +20,7 @@ const TopBar = () => {
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
-	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
+	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 
 	const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : {};
 	const queryParams = new URLSearchParams(queryParamsObj).toString();
@@ -59,7 +59,7 @@ const TopBar = () => {
 				<Icon
 					name="page_info"
 					customClass={'!text-[30px] text-color-gray-100 cursor-pointer'}
-					onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
+					onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
 				/>
 				<Icon
 					name="menu"
@@ -83,11 +83,11 @@ const TopBar = () => {
 				{getModalButtons()}
 			</div>
 
-			{isSettingsSidebarModalOpen && (
-				<StatsFilterModal
+			{isFilterSidebarModalOpen && (
+				<ModalFilterSidebar
 					{...{
-						isSidebarModalOpen: isSettingsSidebarModalOpen,
-						setIsSidebarModalOpen: setIsSettingsSidebarModalOpen,
+						isOpen: isFilterSidebarModalOpen,
+						setIsOpen: setIsFilterSidebarModalOpen,
 						page: 'stats',
 					}}
 				/>
