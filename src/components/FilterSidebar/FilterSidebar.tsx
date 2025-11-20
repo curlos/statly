@@ -168,7 +168,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 				</>
 			)}
 
-			{page === 'focus-records-page' && (
+			{page !== 'completed-tasks-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<ShowRecordsFromEmotionSection />

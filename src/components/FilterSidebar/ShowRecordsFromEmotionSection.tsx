@@ -43,7 +43,7 @@ const ShowRecordsFromEmotionSection = () => {
 						<div
 							key={emotion.id}
 							className="flex items-center gap-2 cursor-pointer mb-2"
-							onClick={() => handleEmotionTagClick(emotion.id)}
+							onClick={() => handleEmotionTagClick(emotion.id, true)}
 						>
 							<Icon
 								name={isChecked ? 'check_box' : 'check_box_outline_blank'}
