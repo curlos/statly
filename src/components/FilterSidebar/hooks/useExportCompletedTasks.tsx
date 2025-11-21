@@ -190,6 +190,9 @@ const useExportCompletedTasks = () => {
 		const appliedFiltersMarkdown = getAppliedFiltersMarkdown({ ...urlValues, projectsById });
 		allDaysWithCompletedTasksMarkdown.push(appliedFiltersMarkdown);
 
+		// Add separator
+		allDaysWithCompletedTasksMarkdown.push('---\n');
+
 		for (let i = 0; i < days.length; i++) {
 			const day = days[i];
 			const dayMarkdown = serializeDayWithCompletedTasks(
@@ -238,7 +241,7 @@ const useExportCompletedTasks = () => {
 					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks, ancestorTasksById))
 					.join('\n---\n');
 
-				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}\n\n${days}`;
+				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
 			} else {
 				// Flat mode (existing logic)
 				const { days, totalTasks } = result.data;
@@ -286,7 +289,7 @@ const useExportCompletedTasks = () => {
 					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks, ancestorTasksById))
 					.join('\n---\n');
 
-				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}\n\n${days}`;
+				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
 			} else {
 				// Flat mode (existing logic)
 				const { days, totalTasks } = result.data;
@@ -367,7 +370,7 @@ const useExportCompletedTasks = () => {
 					.join('\n---\n');
 
 				const customTitle = `${groupName} - Completed Tasks (${totalCompletedTasks.toLocaleString()})`;
-				const markdown = `# ${customTitle}\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}\n\n${days}`;
+				const markdown = `# ${customTitle}\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
 
 				// Filename for the markdown file
 				const sanitizedName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(/[/\\?%*:|"<>]/g, '-');

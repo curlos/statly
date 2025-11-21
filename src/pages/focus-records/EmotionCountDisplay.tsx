@@ -12,8 +12,6 @@ const EmotionCountDisplay = ({ emotionCounts }: EmotionCountDisplayProps) => {
 		return null;
 	}
 
-	// debugger
-
 	// Sort emotions by count (descending) and then by name
 	const sortedEmotions = Object.entries(emotionCounts).sort((a, b) => {
 		if (b[1] !== a[1]) {

@@ -114,6 +114,6 @@ export const getAppliedFiltersMarkdown = (params: AppliedFiltersParams): string 
 	// If no filters applied, show "None"
 	const filtersContent = filters.length === 0 ? 'None' : filters.join('  \n');
 
-	// Return formatted markdown with header and separator after
-	return '### Applied Filters\n\n' + filtersContent + '\n\n---\n\n';
+	// Return formatted markdown with header (separator moved to caller for flexibility)
+	return '### Applied Filters\n\n' + filtersContent + '\n\n';
 };

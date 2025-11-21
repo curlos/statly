@@ -81,6 +81,14 @@ const ExportBackupSectionFocusRecords = () => {
 						}
 					/>
 				</div>
+
+				{/* Export Focus Records by Emotion */}
+				<FocusRecordsExporter
+					text="Export Focus Records by Emotion"
+					icon="download"
+					action="downloadZipFolderOfGroupedFocusRecords"
+					params={['emotion']}
+				/>
 			</Accordion>
 		</div>
 	);

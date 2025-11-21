@@ -8,6 +8,7 @@ import { baseAPI } from '../../../services/api';
 import { useDispatch } from 'react-redux';
 import { getAppliedFiltersMarkdown } from './getAppliedFiltersMarkdown';
 import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
+import { EMOTIONS } from '../../../utils/constants/constants.utils';
 
 const useExportFocusRecords = () => {
 	const dispatch = useDispatch();
@@ -15,11 +16,13 @@ const useExportFocusRecords = () => {
 	const userSettings = useUserSettingsContext();
 	const taskIdIncludeFocusRecordsFromSubtasks = userSettings?.focusRecordsPageSettings?.taskIdIncludeFocusRecordsFromSubtasks ?? true;
 	const onlyExportTasksWithNoParent = userSettings?.focusRecordsPageSettings?.onlyExportTasksWithNoParent ?? true;
+	const showFocusRecordEmotions = userSettings?.focusRecordsPageSettings?.showFocusRecordEmotions ?? true;
+	const showEmotionCount = userSettings?.focusRecordsPageSettings?.showEmotionCount ?? false;
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
 	const serializeFocusRecordToMarkdown = (record: any) => {
-		const { startTime, endTime, duration, tasks, completedTasks, note } = record;
+		const { startTime, endTime, duration, tasks, completedTasks, note, emotions } = record;
 
 		const startTimeObj = formatDateTime(startTime);
 		const endTimeObj = formatDateTime(endTime);
@@ -66,10 +69,30 @@ const useExportFocusRecords = () => {
 			});
 		}
 
+		// Emotions
+		if (showFocusRecordEmotions) {
+			if (emotions && emotions.length > 0) {
+				lines.push(''); // Add blank line for separation
+				lines.push(`###### ❤️ Emotions`);
+				emotions.forEach((emotionObj: any) => {
+					const emotionData = EMOTIONS[emotionObj.emotion as keyof typeof EMOTIONS];
+					const emoji = emotionData?.emoji || '';
+					const emotionName = emotionData?.name || emotionObj.emotion.toUpperCase();
+					const formattedScore = (emotionObj.score * 100).toFixed(0);
+					lines.push(`- ${emoji} ${emotionName} - ${formattedScore}%`);
+				});
+			} else {
+				const noneEmoji = EMOTIONS.none?.emoji || '⚫';
+				lines.push(''); // Add blank line for separation
+				lines.push(`###### ❤️ Emotions`);
+				lines.push(`- ${noneEmoji} NONE`);
+			}
+		}
+
 		return lines.join('\n');
 	};
 
-	const getFocusRecordsMarkdown = (focusRecords: any[], customTitle: string | null, totalDuration: number) => {
+	const getFocusRecordsMarkdown = (focusRecords: any[], customTitle: string | null, totalDuration: number, emotionCounts?: Record<string, number>) => {
 		const allFocusRecordsMarkdown: string[] = [];
 
 		// Add title as H1 at the beginning
@@ -79,6 +102,32 @@ const useExportFocusRecords = () => {
 		// Add applied filters section (always shows, displays "None" if no filters)
 		const appliedFiltersMarkdown = getAppliedFiltersMarkdown({ ...urlValues, projectsById });
 		allFocusRecordsMarkdown.push(appliedFiltersMarkdown);
+
+		// Add emotion counts if showEmotionCount is true and emotionCounts exist
+		if (showEmotionCount && emotionCounts && Object.keys(emotionCounts).length > 0) {
+			allFocusRecordsMarkdown.push('### Emotion Counts\n');
+
+			// Sort emotions by count (descending) and then by name
+			const sortedEmotions = Object.entries(emotionCounts).sort((a, b) => {
+				if (b[1] !== a[1]) {
+					return b[1] - a[1]; // Sort by count descending
+				}
+				return a[0].localeCompare(b[0]); // Then by name alphabetically
+			});
+
+			sortedEmotions.forEach(([emotion, count]) => {
+				const emotionKey = emotion as keyof typeof EMOTIONS;
+				const emotionData = EMOTIONS[emotionKey];
+				const emoji = emotionData?.emoji || '';
+				const emotionName = emotionData?.name || emotion.toUpperCase();
+				allFocusRecordsMarkdown.push(`- ${emoji} ${emotionName} - ${count.toLocaleString()}x`);
+			});
+
+			allFocusRecordsMarkdown.push('');
+		}
+
+		// Add separator
+		allFocusRecordsMarkdown.push('---\n');
 
 		for (let i = 0; i < focusRecords.length; i++) {
 			const focusRecord = focusRecords[i];
@@ -107,8 +156,8 @@ const useExportFocusRecords = () => {
 		);
 
 		if (result.data) {
-			const { records, totalDuration } = result.data;
-			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration);
+			const { records, totalDuration, emotionCounts } = result.data;
+			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts);
 
 			// Copy to clipboard
 			navigator.clipboard.writeText(finalMarkdown);
@@ -127,8 +176,8 @@ const useExportFocusRecords = () => {
 		);
 
 		if (result.data) {
-			const { records, totalDuration } = result.data;
-			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration);
+			const { records, totalDuration, emotionCounts } = result.data;
+			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts);
 
 			// Download as single markdown file
 			const blob = new Blob([finalMarkdown], { type: 'text/markdown;charset=utf-8' });
@@ -136,7 +185,7 @@ const useExportFocusRecords = () => {
 		}
 	};
 
-	const downloadZipFolderOfGroupedFocusRecords = async (groupType: 'project' | 'task') => {
+	const downloadZipFolderOfGroupedFocusRecords = async (groupType: 'project' | 'task' | 'emotion') => {
 		// Trigger the export query manually
 		const result = await dispatch(
 			baseAPI.endpoints.getFocusRecordsExport.initiate({
@@ -160,6 +209,7 @@ const useExportFocusRecords = () => {
 				records: groupData.records,
 				totalDuration: groupData.totalDuration,
 				groupName: groupData.groupName,
+				emotionCounts: groupData.emotionCounts,
 			}))
 			.sort((a, b) => b.totalDuration - a.totalDuration);
 
@@ -168,16 +218,26 @@ const useExportFocusRecords = () => {
 		const paddingWidth = String(totalGroups).length;
 
 		// Add files to ZIP
-		sortedGroups.forEach(({ records, totalDuration, groupName }, index) => {
+		sortedGroups.forEach(({ records, totalDuration, groupName, emotionCounts: groupEmotionCounts }, index) => {
 			const formattedDuration = getFormattedDuration(totalDuration, false);
 			const paddedIndex = String(index + 1).padStart(paddingWidth, '0');
 
+			// For emotion grouping, add emoji to the group name
+			let displayName = groupName;
+			if (groupType === 'emotion') {
+				const emotionKey = groupName.toLowerCase() as keyof typeof EMOTIONS;
+				const emotionData = EMOTIONS[emotionKey];
+				if (emotionData) {
+					displayName = `${emotionData.emoji}_${groupName}`;
+				}
+			}
+
 			// Title used in the markdown content
-			const customTitle = `${groupName} - Focus Records (${records.length.toLocaleString()}) - ${formattedDuration}`;
-			const markdown = getFocusRecordsMarkdown(records, customTitle, totalDuration);
+			const customTitle = `${displayName} - Focus Records (${records.length.toLocaleString()}) - ${formattedDuration}`;
+			const markdown = getFocusRecordsMarkdown(records, customTitle, totalDuration, groupEmotionCounts);
 
 			// Filename for the markdown file - sanitize forward slashes to prevent folder creation
-			const sanitizedName = `${paddedIndex}_${groupName}_${formattedDuration}`.replace(/[\/\\?%*:|"<>]/g, '-');
+			const sanitizedName = `${paddedIndex}_${displayName}_${formattedDuration}`.replace(/[\/\\?%*:|"<>]/g, '-');
 			zip.file(`${sanitizedName}_.md`, markdown);
 		});
 
