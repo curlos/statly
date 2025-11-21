@@ -56,17 +56,17 @@ const ExportBackupSectionFocusRecords = () => {
 					action="downloadSingleMarkdownFile"
 				/>
 
-				{/* Export Focus Records By Project */}
+				{/* Export Focus Records by Project */}
 				<FocusRecordsExporter
-					text="Export Focus Records By Project"
+					text="Export Focus Records by Project"
 					icon="download"
 					action="downloadZipFolderOfGroupedFocusRecords"
 					params={['project']}
 				/>
 
-				{/* Export Focus Records By Task */}
+				{/* Export Focus Records by Task */}
 				<FocusRecordsExporter
-					text="Export Focus Records By Task"
+					text="Export Focus Records by Task"
 					icon="download"
 					action="downloadZipFolderOfGroupedFocusRecords"
 					params={['task']}

@@ -4,17 +4,18 @@ import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils
 import { usePageContext } from 'vike-react/usePageContext';
 import { shouldBreakAllText } from '../../../../utils/text.utils';
 
-const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate }) => {
+const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate, emotionId }) => {
 	const pageContext = usePageContext();
 	const searchParams = new URLSearchParams(pageContext.urlParsed.search);
 
 	const isFocusDuration = metricType === 'duration';
 	const isCompletedTasks = metricType === 'count';
 
-	const handleGoToPage = () => {
-		const { id } = item;
+	const handleGoToPage = (customItem?: { id: string; type: 'task' | 'project' | 'emotion' }) => {
+		const targetItem = customItem || item;
+		const { id, type } = targetItem;
 
-		switch (item.type) {
+		switch (type) {
 			case 'task':
 				searchParams.set('task-id', id);
 				break;
@@ -31,6 +32,15 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 				}
 
 				break;
+			case 'emotion':
+				// Set the emotion filter (handles both regular emotions and no-emotions)
+				searchParams.set('emotions', id);
+				break;
+		}
+
+		// Add emotion filter if viewing within an emotion group (nested view)
+		if (emotionId) {
+			searchParams.set('emotions', emotionId);
 		}
 
 		// Add interval date params if they exist (for two-tier filtering)
@@ -53,19 +63,22 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 	const color = item.type === 'task' ? (projectsById[item?.projectId]?.color || item.color || '#808080') : (item.color || '#808080')
 
 	let topMostAncestorTaskName = null
+	let topMostAncestorTaskId = null
 	let projectName = null
+	let projectId = null
 
 	// For "Stats - Focus", the tasks that are displayed can be unclear since it could be a task like "BUILD" which is the task's name BUT I need more context like "BUILD - MG JUSTICE (GUNPLA)" which'll tell me which GUNPLA this "BUILD" task is for.
 	if (item.type === 'task' && ancestorTasksById) {
 		const fullTask = ancestorTasksById[item.id]
-		const topMostAncestorTaskId = fullTask?.ancestorIds[fullTask.ancestorIds.length - 1]
+		topMostAncestorTaskId = fullTask?.ancestorIds[fullTask.ancestorIds.length - 1]
 		const fullTopMostAncestorTask = ancestorTasksById[topMostAncestorTaskId]
 
 		if (topMostAncestorTaskId !== item.id) {
 			topMostAncestorTaskName = fullTopMostAncestorTask?.title
 		}
 
-		const taskProject = projectsById[item.projectId]
+		projectId = item.projectId
+		const taskProject = projectsById[projectId]
 		projectName = taskProject?.name
 	}
 
@@ -88,22 +101,39 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 				<div>
 					<div
 						className={classNames(
-							'text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px]',
+							'text-[14px] md:text-[16px]',
 							'cursor-pointer hover:underline',
 							{ 'break-all': shouldBreakAll }
 						)}
-						onClick={handleGoToPage}
+						onClick={() => handleGoToPage()}
 					>
 						{item.name}
 					</div>
 
 					<div className="text-color-gray-100">
-						{topMostAncestorTaskName && <span>{topMostAncestorTaskName}{" - "}</span>}
-						{projectName && (topMostAncestorTaskName ? <span>({projectName})</span> : (<span>{projectName}</span>))}
+						{topMostAncestorTaskName && (
+							<span
+								className="cursor-pointer hover:underline"
+								onClick={() => handleGoToPage({ id: topMostAncestorTaskId, type: 'task' })}
+							>
+								{topMostAncestorTaskName}
+							</span>
+						)}
+						{topMostAncestorTaskName && <span>{" - "}</span>}
+						{projectName && topMostAncestorTaskName && <span>(</span>}
+						{projectName && (
+							<span
+								className="cursor-pointer hover:underline"
+								onClick={() => handleGoToPage({ id: projectId, type: 'project' })}
+							>
+								{projectName}
+							</span>
+						)}
+						{projectName && topMostAncestorTaskName && <span>)</span>}
 					</div>
 				</div>
 
-				<div className="text-[14px] md:text-[16px] lg:text-[14px] xl:text-[16px] text-[#8C8C8C] text-nowrap">
+				<div className="text-[14px] md:text-[16px] text-[#8C8C8C] text-nowrap">
 					{formattedMetric} • {item.percentage}%
 				</div>
 			</div>

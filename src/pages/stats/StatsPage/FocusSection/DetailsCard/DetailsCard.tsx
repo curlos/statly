@@ -15,6 +15,7 @@ import { useGetProjectsQuery } from '../../../../../services/resources/documents
 import Spinner from '../../../../../components/Loaders/Spinner';
 import { getPieChartPaddingAngle } from '../../../../../utils/pieChart.utils';
 import { aggregateNestedTasksByParent } from '../../../../../utils/nestedTaskAggregation.utils';
+import { EMOTIONS } from '../../../../../utils/constants/constants.utils';
 
 const noData = [
 	{
@@ -31,7 +32,7 @@ const DetailsCard = () => {
 	const { chosenColorObj } = themeContext;
 	const { hover } = chosenColorObj;
 
-	const selectedOptions = ['Project', 'Task'];
+	const selectedOptions = ['Project', 'Task', 'Emotion'];
 	const [selected, setSelected] = useState(selectedOptions[0]);
 
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
@@ -55,8 +56,15 @@ const DetailsCard = () => {
 	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
 
 	// Build query params for API using custom hook
+	const getGroupBy = () => {
+		if (selected === 'Project') return 'project';
+		if (selected === 'Task') return 'task';
+		if (selected === 'Emotion') return 'emotion';
+		return 'project';
+	};
+
 	const queryParams = useStatsQueryParams({
-		'group-by': selected === 'Project' ? 'project' : 'task',
+		'group-by': getGroupBy(),
 		'interval-start-date': apiStartDate,
 		'interval-end-date': apiEndDate,
 		'nested': showNestedProgressBars,
@@ -74,9 +82,16 @@ const DetailsCard = () => {
 
 	// Extract and process data from API response
 	const { progressBarData, aggregationResults } = useMemo(() => {
-		let data = selected === 'Project'
-			? statsData?.byProject?.length > 0 ? statsData?.byProject : noData
-			: (statsData?.byTask?.length > 0 ? statsData?.byTask : noData);
+		let data;
+		if (selected === 'Project') {
+			data = statsData?.byProject?.length > 0 ? statsData?.byProject : noData;
+		} else if (selected === 'Task') {
+			data = statsData?.byTask?.length > 0 ? statsData?.byTask : noData;
+		} else if (selected === 'Emotion') {
+			data = statsData?.byEmotion?.length > 0 ? statsData?.byEmotion : noData;
+		} else {
+			data = noData;
+		}
 
 		let aggregationResults = null;
 
@@ -113,9 +128,50 @@ const DetailsCard = () => {
 			}
 		}
 
-		// Add project names and colors
+		// For Emotion view with nested progress bars, calculate aggregation from emotion-specific tasks
+		if (selected === 'Emotion' && showNestedProgressBars && statsData?.byEmotionWithTasks) {
+			const aggregationResultsByEmotion = {};
+			const byEmotionWithTasks = statsData.byEmotionWithTasks;
+
+			// Process each emotion's data separately
+			Object.keys(byEmotionWithTasks).forEach(emotionId => {
+				const emotionData = byEmotionWithTasks[emotionId];
+				const emotionTaskData = emotionData.byTask;
+				const emotionAncestorTasksById = emotionData.ancestorTasksById;
+
+				const totalDuration = statsData?.summary?.totalDuration || 1;
+
+				if (emotionTaskData && emotionTaskData.length > 0) {
+					aggregationResultsByEmotion[emotionId] = aggregateNestedTasksByParent(
+						emotionTaskData,
+						emotionAncestorTasksById,
+						totalDuration,
+						'duration',
+						projectsById,
+						totalDuration
+					);
+				}
+			});
+
+			// Store as object instead of single aggregationResults
+			aggregationResults = aggregationResultsByEmotion;
+		}
+
+		// Add project/task/emotion names and colors
 		if (data && data[0]?.id !== 'No Data') {
 			data = [...data].map((item) => {
+				// Handle emotion type
+				if (item.type === 'emotion') {
+					const emotionId = item.id;
+					const emotion = EMOTIONS[emotionId];
+					return {
+						...item,
+						name: emotion?.name || item.name,
+						color: emotion?.hex || 'bg-gray-500/70'
+					};
+				}
+
+				// Handle project/task types
 				const projectId = item.type === 'project' ? item.id : item.projectId
 
 				let name = item.type === 'project' ? projectsById && projectsById[projectId]?.name : item.name
@@ -148,7 +204,7 @@ const DetailsCard = () => {
 		return (
 			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative">
 				<div className="flex gap-4">
-					<div className="md:flex justify-between items-center w-full">
+					<div className="md:flex justify-between items-center gap-2 w-full">
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
 							<h3 className="font-bold text-[16px]">Details</h3>
 							{(isLoading || isFetching) && <Spinner size="md" />}
@@ -284,6 +340,7 @@ const DetailsCard = () => {
 							aggregationResults={aggregationResults}
 							intervalStartDate={apiStartDate}
 							intervalEndDate={apiEndDate}
+							byEmotionWithTasks={statsData?.byEmotionWithTasks}
 						/>
 					</div>
 				</div>

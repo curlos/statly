@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import ProgressBar from '../ProgressBar';
 import { useGetProjectsQuery } from '../../../../../services/resources/documentsProjectsApi';
 import NestedProgressBars from './NestedProgressBars';
+import Accordion from '../../../../../components/Accordion/Accordion';
+import { getFormattedDuration } from '../../../../../utils/focus-apps/helpers.utils';
 
 interface ProgressBarListProps {
 	data: Array<any>;
@@ -21,7 +23,8 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	metricType = 'duration',
 	aggregationResults,
 	intervalStartDate,
-	intervalEndDate
+	intervalEndDate,
+	byEmotionWithTasks
 }) => {
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -52,6 +55,13 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	});
 	const maxDataLen = fromModal ? sortedData.length : 5;
 
+	// Determine if we should show nested view
+	// For emotions, ancestorTasksById is nested inside byEmotionWithTasks
+	const shouldShowNestedView = showNestedProgressBars && aggregationResults && (
+		(dataType === 'Emotion' && byEmotionWithTasks) ||
+		ancestorTasksById
+	);
+
 	return (
 		<div className="space-y-4 w-full p-2">
 			<div
@@ -60,7 +70,87 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 					fromModal ? 'max-h-[300px] md:max-h-[500px]' : 'md:max-h-[230px]'
 				)}
 			>
-				{showNestedProgressBars && ancestorTasksById && aggregationResults ? (
+				{/* Special handling for Emotion dataType with nested view */}
+				{dataType === 'Emotion' && shouldShowNestedView && byEmotionWithTasks && aggregationResults ? (
+					sortedData.slice(0, maxDataLen).map((emotion) => {
+						const emotionId = emotion.id;
+						const emotionData = byEmotionWithTasks[emotionId];
+						const emotionAggregation = aggregationResults[emotionId];
+
+						if (!emotionData || !emotionAggregation) {
+							return null;
+						}
+
+						// Enrich project data with names and colors
+						const enrichedByProject = emotionData.byProject.map((project) => {
+							const projectId = project.id;
+							let name = projectsById?.[projectId]?.name;
+
+							// If no projectName, it's from a non-TickTick/Session app - use the app name
+							if (!name) {
+								const sourceToAppName: Record<string, string> = {
+									'FocusRecordSession': 'Session',
+									'FocusRecordBeFocused': 'Be Focused',
+									'FocusRecordForest': 'Forest',
+									'FocusRecordTide': 'Tide'
+								};
+								name = sourceToAppName[projectId] || 'Inbox';
+							}
+
+							const color = projectsById?.[projectId]?.color || '#808080';
+
+							return {
+								...project,
+								name,
+								color
+							};
+						});
+
+						return (
+							<Accordion
+								key={emotionId}
+								title={
+									<li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+										<span
+											className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+											style={{ backgroundColor: emotion.color }}
+										/>
+										{" "}
+										<span className="hover:underline">
+											<span>{emotion.name}</span>
+											{" "}
+											<span className="text-color-gray-25">
+												({isFocusDuration ? getFormattedDuration(emotion[metricKey], false) : `${emotion[metricKey]} tasks`}, {emotion.percentage}%)
+											</span>
+										</span>
+									</li>
+								}
+								openByDefault={false}
+								showArrowNextToText={true}
+							>
+								<div className="pl-6">
+									<NestedProgressBars
+										data={enrichedByProject}
+										dataByTasks={emotionData.byTask}
+										dataType="Project"
+										ancestorTasksById={emotionData.ancestorTasksById}
+										aggregationResults={emotionAggregation}
+										emotionId={emotionId}
+										focusDurationForInterval={focusDurationForInterval}
+										fromModal={fromModal}
+										setIsModalOpen={setIsModalOpen}
+										sortBy={sortBy}
+										projectsById={projectsById}
+										sessionCategoriesById={sessionCategoriesById}
+										metricType={metricType}
+										intervalStartDate={intervalStartDate}
+										intervalEndDate={intervalEndDate}
+									/>
+								</div>
+							</Accordion>
+						);
+					})
+				) : shouldShowNestedView ? (
 					<NestedProgressBars
 						{...{
 							data,
@@ -77,7 +167,8 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 							metricType,
 							aggregationResults,
 							intervalStartDate,
-							intervalEndDate
+							intervalEndDate,
+							byEmotionWithTasks
 						}}
 					/>
 				) : (

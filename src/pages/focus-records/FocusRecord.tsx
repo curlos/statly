@@ -199,17 +199,25 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 					)}
 
 					{/* Emotion Tags */}
-					{showFocusRecordEmotions && focusRecord.emotions && focusRecord.emotions.length > 0 && (
+					{showFocusRecordEmotions && (
 						<div className="mt-3">
 							<div className="flex flex-wrap gap-2">
-								{focusRecord.emotions.map((emotionObj: any, index: number) => (
+								{focusRecord.emotions && focusRecord.emotions.length > 0 ? (
+									focusRecord.emotions.map((emotionObj: any, index: number) => (
+										<EmotionTag
+											key={`${emotionObj.emotion}-${index}`}
+											emotionObj={emotionObj}
+											onClick={() => handleEmotionTagClick(emotionObj.emotion)}
+											showScore={true}
+										/>
+									))
+								) : (
 									<EmotionTag
-										key={`${emotionObj.emotion}-${index}`}
-										emotionObj={emotionObj}
-										onClick={() => handleEmotionTagClick(emotionObj.emotion)}
-										showScore={true}
+										emotionObj={{ emotion: 'none', score: 0 }}
+										onClick={() => handleEmotionTagClick('none')}
+										showScore={false}
 									/>
-								))}
+								)}
 							</div>
 						</div>
 					)}

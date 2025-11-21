@@ -4,6 +4,7 @@ import Accordion from "../../../../../components/Accordion/Accordion";
 import { getFormattedDuration } from "../../../../../utils/focus-apps/helpers.utils";
 import ProgressBar from "../ProgressBar";
 import { shouldBreakAllText } from "../../../../../utils/text.utils";
+import Spinner from "../../../../../components/Loaders/Spinner";
 
 const NestedProgressBars = ({
     data,
@@ -19,7 +20,8 @@ const NestedProgressBars = ({
     metricType = 'duration',
     aggregationResults,
     intervalStartDate,
-    intervalEndDate
+    intervalEndDate,
+    emotionId
 }) => {
     const groupedTasksCollapsedByDefault = useState(false);
 
@@ -27,7 +29,11 @@ const NestedProgressBars = ({
     const metricKey = isFocusDuration ? 'duration' : 'count';
 
     if (!data || !ancestorTasksById || (dataType === 'Project' && !dataByTasks)) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex justify-center items-center p-8">
+                <Spinner size="lg" />
+            </div>
+        );
     }
 
     const dataToUse = dataType === 'Project' && dataByTasks ? dataByTasks : data;
@@ -71,7 +77,7 @@ const NestedProgressBars = ({
 
         const renderProgressBar = () => (
             <li className="flex items-start gap-1 mb-6">
-                <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
+                <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} emotionId={emotionId} />
             </li>
         )
 
@@ -182,6 +188,7 @@ const NestedProgressBars = ({
                                     ancestorTasksById={ancestorTasksById}
                                     intervalStartDate={intervalStartDate}
                                     intervalEndDate={intervalEndDate}
+                                    emotionId={emotionId}
                                 />
                             </li>
                         </ul>
@@ -314,7 +321,6 @@ const NestedProgressBars = ({
     });
 
     const maxTasksWithNoParent = fromModal ? sortedTasksWithNoParent.length : 4;
-    
 
     if (dataType === 'Project') {
         const groupedProjectsAndTasks = {};
