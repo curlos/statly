@@ -40,6 +40,7 @@ const useUserSettings = () => {
 		showMedalGlow = false,
 		showFocusRecordEmotions = true,
 		showEmotionCount = false,
+		analyzeNoteEmotionsWhileSyncingFocusRecords = false,
 	} = focusRecordsPageSettings;
 
 	const {
@@ -98,6 +99,7 @@ const useUserSettings = () => {
 			showMedalGlow,
 			showFocusRecordEmotions,
 			showEmotionCount,
+			analyzeNoteEmotionsWhileSyncingFocusRecords,
 		},
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
