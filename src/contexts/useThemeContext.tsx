@@ -18,12 +18,20 @@ const useTheme = () => {
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
-	const themeColorKey = userSettings?.theme?.color || 'emerald-500';
+	const themeColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
 	const chosenColorObj = TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
 	const chosenColorVariantsObj = TAILWIND_COLORS_OBJ[chosenColorName];
 
-	const selectedFontFamilyKey = userSettings?.theme?.fontFamily || 'Default';
+	if (userSettings?.theme?.color && localStorage.getItem('theme-color') !== userSettings?.theme?.color) {
+		localStorage.setItem('theme-color', userSettings?.theme?.color);
+	}
+
+	const selectedFontFamilyKey = userSettings?.theme?.fontFamily || localStorage.getItem('font-family') || 'Default';
+
+	if (userSettings?.theme?.fontFamily && localStorage.getItem('font-family') !== userSettings?.theme?.fontFamily) {
+		localStorage.setItem('font-family', userSettings?.theme?.fontFamily);
+	}
 
 	const getNextLightestAndDarkestColor = () => {
 		const colorVariantNameList = Object.keys(chosenColorVariantsObj);
