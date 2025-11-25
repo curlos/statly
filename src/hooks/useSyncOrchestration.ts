@@ -22,9 +22,10 @@ export const useSyncOrchestration = () => {
 		dispatch(resetSyncStatus());
 
 		try {
-			// Phase 1: Projects + Project Groups (parallel)
+			// Phase 1: Projects + Project Groups + Focus Records (parallel)
 			dispatch(setSyncStatus({ syncType: 'projects', status: 'loading' }));
 			dispatch(setSyncStatus({ syncType: 'projectGroups', status: 'loading' }));
+			dispatch(setSyncStatus({ syncType: 'focusRecords', status: 'loading' }));
 
 			await Promise.all([
 				syncWithRetry(() => syncProjects(undefined).unwrap())
@@ -43,17 +44,20 @@ export const useSyncOrchestration = () => {
 						dispatch(setSyncStatus({ syncType: 'projectGroups', status: 'error' }));
 						throw error;
 					}),
+				syncWithRetry(() => syncFocusRecords(undefined).unwrap())
+					.then(() => {
+						dispatch(setSyncStatus({ syncType: 'focusRecords', status: 'success' }));
+					})
+					.catch((error) => {
+						dispatch(setSyncStatus({ syncType: 'focusRecords', status: 'error' }));
+						throw error;
+					}),
 			]);
 
-			// Phase 2: Tasks (sequential - must complete)
+			// Phase 2: Tasks (sequential - updates focus records after completion)
 			dispatch(setSyncStatus({ syncType: 'tasks', status: 'loading' }));
 			await syncWithRetry(() => syncTasks(undefined).unwrap());
 			dispatch(setSyncStatus({ syncType: 'tasks', status: 'success' }));
-
-			// Phase 3: Focus Records (sequential - depends on tasks)
-			dispatch(setSyncStatus({ syncType: 'focusRecords', status: 'loading' }));
-			await syncWithRetry(() => syncFocusRecords(undefined).unwrap());
-			dispatch(setSyncStatus({ syncType: 'focusRecords', status: 'success' }));
 		} catch (error) {
 			console.error('Sync failed:', error);
 			throw error;
