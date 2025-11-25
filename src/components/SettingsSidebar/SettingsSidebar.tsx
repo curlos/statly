@@ -8,6 +8,7 @@ import ExportBackupSectionCompletedTasks from '../FilterSidebar/ExportBackupSect
 import SyncUpdateSection from './SyncUpdateSection';
 import CardImage from '../../pages/challenges/CardImage';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
+import OtherSectionMedals from '../FilterSidebar/OtherSectionMedals';
 
 const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 	const sidebarVariants = {
@@ -107,6 +108,13 @@ const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 							page={isForChallengesPage ? 'challenges' : 'medals'}
 						/>
 					</div>
+				</>
+			)}
+
+			{isForMedalsPage && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<OtherSectionMedals />
 				</>
 			)}
 		</motion.div>

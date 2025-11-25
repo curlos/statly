@@ -129,14 +129,6 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			<hr className="border-color-gray-200 my-4" />
 			<DateRangeSection />
 
-
-			{page === 'medals' && (
-				<>
-					<hr className="border-color-gray-200 my-4" />
-					<OtherSectionMedals />
-				</>
-			)}
-
 			{page !== 'completed-tasks-page' && (
 				<>
 					<hr className="border-color-gray-200 my-4" />

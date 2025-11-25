@@ -31,9 +31,9 @@ const OtherSectionMedals = () => {
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">
-						<h3 className="text-[16px] font-bold">Other</h3>
+						<h3 className="text-[16px] font-bold">Default Date Range Interval</h3>
 						<Icon
-							name="other_admission"
+							name="date_range"
 							fill={0}
 							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
 						/>
@@ -42,7 +42,6 @@ const OtherSectionMedals = () => {
 				openByDefault={true}
 				isChildDropdownOpen={isDropdownOpenForParent}
 			>
-				<h4 className="text-[16px] font-normal mb-2">Default Medal Interval</h4>
 				<div className="flex">
 					<div>
 						<GeneralSelectButtonAndDropdown
