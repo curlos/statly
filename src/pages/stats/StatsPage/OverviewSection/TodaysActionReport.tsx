@@ -1,30 +1,8 @@
-import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { getFormattedLongDay } from '../../../../utils/date.utils';
-import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
-import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
+interface TodaysActionReportProps {
+	todayFocusDuration: number;
+}
 
-const TodaysActionReport = () => {
-	const themeContext = useThemeContext();
-	const { chosenColorObj } = themeContext;
-	const { textColor } = chosenColorObj;
-
-	// Get today's date
-	const today = new Date();
-	const todayDateKey = getFormattedLongDay(today);
-
-	// Build query params for today's focus stats
-	const todayFocusQueryParams = useStatsQueryParams({
-		'group-by': 'day',
-		'interval-start-date': todayDateKey,
-		'interval-end-date': todayDateKey,
-	});
-
-	// Fetch today's focus stats
-	const { data: todayFocusStats } = useGetFocusStatsQuery(todayFocusQueryParams);
-
-	// Extract today's focus duration
-	const todayFocusData = todayFocusStats?.byDay?.[0] || { duration: 0 };
-	const todayFocusDuration = todayFocusData.duration;
+const TodaysActionReport = ({ todayFocusDuration }: TodaysActionReportProps) => {
 
 	const medals = [
 		{

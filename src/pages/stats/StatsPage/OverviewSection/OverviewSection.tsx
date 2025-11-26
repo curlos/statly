@@ -16,15 +16,15 @@ const OverviewSection = () => {
 				<div className="flex justify-between items-center">
 					<div className="grid grid-cols-2 sm:flex gap-6">
 						<div>
-							<span className="font-bold">{(overviewStats?.numOfAllTasks ?? 0).toLocaleString()}</span> <span className="text-gray-400">Tasks</span>
+							<span className="font-bold">{(overviewStats?.totalTasksCount ?? 0).toLocaleString()}</span> <span className="text-gray-400">Tasks</span>
 						</div>
 
 						<div>
-							<span className="font-bold">{(overviewStats?.numOfCompletedTasks ?? 0).toLocaleString()}</span> <span className="text-gray-400">Completed</span>
+							<span className="font-bold">{(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()}</span> <span className="text-gray-400">Completed</span>
 						</div>
 
 						<div>
-							<span className="font-bold">{(overviewStats?.numOfProjects ?? 0).toLocaleString()}</span> <span className="text-gray-400">Projects</span>
+							<span className="font-bold">{(overviewStats?.totalProjectsCount ?? 0).toLocaleString()}</span> <span className="text-gray-400">Projects</span>
 						</div>
 
 						<div>
@@ -33,13 +33,13 @@ const OverviewSection = () => {
 						</div>
 					</div>
 
-					{isLoading || isFetching && <Spinner size="sm" />}
+					{(isLoading || isFetching) && <Spinner size="sm" />}
 				</div>
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-3">
-				<OverviewCard />
-				<TodaysActionReport />
+				<OverviewCard overviewStats={overviewStats} isLoading={isLoading} />
+				<TodaysActionReport todayFocusDuration={overviewStats?.todayFocusDuration ?? 0} />
 			</div>
 		</div>
 	);
