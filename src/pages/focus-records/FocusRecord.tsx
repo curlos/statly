@@ -175,7 +175,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 
 									return (
 										<li
-											key={`${focusRecord.id} ${completedTask._id} ${index}`}
+											key={`${focusRecord.id}-${index}`}
 											className="flex items-start gap-1"
 										>
 											<Icon
