@@ -49,7 +49,7 @@ const CompletedTasksCurveCard = () => {
 			? 0
 			: totalCount / intervalsWithAtLeastOneCompletedTask;
 
-		return `Average: ${averageCount.toFixed(2)} tasks`;
+		return `Average: ${averageCount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} tasks`;
 	};
 
 	return (
