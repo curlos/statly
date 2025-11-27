@@ -1,6 +1,7 @@
 import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
 import AnalyzeNoteEmotions from '../FilterSidebar/AnalyzeNoteEmotions';
+import RevalidateCrossesMidnight from '../FilterSidebar/RevalidateCrossesMidnight';
 import CheckboxOther from '../FilterSidebar/CheckboxOther';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 
@@ -48,6 +49,10 @@ const SyncUpdateSection = () => {
 							handleCheckboxClick: () => handleCheckboxClick(analyzeNoteEmotionsWhileSyncingFocusRecords, 'analyzeNoteEmotionsWhileSyncingFocusRecords'),
 						}}
 					/>
+				</div>
+
+				<div className="mt-4">
+					<RevalidateCrossesMidnight />
 				</div>
 			</Accordion>
 		</div>

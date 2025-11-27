@@ -78,9 +78,17 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
                 body: { recordIds },
             }),
             // Don't automatically invalidate tags - we'll do it manually after all chunks complete
+        }),
+        revalidateCrossesMidnight: builder.mutation({
+            query: ({ timezone }: { timezone: string }) => ({
+                url: '/documents/focus-records/revalidate-crosses-midnight',
+                method: 'POST',
+                body: { timezone },
+            }),
+            invalidatesTags: ['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats'],
         })
     }),
     overrideExisting: false,
 });
 
-export const { useGetFocusRecordsQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery, useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation } = documentsFocusRecordsApi;
+export const { useGetFocusRecordsQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery, useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, useRevalidateCrossesMidnightMutation } = documentsFocusRecordsApi;
