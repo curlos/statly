@@ -20,15 +20,14 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 				searchParams.set('task-id', id);
 				break;
 			case 'project':
-				// If the project is from TickTick.
-				if (projectsById[id]) {
-					searchParams.set('projects', id);
-					// If the project is a category from "Session App".
-				} else if (sessionCategoriesById[id]) {
+				if (sessionCategoriesById[id]) {
 					searchParams.set('categories', id);
 					// If the project is one of the focus apps that don't have separate projects (Forest, Tide, and BeFocused).
 				} else if (id === 'forest-app' || id === 'tide-ios-app' || id === 'be-focused-app') {
 					searchParams.set('focus-apps', id);
+				} else {
+					// If the project is from TickTick. This is used as a default for now but in the future, session's "categories" should also be categorized under this.
+					searchParams.set('projects', id);
 				}
 
 				break;
@@ -79,7 +78,7 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 
 		projectId = item.projectId
 		const taskProject = projectsById[projectId]
-		projectName = taskProject?.name
+		projectName = taskProject?.name || projectId
 	}
 
 	const shouldBreakAll = shouldBreakAllText(item.name);

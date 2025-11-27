@@ -94,7 +94,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 									'FocusRecordForest': 'Forest',
 									'FocusRecordTide': 'Tide'
 								};
-								name = sourceToAppName[projectId] || 'Inbox';
+								name = sourceToAppName[projectId] || projectId;
 							}
 
 							const color = projectsById?.[projectId]?.color || '#808080';

@@ -124,7 +124,7 @@ const CompletionStatsCard = () => {
 			data = [...data].map((item) => {
 				const projectId = item.type === 'project' ? item.id : item.projectId
 
-				const name = item.type === 'project' ? projectsById && projectsById[projectId]?.name : item.name
+				const name = item.type === 'project' ? projectsById && (projectsById[projectId]?.name || projectId) : item.name
 				const color = projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080'
 
 				return {

@@ -174,7 +174,7 @@ const DetailsCard = () => {
 				// Handle project/task types
 				const projectId = item.type === 'project' ? item.id : item.projectId
 
-				let name = item.type === 'project' ? projectsById && projectsById[projectId]?.name : item.name
+				let name = item.type === 'project' ? projectsById && (projectsById[projectId]?.name || projectId) : item.name
 
 				// If no projectName, it's from a non-TickTick/Session app - use the app name
 				if (!name && item.value !== 'No Data') {
