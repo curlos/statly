@@ -2,16 +2,17 @@ import { useState } from 'react';
 import Icon from '../Icon';
 import SidebarModal from '../SidebarModal/SidebarModal';
 import ModalSettingsSidebar from '../SettingsSidebar/ModalSettingsSidebar';
+import ChecklistTimerIcon from '../ChecklistTimerIcon';
 
 const Navbar = ({ page = null }) => {
 	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
 	return (
-		<div className="container pt-4 pb-3 flex items-center justify-between">
-			<img src="/gundam-nu-icon.webp" className="h-[40px]" />
+		<div className="container pt-8 pb-3 flex items-center justify-between">
+			<ChecklistTimerIcon customClassName="!w-[40px] !h-[40px]"/>
 
-			<div className="flex items-center gap-3 mt-[15px] mr-[15px]">
+			<div className="flex items-center gap-3 mr-[15px]">
 				<Icon
 					name="settings"
 					customClass={'!text-[30px] text-color-gray-100 cursor-pointer'}
