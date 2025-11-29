@@ -1,15 +1,63 @@
 import { useForm } from 'react-hook-form';
-import Icon from './Icon';
-import { useDispatch } from 'react-redux';
-import { setModalState } from '../slices/modalSlice';
 import { useLoginUserMutation, useRegisterUserMutation } from '../services/resources/usersApi';
 import { navigate } from 'vike/client/router';
 import Link from './Link';
 import classNames from 'classnames';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
+import { useState } from 'react';
+import FormInput from './FormInput';
+
+// Email validation regex
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Validation rules
+const validationRules = {
+	name: {
+		required: 'Name is required',
+		validate: (value: string) => {
+			const trimmed = value?.trim();
+			if (!trimmed || trimmed.length === 0) {
+				return 'Name cannot be empty or only whitespace';
+			}
+			return true;
+		}
+	},
+	email: {
+		required: 'Email is required',
+		pattern: {
+			value: EMAIL_REGEX,
+			message: 'Please enter a valid email address'
+		}
+	},
+	password: {
+		required: 'Password is required',
+		minLength: {
+			value: 8,
+			message: 'Password must be at least 8 characters long'
+		},
+		validate: (value: string) => {
+			if (!/[a-z]/.test(value)) {
+				return 'Password must contain at least one lowercase letter';
+			}
+			if (!/[A-Z]/.test(value)) {
+				return 'Password must contain at least one uppercase letter';
+			}
+			if (!/\d/.test(value)) {
+				return 'Password must contain at least one number';
+			}
+			if (!/[@$!%*?&]/.test(value)) {
+				return 'Password must contain at least one special character (@$!%*?&)';
+			}
+			return true;
+		}
+	},
+	confirmPassword: {
+		required: 'Please confirm your password',
+	}
+};
 
 const UserForm = ({ mode }) => {
-	const dispatch = useDispatch();
+	const [submitError, setSubmitError] = useState(null);
 
 	const {
 		register,
@@ -23,8 +71,9 @@ const UserForm = ({ mode }) => {
 
 	const isLoading = mode === 'login' ? isLoginLoading : isRegisterLoading;
 
-	const onSubmit = async (data) => {
+	const onSubmit = async (data: any) => {
 		try {
+			setSubmitError(null);
 			if (mode === 'login') {
 				await loginUser(data).unwrap();
 			} else {
@@ -33,62 +82,70 @@ const UserForm = ({ mode }) => {
 
 			navigate('/focus-records');
 		} catch (error) {
-			dispatch(setModalState({ modalId: 'ModalErrorMessenger', isOpen: true, props: { error } }));
+			setSubmitError(error?.data?.message || error?.message || 'An error occurred. Please try again.');
 		}
 	};
 
-	const chosenColorObj = TAILWIND_COLORS_OBJ['red']['red-500'];
+	const chosenColorObj = TAILWIND_COLORS_OBJ['blue']['blue-500'];
 
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className="flex flex-col gap-4 w-full sm:max-w-[400px] bg-color-gray-300 p-10 rounded"
+			className="flex flex-col gap-4 w-full sm:max-w-[400px] bg-color-gray-300 p-10 rounded-xl"
 		>
+			<div className="flex justify-center">
+				<img src="/checklist-icon.svg" className="w-[80px] h-[80px]" />
+			</div>
 			{mode === 'register' && (
-				<div>
-					<div className="flex items-center gap-2 border-b border-color-gray-100 py-2">
-						<Icon name="person" customClass={'!text-[20px] '} />
-						<input
-							id="nickname"
-							type="text"
-							placeholder="Nickname (optional)"
-							{...register('nickname')}
-							className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
-						/>
-					</div>
-					{errors.nickname && <p className="text-red-500">{errors.nickname.message}</p>}
+				<FormInput
+					id="name"
+					type="text"
+					placeholder="Name"
+					iconName="person"
+					register={register('name', validationRules.name)}
+					error={errors.name}
+				/>
+			)}
+			<FormInput
+				id="email"
+				type="email"
+				placeholder="Email"
+				iconName="email"
+				register={register('email', validationRules.email)}
+				error={errors.email}
+			/>
+			<FormInput
+				id="password"
+				type="password"
+				placeholder="Password"
+				iconName="lock"
+				register={register('password', validationRules.password)}
+				error={errors.password}
+			/>
+			{mode === 'register' && (
+				<FormInput
+					id="confirmPassword"
+					type="password"
+					placeholder="Confirm Password"
+					iconName="lock"
+					register={register('confirmPassword', {
+						...validationRules.confirmPassword,
+						validate: (value, formValues) => value === formValues.password || 'Passwords do not match'
+					})}
+					error={errors.confirmPassword}
+				/>
+			)}
+
+			{submitError && (
+				<div className="bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm">
+					{submitError}
 				</div>
 			)}
-			<div>
-				<div className="flex items-center gap-2 border-b border-color-gray-100 py-2">
-					<Icon name="email" customClass={'!text-[20px] '} />
-					<input
-						id="email"
-						type="email"
-						placeholder="Email"
-						{...register('email', { required: 'Email is required' })}
-						className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
-					/>
-				</div>
-				{errors.email && <p className="text-red-500">{errors.email.message}</p>}
-			</div>
-			<div>
-				<div className="flex items-center gap-2 border-b border-color-gray-100 py-2">
-					<Icon name="lock" customClass={'!text-[20px] '} />
-					<input
-						id="password"
-						type="password"
-						placeholder="Password"
-						{...register('password', { required: 'Password is required' })}
-						className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 w-full resize-none outline-none rounded"
-					/>
-				</div>
-				{errors.password && <p className="text-red-500">{errors.password.message}</p>}
-			</div>
+
 			<button
 				type="submit"
 				disabled={isLoading}
-				className={classNames(chosenColorObj.bgColor, 'w-full rounded p-2 mt-4')}
+				className={classNames(chosenColorObj.bgColor, 'w-full rounded-xl p-2 mt-4')}
 			>
 				{mode === 'login' ? 'Login' : 'Sign Up'}
 			</button>
@@ -99,20 +156,20 @@ const UserForm = ({ mode }) => {
 						Have an account already?{' '}
 						<Link
 							href="/login"
-							className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
+							className={classNames(chosenColorObj.textColor, chosenColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
 						>
 							Login
 						</Link>
 					</div>
 				) : (
 					<div>
-						{/* Don't have an account?{' '}
+						Don't have an account?{' '}
 						<Link
 							href="/signup"
-							className={classNames(chosenColorObj.textColor, 'cursor-pointer hover:underline')}
+							className={classNames(chosenColorObj.textColor, chosenColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
 						>
 							Sign Up
-						</Link> */}
+						</Link>
 					</div>
 				)}
 			</div>

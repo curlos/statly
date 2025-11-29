@@ -33,9 +33,9 @@ const ProviderList = ({ children }) => {
 	const pageRoute = pageContext?.urlParsed?.pathname;
 	const isLoggedIn = useSelector(selectUserToken);
 
-	const isNotOnLoginPage = pageRoute !== '/login';
+	const isNotOnLoginOrSignupPage = pageRoute !== '/login' && pageRoute !== '/signup';
 
-	if (!isLoggedIn && isNotOnLoginPage) {
+	if (!isLoggedIn && isNotOnLoginOrSignupPage) {
 		navigate('/login');
 	}
 

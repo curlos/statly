@@ -23,7 +23,6 @@ const LoginAndSignupPage = () => {
 	return (
 		<div className="flex justify-center items-center min-h-screen bg-color-gray-700">
 			<div className="container flex flex-col items-center">
-				<img src="/helicopter-medal-cod-mwr.webp" alt="" className="w-[120px] h-[120px] mb-5" />
 				<UserForm mode={mode} />
 			</div>
 		</div>
