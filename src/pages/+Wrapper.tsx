@@ -3,7 +3,7 @@ import '../App.css';
 import '../fonts';
 import 'material-symbols';
 
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import store from '../store/store';
 // import { StatsProvider } from '../contexts/useStatsContext';
 import GlobalModalList from '../components/Modal/GlobalModalList';
@@ -11,10 +11,12 @@ import { ThemeProvider, useThemeContext } from '../contexts/useThemeContext';
 import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
 import { UserSettingsProvider } from './focus-records/useUserSettingsContext';
 import { usePageContext } from 'vike-react/usePageContext';
-import { selectUserToken } from '../slices/userSlice';
+import { selectUserToken, loginUserSuccess } from '../slices/userSlice';
 import { navigate } from 'vike/client/router';
 import { useAutoSync } from '../hooks/useAutoSync';
 import { FontLoadingProvider } from '../contexts/useFontLoadingContext';
+import { useGetLoggedInUserQuery } from '../services/resources/usersApi';
+import { useEffect } from 'react';
 
 const globalClasses = 'text-white select-none';
 
@@ -32,6 +34,18 @@ const ProviderList = ({ children }) => {
 	const pageContext = usePageContext();
 	const pageRoute = pageContext?.urlParsed?.pathname;
 	const isLoggedIn = useSelector(selectUserToken);
+	const dispatch = useDispatch();
+
+	// Fetch user data if token exists but user data is not loaded
+	const { data: userData } = useGetLoggedInUserQuery(undefined, {
+		skip: !isLoggedIn,
+	});
+
+	useEffect(() => {
+		if (userData && isLoggedIn) {
+			dispatch(loginUserSuccess({ user: userData, token: isLoggedIn }));
+		}
+	}, [userData, isLoggedIn, dispatch]);
 
 	const isNotOnLoginOrSignupPage = pageRoute !== '/login' && pageRoute !== '/signup';
 
