@@ -6,6 +6,7 @@ import Icon from '../../../components/Icon';
 import SidebarModal from '../../../components/SidebarModal/SidebarModal';
 import { useState } from 'react';
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
+import ChecklistTimerIcon from '../../../components/ChecklistTimerIcon';
 
 const TopBar = () => {
 	const pageContext = usePageContext();
@@ -72,7 +73,10 @@ const TopBar = () => {
 
 	return (
 		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-			<h1 className="text-[24px] font-medium">Statistics</h1>
+			<div className="flex items-center gap-3">
+				<ChecklistTimerIcon customClassName="!w-[30px] !h-[30px]"/>
+				<h1 className="text-[24px] font-medium">Statistics</h1>
+			</div>
 
 			<div className="hidden md:flex justify-center sm:mr-[110px]">{getTabButtons()}</div>
 
