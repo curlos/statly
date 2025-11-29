@@ -374,7 +374,9 @@ const useExportCompletedTasks = () => {
 
 				// Filename for the markdown file
 				const sanitizedName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(/[/\\?%*:|"<>]/g, '-');
-				zip.file(`${sanitizedName}.md`, markdown);
+				// Adjust date to local timezone to fix zip file timestamp display
+				const localDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
+				zip.file(`${sanitizedName}.md`, markdown, { date: localDate });
 			});
 		} else {
 			// Flat mode (existing logic)
@@ -403,7 +405,9 @@ const useExportCompletedTasks = () => {
 
 				// Filename for the markdown file - sanitize forward slashes to prevent folder creation
 				const sanitizedName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(/[/\\?%*:|"<>]/g, '-');
-				zip.file(`${sanitizedName}.md`, markdown);
+				// Adjust date to local timezone to fix zip file timestamp display
+				const localDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
+				zip.file(`${sanitizedName}.md`, markdown, { date: localDate });
 			});
 		}
 

@@ -119,8 +119,15 @@ const BackupData = () => {
 			},
 		];
 
+		// Adjust date to local timezone to fix zip file timestamp display
+		const localDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
+
 		for (const data of importantApiResponsesArr) {
-			const folder = zip.folder(data.folderName);
+			// Create folder first with correct timestamp by adding a directory entry
+			zip.file(`${data.folderName}/`, null, {
+				dir: true,
+				date: localDate
+			});
 
 			// All responses are now arrays, so we can directly chunk them
 			const arrayToChunk = data.response;
@@ -141,9 +148,11 @@ const BackupData = () => {
 					response: chunk,
 				};
 
-				folder?.file(
-					`${data.fileName}_${index + 1}.json`,
-					JSON.stringify(fileContent, null, 4)
+				// Use folder path directly in file() to set folder timestamp correctly
+				zip.file(
+					`${data.folderName}/${data.fileName}_${index + 1}.json`,
+					JSON.stringify(fileContent, null, 4),
+					{ date: localDate }
 				);
 			});
 		}

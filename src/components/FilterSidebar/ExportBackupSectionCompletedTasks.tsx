@@ -64,9 +64,9 @@ const ExportBackupSectionCompletedTasks = () => {
 					params={['project']}
 				/>
 
-				{/* Export Completed Tasks by Parent Task */}
+				{/* Export Completed Tasks by Task */}
 				<CompletedTasksExporter
-					text="Export Completed Tasks by Parent Task"
+					text="Export Completed Tasks by Task"
 					icon="download"
 					action="downloadZipFolderOfGroupedCompletedTasks"
 					params={['task']}
