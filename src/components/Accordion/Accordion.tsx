@@ -37,7 +37,7 @@ const Accordion = ({
 			<button
 				onClick={toggleOpen}
 				className={classNames(
-					'w-full text-left flex gap-2 items-center focus:outline-none rounded-xl mb-2',
+					'w-full text-left flex gap-2 items-center focus:outline-none rounded-xl mb-3',
 					showArrowNextToText ? 'justify-start' : 'justify-between'
 				)}
 			>

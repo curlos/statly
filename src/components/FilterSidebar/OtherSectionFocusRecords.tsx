@@ -50,7 +50,7 @@ const OtherSectionFocusRecords = () => {
 		<div>
 			<Accordion
 				title={
-					<div className="flex items-center gap-1 mb-3">
+					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Page Settings</h3>
 						<Icon
 							name="settings"

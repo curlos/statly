@@ -51,7 +51,7 @@ const DateRangeSection = () => {
 		<div>
 			<Accordion
 				title={
-					<div className="flex items-center gap-1 mb-3">
+					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Date Range</h3>
 						<Icon
 							name="diversity_2"

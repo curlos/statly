@@ -16,7 +16,7 @@ const ShowDaysFromToDoListAppSection = () => {
 		<div>
 			<Accordion
 				title={
-					<div className="flex items-center gap-1 mb-3">
+					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Show Days From To-Do List App</h3>
 						<Icon
 							name="app_blocking"
