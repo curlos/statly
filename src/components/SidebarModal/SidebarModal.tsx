@@ -72,37 +72,22 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col"
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
-						<div className="flex-1">
-							<div className="font-bold text-[24px]">
-								<LinkLi name="Stats" linkUrl="/stats/overview" iconName="network_intelligence_history" />
-								<LinkLi name="Focus Hours Goal" linkUrl="/focus-hours-goal" iconName="clock_loader_20" />
-								<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timeline" />
-								<LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" />
-								<LinkLi name="Medals" linkUrl={getMedalsLinkUrl()} iconName="workspace_premium" />
-								<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />
-							</div>
-
-							{/* Sync */}
-							<hr className="border-color-gray-200 my-4" />
-							<SyncSection />
-
-							{/* Theme Color */}
-							{/* <hr className="border-color-gray-200 my-4" />
-							<ThemeColorList /> */}
-
-							{/* Font Families */}
-							{/* <hr className="border-color-gray-200 my-4" />
-							<FontFamilyList /> */}
-
-							{/* Other */}
-							{/* <hr className="border-color-gray-200 my-4" />
-							<OtherSection /> */}
+						<div className="font-bold text-[24px]">
+							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="network_intelligence_history" />
+							<LinkLi name="Focus Hours Goal" linkUrl="/focus-hours-goal" iconName="clock_loader_20" />
+							<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timeline" />
+							<LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" />
+							<LinkLi name="Medals" linkUrl={getMedalsLinkUrl()} iconName="workspace_premium" />
+							<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />
 						</div>
+
+						{/* Sync */}
+						<hr className="border-color-gray-200 my-4" />
+						<SyncSection />
 
 						{/* User Profile */}
-						<div className="pt-2">
-							<UserProfileSection />
-						</div>
+						<hr className="border-color-gray-200 my-4" />
+						<UserProfileSection />
 					</motion.div>
 				</motion.div>
 			)}

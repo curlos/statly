@@ -38,7 +38,7 @@ const FocusRecordList = ({
 							<div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
 								<Icon name="timer" customClass="!text-[40px]" />
 								<p className="text-lg font-bold">No Focus Records</p>
-								<p className="text-sm mt-1">Start a focus session to see your records here</p>
+								<p className="mt-1">Start a focus session to see your records here</p>
 							</div>
 						) : (
 							<div className="space-y-3">

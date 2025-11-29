@@ -73,10 +73,10 @@ const ModalFirstSync = () => {
 								<p className="text-lg">
 									Your data has been successfully synced!
 								</p>
-								<p className="text-sm">
+								<p>
 									You can now view all your tasks, projects, and focus records.
 								</p>
-								<p className="text-xs text-color-gray-200">
+								<p className="text-color-gray-200">
 									This modal will close automatically in 2 seconds.
 								</p>
 							</>
@@ -93,7 +93,7 @@ const ModalFirstSync = () => {
 							// For idle state, show "Waiting..." text
 							const displayInfo = statusInfo || { name: 'schedule', color: '#9ca3af', text: 'Waiting...', spin: false };
 							return (
-								<div key={category.label} className="flex items-center justify-between text-sm">
+								<div key={category.label} className="flex items-center justify-between">
 									<div className="flex items-center gap-2">
 										<Icon name={category.icon} fill={1} customClass="!text-[18px] text-color-gray-100" />
 										<span className="text-color-gray-100">{category.label}</span>

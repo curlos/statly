@@ -28,8 +28,9 @@ const UserProfileSection = () => {
 	};
 
 	const handleLogout = () => {
-		dispatch(logoutUser());
 		setIsDropdownOpen(false);
+		// Dispatch logout - the Wrapper will handle navigation and keep providers mounted during transition
+		dispatch(logoutUser());
 	};
 
 	const handleSettingsClick = () => {
@@ -38,7 +39,7 @@ const UserProfileSection = () => {
 	};
 
 	const profilePicUrl = user.profilePic || null;
-	const themeColor = chosenColorObj?.hex || '#3b82f6';
+	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 
 	return (
 		<div className="relative">
@@ -51,7 +52,7 @@ const UserProfileSection = () => {
 					<img src={profilePicUrl} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
 				) : (
 					<div
-						className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
+						className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
 						style={{ backgroundColor: themeColor }}
 					>
 						{getInitials(user.name)}
@@ -59,12 +60,12 @@ const UserProfileSection = () => {
 				)}
 				<div className="flex-1 min-w-0">
 					<div className="font-semibold text-white truncate">{user.name}</div>
-					<div className="text-sm text-color-gray-50 truncate">{user.email}</div>
+					<div className="text-color-gray-50 truncate">{user.email}</div>
 				</div>
 				<Icon name="more_horiz" customClass="text-color-gray-50 !text-[24px]" />
 			</div>
 
-			<Dropdown isVisible={isDropdownOpen} setIsVisible={setIsDropdownOpen} toggleRef={toggleRef} customClasses="w-full max-w-[250px]">
+			<Dropdown isVisible={isDropdownOpen} setIsVisible={setIsDropdownOpen} toggleRef={toggleRef} customClasses="w-full max-w-[250px] !text-[16px]">
 				<div className="p-2">
 					<div
 						className="flex items-center gap-3 p-2 hover:bg-color-gray-200 cursor-pointer rounded"

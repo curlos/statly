@@ -10,8 +10,8 @@ import FormInput from './FormInput';
 // Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Validation rules
-const validationRules = {
+// Validation rules for signup (strict validation)
+const signupValidationRules = {
 	name: {
 		required: 'Name is required',
 		validate: (value: string) => {
@@ -56,6 +56,20 @@ const validationRules = {
 	}
 };
 
+// Validation rules for login (minimal validation)
+const loginValidationRules = {
+	email: {
+		required: 'Email is required',
+		pattern: {
+			value: EMAIL_REGEX,
+			message: 'Please enter a valid email address'
+		}
+	},
+	password: {
+		required: 'Password is required'
+	}
+};
+
 const UserForm = ({ mode }) => {
 	const [submitError, setSubmitError] = useState(null);
 
@@ -70,6 +84,9 @@ const UserForm = ({ mode }) => {
 	const [registerUser, { isLoading: isRegisterLoading }] = useRegisterUserMutation();
 
 	const isLoading = mode === 'login' ? isLoginLoading : isRegisterLoading;
+
+	// Use different validation rules based on mode
+	const validationRules = mode === 'login' ? loginValidationRules : signupValidationRules;
 
 	const onSubmit = async (data: any) => {
 		try {

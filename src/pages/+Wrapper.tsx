@@ -47,23 +47,28 @@ const ProviderList = ({ children }) => {
 		}
 	}, [userData, isLoggedIn, dispatch]);
 
-	const isNotOnLoginOrSignupPage = pageRoute !== '/login' && pageRoute !== '/signup';
-
-	if (!isLoggedIn && isNotOnLoginOrSignupPage) {
-		navigate('/login');
-	}
+	const isOnLoginOrSignupPage = pageRoute === '/login' || pageRoute === '/signup';
 
 	if (!isLoggedIn) {
-		return (
-			<div className={globalClasses}>
-				{children}
+		// If not on login/signup page, navigate there
+		if (!isOnLoginOrSignupPage) {
+			navigate('/login');
+			// Keep rendering with providers during transition to prevent context errors
+			// Fall through to the main return at the bottom
+		} else {
+			// On login/signup page: render without providers
+			return (
+				<div className={globalClasses}>
+					{children}
 
-				{/* Modals */}
-				<GlobalModalList />
-			</div>
-		);
+					{/* Modals */}
+					<GlobalModalList />
+				</div>
+			);
+		}
 	}
 
+	// Logged in OR transitioning to login: render with all providers
 	return (
 		<SearchParamsProvider>
 			<ThemeProvider>

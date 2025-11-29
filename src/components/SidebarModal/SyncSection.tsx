@@ -34,7 +34,7 @@ const SyncItem = ({ label, syncKey, metadata }: SyncItemProps) => {
 	return (
 		<div className="flex items-center justify-between gap-2">
 			<div className="font-semibold">{label}</div>
-			<div className="flex items-center gap-2 text-sm text-color-gray-100">
+			<div className="flex items-center gap-2 text-color-gray-100">
 				<span className="font-bold hidden sm:inline-block">Last sync:</span>
 				<span>{formatLastSyncTime(metadata?.lastSyncTime)}</span>
 				{statusIcon && (

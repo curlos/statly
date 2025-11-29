@@ -159,7 +159,7 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 					exit="hidden"
 					variants={variants}
 					className={classNames(
-						'absolute top-full left-0 z-50 text-white bg-color-gray-600 rounded-lg text-sm mt-[4px]',
+						'absolute top-full left-0 z-50 text-white bg-color-gray-600 rounded-lg text-[14px] mt-[4px]',
 						positionAdjustment || '',
 						customClasses || ''
 					)}

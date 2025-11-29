@@ -56,10 +56,6 @@ const FontFamilyList = () => {
 
 	return (
 		<div>
-			<div className="flex items-center gap-1 mb-2">
-				<h3 className="text-[20px] font-bold">Font Family</h3>
-				<Icon name="font_download" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
-			</div>
 			{fontFamilies.map((fontFamilyName) => {
 				const fontFamilyKey = fontFamilyName ? fontFamilyName : 'Default';
 
