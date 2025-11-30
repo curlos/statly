@@ -128,15 +128,15 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 			)}
 
 			{/* Action Buttons */}
-			<div className="flex gap-3">
+			<div className="flex justify-center items-center gap-3 w-full">
 				<button
-					className="px-6 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full w-[200px]"
+					className="flex-1 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full max-w-[200px]"
 					onClick={onEditProfile}
 				>
 					Edit Profile
 				</button>
 				<button
-					className="px-6 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full w-[200px]"
+					className="flex-1 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full max-w-[200px]"
 					onClick={handleLogout}
 				>
 					Log Out
