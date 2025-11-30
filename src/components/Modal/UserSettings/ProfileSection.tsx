@@ -4,11 +4,12 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useGetOverviewStatsQuery } from '../../../services/resources/documentsStatsApi';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 
-interface AccountSectionProps {
+interface ProfileSectionProps {
 	onClose: () => void;
+	onEditProfile: () => void;
 }
 
-const AccountSection: React.FC<AccountSectionProps> = ({ onClose }) => {
+const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile }) => {
 	const user = useSelector(selectUser);
 	const dispatch = useDispatch();
 	const { chosenColorObj } = useThemeContext();
@@ -73,7 +74,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({ onClose }) => {
 			)}
 
 			{/* Stats Grid */}
-			<div className="grid grid-cols-2 gap-6 my-6 max-w-md">
+			<div className="grid grid-cols-2 gap-3 my-6 max-w-md">
 				<div className="text-center">
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
 						{(overviewStats?.totalFocusRecordCount ?? 0).toLocaleString()}
@@ -84,7 +85,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({ onClose }) => {
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
 						{(getFormattedDuration(overviewStats?.totalFocusDuration || 0, false))}
 					</div>
-					<div className="text-color-gray-50">Focus Duration</div>
+					<div className="text-color-gray-50">Focus Time</div>
 				</div>
 				<div className="text-center">
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
@@ -127,14 +128,22 @@ const AccountSection: React.FC<AccountSectionProps> = ({ onClose }) => {
 			)}
 
 			{/* Action Buttons */}
-			<button
-				className="px-6 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded w-[200px]"
-				onClick={handleLogout}
-			>
-				Log Out
-			</button>
+			<div className="flex gap-3">
+				<button
+					className="px-6 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full w-[200px]"
+					onClick={onEditProfile}
+				>
+					Edit Profile
+				</button>
+				<button
+					className="px-6 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full w-[200px]"
+					onClick={handleLogout}
+				>
+					Log Out
+				</button>
+			</div>
 		</div>
 	);
 };
 
-export default AccountSection;
+export default ProfileSection;

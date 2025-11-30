@@ -313,7 +313,7 @@ const DetailsCard = () => {
 													dominantBaseline="central"
 													className="text-[14px]"
 												>
-													Focus Duration
+													Focus Time
 												</text>
 											</g>
 										);

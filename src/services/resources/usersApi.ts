@@ -4,7 +4,8 @@ import { baseAPI } from '../api';
 export const usersApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
 		getLoggedInUser: builder.query({
-			query: () => '/users/logged-in',
+			query: () => '/users/logged-in-user',
+			providesTags: ['User'],
 		}),
 		registerUser: builder.mutation({
 			query: (userDetails) => ({
@@ -43,9 +44,30 @@ export const usersApi = baseAPI.injectEndpoints({
 					console.error('Login failed:', error);
 				}
 			},
-			invalidatesTags: (result, error) => (error ? [] : ['Task', 'Project', 'FocusRecord']),
+			invalidatesTags: ['User'],
+		}),
+		updateUserProfile: builder.mutation({
+			query: (formData) => ({
+				url: '/users/update-profile',
+				method: 'PUT',
+				body: formData,
+			}),
+			invalidatesTags: (_result, error) => (error ? [] : ['User']),
+		}),
+		updateUserPassword: builder.mutation({
+			query: (credentials) => ({
+				url: '/users/update-password',
+				method: 'PUT',
+				body: credentials,
+			}),
 		}),
 	}),
 });
 
-export const { useGetLoggedInUserQuery, useRegisterUserMutation, useLoginUserMutation } = usersApi;
+export const {
+	useGetLoggedInUserQuery,
+	useRegisterUserMutation,
+	useLoginUserMutation,
+	useUpdateUserProfileMutation,
+	useUpdateUserPasswordMutation,
+} = usersApi;

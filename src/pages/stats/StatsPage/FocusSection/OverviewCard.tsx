@@ -151,7 +151,7 @@ const OverviewCard = () => {
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{getFormattedDuration(totalFocusDuration, false)}
 						</div>
-						<div className="text-color-gray-100 font-medium">Total Focus Duration</div>
+						<div className="text-color-gray-100 font-medium">Total Focus Time</div>
 					</div>
 				</div>
 			</div>

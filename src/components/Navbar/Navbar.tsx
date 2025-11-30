@@ -10,7 +10,7 @@ const Navbar = ({ page = null }) => {
 
 	return (
 		<div className="container pt-8 pb-3 flex items-center justify-between">
-			<ChecklistTimerIcon customClassName="!w-[40px] !h-[40px]"/>
+			<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]"/>
 
 			<div className="flex items-center gap-3 mr-[15px]">
 				<Icon

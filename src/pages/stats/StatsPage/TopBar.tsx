@@ -74,7 +74,7 @@ const TopBar = () => {
 	return (
 		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
 			<div className="flex items-center gap-3">
-				<ChecklistTimerIcon customClassName="!w-[30px] !h-[30px]"/>
+				<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]"/>
 				<h1 className="text-[24px] font-medium">Statistics</h1>
 			</div>
 
