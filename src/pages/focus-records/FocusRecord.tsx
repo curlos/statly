@@ -259,7 +259,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		const taskId = task?.taskId || task.id;
 
 		return (
-			<h3 className="text-[18px] md:text-[22px] truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
+			<h3 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
 				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline font-bold">
 					{task?.title}
 				</span>

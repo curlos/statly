@@ -31,11 +31,7 @@ export const GOAL_FOR_DAYS = {
 };
 
 export const getGoalSeconds = (date) => {
-	if (!localStorage.getItem('focus-hours-goal')) {
-		localStorage.setItem('focus-hours-goal', '6h');
-	}
-
-	const defaultGoalSeconds = parseFormattedDuration(localStorage.getItem('focus-hours-goal'))
+	const defaultGoalSeconds = parseFormattedDuration('6h')
 
 	const currentDayString = getDayString(date);
 	const goalSecondsForToday = defaultGoalSeconds || GOAL_FOR_DAYS[currentDayString];
@@ -152,11 +148,7 @@ export const getStreaksInfo = (focusRecords, filteredProjects, tasksById) => {
 };
 
 export const getStreakGoalDays = () => {
-	if (!localStorage.getItem('streak-goal-days')) {
-		localStorage.setItem('streak-goal-days', '6');
-	}
-
-	return localStorage.getItem('streak-goal-days')
+	return '30'
 }
 
 export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProjects, tasksById) => {

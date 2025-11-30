@@ -21,8 +21,6 @@ const userSlice = createSlice({
 			state.user = null;
 			state.token = null;
 			state.isLoggedIn = false;
-			localStorage.removeItem('token');
-			localStorage.removeItem('theme-color')
 		},
 	},
 });

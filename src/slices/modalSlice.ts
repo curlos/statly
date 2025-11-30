@@ -26,9 +26,15 @@ const modalSlice = createSlice({
 			state.modals[modalId].isOpen = isOpen ? isOpen : DEFAULT_MODAL_STATE.isOpen;
 			state.modals[modalId].props = props ? props : DEFAULT_MODAL_STATE.props;
 		},
+		resetModals: (state) => {
+			state.modals = MODAL_IDS.reduce((acc, modalId) => {
+				acc[modalId] = { ...DEFAULT_MODAL_STATE };
+				return acc;
+			}, {});
+		},
 	},
 });
 
-export const { setModalState } = modalSlice.actions;
+export const { setModalState, resetModals } = modalSlice.actions;
 
 export default modalSlice.reducer;

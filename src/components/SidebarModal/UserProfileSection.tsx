@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, logoutUser } from '../../slices/userSlice';
+import { selectUser } from '../../slices/userSlice';
+import { handleLogout } from '../../utils/logout.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Icon from '../Icon';
 import Dropdown from '../Dropdown/Dropdown';
@@ -27,10 +28,9 @@ const UserProfileSection = () => {
 			.slice(0, 2);
 	};
 
-	const handleLogout = () => {
+	const onLogout = () => {
 		setIsDropdownOpen(false);
-		// Dispatch logout - the Wrapper will handle navigation and keep providers mounted during transition
-		dispatch(logoutUser());
+		handleLogout(dispatch);
 	};
 
 	const handleSettingsClick = () => {
@@ -76,7 +76,7 @@ const UserProfileSection = () => {
 					</div>
 					<div
 						className="flex items-center gap-3 p-2 hover:bg-color-gray-200 cursor-pointer rounded"
-						onClick={handleLogout}
+						onClick={onLogout}
 					>
 						<Icon name="logout" customClass="text-color-gray-50 !text-[20px]" />
 						<span>Log Out</span>

@@ -119,7 +119,7 @@ const OtherSectionFocusRecords = () => {
 
 							<CheckboxOther
 								{...{
-									name: 'Show Task Project Name',
+									name: 'Show Task Project',
 									showValue: showTaskProjectName,
 									handleCheckboxClick: () =>
 										handleCheckboxClick(showTaskProjectName, 'showTaskProjectName'),
@@ -156,7 +156,7 @@ const OtherSectionFocusRecords = () => {
 							<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
 							<CheckboxOther
 								{...{
-									name: 'Show Total Focus Records Duration',
+									name: 'Show Total Focus Records Time',
 									showValue: showTotalFocusDuration,
 									handleCheckboxClick: () =>
 										handleCheckboxClick(showTotalFocusDuration, 'showTotalFocusDuration'),

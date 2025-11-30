@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, logoutUser } from '../../../slices/userSlice';
+import { selectUser } from '../../../slices/userSlice';
+import { handleLogout } from '../../../utils/logout.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useGetOverviewStatsQuery } from '../../../services/resources/documentsStatsApi';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
@@ -20,10 +21,9 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 		includeFirstData: true
 	});
 
-	const handleLogout = () => {
+	const onLogout = () => {
 		onClose();
-		// Dispatch logout - the Wrapper will handle navigation and keep providers mounted during transition
-		dispatch(logoutUser());
+		handleLogout(dispatch);
 	};
 
 	const getInitials = (name: string) => {
@@ -137,7 +137,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 				</button>
 				<button
 					className="flex-1 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full max-w-[200px]"
-					onClick={handleLogout}
+					onClick={onLogout}
 				>
 					Log Out
 				</button>
