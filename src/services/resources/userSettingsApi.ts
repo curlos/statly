@@ -41,7 +41,15 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 			},
 			invalidatesTags: (result, error, userId) => ['UserSettings'],
 		}),
+		getDocumentCounts: builder.query({
+			query: () => `/user-settings/document-counts`,
+			providesTags: ['DocumentCounts'],
+		}),
 	}),
 });
 
-export const { useGetUserSettingsQuery, useEditUserSettingsMutation } = userSettingsApi;
+export const {
+	useGetUserSettingsQuery,
+	useEditUserSettingsMutation,
+	useGetDocumentCountsQuery
+} = userSettingsApi;

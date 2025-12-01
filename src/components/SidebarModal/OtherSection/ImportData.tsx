@@ -72,6 +72,7 @@ const ImportData = () => {
 			baseAPI.util.invalidateTags([
 				'OverviewStats',
 				'SyncMetadata',
+				'DocumentCounts',
 				'Project',
 				'ProjectGroup',
 				'DayWithCompletedTasks',
