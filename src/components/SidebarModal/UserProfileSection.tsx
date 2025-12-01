@@ -49,10 +49,10 @@ const UserProfileSection = () => {
 				onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 			>
 				{profilePicUrl ? (
-					<img src={profilePicUrl} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
+					<img src={profilePicUrl} alt={user.name} className="w-[60px] h-[60px] rounded-full object-cover" />
 				) : (
 					<div
-						className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+						className="w-[60px] h-[60px] rounded-full flex items-center justify-center text-white font-bold text-[20px]"
 						style={{ backgroundColor: themeColor }}
 					>
 						{getInitials(user.name)}

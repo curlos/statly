@@ -33,7 +33,7 @@ const CompletedTaskList = ({
 							<div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
 								<Icon name="task_alt" customClass="!text-[40px]" />
 								<p className="text-lg font-bold">No Completed Tasks</p>
-								<p className="mt-1">Complete some tasks to see them here</p>
+								<p className="mt-1">Sync or import completed tasks from TickTick to see them here</p>
 							</div>
 						) : (
 							<div className="space-y-3">

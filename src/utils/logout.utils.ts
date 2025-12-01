@@ -1,4 +1,3 @@
-import { baseAPI } from '../services/api';
 import { logoutUser } from '../slices/userSlice';
 import { resetModals } from '../slices/modalSlice';
 import { resetSyncStatus } from '../slices/syncSlice';
@@ -7,25 +6,26 @@ import { resetImport } from '../slices/importProgressSlice';
 
 /**
  * Handles complete logout process:
- * - Clears all localStorage items
- * - Clears all sessionStorage
- * - Resets RTK Query cache
+ * - Clears user state from Redux (removes token)
  * - Resets all Redux slices
+ * - Clears all localStorage and sessionStorage
+ * - Reloads the page to ensure complete state cleanup
  */
 export const handleLogout = (dispatch: any) => {
-	// Clear all localStorage and sessionStorage items
-	localStorage.clear();
-	sessionStorage.clear();
+	// 1. Clear the user state/token from Redux
+	dispatch(logoutUser());
 
-	// Reset RTK Query cache
-	dispatch(baseAPI.util.resetApiState());
-
-	// Reset all Redux slices
+	// 2. Reset all Redux slices
 	dispatch(resetModals());
 	dispatch(resetSyncStatus());
 	dispatch(resetAnalysis());
 	dispatch(resetImport());
 
-	// Dispatch logout - the Wrapper will handle navigation and keep providers mounted during transition
-	dispatch(logoutUser());
+	// 3. Clear all localStorage and sessionStorage items
+	localStorage.clear();
+	sessionStorage.clear();
+
+	// 4. Reload the page to ensure complete cleanup of all state
+	// This prevents any cached data from persisting between user sessions
+	window.location.href = '/login';
 };

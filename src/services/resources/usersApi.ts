@@ -20,7 +20,8 @@ export const usersApi = baseAPI.injectEndpoints({
 			onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
 				try {
 					const { data } = await queryFulfilled;
-					dispatch(loginUserSuccess(data)); // Update user slice state on successful login
+					// Update user slice state on successful registration
+					dispatch(loginUserSuccess(data));
 				} catch (error) {
 					console.error('Registration failed:', error);
 				}
@@ -39,7 +40,8 @@ export const usersApi = baseAPI.injectEndpoints({
 			onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
 				try {
 					const { data } = await queryFulfilled;
-					dispatch(loginUserSuccess(data)); // Update user slice state on successful login
+					// Update user slice state on successful login
+					dispatch(loginUserSuccess(data));
 				} catch (error) {
 					console.error('Login failed:', error);
 				}
