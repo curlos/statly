@@ -12,6 +12,7 @@ interface ModalConfirmDeleteProps {
 		projectGroups?: number;
 	};
 	isDeleting: boolean;
+	showCounts?: boolean;
 }
 
 const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
@@ -20,7 +21,8 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 	onConfirm,
 	title,
 	counts,
-	isDeleting
+	isDeleting,
+	showCounts = true
 }) => {
 	const hasMultipleCategories = Object.keys(counts).length > 1;
 
@@ -29,28 +31,30 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 			<div className="bg-color-gray-700 rounded-lg p-6">
 				<h3 className="text-xl font-semibold mb-4">{title}</h3>
 
-				<div className="mb-6">
-					<p className="text-color-gray-100 mb-3">
-						{hasMultipleCategories ? 'Deleting:' : `Deleting ${Object.values(counts)[0]?.toLocaleString()} documents`}
-					</p>
+				{showCounts && (
+					<div className="mb-6">
+						<p className="text-color-gray-100 mb-3">
+							{hasMultipleCategories ? 'Deleting:' : `Deleting ${Object.values(counts)[0]?.toLocaleString()} documents`}
+						</p>
 
-					{hasMultipleCategories && (
-						<ul className="space-y-2 text-color-gray-100">
-							{counts.focusRecords !== undefined && (
-								<li>- {counts.focusRecords.toLocaleString()} focus records</li>
-							)}
-							{counts.tasks !== undefined && (
-								<li>- {counts.tasks.toLocaleString()} tasks</li>
-							)}
-							{counts.projects !== undefined && (
-								<li>- {counts.projects.toLocaleString()} projects</li>
-							)}
-							{counts.projectGroups !== undefined && (
-								<li>- {counts.projectGroups.toLocaleString()} project groups</li>
-							)}
-						</ul>
-					)}
-				</div>
+						{hasMultipleCategories && (
+							<ul className="space-y-2 text-color-gray-100">
+								{counts.focusRecords !== undefined && (
+									<li>- {counts.focusRecords.toLocaleString()} focus records</li>
+								)}
+								{counts.tasks !== undefined && (
+									<li>- {counts.tasks.toLocaleString()} tasks</li>
+								)}
+								{counts.projects !== undefined && (
+									<li>- {counts.projects.toLocaleString()} projects</li>
+								)}
+								{counts.projectGroups !== undefined && (
+									<li>- {counts.projectGroups.toLocaleString()} project groups</li>
+								)}
+							</ul>
+						)}
+					</div>
+				)}
 
 				<p className="text-red-500 mb-6 font-medium">
 					This action cannot be undone!

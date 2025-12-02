@@ -104,7 +104,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 	const buttonContent = (
 		<button
 			onClick={handleSync}
-			disabled={isSyncing}
+			disabled={isSyncing || !syncMetadata}
 			className={customClass || 'flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed'}
 		>
 			<Icon

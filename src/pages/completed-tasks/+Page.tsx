@@ -43,7 +43,7 @@ const Page = () => {
 	}, [currentPageFromUrl]);
 
 	return (
-		<div className="max-w-screen min-h-screen bg-color-gray-700">
+		<div className="max-w-screen min-h-screen bg-color-gray-700 pb-10">
 			<Navbar page="completed-tasks-page" />
 
 			<FilterBar

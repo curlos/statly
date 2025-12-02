@@ -62,7 +62,7 @@ const FocusRecordsPage = () => {
 
 	return (
 		<div>
-			<div className="max-w-screen min-h-screen bg-color-gray-700">
+			<div className="max-w-screen min-h-screen bg-color-gray-700 pb-10">
 				<Navbar page="focus-records-page" />
 
 				<FilterBar

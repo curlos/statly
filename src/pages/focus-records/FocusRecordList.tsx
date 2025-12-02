@@ -1,6 +1,6 @@
 import { getFocusRecordProperty } from '../../utils/focus-apps/multiFocusApps.utils';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
-import FocusRecord from './FocusRecord';
+import FocusRecord from './FocusRecord/FocusRecord';
 import FocusRecordSkeleton from './FocusRecordSkeleton';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import Icon from '../../components/Icon';

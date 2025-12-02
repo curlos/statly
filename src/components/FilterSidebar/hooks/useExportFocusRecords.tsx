@@ -1,6 +1,7 @@
 import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 import { useUserSettingsContext } from '../../../pages/focus-records/useUserSettingsContext';
-import { getFormattedDateAndTimeForFileName, getFormattedLongDay, formatDateTime } from '../../../utils/date.utils';
+import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
+import { serializeFocusRecordToMarkdown } from '../../../utils/focus-apps/focusRecords.utils';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
@@ -21,76 +22,6 @@ const useExportFocusRecords = () => {
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
-	const serializeFocusRecordToMarkdown = (record: any) => {
-		const { startTime, endTime, duration, tasks, completedTasks, note, emotions } = record;
-
-		const startTimeObj = formatDateTime(startTime);
-		const endTimeObj = formatDateTime(endTime);
-
-		// Check if focus record crosses midnight
-		const startDate = new Date(startTime);
-		const endDate = new Date(endTime);
-		const crossesMidnight = getFormattedLongDay(startDate) !== getFormattedLongDay(endDate);
-
-		// Build date string with both dates if crosses midnight
-		let dateStr = getFormattedLongDay(startDate);
-		if (crossesMidnight) {
-			dateStr += ` - ${getFormattedLongDay(endDate)}`;
-		}
-		dateStr += ` - ${startTimeObj.time} - ${endTimeObj.time} (${getFormattedDuration(duration, false)})`;
-
-		const lines: string[] = [];
-
-		// Date and duration
-		lines.push(`### 📅 ${dateStr}`);
-
-		// Tasks
-		if (tasks && tasks.length > 0) {
-			tasks.forEach((task: any) => {
-				const taskStartTimeObj = formatDateTime(task.startTime);
-				const taskEndTimeObj = formatDateTime(task.endTime);
-				const taskTimeRange = `${taskStartTimeObj.time} - ${taskEndTimeObj.time}`;
-
-				lines.push(`📝 ${task.title}: ${taskTimeRange}`);
-			});
-		}
-
-		// Notes
-		if (note) {
-			lines.push(note.trim());
-		}
-
-		// Completed tasks
-		if (completedTasks && completedTasks.length > 0) {
-			lines.push(''); // Add blank line for separation
-			lines.push(`###### ✅ Completed Tasks`);
-			completedTasks.forEach((task: any) => {
-				lines.push(`- [x] ${task.title}`);
-			});
-		}
-
-		// Emotions
-		if (showFocusRecordEmotions) {
-			if (emotions && emotions.length > 0) {
-				lines.push(''); // Add blank line for separation
-				lines.push(`###### ❤️ Emotions`);
-				emotions.forEach((emotionObj: any) => {
-					const emotionData = EMOTIONS[emotionObj.emotion as keyof typeof EMOTIONS];
-					const emoji = emotionData?.emoji || '';
-					const emotionName = emotionData?.name || emotionObj.emotion.toUpperCase();
-					const formattedScore = (emotionObj.score * 100).toFixed(0);
-					lines.push(`- ${emoji} ${emotionName} - ${formattedScore}%`);
-				});
-			} else {
-				const noneEmoji = EMOTIONS.none?.emoji || '⚫';
-				lines.push(''); // Add blank line for separation
-				lines.push(`###### ❤️ Emotions`);
-				lines.push(`- ${noneEmoji} NONE`);
-			}
-		}
-
-		return lines.join('\n');
-	};
 
 	const getFocusRecordsMarkdown = (focusRecords: any[], customTitle: string | null, totalDuration: number, emotionCounts?: Record<string, number>) => {
 		const allFocusRecordsMarkdown: string[] = [];
@@ -131,7 +62,9 @@ const useExportFocusRecords = () => {
 
 		for (let i = 0; i < focusRecords.length; i++) {
 			const focusRecord = focusRecords[i];
-			const focusRecordMarkdown = serializeFocusRecordToMarkdown(focusRecord);
+			// Note: ancestorTasksById and projectsById are not needed here because the export API
+			// already returns records with formatted task titles that include ancestors and projects
+			const focusRecordMarkdown = serializeFocusRecordToMarkdown(focusRecord, showFocusRecordEmotions);
 			allFocusRecordsMarkdown.push(focusRecordMarkdown);
 
 			// Add separator between records (but not after the last one)
