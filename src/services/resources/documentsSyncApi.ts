@@ -22,7 +22,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                     body: { timezone },
                 };
             },
-            invalidatesTags: [
+            invalidatesTags: (_result, error) => error ? [] : [
                 // General tags that need mostly every group
                 'OverviewStats', 'SyncMetadata', 'DocumentCounts',
                 // Projects
@@ -39,7 +39,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 method: 'POST',
                 body: payload,
             }),
-            invalidatesTags: [
+            invalidatesTags: (_result, error) => error ? [] : [
                 // Tasks
                 'AllTasks', 'DayWithCompletedTasks', 'TasksMedal', 'TasksChallenge', 'OverviewStats', 'TasksStats', 'DocumentCounts',
                 // The main reason this needs to be here is that focus records have a "completedTasks" array and thus one of these archived project's tasks could show up here so we need to be on top of that.
@@ -51,21 +51,21 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 url: '/documents/sync/ticktick/projects',
                 method: 'POST',
             }),
-            invalidatesTags: ['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: (_result, error) => error ? [] : ['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
         }),
         syncTickTickProjectGroups: builder.mutation({
             query: () => ({
                 url: '/documents/sync/ticktick/project-groups',
                 method: 'POST',
             }),
-            invalidatesTags: ['ProjectGroup', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: (_result, error) => error ? [] : ['ProjectGroup', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
         }),
         syncTickTickTasks: builder.mutation({
             query: () => ({
                 url: '/documents/sync/ticktick/tasks',
                 method: 'POST',
             }),
-            invalidatesTags: ['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: (_result, error) => error ? [] : ['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
         }),
         syncTickTickFocusRecords: builder.mutation({
             query: () => {
@@ -76,7 +76,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                     body: { timezone },
                 };
             },
-            invalidatesTags: ['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: (_result, error) => error ? [] : ['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
         }),
     }),
     overrideExisting: false,

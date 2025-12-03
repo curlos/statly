@@ -3,6 +3,10 @@ import { useUserSettingsContext } from '../focus-records/useUserSettingsContext'
 import DayWithCompletedTasks from './DayWithCompletedTasks/DayWithCompletedTasks';
 import DayWithCompletedTasksSkeleton from './DayWithCompletedTasks/DayWithCompletedTasksSkeleton';
 import Icon from '../../components/Icon';
+import SyncButton from '../../components/SyncButton';
+import { useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
+import { useDispatch } from 'react-redux';
+import { setModalState } from '../../slices/modalSlice';
 
 const CompletedTaskList = ({
 	daysWithCompletedTasks,
@@ -12,11 +16,20 @@ const CompletedTaskList = ({
 	showFilterSidebar,
 	setShowFilterSidebar,
 }) => {
+	const dispatch = useDispatch();
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
+	const { userSettings } = fetchedUserSettings || {};
+	const hasCookie = userSettings?.tickTickCookieSet || false;
+
 	const {
 		completedTasksPageSettings: { maxDaysPerPage },
 	} = useUserSettingsContext();
 
-	const numberOfDaysForSkeleton = maxDaysPerPage || 7
+	const numberOfDaysForSkeleton = maxDaysPerPage || 7;
+
+	const handleOpenSidebar = () => {
+		dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: true }));
+	};
 	
 	return (
 		<div>
@@ -34,6 +47,21 @@ const CompletedTaskList = ({
 								<Icon name="task_alt" customClass="!text-[40px]" />
 								<p className="text-lg font-bold">No Completed Tasks</p>
 								<p className="mt-1">Sync or import completed tasks from TickTick to see them here</p>
+
+								{/* Show sync button or add cookie button */}
+								<div className="mt-4">
+									{hasCookie ? (
+										<SyncButton showText={true} customClass="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed" />
+									) : (
+										<button
+											onClick={handleOpenSidebar}
+											className="flex items-center gap-2 px-4 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold"
+										>
+											<Icon name="cookie" fill={1} customClass="!text-[20px]" />
+											<span>Add TickTick Cookie & Sync</span>
+										</button>
+									)}
+								</div>
 							</div>
 						) : (
 							<div className="space-y-3">

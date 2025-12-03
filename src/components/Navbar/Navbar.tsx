@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../Icon';
 import SidebarModal from '../SidebarModal/SidebarModal';
 import ModalSettingsSidebar from '../SettingsSidebar/ModalSettingsSidebar';
 import ChecklistTimerIcon from '../ChecklistTimerIcon';
+import { setModalState } from '../../slices/modalSlice';
 
 const Navbar = ({ page = null }) => {
-	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
+	const dispatch = useDispatch();
+	const isSidebarModalOpen = useSelector((state: any) => state.modals.modals.ModalSidebar?.isOpen);
 	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 
 	return (
@@ -21,11 +24,10 @@ const Navbar = ({ page = null }) => {
 				<Icon
 					name="menu"
 					customClass={'!text-[30px] text-white cursor-pointer'}
-					onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
+					onClick={() => dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: !isSidebarModalOpen }))}
 				/>
 			</div>
 
-			{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
 			{isSettingsSidebarModalOpen && (
 				<ModalSettingsSidebar
 					{...{

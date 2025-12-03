@@ -5,8 +5,16 @@ import SyncSection from './SyncSection';
 import UserProfileSection from './UserProfileSection';
 import useGetDefaultMedalDates from '../../pages/medals/useGetDefaultMedalDates';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setModalState } from '../../slices/modalSlice';
 
-const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
+const SidebarModal = () => {
+	const dispatch = useDispatch();
+	const isSidebarModalOpen = useSelector((state: any) => state.modals.modals.ModalSidebar?.isOpen);
+
+	const handleClose = () => {
+		dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: false }));
+	};
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -23,7 +31,7 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 				className="group flex items-center gap-2 cursor-pointer"
 				onClick={() => {
 					navigate(linkUrl);
-					setIsSidebarModalOpen(false);
+					handleClose();
 				}}
 			>
 				<div className="group-hover:underline">{name}</div>
@@ -62,7 +70,7 @@ const SidebarModal = ({ isSidebarModalOpen, setIsSidebarModalOpen }) => {
 						exit="hidden"
 						variants={backdropVariants}
 						className="overlay absolute bg-black inset-0"
-						onClick={() => setIsSidebarModalOpen(false)}
+						onClick={handleClose}
 					/>
 					<motion.div
 						initial="hidden"

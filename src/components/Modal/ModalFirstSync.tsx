@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from './Modal';
 import Icon from '../Icon';
-import { setShowFirstSyncModal, selectShowFirstSyncModal, selectIsSyncing } from '../../slices/syncSlice';
+import { setShowFirstSyncModal, selectShowFirstSyncModal, selectIsSyncing, selectSyncStatus } from '../../slices/syncSlice';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useSyncStatusHelpers } from '../../hooks/useSyncStatusHelpers';
 
@@ -9,10 +9,14 @@ const ModalFirstSync = () => {
 	const dispatch = useDispatch();
 	const isOpen = useSelector(selectShowFirstSyncModal);
 	const isSyncing = useSelector(selectIsSyncing);
+	const syncStatus = useSelector(selectSyncStatus);
 	const { getStatusIcon } = useSyncStatusHelpers();
 	const themeContext = useThemeContext() as any;
 	const chosenColorObj = themeContext?.chosenColorObj;
 	const themeColor = chosenColorObj?.hex || '#3b82f6'; // Default to blue-500 if no theme
+
+	// Check if any sync failed
+	const hasError = Object.values(syncStatus).some((status) => status === 'error');
 
 	const handleClose = () => {
 		// Only allow closing when sync is complete
@@ -43,9 +47,9 @@ const ModalFirstSync = () => {
 
 				<div className="flex flex-col items-center text-center space-y-4">
 					{/* Icon */}
-					<div className="relative" style={{ color: isSyncing ? themeColor : '#4ade80' }}>
+					<div className="relative" style={{ color: isSyncing ? themeColor : (hasError ? '#ef4444' : '#4ade80') }}>
 						<Icon
-							name={isSyncing ? "sync" : "check_circle"}
+							name={isSyncing ? "sync" : (hasError ? "error" : "check_circle")}
 							fill={1}
 							customClass={`!text-[64px] ${isSyncing ? 'animate-spin' : ''}`}
 						/>
@@ -53,7 +57,7 @@ const ModalFirstSync = () => {
 
 					{/* Title */}
 					<h2 className="text-2xl font-bold text-white">
-						{isSyncing ? 'First Time Sync in Progress' : 'Sync Complete!'}
+						{isSyncing ? 'First Time Sync in Progress' : (hasError ? 'Sync Failed' : 'Sync Complete!')}
 					</h2>
 
 					{/* Message */}
@@ -68,6 +72,15 @@ const ModalFirstSync = () => {
 									Future syncs will be much faster as we'll only fetch what's changed.
 								</p>
 							</>
+						) : hasError ? (
+							<>
+								<p className="text-lg text-red-400 mt-0">
+									One or more syncs failed.
+								</p>
+								<p className="mt-0">
+									Please check your TickTick cookie and try again. Some data may not be available.
+								</p>
+							</>
 						) : (
 							<>
 								<p className="text-lg">
@@ -76,7 +89,7 @@ const ModalFirstSync = () => {
 								<p>
 									You can now view all your tasks, projects, and focus records.
 								</p>
-								<p className="text-color-gray-200">
+								<p className="text-color-gray-100">
 									This modal will close automatically in 2 seconds.
 								</p>
 							</>

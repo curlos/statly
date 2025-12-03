@@ -1,10 +1,9 @@
 import DailyHoursFocusGoal from './DailyHoursFocusGoal.js';
-import { useGetPomoAndStopwatchFocusRecordsQuery } from '../../services/resources/ticktickOneApi.js';
 import Spinner from '../../components/Loaders/Spinner.js';
 import Navbar from '../../components/Navbar/Navbar.js';
 
 export default function Page() {
-	const { isLoading: isLoadingGetFocusRecords } = useGetPomoAndStopwatchFocusRecordsQuery();
+	// const { isLoading: isLoadingGetFocusRecords } = useGetPomoAndStopwatchFocusRecordsQuery();
 
 	return (
 		<div className="w-screen h-screen bg-color-gray-700 flex justify-center items-center">
@@ -14,11 +13,11 @@ export default function Page() {
 
 			<DailyHoursFocusGoal />
 
-			{isLoadingGetFocusRecords && (
+			{/* {isLoadingGetFocusRecords && (
 				<div className="absolute bottom-4 right-4">
 					<Spinner size="xl" />
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 }

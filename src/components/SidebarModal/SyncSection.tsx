@@ -1,8 +1,11 @@
 import Icon from '../Icon';
 import { useGetSyncMetadataQuery } from '../../services/resources/documentsSyncApi';
-import { formatDistanceToNow } from 'date-fns';
+import { intlFormatDistance } from 'date-fns';
 import SyncButton from '../SyncButton';
 import { useSyncStatusHelpers } from '../../hooks/useSyncStatusHelpers';
+import Accordion from '../Accordion/Accordion';
+import CookieInstructions from './CookieInstructions';
+import CookieSection from './CookieSection';
 
 interface SyncMetadata {
 	lastSyncTime: string;
@@ -28,14 +31,13 @@ const SyncItem = ({ label, syncKey, metadata }: SyncItemProps) => {
 
 	const formatLastSyncTime = (lastSyncTime: string | undefined) => {
 		if (!lastSyncTime) return 'Never';
-		return formatDistanceToNow(new Date(lastSyncTime), { addSuffix: true });
+		return intlFormatDistance(new Date(lastSyncTime), new Date());
 	};
 
 	return (
 		<div className="flex items-center justify-between gap-2">
 			<div className="font-semibold">{label}</div>
 			<div className="flex items-center gap-2 text-color-gray-100">
-				<span className="font-bold hidden sm:inline-block">Last sync:</span>
 				<span>{formatLastSyncTime(metadata?.lastSyncTime)}</span>
 				{statusIcon && (
 					<div style={{ color: statusIcon.color }}>
@@ -72,6 +74,31 @@ const SyncSection = () => {
 					showText={true}
 					customClass="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
 				/>
+			</div>
+
+			{/* Cookie Input Section */}
+			<CookieSection />
+
+			<div className="mt-4">
+				<Accordion
+					title={
+						<div className="flex items-center gap-2">
+							<Icon name="help" fill={1} customClass="!text-[18px] text-color-gray-100" />
+							<span className="text-[14px] font-semibold">How to Get Your TickTick Cookie</span>
+						</div>
+					}
+					openByDefault={false}
+					setIsOpenForParent={undefined}
+					isChildDropdownOpen={true}
+					showArrowNextToText={undefined}
+					customClasses={undefined}
+					customToggleOpen={undefined}
+					preventOpen={false}
+				>
+					<div className="mt-3">
+						<CookieInstructions />
+					</div>
+				</Accordion>
 			</div>
 		</div>
 	);

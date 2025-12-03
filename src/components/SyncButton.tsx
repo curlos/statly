@@ -2,12 +2,14 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Icon from './Icon';
 import { useGetSyncMetadataQuery } from '../services/resources/documentsSyncApi';
-import { formatDistanceToNow } from 'date-fns';
+import { intlFormatDistance } from 'date-fns';
 import Tooltip from './Tooltip';
 import { setShowFirstSyncModal } from '../slices/syncSlice';
 import { isFirstTimeTickTickSync } from '../utils/syncHelpers';
 import { useSyncOrchestration } from '../hooks/useSyncOrchestration';
 import { useSyncStatusHelpers } from '../hooks/useSyncStatusHelpers';
+import useHandleError from '../hooks/useHandleError';
+import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
 
 interface SyncButtonProps {
 	showText?: boolean;
@@ -29,34 +31,36 @@ interface SyncMetadataByType {
 
 const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: SyncButtonProps) => {
 	const dispatch = useDispatch();
+	const handleError = useHandleError();
 	const { data: syncMetadata, isLoading: isLoadingMetadata } = useGetSyncMetadataQuery(undefined);
 	const { syncTickTickData, isSyncing } = useSyncOrchestration();
 	const { getStatusIcon } = useSyncStatusHelpers();
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
+	const { userSettings } = fetchedUserSettings || {};
 
 	const handleSync = useCallback(async () => {
 		if (isSyncing || isLoadingMetadata) return;
 
 		// Check if this is the first sync by verifying all core TickTick sync metadata exist
 		const needsFirstSync = isFirstTimeTickTickSync(syncMetadata);
+		const hasCookie = !!userSettings?.tickTickCookie;
 
-		if (needsFirstSync) {
+		// Only show first sync modal if cookie is set
+		if (needsFirstSync && hasCookie) {
 			dispatch(setShowFirstSyncModal(true));
 		}
 
-		try {
+		await handleError(async () => {
 			await syncTickTickData();
 
 			// Hide modal after sync completes for first-time sync
-			if (needsFirstSync) {
+			if (needsFirstSync && hasCookie) {
 				setTimeout(() => {
 					dispatch(setShowFirstSyncModal(false));
 				}, 2000); // Keep modal visible for 2s after completion
 			}
-		} catch (error) {
-			console.error('Sync failed:', error);
-			dispatch(setShowFirstSyncModal(false));
-		}
-	}, [isSyncing, isLoadingMetadata, syncTickTickData, syncMetadata, dispatch]);
+		});
+	}, [isSyncing, isLoadingMetadata, syncTickTickData, syncMetadata, dispatch, handleError, userSettings]);
 
 	const getTooltipContent = () => {
 		if (!syncMetadata) return 'No sync data available';
@@ -64,7 +68,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 
 		const formatSync = (metadata?: SyncMetadata) => {
 			if (!metadata?.lastSyncTime) return 'Never';
-			return formatDistanceToNow(new Date(metadata.lastSyncTime), { addSuffix: true });
+			return intlFormatDistance(new Date(metadata.lastSyncTime), new Date());
 		};
 
 		const syncItems = [

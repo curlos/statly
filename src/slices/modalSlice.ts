@@ -8,6 +8,7 @@ const DEFAULT_MODAL_STATE = {
 
 const MODAL_IDS = [
 	'ModalErrorMessenger',
+	'ModalSidebar',
 ];
 
 const initialState = {

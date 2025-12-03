@@ -7,8 +7,11 @@ import SidebarModal from '../../../components/SidebarModal/SidebarModal';
 import { useState } from 'react';
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
 import ChecklistTimerIcon from '../../../components/ChecklistTimerIcon';
+import { useDispatch, useSelector } from 'react-redux';
+import { setModalState } from '../../../slices/modalSlice';
 
 const TopBar = () => {
+	const dispatch = useDispatch();
 	const pageContext = usePageContext();
 	const location = pageContext.urlParsed;
 
@@ -20,7 +23,7 @@ const TopBar = () => {
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
-	const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
+	const isSidebarModalOpen = useSelector((state: any) => state.modals.modals.ModalSidebar?.isOpen);
 	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 
 	const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : {};
@@ -65,7 +68,7 @@ const TopBar = () => {
 				<Icon
 					name="menu"
 					customClass={'!text-[30px] text-white mr-[15px] cursor-pointer'}
-					onClick={() => setIsSidebarModalOpen(!isSidebarModalOpen)}
+					onClick={() => dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: !isSidebarModalOpen }))}
 				/>
 			</div>
 		);
@@ -96,7 +99,6 @@ const TopBar = () => {
 					}}
 				/>
 			)}
-			{isSidebarModalOpen && <SidebarModal {...{ isSidebarModalOpen, setIsSidebarModalOpen }} />}
 		</div>
 	);
 };

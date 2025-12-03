@@ -3,6 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import Icon from '../Icon';
 
+/**
+ * Returns helpful context for known TickTick error messages
+ */
+const getErrorContext = (errorMessage: string) => {
+	const contexts: Record<string, string> = {
+		'user_not_sign_on': 'Your TickTick cookie may be invalid or expired. Please update your cookie.',
+		// Can add more error codes here as we discover them
+	};
+
+	return contexts[errorMessage] || null;
+};
+
 const ModalErrorMessenger: React.FC = () => {
 	const modal = useSelector((state) => state.modals.modals['ModalErrorMessenger']);
 	const dispatch = useDispatch();
@@ -19,6 +31,8 @@ const ModalErrorMessenger: React.FC = () => {
 	}
 
 	const { status, data, message } = error;
+	const errorMessage = data?.message || message;
+	const contextMessage = getErrorContext(errorMessage);
 
 	const closeModal = () => dispatch(setModalState({ modalId: 'ModalErrorMessenger', isOpen: false }));
 
@@ -32,15 +46,22 @@ const ModalErrorMessenger: React.FC = () => {
 						onClick={closeModal}
 					/>
 				</div>
-				<h1 className="font-bold text-[18px] mt-[-12px]">Fatal Error!</h1>
+				<h1 className="font-bold text-[18px] mt-[-12px]">Error</h1>
 				{status && (
 					<h3 className="font-bold">
 						Status: <span className="font-normal">{status}</span>
 					</h3>
 				)}
 				<p className="font-bold mt-1">
-					Message: <span className="font-normal">{data?.message || message}</span>
+					Message: <span className="font-normal">{errorMessage}</span>
 				</p>
+
+				{/* Additional context for known error types */}
+				{contextMessage && (
+					<div className="mt-3 p-3 bg-yellow-500/20 rounded border border-yellow-500/40">
+						<p className="text-sm text-yellow-200 mt-0">{contextMessage}</p>
+					</div>
+				)}
 			</div>
 		</Modal>
 	);

@@ -5,7 +5,6 @@ import 'material-symbols';
 
 import { Provider, useSelector, useDispatch } from 'react-redux';
 import store from '../store/store';
-// import { StatsProvider } from '../contexts/useStatsContext';
 import GlobalModalList from '../components/Modal/GlobalModalList';
 import { ThemeProvider, useThemeContext } from '../contexts/useThemeContext';
 import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
