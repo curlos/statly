@@ -6,6 +6,7 @@ import syncReducer from '../slices/syncSlice';
 import sentimentAnalysisReducer from '../slices/sentimentAnalysisSlice';
 import importProgressReducer from '../slices/importProgressSlice';
 import { baseAPI } from '../services/api';
+import { rtkQueryErrorMiddleware } from './middleware/rtkQueryErrorMiddleware';
 
 // Create and configure the store
 const store = configureStore({
@@ -17,7 +18,8 @@ const store = configureStore({
 		importProgress: importProgressReducer,
 		[baseAPI.reducerPath]: baseAPI.reducer, // RTK Query reducer for users
 	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseAPI.middleware), // Add middleware for both APIs
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware().concat(baseAPI.middleware).concat(rtkQueryErrorMiddleware), // Add middleware for RTK Query and error handling
 });
 
 export default store;

@@ -1,11 +1,8 @@
 import { useThemeContext } from '../../contexts/useThemeContext';
-import useHandleError from '../../hooks/useHandleError';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import CustomRadioButton from '../CustomRadioButton';
-import Icon from '../Icon';
 
 const FontFamilyList = () => {
-	const handleError = useHandleError();
 
 	// RTK Query - User Settings
 	const [editUserSettings] = useEditUserSettingsMutation();
@@ -33,22 +30,20 @@ const FontFamilyList = () => {
 		'Jost',
 	];
 
-	const handleChangeFontFamily = (fontFamilyKey) => {
-		handleError(async () => {
-			const restOfThemeKeysAndVals = userSettings?.theme;
+	const handleChangeFontFamily = async (fontFamilyKey) => {
+		const restOfThemeKeysAndVals = userSettings?.theme;
 
-			const payload = {
-				theme: {
-					...restOfThemeKeysAndVals,
-					fontFamily: fontFamilyKey,
-				},
-			};
+		const payload = {
+			theme: {
+				...restOfThemeKeysAndVals,
+				fontFamily: fontFamilyKey,
+			},
+		};
 
-			await editUserSettings(payload).unwrap();
+		await editUserSettings(payload);
 
-			// Once the theme has been successfully set on the backend, update it in localStorage.
-			localStorage.setItem('font-family', fontFamilyKey);
-		});
+		// Once the theme has been successfully set on the backend, update it in localStorage.
+		localStorage.setItem('font-family', fontFamilyKey);
 	};
 
 	const themeContext = useThemeContext();

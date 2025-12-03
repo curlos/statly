@@ -1,5 +1,4 @@
 import Icon from '../Icon';
-import useHandleError from '../../hooks/useHandleError';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
@@ -19,8 +18,6 @@ const OtherSectionFocusRecords = () => {
 		focusRecordsPageSettings: { showMedals, selectedMedalImage },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
-
-	const handleError = useHandleError();
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
@@ -119,7 +116,6 @@ const OtherSectionFocusRecords = () => {
 						<InputNumUserSettings
 							{...{
 								defaultValue: maxDaysPerPage,
-								handleError,
 								userSettings,
 								editUserSettings,
 								minNum: 7,

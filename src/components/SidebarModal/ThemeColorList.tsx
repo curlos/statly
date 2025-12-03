@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import useHandleError from '../../hooks/useHandleError';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import { toTitleCase } from '../../utils/focus-apps/helpers.utils';
@@ -8,7 +7,6 @@ import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
 
 const ThemeColorList = () => {
-	const handleError = useHandleError();
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
@@ -20,22 +18,20 @@ const ThemeColorList = () => {
 	const themeContext = useThemeContext();
 	const { themeColorKey, cssStyles, chosenColorObj } = themeContext;
 
-	const handleChangeThemeColor = (colorKey) => {
-		handleError(async () => {
-			const restOfThemeKeysAndVals = userSettings?.theme;
+	const handleChangeThemeColor = async (colorKey) => {
+		const restOfThemeKeysAndVals = userSettings?.theme;
 
-			const payload = {
-				theme: {
-					...restOfThemeKeysAndVals,
-					color: colorKey,
-				},
-			};
+		const payload = {
+			theme: {
+				...restOfThemeKeysAndVals,
+				color: colorKey,
+			},
+		};
 
-			await editUserSettings(payload).unwrap();
+		await editUserSettings(payload);
 
-			// Once the theme has been successfully set on the backend, update it in localStorage.
-			localStorage.setItem('theme-color', colorKey);
-		});
+		// Once the theme has been successfully set on the backend, update it in localStorage.
+		localStorage.setItem('theme-color', colorKey);
 	};
 
 	return (

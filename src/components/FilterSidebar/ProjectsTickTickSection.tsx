@@ -10,7 +10,6 @@ import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import CheckboxOther from './CheckboxOther';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
-import useHandleError from '../../hooks/useHandleError';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
@@ -38,8 +37,6 @@ const ProjectsTickTickSection = ({ page }) => {
 	const { userSettings } = fetchedUserSettings || {};
 
 	const [editUserSettings] = useEditUserSettingsMutation();
-
-	const handleError = useHandleError();
 
 	const [groupedProjectsByGroupId, setGroupedProjectsByGroupId] = useState([]);
 	const [sortedProjectGroups, setSortedProjectGroups] = useState([]);
@@ -107,25 +104,23 @@ const ProjectsTickTickSection = ({ page }) => {
 
 	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
 
-	const handleCheckboxClick = (userSettingProperty, newValue) => {
+	const handleCheckboxClick = async (userSettingProperty, newValue) => {
 		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 		const restOfFocusHoursGoalsKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
 
-		handleError(async () => {
-			const payload = {
-				tickTickOne: {
-					pages: {
-						...restOfPagesKeysAndVals,
-						focusHoursGoal: {
-							...restOfFocusHoursGoalsKeysAndVals,
-							[userSettingProperty]: newValue,
-						},
+		const payload = {
+			tickTickOne: {
+				pages: {
+					...restOfPagesKeysAndVals,
+					focusHoursGoal: {
+						...restOfFocusHoursGoalsKeysAndVals,
+						[userSettingProperty]: newValue,
 					},
 				},
-			};
+			},
+		};
 
-			await editUserSettings(payload).unwrap();
-		});
+		await editUserSettings(payload);
 	};
 
 	return (

@@ -1,6 +1,5 @@
 import { createContext, useContext } from 'react';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
-import useHandleError from '../../hooks/useHandleError';
 
 const UserSettingsContext = createContext();
 
@@ -57,28 +56,25 @@ const useUserSettings = () => {
 	const { selectedChallengeCardImage } = challengesPageSettings;
 	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings;
 
-	const handleError = useHandleError();
 	const [editUserSettings] = useEditUserSettingsMutation();
 
-	const handleUpdateUserSettingForPage = (page, userSettingProperty, newValue) => {
+	const handleUpdateUserSettingForPage = async (page, userSettingProperty, newValue) => {
 		const restOfPageKeysAndVals = userSettings?.tickTickOne?.pages[page];
 		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 
-		handleError(async () => {
-			const payload = {
-				tickTickOne: {
-					pages: {
-						...restOfPagesKeysAndVals,
-						[page]: {
-							...restOfPageKeysAndVals,
-							[userSettingProperty]: newValue,
-						},
+		const payload = {
+			tickTickOne: {
+				pages: {
+					...restOfPagesKeysAndVals,
+					[page]: {
+						...restOfPageKeysAndVals,
+						[userSettingProperty]: newValue,
 					},
 				},
-			};
+			},
+		};
 
-			await editUserSettings(payload).unwrap();
-		});
+		await editUserSettings(payload);
 	};
 
 	return {

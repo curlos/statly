@@ -8,7 +8,6 @@ import { setShowFirstSyncModal } from '../slices/syncSlice';
 import { isFirstTimeTickTickSync } from '../utils/syncHelpers';
 import { useSyncOrchestration } from '../hooks/useSyncOrchestration';
 import { useSyncStatusHelpers } from '../hooks/useSyncStatusHelpers';
-import useHandleError from '../hooks/useHandleError';
 import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
 
 interface SyncButtonProps {
@@ -31,7 +30,6 @@ interface SyncMetadataByType {
 
 const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: SyncButtonProps) => {
 	const dispatch = useDispatch();
-	const handleError = useHandleError();
 	const { data: syncMetadata, isLoading: isLoadingMetadata } = useGetSyncMetadataQuery(undefined);
 	const { syncTickTickData, isSyncing } = useSyncOrchestration();
 	const { getStatusIcon } = useSyncStatusHelpers();
@@ -50,17 +48,15 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 			dispatch(setShowFirstSyncModal(true));
 		}
 
-		await handleError(async () => {
-			await syncTickTickData();
+		await syncTickTickData();
 
-			// Hide modal after sync completes for first-time sync
-			if (needsFirstSync && hasCookie) {
-				setTimeout(() => {
-					dispatch(setShowFirstSyncModal(false));
-				}, 2000); // Keep modal visible for 2s after completion
-			}
-		});
-	}, [isSyncing, isLoadingMetadata, syncTickTickData, syncMetadata, dispatch, handleError, userSettings]);
+		// Hide modal after sync completes for first-time sync
+		if (needsFirstSync && hasCookie) {
+			setTimeout(() => {
+				dispatch(setShowFirstSyncModal(false));
+			}, 2000); // Keep modal visible for 2s after completion
+		}
+	}, [isSyncing, isLoadingMetadata, syncTickTickData, syncMetadata, dispatch, userSettings]);
 
 	const getTooltipContent = () => {
 		if (!syncMetadata) return 'No sync data available';

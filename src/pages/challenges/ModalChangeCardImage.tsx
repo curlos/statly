@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import Icon from '../../components/Icon';
 import Modal from '../../components/Modal/Modal';
 import LazyImage from '../../components/LazyImage';
-import useHandleError from '../../hooks/useHandleError';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import classNames from 'classnames';
@@ -14,7 +13,6 @@ import { debounce } from '../../utils/focus-apps/helpers.utils';
 import Pagination from '../../components/Pagination';
 
 const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
-	const handleError = useHandleError();
 	const { chosenColorObj } = useThemeContext();
 
 	// RTK Query - User Settings
@@ -50,12 +48,10 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		}
 	};
 
-	const handleChangeImageUserSetting = () => {
-		handleError(async () => {
-			const payload = handleGetPayload();
-			await editUserSettings(payload).unwrap();
-			setShowModal(false);
-		});
+	const handleChangeImageUserSetting = async () => {
+		const payload = handleGetPayload();
+		await editUserSettings(payload);
+		setShowModal(false);
 	};
 
 	const getChallengesPagePayload = () => {

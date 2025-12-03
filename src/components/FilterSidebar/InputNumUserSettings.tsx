@@ -5,7 +5,6 @@ import Spinner from '../Loaders/Spinner';
 
 const InputNumUserSettings = ({
 	defaultValue,
-	handleError,
 	userSettings,
 	editUserSettings,
 	minNum,
@@ -81,7 +80,7 @@ const InputNumUserSettings = ({
 		return payload;
 	};
 
-	const handleDebouncedUpdate = debounce(() => {
+	const handleDebouncedUpdate = debounce(async () => {
 		const errorMessage = getErrorMessage();
 		const isThereAnError = errorMessage;
 
@@ -99,11 +98,9 @@ const InputNumUserSettings = ({
 				return;
 			}
 
-			handleError(async () => {
-				setApiRequestLoading(true);
-				await editUserSettings(payload).unwrap();
-				setApiRequestLoading(false);
-			});
+			setApiRequestLoading(true);
+			await editUserSettings(payload);
+			setApiRequestLoading(false);
 		}
 	}, 1000);
 

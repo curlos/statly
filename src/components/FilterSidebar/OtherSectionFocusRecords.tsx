@@ -1,5 +1,4 @@
 import Icon from '../Icon';
-import useHandleError from '../../hooks/useHandleError';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
@@ -25,8 +24,6 @@ const OtherSectionFocusRecords = () => {
 		},
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
-
-	const handleError = useHandleError();
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 
 	// RTK Query - User Settings
@@ -190,7 +187,6 @@ const OtherSectionFocusRecords = () => {
 						<InputNumUserSettings
 							{...{
 								defaultValue: maxFocusRecordsPerPage,
-								handleError,
 								userSettings,
 								editUserSettings,
 								minNum: 5,

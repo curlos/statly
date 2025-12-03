@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { useState, useEffect } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
-import useHandleError from '../../../hooks/useHandleError';
 import { useSyncTasksFromArchivedProjectsMutation } from '../../../services/resources/documentsSyncApi';
 import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
 import Accordion from '../../Accordion/Accordion';
@@ -13,33 +12,29 @@ const UpdateArchivedProjects = () => {
 	const [updateStatus, setUpdateStatus] = useState('none');
 	const [checkedArchivedProjects, setCheckedArchivedProjects] = useState({});
 
-	const handleError = useHandleError();
-
 	const [syncTasksFromArchivedProjects] = useSyncTasksFromArchivedProjectsMutation();
 
-	const handleClick = () => {
-		handleError(async () => {
-			const checkedArchivedProjectIds = Object.keys(checkedArchivedProjects).filter(
-				(projectId) => checkedArchivedProjects[projectId]
-			);
+	const handleClick = async () => {
+		const checkedArchivedProjectIds = Object.keys(checkedArchivedProjects).filter(
+			(projectId) => checkedArchivedProjects[projectId]
+		);
 
-			const payload = {
-				archivedProjectIds: checkedArchivedProjectIds,
-			};
+		const payload = {
+			archivedProjectIds: checkedArchivedProjectIds,
+		};
 
-			setUpdateStatus('loading');
+		setUpdateStatus('loading');
 
-			await syncTasksFromArchivedProjects(payload);
+		await syncTasksFromArchivedProjects(payload);
 
-			// Let the UI update before doing heavy work
+		// Let the UI update before doing heavy work
+		setTimeout(() => {
+			setUpdateStatus('done');
+
 			setTimeout(() => {
-				setUpdateStatus('done');
-
-				setTimeout(() => {
-					setUpdateStatus('none');
-				}, 1000);
-			}, 0);
-		});
+				setUpdateStatus('none');
+			}, 1000);
+		}, 0);
 	};
 
 	return (
