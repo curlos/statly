@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
+import FileSaver from 'file-saver';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
@@ -158,7 +158,7 @@ const BackupData = () => {
 		}
 
 		zip.generateAsync({ type: 'blob' }).then((blob) => {
-			saveAs(blob, `Backup_Tasks_FocusRecords_Projects_${getFormattedDateAndTimeForFileName()}.zip`);
+			FileSaver.saveAs(blob, `Backup_Tasks_FocusRecords_Projects_${getFormattedDateAndTimeForFileName()}.zip`);
 		});
 	};
 
