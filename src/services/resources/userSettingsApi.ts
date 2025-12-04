@@ -1,4 +1,5 @@
 import { baseAPI } from '../api';
+import { invalidateOnSuccess } from '../utils/rtkHelpers';
 
 export const userSettingsApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
@@ -39,7 +40,7 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 					patchResult.undo();
 				}
 			},
-			invalidatesTags: (result, error, userId) => ['UserSettings'],
+			invalidatesTags: invalidateOnSuccess(['UserSettings'] as const),
 		}),
 		getDocumentCounts: builder.query({
 			query: () => `/user-settings/document-counts`,

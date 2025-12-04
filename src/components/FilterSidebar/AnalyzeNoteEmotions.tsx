@@ -123,7 +123,6 @@ const AnalyzeNoteEmotions = () => {
 			dispatch(documentsFocusRecordsApi.util.invalidateTags(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats']));
 		} catch (error) {
 			console.error('Error updating focus record emotions:', error);
-			alert('Failed to start updating emotions');
 		}
 	};
 

@@ -25,16 +25,21 @@ const UpdateArchivedProjects = () => {
 
 		setUpdateStatus('loading');
 
-		await syncTasksFromArchivedProjects(payload);
+		try {
+			await syncTasksFromArchivedProjects(payload).unwrap();
 
-		// Let the UI update before doing heavy work
-		setTimeout(() => {
-			setUpdateStatus('done');
-
+			// Let the UI update before doing heavy work
 			setTimeout(() => {
-				setUpdateStatus('none');
-			}, 1000);
-		}, 0);
+				setUpdateStatus('done');
+
+				setTimeout(() => {
+					setUpdateStatus('none');
+				}, 1000);
+			}, 0);
+		} catch (error) {
+			// Error already shown by middleware, just reset loading state
+			setUpdateStatus('none');
+		}
 	};
 
 	return (

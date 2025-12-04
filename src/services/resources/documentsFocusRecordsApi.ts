@@ -1,4 +1,5 @@
 import { baseAPI, buildQueryString } from '../api';
+import { invalidateOnSuccess } from '../utils/rtkHelpers';
 
 /**
  * @description API for fetching documents/focus-records data from the backend
@@ -85,7 +86,7 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
                 method: 'POST',
                 body: { timezone },
             }),
-            invalidatesTags: ['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats'],
+            invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats'] as const),
         })
     }),
     overrideExisting: false,

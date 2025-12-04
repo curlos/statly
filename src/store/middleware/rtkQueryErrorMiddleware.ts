@@ -7,11 +7,17 @@ export const rtkQueryErrorMiddleware: Middleware = (api) => (next) => (action) =
 	if (isRejectedWithValue(action)) {
 		const error = action.payload;
 
+		// Extract endpoint name from action metadata
+		const endpointName = action.meta?.arg?.endpointName || 'Unknown endpoint';
+
 		const errorDetails = {
 			status: error?.status,
 			data: error?.data,
 			message: error?.data?.message || error?.error || 'An error occurred',
+			endpoint: endpointName,
 		};
+
+		console.log(`[RTK Query Error] Endpoint: ${endpointName}`, errorDetails);
 
 		// Dispatch modal state to show error
 		api.dispatch(

@@ -1,5 +1,6 @@
 import { loginUserSuccess } from '../../slices/userSlice';
 import { baseAPI } from '../api';
+import { invalidateOnSuccess } from '../utils/rtkHelpers';
 
 export const usersApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
@@ -26,7 +27,7 @@ export const usersApi = baseAPI.injectEndpoints({
 					console.error('Registration failed:', error);
 				}
 			},
-			invalidatesTags: ['User'],
+			invalidatesTags: invalidateOnSuccess(['User'] as const),
 		}),
 		loginUser: builder.mutation({
 			query: (credentials) => ({
@@ -46,7 +47,7 @@ export const usersApi = baseAPI.injectEndpoints({
 					console.error('Login failed:', error);
 				}
 			},
-			invalidatesTags: ['User'],
+			invalidatesTags: invalidateOnSuccess(['User'] as const),
 		}),
 		updateUserProfile: builder.mutation({
 			query: (formData) => ({
@@ -54,7 +55,7 @@ export const usersApi = baseAPI.injectEndpoints({
 				method: 'PUT',
 				body: formData,
 			}),
-			invalidatesTags: (_result, error) => (error ? [] : ['User']),
+			invalidatesTags: invalidateOnSuccess(['User'] as const),
 		}),
 		updateUserPassword: builder.mutation({
 			query: (credentials) => ({

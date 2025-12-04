@@ -1,4 +1,5 @@
 import { baseAPI } from '../api';
+import { invalidateOnSuccess } from '../utils/rtkHelpers';
 
 /**
  * @description API for fetching documents/tasks data from the backend
@@ -22,7 +23,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                     body: { timezone },
                 };
             },
-            invalidatesTags: (_result, error) => error ? [] : [
+            invalidatesTags: invalidateOnSuccess([
                 // General tags that need mostly every group
                 'OverviewStats', 'SyncMetadata', 'DocumentCounts',
                 // Projects
@@ -31,7 +32,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 'DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats',
                 // Focus Records
                 'FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats'
-            ],
+            ] as const),
         }),
         syncTasksFromArchivedProjects: builder.mutation({
             query: (payload) => ({
@@ -39,33 +40,33 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 method: 'POST',
                 body: payload,
             }),
-            invalidatesTags: (_result, error) => error ? [] : [
+            invalidatesTags: invalidateOnSuccess([
                 // Tasks
                 'AllTasks', 'DayWithCompletedTasks', 'TasksMedal', 'TasksChallenge', 'OverviewStats', 'TasksStats', 'DocumentCounts',
                 // The main reason this needs to be here is that focus records have a "completedTasks" array and thus one of these archived project's tasks could show up here so we need to be on top of that.
                 'FocusRecord'
-            ],
+            ] as const),
         }),
         syncTickTickProjects: builder.mutation({
             query: () => ({
                 url: '/documents/sync/ticktick/projects',
                 method: 'POST',
             }),
-            invalidatesTags: (_result, error) => error ? [] : ['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: invalidateOnSuccess(['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
         }),
         syncTickTickProjectGroups: builder.mutation({
             query: () => ({
                 url: '/documents/sync/ticktick/project-groups',
                 method: 'POST',
             }),
-            invalidatesTags: (_result, error) => error ? [] : ['ProjectGroup', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: invalidateOnSuccess(['ProjectGroup', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
         }),
         syncTickTickTasks: builder.mutation({
             query: () => ({
                 url: '/documents/sync/ticktick/tasks',
                 method: 'POST',
             }),
-            invalidatesTags: (_result, error) => error ? [] : ['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: invalidateOnSuccess(['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
         }),
         syncTickTickFocusRecords: builder.mutation({
             query: () => {
@@ -76,7 +77,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                     body: { timezone },
                 };
             },
-            invalidatesTags: (_result, error) => error ? [] : ['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+            invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
         }),
     }),
     overrideExisting: false,

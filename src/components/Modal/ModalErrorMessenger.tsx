@@ -30,7 +30,7 @@ const ModalErrorMessenger: React.FC = () => {
 		return null;
 	}
 
-	const { status, data, message } = error;
+	const { status, data, message, endpoint } = error;
 	const errorMessage = data?.message || message;
 	const contextMessage = getErrorContext(errorMessage);
 
@@ -46,7 +46,12 @@ const ModalErrorMessenger: React.FC = () => {
 						onClick={closeModal}
 					/>
 				</div>
-				<h1 className="font-bold text-[18px] mt-[-12px]">Error</h1>
+				<h1 className="font-bold text-[24px] mt-[-12px] text-red-500">Error</h1>
+				{endpoint && (
+					<h3 className="font-bold">
+						Endpoint: <span className="font-normal">{endpoint}</span>
+					</h3>
+				)}
 				{status && (
 					<h3 className="font-bold">
 						Status: <span className="font-normal">{status}</span>

@@ -54,7 +54,7 @@ const FocusRecordsPage = () => {
 	const getFilterBarHeaderContent = () => {
 		return (
 			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Focus Records {!isLoading && `(${total?.toLocaleString()})`}
+				Focus Records {!isLoading && `(${total?.toLocaleString() || 0})`}
 				{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(onlyTasksTotalDuration, false)}`}
 			</h2>
 		);
