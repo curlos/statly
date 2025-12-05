@@ -5,11 +5,25 @@ import BackupData from "../../SidebarModal/OtherSection/BackupData";
 import ImportData from "../../SidebarModal/OtherSection/ImportData";
 import UpdateArchivedProjects from "../../SidebarModal/OtherSection/UpdateArchivedProjects";
 import DeleteDataSection from "./DeleteDataSection";
+import CheckboxOther from "../../FilterSidebar/CheckboxOther";
+import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../../services/resources/userSettingsApi';
 
 const ManageDataSection = () => {
 	const [activeTab, setActiveTab] = useState<'data-operations' | 'delete-data'>('data-operations');
 	const { chosenColorObj } = useThemeContext();
 	const { textColor, bgColorHalfOpacity } = chosenColorObj;
+
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
+	const { userSettings } = fetchedUserSettings || {};
+	const [editUserSettings] = useEditUserSettingsMutation();
+
+	const handleAutoSyncToggle = async () => {
+		const newValue = !userSettings?.autoSyncEnabled;
+		const payload = {
+			autoSyncEnabled: newValue,
+		};
+		await editUserSettings(payload).unwrap();
+	};
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-bold`);
@@ -37,6 +51,13 @@ const ManageDataSection = () => {
 			<div>
 				{activeTab === 'data-operations' && (
 					<div>
+						<div className="mb-6">
+							<CheckboxOther
+								name="Auto Sync Focus Records, Tasks, Projects, and Project Groups"
+								showValue={userSettings?.autoSyncEnabled || false}
+								handleCheckboxClick={handleAutoSyncToggle}
+							/>
+						</div>
 						<UpdateArchivedProjects />
 						<BackupData />
 						<ImportData />

@@ -83,7 +83,7 @@ const LoggedInBase = ({ children }) => {
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey } = themeContext;
 
-	// useAutoSync();
+	useAutoSync();
 
 	const globalStyle = {
 		fontFamily: selectedFontFamilyKey !== 'Default' ? selectedFontFamilyKey : '',

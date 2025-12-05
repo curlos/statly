@@ -15,6 +15,11 @@ export const useAutoSync = () => {
 	const { userSettings } = fetchedUserSettings || {};
 
 	useEffect(() => {
+		// Early return if auto sync is disabled
+		if (!userSettings?.autoSyncEnabled) {
+			return;
+		}
+
 		const hasAutoSynced = sessionStorage.getItem('automatic-sync-all');
 
 		// Only proceed if we've finished loading the sync metadata
@@ -43,7 +48,8 @@ export const useAutoSync = () => {
 					}
 				} catch (error) {
 					console.error('Auto sync failed:', error);
-					hasTriggeredSync.current = false; // Reset on error so it can retry
+					// Don't retry - user can manually sync after fixing the issue
+					sessionStorage.setItem('automatic-sync-all', 'failed');
 					dispatch(setShowFirstSyncModal(false));
 				}
 			};
