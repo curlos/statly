@@ -86,7 +86,7 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
                 method: 'POST',
                 body: { timezone },
             }),
-            invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats'] as const),
+            invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'TodayFocus', 'StreakHistory'] as const),
         })
     }),
     overrideExisting: false,

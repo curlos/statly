@@ -48,7 +48,9 @@ export const baseAPI = createApi({
 		'FocusStats',
 		'TasksStats',
 		'SyncMetadata',
-		'DocumentCounts'
+		'DocumentCounts',
+		'TodayFocus',
+		'StreakHistory'
 	],
 	endpoints: () => ({}),
 });

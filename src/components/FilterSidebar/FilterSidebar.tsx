@@ -8,7 +8,6 @@ import { useSearchParamsCustom } from '../../contexts/useSearchParamsContext';
 import AppliedFilterItemList from '../../pages/focus-records/AppliedFilterItemList';
 import CategoriesSection from './CategoriesSection';
 import ShowRecordsFromFocusAppSection from './ShowRecordsFromFocusAppSection';
-import OtherSectionMedals from './OtherSectionMedals';
 import ShowDaysFromToDoListAppSection from './ShowDaysFromToDoListAppSection';
 import ProjectsTickTickSection from './ProjectsTickTickSection';
 import ProjectsTodoistSection from './ProjectsTodoistSection';
@@ -85,7 +84,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 		>
 			<div className="flex justify-between items-center">
-				<h2 className="font-bold text-[18px]">{isFocusRecordsOrCompletedTasksPage ? 'Filter & Sort' : `${page.charAt(0).toUpperCase() + page.slice(1).toLowerCase()} - Filter`}</h2>
+				<h2 className="font-bold text-[18px]">{isFocusRecordsOrCompletedTasksPage ? 'Filter & Sort' : 'Filter'}</h2>
 				<div className="flex items-center gap-3">
 					{isAtLeastOneFilterApplied && (
 						<div
