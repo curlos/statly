@@ -61,7 +61,7 @@ const ProviderList = ({ children }) => {
 					{children}
 
 					{/* Modals */}
-					<GlobalModalList />
+					<GlobalModalList isAuthPage={true} />
 				</div>
 			);
 		}
