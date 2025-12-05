@@ -1,4 +1,4 @@
-import { baseAPI } from '../api';
+import { baseAPI, buildQueryString } from '../api';
 import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
 
 /**
@@ -7,7 +7,12 @@ import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
 export const documentsProjectsApi = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getProjects: builder.query({
-            query: () => '/documents/projects',
+            query: (queryParams?: { fullData?: boolean }) => {
+                const queryString = buildQueryString(queryParams || {});
+                return queryString
+                    ? `/documents/projects?${queryString}`
+                    : '/documents/projects';
+            },
             transformResponse: (response) => {
                 const projects = response
                 const projectsWithInbox = [
@@ -28,7 +33,12 @@ export const documentsProjectsApi = baseAPI.injectEndpoints({
             providesTags: ['Project'],
         }),
         getProjectGroups: builder.query({
-            query: () => '/documents/projects/project-groups',
+            query: (queryParams?: { fullData?: boolean }) => {
+                const queryString = buildQueryString(queryParams || {});
+                return queryString
+                    ? `/documents/projects/project-groups?${queryString}`
+                    : '/documents/projects/project-groups';
+            },
             transformResponse: (response) => {
                 const projectGroups = response
                 const projectGroupsById = arrayToObjectByKey(projectGroups, 'id');

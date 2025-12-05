@@ -184,8 +184,8 @@ const BackupData = () => {
 						const [allTasks, allFocusRecords, projects, projectGroups] = await Promise.all([
 							fetchAllPages(triggerGetAllTasks),
 							fetchAllPages(triggerGetAllFocusRecords),
-							triggerGetProjects(undefined).then((res: any) => res.data?.projects || []),
-							triggerGetProjectGroups(undefined).then((res: any) => res.data?.projectGroups || []),
+							triggerGetProjects({ fullData: true }).then((res: any) => res.data?.projects || []),
+							triggerGetProjectGroups({ fullData: true }).then((res: any) => res.data?.projectGroups || []),
 						]);
 
 						// Let the UI update before doing heavy work
