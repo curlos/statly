@@ -8,7 +8,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import { useGetStreaksTodayQuery, useGetStreakHistoryQuery } from '../../services/resources/streaksApi';
 import Spinner from '../../components/Loaders/Spinner';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
-import { useSyncOrchestration } from '../../hooks/useSyncOrchestration';
+import ModalFocusGoalProgress from '../../components/Modal/ModalFocusGoalProgress';
 
 const defaultFocusData = {
 	goalSeconds: 21600, // 6 hours
@@ -24,13 +24,9 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	// Fetch streak history (current + longest streaks)
 	const { data: streakData, isLoading: isStreakLoading } = useGetStreakHistoryQuery(queryParams);
 
-	// Check if syncing to show spinner
-	const { isSyncing } = useSyncOrchestration();
-
 	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
 		todayData?.todayData || defaultFocusData;
-
-	const [isModalHabitDetailsOpen, setIsModalHabitDetailsOpen] = useState(false);
+	const [isFocusGoalModalOpen, setIsFocusGoalModalOpen] = useState(false);
 
 	// const completedGoalForTheDay = percentageOfFocusedGoalHours >= 100;
 
@@ -41,14 +37,14 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 
 	return (
 		<div className={classNames(isLargeType ? 'w-[350px]' : 'w-[250px]', 'relative')}>
-			{(isTodayLoading || isStreakLoading || isSyncing) && (
+			{(isTodayLoading || isStreakLoading) && (
 				<div className="absolute bottom-4 right-[-30px] z-10">
 					<Spinner size="xl" />
 				</div>
 			)}
 			<div
 				className="flex justify-end items-center text-orange-500 cursor-pointer"
-				onClick={() => setIsModalHabitDetailsOpen(true)}
+				onClick={() => setIsFocusGoalModalOpen(true)}
 			>
 				<Icon
 					name="local_fire_department"
@@ -58,7 +54,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					<span className={classNames(isLargeType ? '!text-[36px]' : '!text-[28px]', 'font-bold')}>
 						{streakData?.currentStreak?.days || 0}
 					</span>
-					<span className="text-[24px]">/{getStreakGoalDays()}</span>
+					<span className="mx-[2px]">/</span>
+					<span className="text-[24px]">{getStreakGoalDays()}</span>
 				</span>
 			</div>
 			<CircularProgressbarWithChildren
@@ -83,8 +80,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 							<span className={classNames(isLargeType ? 'text-[48px]' : 'text-[36px]', 'font-[600]')}>
 								{getFormattedDuration(totalFocusDurationForDay, false)}
 							</span>
-							<span className="">/</span>
-							<span>{getFormattedDuration(goalSeconds, false)}</span>
+							<span className="mx-[3px] text-color-gray-25">/</span>
+							<span className="text-color-gray-25">{getFormattedDuration(goalSeconds, false)}</span>
 						</div>
 
 						<div
@@ -98,6 +95,13 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					</div>
 				</div>
 			</CircularProgressbarWithChildren>
+
+			<ModalFocusGoalProgress
+				isOpen={isFocusGoalModalOpen}
+				onClose={() => setIsFocusGoalModalOpen(false)}
+				streakData={streakData}
+				goalSeconds={goalSeconds}
+			/>
 		</div>
 	);
 };
