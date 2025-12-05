@@ -8,6 +8,7 @@ import Icon from '../../Icon';
 import Tooltip from '../../Tooltip';
 import Spinner from '../../Loaders/Spinner';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import ImageCropModal from '../ImageCropModal';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -24,6 +25,8 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [previewImage, setPreviewImage] = useState<string | null>(null);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [showCropModal, setShowCropModal] = useState(false);
+	const [imageToCrop, setImageToCrop] = useState<string | null>(null);
 
 	const {
 		register,
@@ -51,12 +54,43 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 				onError('Image size must be less than 5MB');
 				return;
 			}
-			setSelectedFile(file);
 			const reader = new FileReader();
 			reader.onloadend = () => {
-				setPreviewImage(reader.result as string);
+				setImageToCrop(reader.result as string);
+				setShowCropModal(true);
 			};
 			reader.readAsDataURL(file);
+		}
+	};
+
+	const handleCropComplete = async (croppedImageUrl: string) => {
+		try {
+			// Convert data URL to File object
+			const response = await fetch(croppedImageUrl);
+			const blob = await response.blob();
+			const file = new File([blob], 'profile-pic.jpg', { type: 'image/jpeg' });
+
+			// Set both preview and file
+			setPreviewImage(croppedImageUrl);
+			setSelectedFile(file);
+
+			setShowCropModal(false);
+			// Reset file input
+			if (fileInputRef.current) {
+				fileInputRef.current.value = '';
+			}
+		} catch (error) {
+			console.error('Error processing cropped image:', error);
+			onError('Failed to process cropped image');
+		}
+	};
+
+	const handleCropModalClose = () => {
+		setShowCropModal(false);
+		setImageToCrop(null);
+		// Reset file input when user cancels
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
 		}
 	};
 
@@ -219,6 +253,13 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					</div>
 				)}
 			</div>
+
+			<ImageCropModal
+				isOpen={showCropModal}
+				onClose={handleCropModalClose}
+				imageSrc={imageToCrop || ''}
+				onCropComplete={handleCropComplete}
+			/>
 		</form>
 	);
 };
