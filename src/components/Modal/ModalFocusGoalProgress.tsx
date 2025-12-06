@@ -6,6 +6,7 @@ import { getAllMonths } from '../../utils/date.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import FocusGoalCalendarDay from './FocusGoalCalendarDay';
+import StreaksList from './StreaksList';
 
 // Helper function to format date as YYYY-MM-DD to match API format
 const formatDateAsAPIKey = (date: Date): string => {
@@ -36,6 +37,7 @@ interface Streak {
 interface StreakData {
 	currentStreak?: Streak;
 	longestStreak?: Streak;
+	allStreaks?: Streak[];
 	dailyDurationsMap?: {
 		[dateKey: string]: number;
 	};
@@ -57,6 +59,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	const { chosenColorObj } = useThemeContext() as any;
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [showYearView, setShowYearView] = useState(false);
+	const [viewMode, setViewMode] = useState<'calendar' | 'streaks'>('calendar');
 
 	// Calendar navigation handlers
 	const goToPreviousMonth = () => {
@@ -112,31 +115,61 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					/>
 				</div>
 
-				{/* Calendar Navigation */}
-				<CalendarNavigation
-					currentDate={currentDate}
-					showYearView={showYearView}
-					setShowYearView={setShowYearView}
-					monthName={monthName}
-					goToPreviousMonth={goToPreviousMonth}
-					goToNextMonth={goToNextMonth}
-					goToPreviousYear={goToPreviousYear}
-					goToNextYear={goToNextYear}
-				/>
+				{/* Toggle Button Row */}
+				<div className="grid grid-cols-2 gap-4 mb-6">
+					<div></div>
+					<button
+						onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
+						className="p-4 rounded-lg bg-color-gray-600 hover:bg-color-gray-500 transition-colors font-semibold flex items-center justify-center gap-2"
+					>
+						{viewMode === 'calendar' ? (
+							<>
+								<Icon name="list" />
+								<span>View All Streaks</span>
+							</>
+						) : (
+							<>
+								<Icon name="calendar_month" />
+								<span>View Calendar</span>
+							</>
+						)}
+					</button>
+				</div>
 
-				{/* Calendar Grid or Year View */}
-				{showYearView ? (
-					<YearView
-						currentDate={currentDate}
-						setCurrentDate={setCurrentDate}
-						setShowYearView={setShowYearView}
-					/>
+				{viewMode === 'calendar' ? (
+					<>
+						{/* Calendar Navigation */}
+						<CalendarNavigation
+							currentDate={currentDate}
+							showYearView={showYearView}
+							setShowYearView={setShowYearView}
+							monthName={monthName}
+							goToPreviousMonth={goToPreviousMonth}
+							goToNextMonth={goToNextMonth}
+							goToPreviousYear={goToPreviousYear}
+							goToNextYear={goToNextYear}
+						/>
+
+						{/* Calendar Grid or Year View */}
+						{showYearView ? (
+							<YearView
+								currentDate={currentDate}
+								setCurrentDate={setCurrentDate}
+								setShowYearView={setShowYearView}
+							/>
+						) : (
+							<CalendarGrid
+								currentDate={currentDate}
+								dailyDurationsMap={streakData?.dailyDurationsMap}
+								themeColor={chosenColorObj.hexColor}
+								goalSeconds={goalSeconds}
+							/>
+						)}
+					</>
 				) : (
-					<CalendarGrid
-						currentDate={currentDate}
-						dailyDurationsMap={streakData?.dailyDurationsMap}
-						themeColor={chosenColorObj.hexColor}
-						goalSeconds={goalSeconds}
+					<StreaksList
+						allStreaks={streakData?.allStreaks || []}
+						currentStreak={streakData?.currentStreak}
 					/>
 				)}
 			</div>
