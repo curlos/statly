@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import Icon from '../Icon';
-import { useThemeContext } from '../../contexts/useThemeContext';
 
 interface Streak {
 	days: number;
@@ -11,9 +9,10 @@ interface Streak {
 interface StreaksListProps {
 	allStreaks: Streak[];
 	currentStreak?: Streak;
+	sortBy: SortOption;
 }
 
-type SortOption = 'longest' | 'shortest' | 'recent' | 'oldest';
+export type SortOption = 'longest' | 'shortest' | 'recent' | 'oldest';
 
 // Helper function to format date string without timezone conversion
 const formatDateWithoutTimezone = (dateString: string): string => {
@@ -27,10 +26,7 @@ const formatDateWithoutTimezone = (dateString: string): string => {
 	});
 };
 
-const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak }) => {
-	const [sortBy, setSortBy] = useState<SortOption>('longest');
-	const { chosenColorObj } = useThemeContext() as any;
-	const { bgColorHalfOpacity } = chosenColorObj;
+const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, sortBy }) => {
 
 	// Check if a streak is the current streak
 	const isCurrentStreak = (streak: Streak): boolean => {
@@ -78,40 +74,8 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak }) 
 
 	const sortedStreaks = getSortedStreaks();
 
-	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
-	const selectedButtonStyle = `${bgColorHalfOpacity} ${sharedButtonStyle}`;
-	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-600`;
-
 	return (
 		<div>
-			{/* Sort Options */}
-			<div className="mb-4 flex gap-2 justify-center flex-wrap">
-				<button
-					onClick={() => setSortBy('longest')}
-					className={sortBy === 'longest' ? selectedButtonStyle : unselectedButtonStyle}
-				>
-					Longest
-				</button>
-				<button
-					onClick={() => setSortBy('shortest')}
-					className={sortBy === 'shortest' ? selectedButtonStyle : unselectedButtonStyle}
-				>
-					Shortest
-				</button>
-				<button
-					onClick={() => setSortBy('recent')}
-					className={sortBy === 'recent' ? selectedButtonStyle : unselectedButtonStyle}
-				>
-					Most Recent
-				</button>
-				<button
-					onClick={() => setSortBy('oldest')}
-					className={sortBy === 'oldest' ? selectedButtonStyle : unselectedButtonStyle}
-				>
-					Oldest
-				</button>
-			</div>
-
 			{/* Streaks List */}
 			<div className="max-h-[400px] overflow-y-auto space-y-3 pr-2 scrollbar-thin gray-scrollbar">
 				{sortedStreaks.length === 0 ? (

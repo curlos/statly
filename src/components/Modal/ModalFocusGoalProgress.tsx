@@ -6,9 +6,10 @@ import { formatDateAsAPIKey, formatDateWithoutTimezone, getAllMonths } from '../
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import FocusGoalCalendarDay from './FocusGoalCalendarDay';
-import StreaksList from './StreaksList';
+import StreaksList, { SortOption } from './StreaksList';
 import { useStatsDateRange } from '../../hooks/useStatsDateRange';
 import FocusStatsCard from './ModalFocusGoalProgress/FocusStatsCard';
+import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
 
 interface Streak {
 	days: number;
@@ -42,6 +43,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [showYearView, setShowYearView] = useState(false);
 	const [viewMode, setViewMode] = useState<'calendar' | 'streaks'>('calendar');
+	const [sortBy, setSortBy] = useState<string>('Longest');
 
 	// Focus stats interval management
 	const selectedIntervalOptions = ['Week', 'Month', 'Year', 'All', 'Custom'];
@@ -81,6 +83,22 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	};
 
 	const monthName = currentDate.toLocaleString('default', { month: 'long' });
+
+	// Convert display sort option to internal format
+	const getSortByValue = (): SortOption => {
+		switch (sortBy) {
+			case 'Longest':
+				return 'longest';
+			case 'Shortest':
+				return 'shortest';
+			case 'Most Recent':
+				return 'recent';
+			case 'Oldest':
+				return 'oldest';
+			default:
+				return 'longest';
+		}
+	};
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[650px]">
@@ -129,11 +147,28 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					/>
 				</div>
 
-				{/* View toggle button */}
-				<div className="flex justify-end mb-1">
+				{/* View toggle button with sort dropdown */}
+				<div className="flex justify-between items-center mb-3">
+					{/* Sort dropdown - only visible in streaks view */}
+					{viewMode === 'streaks' && (
+						<GeneralSelectButtonAndDropdown
+							selected={sortBy}
+							setSelected={setSortBy}
+							selectedOptions={['Longest', 'Shortest', 'Most Recent', 'Oldest']}
+						/>
+					)}
+
+					{/* Spacer for calendar view */}
+					{viewMode === 'calendar' && <div></div>}
+
 					<button
 						onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
-						className="text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border border-color-gray-100 hover:bg-color-gray-200 text-color-gray-50 transition-colors flex items-center gap-1"
+						className={classNames(
+							"text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border text-color-gray-50 transition-colors flex items-center gap-1",
+							"border-color-gray-100",
+							chosenColorObj.hover.textColor,
+							chosenColorObj.hover.borderColor
+						)}
 					>
 						{viewMode === 'calendar' ? (
 							<>
@@ -183,6 +218,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					<StreaksList
 						allStreaks={streakData?.allStreaks || []}
 						currentStreak={streakData?.currentStreak}
+						sortBy={getSortByValue()}
 					/>
 				)}
 
