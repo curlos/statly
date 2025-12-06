@@ -34,7 +34,9 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 		'categories',
 		'date-interval',
 		'crosses-midnight',
-		'emotions'
+		'emotions',
+		'focus-apps',
+		'to-do-list-apps'
 	];
 
 	switch (page) {
