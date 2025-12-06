@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 		visible: { opacity: 0.5 },
 	};
 
-	const containerClasses = `z-50 relative p-3 max-w-full w-[500px]`;
+	const containerClasses = `z-50 relative p-3 max-w-full w-[500px] max-h-[90vh] overflow-y-auto gray-scrollbar`;
 
 	return (
 		<AnimatePresence>
