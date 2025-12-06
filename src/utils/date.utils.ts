@@ -602,3 +602,23 @@ export const getDateRangeFromSelectedDates = (selectedDates) => {
 		endDate: getFormattedLongDay(endDate)
 	};
 };
+
+// Helper function to format date as YYYY-MM-DD to match API format
+export const formatDateAsAPIKey = (date: Date): string => {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	return `${year}-${month}-${day}`;
+};
+
+// Helper function to format date string without timezone conversion
+export const formatDateWithoutTimezone = (dateString: string): string => {
+	// Parse YYYY-MM-DD format directly without timezone conversion
+	const [year, month, day] = dateString.split('-').map(Number);
+	const date = new Date(year, month - 1, day); // Month is 0-indexed
+	return date.toLocaleDateString('en-US', {
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric',
+	});
+};

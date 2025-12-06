@@ -2,31 +2,13 @@ import { useState } from 'react';
 import Modal from './Modal';
 import Icon from '../Icon';
 import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
-import { getAllMonths } from '../../utils/date.utils';
+import { formatDateAsAPIKey, formatDateWithoutTimezone, getAllMonths } from '../../utils/date.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import FocusGoalCalendarDay from './FocusGoalCalendarDay';
 import StreaksList from './StreaksList';
-
-// Helper function to format date as YYYY-MM-DD to match API format
-const formatDateAsAPIKey = (date: Date): string => {
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const day = String(date.getDate()).padStart(2, '0');
-	return `${year}-${month}-${day}`;
-};
-
-// Helper function to format date string without timezone conversion
-const formatDateWithoutTimezone = (dateString: string): string => {
-	// Parse YYYY-MM-DD format directly without timezone conversion
-	const [year, month, day] = dateString.split('-').map(Number);
-	const date = new Date(year, month - 1, day); // Month is 0-indexed
-	return date.toLocaleDateString('en-US', {
-		month: 'short',
-		day: 'numeric',
-		year: 'numeric',
-	});
-};
+import { useStatsDateRange } from '../../hooks/useStatsDateRange';
+import FocusStatsCard from './ModalFocusGoalProgress/FocusStatsCard';
 
 interface Streak {
 	days: number;
@@ -60,6 +42,22 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [showYearView, setShowYearView] = useState(false);
 	const [viewMode, setViewMode] = useState<'calendar' | 'streaks'>('calendar');
+
+	// Focus stats interval management
+	const selectedIntervalOptions = ['Week', 'Month', 'Year', 'All', 'Custom'];
+	const {
+		selectedInterval,
+		setSelectedInterval,
+		selectedDates,
+		setSelectedDates,
+		startDate,
+		endDate,
+		setIsModalPickDateRangeOpen,
+		renderCustomDateModal,
+	} = useStatsDateRange({
+		initialInterval: 'Month',
+		initialDates: [new Date()],
+	});
 
 	// Calendar navigation handlers
 	const goToPreviousMonth = () => {
@@ -100,7 +98,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				</div>
 
 				{/* Streaks Section */}
-				<div className="grid grid-cols-2 gap-4 mb-6">
+				<div className="grid grid-cols-2 gap-3 mb-3">
 					<StreakDisplay
 						title="Current Streak"
 						streak={streakData?.currentStreak}
@@ -115,25 +113,22 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					/>
 				</div>
 
-				{/* Toggle Button Row */}
-				<div className="grid grid-cols-2 gap-4 mb-6">
-					<div></div>
-					<button
-						onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
-						className="p-4 rounded-lg bg-color-gray-600 hover:bg-color-gray-500 transition-colors font-semibold flex items-center justify-center gap-2"
-					>
-						{viewMode === 'calendar' ? (
-							<>
-								<Icon name="list" />
-								<span>View All Streaks</span>
-							</>
-						) : (
-							<>
-								<Icon name="calendar_month" />
-								<span>View Calendar</span>
-							</>
-						)}
-					</button>
+				{/* Focus Stats Card */}
+				<div className="mb-6">
+					<FocusStatsCard
+						selectedInterval={selectedInterval}
+						setSelectedInterval={setSelectedInterval}
+						selectedDates={selectedDates}
+						setSelectedDates={setSelectedDates}
+						selectedIntervalOptions={selectedIntervalOptions}
+						dailyDurationsMap={streakData?.dailyDurationsMap || {}}
+						goalSeconds={goalSeconds}
+						setIsModalPickDateRangeOpen={setIsModalPickDateRangeOpen}
+						viewMode={viewMode}
+						setViewMode={setViewMode}
+						startDate={startDate}
+						endDate={endDate}
+					/>
 				</div>
 
 				{viewMode === 'calendar' ? (
@@ -172,6 +167,9 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 						currentStreak={streakData?.currentStreak}
 					/>
 				)}
+
+				{/* Custom date modal */}
+				{renderCustomDateModal()}
 			</div>
 		</Modal>
 	);
