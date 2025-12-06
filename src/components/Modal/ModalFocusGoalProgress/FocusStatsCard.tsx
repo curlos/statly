@@ -12,8 +12,6 @@ const FocusStatsCard = ({
 	dailyDurationsMap,
 	goalSeconds,
 	setIsModalPickDateRangeOpen,
-	viewMode,
-	setViewMode,
 	startDate,
 	endDate,
 }: {
@@ -25,8 +23,6 @@ const FocusStatsCard = ({
 	dailyDurationsMap: { [dateKey: string]: number };
 	goalSeconds: number;
 	setIsModalPickDateRangeOpen: (value: boolean) => void;
-	viewMode: 'calendar' | 'streaks';
-	setViewMode: (value: 'calendar' | 'streaks') => void;
 	startDate: Date | null;
 	endDate: Date | null;
 }) => {
@@ -243,27 +239,9 @@ const FocusStatsCard = ({
 				{stats.daysMetGoal}/{stats.totalDays} <span className="text-color-gray-50">({Math.round(stats.percentage)}%)</span>
 			</div>
 
-			{/* Helper text and toggle button */}
-			<div className="flex items-center justify-between">
-				<div className="text-color-gray-100">
-					Days goal met
-				</div>
-				<button
-					onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
-					className="text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border border-color-gray-100 hover:bg-color-gray-500 text-color-gray-50 transition-colors flex items-center gap-1"
-				>
-					{viewMode === 'calendar' ? (
-						<>
-							<Icon name="list" customClass="!text-[18px]" />
-							<span>View All Streaks</span>
-						</>
-					) : (
-						<>
-							<Icon name="calendar_month" customClass="!text-[18px]" />
-							<span>View Calendar</span>
-						</>
-					)}
-				</button>
+			{/* Helper text */}
+			<div className="text-color-gray-100">
+				Days goal met
 			</div>
 		</div>
 	);

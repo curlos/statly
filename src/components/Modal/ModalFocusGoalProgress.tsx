@@ -124,11 +124,29 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 						dailyDurationsMap={streakData?.dailyDurationsMap || {}}
 						goalSeconds={goalSeconds}
 						setIsModalPickDateRangeOpen={setIsModalPickDateRangeOpen}
-						viewMode={viewMode}
-						setViewMode={setViewMode}
 						startDate={startDate}
 						endDate={endDate}
 					/>
+				</div>
+
+				{/* View toggle button */}
+				<div className="flex justify-end mb-1">
+					<button
+						onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
+						className="text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border border-color-gray-100 hover:bg-color-gray-200 text-color-gray-50 transition-colors flex items-center gap-1"
+					>
+						{viewMode === 'calendar' ? (
+							<>
+								<Icon name="list" customClass="!text-[18px]" />
+								<span>View All Streaks</span>
+							</>
+						) : (
+							<>
+								<Icon name="calendar_month" customClass="!text-[18px]" />
+								<span>View Calendar</span>
+							</>
+						)}
+					</button>
 				</div>
 
 				{viewMode === 'calendar' ? (
