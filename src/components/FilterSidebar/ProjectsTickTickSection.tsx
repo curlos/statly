@@ -10,6 +10,7 @@ import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import CheckboxOther from './CheckboxOther';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
+import AppliedFilterItem from './AppliedFilterItem';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
@@ -26,7 +27,7 @@ const ProjectsTickTickSection = ({ page }) => {
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
-	const { projectsTickTick } = fetchedProjects || {};
+	const { projectsTickTick, projectsById } = fetchedProjects || {};
 
 	// RTK Query - TickTick 1.0 - Project Groups
 	const { data: fetchedProjectGroups, isLoading: isLoadingGetProjectGroups } = useGetProjectGroupsQuery();
@@ -123,8 +124,54 @@ const ProjectsTickTickSection = ({ page }) => {
 		await editUserSettings(payload);
 	};
 
+	// Get list of selected project IDs from user settings
+	const getSelectedProjectIds = (): string[] => {
+		if (!filteredProjects || typeof filteredProjects !== 'object') {
+			return [];
+		}
+		return Object.entries(filteredProjects)
+			.filter(([_, isSelected]) => isSelected === true)
+			.map(([projectId, _]) => projectId);
+	};
+
+	// Get comma-separated project names for display
+	const getSelectedProjectsDisplay = (): string => {
+		const selectedIds = getSelectedProjectIds();
+		if (!projectsById || selectedIds.length === 0) return '';
+
+		const projectNames = selectedIds
+			.map(id => projectsById[id]?.name || id)
+			.filter(Boolean); // Remove undefined entries
+
+		return projectNames.join(', ');
+	};
+
+	// Clear all selected projects
+	const handleClearAllProjects = async () => {
+		// Set all projects to false
+		const clearedProjects = {};
+		if (filteredProjects) {
+			Object.keys(filteredProjects).forEach(projectId => {
+				clearedProjects[projectId] = false;
+			});
+		}
+
+		await handleCheckboxClick('projects', clearedProjects);
+	};
+
 	return (
 		<div>
+			{/* Selected Projects Display - Only for focus-hours-goal page */}
+			{page === 'focus-hours-goal' && getSelectedProjectIds().length > 0 && (
+				<div className="mb-3">
+					<AppliedFilterItem
+						name="Projects (TickTick)"
+						value={getSelectedProjectsDisplay()}
+						onRemove={handleClearAllProjects}
+					/>
+				</div>
+			)}
+
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">
