@@ -10,6 +10,7 @@ import CardImage from '../../pages/challenges/CardImage';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import OtherSectionMedals from '../FilterSidebar/OtherSectionMedals';
 import ProjectsTickTickSection from '../FilterSidebar/ProjectsTickTickSection';
+import FocusHoursGoalPageSettingsSection from '../FilterSidebar/FocusHoursGoalPageSettingsSection';
 
 const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 	const sidebarVariants = {
@@ -121,6 +122,8 @@ const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 
 			{page === 'focus-hours-goal-page' && (
 				<div>
+					<hr className="border-color-gray-200 my-4" />
+					<FocusHoursGoalPageSettingsSection />
 					<hr className="border-color-gray-200 my-4" />
 					<ProjectsTickTickSection page="focus-hours-goal" />
 				</div>

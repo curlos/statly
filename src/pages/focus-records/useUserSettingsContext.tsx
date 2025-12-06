@@ -51,7 +51,7 @@ const useUserSettings = () => {
 		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
-	const { projects: filteredProjects = {} } = focusHoursGoalPageSettings;
+	const { projects: filteredProjects = {}, showStreakCount = true } = focusHoursGoalPageSettings;
 
 	const { selectedChallengeCardImage } = challengesPageSettings;
 	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings;
@@ -107,6 +107,7 @@ const useUserSettings = () => {
 		},
 		focusHoursGoalPageSettings: {
 			filteredProjects,
+			showStreakCount,
 		},
 		challengesPageSettings: {
 			selectedChallengeCardImage,
