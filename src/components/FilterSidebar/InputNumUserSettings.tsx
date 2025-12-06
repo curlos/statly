@@ -7,10 +7,11 @@ const InputNumUserSettings = ({
 	defaultValue,
 	userSettings,
 	editUserSettings,
-	minNum,
-	maxNum,
+	minNum = 5,
+	maxNum = 100,
 	name,
 	page,
+	inputMaxWidth = 'w-[50px]',
 }) => {
 	const [localValue, setLocalValue] = useState(defaultValue);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -75,6 +76,27 @@ const InputNumUserSettings = ({
 					},
 				},
 			};
+		} else if (page === 'focus-hours-goal-page') {
+			const restOfFocusHoursGoalKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
+			const currentGoalDays = restOfFocusHoursGoalKeysAndVals?.goalDays;
+
+			if (currentGoalDays === localValue) {
+				return;
+			}
+
+			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+
+			payload = {
+				tickTickOne: {
+					pages: {
+						...restOfPagesKeysAndVals,
+						focusHoursGoal: {
+							...restOfFocusHoursGoalKeysAndVals,
+							goalDays: localValue,
+						},
+					},
+				},
+			};
 		}
 
 		return payload;
@@ -91,7 +113,7 @@ const InputNumUserSettings = ({
 
 		setErrorMessage('');
 
-		if (page === 'focus-records-page' || page === 'completed-tasks-page') {
+		if (page === 'focus-records-page' || page === 'completed-tasks-page' || page === 'focus-hours-goal-page') {
 			const payload = getPayload();
 
 			if (!payload) {
@@ -115,8 +137,15 @@ const InputNumUserSettings = ({
 	return (
 		<div>
 			<div className="flex gap-2 mt-1 mb-1 ml-1">
-				<div className="max-w-[50px]">
-					<CustomInput value={localValue} setValue={setLocalValue} type="number" min={5} max={100} />
+				<div>
+					<CustomInput
+						value={localValue}
+						setValue={setLocalValue}
+						type="number"
+						min={minNum}
+						max={maxNum}
+						customClasses={inputMaxWidth}
+					/>
 				</div>
 				<div className="flex items-center gap-1">
 					<div>{name}</div>

@@ -30,7 +30,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 		<input
 			type={type || 'text'}
 			className={classNames(
-				'text-center text-[16px] p-1 bg-color-gray-200 placeholder:text-[#7C7C7C] mb-0 w-full resize-none outline-none rounded',
+				'text-center text-[16px] p-1 bg-color-gray-200 placeholder:text-[#7C7C7C] mb-0 resize-none outline-none rounded',
 				chosenColorObj.focus.outlineColor,
 				customClasses
 			)}
@@ -40,11 +40,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
 				onChange
 					? onChange
 					: (e) => {
-							// if (isNaN(e.target.value)) {
-							// 	setValue(e.target.value);
-							// } else {
-							// 	setValue(Number(e.target.value));
-							// }
 							setValue(e.target.value);
 						}
 			}

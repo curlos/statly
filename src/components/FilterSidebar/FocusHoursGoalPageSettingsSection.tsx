@@ -2,12 +2,20 @@ import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
+import InputNumUserSettings from './InputNumUserSettings';
+import GoalSecondsInput from './GoalSecondsInput';
+import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
-		focusHoursGoalPageSettings: { showStreakCount },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
+
+	// RTK Query - User Settings
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
+	const { userSettings } = fetchedUserSettings || {};
+	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const handleCheckboxClick = (showValue, userSettingProperty) => {
 		const newShowValue = !showValue;
@@ -35,13 +43,46 @@ const FocusHoursGoalPageSettingsSection = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
-				<CheckboxOther
-					{...{
-						name: 'Show Streak Count',
-						showValue: showStreakCount,
-						handleCheckboxClick: () => handleCheckboxClick(showStreakCount, 'showStreakCount'),
-					}}
-				/>
+				{/* General Section */}
+				<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
+					<CheckboxOther
+						{...{
+							name: 'Show Streak Count',
+							showValue: showStreakCount,
+							handleCheckboxClick: () => handleCheckboxClick(showStreakCount, 'showStreakCount'),
+						}}
+					/>
+				</div>
+
+				{/* Streak Goal Section */}
+				<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Streak Goal</h4>
+					<InputNumUserSettings
+						{...{
+							defaultValue: goalDays,
+							userSettings,
+							editUserSettings,
+							minNum: 1,
+							maxNum: 36524,
+							name: 'Goal Days',
+							page: 'focus-hours-goal-page',
+							inputMaxWidth: 'w-[70px]',
+						}}
+					/>
+				</div>
+
+				{/* Daily Focus Goal Section */}
+				<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Daily Focus Goal</h4>
+					<GoalSecondsInput
+						{...{
+							defaultValue: goalSeconds,
+							userSettings,
+							editUserSettings,
+						}}
+					/>
+				</div>
 			</Accordion>
 		</div>
 	);

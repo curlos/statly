@@ -3,7 +3,6 @@ import Icon from '../../components/Icon';
 import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import { useState } from 'react';
 import classNames from 'classnames';
-import { getStreakGoalDays } from '../../utils/focus.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useGetStreaksTodayQuery, useGetStreakHistoryQuery } from '../../services/resources/streaksApi';
 import Spinner from '../../components/Loaders/Spinner';
@@ -28,7 +27,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { chosenColorObj } = themeContext;
 
 	const {
-		focusHoursGoalPageSettings: { showStreakCount },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds },
 	} = useUserSettingsContext();
 
 	// Only fetch streak history when:
@@ -41,8 +40,10 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 		skip: !shouldFetchStreakHistory,
 	});
 
-	const { goalSeconds, totalFocusDurationForDay, percentageOfFocusedGoalHours } =
-		todayData?.todayData || defaultFocusData;
+	const { totalFocusDurationForDay } = todayData?.todayData || defaultFocusData;
+
+	// Recalculate percentage based on user's goalSeconds setting
+	const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalSeconds) * 100;
 
 	// const completedGoalForTheDay = percentageOfFocusedGoalHours >= 100;
 
@@ -57,7 +58,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 			)}
 			<div
 				className={classNames(
-					'flex justify-end items-center text-orange-500 cursor-pointer mb-[-20px]',
+					'flex justify-end items-center text-orange-500 cursor-pointer',
 					!showStreakCount && 'mr-4'
 				)}
 				onClick={() => setIsFocusGoalModalOpen(true)}
@@ -77,10 +78,10 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				{showStreakCount && (
 					<span className={classNames(isLargeType ? '!text-[20px]' : '!text-[18px]')}>
 						<span className={classNames(isLargeType ? '!text-[36px]' : '!text-[28px]', 'font-bold')}>
-							{streakData?.currentStreak?.days || 0}
+							{(streakData?.currentStreak?.days || 0).toLocaleString()}
 						</span>
 						<span className="mx-[2px]">/</span>
-						<span className="text-[24px]">{getStreakGoalDays()}</span>
+						<span className="text-[24px]">{goalDays.toLocaleString()}</span>
 					</span>
 				)}
 			</div>

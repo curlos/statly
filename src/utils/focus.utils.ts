@@ -147,10 +147,6 @@ export const getStreaksInfo = (focusRecords, filteredProjects, tasksById) => {
 	return newStreaksInfo;
 };
 
-export const getStreakGoalDays = () => {
-	return '30'
-}
-
 export const getFocusDurationForDay = (focusRecordsByDate, date, filteredProjects, tasksById) => {
 	const dayKey = getFormattedLongDay(date);
 	const focusRecordsForTheDay = focusRecordsByDate[dayKey];
