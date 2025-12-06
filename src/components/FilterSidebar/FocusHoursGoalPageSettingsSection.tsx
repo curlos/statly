@@ -8,7 +8,7 @@ import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../serv
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
-		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -51,6 +51,13 @@ const FocusHoursGoalPageSettingsSection = () => {
 							name: 'Show Streak Count',
 							showValue: showStreakCount,
 							handleCheckboxClick: () => handleCheckboxClick(showStreakCount, 'showStreakCount'),
+						}}
+					/>
+					<CheckboxOther
+						{...{
+							name: 'Show Goal Days',
+							showValue: showGoalDays,
+							handleCheckboxClick: () => handleCheckboxClick(showGoalDays, 'showGoalDays'),
 						}}
 					/>
 				</div>

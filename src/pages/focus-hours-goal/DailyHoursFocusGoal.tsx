@@ -27,7 +27,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { chosenColorObj } = themeContext;
 
 	const {
-		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays },
 	} = useUserSettingsContext();
 
 	// Only fetch streak history when:
@@ -80,8 +80,12 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 						<span className={classNames(isLargeType ? '!text-[36px]' : '!text-[28px]', 'font-bold')}>
 							{(streakData?.currentStreak?.days || 0).toLocaleString()}
 						</span>
-						<span className="mx-[2px]">/</span>
-						<span className="text-[24px]">{goalDays.toLocaleString()}</span>
+						{showGoalDays && (
+							<>
+								<span className="mx-[2px]">/</span>
+								<span className="text-[24px]">{goalDays.toLocaleString()}</span>
+							</>
+						)}
 					</span>
 				)}
 			</div>

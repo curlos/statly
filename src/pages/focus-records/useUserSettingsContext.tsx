@@ -56,6 +56,7 @@ const useUserSettings = () => {
 		showStreakCount = true,
 		goalDays = 7,
 		goalSeconds = 3600,
+		showGoalDays = true,
 	} = focusHoursGoalPageSettings;
 
 	const { selectedChallengeCardImage } = challengesPageSettings;
@@ -115,6 +116,7 @@ const useUserSettings = () => {
 			showStreakCount,
 			goalDays,
 			goalSeconds,
+			showGoalDays,
 		},
 		challengesPageSettings: {
 			selectedChallengeCardImage,
