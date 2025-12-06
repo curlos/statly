@@ -4,4 +4,5 @@ export interface DropdownProps {
 	toggleRef: React.MutableRefObject<null>;
 	customClasses?: string;
 	customStyling?: Object;
+	align?: 'left' | 'right';
 }

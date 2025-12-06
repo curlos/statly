@@ -12,6 +12,7 @@ const DropdownGeneralSelect = ({
 	setSelected,
 	selectedOptions,
 	onClick,
+	align,
 }) => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -49,6 +50,7 @@ const DropdownGeneralSelect = ({
 			isVisible={isVisible}
 			setIsVisible={setIsVisible}
 			customClasses={classNames('shadow-2xl border border-color-gray-200 rounded-lg w-[150px]', customClasses)}
+			align={align}
 		>
 			<div className="p-1 max-h-[250px] overflow-y-auto gray-scrollbar">
 				{selectedOptions.map((name) => (

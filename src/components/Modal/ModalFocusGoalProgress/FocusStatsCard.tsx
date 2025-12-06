@@ -234,6 +234,7 @@ const FocusStatsCard = ({
 						if (name?.toLowerCase() !== 'custom') return;
 						setIsModalPickDateRangeOpen(true);
 					}}
+					align="right"
 				/>
 			</div>
 

@@ -11,6 +11,7 @@ interface GeneralSelectButtonAndDropdownProps {
 	onClick?: (selectedOption: string) => void;
 	isDropdownOpenForParent?: boolean;
 	setIsDropdownOpenForParent?: (value: boolean) => void;
+	align?: 'left' | 'right';
 }
 
 const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownProps> = ({
@@ -20,6 +21,7 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 	onClick,
 	isDropdownOpenForParent,
 	setIsDropdownOpenForParent,
+	align,
 }) => {
 	const dropdownRef = useRef(null);
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -62,6 +64,7 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 				setSelected={setSelected}
 				selectedOptions={selectedOptions}
 				onClick={onClick}
+				align={align}
 			/>
 		</div>
 	);

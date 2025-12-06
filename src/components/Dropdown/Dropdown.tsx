@@ -20,6 +20,7 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	innerClickElemRefs,
 	addedAdditionalMargin,
 	parentElemRef,
+	align,
 }) => {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -54,24 +55,27 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 				}
 			}
 
-			// Check if dropdown exceeds the right side of the viewport
-			if (dropdownRect.right > window.innerWidth - margin) {
-				adjustments.right = '0';
-				adjustments.left = 'auto';
-			}
+			// Only do auto-detection for horizontal positioning if align prop is not provided
+			if (!align) {
+				// Check if dropdown exceeds the right side of the viewport
+				if (dropdownRect.right > window.innerWidth - margin) {
+					adjustments.right = '0';
+					adjustments.left = 'auto';
+				}
 
-			// Handle parent container constraints if specified
-			if (parentElemRef?.current) {
-				const parentElemRect = parentElemRef.current.getBoundingClientRect();
-				if (dropdownRect.right > parentElemRect.right) {
-					adjustments.left = `-${dropdownRect.width - 32}px`;
+				// Handle parent container constraints if specified
+				if (parentElemRef?.current) {
+					const parentElemRect = parentElemRef.current.getBoundingClientRect();
+					if (dropdownRect.right > parentElemRect.right) {
+						adjustments.left = `-${dropdownRect.width - 32}px`;
+					}
 				}
 			}
 
 			// Apply styles directly to adjust the dropdown's positioning
 			Object.assign(dropdownRef.current.style, adjustments);
 		}
-	}, [isVisible, toggleRef, parentElemRef]);
+	}, [isVisible, toggleRef, parentElemRef, align]);
 
 	// Animation variants
 	const variants = {
@@ -101,7 +105,8 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 					exit="hidden"
 					variants={variants}
 					className={classNames(
-						'absolute top-full left-0 z-50 text-white bg-color-gray-600 rounded-lg text-[14px] mt-[4px]',
+						'absolute top-full z-50 text-white bg-color-gray-600 rounded-lg text-[14px] mt-[4px]',
+						align === 'right' ? 'right-0' : 'left-0',
 						positionAdjustment || '',
 						customClasses || ''
 					)}
