@@ -1,8 +1,13 @@
 import Icon from '../../components/Icon';
 import AppliedFilterItemList from './AppliedFilterItemList';
 import SyncButton from '../../components/SyncButton';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import classNames from 'classnames';
 
 const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isFetching = false }) => {
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+
 	return (
 		<div className="bg-color-gray-700 sticky top-0 z-[1] pt-2">
 			<div className="flex justify-between items-center pb-5 container">
@@ -17,7 +22,11 @@ const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isF
 
 					<div className="text-nowrap text-[16px] cursor-pointer flex items-center gap-2">
 						<div
-							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
+							className={classNames(
+								'flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1 transition-colors',
+								chosenColorObj.hover.borderColor,
+								chosenColorObj.hover.textColor
+							)}
 							onClick={() => !isFetching && setShowFilterSidebar(!showFilterSidebar)}
 							style={{ opacity: isFetching ? 0.5 : 1, cursor: isFetching ? 'not-allowed' : 'pointer' }}
 						>
@@ -25,7 +34,7 @@ const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isF
 							<Icon
 								name="page_info"
 								fill={0}
-								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								customClass={'!text-[20px] cursor-pointer'}
 							/>
 						</div>
 

@@ -24,7 +24,7 @@ const ShowRecordsFromEmotionSection = () => {
 						<Icon
 							name="favorite"
 							fill={1}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							customClass={`${chosenColorObj.textColor} !text-[20px] hover:text-white cursor-pointer`}
 						/>
 					</div>
 				}

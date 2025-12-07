@@ -19,9 +19,9 @@ const ShowRecordsFromFocusAppSection = () => {
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Show Records From Focus App</h3>
 						<Icon
-							name="app_blocking"
+							name="timer"
 							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							customClass={`${chosenColorObj.textColor} !text-[20px] hover:text-white cursor-pointer`}
 						/>
 					</div>
 				}

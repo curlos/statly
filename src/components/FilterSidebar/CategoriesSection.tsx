@@ -32,7 +32,7 @@ const CategoriesSection = () => {
 						<Icon
 							name="construction"
 							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							customClass={`${chosenColorObj.textColor} !text-[20px] hover:text-white cursor-pointer`}
 						/>
 						{isLoadingGetProjects && <Spinner />}
 					</div>

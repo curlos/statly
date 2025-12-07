@@ -14,10 +14,14 @@ import { useGetTasksMedalsQuery } from '../../services/resources/documentsTasksA
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import classNames from 'classnames';
 
 const Page = () => {
 	const pageContext = usePageContext();
 	const { type, interval } = pageContext.routeParams;
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
  
 	const [chosenMedal, setChosenMedal] = useState({});
 	const chosenMedalRef = useRef(null);
@@ -99,7 +103,11 @@ const Page = () => {
 						</div>
 
 						<div
-							className="flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1"
+							className={classNames(
+								'flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1 transition-colors',
+								chosenColorObj.hover.borderColor,
+								chosenColorObj.hover.textColor
+							)}
 							onClick={() => !isLoading && setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
 							style={{ opacity: isLoading ? 0.5 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
 						>
@@ -107,7 +115,7 @@ const Page = () => {
 							<Icon
 								name="page_info"
 								fill={0}
-								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+								customClass={'!text-[20px] cursor-pointer'}
 							/>
 						</div>
 					</div>

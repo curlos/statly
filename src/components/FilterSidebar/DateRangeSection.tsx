@@ -6,9 +6,11 @@ import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangePicker';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const { chosenColorObj } = useThemeContext();
 	const startDateFromUrl = searchParams.get('start-date');
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
@@ -54,9 +56,9 @@ const DateRangeSection = () => {
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Date Range</h3>
 						<Icon
-							name="diversity_2"
+							name="date_range"
 							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							customClass={`${chosenColorObj.textColor} !text-[20px] hover:text-white cursor-pointer`}
 						/>
 					</div>
 				}

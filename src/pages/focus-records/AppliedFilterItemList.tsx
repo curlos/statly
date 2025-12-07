@@ -260,4 +260,13 @@ const AppliedFilterItemList = () => {
 	);
 };
 
+const getStrInBulletPointsMD = (strArr) => {
+	return strArr
+		.map((item, index) => {
+			// Append a newline if the item is not the last in the array
+			return `- ${item}${index < strArr.length - 1 ? '\n' : ''}`;
+		})
+		.join('');
+};
+
 export default AppliedFilterItemList;

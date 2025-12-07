@@ -28,7 +28,7 @@ const SortBySection = ({ sortByOptions }) => {
 						<Icon
 							name="swap_vert"
 							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							customClass={`${chosenColorObj.textColor} !text-[20px] hover:text-white cursor-pointer`}
 						/>
 					</div>
 				}

@@ -69,7 +69,7 @@ const ProjectsTodoistSection = () => {
 						<Icon
 							name="construction"
 							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							customClass={`${chosenColorObj.textColor} !text-[20px] hover:text-white cursor-pointer`}
 						/>
 						{/* Assume the user always has at least one project. I suppose it'd be possible for there to be 0 projects but this works better for me personally. */}
 						{activeProjects.length === 0 || (archivedProjects.length === 0 && <Spinner />)}

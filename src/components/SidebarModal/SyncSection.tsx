@@ -6,6 +6,7 @@ import { useSyncStatusHelpers } from '../../hooks/useSyncStatusHelpers';
 import Accordion from '../Accordion/Accordion';
 import CookieInstructions from './CookieInstructions';
 import CookieSection from './CookieSection';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
 interface SyncMetadata {
 	lastSyncTime: string;
@@ -56,12 +57,14 @@ const SyncItem = ({ label, syncKey, metadata }: SyncItemProps) => {
 const SyncSection = () => {
 	const { data: syncMetadata } = useGetSyncMetadataQuery(undefined);
 	const syncMetadataByType = syncMetadata as SyncMetadataByType;
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
 
 	return (
 		<div>
 			<div className="flex items-center gap-2 mb-3">
 				<h3 className="text-[20px] font-bold">Sync TickTick Data</h3>
-				<Icon name="sync" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
+				<Icon name="sync" fill={1} customClass={`${chosenColorObj.textColor} !text-[20px]`} />
 			</div>
 
 			<div className="space-y-2">
