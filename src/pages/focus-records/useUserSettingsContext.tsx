@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 
 const UserSettingsContext = createContext();
@@ -13,6 +13,18 @@ export const UserSettingsProvider = ({ children }) => {
 };
 
 const useUserSettings = () => {
+	// Initialize cached settings from localStorage
+	const [cachedSettings, setCachedSettings] = useState(() => {
+		const defaultSettings = { goalDays: 7, goalSeconds: 3600, showGoalDays: true };
+		try {
+			const cached = localStorage.getItem('focusHoursGoalPageSettings');
+			return cached ? JSON.parse(cached) : defaultSettings;
+		} catch (error) {
+			console.error('Failed to load cached settings:', error);
+			return defaultSettings;
+		}
+	});
+
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
@@ -51,6 +63,11 @@ const useUserSettings = () => {
 		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
+	// Use cached values if API is still loading
+	const settingsSource = isLoadingGetUserSettings && cachedSettings
+		? cachedSettings
+		: focusHoursGoalPageSettings;
+
 	const {
 		projects: filteredProjects = {},
 		showStreakCount = true,
@@ -66,10 +83,28 @@ const useUserSettings = () => {
 			saturday: true,
 			sunday: true,
 		},
-	} = focusHoursGoalPageSettings;
+	} = settingsSource;
 
 	const { selectedChallengeCardImage } = challengesPageSettings;
 	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings;
+
+	// Sync to localStorage after API fetch completes
+	useEffect(() => {
+		if (!isLoadingGetUserSettings && focusHoursGoalPageSettings) {
+			try {
+				const settingsToCache = {
+					goalDays,
+					goalSeconds,
+					showGoalDays,
+					showStreakCount
+				};
+				localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(settingsToCache));
+				setCachedSettings(settingsToCache);
+			} catch (error) {
+				console.error('Failed to cache settings:', error);
+			}
+		}
+	}, [isLoadingGetUserSettings, goalDays, goalSeconds, showGoalDays, focusHoursGoalPageSettings]);
 
 	const [editUserSettings] = useEditUserSettingsMutation();
 
@@ -90,6 +125,17 @@ const useUserSettings = () => {
 		};
 
 		await editUserSettings(payload);
+
+		// Update localStorage for focusHoursGoal page settings
+		if (page === 'focusHoursGoal' && ['goalDays', 'goalSeconds', 'showGoalDays', 'showStreakCount'].includes(userSettingProperty)) {
+			try {
+				const currentCache = JSON.parse(localStorage.getItem('focusHoursGoalPageSettings') || '{}');
+				const updatedCache = { ...currentCache, [userSettingProperty]: newValue };
+				localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(updatedCache));
+			} catch (error) {
+				console.error('Failed to update cached settings:', error);
+			}
+		}
 	};
 
 	return {
