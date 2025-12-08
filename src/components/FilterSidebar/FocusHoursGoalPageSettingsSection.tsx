@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
@@ -7,6 +8,7 @@ import GoalSecondsInput from './GoalSecondsInput';
 import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
+import ModalRestDays from '../Modal/ModalRestDays';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
@@ -17,6 +19,8 @@ const FocusHoursGoalPageSettingsSection = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { bgColor } = chosenColorObj;
+
+	const [isRestDaysModalOpen, setIsRestDaysModalOpen] = useState(false);
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
@@ -96,6 +100,13 @@ const FocusHoursGoalPageSettingsSection = () => {
 							handleCheckboxClick: handleToggleTodayRestDay,
 						}}
 					/>
+					<button
+						onClick={() => setIsRestDaysModalOpen(true)}
+						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
+					>
+						<Icon name="calendar_month" fill={1} customClass="!text-[18px]" />
+						<span>View All Rest Days</span>
+					</button>
 				</div>
 
 				{/* General Section */}
@@ -170,6 +181,12 @@ const FocusHoursGoalPageSettingsSection = () => {
 					</div>
 				</div>
 			</Accordion>
+
+			<ModalRestDays
+				isOpen={isRestDaysModalOpen}
+				onClose={() => setIsRestDaysModalOpen(false)}
+				restDays={restDays}
+			/>
 		</div>
 	);
 };
