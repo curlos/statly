@@ -3,6 +3,8 @@ import Tooltip from '../Tooltip';
 import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import { areDatesEqual } from '../../utils/date.utils';
 import classNames from 'classnames';
+import Icon from '../Icon';
+import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 
 interface FocusGoalCalendarDayProps {
 	day: Date;
@@ -13,6 +15,8 @@ interface FocusGoalCalendarDayProps {
 	};
 	themeColor: string;
 	goalSeconds: number;
+	restDays?: Record<string, boolean>;
+	dateKey: string;
 }
 
 const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
@@ -20,7 +24,14 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	dayData,
 	themeColor,
 	goalSeconds: defaultGoalSeconds,
+	restDays,
+	dateKey,
 }) => {
+	// Get selectedDaysOfWeek from context
+	const {
+		focusHoursGoalPageSettings: { selectedDaysOfWeek },
+	} = useUserSettingsContext();
+
 	// Use dayData if available, otherwise show 0 progress
 	const percentage = dayData?.percentageOfFocusedGoalHours || 0;
 	const totalFocused = dayData?.totalFocusDurationForDay || 0;
@@ -29,19 +40,47 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	// Check if today
 	const isToday = areDatesEqual(new Date(), day);
 
+	// Check if this is a rest day
+	const isRestDay = restDays?.[dateKey] ?? false;
+
+	// Check if this is a freebie day (day of week is not selected)
+	const dayOfWeek = day.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as
+		| 'monday'
+		| 'tuesday'
+		| 'wednesday'
+		| 'thursday'
+		| 'friday'
+		| 'saturday'
+		| 'sunday';
+	const isFreebieDay = !(selectedDaysOfWeek?.[dayOfWeek] ?? true);
+
 	// Tooltip content
 	const tooltipContent = (
 		<div className="text-base whitespace-nowrap">
-			<span className="text-lg font-bold">{getFormattedDuration(totalFocused, false)}</span>
-			<span className="mx-[2px]">/</span>
-			<span className="text-base text-color-gray-25">{getFormattedDuration(goalForDay, false)}</span>
+			<div className="text-center">
+				<span className="text-lg font-bold">{getFormattedDuration(totalFocused, false)}</span>
+				<span className="mx-[2px]">/</span>
+				<span className="text-base text-color-gray-25 ">{getFormattedDuration(goalForDay, false)}</span>
+			</div>
 			<div className="text-color-gray-100 text-center">{percentage.toFixed(2)}%</div>
+			{isFreebieDay && (
+				<div className="flex items-center justify-center gap-1 mb-0">
+					<span className="text-color-gray-100">Freebie Day</span>
+					<Icon name="featured_seasonal_and_gifts" fill={1} customClass="!text-[16px]" />
+				</div>
+			)}
+			{isRestDay && (
+				<div className="flex items-center justify-center gap-1 mb-0">
+					<span className="text-color-gray-100">Rest Day</span>
+					<Icon name="beach_access" fill={1} customClass="!text-[16px]" />
+				</div>
+			)}
 		</div>
 	);
 
 	return (
 		<Tooltip content={tooltipContent} position="top">
-			<div className="flex items-center justify-center">
+			<div className="flex items-center justify-center relative">
 				<div style={{ width: '40px', height: '40px' }}>
 					<CircularProgressbarWithChildren
 						value={percentage}
@@ -62,6 +101,15 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 						</div>
 					</CircularProgressbarWithChildren>
 				</div>
+
+				{/* Rest day icon */}
+				{isRestDay && (
+					<Icon
+						name="beach_access"
+						fill={1}
+						customClass="!text-[16px] absolute bottom-[4px] right-[4px]"
+					/>
+				)}
 			</div>
 		</Tooltip>
 	);

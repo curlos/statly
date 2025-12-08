@@ -10,6 +10,7 @@ import StreaksList, { SortOption } from './StreaksList';
 import { useStatsDateRange } from '../../hooks/useStatsDateRange';
 import FocusStatsCard from './ModalFocusGoalProgress/FocusStatsCard';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
+import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 
 interface Streak {
 	days: number;
@@ -31,15 +32,6 @@ interface ModalFocusGoalProgressProps {
 	onClose: () => void;
 	streakData: StreakData;
 	goalSeconds: number;
-	selectedDaysOfWeek?: {
-		monday: boolean;
-		tuesday: boolean;
-		wednesday: boolean;
-		thursday: boolean;
-		friday: boolean;
-		saturday: boolean;
-		sunday: boolean;
-	};
 }
 
 const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
@@ -47,7 +39,6 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	onClose,
 	streakData,
 	goalSeconds,
-	selectedDaysOfWeek,
 }) => {
 	const { chosenColorObj } = useThemeContext() as any;
 	const [currentDate, setCurrentDate] = useState(new Date());
@@ -221,7 +212,6 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 								dailyDurationsMap={streakData?.dailyDurationsMap}
 								themeColor={chosenColorObj.hexColor}
 								goalSeconds={goalSeconds}
-								selectedDaysOfWeek={selectedDaysOfWeek}
 							/>
 						)}
 					</>
@@ -334,22 +324,16 @@ const CalendarGrid = ({
 	dailyDurationsMap,
 	themeColor,
 	goalSeconds,
-	selectedDaysOfWeek,
 }: {
 	currentDate: Date;
 	dailyDurationsMap?: { [dateKey: string]: number };
 	themeColor: string;
 	goalSeconds: number;
-	selectedDaysOfWeek?: {
-		monday: boolean;
-		tuesday: boolean;
-		wednesday: boolean;
-		thursday: boolean;
-		friday: boolean;
-		saturday: boolean;
-		sunday: boolean;
-	};
 }) => {
+	// Get user settings directly in this component
+	const {
+		focusHoursGoalPageSettings: { selectedDaysOfWeek, restDays },
+	} = useUserSettingsContext();
 	// Get first day of month and last day
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth();
@@ -434,6 +418,8 @@ const CalendarGrid = ({
 							dayData={dayData}
 							themeColor={themeColor}
 							goalSeconds={goalSeconds}
+							restDays={restDays}
+							dateKey={dateKey}
 						/>
 					);
 				})}

@@ -132,7 +132,6 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				onClose={() => setIsFocusGoalModalOpen(false)}
 				streakData={streakData}
 				goalSeconds={goalSeconds}
-				selectedDaysOfWeek={selectedDaysOfWeek}
 			/>
 		</div>
 	);

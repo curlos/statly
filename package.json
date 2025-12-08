@@ -38,7 +38,7 @@
     "fuse.js": "^7.0.0",
     "i": "^0.3.7",
     "jszip": "^3.10.1",
-    "material-symbols": "^0.16.0",
+    "material-symbols": "^0.40.1",
     "npm": "^10.9.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",

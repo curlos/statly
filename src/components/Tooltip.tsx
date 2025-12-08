@@ -22,18 +22,36 @@ const Tooltip = ({ content, children, className = '', position = 'top' }: Toolti
 
 	// Determine alignment based on container position
 	const getAlignment = (): 'left' | 'right' | 'center' => {
-		if (!containerRef.current) return 'right';
+		if (!containerRef.current) return 'center';
 
 		const rect = containerRef.current.getBoundingClientRect();
-		const viewportWidth = window.innerWidth;
 
-		// If element is in the left third of viewport, align left
-		if (rect.left < viewportWidth / 3) {
-			return 'left';
+		// Find the nearest scrollable parent (modal or viewport)
+		let scrollParent = containerRef.current.parentElement;
+		while (scrollParent) {
+			const overflow = window.getComputedStyle(scrollParent).overflow;
+			if (overflow === 'auto' || overflow === 'scroll' || scrollParent === document.body) {
+				break;
+			}
+			scrollParent = scrollParent.parentElement;
 		}
-		// If element is in the right third of viewport, align right
-		if (rect.right > (viewportWidth * 2) / 3) {
+
+		const containerRect = scrollParent?.getBoundingClientRect() || { left: 0, right: window.innerWidth };
+		const availableWidth = containerRect.right - containerRect.left;
+		const elementCenter = rect.left + rect.width / 2 - containerRect.left;
+
+		// Estimate tooltip width (roughly 150-200px for these tooltips)
+		const estimatedTooltipWidth = 180;
+		const spaceOnLeft = elementCenter;
+		const spaceOnRight = availableWidth - elementCenter;
+
+		// If not enough space on right for center-aligned tooltip, align right
+		if (spaceOnRight < estimatedTooltipWidth / 2 + 20) {
 			return 'right';
+		}
+		// If not enough space on left for center-aligned tooltip, align left
+		if (spaceOnLeft < estimatedTooltipWidth / 2 + 20) {
+			return 'left';
 		}
 		// Otherwise center
 		return 'center';

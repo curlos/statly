@@ -10,7 +10,7 @@ import classNames from 'classnames';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
-		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays, selectedDaysOfWeek },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays, selectedDaysOfWeek, restDays },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -47,12 +47,30 @@ const FocusHoursGoalPageSettingsSection = () => {
 		handleUpdateUserSettingForPage('focusHoursGoal', 'selectedDaysOfWeek', newSelectedDays);
 	};
 
+	// Get today's date in YYYY-MM-DD format
+	const getTodayDateKey = () => {
+		const today = new Date();
+		return today.toLocaleDateString('en-CA'); // Returns YYYY-MM-DD
+	};
+
+	const todayDateKey = getTodayDateKey();
+	const isTodayRestDay = restDays?.[todayDateKey] ?? false;
+
+	// Toggle today as a rest day
+	const handleToggleTodayRestDay = () => {
+		const newRestDays = {
+			...restDays,
+			[todayDateKey]: !isTodayRestDay,
+		};
+		handleUpdateUserSettingForPage('focusHoursGoal', 'restDays', newRestDays);
+	};
+
 	return (
 		<div>
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">
-						<h3 className="text-[16px] font-bold">Page Settings</h3>
+						<h3 className="text-[16px] font-bold">Ring Settings</h3>
 						<Icon
 							name="settings"
 							fill={0}
@@ -68,6 +86,18 @@ const FocusHoursGoalPageSettingsSection = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
+				{/* Today Section */}
+				<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Today</h4>
+					<CheckboxOther
+						{...{
+							name: 'Mark Today as Rest Day',
+							showValue: isTodayRestDay,
+							handleCheckboxClick: handleToggleTodayRestDay,
+						}}
+					/>
+				</div>
+
 				{/* General Section */}
 				<div className="mb-4">
 					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
