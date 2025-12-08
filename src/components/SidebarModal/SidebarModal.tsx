@@ -7,10 +7,13 @@ import useGetDefaultMedalDates from '../../pages/medals/useGetDefaultMedalDates'
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
 const SidebarModal = () => {
 	const dispatch = useDispatch();
 	const isSidebarModalOpen = useSelector((state: any) => state.modals.modals.ModalSidebar?.isOpen);
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
 
 	const handleClose = () => {
 		dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: false }));
@@ -36,7 +39,7 @@ const SidebarModal = () => {
 			>
 				<div className="group-hover:underline">{name}</div>
 
-				{iconName && <Icon name={iconName} fill={1} customClass={'text-color-gray-50 !text-[24px]'} />}
+				{iconName && <Icon name={iconName} fill={1} customClass={`${chosenColorObj.textColor} !text-[24px]`} />}
 			</div>
 		);
 	};
@@ -81,9 +84,9 @@ const SidebarModal = () => {
 						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
 					>
 						<div className="font-bold text-[24px]">
-							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="network_intelligence_history" />
-							<LinkLi name="Focus Hours Goal" linkUrl="/focus-hours-goal" iconName="clock_loader_20" />
-							<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timeline" />
+							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="query_stats" />
+							<LinkLi name="Focus Hours Goal" linkUrl="/focus-hours-goal" iconName="flag" />
+							<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timer" />
 							<LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" />
 							<LinkLi name="Medals" linkUrl={getMedalsLinkUrl()} iconName="workspace_premium" />
 							<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />

@@ -57,6 +57,15 @@ const useUserSettings = () => {
 		goalDays = 7,
 		goalSeconds = 3600,
 		showGoalDays = true,
+		selectedDaysOfWeek = {
+			monday: true,
+			tuesday: true,
+			wednesday: true,
+			thursday: true,
+			friday: true,
+			saturday: true,
+			sunday: true,
+		},
 	} = focusHoursGoalPageSettings;
 
 	const { selectedChallengeCardImage } = challengesPageSettings;
@@ -117,6 +126,7 @@ const useUserSettings = () => {
 			goalDays,
 			goalSeconds,
 			showGoalDays,
+			selectedDaysOfWeek,
 		},
 		challengesPageSettings: {
 			selectedChallengeCardImage,

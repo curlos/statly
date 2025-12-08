@@ -31,6 +31,15 @@ interface ModalFocusGoalProgressProps {
 	onClose: () => void;
 	streakData: StreakData;
 	goalSeconds: number;
+	selectedDaysOfWeek?: {
+		monday: boolean;
+		tuesday: boolean;
+		wednesday: boolean;
+		thursday: boolean;
+		friday: boolean;
+		saturday: boolean;
+		sunday: boolean;
+	};
 }
 
 const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
@@ -38,6 +47,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	onClose,
 	streakData,
 	goalSeconds,
+	selectedDaysOfWeek,
 }) => {
 	const { chosenColorObj } = useThemeContext() as any;
 	const [currentDate, setCurrentDate] = useState(new Date());
@@ -211,6 +221,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 								dailyDurationsMap={streakData?.dailyDurationsMap}
 								themeColor={chosenColorObj.hexColor}
 								goalSeconds={goalSeconds}
+								selectedDaysOfWeek={selectedDaysOfWeek}
 							/>
 						)}
 					</>
@@ -323,11 +334,21 @@ const CalendarGrid = ({
 	dailyDurationsMap,
 	themeColor,
 	goalSeconds,
+	selectedDaysOfWeek,
 }: {
 	currentDate: Date;
 	dailyDurationsMap?: { [dateKey: string]: number };
 	themeColor: string;
 	goalSeconds: number;
+	selectedDaysOfWeek?: {
+		monday: boolean;
+		tuesday: boolean;
+		wednesday: boolean;
+		thursday: boolean;
+		friday: boolean;
+		saturday: boolean;
+		sunday: boolean;
+	};
 }) => {
 	// Get first day of month and last day
 	const year = currentDate.getFullYear();
@@ -353,13 +374,39 @@ const CalendarGrid = ({
 		days.push(new Date(year, month, day, 12, 0, 0));
 	}
 
+	// Map day headers to selectedDaysOfWeek keys
+	const dayHeaders = [
+		{ label: 'Mo', key: 'monday' },
+		{ label: 'Tu', key: 'tuesday' },
+		{ label: 'We', key: 'wednesday' },
+		{ label: 'Th', key: 'thursday' },
+		{ label: 'Fr', key: 'friday' },
+		{ label: 'Sa', key: 'saturday' },
+		{ label: 'Su', key: 'sunday' },
+	];
+
 	return (
 		<div>
 			{/* Day headers */}
 			<div className="grid grid-cols-7 gap-2 text-center text-sm text-color-gray-100 mb-2">
-				{['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day) => (
-					<div key={day}>{day}</div>
-				))}
+				{dayHeaders.map(({ label, key }) => {
+					const isDaySelected = selectedDaysOfWeek?.[key] ?? true;
+					const isFreebieDay = !isDaySelected;
+
+					return (
+						<div key={label} className="flex items-center justify-center gap-1">
+							<span>{label}</span>
+							{isFreebieDay && (
+								<Icon
+									name="featured_seasonal_and_gifts"
+									fill={1}
+									customClass="!text-[14px]"
+									style={{ color: themeColor }}
+								/>
+							)}
+						</div>
+					);
+				})}
 			</div>
 
 			{/* Calendar grid */}

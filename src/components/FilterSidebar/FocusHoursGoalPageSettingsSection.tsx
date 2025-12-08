@@ -5,12 +5,18 @@ import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
 import GoalSecondsInput from './GoalSecondsInput';
 import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
+import { useThemeContext } from '../../contexts/useThemeContext';
+import classNames from 'classnames';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
-		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays, selectedDaysOfWeek },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
+
+	const themeContext = useThemeContext();
+	const { chosenColorObj } = themeContext;
+	const { bgColor } = chosenColorObj;
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
@@ -20,6 +26,25 @@ const FocusHoursGoalPageSettingsSection = () => {
 	const handleCheckboxClick = (showValue, userSettingProperty) => {
 		const newShowValue = !showValue;
 		handleUpdateUserSettingForPage('focusHoursGoal', userSettingProperty, newShowValue);
+	};
+
+	const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+	const dayLabels = {
+		monday: 'Mon',
+		tuesday: 'Tue',
+		wednesday: 'Wed',
+		thursday: 'Thu',
+		friday: 'Fri',
+		saturday: 'Sat',
+		sunday: 'Sun',
+	};
+
+	const handleDayToggle = (day) => {
+		const newSelectedDays = {
+			...selectedDaysOfWeek,
+			[day]: !selectedDaysOfWeek[day],
+		};
+		handleUpdateUserSettingForPage('focusHoursGoal', 'selectedDaysOfWeek', newSelectedDays);
 	};
 
 	return (
@@ -89,6 +114,30 @@ const FocusHoursGoalPageSettingsSection = () => {
 							editUserSettings,
 						}}
 					/>
+				</div>
+
+				{/* Streak Days Section */}
+				<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-1">Streak Days</h4>
+					<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
+						Select days that can break your streak. Unselected days are "freebie" days.
+					</p>
+					<div className="flex gap-2 flex-wrap">
+						{daysOfWeek.map((day) => (
+							<button
+								key={day}
+								onClick={() => handleDayToggle(day)}
+								className={classNames(
+									'px-2 py-1 rounded-full text-sm transition-colors',
+									selectedDaysOfWeek[day]
+										? `${bgColor} text-white`
+										: 'bg-color-gray-300 text-color-gray-50 hover:bg-color-gray-200'
+								)}
+							>
+								{dayLabels[day]}
+							</button>
+						))}
+					</div>
 				</div>
 			</Accordion>
 		</div>

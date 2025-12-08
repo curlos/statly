@@ -27,7 +27,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { chosenColorObj } = themeContext;
 
 	const {
-		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays, selectedDaysOfWeek },
 	} = useUserSettingsContext();
 
 	// Only fetch streak history when:
@@ -132,6 +132,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				onClose={() => setIsFocusGoalModalOpen(false)}
 				streakData={streakData}
 				goalSeconds={goalSeconds}
+				selectedDaysOfWeek={selectedDaysOfWeek}
 			/>
 		</div>
 	);
