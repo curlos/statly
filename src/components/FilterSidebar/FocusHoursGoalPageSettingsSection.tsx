@@ -9,6 +9,7 @@ import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../serv
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import ModalRestDays from '../Modal/ModalRestDays';
+import ModalCustomFocusGoals from '../Modal/ModalCustomFocusGoals';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
@@ -21,6 +22,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 	const { bgColor } = chosenColorObj;
 
 	const [isRestDaysModalOpen, setIsRestDaysModalOpen] = useState(false);
+	const [isCustomGoalsModalOpen, setIsCustomGoalsModalOpen] = useState(false);
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
@@ -167,6 +169,13 @@ const FocusHoursGoalPageSettingsSection = () => {
 						<Icon name="calendar_month" fill={1} customClass="!text-[18px]" />
 						<span>View All Rest Days</span>
 					</button>
+					<button
+						onClick={() => setIsCustomGoalsModalOpen(true)}
+						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
+					>
+						<Icon name="tune" fill={1} customClass="!text-[18px]" />
+						<span>View All Custom Focus Goal Days</span>
+					</button>
 				</div>
 
 				{/* Streak Goal Section */}
@@ -227,6 +236,11 @@ const FocusHoursGoalPageSettingsSection = () => {
 				isOpen={isRestDaysModalOpen}
 				onClose={() => setIsRestDaysModalOpen(false)}
 				restDays={restDays}
+			/>
+			<ModalCustomFocusGoals
+				isOpen={isCustomGoalsModalOpen}
+				onClose={() => setIsCustomGoalsModalOpen(false)}
+				customDailyFocusGoal={customDailyFocusGoal}
 			/>
 		</div>
 	);
