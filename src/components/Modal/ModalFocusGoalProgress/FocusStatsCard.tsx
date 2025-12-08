@@ -11,6 +11,7 @@ const FocusStatsCard = ({
 	selectedIntervalOptions,
 	dailyDurationsMap,
 	goalSeconds,
+	customDailyFocusGoal,
 	setIsModalPickDateRangeOpen,
 	startDate,
 	endDate,
@@ -22,6 +23,7 @@ const FocusStatsCard = ({
 	selectedIntervalOptions: string[];
 	dailyDurationsMap: { [dateKey: string]: number };
 	goalSeconds: number;
+	customDailyFocusGoal?: Record<string, number>;
 	setIsModalPickDateRangeOpen: (value: boolean) => void;
 	startDate: Date | null;
 	endDate: Date | null;
@@ -102,7 +104,10 @@ const FocusStatsCard = ({
 		// Count days where goal was met
 		const daysMetGoal = daysWithRecords.filter(dateKey => {
 			const duration = dailyDurationsMap[dateKey];
-			return duration >= (goalSeconds - 300);
+			// Use custom goal if set for this date, otherwise use default goal
+			const dailyGoalSeconds = customDailyFocusGoal?.[dateKey] ?? goalSeconds;
+			const offsetDailyGoal = dailyGoalSeconds - 300; // 5-minute offset
+			return duration >= offsetDailyGoal;
 		});
 
 		return {

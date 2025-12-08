@@ -27,15 +27,21 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	restDays,
 	dateKey,
 }) => {
-	// Get selectedDaysOfWeek from context
+	// Get selectedDaysOfWeek and customDailyFocusGoal from context
 	const {
-		focusHoursGoalPageSettings: { selectedDaysOfWeek },
+		focusHoursGoalPageSettings: { selectedDaysOfWeek, customDailyFocusGoal },
 	} = useUserSettingsContext();
 
+	// Check if this date has a custom goal
+	const customGoalForDay = customDailyFocusGoal?.[dateKey];
+	const hasCustomGoal = customGoalForDay !== undefined;
+
 	// Use dayData if available, otherwise show 0 progress
-	const percentage = dayData?.percentageOfFocusedGoalHours || 0;
 	const totalFocused = dayData?.totalFocusDurationForDay || 0;
-	const goalForDay = dayData?.goalSeconds || defaultGoalSeconds;
+	// Use custom goal if set for this date, otherwise use default
+	const goalForDay = hasCustomGoal ? customGoalForDay : (dayData?.goalSeconds || defaultGoalSeconds);
+	// Recalculate percentage based on the actual goal (custom or default)
+	const percentage = goalForDay > 0 ? (totalFocused / goalForDay) * 100 : 0;
 
 	// Check if today
 	const isToday = areDatesEqual(new Date(), day);
@@ -63,16 +69,22 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 				<span className="text-base text-color-gray-25 ">{getFormattedDuration(goalForDay, false)}</span>
 			</div>
 			<div className="text-color-gray-100 text-center">{percentage.toFixed(2)}%</div>
+			{hasCustomGoal && (
+				<div className="flex items-center justify-center gap-1 mb-0">
+					<span className="text-color-gray-100">Custom Goal</span>
+					<Icon name="acute" fill={1} customClass="!text-[20px]" />
+				</div>
+			)}
 			{isFreebieDay && (
 				<div className="flex items-center justify-center gap-1 mb-0">
 					<span className="text-color-gray-100">Freebie Day</span>
-					<Icon name="featured_seasonal_and_gifts" fill={1} customClass="!text-[16px]" />
+					<Icon name="featured_seasonal_and_gifts" fill={1} customClass="!text-[20px]" />
 				</div>
 			)}
 			{isRestDay && (
 				<div className="flex items-center justify-center gap-1 mb-0">
 					<span className="text-color-gray-100">Rest Day</span>
-					<Icon name="beach_access" fill={1} customClass="!text-[16px]" />
+					<Icon name="beach_access" fill={1} customClass="!text-[20px]" />
 				</div>
 			)}
 		</div>
@@ -107,7 +119,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 					<Icon
 						name="beach_access"
 						fill={1}
-						customClass="!text-[16px] absolute bottom-[4px] right-[4px]"
+						customClass="!text-[16px] absolute bottom-0 right-0 p-[2px] rounded-full bg-blue-600"
 					/>
 				)}
 			</div>

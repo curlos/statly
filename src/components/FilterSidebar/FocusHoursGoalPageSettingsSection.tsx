@@ -12,7 +12,7 @@ import ModalRestDays from '../Modal/ModalRestDays';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
-		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays, selectedDaysOfWeek, restDays },
+		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays, selectedDaysOfWeek, restDays, customDailyFocusGoal },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -69,6 +69,24 @@ const FocusHoursGoalPageSettingsSection = () => {
 		handleUpdateUserSettingForPage('focusHoursGoal', 'restDays', newRestDays);
 	};
 
+	// Check if today has a custom focus goal
+	const hasCustomGoalForToday = customDailyFocusGoal?.[todayDateKey] !== undefined;
+
+	// Toggle custom focus goal for today
+	const handleToggleCustomGoalForToday = () => {
+		const newCustomDailyFocusGoal = { ...customDailyFocusGoal };
+
+		if (hasCustomGoalForToday) {
+			// Remove today's custom goal
+			delete newCustomDailyFocusGoal[todayDateKey];
+		} else {
+			// Add today's custom goal with default value
+			newCustomDailyFocusGoal[todayDateKey] = goalSeconds;
+		}
+
+		handleUpdateUserSettingForPage('focusHoursGoal', 'customDailyFocusGoal', newCustomDailyFocusGoal);
+	};
+
 	return (
 		<div>
 			<Accordion
@@ -100,13 +118,29 @@ const FocusHoursGoalPageSettingsSection = () => {
 							handleCheckboxClick: handleToggleTodayRestDay,
 						}}
 					/>
-					<button
-						onClick={() => setIsRestDaysModalOpen(true)}
-						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
-					>
-						<Icon name="calendar_month" fill={1} customClass="!text-[18px]" />
-						<span>View All Rest Days</span>
-					</button>
+
+					{/* Custom Focus Goal for Today */}
+					<div className="mt-3">
+						<CheckboxOther
+							{...{
+								name: 'Use Custom Focus Goal for Today',
+								showValue: hasCustomGoalForToday,
+								handleCheckboxClick: handleToggleCustomGoalForToday,
+							}}
+						/>
+						{hasCustomGoalForToday && (
+							<div className="mt-2">
+								<GoalSecondsInput
+									{...{
+										defaultValue: customDailyFocusGoal[todayDateKey],
+										userSettings,
+										editUserSettings,
+										customDateKey: todayDateKey,
+									}}
+								/>
+							</div>
+						)}
+					</div>
 				</div>
 
 				{/* General Section */}
@@ -126,6 +160,13 @@ const FocusHoursGoalPageSettingsSection = () => {
 							handleCheckboxClick: () => handleCheckboxClick(showGoalDays, 'showGoalDays'),
 						}}
 					/>
+					<button
+						onClick={() => setIsRestDaysModalOpen(true)}
+						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
+					>
+						<Icon name="calendar_month" fill={1} customClass="!text-[18px]" />
+						<span>View All Rest Days</span>
+					</button>
 				</div>
 
 				{/* Streak Goal Section */}

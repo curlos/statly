@@ -41,6 +41,9 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	goalSeconds,
 }) => {
 	const { chosenColorObj } = useThemeContext() as any;
+	const {
+		focusHoursGoalPageSettings: { customDailyFocusGoal },
+	} = useUserSettingsContext();
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [showYearView, setShowYearView] = useState(false);
 	const [viewMode, setViewMode] = useState<'calendar' | 'streaks'>('calendar');
@@ -142,6 +145,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 						selectedIntervalOptions={selectedIntervalOptions}
 						dailyDurationsMap={streakData?.dailyDurationsMap || {}}
 						goalSeconds={goalSeconds}
+						customDailyFocusGoal={customDailyFocusGoal}
 						setIsModalPickDateRangeOpen={setIsModalPickDateRangeOpen}
 						startDate={startDate}
 						endDate={endDate}

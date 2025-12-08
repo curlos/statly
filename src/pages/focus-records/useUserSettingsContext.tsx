@@ -84,6 +84,7 @@ const useUserSettings = () => {
 			sunday: true,
 		},
 		restDays = {},
+		customDailyFocusGoal = {},
 	} = settingsSource;
 
 	const { selectedChallengeCardImage } = challengesPageSettings;
@@ -175,6 +176,7 @@ const useUserSettings = () => {
 			showGoalDays,
 			selectedDaysOfWeek,
 			restDays,
+			customDailyFocusGoal,
 		},
 		challengesPageSettings: {
 			selectedChallengeCardImage,

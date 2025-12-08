@@ -3,7 +3,12 @@ import { debounce, secondsToHoursAndMinutes } from '../../utils/focus-apps/helpe
 import CustomInput from '../CustomInput';
 import Spinner from '../Loaders/Spinner';
 
-const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings }) => {
+const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings, customDateKey = null }: {
+	defaultValue: number;
+	userSettings: any;
+	editUserSettings: any;
+	customDateKey?: string | null;
+}) => {
 	const { hours: defaultHours, minutes: defaultMinutes } = secondsToHoursAndMinutes(defaultValue);
 
 	const [hours, setHours] = useState(defaultHours);
@@ -29,10 +34,39 @@ const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings }) => {
 
 	const getPayload = () => {
 		const restOfFocusHoursGoalKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
-		const currentGoalSeconds = restOfFocusHoursGoalKeysAndVals?.goalSeconds;
 
 		// Convert hours and minutes to seconds
 		const newGoalSeconds = (Number(hours) * 3600) + (Number(minutes) * 60);
+
+		// If customDateKey is provided, update customDailyFocusGoal for that date
+		if (customDateKey) {
+			const currentCustomDailyFocusGoal = restOfFocusHoursGoalKeysAndVals?.customDailyFocusGoal || {};
+
+			// Check if value has changed
+			if (currentCustomDailyFocusGoal[customDateKey] === newGoalSeconds) {
+				return;
+			}
+
+			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+
+			return {
+				tickTickOne: {
+					pages: {
+						...restOfPagesKeysAndVals,
+						focusHoursGoal: {
+							...restOfFocusHoursGoalKeysAndVals,
+							customDailyFocusGoal: {
+								...currentCustomDailyFocusGoal,
+								[customDateKey]: newGoalSeconds,
+							},
+						},
+					},
+				},
+			};
+		}
+
+		// Otherwise, update the default goalSeconds
+		const currentGoalSeconds = restOfFocusHoursGoalKeysAndVals?.goalSeconds;
 
 		if (currentGoalSeconds === newGoalSeconds) {
 			return;
@@ -40,7 +74,7 @@ const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings }) => {
 
 		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 
-		const payload = {
+		return {
 			tickTickOne: {
 				pages: {
 					...restOfPagesKeysAndVals,
@@ -51,8 +85,6 @@ const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings }) => {
 				},
 			},
 		};
-
-		return payload;
 	};
 
 	const handleDebouncedUpdate = debounce(async () => {
