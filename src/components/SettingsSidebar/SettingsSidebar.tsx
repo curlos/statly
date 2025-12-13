@@ -124,8 +124,6 @@ const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 				<div>
 					<hr className="border-color-gray-200 my-4" />
 					<FocusHoursGoalPageSettingsSection />
-					<hr className="border-color-gray-200 my-4" />
-					<ProjectsTickTickSection page="focus-hours-goal" />
 				</div>
 			)}
 		</motion.div>
