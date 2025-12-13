@@ -101,7 +101,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					styles={buildStyles({
 						textColor: '#4772F9',
 						pathColor: ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor),
-						trailColor: hexToRgba(ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor), 0.4),
+						trailColor: hexToRgba(ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor), 0.2),
 					})}
 					counterClockwise={false}
 				>
@@ -239,7 +239,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 										strokeWidth={strokeWidth}
 										styles={buildStyles({
 											pathColor: ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor),
-											trailColor: hexToRgba(ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor), 0.4),
+											trailColor: hexToRgba(ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor), 0.2),
 										})}
 									/>
 								</div>
