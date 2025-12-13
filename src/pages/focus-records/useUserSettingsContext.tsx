@@ -39,7 +39,7 @@ const useUserSettings = () => {
 	const medalsPageSettings = userSettings?.tickTickOne?.pages?.medals || {};
 
 	// Extract rings from focusHoursGoal settings - use cached rings while loading
-	const rings = isLoadingGetUserSettings && cachedSettings.rings.length > 0
+	const rings = isLoadingGetUserSettings && cachedSettings?.rings?.length > 0
 		? cachedSettings.rings
 		: (focusHoursGoalPageSettings?.rings || []);
 	const activeRings = rings.filter(ring => ring.isActive);
