@@ -12,6 +12,19 @@ const InputNumUserSettings = ({
 	name,
 	page,
 	inputMaxWidth = 'w-[50px]',
+	ringId = null,
+	handleUpdateRingSetting = null,
+}: {
+	defaultValue: any;
+	userSettings: any;
+	editUserSettings: any;
+	minNum?: number;
+	maxNum?: number;
+	name: string;
+	page: string;
+	inputMaxWidth?: string;
+	ringId?: string | null;
+	handleUpdateRingSetting?: ((ringId: string, property: string, value: any) => Promise<void>) | null;
 }) => {
 	const [localValue, setLocalValue] = useState(defaultValue);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -112,6 +125,14 @@ const InputNumUserSettings = ({
 		}
 
 		setErrorMessage('');
+
+		// If ring-specific update is provided for focus-hours-goal-page
+		if (page === 'focus-hours-goal-page' && ringId && handleUpdateRingSetting) {
+			setApiRequestLoading(true);
+			await handleUpdateRingSetting(ringId, 'goalDays', localValue);
+			setApiRequestLoading(false);
+			return;
+		}
 
 		if (page === 'focus-records-page' || page === 'completed-tasks-page' || page === 'focus-hours-goal-page') {
 			const payload = getPayload();

@@ -13,9 +13,9 @@ export const UserSettingsProvider = ({ children }) => {
 };
 
 const useUserSettings = () => {
-	// Initialize cached settings from localStorage
+	// Initialize cached settings from localStorage with rings array
 	const [cachedSettings, setCachedSettings] = useState(() => {
-		const defaultSettings = { goalDays: 7, goalSeconds: 3600, showGoalDays: true };
+		const defaultSettings = { rings: [], selectedRingId: null };
 		try {
 			const cached = localStorage.getItem('focusHoursGoalPageSettings');
 			return cached ? JSON.parse(cached) : defaultSettings;
@@ -24,6 +24,9 @@ const useUserSettings = () => {
 			return defaultSettings;
 		}
 	});
+
+	// Selected ring state
+	const [selectedRingId, setSelectedRingId] = useState(cachedSettings.selectedRingId);
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
@@ -34,6 +37,18 @@ const useUserSettings = () => {
 	const focusHoursGoalPageSettings = userSettings?.tickTickOne?.pages?.focusHoursGoal || {};
 	const challengesPageSettings = userSettings?.tickTickOne?.pages?.challenges || {};
 	const medalsPageSettings = userSettings?.tickTickOne?.pages?.medals || {};
+
+	// Extract rings from focusHoursGoal settings - use cached rings while loading
+	const rings = isLoadingGetUserSettings && cachedSettings.rings.length > 0
+		? cachedSettings.rings
+		: (focusHoursGoalPageSettings?.rings || []);
+	const activeRings = rings.filter(ring => ring.isActive);
+
+	// Auto-select first active ring if no selection yet
+	const effectiveSelectedRingId = selectedRingId || (activeRings[0]?.id || null);
+
+	// Find current ring by selectedRingId
+	const currentRing = rings.find(ring => ring.id === effectiveSelectedRingId) || null;
 
 	const {
 		showFocusNotes = true,
@@ -63,42 +78,16 @@ const useUserSettings = () => {
 		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
-	// Use cached values if API is still loading
-	const settingsSource = isLoadingGetUserSettings && cachedSettings
-		? cachedSettings
-		: focusHoursGoalPageSettings;
-
-	const {
-		projects: filteredProjects = {},
-		showStreakCount = true,
-		goalDays = 7,
-		goalSeconds = 3600,
-		showGoalDays = true,
-		selectedDaysOfWeek = {
-			monday: true,
-			tuesday: true,
-			wednesday: true,
-			thursday: true,
-			friday: true,
-			saturday: true,
-			sunday: true,
-		},
-		restDays = {},
-		customDailyFocusGoal = {},
-	} = settingsSource;
-
 	const { selectedChallengeCardImage } = challengesPageSettings;
 	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings;
 
-	// Sync to localStorage after API fetch completes
+	// Sync rings array to localStorage after API fetch completes
 	useEffect(() => {
-		if (!isLoadingGetUserSettings && focusHoursGoalPageSettings) {
+		if (!isLoadingGetUserSettings && focusHoursGoalPageSettings?.rings) {
 			try {
 				const settingsToCache = {
-					goalDays,
-					goalSeconds,
-					showGoalDays,
-					showStreakCount
+					rings: focusHoursGoalPageSettings.rings,
+					selectedRingId: effectiveSelectedRingId
 				};
 				localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(settingsToCache));
 				setCachedSettings(settingsToCache);
@@ -106,7 +95,19 @@ const useUserSettings = () => {
 				console.error('Failed to cache settings:', error);
 			}
 		}
-	}, [isLoadingGetUserSettings, goalDays, goalSeconds, showGoalDays, focusHoursGoalPageSettings]);
+	}, [isLoadingGetUserSettings, focusHoursGoalPageSettings?.rings, effectiveSelectedRingId, focusHoursGoalPageSettings]);
+
+	// Helper function to switch selected ring
+	const handleSetSelectedRing = (ringId) => {
+		setSelectedRingId(ringId);
+		try {
+			const currentCache = JSON.parse(localStorage.getItem('focusHoursGoalPageSettings') || '{}');
+			const updatedCache = { ...currentCache, selectedRingId: ringId };
+			localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(updatedCache));
+		} catch (error) {
+			console.error('Failed to update selected ring in cache:', error);
+		}
+	};
 
 	const [editUserSettings] = useEditUserSettingsMutation();
 
@@ -127,21 +128,57 @@ const useUserSettings = () => {
 		};
 
 		await editUserSettings(payload);
+	};
 
-		// Update localStorage for focusHoursGoal page settings
-		if (page === 'focusHoursGoal' && ['goalDays', 'goalSeconds', 'showGoalDays', 'showStreakCount'].includes(userSettingProperty)) {
-			try {
-				const currentCache = JSON.parse(localStorage.getItem('focusHoursGoalPageSettings') || '{}');
-				const updatedCache = { ...currentCache, [userSettingProperty]: newValue };
-				localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(updatedCache));
-			} catch (error) {
-				console.error('Failed to update cached settings:', error);
+	// Helper function to update ring-specific settings
+	const handleUpdateRingSetting = async (ringId, settingProperty, newValue) => {
+		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+		const existingRings = focusHoursGoalPageSettings?.rings || [];
+
+		// Find and update the specific ring
+		const updatedRings = existingRings.map(ring => {
+			if (ring.id === ringId) {
+				return {
+					...ring,
+					[settingProperty]: newValue,
+					updatedAt: new Date().toISOString()
+				};
 			}
+			return ring;
+		});
+
+		const payload = {
+			tickTickOne: {
+				pages: {
+					...restOfPagesKeysAndVals,
+					focusHoursGoal: {
+						...focusHoursGoalPageSettings,
+						rings: updatedRings,
+					},
+				},
+			},
+		};
+
+		await editUserSettings(payload);
+
+		// Update localStorage cache with updated rings array
+		try {
+			const currentCache = JSON.parse(localStorage.getItem('focusHoursGoalPageSettings') || '{}');
+			const updatedCache = {
+				...currentCache,
+				rings: updatedRings
+			};
+			localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(updatedCache));
+			setCachedSettings(updatedCache);
+		} catch (error) {
+			console.error('Failed to update cached settings:', error);
 		}
 	};
 
 	return {
 		handleUpdateUserSettingForPage,
+		handleUpdateRingSetting,
+		handleSetSelectedRing,
 		focusRecordsPageSettings: {
 			showFocusNotes,
 			showTotalFocusDuration,
@@ -169,14 +206,10 @@ const useUserSettings = () => {
 			maxDaysPerPage,
 		},
 		focusHoursGoalPageSettings: {
-			filteredProjects,
-			showStreakCount,
-			goalDays,
-			goalSeconds,
-			showGoalDays,
-			selectedDaysOfWeek,
-			restDays,
-			customDailyFocusGoal,
+			rings,
+			activeRings,
+			currentRing,
+			selectedRingId: effectiveSelectedRingId,
 		},
 		challengesPageSettings: {
 			selectedChallengeCardImage,

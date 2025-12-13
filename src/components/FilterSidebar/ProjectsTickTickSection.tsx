@@ -22,8 +22,11 @@ const ProjectsTickTickSection = ({ page }) => {
 	const projectsFromUrl = searchParams.get('projects');
 
 	const {
-		focusHoursGoalPageSettings: { filteredProjects },
+		focusHoursGoalPageSettings: { currentRing, selectedRingId },
+		handleUpdateRingSetting,
 	} = useUserSettingsContext();
+
+	const filteredProjects = currentRing?.projects ?? {};
 
 	// RTK Query - TickTick 1.0 - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
@@ -106,6 +109,13 @@ const ProjectsTickTickSection = ({ page }) => {
 	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
 
 	const handleCheckboxClick = async (userSettingProperty, newValue) => {
+		// If a ring is selected, update ring-specific settings
+		if (currentRing && selectedRingId) {
+			await handleUpdateRingSetting(selectedRingId, userSettingProperty, newValue);
+			return;
+		}
+
+		// Otherwise, use global update (existing logic for backward compatibility)
 		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
 		const restOfFocusHoursGoalsKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
 

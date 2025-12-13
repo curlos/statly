@@ -10,7 +10,6 @@ import StreaksList, { SortOption } from './StreaksList';
 import { useStatsDateRange } from '../../hooks/useStatsDateRange';
 import FocusStatsCard from './ModalFocusGoalProgress/FocusStatsCard';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
-import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 
 interface Streak {
 	days: number;
@@ -31,19 +30,24 @@ interface ModalFocusGoalProgressProps {
 	isOpen: boolean;
 	onClose: () => void;
 	streakData: StreakData;
-	goalSeconds: number;
+	ring: any; // The specific ring this modal is for
 }
 
 const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	isOpen,
 	onClose,
 	streakData,
-	goalSeconds,
+	ring,
 }) => {
 	const { chosenColorObj } = useThemeContext() as any;
-	const {
-		focusHoursGoalPageSettings: { customDailyFocusGoal },
-	} = useUserSettingsContext();
+
+	const customDailyFocusGoal = ring?.customDailyFocusGoal ?? {};
+	const selectedDaysOfWeek = ring?.selectedDaysOfWeek ?? {};
+	const restDays = ring?.restDays ?? {};
+	const ringName = ring?.name;
+	const ringColor = ring?.color;
+	const useThemeColor = ring?.useThemeColor;
+	const goalSeconds = ring?.goalSeconds ?? 3600;
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [showYearView, setShowYearView] = useState(false);
 	const [viewMode, setViewMode] = useState<'calendar' | 'streaks'>('calendar');
@@ -110,7 +114,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				{/* Header */}
 				<div className="flex justify-between items-center mb-6">
 					<h2 className="text-2xl font-semibold">
-						Focus {getFormattedDuration(goalSeconds, false, true)}
+						{ringName ? `${ringName} - ` : ''}Focus {getFormattedDuration(goalSeconds, false, true)}
 					</h2>
 					<Icon
 						name="close"
@@ -216,6 +220,11 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 								dailyDurationsMap={streakData?.dailyDurationsMap}
 								themeColor={chosenColorObj.hexColor}
 								goalSeconds={goalSeconds}
+								ringColor={ringColor}
+								useThemeColor={useThemeColor}
+								selectedDaysOfWeek={selectedDaysOfWeek}
+								restDays={restDays}
+								customDailyFocusGoal={customDailyFocusGoal}
 							/>
 						)}
 					</>
@@ -328,16 +337,25 @@ const CalendarGrid = ({
 	dailyDurationsMap,
 	themeColor,
 	goalSeconds,
+	ringColor,
+	useThemeColor,
+	selectedDaysOfWeek,
+	restDays,
+	customDailyFocusGoal,
 }: {
 	currentDate: Date;
 	dailyDurationsMap?: { [dateKey: string]: number };
 	themeColor: string;
 	goalSeconds: number;
+	ringColor?: string | null;
+	useThemeColor?: boolean;
+	selectedDaysOfWeek: Record<string, boolean>;
+	restDays: Record<string, boolean>;
+	customDailyFocusGoal: Record<string, number>;
 }) => {
-	// Get user settings directly in this component
-	const {
-		focusHoursGoalPageSettings: { selectedDaysOfWeek, restDays },
-	} = useUserSettingsContext();
+	// Determine which color to use for the ring
+	const ringDisplayColor = useThemeColor ? themeColor : (ringColor || themeColor);
+
 	// Get first day of month and last day
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth();
@@ -388,8 +406,7 @@ const CalendarGrid = ({
 								<Icon
 									name="featured_seasonal_and_gifts"
 									fill={1}
-									customClass="!text-[14px]"
-									style={{ color: themeColor }}
+									customClass="!text-[14px] text-sky-300"
 								/>
 							)}
 						</div>
@@ -407,10 +424,14 @@ const CalendarGrid = ({
 					// Format date as YYYY-MM-DD to match API format
 					const dateKey = formatDateAsAPIKey(day);
 					const totalFocusDurationForDay = dailyDurationsMap?.[dateKey] || 0;
-					const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalSeconds) * 100;
+
+					// Check if this day has a custom goal, otherwise use default
+					const customGoalForDay = customDailyFocusGoal?.[dateKey];
+					const goalForDay = customGoalForDay !== undefined ? customGoalForDay : goalSeconds;
+					const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalForDay) * 100;
 
 					const dayData = {
-						goalSeconds,
+						goalSeconds: goalForDay, // Use day-specific goal (custom or default)
 						totalFocusDurationForDay,
 						percentageOfFocusedGoalHours,
 					};
@@ -420,10 +441,12 @@ const CalendarGrid = ({
 							key={index}
 							day={day}
 							dayData={dayData}
-							themeColor={themeColor}
+							themeColor={ringDisplayColor}
 							goalSeconds={goalSeconds}
 							restDays={restDays}
 							dateKey={dateKey}
+							selectedDaysOfWeek={selectedDaysOfWeek}
+							customDailyFocusGoal={customDailyFocusGoal}
 						/>
 					);
 				})}

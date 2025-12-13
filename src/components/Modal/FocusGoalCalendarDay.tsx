@@ -2,9 +2,9 @@ import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-pro
 import Tooltip from '../Tooltip';
 import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
 import { areDatesEqual } from '../../utils/date.utils';
+import { hexToRgba } from '../../utils/color.utils';
 import classNames from 'classnames';
 import Icon from '../Icon';
-import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 
 interface FocusGoalCalendarDayProps {
 	day: Date;
@@ -17,6 +17,8 @@ interface FocusGoalCalendarDayProps {
 	goalSeconds: number;
 	restDays?: Record<string, boolean>;
 	dateKey: string;
+	selectedDaysOfWeek: Record<string, boolean>;
+	customDailyFocusGoal: Record<string, number>;
 }
 
 const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
@@ -26,11 +28,9 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	goalSeconds: defaultGoalSeconds,
 	restDays,
 	dateKey,
+	selectedDaysOfWeek,
+	customDailyFocusGoal,
 }) => {
-	// Get selectedDaysOfWeek and customDailyFocusGoal from context
-	const {
-		focusHoursGoalPageSettings: { selectedDaysOfWeek, customDailyFocusGoal },
-	} = useUserSettingsContext();
 
 	// Check if this date has a custom goal
 	const customGoalForDay = customDailyFocusGoal?.[dateKey];
@@ -63,10 +63,10 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	// Tooltip content
 	const tooltipContent = (
 		<div className="text-base whitespace-nowrap">
-			<div className="text-center">
-				<span className="text-lg font-bold">{getFormattedDuration(totalFocused, false)}</span>
-				<span className="mx-[2px]">/</span>
-				<span className="text-base text-color-gray-25 ">{getFormattedDuration(goalForDay, false)}</span>
+			<div className="text-center font-bold">
+				<span className="text-lg" style={{ color: themeColor }}>{getFormattedDuration(totalFocused, false)}</span>
+				<span className="mx-[2px] opacity-60" style={{ color: themeColor }}>/</span>
+				<span className="text-base opacity-60" style={{ color: themeColor }}>{getFormattedDuration(goalForDay, false)}</span>
 			</div>
 			<div className="text-color-gray-100 text-center">{percentage.toFixed(2)}%</div>
 			{hasCustomGoal && (
@@ -78,7 +78,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 			{isFreebieDay && (
 				<div className="flex items-center justify-center gap-1 mb-0">
 					<span className="text-color-gray-100">Freebie Day</span>
-					<Icon name="featured_seasonal_and_gifts" fill={1} customClass="!text-[20px]" />
+					<Icon name="featured_seasonal_and_gifts" fill={1} customClass="!text-[20px] text-sky-300" />
 				</div>
 			)}
 			{isRestDay && (
@@ -99,7 +99,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 						strokeWidth={10}
 						styles={buildStyles({
 							pathColor: themeColor,
-							trailColor: '#3d3c3c',
+							trailColor: hexToRgba(themeColor, 0.2)
 						})}
 						counterClockwise={false}
 					>

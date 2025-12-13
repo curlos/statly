@@ -1,21 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Icon from '../Icon';
-import Accordion from '../Accordion/Accordion';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
 import GoalSecondsInput from './GoalSecondsInput';
-import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import ModalRestDays from '../Modal/ModalRestDays';
 import ModalCustomFocusGoals from '../Modal/ModalCustomFocusGoals';
+import Spinner from '../Loaders/Spinner';
+import RingColorPicker from '../ColorPicker/RingColorPicker';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
-		focusHoursGoalPageSettings: { showStreakCount, goalDays, goalSeconds, showGoalDays, selectedDaysOfWeek, restDays, customDailyFocusGoal },
-		handleUpdateUserSettingForPage,
+		focusHoursGoalPageSettings: { rings, activeRings, currentRing, selectedRingId },
+		handleUpdateRingSetting,
+		handleSetSelectedRing,
 	} = useUserSettingsContext();
+
+	// Extract properties from currentRing
+	const showStreakCount = currentRing?.showStreakCount ?? true;
+	const goalDays = currentRing?.goalDays ?? 7;
+	const goalSeconds = currentRing?.goalSeconds ?? 3600;
+	const showGoalDays = currentRing?.showGoalDays ?? true;
+	const selectedDaysOfWeek = currentRing?.selectedDaysOfWeek ?? {
+		monday: true,
+		tuesday: true,
+		wednesday: true,
+		thursday: true,
+		friday: true,
+		saturday: true,
+		sunday: true,
+	};
+	const restDays = currentRing?.restDays ?? {};
+	const customDailyFocusGoal = currentRing?.customDailyFocusGoal ?? {};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -23,19 +42,43 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 	const [isRestDaysModalOpen, setIsRestDaysModalOpen] = useState(false);
 	const [isCustomGoalsModalOpen, setIsCustomGoalsModalOpen] = useState(false);
+	const [ringName, setRingName] = useState(currentRing?.name || '');
+	const [isUpdatingRingName, setIsUpdatingRingName] = useState(false);
+	const [isTogglingRingStatus, setIsTogglingRingStatus] = useState(false);
 
-	// RTK Query - User Settings
-	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
-	const { userSettings } = fetchedUserSettings || {};
-	const [editUserSettings] = useEditUserSettingsMutation();
+	// Ref to store the debounce timer
+	const debounceTimerRef = useRef(null);
 
-	const handleCheckboxClick = (showValue, userSettingProperty) => {
+	// Update ringName when currentRing changes
+	useEffect(() => {
+		setRingName(currentRing?.name || '');
+	}, [currentRing]);
+
+	// Cleanup timer on unmount
+	useEffect(() => {
+		return () => {
+			if (debounceTimerRef.current) {
+				clearTimeout(debounceTimerRef.current);
+			}
+		};
+	}, []);
+
+	// Early return if no current ring - show loading spinner
+	if (!currentRing) {
+		return (
+			<div className="flex items-center justify-center py-8">
+				<Spinner />
+			</div>
+		);
+	}
+
+	const handleCheckboxClick = (showValue: boolean, userSettingProperty: string) => {
 		const newShowValue = !showValue;
-		handleUpdateUserSettingForPage('focusHoursGoal', userSettingProperty, newShowValue);
+		handleUpdateRingSetting(selectedRingId, userSettingProperty, newShowValue);
 	};
 
-	const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-	const dayLabels = {
+	const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+	const dayLabels: Record<typeof daysOfWeek[number], string> = {
 		monday: 'Mon',
 		tuesday: 'Tue',
 		wednesday: 'Wed',
@@ -45,12 +88,12 @@ const FocusHoursGoalPageSettingsSection = () => {
 		sunday: 'Sun',
 	};
 
-	const handleDayToggle = (day) => {
+	const handleDayToggle = (day: string) => {
 		const newSelectedDays = {
 			...selectedDaysOfWeek,
 			[day]: !selectedDaysOfWeek[day],
 		};
-		handleUpdateUserSettingForPage('focusHoursGoal', 'selectedDaysOfWeek', newSelectedDays);
+		handleUpdateRingSetting(selectedRingId, 'selectedDaysOfWeek', newSelectedDays);
 	};
 
 	// Get today's date in YYYY-MM-DD format
@@ -68,7 +111,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 			...restDays,
 			[todayDateKey]: !isTodayRestDay,
 		};
-		handleUpdateUserSettingForPage('focusHoursGoal', 'restDays', newRestDays);
+		handleUpdateRingSetting(selectedRingId, 'restDays', newRestDays);
 	};
 
 	// Check if today has a custom focus goal
@@ -86,151 +129,290 @@ const FocusHoursGoalPageSettingsSection = () => {
 			newCustomDailyFocusGoal[todayDateKey] = goalSeconds;
 		}
 
-		handleUpdateUserSettingForPage('focusHoursGoal', 'customDailyFocusGoal', newCustomDailyFocusGoal);
+		handleUpdateRingSetting(selectedRingId, 'customDailyFocusGoal', newCustomDailyFocusGoal);
+	};
+
+	// Check if this is the only active ring (prevent disabling)
+	const isOnlyActiveRing = () => {
+		return activeRings.length === 1 && currentRing.isActive;
+	};
+
+	// Toggle ring active/paused status
+	const handleToggleRingActive = async () => {
+		if (isOnlyActiveRing()) return;
+
+		setIsTogglingRingStatus(true);
+		const newIsActive = !currentRing.isActive;
+
+		// Update inactivePeriods array
+		const inactivePeriods = [...(currentRing.inactivePeriods || [])];
+		const today = new Date().toISOString().split('T')[0];
+
+		if (!newIsActive) {
+			// Pausing ring - add new inactive period
+			inactivePeriods.push({
+				startDate: today,
+				endDate: null
+			});
+		} else {
+			// Reactivating ring - close last inactive period
+			if (inactivePeriods.length > 0) {
+				const lastPeriod = inactivePeriods[inactivePeriods.length - 1];
+				if (lastPeriod.endDate === null) {
+					lastPeriod.endDate = today;
+				}
+			}
+		}
+
+		// Update both isActive and inactivePeriods
+		await handleUpdateRingSetting(selectedRingId, 'inactivePeriods', inactivePeriods);
+		await handleUpdateRingSetting(selectedRingId, 'isActive', newIsActive);
+
+		setIsTogglingRingStatus(false);
+	};
+
+	// Handle ring name change with debouncing
+	const handleRingNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newName = e.target.value;
+
+		// Update local state immediately for smooth UX
+		setRingName(newName);
+
+		// Clear existing timer
+		if (debounceTimerRef.current) {
+			clearTimeout(debounceTimerRef.current);
+		}
+
+		// Set new timer to update ring name after 1 second
+		debounceTimerRef.current = setTimeout(async () => {
+			if (newName !== currentRing.name) {
+				setIsUpdatingRingName(true);
+				await handleUpdateRingSetting(selectedRingId, 'name', newName);
+				setIsUpdatingRingName(false);
+			}
+		}, 1000) as any;
 	};
 
 	return (
 		<div>
-			<Accordion
-				title={
-					<div className="flex items-center gap-1">
-						<h3 className="text-[16px] font-bold">Ring Settings</h3>
-						<Icon
-							name="settings"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
-						/>
-					</div>
-				}
-				openByDefault={true}
-				setIsOpenForParent={undefined}
-				isChildDropdownOpen={false}
-				showArrowNextToText={undefined}
-				customClasses={undefined}
-				customToggleOpen={undefined}
-				preventOpen={false}
-			>
-				{/* Today Section */}
-				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Today</h4>
-					<CheckboxOther
-						{...{
-							name: 'Mark Today as Rest Day',
-							showValue: isTodayRestDay,
-							handleCheckboxClick: handleToggleTodayRestDay,
-						}}
-					/>
+		{/* Ring Tabs - show all rings (active + paused) */}
+			<div className="mb-4 bg-color-gray-700 rounded-lg">
+				<div className="space-y-2">
+					{rings.map((ring: any) => {
+						const ringColor = ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor);
 
-					{/* Custom Focus Goal for Today */}
-					<div className="mt-3">
-						<CheckboxOther
-							{...{
-								name: 'Use Custom Focus Goal for Today',
-								showValue: hasCustomGoalForToday,
-								handleCheckboxClick: handleToggleCustomGoalForToday,
-							}}
-						/>
-						{hasCustomGoalForToday && (
-							<div className="mt-2">
-								<GoalSecondsInput
-									{...{
-										defaultValue: customDailyFocusGoal[todayDateKey],
-										userSettings,
-										editUserSettings,
-										customDateKey: todayDateKey,
-									}}
-								/>
-							</div>
+						return (
+							<button
+								key={ring.id}
+								onClick={() => handleSetSelectedRing(ring.id)}
+								className={classNames(
+									'px-3 py-2 rounded-full text-[14px] transition-colors flex items-center gap-2',
+									selectedRingId === ring.id
+										? `${bgColor} ${chosenColorObj.hover.bgColorHalfOpacity} text-white font-semibold`
+										: 'bg-color-gray-600 text-color-gray-25 hover:bg-color-gray-200'
+								)}
+							>
+								{(ring.color || ring.useThemeColor) && (
+									<div style={{ width: '20px', height: '20px' }}>
+										<CircularProgressbar
+											value={100}
+											strokeWidth={12}
+											styles={buildStyles({
+												pathColor: ringColor,
+												trailColor: ringColor
+											})}
+										/>
+									</div>
+								)}
+								<span>{ring.name} {!ring.isActive && (
+									<span className="text-color-gray-100">(Paused)</span>
+								)}</span>
+							</button>
+						);
+					})}
+				</div>
+			</div>
+
+			{/* Ring Status Toggle */}
+			<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Ring Status</h4>
+					<div className="flex items-center gap-3">
+						<button
+							onClick={handleToggleRingActive}
+							disabled={isOnlyActiveRing() || isTogglingRingStatus}
+							className={classNames(
+								'px-4 py-2 rounded-full text-[14px] font-medium transition-colors flex items-center gap-2',
+								currentRing.isActive
+									? 'bg-green-600 hover:bg-green-700 text-white'
+									: 'bg-color-gray-600 hover:bg-color-gray-200 text-white',
+								(isOnlyActiveRing() || isTogglingRingStatus) && 'opacity-50 cursor-not-allowed'
+							)}
+						>
+							<span>{currentRing.isActive ? 'Active' : 'Paused'}</span>
+						</button>
+						{isTogglingRingStatus && <Spinner size="sm" />}
+						{isOnlyActiveRing() && (
+							<p className="text-[12px] text-orange-400">
+								At least one ring must remain active
+							</p>
 						)}
 					</div>
 				</div>
 
-				{/* General Section */}
-				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
+			{/* Ring Name Input */}
+			<div className="mb-4 px-1">
+				<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Ring Name</h4>
+				<div className="relative">
+					<input
+						type="text"
+						value={ringName}
+						onChange={handleRingNameChange}
+						className="w-full px-3 py-2 bg-color-gray-600 rounded-lg text-white text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+						placeholder="Enter ring name..."
+					/>
+					{isUpdatingRingName && (
+						<div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+							<Spinner size="sm" />
+						</div>
+					)}
+				</div>
+			</div>
+
+			{/* Ring Appearance Section */}
+			<div className="mb-4 px-1">
+				<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">
+					Ring Color
+				</h4>
+				<RingColorPicker
+					color={currentRing.color}
+					useThemeColor={currentRing.useThemeColor || false}
+					onColorChange={(newColor) =>
+						handleUpdateRingSetting(selectedRingId, 'color', newColor)
+					}
+					onUseThemeColorChange={(useThemeColor) =>
+						handleUpdateRingSetting(selectedRingId, 'useThemeColor', useThemeColor)
+					}
+				/>
+			</div>
+
+			{/* Today Section */}
+			<div className="mb-4">
+				<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Today</h4>
+				<CheckboxOther
+					{...{
+						name: 'Mark Today as Rest Day',
+						showValue: isTodayRestDay,
+						handleCheckboxClick: handleToggleTodayRestDay,
+					}}
+				/>
+
+				{/* Custom Focus Goal for Today */}
+				<div>
 					<CheckboxOther
 						{...{
-							name: 'Show Streak Count',
-							showValue: showStreakCount,
-							handleCheckboxClick: () => handleCheckboxClick(showStreakCount, 'showStreakCount'),
+							name: 'Use Custom Focus Goal for Today',
+							showValue: hasCustomGoalForToday,
+							handleCheckboxClick: handleToggleCustomGoalForToday,
 						}}
 					/>
-					<CheckboxOther
-						{...{
-							name: 'Show Goal Days',
-							showValue: showGoalDays,
-							handleCheckboxClick: () => handleCheckboxClick(showGoalDays, 'showGoalDays'),
-						}}
-					/>
-					<button
-						onClick={() => setIsRestDaysModalOpen(true)}
-						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
-					>
-						<Icon name="calendar_month" fill={1} customClass="!text-[18px]" />
-						<span>View All Rest Days</span>
-					</button>
-					<button
-						onClick={() => setIsCustomGoalsModalOpen(true)}
-						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
-					>
-						<Icon name="tune" fill={1} customClass="!text-[18px]" />
-						<span>View All Custom Focus Goal Days</span>
-					</button>
+					{hasCustomGoalForToday && (
+						<div className="mt-2">
+							<GoalSecondsInput
+								key={`custom-goal-${selectedRingId}-${todayDateKey}`}
+								defaultValue={customDailyFocusGoal[todayDateKey]}
+								customDateKey={todayDateKey}
+								ringId={selectedRingId}
+								handleUpdateRingSetting={handleUpdateRingSetting}
+								customDailyFocusGoal={customDailyFocusGoal}
+							/>
+						</div>
+					)}
 				</div>
+			</div>
 
-				{/* Streak Goal Section */}
-				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Streak Goal</h4>
-					<InputNumUserSettings
-						{...{
-							defaultValue: goalDays,
-							userSettings,
-							editUserSettings,
-							minNum: 1,
-							maxNum: 36524,
-							name: 'Goal Days',
-							page: 'focus-hours-goal-page',
-							inputMaxWidth: 'w-[70px]',
-						}}
-					/>
-				</div>
+			{/* General Section */}
+			<div className="mb-4">
+				<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
+				<CheckboxOther
+					{...{
+						name: 'Show Streak Count',
+						showValue: showStreakCount,
+						handleCheckboxClick: () => handleCheckboxClick(showStreakCount, 'showStreakCount'),
+					}}
+				/>
+				<CheckboxOther
+					{...{
+						name: 'Show Goal Days',
+						showValue: showGoalDays,
+						handleCheckboxClick: () => handleCheckboxClick(showGoalDays, 'showGoalDays'),
+					}}
+				/>
+				<button
+					onClick={() => setIsRestDaysModalOpen(true)}
+					className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
+				>
+					<Icon name="calendar_month" fill={1} customClass="!text-[18px]" />
+					<span>View All Rest Days</span>
+				</button>
+				<button
+					onClick={() => setIsCustomGoalsModalOpen(true)}
+					className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
+				>
+					<Icon name="tune" fill={1} customClass="!text-[18px]" />
+					<span>View All Custom Focus Goal Days</span>
+				</button>
+			</div>
 
-				{/* Daily Focus Goal Section */}
-				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Daily Focus Goal</h4>
-					<GoalSecondsInput
-						{...{
-							defaultValue: goalSeconds,
-							userSettings,
-							editUserSettings,
-						}}
-					/>
-				</div>
+			{/* Streak Goal Section */}
+			<div className="mb-4">
+				<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Streak Goal</h4>
+				<InputNumUserSettings
+					key={`goal-days-${selectedRingId}`}
+					defaultValue={goalDays}
+					minNum={1}
+					maxNum={36524}
+					name="Goal Days"
+					page="focus-hours-goal-page"
+					inputMaxWidth="w-[70px]"
+					ringId={selectedRingId}
+					handleUpdateRingSetting={handleUpdateRingSetting}
+				/>
+			</div>
 
-				{/* Streak Days Section */}
-				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-1">Streak Days</h4>
-					<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
-						Select days that can break your streak. Unselected days are "freebie" days.
-					</p>
-					<div className="flex gap-2 flex-wrap">
-						{daysOfWeek.map((day) => (
-							<button
-								key={day}
-								onClick={() => handleDayToggle(day)}
-								className={classNames(
-									'px-2 py-1 rounded-full text-sm transition-colors',
-									selectedDaysOfWeek[day]
-										? `${bgColor} text-white`
-										: 'bg-color-gray-300 text-color-gray-50 hover:bg-color-gray-200'
-								)}
-							>
-								{dayLabels[day]}
-							</button>
-						))}
-					</div>
+			{/* Daily Focus Goal Section */}
+			<div className="mb-4">
+				<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Daily Focus Goal</h4>
+				<GoalSecondsInput
+					key={`goal-seconds-${selectedRingId}`}
+					defaultValue={goalSeconds}
+					ringId={selectedRingId}
+					handleUpdateRingSetting={handleUpdateRingSetting}
+				/>
+			</div>
+
+			{/* Streak Days Section */}
+			<div className="mb-4">
+				<h4 className="text-[14px] font-semibold text-color-gray-100 mb-1">Streak Days</h4>
+				<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
+					Select days that can break your streak. Unselected days are "freebie" days.
+				</p>
+				<div className="flex gap-2 flex-wrap">
+					{daysOfWeek.map((day) => (
+						<button
+							key={day}
+							onClick={() => handleDayToggle(day)}
+							className={classNames(
+								'px-2 py-1 rounded-full text-sm transition-colors',
+								selectedDaysOfWeek[day]
+									? `${bgColor} text-white`
+									: 'bg-color-gray-300 text-color-gray-50 hover:bg-color-gray-200'
+							)}
+						>
+							{dayLabels[day]}
+						</button>
+					))}
 				</div>
-			</Accordion>
+			</div>
 
 			<ModalRestDays
 				isOpen={isRestDaysModalOpen}

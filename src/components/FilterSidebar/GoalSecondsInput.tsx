@@ -3,11 +3,12 @@ import { debounce, secondsToHoursAndMinutes } from '../../utils/focus-apps/helpe
 import CustomInput from '../CustomInput';
 import Spinner from '../Loaders/Spinner';
 
-const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings, customDateKey = null }: {
+const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUpdateRingSetting, customDailyFocusGoal = {} }: {
 	defaultValue: number;
-	userSettings: any;
-	editUserSettings: any;
 	customDateKey?: string | null;
+	ringId: string;
+	handleUpdateRingSetting: (ringId: string, property: string, value: any) => Promise<void>;
+	customDailyFocusGoal?: Record<string, number>;
 }) => {
 	const { hours: defaultHours, minutes: defaultMinutes } = secondsToHoursAndMinutes(defaultValue);
 
@@ -32,61 +33,6 @@ const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings, custom
 		return '';
 	};
 
-	const getPayload = () => {
-		const restOfFocusHoursGoalKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
-
-		// Convert hours and minutes to seconds
-		const newGoalSeconds = (Number(hours) * 3600) + (Number(minutes) * 60);
-
-		// If customDateKey is provided, update customDailyFocusGoal for that date
-		if (customDateKey) {
-			const currentCustomDailyFocusGoal = restOfFocusHoursGoalKeysAndVals?.customDailyFocusGoal || {};
-
-			// Check if value has changed
-			if (currentCustomDailyFocusGoal[customDateKey] === newGoalSeconds) {
-				return;
-			}
-
-			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
-
-			return {
-				tickTickOne: {
-					pages: {
-						...restOfPagesKeysAndVals,
-						focusHoursGoal: {
-							...restOfFocusHoursGoalKeysAndVals,
-							customDailyFocusGoal: {
-								...currentCustomDailyFocusGoal,
-								[customDateKey]: newGoalSeconds,
-							},
-						},
-					},
-				},
-			};
-		}
-
-		// Otherwise, update the default goalSeconds
-		const currentGoalSeconds = restOfFocusHoursGoalKeysAndVals?.goalSeconds;
-
-		if (currentGoalSeconds === newGoalSeconds) {
-			return;
-		}
-
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
-
-		return {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					focusHoursGoal: {
-						...restOfFocusHoursGoalKeysAndVals,
-						goalSeconds: newGoalSeconds,
-					},
-				},
-			},
-		};
-	};
-
 	const handleDebouncedUpdate = debounce(async () => {
 		const errorMessage = getErrorMessage();
 		const isThereAnError = errorMessage;
@@ -98,14 +44,23 @@ const GoalSecondsInput = ({ defaultValue, userSettings, editUserSettings, custom
 
 		setErrorMessage('');
 
-		const payload = getPayload();
-
-		if (!payload) {
-			return;
-		}
+		// Convert hours and minutes to seconds
+		const newGoalSeconds = (Number(hours) * 3600) + (Number(minutes) * 60);
 
 		setApiRequestLoading(true);
-		await editUserSettings(payload);
+
+		if (customDateKey) {
+			// Update custom daily focus goal for the ring
+			// Merge with existing customDailyFocusGoal
+			await handleUpdateRingSetting(ringId, 'customDailyFocusGoal', {
+				...customDailyFocusGoal,
+				[customDateKey]: newGoalSeconds,
+			});
+		} else {
+			// Update default goalSeconds for the ring
+			await handleUpdateRingSetting(ringId, 'goalSeconds', newGoalSeconds);
+		}
+
 		setApiRequestLoading(false);
 	}, 1000);
 
