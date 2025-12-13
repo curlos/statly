@@ -9,7 +9,6 @@ import SyncUpdateSection from './SyncUpdateSection';
 import CardImage from '../../pages/challenges/CardImage';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import OtherSectionMedals from '../FilterSidebar/OtherSectionMedals';
-import ProjectsTickTickSection from '../FilterSidebar/ProjectsTickTickSection';
 import FocusHoursGoalPageSettingsSection from '../FilterSidebar/FocusHoursGoalPageSettingsSection';
 
 const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {

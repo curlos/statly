@@ -78,6 +78,8 @@ const useUserSettings = () => {
 		maxDaysPerPage = 7,
 	} = completedTasksPageSettings;
 
+	const { showMultiRingViewForOneActiveRing = false } = focusHoursGoalPageSettings;
+
 	const { selectedChallengeCardImage } = challengesPageSettings;
 	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings;
 
@@ -210,6 +212,7 @@ const useUserSettings = () => {
 			activeRings,
 			currentRing,
 			selectedRingId: effectiveSelectedRingId,
+			showMultiRingViewForOneActiveRing,
 		},
 		challengesPageSettings: {
 			selectedChallengeCardImage,

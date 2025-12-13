@@ -16,9 +16,10 @@ import Accordion from '../Accordion/Accordion';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
-		focusHoursGoalPageSettings: { rings, activeRings, currentRing, selectedRingId },
+		focusHoursGoalPageSettings: { rings, activeRings, currentRing, selectedRingId, showMultiRingViewForOneActiveRing },
 		handleUpdateRingSetting,
 		handleSetSelectedRing,
+		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
 	// Extract properties from currentRing
@@ -451,6 +452,34 @@ const FocusHoursGoalPageSettingsSection = () => {
 					isOpen={isCustomGoalsModalOpen}
 					onClose={() => setIsCustomGoalsModalOpen(false)}
 					customDailyFocusGoal={customDailyFocusGoal}
+				/>
+			</Accordion>
+
+			<Accordion
+				title={
+					<div className="flex items-center gap-1">
+						<h3 className="text-[16px] font-bold">Page Settings</h3>
+						<Icon
+							name="settings"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
+						/>
+					</div>
+				}
+				openByDefault={true}
+				setIsOpenForParent={undefined}
+				isChildDropdownOpen={false}
+				showArrowNextToText={undefined}
+				customClasses={undefined}
+				customToggleOpen={undefined}
+				preventOpen={false}
+			>
+				<CheckboxOther
+					{...{
+						name: 'Show Multi-Ring View for One Active Ring',
+						showValue: showMultiRingViewForOneActiveRing,
+						handleCheckboxClick: () => handleUpdateUserSettingForPage('focusHoursGoal', 'showMultiRingViewForOneActiveRing', !showMultiRingViewForOneActiveRing),
+					}}
 				/>
 			</Accordion>
 		</div>

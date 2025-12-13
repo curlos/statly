@@ -22,7 +22,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 
-	const { focusHoursGoalPageSettings: { activeRings } } = useUserSettingsContext();
+	const { focusHoursGoalPageSettings: { activeRings, showMultiRingViewForOneActiveRing } } = useUserSettingsContext();
 
 	// Determine if we should fetch streak history
 	const shouldFetchStreakHistory = isFocusGoalModalOpen || activeRings.some(ring => ring.showStreakCount);
@@ -33,7 +33,6 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	});
 
 	const isLargeType = type === 'large';
-	const hasMultipleRings = activeRings.length > 1;
 
 	// Helper to get today's date key
 	const getTodayDateKey = () => {
@@ -142,8 +141,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				</div>
 			)}
 
-			{/* Single active ring view */}
-			{activeRings.length === 1 && (
+			{activeRings.length === 1 && !showMultiRingViewForOneActiveRing ? (
+				// Single active ring view
 				<div>
 					{renderSingleRing(
 						activeRings[0],
@@ -152,11 +151,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 						type
 					)}
 				</div>
-			)}
-
-			{/* Multiple active rings - Apple Watch style */}
-			{/* TODO: Also do this when the user wants to show it in this style by checking the global checkbox. */}
-			{activeRings.length > 1 && (
+			) : (
+				// Multiple active rings - Apple Watch style
 				<div className="flex gap-0 items-center">
 					{/* LEFT SIDE - Text Stats */}
 					<div className="flex-1 space-y-2">
