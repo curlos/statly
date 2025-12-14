@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useGetSyncMetadataQuery } from '../services/resources/documentsSyncApi';
+import { useGetSyncMetadataQuery } from '../services/resources/syncApi';
 import { setShowFirstSyncModal } from '../slices/syncSlice';
 import { isFirstTimeTickTickSync } from '../utils/syncHelpers';
 import { useSyncOrchestration } from './useSyncOrchestration';

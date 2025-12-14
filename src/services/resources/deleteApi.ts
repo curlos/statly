@@ -2,7 +2,7 @@ import { baseAPI } from '../api';
 import { invalidateOnSuccess } from '../utils/rtkHelpers';
 
 /**
- * @description API for deleting user documents
+ * @description API for deleting user data
  */
 export const deleteApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({

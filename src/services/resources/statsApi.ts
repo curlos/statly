@@ -1,16 +1,16 @@
 import { baseAPI, buildQueryString } from '../api';
 
 /**
- * @description API for fetching documents/stats data from the backend
+ * @description API for fetching stats data from the backend
  */
-export const documentsStatsApi = baseAPI.injectEndpoints({
+export const statsApi = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getOverviewStats: builder.query({
             query: (queryParams) => {
                 const queryString = buildQueryString(queryParams);
                 return queryString
-                    ? `/documents/stats/overview?${queryString}`
-                    : '/documents/stats/overview';
+                    ? `/stats/overview?${queryString}`
+                    : '/stats/overview';
             },
             transformResponse: (response) => {
                 return response;
@@ -21,8 +21,8 @@ export const documentsStatsApi = baseAPI.injectEndpoints({
             query: (queryParams) => {
                 const queryString = buildQueryString(queryParams);
                 return queryString
-                    ? `/documents/stats/focus?${queryString}`
-                    : '/documents/stats/focus';
+                    ? `/stats/focus?${queryString}`
+                    : '/stats/focus';
             },
             transformResponse: (response) => {
                 return response;
@@ -33,8 +33,8 @@ export const documentsStatsApi = baseAPI.injectEndpoints({
             query: (queryParams) => {
                 const queryString = buildQueryString(queryParams);
                 return queryString
-                    ? `/documents/stats/tasks?${queryString}`
-                    : '/documents/stats/tasks';
+                    ? `/stats/tasks?${queryString}`
+                    : '/stats/tasks';
             },
             transformResponse: (response) => {
                 return response;
@@ -45,4 +45,4 @@ export const documentsStatsApi = baseAPI.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useGetOverviewStatsQuery, useGetFocusStatsQuery, useGetTasksStatsQuery } = documentsStatsApi;
+export const { useGetOverviewStatsQuery, useGetFocusStatsQuery, useGetTasksStatsQuery } = statsApi;

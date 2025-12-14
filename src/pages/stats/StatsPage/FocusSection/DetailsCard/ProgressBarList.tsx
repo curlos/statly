@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import ProgressBar from '../ProgressBar';
-import { useGetProjectsQuery } from '../../../../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../../../../services/resources/projectsApi';
 import NestedProgressBars from './NestedProgressBars';
 import Accordion from '../../../../../components/Accordion/Accordion';
 import { getFormattedDuration } from '../../../../../utils/focus-apps/helpers.utils';

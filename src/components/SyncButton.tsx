@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Icon from './Icon';
-import { useGetSyncMetadataQuery } from '../services/resources/documentsSyncApi';
+import { useGetSyncMetadataQuery } from '../services/resources/syncApi';
 import { intlFormatDistance } from 'date-fns';
 import Tooltip from './Tooltip';
 import { setShowFirstSyncModal } from '../slices/syncSlice';

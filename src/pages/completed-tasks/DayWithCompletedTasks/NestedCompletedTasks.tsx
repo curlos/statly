@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import Accordion from '../../../components/Accordion/Accordion';
 import Icon from '../../../components/Icon';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
-import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 
 const NestedCompletedTasks = ({

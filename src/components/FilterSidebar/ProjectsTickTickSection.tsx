@@ -1,7 +1,7 @@
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import { useGetProjectsQuery, useGetProjectGroupsQuery } from '../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery, useGetProjectGroupsQuery } from '../../services/resources/projectsApi';
 import { useEffect, useState } from 'react';
 import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';

@@ -1,17 +1,17 @@
 import { baseAPI, buildQueryString } from '../api';
 
 /**
- * @description API for fetching documents/tasks data from the backend
+ * @description API for fetching tasks data from the backend
  */
-export const documentsTasksApi = baseAPI.injectEndpoints({
+export const tasksApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
 		getDaysWithCompletedTasks: builder.query({
 			query: (queryParams) => {
 				const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 			const queryString = buildQueryString({ ...queryParams, timezone });
 				return queryString
-					? `/documents/tasks/days-with-completed-tasks?${queryString}`
-					: '/documents/tasks/days-with-completed-tasks';
+					? `/tasks/days-with-completed-tasks?${queryString}`
+					: '/tasks/days-with-completed-tasks';
 			},
 			transformResponse: (response) => {
 				return response;
@@ -22,8 +22,8 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
 				return queryString
-					? `/documents/tasks/medals?${queryString}`
-					: '/documents/tasks/medals';
+					? `/tasks/medals?${queryString}`
+					: '/tasks/medals';
 			},
 			transformResponse: (response) => {
 				return response;
@@ -34,8 +34,8 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
 				return queryString
-					? `/documents/tasks/challenges?${queryString}`
-					: '/documents/tasks/challenges';
+					? `/tasks/challenges?${queryString}`
+					: '/tasks/challenges';
 			},
 			transformResponse: (response) => {
 				return response;
@@ -47,8 +47,8 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 				const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 				const queryString = buildQueryString({ ...queryParams, timezone });
 				return queryString
-					? `/documents/tasks/days-with-completed-tasks/export?${queryString}`
-					: '/documents/tasks/days-with-completed-tasks/export';
+					? `/tasks/days-with-completed-tasks/export?${queryString}`
+					: '/tasks/days-with-completed-tasks/export';
 			},
 			transformResponse: (response) => {
 				return response;
@@ -59,8 +59,8 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 			query: (queryParams?: { page?: number; limit?: number }) => {
 				const queryString = buildQueryString(queryParams || {});
 				return queryString
-					? `/documents/tasks/all?${queryString}`
-					: '/documents/tasks/all';
+					? `/tasks/all?${queryString}`
+					: '/tasks/all';
 			},
 			transformResponse: (response) => {
 				return response;
@@ -71,4 +71,4 @@ export const documentsTasksApi = baseAPI.injectEndpoints({
 	overrideExisting: false,
 });
 
-export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery, useGetTasksChallengesQuery, useGetAllTasksQuery } = documentsTasksApi;
+export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery, useGetTasksChallengesQuery, useGetAllTasksQuery } = tasksApi;

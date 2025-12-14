@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useMemo } from 'react';
 import Icon from '../../../../components/Icon';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import { useGetTasksStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useGetTasksStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../../StatsPage/GeneralSelectButtonAndDropdown';

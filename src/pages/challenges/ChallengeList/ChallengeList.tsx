@@ -3,8 +3,8 @@ import { useEffect, useState, useRef } from 'react';
 import ChallengeCard from './ChallengeCard';
 import ChallengeListSkeleton from './ChallengeListSkeleton';
 import ModalAddChallenge from '../ModalAddChallenge';
-import { useGetFocusChallengesQuery } from '../../../services/resources/documentsFocusRecordsApi';
-import { useGetTasksChallengesQuery } from '../../../services/resources/documentsTasksApi';
+import { useGetFocusChallengesQuery } from '../../../services/resources/focusRecordsApi';
+import { useGetTasksChallengesQuery } from '../../../services/resources/tasksApi';
 import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 
 const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {

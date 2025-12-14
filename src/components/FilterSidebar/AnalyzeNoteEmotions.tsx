@@ -1,5 +1,5 @@
 import Icon from '../Icon';
-import { useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, documentsFocusRecordsApi } from '../../services/resources/documentsFocusRecordsApi';
+import { useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, focusRecordsApi } from '../../services/resources/focusRecordsApi';
 import { useEffect, useRef } from 'react';
 import ModalSentimentProgress from '../Modal/ModalSentimentProgress';
 import { ChunkStatus } from '../../slices/sentimentAnalysisSlice';
@@ -120,7 +120,7 @@ const AnalyzeNoteEmotions = () => {
 			}
 
 			// Manually invalidate tags after all chunks complete (or after last chunk if cancelled)
-			dispatch(documentsFocusRecordsApi.util.invalidateTags(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats']));
+			dispatch(focusRecordsApi.util.invalidateTags(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats']));
 		} catch (error) {
 			console.error('Error updating focus record emotions:', error);
 		}

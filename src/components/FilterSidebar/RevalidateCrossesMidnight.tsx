@@ -1,5 +1,5 @@
 import Icon from '../Icon';
-import { useRevalidateCrossesMidnightMutation } from '../../services/resources/documentsFocusRecordsApi';
+import { useRevalidateCrossesMidnightMutation } from '../../services/resources/focusRecordsApi';
 import { useState } from 'react';
 import Tooltip from '../Tooltip';
 import Spinner from '../Loaders/Spinner';

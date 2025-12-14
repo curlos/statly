@@ -1,5 +1,5 @@
 import Icon from '../Icon';
-import { useGetSyncMetadataQuery } from '../../services/resources/documentsSyncApi';
+import { useGetSyncMetadataQuery } from '../../services/resources/syncApi';
 import { intlFormatDistance } from 'date-fns';
 import SyncButton from '../SyncButton';
 import { useSyncStatusHelpers } from '../../hooks/useSyncStatusHelpers';

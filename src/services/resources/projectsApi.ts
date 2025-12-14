@@ -2,16 +2,16 @@ import { baseAPI, buildQueryString } from '../api';
 import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
 
 /**
- * @description API for fetching documents/projects data from the backend
+ * @description API for fetching projects data from the backend
  */
-export const documentsProjectsApi = baseAPI.injectEndpoints({
+export const projectsApi = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getProjects: builder.query({
             query: (queryParams?: { fullData?: boolean }) => {
                 const queryString = buildQueryString(queryParams || {});
                 return queryString
-                    ? `/documents/projects?${queryString}`
-                    : '/documents/projects';
+                    ? `/projects?${queryString}`
+                    : '/projects';
             },
             transformResponse: (response) => {
                 const projects = response
@@ -36,8 +36,8 @@ export const documentsProjectsApi = baseAPI.injectEndpoints({
             query: (queryParams?: { fullData?: boolean }) => {
                 const queryString = buildQueryString(queryParams || {});
                 return queryString
-                    ? `/documents/projects/project-groups?${queryString}`
-                    : '/documents/projects/project-groups';
+                    ? `/projects/project-groups?${queryString}`
+                    : '/projects/project-groups';
             },
             transformResponse: (response) => {
                 const projectGroups = response
@@ -50,4 +50,4 @@ export const documentsProjectsApi = baseAPI.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useGetProjectsQuery, useGetProjectGroupsQuery } = documentsProjectsApi;
+export const { useGetProjectsQuery, useGetProjectGroupsQuery } = projectsApi;

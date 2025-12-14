@@ -3,7 +3,7 @@ import DateRangePicker from './DateRangePicker';
 import CalendarHeatmap from './CalendarHeatmap';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getFormattedLongDay } from '../../../../utils/date.utils';
-import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 
 const YearGridsCard = () => {

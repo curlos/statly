@@ -1,6 +1,6 @@
 import TodaysActionReport from './TodaysActionReport';
 import OverviewCard from './OverviewCard';
-import { useGetOverviewStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useGetOverviewStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';
 import Tooltip from '../../../../components/Tooltip';

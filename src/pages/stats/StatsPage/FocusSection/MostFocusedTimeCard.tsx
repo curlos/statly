@@ -3,7 +3,7 @@ import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Ba
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { convertTo12HourFormat, getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
-import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';

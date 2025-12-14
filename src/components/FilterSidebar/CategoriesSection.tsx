@@ -4,7 +4,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
-import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../services/resources/projectsApi';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 
 /**

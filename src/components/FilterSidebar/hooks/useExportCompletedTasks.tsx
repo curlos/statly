@@ -6,7 +6,7 @@ import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 import { baseAPI } from '../../../services/api';
 import { useDispatch } from 'react-redux';
 import { getAppliedFiltersMarkdown } from './getAppliedFiltersMarkdown';
-import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 
 const useExportCompletedTasks = () => {
 	const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import Accordion from '../../../components/Accordion/Accordion';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
-import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import CompletedTask from './CompletedTask';
 
 const CompletedTasksWithBreadcrumbs = ({

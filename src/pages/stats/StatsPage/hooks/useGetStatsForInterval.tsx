@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useGetFocusStatsQuery, useGetTasksStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useGetFocusStatsQuery, useGetTasksStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { useState, useEffect } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
-import { useSyncTasksFromArchivedProjectsMutation } from '../../../services/resources/documentsSyncApi';
-import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
+import { useSyncTasksFromArchivedProjectsMutation } from '../../../services/resources/syncApi';
+import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import Accordion from '../../Accordion/Accordion';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
@@ -76,7 +76,7 @@ const UpdateArchivedProjects = () => {
 const ArchivedProjectsCheckboxList = ({ checkedArchivedProjects, setCheckedArchivedProjects }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
-	// RTK Query - Documents - Projects
+	// RTK Query - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
 	const { projectsTickTick } = fetchedProjects || {};
 

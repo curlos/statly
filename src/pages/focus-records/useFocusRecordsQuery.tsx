@@ -1,4 +1,4 @@
-import { useGetFocusRecordsQuery } from '../../services/resources/documentsFocusRecordsApi';
+import { useGetFocusRecordsQuery } from '../../services/resources/focusRecordsApi';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 

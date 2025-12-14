@@ -7,7 +7,7 @@ import { getAllDaysInWeekFromDate, getDateRangeFromSelectedDates } from '../../.
 import DateRangePicker from './DateRangePicker';
 import TimelineChart from './TimelineChart';
 import Spinner from '../../../../components/Loaders/Spinner';
-import { useGetFocusStatsQuery } from '../../../../services/resources/documentsStatsApi';
+import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 
 const TimelineCard = () => {

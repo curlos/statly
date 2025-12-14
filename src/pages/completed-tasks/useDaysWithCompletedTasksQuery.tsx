@@ -1,5 +1,5 @@
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
-import { useGetDaysWithCompletedTasksQuery } from '../../services/resources/documentsTasksApi';
+import { useGetDaysWithCompletedTasksQuery } from '../../services/resources/tasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 
 export const useDaysWithCompletedTasksQuery = ({ skip = false }: { skip?: boolean } = {}) => {

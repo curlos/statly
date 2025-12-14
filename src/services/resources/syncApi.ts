@@ -2,12 +2,12 @@ import { baseAPI } from '../api';
 import { invalidateOnSuccess } from '../utils/rtkHelpers';
 
 /**
- * @description API for fetching documents/tasks data from the backend
+ * @description API for fetching tasks data from the backend
  */
-export const documentsSyncApi = baseAPI.injectEndpoints({
+export const syncApi = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getSyncMetadata: builder.query({
-            query: () => '/documents/sync/metadata',
+            query: () => '/sync/metadata',
             transformResponse: (response) => {
                 return response;
             },
@@ -18,7 +18,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
                 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
                 return {
-                    url: '/documents/sync/ticktick/all',
+                    url: '/sync/ticktick/all',
                     method: 'POST',
                     body: { timezone },
                 };
@@ -36,7 +36,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
         }),
         syncTasksFromArchivedProjects: builder.mutation({
             query: (payload) => ({
-                url: `/documents/sync/ticktick/tasks-from-archived-projects`,
+                url: `/sync/ticktick/tasks-from-archived-projects`,
                 method: 'POST',
                 body: payload,
             }),
@@ -49,21 +49,21 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
         }),
         syncTickTickProjects: builder.mutation({
             query: () => ({
-                url: '/documents/sync/ticktick/projects',
+                url: '/sync/ticktick/projects',
                 method: 'POST',
             }),
             invalidatesTags: invalidateOnSuccess(['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
         }),
         syncTickTickProjectGroups: builder.mutation({
             query: () => ({
-                url: '/documents/sync/ticktick/project-groups',
+                url: '/sync/ticktick/project-groups',
                 method: 'POST',
             }),
             invalidatesTags: invalidateOnSuccess(['ProjectGroup', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
         }),
         syncTickTickTasks: builder.mutation({
             query: () => ({
-                url: '/documents/sync/ticktick/tasks',
+                url: '/sync/ticktick/tasks',
                 method: 'POST',
             }),
             invalidatesTags: invalidateOnSuccess(['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
@@ -72,7 +72,7 @@ export const documentsSyncApi = baseAPI.injectEndpoints({
             query: () => {
                 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 return {
-                    url: '/documents/sync/ticktick/focus-records',
+                    url: '/sync/ticktick/focus-records',
                     method: 'POST',
                     body: { timezone },
                 };
@@ -91,4 +91,4 @@ export const {
     useSyncTickTickProjectGroupsMutation,
     useSyncTickTickTasksMutation,
     useSyncTickTickFocusRecordsMutation
-} = documentsSyncApi;
+} = syncApi;

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { useRef, useState } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
-import { useImportBackupDataMutation } from '../../../services/resources/documentsImportApi';
 import { baseAPI } from '../../../services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../../Icon';
@@ -17,6 +16,7 @@ import {
 	resetImport,
 	BatchStatus,
 } from '../../../slices/importProgressSlice';
+import { useImportBackupDataMutation } from '../../../services/resources/importApi';
 
 const ImportData = () => {
 	const { chosenColorObj } = useThemeContext();

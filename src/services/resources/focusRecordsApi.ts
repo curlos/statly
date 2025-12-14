@@ -2,16 +2,16 @@ import { baseAPI, buildQueryString } from '../api';
 import { invalidateOnSuccess } from '../utils/rtkHelpers';
 
 /**
- * @description API for fetching documents/focus-records data from the backend
+ * @description API for fetching focus records data from the backend
  */
-export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
+export const focusRecordsApi = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getFocusRecords: builder.query({
             query: (queryParams) => {
                 const queryString = buildQueryString(queryParams);
                 return queryString
-                    ? `/documents/focus-records?${queryString}`
-                    : '/documents/focus-records';
+                    ? `/focus-records?${queryString}`
+                    : '/focus-records';
             },
             transformResponse: (response) => {
                 return response;
@@ -22,8 +22,8 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
             query: (queryParams) => {
                 const queryString = buildQueryString(queryParams);
                 return queryString
-                    ? `/documents/focus-records/export?${queryString}`
-                    : '/documents/focus-records/export';
+                    ? `/focus-records/export?${queryString}`
+                    : '/focus-records/export';
             },
             transformResponse: (response) => {
                 return response;
@@ -34,8 +34,8 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
             query: (queryParams) => {
                 const queryString = buildQueryString(queryParams);
                 return queryString
-                    ? `/documents/focus-records/medals?${queryString}`
-                    : '/documents/focus-records/medals';
+                    ? `/focus-records/medals?${queryString}`
+                    : '/focus-records/medals';
             },
             transformResponse: (response) => {
                 return response;
@@ -46,8 +46,8 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
             query: (queryParams) => {
                 const queryString = buildQueryString(queryParams);
                 return queryString
-                    ? `/documents/focus-records/challenges?${queryString}`
-                    : '/documents/focus-records/challenges';
+                    ? `/focus-records/challenges?${queryString}`
+                    : '/focus-records/challenges';
             },
             transformResponse: (response) => {
                 return response;
@@ -58,8 +58,8 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
             query: (queryParams?: { page?: number; limit?: number }) => {
                 const queryString = buildQueryString(queryParams || {});
                 return queryString
-                    ? `/documents/focus-records/all?${queryString}`
-                    : '/documents/focus-records/all';
+                    ? `/focus-records/all?${queryString}`
+                    : '/focus-records/all';
             },
             transformResponse: (response) => {
                 return response;
@@ -67,14 +67,14 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
             providesTags: ['AllFocusRecords'],
         }),
         getFocusRecordsNeedingSentiment: builder.query({
-            query: () => '/documents/focus-records/analyze-sentiment/ids',
+            query: () => '/focus-records/analyze-sentiment/ids',
             transformResponse: (response: { recordIds: string[] }) => {
                 return response;
             },
         }),
         analyzeNoteEmotions: builder.mutation({
             query: (recordIds: string[]) => ({
-                url: '/documents/focus-records/analyze-note-emotions',
+                url: '/focus-records/analyze-note-emotions',
                 method: 'POST',
                 body: { recordIds },
             }),
@@ -82,7 +82,7 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
         }),
         revalidateCrossesMidnight: builder.mutation({
             query: ({ timezone }: { timezone: string }) => ({
-                url: '/documents/focus-records/revalidate-crosses-midnight',
+                url: '/focus-records/revalidate-crosses-midnight',
                 method: 'POST',
                 body: { timezone },
             }),
@@ -92,4 +92,4 @@ export const documentsFocusRecordsApi = baseAPI.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useGetFocusRecordsQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery, useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, useRevalidateCrossesMidnightMutation } = documentsFocusRecordsApi;
+export const { useGetFocusRecordsQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery, useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, useRevalidateCrossesMidnightMutation } = focusRecordsApi;

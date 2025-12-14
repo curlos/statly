@@ -1,5 +1,5 @@
 import { useSearchParamsContext } from "../../../contexts/useSearchParamsContext";
-import { useGetProjectsQuery } from "../../../services/resources/documentsProjectsApi";
+import { useGetProjectsQuery } from "../../../services/resources/projectsApi";
 import { useFocusRecordsQuery } from "../useFocusRecordsQuery";
 import { useUserSettingsContext } from "../useUserSettingsContext";
 
@@ -57,7 +57,7 @@ const TaskProjectName = ({ taskId, task }) => {
     }
 
     // Check if this project is a Session category
-    // TODO: If there are no projects, this will be mapped incorrectly. Frankly, I probably want to get rid of this separation between categories and projects anyways. So, merge these two together. Probably do the same thing for Todoist. This isn't usually an issue but if I sync only some documents (like only Focus Records and no Tasks or Projects, it becomes an issue due to the incomplete data).
+    // TODO: If there are no projects, this will be mapped incorrectly. Frankly, I probably want to get rid of this separation between categories and projects anyways. So, merge these two together. Probably do the same thing for Todoist. This isn't usually an issue but if I sync only some data (like only Focus Records and no Tasks or Projects, it becomes an issue due to the incomplete data).
     const isSessionProject = (projectsSessionById && taskProject?.id && projectsSessionById[taskProject.id]);
     const projectQueryParam = isSessionProject ? 'categories' : 'projects';
 

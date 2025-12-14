@@ -24,7 +24,7 @@ interface ImportResponse {
 	errors?: string[];
 }
 
-export const documentsImportApi = baseAPI.injectEndpoints({
+export const importApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
 		importBackupData: builder.mutation<ImportResponse, File[]>({
 			query: (files: File[]) => {
@@ -34,7 +34,7 @@ export const documentsImportApi = baseAPI.injectEndpoints({
 				});
 
 				return {
-					url: '/documents/import/backup',
+					url: '/import/backup',
 					method: 'POST',
 					body: formData,
 				};
@@ -46,4 +46,4 @@ export const documentsImportApi = baseAPI.injectEndpoints({
 	overrideExisting: false,
 });
 
-export const { useImportBackupDataMutation } = documentsImportApi;
+export const { useImportBackupDataMutation } = importApi;

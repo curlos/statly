@@ -3,9 +3,9 @@ import FileSaver from 'file-saver';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
-import { documentsTasksApi } from '../../../services/resources/documentsTasksApi';
-import { documentsFocusRecordsApi } from '../../../services/resources/documentsFocusRecordsApi';
-import { documentsProjectsApi } from '../../../services/resources/documentsProjectsApi';
+import { tasksApi } from '../../../services/resources/tasksApi';
+import { focusRecordsApi } from '../../../services/resources/focusRecordsApi';
+import { projectsApi } from '../../../services/resources/projectsApi';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
 import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
@@ -13,16 +13,16 @@ import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
 const BackupData = () => {
 	// RTK Query - Lazy queries that only trigger on button click
 	const [triggerGetAllTasks, { isLoading: isLoadingGetAllTasks }] =
-		documentsTasksApi.useLazyGetAllTasksQuery();
+		tasksApi.useLazyGetAllTasksQuery();
 
 	const [triggerGetAllFocusRecords, { isLoading: isLoadingGetAllFocusRecords }] =
-		documentsFocusRecordsApi.useLazyGetAllFocusRecordsQuery();
+		focusRecordsApi.useLazyGetAllFocusRecordsQuery();
 
 	const [triggerGetProjects, { isLoading: isLoadingGetDocumentsProjects }] =
-		documentsProjectsApi.useLazyGetProjectsQuery();
+		projectsApi.useLazyGetProjectsQuery();
 
 	const [triggerGetProjectGroups, { isLoading: isLoadingGetDocumentsProjectGroups }] =
-		documentsProjectsApi.useLazyGetProjectGroupsQuery();
+		projectsApi.useLazyGetProjectGroupsQuery();
 
 	const { chosenColorObj } = useThemeContext();
 	const [status, setStatus] = useState('none');
@@ -90,7 +90,7 @@ const BackupData = () => {
 			{
 				folderName: 'tasks',
 				fileName: 'tasks',
-				apiEndpointName: '/documents/tasks/all',
+				apiEndpointName: '/tasks/all',
 				response: allTasks,
 			},
 
@@ -98,7 +98,7 @@ const BackupData = () => {
 			{
 				folderName: 'focus-records',
 				fileName: 'focus-records',
-				apiEndpointName: '/documents/focus-records/all',
+				apiEndpointName: '/focus-records/all',
 				response: allFocusRecords,
 			},
 
@@ -106,7 +106,7 @@ const BackupData = () => {
 			{
 				folderName: 'projects',
 				fileName: 'projects',
-				apiEndpointName: '/documents/projects',
+				apiEndpointName: '/projects',
 				response: projects,
 			},
 
@@ -114,7 +114,7 @@ const BackupData = () => {
 			{
 				folderName: 'project-groups',
 				fileName: 'project-groups',
-				apiEndpointName: '/documents/projects/project-groups',
+				apiEndpointName: '/projects/project-groups',
 				response: projectGroups,
 			},
 		];

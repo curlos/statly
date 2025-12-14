@@ -3,7 +3,7 @@ import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
 import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
 import { useDaysWithCompletedTasksQuery } from '../completed-tasks/useDaysWithCompletedTasksQuery';
-import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../services/resources/projectsApi';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useFocusRecordsQuery } from './useFocusRecordsQuery';
 import AppliedFilterItem from '../../components/FilterSidebar/AppliedFilterItem';

@@ -8,7 +8,7 @@ import { saveAs } from 'file-saver';
 import { baseAPI } from '../../../services/api';
 import { useDispatch } from 'react-redux';
 import { getAppliedFiltersMarkdown } from './getAppliedFiltersMarkdown';
-import { useGetProjectsQuery } from '../../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { EMOTIONS } from '../../../utils/constants/constants.utils';
 
 const useExportFocusRecords = () => {

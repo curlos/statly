@@ -6,7 +6,7 @@ import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
-import { useGetProjectsQuery } from '../../services/resources/documentsProjectsApi';
+import { useGetProjectsQuery } from '../../services/resources/projectsApi';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.

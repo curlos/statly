@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '../../../slices/userSlice';
 import { handleLogout } from '../../../utils/logout.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
-import { useGetOverviewStatsQuery } from '../../../services/resources/documentsStatsApi';
+import { useGetOverviewStatsQuery } from '../../../services/resources/statsApi';
 import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
 
 interface ProfileSectionProps {

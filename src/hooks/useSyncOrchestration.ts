@@ -5,7 +5,7 @@ import {
 	useSyncTickTickProjectGroupsMutation,
 	useSyncTickTickTasksMutation,
 	useSyncTickTickFocusRecordsMutation,
-} from '../services/resources/documentsSyncApi';
+} from '../services/resources/syncApi';
 import { setSyncStatus, resetSyncStatus, selectIsSyncing } from '../slices/syncSlice';
 import { syncWithRetry } from '../utils/syncRetry';
 
