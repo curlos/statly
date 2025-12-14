@@ -3,7 +3,7 @@ import { selectUser } from '../../../slices/userSlice';
 import { handleLogout } from '../../../utils/logout.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useGetOverviewStatsQuery } from '../../../services/resources/statsApi';
-import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../utils/helpers.utils';
 
 interface ProfileSectionProps {
 	onClose: () => void;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { debounce, secondsToHoursAndMinutes } from '../../utils/focus-apps/helpers.utils';
+import { debounce, secondsToHoursAndMinutes } from '../../utils/helpers.utils';
 import CustomInput from '../CustomInput';
 import Spinner from '../Loaders/Spinner';
 

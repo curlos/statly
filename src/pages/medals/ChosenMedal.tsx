@@ -1,7 +1,6 @@
 import { usePageContext } from 'vike-react/usePageContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
-import { parseDateRange } from '../../utils/focus.utils';
-import { getFormattedShortMonthDay } from '../../utils/date.utils';
+import { getFormattedShortMonthDay, parseDateRange } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 
 const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {

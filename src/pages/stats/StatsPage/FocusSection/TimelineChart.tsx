@@ -5,7 +5,7 @@ import {
 	getFormattedLongDay,
 	getDailyHourBlocks,
 } from '../../../../utils/date.utils';
-import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import ReactApexChart from 'react-apexcharts';
 import apexchart from 'apexcharts';
 

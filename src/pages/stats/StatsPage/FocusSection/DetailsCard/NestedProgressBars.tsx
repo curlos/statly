@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useState } from "react";
 import Accordion from "../../../../../components/Accordion/Accordion";
-import { getFormattedDuration } from "../../../../../utils/focus-apps/helpers.utils";
+import { getFormattedDuration } from "../../../../../utils/helpers.utils";
 import ProgressBar from "../ProgressBar";
 import { shouldBreakAllText } from "../../../../../utils/text.utils";
 import Spinner from "../../../../../components/Loaders/Spinner";

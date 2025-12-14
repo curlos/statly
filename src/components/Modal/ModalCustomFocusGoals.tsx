@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from './Modal';
 import Icon from '../Icon';
 import { getFormattedLongDay } from '../../utils/date.utils';
-import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../utils/helpers.utils';
 
 interface ModalCustomFocusGoalsProps {
 	isOpen: boolean;

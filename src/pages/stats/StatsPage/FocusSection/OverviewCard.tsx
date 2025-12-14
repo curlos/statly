@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import Icon from '../../../../components/Icon';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getFormattedLongDay } from '../../../../utils/date.utils';
-import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';

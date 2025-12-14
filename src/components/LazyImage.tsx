@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import Spinner from './Loaders/Spinner';
-import { isPokemonTcgCard } from '../utils/focus-apps/helpers.utils';
+import { isPokemonTcgCard } from '../utils/helpers.utils';
 import { useThemeContext } from '../contexts/useThemeContext';
 
 interface LazyImageProps {

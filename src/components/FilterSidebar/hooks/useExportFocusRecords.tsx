@@ -1,8 +1,8 @@
 import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 import { useUserSettingsContext } from '../../../pages/focus-records/useUserSettingsContext';
 import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
-import { serializeFocusRecordToMarkdown } from '../../../utils/focus-apps/focusRecords.utils';
-import { getFormattedDuration } from '../../../utils/focus-apps/helpers.utils';
+import { serializeFocusRecordToMarkdown } from '../../../utils/focusRecords.utils';
+import { getFormattedDuration } from '../../../utils/helpers.utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { baseAPI } from '../../../services/api';

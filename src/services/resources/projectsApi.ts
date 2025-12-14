@@ -1,5 +1,5 @@
 import { baseAPI, buildQueryString } from '../api';
-import { arrayToObjectByKey } from '../../utils/focus-apps/helpers.utils';
+import { arrayToObjectByKey } from '../../utils/helpers.utils';
 
 /**
  * @description API for fetching projects data from the backend

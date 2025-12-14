@@ -1,7 +1,7 @@
 import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
-import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
+import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 import { EMOTIONS } from '../../utils/constants/constants.utils';
 import EmotionTag from '../EmotionTag';
 import { useThemeContext } from '../../contexts/useThemeContext';

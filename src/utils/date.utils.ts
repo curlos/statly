@@ -1,5 +1,3 @@
-import { getFocusRecordProperty } from "./focus-apps/multiFocusApps.utils";
-
 export const setTimeOnDateString = (dateString, timeString) => {
 	// Parse the existing date string to get a Date object
 	const date = new Date(dateString);
@@ -68,113 +66,6 @@ export const formatDateTime = (dateTimeStr) => {
 	const day = date.toLocaleDateString('en-US', optionsDate);
 
 	return { time, day };
-};
-
-export const groupTasksByDate = (tasks) => {
-	const grouped = {};
-
-	tasks.forEach((task) => {
-		const associatedTaskTime = getAssociatedTimeForTask(task);
-
-		if (!associatedTaskTime) {
-			return;
-		}
-
-		const taskTime = new Date(associatedTaskTime.value);
-		const day = taskTime.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-		// Initialize the array if it does not already exist
-		if (!grouped[day]) {
-			grouped[day] = [];
-		}
-
-		// Push the current record into the correct day array
-		grouped[day].push(task);
-	});
-
-	// Create an array from the grouped object and sort it by date
-	const sortedKeys = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
-	const sortedGrouped = {};
-	sortedKeys.forEach((key) => {
-		sortedGrouped[key] = grouped[key];
-	});
-
-	return sortedGrouped;
-};
-
-export const getAssociatedTimeForTask = (task) => {
-	if (task['completedTime']) {
-		return {
-			key: 'completedTime',
-			value: task['completedTime'],
-		};
-	} else if (task['willNotDo']) {
-		return {
-			key: 'willNotDo',
-			value: task['willNotDo'],
-		};
-	} else if (task['isDeleted']) {
-		return {
-			key: 'isDeleted',
-			value: task['isDeleted'],
-		};
-	} else if (task['dueDate']) {
-		return {
-			key: 'dueDate',
-			value: task['dueDate'],
-		};
-	}
-
-	return null;
-};
-
-export const getLast7Days = () => {
-	let result = [];
-
-	for (let i = 0; i < 7; i++) {
-		const date = new Date(); // Get today's date
-		date.setDate(date.getDate() - i); // Subtract `i` days from today
-		result.push(date); // Format the date as "YYYY-MM-DD" and add to the result array
-	}
-
-	return result.reverse(); // Reverse the array to start from 7 days ago to today
-};
-
-export const getLast7Weeks = () => {
-	let result = [];
-
-	for (let i = 0; i < 7; i++) {
-		let week = [];
-		for (let j = 0; j < 7; j++) {
-			// Get each day of the week
-			const date = new Date();
-			date.setDate(date.getDate() - (i * 7 + j)); // Subtract `i * 7 + j` days to get each day of the week
-			week.push(new Date(date)); // Add the date to the current week
-		}
-		result.push(week); // Add the week to the result array
-	}
-
-	return result.reverse(); // Reverse to start from 7 weeks ago to today
-};
-
-export const getLast7Months = () => {
-	let result = [];
-
-	for (let i = 0; i < 7; i++) {
-		let month = [];
-		const today = new Date();
-		const monthDate = new Date(today.getFullYear(), today.getMonth() - i, 1); // Start at the 1st of the month
-
-		// Loop through all days in the current month
-		while (monthDate.getMonth() === (today.getMonth() - i + 12) % 12) {
-			month.push(new Date(monthDate)); // Add the day to the current month array
-			monthDate.setDate(monthDate.getDate() + 1); // Go to the next day
-		}
-
-		result.push(month); // Add the month to the result array
-	}
-
-	return result.reverse(); // Reverse to start from 7 months ago to this month
 };
 
 export function areDatesEqual(date1: Date | null, date2: Date | null) {
@@ -312,114 +203,6 @@ export const getAllDatesInYear = (year) => {
 	return dates;
 };
 
-export const sortArrayByProperty = (array, property, type = 'descending') => {
-	// Create a deep copy of the array to avoid modifying the original
-	const arrayCopy = array.map((item) => ({ ...item }));
-
-	if (type === 'descending') {
-		return arrayCopy.sort((a, b) => new Date(b[property]) - new Date(a[property]));
-	}
-
-	return arrayCopy.sort((a, b) => new Date(a[property]) - new Date(b[property]));
-};
-
-export const sortObjectByDateKeys = (data) => {
-	// Create an array from the object keys and sort it based on the date
-	const sortedKeys = Object.keys(data).sort((a, b) => new Date(a) - new Date(b));
-
-	// Create a new object with keys ordered by date
-	const sortedObject = {};
-	sortedKeys.forEach((key) => {
-		sortedObject[key] = data[key];
-	});
-
-	return sortedObject;
-};
-
-export const isTimeBetween = (targetDate, startDate, endDate, offsetMinutes = 10) => {
-	// Convert offset minutes to milliseconds
-	const offsetMilliseconds = offsetMinutes * 60 * 1000;
-
-	// Get the time in milliseconds since the epoch for each date
-	const targetTime = targetDate.getTime();
-	const startTime = startDate.getTime() - offsetMilliseconds; // Apply offset to start time
-	const endTime = endDate.getTime() + offsetMilliseconds; // Apply offset to end time
-
-	// Check if the target time in milliseconds is between the adjusted start and end times
-	return targetTime >= startTime && targetTime <= endTime;
-};
-
-export const isDateBetween = (targetDate, startDate, endDate) => {
-	// Remove the time part of each date
-	const target = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
-	const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-	const end = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-
-	// Check if the target date is between the start and end dates (inclusive)
-	return target >= start && target <= end;
-};
-
-export const getTimeSince = (date) => {
-	const now = new Date(); // Current date and time
-	const past = new Date(date); // Convert the input date to a Date object
-	if (isNaN(past.getTime())) {
-		return 'Invalid date'; // Check if the input date is valid
-	}
-
-	const seconds = Math.floor((now - past) / 1000);
-	const minutes = Math.floor(seconds / 60);
-	const hours = Math.floor(minutes / 60);
-	const days = Math.floor(hours / 24);
-	const months = Math.floor(days / 30); // Approximation
-	const years = Math.floor(days / 365);
-
-	return {
-		seconds: seconds,
-		minutes: minutes,
-		hours: hours,
-		days: days,
-		months: months,
-		years: years,
-	};
-};
-
-export const getTimeInBlocks = (startTime, endTime) => {
-	// Parse timestamps
-	const start = new Date(startTime);
-	const end = new Date(endTime);
-
-	// Normalize the start time to the start of the hour
-	const startHour = new Date(start);
-	startHour.setMinutes(0, 0, 0);
-
-	const results = [];
-
-	// Loop over each hour block from startHour until end
-	while (startHour <= end) {
-		const nextHour = new Date(startHour);
-		nextHour.setHours(nextHour.getHours() + 1);
-
-		// Calculate the overlap of the current hour block with the [start, end] interval
-		const overlapStart = startHour < start ? start : startHour;
-		const overlapEnd = nextHour > end ? end : nextHour;
-
-		// Calculate seconds in the current block, if any
-		if (overlapStart < overlapEnd) {
-			const duration = (overlapEnd - overlapStart) / 1000; // convert milliseconds to seconds
-			results.push({
-				from: `${startHour.getHours().toString().padStart(2, '0')}:00`,
-				to: `${nextHour.getHours().toString().padStart(2, '0')}:00`,
-				seconds: duration,
-			});
-		}
-
-		// Move to the next hour block
-		startHour.setHours(startHour.getHours() + 1);
-	}
-
-	return results;
-};
-
 export const getDailyHourBlocks = () => {
 	const hourBlocks = {};
 
@@ -440,38 +223,6 @@ export const getDailyHourBlocks = () => {
 	return hourBlocks;
 };
 
-export const fillInHourBlocksWithSeconds = (focusRecords, newDailyHourBlocks) => {
-	for (let focusRecord of focusRecords) {
-		const { tasks } = focusRecord;
-		
-		// TickTick - Only use the "tasks" Focus Records
-		if (tasks?.length > 0) {
-			for (let task of tasks) {
-				const { startTime, endTime } = task;
-				const timeInBlocks = getTimeInBlocks(startTime, endTime);
-
-				for (let timeBlock of timeInBlocks) {
-					const { from, seconds } = timeBlock;
-
-					newDailyHourBlocks[from].seconds += seconds;
-				}
-			}
-		} else {
-			// Handles: TickTick Focus Records without a task, Session App, Forest, Be Focused, Tide.
-			const startTime = getFocusRecordProperty(focusRecord, 'startTime')
-			const endTime = getFocusRecordProperty(focusRecord, 'endTime')
-
-			const timeInBlocks = getTimeInBlocks(startTime, endTime);
-
-			for (let timeBlock of timeInBlocks) {
-				const { from, seconds } = timeBlock;
-
-				newDailyHourBlocks[from].seconds += seconds;
-			}
-		}
-	}
-};
-
 export const convertTo12HourFormat = (hour24) => {
 	// Convert the hour string to an integer
 	const hour = parseInt(hour24.substring(0, 2), 10);
@@ -484,67 +235,6 @@ export const convertTo12HourFormat = (hour24) => {
 
 	// Return formatted string
 	return `${hour12}:00 ${suffix}`;
-};
-
-function getStartOfWeek(d) {
-	const date = new Date(d);
-	const day = date.getDay();
-	const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
-	return new Date(date.setDate(diff));
-}
-
-export const groupDatesByInterval = (dates, interval) => {
-	const grouped = {};
-
-	dates.forEach((dateObj) => {
-		let key;
-		const d = new Date(dateObj);
-
-		switch (interval) {
-			case 'Days':
-				key = getFormattedShortMonthDay(d);
-				break;
-			case 'Weeks':
-				key = getFormattedShortMonthDay(getStartOfWeek(d));
-				break;
-			case 'Months':
-				key = d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-				break;
-			default:
-				throw new Error('Invalid grouping option. Use "days", "weeks", or "months".');
-		}
-
-		if (!grouped[key]) {
-			grouped[key] = [];
-		}
-		grouped[key].push(dateObj);
-	});
-
-	return grouped;
-};
-
-export const getDateMapSinceDay = (startDateStr) => {
-	const startDate = new Date(startDateStr);
-	const currentDate = new Date();
-	const oneDay = 1000 * 60 * 60 * 24; // milliseconds in a day
-	const dateMap = {};
-
-	for (let date = startDate; date <= currentDate; date = new Date(date.getTime() + oneDay)) {
-		const dateString = date.toLocaleDateString('en-US', {
-			month: 'long',
-			day: 'numeric',
-			year: 'numeric',
-		});
-		dateMap[dateString] = 0;
-	}
-
-	return dateMap;
-};
-
-export const getDayString = (date) => {
-	const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-	const dayOfWeek = daysOfWeek[date.getDay()];
-	return dayOfWeek;
 };
 
 export const getAllMonths = (date) => {
@@ -622,3 +312,45 @@ export const formatDateWithoutTimezone = (dateString: string): string => {
 		year: 'numeric',
 	});
 };
+
+export const parseDateRange = (rangeType, rangeValue) => {
+  const parseMonthYear = (str) => {
+    const [monthName, year] = str.split(" ");
+    const month = new Date(`${monthName} 1, ${year}`).getMonth();
+    return { month, year: parseInt(year) };
+  };
+
+  const parseWeek = (str) => {
+    const [startStr, endStr] = str.split(" - ");
+    return [new Date(startStr), new Date(endStr)];
+  };
+
+  switch (rangeType.toLowerCase()) {
+    case "day": {
+      const date = new Date(rangeValue);
+      return { startDate: date, endDate: date };
+    }
+
+    case "week": {
+      const [start, end] = parseWeek(rangeValue);
+      return { startDate: start, endDate: end };
+    }
+
+    case "month": {
+      const { month, year } = parseMonthYear(rangeValue);
+      const startDate = new Date(year, month, 1);
+      const endDate = new Date(year, month + 1, 0); // last day of the month
+      return { startDate, endDate };
+    }
+
+    case "year": {
+      const year = parseInt(rangeValue);
+      const startDate = new Date(year, 0, 1);
+      const endDate = new Date(year, 11, 31);
+      return { startDate, endDate };
+    }
+
+    default:
+      throw new Error("Unsupported range type: " + rangeType);
+  }
+}

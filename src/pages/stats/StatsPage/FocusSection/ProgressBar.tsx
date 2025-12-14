@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { navigate } from 'vike/client/router';
-import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { usePageContext } from 'vike-react/usePageContext';
 import { shouldBreakAllText } from '../../../../utils/text.utils';
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
-import { toTitleCase } from '../../utils/focus-apps/helpers.utils';
+import { toTitleCase } from '../../utils/helpers.utils';
 import CustomRadioButton from '../CustomRadioButton';
 import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';

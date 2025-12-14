@@ -3,7 +3,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import Accordion from '../Accordion/Accordion';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
-import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
+import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 import { FOCUS_APPS } from '../../utils/constants/constants.utils';
 
 const ShowRecordsFromFocusAppSection = () => {

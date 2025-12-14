@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import Dropdown from '../../../../components/Dropdown/Dropdown';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDatesInYear, getFormattedLongDay } from '../../../../utils/date.utils';
-import { secondsToHoursAndMinutes, getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../../utils/helpers.utils';
 
 interface CalendarHeatmapProps {
 	selectedDates: Date[];

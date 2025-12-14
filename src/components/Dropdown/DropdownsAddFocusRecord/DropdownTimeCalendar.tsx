@@ -7,7 +7,7 @@ import { getAllDaysInWeekFromDate, getTimeString, setTimeOnDateString } from '..
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
 import Icon from '../../Icon';
-import { debounce } from '../../../utils/focus-apps/helpers.utils';
+import { debounce } from '../../../utils/helpers.utils';
 
 interface DropdownTimeCalendarProps extends DropdownProps {
 	date: Date | null;

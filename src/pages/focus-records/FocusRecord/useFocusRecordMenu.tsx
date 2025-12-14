@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useDeleteFocusRecordMutation } from '../../../services/resources/deleteApi';
-import { serializeFocusRecordToMarkdown } from '../../../utils/focus-apps/focusRecords.utils';
+import { serializeFocusRecordToMarkdown } from '../../../utils/focusRecords.utils';
 import { useFocusRecordsQuery } from '../useFocusRecordsQuery';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 

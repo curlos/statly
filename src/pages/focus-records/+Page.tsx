@@ -5,7 +5,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import FilterBar from './FilterBar';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useUserSettingsContext } from './useUserSettingsContext';
-import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../utils/helpers.utils';
 import { useFocusRecordsQuery } from './useFocusRecordsQuery';
 
 const Page = () => {

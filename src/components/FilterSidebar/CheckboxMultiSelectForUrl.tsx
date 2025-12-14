@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import Icon from '../Icon';
-import { getProjectProperty } from '../../utils/focus-apps/multiFocusApps.utils';
 
 interface CheckboxMultiSelectForUrlProps {
 	project?: object;
@@ -32,9 +31,9 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 		urlQueryParamName === 'categories' ||
 		urlQueryParamName === 'projects-todoist';
 
-	const id = isProjectOrCategory ? getProjectProperty(project, 'id') : checkboxId;
-	let name = isProjectOrCategory ? getProjectProperty(project, 'name') : checkboxName;
-	const color = isProjectOrCategory ? getProjectProperty(project, 'color') : null;
+	const id = isProjectOrCategory ? project?.id : checkboxId;
+	let name = isProjectOrCategory ? project?.name : checkboxName;
+	const color = isProjectOrCategory ? project?.color : null;
 
 	// TODO: Change this to also check for DB value possibly.
 	const isChecked = commaSeparatedObj[id];

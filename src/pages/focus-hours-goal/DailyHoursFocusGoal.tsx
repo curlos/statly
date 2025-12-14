@@ -1,6 +1,6 @@
 import { CircularProgressbar, CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import Icon from '../../components/Icon';
-import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../utils/helpers.utils';
 import { hexToRgba } from '../../utils/color.utils';
 import { useState } from 'react';
 import classNames from 'classnames';

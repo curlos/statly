@@ -1,4 +1,4 @@
-import { arrayToObjectByKey } from './focus-apps/helpers.utils';
+import { arrayToObjectByKey } from './helpers.utils';
 import { getTasksWithParentIdAndNoParent, getGroupedSubtasksAndParentTasks } from '../pages/completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
 
 /**

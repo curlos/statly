@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import Icon from '../../../../../components/Icon';
 import Modal from '../../../../../components/Modal/Modal';
 import { useThemeContext } from '../../../../../contexts/useThemeContext';
-import { getFormattedDuration } from '../../../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../../../utils/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../../hooks/useStatsDateRange';

@@ -9,7 +9,7 @@ import GeneralSelectButtonAndDropdown from '../stats/StatsPage/GeneralSelectButt
 import { MEDALS_GAMES, URL_TO_GAME_MEDAL_MAP } from '../medals/medalsLinks';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Fuse from 'fuse.js';
-import { debounce } from '../../utils/focus-apps/helpers.utils';
+import { debounce } from '../../utils/helpers.utils';
 import Pagination from '../../components/Pagination';
 
 const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page, imageSrc }) => {

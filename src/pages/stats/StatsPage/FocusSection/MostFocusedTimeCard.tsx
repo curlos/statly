@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Bar } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { convertTo12HourFormat, getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
-import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';

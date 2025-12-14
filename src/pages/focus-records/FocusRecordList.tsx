@@ -1,4 +1,3 @@
-import { getFocusRecordProperty } from '../../utils/focus-apps/multiFocusApps.utils';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord/FocusRecord';
 import FocusRecordSkeleton from './FocusRecordSkeleton';
@@ -73,11 +72,9 @@ const FocusRecordList = ({
 								{focusRecords.map((focusRecord, index) => {
 									const isLastItem = index === focusRecords.length - 1;
 
-									const focusRecordKey = getFocusRecordProperty(focusRecord, 'key');
-
 									return (
 										<FocusRecord
-											key={focusRecordKey}
+											key={focusRecord.id}
 											focusRecord={focusRecord}
 											isLastItemForTheDay={isLastItem}
 										/>

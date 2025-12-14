@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
-import { getFormattedDuration } from '../../../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';

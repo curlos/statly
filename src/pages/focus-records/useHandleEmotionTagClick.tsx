@@ -1,5 +1,5 @@
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
-import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
+import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 
 export const useHandleEmotionTagClick = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();

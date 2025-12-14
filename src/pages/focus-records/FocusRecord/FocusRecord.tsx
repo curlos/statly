@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { useThemeContext } from "../../../contexts/useThemeContext";
 import { useSearchParamsContext } from "../../../contexts/useSearchParamsContext";
 import { useUserSettingsContext } from "../useUserSettingsContext";
-import { getFormattedDuration, getMedalImageClasses } from "../../../utils/focus-apps/helpers.utils";
+import { getFormattedDuration, getMedalImageClasses } from "../../../utils/helpers.utils";
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from "../../medals/medalsLinks";
 import EmotionTag from "../../../components/EmotionTag";
 import { useHandleEmotionTagClick } from "../useHandleEmotionTagClick";

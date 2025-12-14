@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Modal from './Modal';
 import Icon from '../Icon';
-import { getFormattedDuration } from '../../utils/focus-apps/helpers.utils';
+import { getFormattedDuration } from '../../utils/helpers.utils';
 import { formatDateAsAPIKey, formatDateWithoutTimezone, getAllMonths } from '../../utils/date.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';

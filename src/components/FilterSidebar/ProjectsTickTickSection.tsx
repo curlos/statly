@@ -5,7 +5,7 @@ import { useGetProjectsQuery, useGetProjectGroupsQuery } from '../../services/re
 import { useEffect, useState } from 'react';
 import Accordion from '../Accordion/Accordion';
 import Spinner from '../Loaders/Spinner';
-import { getCommaSeparatedObj } from '../../utils/focus-apps/helpers.utils';
+import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import CheckboxOther from './CheckboxOther';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
