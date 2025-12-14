@@ -19,28 +19,12 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 		handleTimeSelection();
 	}, [selectedHour, selectedMinute, selectedPeriod]);
 
-	// useEffect(() => {
-	// 	const time = extractTimeDetails(selectedTime);
-	// 	setSelectedHour(time.hours);
-	// 	setSelectedMinute(time.minutes);
-	// 	setSelectedPeriod(time.period);
-	// }, [selectedTime, isVisible]);
-
 	const handleTimeSelection = () => {
 		let time = `${selectedHour}:${selectedMinute} ${selectedPeriod}`;
 
 		if (!selectedHour || !selectedMinute || !selectedPeriod) {
 			time = '';
 		}
-
-		// TODO: Fix
-		// if (time === '12:00 AM') {
-		// 	setSelectedHour('');
-		// 	setSelectedMinute('');
-		// 	setSelectedPeriod('');
-		// } else {
-		// 	setSelectedTime(time);
-		// }
 
 		setSelectedTime(time);
 	};
@@ -85,9 +69,6 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 						))}
 					</div>
 				</div>
-				{/* <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded" onClick={handleTimeSelection}>
-					Set Time
-				</button> */}
 			</div>
 		</Dropdown>
 	);

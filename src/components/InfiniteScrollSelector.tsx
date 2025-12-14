@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useThemeContext } from '../contexts/useThemeContext';
 
 const InfiniteScrollSelector = ({ items, unit, selectedValue, setSelectedValue }) => {

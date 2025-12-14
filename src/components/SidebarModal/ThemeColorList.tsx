@@ -7,7 +7,6 @@ import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
 
 const ThemeColorList = () => {
-
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};

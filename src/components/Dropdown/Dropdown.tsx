@@ -18,7 +18,6 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	toggleRef,
 	customStyling,
 	innerClickElemRefs,
-	addedAdditionalMargin,
 	parentElemRef,
 	align,
 }) => {
