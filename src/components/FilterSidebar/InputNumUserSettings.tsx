@@ -48,65 +48,59 @@ const InputNumUserSettings = ({
 		let payload = null;
 
 		if (page === 'focus-records-page') {
-			const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
+			const restOfFocusRecordsKeysAndVals = userSettings?.pages?.focusRecords;
 			const currentMaxFocusRecordsPerPage = restOfFocusRecordsKeysAndVals?.maxFocusRecordsPerPage;
 
 			if (currentMaxFocusRecordsPerPage === localValue) {
 				return;
 			}
 
-			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+			const restOfPagesKeysAndVals = userSettings?.pages;
 
 			payload = {
-				tickTickOne: {
-					pages: {
-						...restOfPagesKeysAndVals,
-						focusRecords: {
-							...restOfFocusRecordsKeysAndVals,
-							maxFocusRecordsPerPage: localValue,
-						},
+				pages: {
+					...restOfPagesKeysAndVals,
+					focusRecords: {
+						...restOfFocusRecordsKeysAndVals,
+						maxFocusRecordsPerPage: localValue,
 					},
 				},
 			};
 		} else if (page === 'completed-tasks-page') {
-			const restOfCompletedTasksPageKeysAndVals = userSettings?.tickTickOne?.pages?.completedTasks;
+			const restOfCompletedTasksPageKeysAndVals = userSettings?.pages?.completedTasks;
 			const currentMaxDaysPerPage = restOfCompletedTasksPageKeysAndVals?.maxDaysPerPage;
 
 			if (currentMaxDaysPerPage === localValue) {
 				return;
 			}
 
-			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+			const restOfPagesKeysAndVals = userSettings?.pages;
 
 			payload = {
-				tickTickOne: {
-					pages: {
-						...restOfPagesKeysAndVals,
-						completedTasks: {
-							...restOfCompletedTasksPageKeysAndVals,
-							maxDaysPerPage: localValue,
-						},
+				pages: {
+					...restOfPagesKeysAndVals,
+					completedTasks: {
+						...restOfCompletedTasksPageKeysAndVals,
+						maxDaysPerPage: localValue,
 					},
 				},
 			};
 		} else if (page === 'focus-hours-goal-page') {
-			const restOfFocusHoursGoalKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
+			const restOfFocusHoursGoalKeysAndVals = userSettings?.pages?.focusHoursGoal;
 			const currentGoalDays = restOfFocusHoursGoalKeysAndVals?.goalDays;
 
 			if (currentGoalDays === localValue) {
 				return;
 			}
 
-			const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+			const restOfPagesKeysAndVals = userSettings?.pages;
 
 			payload = {
-				tickTickOne: {
-					pages: {
-						...restOfPagesKeysAndVals,
-						focusHoursGoal: {
-							...restOfFocusHoursGoalKeysAndVals,
-							goalDays: localValue,
-						},
+				pages: {
+					...restOfPagesKeysAndVals,
+					focusHoursGoal: {
+						...restOfFocusHoursGoalKeysAndVals,
+						goalDays: localValue,
 					},
 				},
 			};

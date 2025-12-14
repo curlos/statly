@@ -32,11 +32,11 @@ const useUserSettings = () => {
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
-	const focusRecordsPageSettings = userSettings?.tickTickOne?.pages?.focusRecords || {};
-	const completedTasksPageSettings = userSettings?.tickTickOne?.pages?.completedTasks || {};
-	const focusHoursGoalPageSettings = userSettings?.tickTickOne?.pages?.focusHoursGoal || {};
-	const challengesPageSettings = userSettings?.tickTickOne?.pages?.challenges || {};
-	const medalsPageSettings = userSettings?.tickTickOne?.pages?.medals || {};
+	const focusRecordsPageSettings = userSettings?.pages?.focusRecords || {};
+	const completedTasksPageSettings = userSettings?.pages?.completedTasks || {};
+	const focusHoursGoalPageSettings = userSettings?.pages?.focusHoursGoal || {};
+	const challengesPageSettings = userSettings?.pages?.challenges || {};
+	const medalsPageSettings = userSettings?.pages?.medals || {};
 
 	// Extract rings from focusHoursGoal settings - use cached rings while loading
 	const rings = isLoadingGetUserSettings && cachedSettings?.rings?.length > 0
@@ -114,17 +114,15 @@ const useUserSettings = () => {
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const handleUpdateUserSettingForPage = async (page, userSettingProperty, newValue) => {
-		const restOfPageKeysAndVals = userSettings?.tickTickOne?.pages[page];
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+		const restOfPageKeysAndVals = userSettings?.pages[page];
+		const restOfPagesKeysAndVals = userSettings?.pages;
 
 		const payload = {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					[page]: {
-						...restOfPageKeysAndVals,
-						[userSettingProperty]: newValue,
-					},
+			pages: {
+				...restOfPagesKeysAndVals,
+				[page]: {
+					...restOfPageKeysAndVals,
+					[userSettingProperty]: newValue,
 				},
 			},
 		};
@@ -134,7 +132,7 @@ const useUserSettings = () => {
 
 	// Helper function to update ring-specific settings
 	const handleUpdateRingSetting = async (ringId, settingProperty, newValue) => {
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+		const restOfPagesKeysAndVals = userSettings?.pages;
 		const existingRings = focusHoursGoalPageSettings?.rings || [];
 
 		// Find and update the specific ring
@@ -150,13 +148,11 @@ const useUserSettings = () => {
 		});
 
 		const payload = {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					focusHoursGoal: {
-						...focusHoursGoalPageSettings,
-						rings: updatedRings,
-					},
+			pages: {
+				...restOfPagesKeysAndVals,
+				focusHoursGoal: {
+					...focusHoursGoalPageSettings,
+					rings: updatedRings,
 				},
 			},
 		};

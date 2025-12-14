@@ -55,21 +55,19 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	};
 
 	const getChallengesPagePayload = () => {
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
-		const restOfChallengesKeysAndVals = userSettings?.tickTickOne?.pages?.challenges;
+		const restOfPagesKeysAndVals = userSettings?.pages;
+		const restOfChallengesKeysAndVals = userSettings?.pages?.challenges;
 		const restOfSelectedChallengeCardImages =
-			userSettings?.tickTickOne?.pages?.challenges?.selectedChallengeCardImage;
+			userSettings?.pages?.challenges?.selectedChallengeCardImage;
 
 		const payload = {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					challenges: {
-						...restOfChallengesKeysAndVals,
-						selectedChallengeCardImage: {
-							...restOfSelectedChallengeCardImages,
-							[cardType]: selectedImageSrc,
-						},
+			pages: {
+				...restOfPagesKeysAndVals,
+				challenges: {
+					...restOfChallengesKeysAndVals,
+					selectedChallengeCardImage: {
+						...restOfSelectedChallengeCardImages,
+						[cardType]: selectedImageSrc,
 					},
 				},
 			},
@@ -79,20 +77,18 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	};
 
 	const getMedalsPagePayload = () => {
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
-		const restOfMedalsKeysAndVals = userSettings?.tickTickOne?.pages?.medals;
-		const restOfSelectedMedalCardImages = userSettings?.tickTickOne?.pages?.medals?.selectedMedalCardImage;
+		const restOfPagesKeysAndVals = userSettings?.pages;
+		const restOfMedalsKeysAndVals = userSettings?.pages?.medals;
+		const restOfSelectedMedalCardImages = userSettings?.pages?.medals?.selectedMedalCardImage;
 
 		const payload = {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					medals: {
-						...restOfMedalsKeysAndVals,
-						selectedMedalCardImage: {
-							...restOfSelectedMedalCardImages,
-							[cardType]: selectedImageSrc,
-						},
+			pages: {
+				...restOfPagesKeysAndVals,
+				medals: {
+					...restOfMedalsKeysAndVals,
+					selectedMedalCardImage: {
+						...restOfSelectedMedalCardImages,
+						[cardType]: selectedImageSrc,
 					},
 				},
 			},
@@ -102,17 +98,15 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	};
 
 	const getFocusRecordsPagePayload = () => {
-		const restOfFocusRecordsKeysAndVals = userSettings?.tickTickOne?.pages?.focusRecords;
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
+		const restOfFocusRecordsKeysAndVals = userSettings?.pages?.focusRecords;
+		const restOfPagesKeysAndVals = userSettings?.pages;
 
 		const payload = {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					focusRecords: {
-						...restOfFocusRecordsKeysAndVals,
-						selectedMedalImage: selectedImageSrc,
-					},
+			pages: {
+				...restOfPagesKeysAndVals,
+				focusRecords: {
+					...restOfFocusRecordsKeysAndVals,
+					selectedMedalImage: selectedImageSrc,
 				},
 			},
 		};

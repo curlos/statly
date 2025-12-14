@@ -116,17 +116,15 @@ const ProjectsTickTickSection = ({ page }) => {
 		}
 
 		// Otherwise, use global update (existing logic for backward compatibility)
-		const restOfPagesKeysAndVals = userSettings?.tickTickOne?.pages;
-		const restOfFocusHoursGoalsKeysAndVals = userSettings?.tickTickOne?.pages?.focusHoursGoal;
+		const restOfPagesKeysAndVals = userSettings?.pages;
+		const restOfFocusHoursGoalsKeysAndVals = userSettings?.pages?.focusHoursGoal;
 
 		const payload = {
-			tickTickOne: {
-				pages: {
-					...restOfPagesKeysAndVals,
-					focusHoursGoal: {
-						...restOfFocusHoursGoalsKeysAndVals,
-						[userSettingProperty]: newValue,
-					},
+			pages: {
+				...restOfPagesKeysAndVals,
+				focusHoursGoal: {
+					...restOfFocusHoursGoalsKeysAndVals,
+					[userSettingProperty]: newValue,
 				},
 			},
 		};
