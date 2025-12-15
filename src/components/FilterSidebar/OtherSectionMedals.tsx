@@ -15,11 +15,11 @@ const OtherSectionMedals = () => {
 	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
 	const [startDate, setStartDate] = useState(customMedalStartDate && customMedalStartDate !== '' ? new Date(customMedalStartDate) : new Date());
 
-	const handleIntervalChange = (newInterval) => {
+	const handleIntervalChange = (newInterval: string) => {
 		handleUpdateUserSettingForPage('medals', 'defaultMedalInterval', newInterval);
 	};
 
-	const handleCustomStartDateChange = (newStartDate) => {
+	const handleCustomStartDateChange = (newStartDate: Date | null) => {
 		if (newStartDate) {
 			setStartDate(newStartDate);
 			handleUpdateUserSettingForPage('medals', 'customMedalStartDate', newStartDate.toISOString());

@@ -41,7 +41,7 @@ const MedalImage = () => {
 							name={imageSizeOption.name}
 							checked={imageSizeOption.px === medalImageSizePx}
 							onChange={() => {
-								handleUpdateUserSettingForPage('focusRecords', 'medalImageSizePx', imageSizeOption.px);
+								handleUpdateUserSettingForPage('focusRecords', 'medalImageSizePx', String(imageSizeOption.px));
 							}}
 							customOuterCircleClasses={classNames('!w-[20px] !h-[20px]')}
 							customInnerCircleClasses={classNames('!w-[10px] !h-[10px]')}

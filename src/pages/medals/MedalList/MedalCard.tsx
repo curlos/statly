@@ -3,8 +3,17 @@ import LazyImage from '../../../components/LazyImage';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
+import type { MedalWithName } from '../../../types/api';
 
-const MedalCard = ({
+interface MedalCardProps {
+	medal: MedalWithName;
+	chosenMedal: MedalWithName | null;
+	setChosenMedal: (medal: MedalWithName) => void;
+	isLoadingFocusOrTasksData: boolean;
+	setShowChosenMedalModal: (show: boolean) => void;
+}
+
+const MedalCard: React.FC<MedalCardProps> = ({
 	medal,
 	chosenMedal,
 	setChosenMedal,
@@ -21,7 +30,7 @@ const MedalCard = ({
 
 	const timesEarned = !intervalsEarned ? 0 : intervalsEarned.length;
 
-	const imgSrc = selectedMedalCardImage?.[medal.type]
+	const imgSrc = selectedMedalCardImage?.[medal.type] || '';
 	const { width } = useWindowSize();
 
 	return (

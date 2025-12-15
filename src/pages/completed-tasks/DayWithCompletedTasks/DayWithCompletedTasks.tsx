@@ -14,11 +14,18 @@ import {
 } from './getGroupedSubtasksAndParentTasks.util';
 import { BATTLEFIELD_1_MEDALS_BY_URL, BATTLEFIELD_3_MEDALS_BY_URL } from '../../medals/medalsLinks';
 import { getMedalImageClasses } from '../../../utils/helpers.utils';
+import type { DayWithCompletedTasks as DayWithCompletedTasksType, AncestorTask } from '../../../types/api';
+
+interface DayWithCompletedTasksProps {
+	dateWithCompletedTasks: DayWithCompletedTasksType;
+	isLastItemForTheDay?: boolean;
+	ancestorTasksById: Record<string, AncestorTask>;
+}
 
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
  */
-const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = false, ancestorTasksById }) => {
+const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithCompletedTasks, isLastItemForTheDay = false, ancestorTasksById }) => {
 
 	// Context
 	const { updateQueryParams } = useSearchParamsContext();
@@ -44,7 +51,7 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		ancestorTasksById
 	});
 
-	const updateTaskIdQueryParam = (taskId) => {
+	const updateTaskIdQueryParam = (taskId: string) => {
 		// All the other query params must be cleared to show all of the tasks from the specific task id.
 		updateQueryParams({
 			'task-id': taskId,
@@ -57,14 +64,15 @@ const DayWithCompletedTasks = ({ dateWithCompletedTasks, isLastItemForTheDay = f
 		});
 	};
 
-	const handleClickDay = (e) => {
+	const handleClickDay = (e: React.MouseEvent) => {
 		e.stopPropagation();
 		const newDayUrl = getFormattedShortMonthDay(new Date(dateStr));
 		updateQueryParams({ 'start-date': newDayUrl, 'end-date': newDayUrl, 'date-interval': 'Day', page: '' });
 	};
 
-	const isBattlefieldOneOrThreeMedal =
-		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
+	const isBattlefieldOneOrThreeMedal = !!(
+		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage]
+	);
 
 	return (
 		<div

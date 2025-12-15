@@ -4,7 +4,14 @@ import Icon from '../../components/Icon';
 import { useState } from 'react';
 import LazyImage from '../../components/LazyImage';
 
-const CardImage = ({ cardType, imageSrc, page, showGlow = false }) => {
+interface CardImageProps {
+	cardType: string;
+	imageSrc: string;
+	page: string;
+	showGlow?: boolean;
+}
+
+const CardImage: React.FC<CardImageProps> = ({ cardType, imageSrc, page, showGlow = false }) => {
 	const [hoverImage, setHoverImage] = useState(false);
 	const [showModalChangeCardImage, setShowModalChangeCardImage] = useState(false);
 

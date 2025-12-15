@@ -107,11 +107,11 @@ const FocusRecordsExporter: React.FC<FocusRecordsExporterProps> = ({ text, icon,
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
 	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedFocusRecords } = useExportFocusRecords();
 
-	const actionFunctions: Record<string, (...args: any[]) => Promise<void>> = {
+	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
 		downloadSingleMarkdownFile: downloadSingleMarkdownFile,
 		downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedFocusRecords,
-	};
+	} as Record<string, (...args: unknown[]) => Promise<void>>;
 
 	return (
 		<div

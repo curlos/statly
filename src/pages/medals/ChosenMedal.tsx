@@ -2,17 +2,26 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { getFormattedShortMonthDay, parseDateRange } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import type { MedalWithName } from '../../types/api';
 
-const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
-	if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
-		return null;
-	}
+interface ChosenMedalProps {
+	chosenMedal: MedalWithName | null;
+	maxHeight: string | number;
+	chosenMedalRef: React.RefObject<HTMLDivElement>;
+}
 
+const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 	const { updateQueryParams } = useSearchParamsContext();
 
 	const {
 		medalsPageSettings: { selectedMedalCardImage },
 	} = useUserSettingsContext();
+
+	const pageContext = usePageContext();
+
+	if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
+		return null;
+	}
 
 	const { name, intervalsEarned, interval } = chosenMedal;
 
@@ -50,9 +59,7 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 
 	const imgSrc = selectedMedalCardImage?.[chosenMedal.type]
 
-	const pageContext = usePageContext();
-
-	const handleGoToSelectedDateRange = (dateRange) => {
+	const handleGoToSelectedDateRange = (dateRange: string) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
@@ -100,18 +107,18 @@ const ChosenMedal = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 								<span className="font-bold underline">{getIntervalsEarnedText()} Earned: </span>
 								<ul className="pb-3">
 									{intervalsEarned
-										.toSorted((a, b) => {
+										.toSorted((a: string, b: string) => {
 											if (chosenMedal.interval !== 'weekly') {
-												return new Date(b) - new Date(a);
+												return new Date(b).getTime() - new Date(a).getTime();
 											}
 
 											// If it's weekly, split the strings into two since weekly shows both the start and end period. Grab the start period date and sort it by that.
 											const startDateA = a.split(' - ')[0].trim();
 											const startDateB = b.split(' - ')[0].trim();
 
-											return new Date(startDateB) - new Date(startDateA);
+											return new Date(startDateB).getTime() - new Date(startDateA).getTime();
 										})
-										?.map((dateRange) => {
+										?.map((dateRange: string) => {
 											return (
 												<li
 													key={dateRange}

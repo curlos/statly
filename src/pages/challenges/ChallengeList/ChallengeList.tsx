@@ -5,9 +5,17 @@ import ChallengeListSkeleton from './ChallengeListSkeleton';
 import { useGetFocusChallengesQuery } from '../../../services/resources/focusRecordsApi';
 import { useGetTasksChallengesQuery } from '../../../services/resources/tasksApi';
 import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
+import type { Challenge } from '../../../types/api';
 
-const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
-	const scrollContainerRef = useRef(null);
+interface ChallengeListProps {
+	maxHeight: string;
+	chosenChallenge: Challenge | null;
+	setChosenChallenge: React.Dispatch<React.SetStateAction<Challenge | null>>;
+	setShowChosenChallengeModal: (show: boolean) => void;
+}
+
+const ChallengeList: React.FC<ChallengeListProps> = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const pageContext = usePageContext();
 	const { type } = pageContext.routeParams;
 
@@ -38,7 +46,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 		}
 
 		// Find first challenge that has been completed
-		const firstCompletedChallenge = challengesData.find((challenge) => challenge.completedDate);
+		const firstCompletedChallenge = challengesData.find((challenge: Challenge) => challenge.completedDate);
 		if (firstCompletedChallenge) {
 			setChosenChallenge(firstCompletedChallenge);
 		}
@@ -58,8 +66,8 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 
 	const challengesToUse = getChallengesToUse();
 
-	const completedChallenges = challengesToUse.filter((challenge) => challenge.completedDate);
-	const incompleteChallenges = challengesToUse.filter((challenge) => !challenge.completedDate);
+	const completedChallenges = challengesToUse.filter((challenge: Challenge) => challenge.completedDate);
+	const incompleteChallenges = challengesToUse.filter((challenge: Challenge) => !challenge.completedDate);
 
 	if (isLoadingFocusOrTasksData) {
 		return <ChallengeListSkeleton maxHeight={maxHeight} />;
@@ -68,7 +76,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 	return (
 		<div ref={scrollContainerRef} className="overflow-auto gray-scrollbar">
 			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2 " style={{ maxHeight }}>
-				{completedChallenges.map((challenge) => {
+				{completedChallenges.map((challenge: Challenge) => {
 					return (
 						<ChallengeCard
 							key={challenge.name}
@@ -85,7 +93,7 @@ const ChallengeList = ({ maxHeight, chosenChallenge, setChosenChallenge, setShow
 					);
 				})}
 
-				{incompleteChallenges.map((challenge) => {
+				{incompleteChallenges.map((challenge: Challenge) => {
 					return (
 						<ChallengeCard
 							key={challenge.name}

@@ -15,7 +15,7 @@ const OtherSectionFocusRecords = () => {
 			showIndentedTasks,
 			maxDaysPerPage,
 		},
-		focusRecordsPageSettings: { showMedals, selectedMedalImage },
+		focusRecordsPageSettings: { showMedals },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -24,7 +24,7 @@ const OtherSectionFocusRecords = () => {
 	const { userSettings } = fetchedUserSettings || {};
 	const [editUserSettings] = useEditUserSettingsMutation();
 
-	const handleCheckboxClick = (showValue, userSettingProperty) => {
+	const handleCheckboxClick = (showValue: boolean, userSettingProperty: string) => {
 		const newShowValue = !showValue;
 		handleUpdateUserSettingForPage('completedTasks', userSettingProperty, newShowValue);
 	};

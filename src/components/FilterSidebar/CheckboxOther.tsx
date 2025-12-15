@@ -2,7 +2,13 @@ import classNames from 'classnames';
 import Icon from '../Icon';
 import { useThemeContext } from '../../contexts/useThemeContext';
 
-const CheckboxOther = ({ name, showValue, handleCheckboxClick }) => {
+interface CheckboxOtherProps {
+	name: string;
+	showValue: boolean;
+	handleCheckboxClick: () => void;
+}
+
+const CheckboxOther: React.FC<CheckboxOtherProps> = ({ name, showValue, handleCheckboxClick }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	return (

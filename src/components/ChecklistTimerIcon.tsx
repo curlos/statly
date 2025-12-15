@@ -1,7 +1,11 @@
 import classNames from "classnames";
 import { useThemeContext } from "../contexts/useThemeContext";
 
-const ChecklistTimerIcon = ({ customClassName }) => {
+interface ChecklistTimerIconProps {
+	customClassName?: string;
+}
+
+const ChecklistTimerIcon: React.FC<ChecklistTimerIconProps> = ({ customClassName }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	return (

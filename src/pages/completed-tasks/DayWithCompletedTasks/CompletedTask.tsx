@@ -1,9 +1,16 @@
 import classNames from 'classnames';
 import Icon from '../../../components/Icon';
+import type { Task } from '../../../types/models';
 
-const CompletedTask = ({ task, isFullTask, updateTaskIdQueryParam }) => {
+interface CompletedTaskProps {
+	task: Task;
+	isFullTask: boolean;
+	updateTaskIdQueryParam: (taskId: string) => void;
+}
+
+const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateTaskIdQueryParam }) => {
 	// Really just for TickTick tasks, don't see anything like this for Todoist tasks. They seem to only have two statuses: "Complete" and "Not Complete".
-	const statusIsWillNotDo = task.status === -1;
+	const statusIsWillNotDo = 'status' in task && task.status === -1;
 
 	return (
 		<div className="flex items-start gap-1">
@@ -22,7 +29,7 @@ const CompletedTask = ({ task, isFullTask, updateTaskIdQueryParam }) => {
 					updateTaskIdQueryParam(task.id);
 				}}
 			>
-				{task.title || task.content}
+				{task.title}
 			</div>
 		</div>
 	);

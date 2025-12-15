@@ -3,8 +3,13 @@ import { formatDateTime } from "../../../utils/date.utils";
 import { useUserSettingsContext } from "../useUserSettingsContext";
 import TaskProjectName from "./TaskProjectName";
 import TaskTitleWithBreadcrumbs from "./TaskTitleWithBreadcrumbs";
+import type { FocusRecord, FocusRecordTask } from "../../../types/models";
 
-const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
+interface FocusRecordTasksProps {
+	focusRecord: FocusRecord;
+}
+
+const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord }) => {
 	const { updateQueryParams } = useSearchParamsContext();
 	const {
 		focusRecordsPageSettings: {
@@ -18,7 +23,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 
 	const updateTaskIdQueryParam = (taskId?: string) => {
 		updateQueryParams({
-			'task-id': taskId,
+			'task-id': taskId || '',
 			'sort-by': '',
 			search: '',
 			'start-date': '',
@@ -28,12 +33,12 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		});
 	};
 
-	const getTaskTitle = (task, dateStr) => {
+	const getTaskTitle = (task: FocusRecordTask, dateStr: string) => {
 		if (showTaskAncestors) {
 			return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
 		}
 
-		const taskId = task?.taskId || task.id;
+		const taskId = task.taskId;
 
 		return (
 			<h3 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
@@ -45,7 +50,7 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 		);
 	};
 
-	return focusRecord.tasks.map((task, index) => {
+	return focusRecord.tasks?.map((task: FocusRecordTask, index: number) => {
 		const { startTime, endTime, taskId } = task;
 
 		const startTimeObj = formatDateTime(startTime);
@@ -58,11 +63,9 @@ const FocusRecordTasks = ({ focusRecord, showSubtaskTime }) => {
 					`${startTimeObj.day + ' ' + startTimeObj.time} - ${endTimeObj.day + ' ' + endTimeObj.time}`
 				)}
 
-				{showSubtaskTime && (
-					<div className="sm:ml-3 text-white min-w-[150px] flex justify-end md:mt-[6px]">
-						{startTimeObj.time} - {endTimeObj.time}
-					</div>
-				)}
+				<div className="sm:ml-3 text-white min-w-[150px] flex justify-end md:mt-[6px]">
+					{startTimeObj.time} - {endTimeObj.time}
+				</div>
 			</div>
 		);
 	});

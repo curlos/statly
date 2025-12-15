@@ -14,7 +14,11 @@ const MedalCardSkeleton = () => {
 	);
 };
 
-const MedalListSkeleton = ({ maxHeight }) => {
+interface MedalListSkeletonProps {
+	maxHeight: string;
+}
+
+const MedalListSkeleton: React.FC<MedalListSkeletonProps> = ({ maxHeight }) => {
 	return (
 		<div className="col-span-12 sm:col-span-8">
 			<div

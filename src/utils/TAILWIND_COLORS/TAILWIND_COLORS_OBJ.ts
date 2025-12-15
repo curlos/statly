@@ -1,4 +1,34 @@
-export const TAILWIND_COLORS_OBJ = {
+// Type definitions for Tailwind color structure
+export interface ColorVariantHover {
+	textColor: string;
+	bgColor: string;
+	bgColorHalfOpacity: string;
+	borderColor: string;
+	outlineColor: string;
+}
+
+export interface ColorVariantFocus {
+	outlineColor: string;
+}
+
+export interface ColorVariant {
+	textColor: string;
+	bgColor: string;
+	bgColorHalfOpacity: string;
+	borderColor: string;
+	outlineColor: string;
+	hexColor: string;
+	hover: ColorVariantHover;
+	focus: ColorVariantFocus;
+}
+
+// Type for a color family (e.g., all shades of 'slate')
+export type ColorShades = Record<string, ColorVariant>;
+
+// Type for the entire TAILWIND_COLORS_OBJ
+export type TailwindColorsObj = Record<string, ColorShades>;
+
+export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
 	slate: {
 		'slate-50': {
 			textColor: 'text-slate-50',

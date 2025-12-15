@@ -1,11 +1,14 @@
+import type { Task } from '../../../types/models';
+import type { AncestorTask } from '../../../types/api';
+
 /**
  * @description // Go through all of the Completed Tasks for the day and group them up together by parent. So, all of the tasks with the same parent will be in the same array like "{ "5391586608": [{...}, {...}, ...] }". Also, get the "parentTasks" which are the tasks that have no parent.
  * @returns {Object}
  */
-export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancestorTasksById }) => {
-	const groupedSubtasksByParentTask = {};
-	const parentTasksArr = [];
-	const parentTasksObj = {};
+export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancestorTasksById }: { completedTasksForDay: Task[]; ancestorTasksById: Record<string, AncestorTask> }) => {
+	const groupedSubtasksByParentTask: Record<string, Task[]> = {};
+	const parentTasksArr: Task[] = [];
+	const parentTasksObj: Record<string, boolean> = {};
 
 	for (const task of completedTasksForDay) {
 		if (!task) {
@@ -49,9 +52,13 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancesto
 export const getTasksWithParentIdAndNoParent = ({
 	completedTasksForDay,
 	ancestorTasksById,
-	includeDirectParentTasksWithNoChild
+	includeDirectParentTasksWithNoChild = false
+}: {
+	completedTasksForDay: Task[];
+	ancestorTasksById: Record<string, AncestorTask>;
+	includeDirectParentTasksWithNoChild?: boolean;
 }) => {
-	const tasksWithParentId = {};
+	const tasksWithParentId: Record<string, string | null> = {};
 
 	for (const task of completedTasksForDay) {
 		if (!task) {
@@ -62,7 +69,7 @@ export const getTasksWithParentIdAndNoParent = ({
 
 		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length > 0) {
 			// Go through each "taskId" and if it has a parentId, then map it to that parentId, else map it to null.
-			groupTaskBreadcrumbs.forEach((taskId) => {
+			groupTaskBreadcrumbs.forEach((taskId: string) => {
 				// If the task is not in the DB, then do not store in the grouped tasks as that'll cause trouble later on.
 				if (!ancestorTasksById[taskId]) {
 					return

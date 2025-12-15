@@ -16,8 +16,14 @@ import Dropdown from "../../../components/Dropdown/Dropdown";
 import FocusRecordTasks from "./FocusRecordTasks";
 import { useFocusRecordMenu } from "./useFocusRecordMenu";
 import FocusRecordMenuItems from "../../../components/FocusRecordMenuItems";
+import type { FocusRecord, Emotion, Task } from "../../../types/models";
 
-const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay = false }) => {
+interface FocusRecordProps {
+    focusRecord: FocusRecord;
+    isLastItemForTheDay?: boolean;
+}
+
+const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForTheDay = false }) => {
     const { updateQueryParams } = useSearchParamsContext();
     const { startTime, endTime, duration, note, crossesMidnight } = focusRecord;
     const startTimeObj = formatDateTime(startTime);
@@ -45,8 +51,9 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
 
     // Handle emotion tag click
     const { handleEmotionTagClick } = useHandleEmotionTagClick();
-    const isBattlefieldOneOrThreeMedal =
-        BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage];
+    const isBattlefieldOneOrThreeMedal = !!(
+        BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage]
+    );
     const urlRegex = /(https?:\/\/[^\s)]+)/g; // matches http/https URLs
 
     // Use custom hook for all menu-related logic
@@ -244,7 +251,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
                         </div>
                     </div>
 
-                    <FocusRecordTasks focusRecord={focusRecord} showSubtaskTime={showSubtaskTime} />
+                    <FocusRecordTasks focusRecord={focusRecord} />
 
                     {showFocusNotes && (
                         <div
@@ -261,7 +268,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
                             <h4 className="text-[16px] font-bold underline mt-4">Completed Tasks</h4>
 
                             <ul>
-                                {completedTasksDuringFocusSession.map((completedTask: any, index: number) => {
+                                {completedTasksDuringFocusSession.map((completedTask: Task, index: number) => {
                                     const completedTaskText = completedTask.title;
                                     const containsUrl = completedTaskText?.match(urlRegex);
 
@@ -292,7 +299,7 @@ const FocusRecord = ({ focusRecord, showSubtaskTime = true, isLastItemForTheDay 
                         <div className="mt-3">
                             <div className="flex flex-wrap gap-2">
                                 {focusRecord.emotions && focusRecord.emotions.length > 0 ? (
-                                    focusRecord.emotions.map((emotionObj: any, index: number) => (
+                                    focusRecord.emotions.map((emotionObj: Emotion, index: number) => (
                                         <EmotionTag
                                             key={`${emotionObj.emotion}-${index}`}
                                             emotionObj={emotionObj}

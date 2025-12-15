@@ -16,7 +16,6 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	customClasses,
 	positionAdjustment,
 	toggleRef,
-	customStyling,
 	innerClickElemRefs,
 	parentElemRef,
 	align,
@@ -109,7 +108,6 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 						positionAdjustment || '',
 						customClasses || ''
 					)}
-					style={customStyling || {}}
 				>
 					{children}
 				</motion.div>

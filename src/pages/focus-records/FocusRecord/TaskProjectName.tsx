@@ -2,8 +2,14 @@ import { useSearchParamsContext } from "../../../contexts/useSearchParamsContext
 import { useGetProjectsQuery } from "../../../services/resources/projectsApi";
 import { useFocusRecordsQuery } from "../useFocusRecordsQuery";
 import { useUserSettingsContext } from "../useUserSettingsContext";
+import type { FocusRecordTask } from "../../../types/models";
 
-const TaskProjectName = ({ taskId, task }) => {
+interface TaskProjectNameProps {
+    taskId: string;
+    task?: FocusRecordTask;
+}
+
+const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task }) => {
     const { ancestorTasksById } = useFocusRecordsQuery();
 
     const { data: fetchedProjects } = useGetProjectsQuery();
@@ -35,8 +41,8 @@ const TaskProjectName = ({ taskId, task }) => {
         return null;
     }
 
-    const fullTask = ancestorTasksById[taskId] || task;
-    const taskProject = projectsById && fullTask?.projectId && projectsById[fullTask?.projectId];
+    const fullTask = ancestorTasksById?.[taskId] || task;
+    const taskProject = (projectsById && fullTask?.projectId) ? projectsById[fullTask.projectId] : undefined;
 
     // Try to get the project name, or use source mapping as fallback
     let taskProjectName = taskProject ? taskProject.name : '';
@@ -58,7 +64,7 @@ const TaskProjectName = ({ taskId, task }) => {
 
     // Check if this project is a Session category
     // TODO: If there are no projects, this will be mapped incorrectly. Frankly, I probably want to get rid of this separation between categories and projects anyways. So, merge these two together. Probably do the same thing for Todoist. This isn't usually an issue but if I sync only some data (like only Focus Records and no Tasks or Projects, it becomes an issue due to the incomplete data).
-    const isSessionProject = (projectsSessionById && taskProject?.id && projectsSessionById[taskProject.id]);
+    const isSessionProject = taskProject && projectsSessionById?.[taskProject.id];
     const projectQueryParam = isSessionProject ? 'categories' : 'projects';
 
     // Shared query params to reset when filtering
@@ -78,7 +84,7 @@ const TaskProjectName = ({ taskId, task }) => {
             <span
                 className="hover:underline hover:text-blue-500"
                 onClick={() => {
-                    if (isMappedFocusApp) {
+                    if (isMappedFocusApp && fullTask?.projectId) {
                         // Filter by focus app source using the mapped focus app ID
                         const focusAppId = sourceToFocusAppId[fullTask.projectId];
                         updateQueryParams({

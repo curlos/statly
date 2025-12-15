@@ -34,7 +34,7 @@ const OtherSectionFocusRecords = () => {
 	// Get crosses-midnight from query params (defaults to false)
 	const crossesMidnight = searchParams.get('crosses-midnight') === 'true';
 
-	const handleCheckboxClick = (showValue, userSettingProperty) => {
+	const handleCheckboxClick = (showValue: boolean, userSettingProperty: string) => {
 		const newShowValue = !showValue;
 		handleUpdateUserSettingForPage('focusRecords', userSettingProperty, newShowValue);
 	};

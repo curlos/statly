@@ -60,8 +60,8 @@ const Page = () => {
 					<div className="container p-1">
 						<CompletedTaskList
 							{...{
-								daysWithCompletedTasks,
-								ancestorTasksById,
+								daysWithCompletedTasks: daysWithCompletedTasks || [],
+								ancestorTasksById: ancestorTasksById || {},
 								isFetching,
 								sortByOptions,
 								showFilterSidebar,
@@ -77,7 +77,7 @@ const Page = () => {
 							total={totalPages}
 							currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
 							setCurrentPage={(value) => {
-								updateQueryParams({ page: value === 1 ? '' : value });
+								updateQueryParams({ page: value === 1 ? '' : String(value) });
 							}}
 							totalPages={totalPages}
 						/>

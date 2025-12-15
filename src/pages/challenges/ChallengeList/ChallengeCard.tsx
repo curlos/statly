@@ -3,8 +3,19 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 import { useEffect } from 'react';
+import { Challenge } from '../../../types/api';
 
-const ChallengeCard = ({
+interface ChallengeCardProps {
+	challenge: Challenge;
+	isChosenChallenge: boolean;
+	setChosenChallenge: (challenge: Challenge) => void;
+	isIncomplete?: boolean;
+	isLoadingFocusOrTasksData: boolean;
+	setShowChosenChallengeModal: (show: boolean) => void;
+	completedChallenges: Challenge[];
+}
+
+const ChallengeCard: React.FC<ChallengeCardProps> = ({
 	challenge,
 	isChosenChallenge,
 	setChosenChallenge,
@@ -13,7 +24,7 @@ const ChallengeCard = ({
 	setShowChosenChallengeModal,
 	completedChallenges,
 }) => {
-	const { name, smallImageSrc } = challenge;
+	const { name } = challenge;
 
 	const { chosenColorObj } = useThemeContext();
 
@@ -21,14 +32,10 @@ const ChallengeCard = ({
 		challengesPageSettings: { selectedChallengeCardImage },
 	} = useUserSettingsContext();
 
-	let imgSrc =
-		challenge.requiredDuration !== undefined
+	const imgSrc =
+		challenge.type === 'focus'
 			? selectedChallengeCardImage?.focus
 			: selectedChallengeCardImage?.tasks;
-
-	if (smallImageSrc) {
-		imgSrc = smallImageSrc;
-	}
 
 	const { width } = useWindowSize();
 

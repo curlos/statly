@@ -1,30 +1,39 @@
 import { useFocusRecordsQuery } from "../useFocusRecordsQuery";
 import TaskProjectName from "./TaskProjectName";
+import type { FocusRecordTask } from "../../../types/models";
 
-const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling, dateStr }) => {
+interface TaskTitleWithBreadcrumbsProps {
+    task: FocusRecordTask;
+    updateTaskIdQueryParam: (taskId?: string) => void;
+    headerStyling: string;
+    dateStr: string;
+}
+
+const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ task, updateTaskIdQueryParam, headerStyling, dateStr }) => {
     const { ancestorTasksById, isLoading } = useFocusRecordsQuery();
 
     if (isLoading) {
         return (
-            <h3 onClick={() => updateTaskIdQueryParam(task.id || task.taskId)} className={headerStyling}>
+            <h3 onClick={() => updateTaskIdQueryParam(task.taskId)} className={headerStyling}>
                 {task?.title}
             </h3>
         );
     }
 
-    const parentTask = ancestorTasksById[task.taskId] || task;
-    const parentTaskTitle = parentTask?.title || task.title || parentTask?.id;
+    const parentTask = ancestorTasksById?.[task.taskId] || task;
+    const parentTaskId = 'id' in parentTask ? parentTask.id : parentTask.taskId;
+    const parentTaskTitle = parentTask?.title || task.title || parentTaskId;
 
     // Only checking TickTick because Todoist does not have Focus Records.
-    const parentTaskBreadcrumbsTickTick = parentTask?.ancestorIds;
-    const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick?.filter((ancestorId) => ancestorId !== task.taskId) || [];
+    const parentTaskBreadcrumbsTickTick = 'ancestorIds' in parentTask ? parentTask.ancestorIds : undefined;
+    const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick?.filter((ancestorId: string) => ancestorId !== task.taskId) || [];
 
     return (
         <div className="text-[22px] cursor-pointer">
             <span
                 className="hover:underline font-bold hover:text-blue-500"
                 onClick={() => {
-                    updateTaskIdQueryParam(parentTask.id || task.taskId);
+                    updateTaskIdQueryParam(parentTaskId);
                 }}
             >
                 {parentTaskTitle}
@@ -33,9 +42,9 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
             {parentTaskBreadcrumbs?.length > 0 && (
                 <span className="ml-1 text-color-gray-25">
                     -{' '}
-                    {parentTaskBreadcrumbs.map((taskId, index) => {
-                        const taskObj = ancestorTasksById[taskId];
-                        const title = taskObj?.title || taskObj?.content || taskId;
+                    {parentTaskBreadcrumbs.map((taskId: string, index: number) => {
+                        const taskObj = ancestorTasksById?.[taskId];
+                        const title = taskObj?.title || taskId;
 
                         return (
                             <span key={`breadcrumbs-${taskObj?.id || taskId}-${index}-${dateStr}`}>
@@ -54,7 +63,7 @@ const TaskTitleWithBreadcrumbs = ({ task, updateTaskIdQueryParam, headerStyling,
                 </span>
             )}
 
-            <TaskProjectName {...{ taskId: (parentTask?.id || task.taskId), task }} />
+            <TaskProjectName {...{ taskId: parentTaskId, task }} />
         </div>
     );
 };

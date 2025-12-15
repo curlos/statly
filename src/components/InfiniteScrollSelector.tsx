@@ -2,7 +2,14 @@ import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import { useThemeContext } from '../contexts/useThemeContext';
 
-const InfiniteScrollSelector = ({ items, unit, selectedValue, setSelectedValue }) => {
+interface InfiniteScrollSelectorProps<T extends string | number> {
+	items: T[];
+	unit?: string;
+	selectedValue: T;
+	setSelectedValue: React.Dispatch<React.SetStateAction<T>>;
+}
+
+const InfiniteScrollSelector = <T extends string | number>({ items, unit, selectedValue, setSelectedValue }: InfiniteScrollSelectorProps<T>) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const scrollRef = useRef(null);

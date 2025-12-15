@@ -16,6 +16,7 @@ import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
+import type { Challenge } from '../../types/api';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -23,7 +24,7 @@ const Page = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 
-	const [chosenChallenge, setChosenChallenge] = useState({});
+	const [chosenChallenge, setChosenChallenge] = useState<Challenge | null>(null);
 	const chosenChallengeRef = useRef(null);
 	const [showChosenChallengeModal, setShowChosenChallengeModal] = useState(false);
 	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
@@ -115,7 +116,6 @@ const Page = () => {
 					<Modal
 						isOpen={showChosenChallengeModal}
 						onClose={() => setShowChosenChallengeModal(false)}
-						position="top-center"
 					>
 						<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
 							{isLoading ? (

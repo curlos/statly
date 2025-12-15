@@ -2,17 +2,6 @@ import { createContext, useContext } from 'react';
 import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 
-const ThemeContext = createContext();
-
-export const useThemeContext = () => {
-	return useContext(ThemeContext);
-};
-
-export const ThemeProvider = ({ children }) => {
-	const value = useTheme();
-	return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
-};
-
 const useTheme = () => {
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
@@ -76,7 +65,7 @@ const useTheme = () => {
 
 		if (preferredNextColor === 'next-lightest') {
 			// If they are the same, then, to actually see a difference, we have to get the next darkest color.
-			if (chosenColorObj.textColor === nextLightestColorObj.textColor) {
+			if (chosenColorObj.textColor === nextLightestColorObj?.textColor) {
 				return nextDarkestColorObj;
 			} else {
 				return nextLightestColorObj;
@@ -84,7 +73,7 @@ const useTheme = () => {
 			// If the preferred next color is "next-darkest"
 		} else {
 			// If they are the same, then, to actually see a difference, we have to get the next lightest color.
-			if (chosenColorObj.textColor === nextDarkestColorObj.textColor) {
+			if (chosenColorObj.textColor === nextDarkestColorObj?.textColor) {
 				return nextLightestColorObj;
 			} else {
 				return nextDarkestColorObj;
@@ -102,4 +91,25 @@ const useTheme = () => {
 		nextDarkestColorObj: getNextLightestOrDarkestColorObj('next-darkest'),
 		selectedFontFamilyKey,
 	};
+};
+
+// Export the type of the theme context value
+export type ThemeContextValue = ReturnType<typeof useTheme>;
+
+// Create typed context
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+
+// Export typed hook
+export const useThemeContext = (): ThemeContextValue => {
+	const context = useContext(ThemeContext);
+	if (!context) {
+		throw new Error('useThemeContext must be used within ThemeProvider');
+	}
+	return context;
+};
+
+// Export typed provider
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+	const value = useTheme();
+	return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

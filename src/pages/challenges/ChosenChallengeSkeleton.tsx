@@ -1,4 +1,9 @@
-const ChosenChallengeSkeleton = ({ maxHeight, chosenChallengeRef }) => {
+interface ChosenChallengeSkeletonProps {
+	maxHeight: string;
+	chosenChallengeRef: React.RefObject<HTMLDivElement>;
+}
+
+const ChosenChallengeSkeleton: React.FC<ChosenChallengeSkeletonProps> = ({ maxHeight, chosenChallengeRef }) => {
 	return (
 		<div
 			ref={chosenChallengeRef}

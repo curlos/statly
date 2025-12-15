@@ -787,14 +787,24 @@ export const BATTLEFIELD_3_MEDALS_BY_URL = Object.entries(BATTLEFIELD_3_MEDALS).
   return acc;
 }, {});
 
+// Type for Pokemon card image objects
+interface PokemonCardImage {
+  name: string;
+  originalImageUrl: string;
+  imgurImageUrl: string;
+}
+
+// Type for medal image URLs (can be either a string or a Pokemon card object)
+type MedalImageUrl = string | PokemonCardImage;
+
 // Comprehensive reverse lookup map for all games and medal types
 export const URL_TO_GAME_MEDAL_MAP = new Map();
 
 // Populate the map once at module load time
 Object.entries(MEDALS_GAMES).forEach(([gameName, gameData]) => {
   Object.entries(gameData.MEDALS_OBJ).forEach(([medalTypeName, imageUrls]) => {
-    imageUrls.forEach((urlOrObj: any) => {
-      const url = gameName === 'POKEMON TCG CARDS' ? urlOrObj.imgurImageUrl : urlOrObj;
+    imageUrls.forEach((urlOrObj: MedalImageUrl) => {
+      const url = gameName === 'POKEMON TCG CARDS' ? (urlOrObj as PokemonCardImage).imgurImageUrl : urlOrObj as string;
       URL_TO_GAME_MEDAL_MAP.set(url, { game: gameName, medalType: medalTypeName });
     });
   });

@@ -2,34 +2,38 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import { Challenge } from '../../types/api';
 
-const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => {
-	if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
-		return null;
-	}
+interface ChosenChallengeProps {
+	chosenChallenge: Challenge | null;
+	maxHeight: string;
+	chosenChallengeRef: React.RefObject<HTMLDivElement>;
+}
 
+const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => {
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
 	} = useUserSettingsContext();
 
 	const { updateQueryParams } = useSearchParamsContext();
+	const pageContext = usePageContext();
 
-	const { name, completedDate, startDate, deadline, fullImageSrc, rewardName } = chosenChallenge;
+	if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
+		return null;
+	}
 
-	let imgSrc =
-		chosenChallenge.requiredDuration !== undefined
+	console.log(chosenChallenge)
+
+	const { name, completedDate } = chosenChallenge;
+
+	const imgSrc =
+		chosenChallenge.type === 'focus'
 			? selectedChallengeCardImage?.focus
 			: selectedChallengeCardImage?.tasks;
 
-	if (fullImageSrc) {
-		imgSrc = fullImageSrc;
-	}
 
-	const isCustomChallenge = chosenChallenge.fullImageSrc !== undefined;
 
-	const pageContext = usePageContext();
-
-	const handleGoToCompletedDate = (completedDate) => {
+	const handleGoToCompletedDate = (completedDate: Challenge['completedDate']) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
 		const startDate = pageContext.urlParsed.search['start-date'] || 'Jan 1, 1900'
 
@@ -42,7 +46,7 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 			{
 				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(new Date(startDate)),
-				'end-date': getFormattedShortMonthDay(new Date(completedDate)),
+				'end-date': getFormattedShortMonthDay(new Date(completedDate || startDate)),
 			},
 			`/${isForFocusChallenges ? 'focus-records' : 'completed-tasks'}`
 		);
@@ -64,27 +68,9 @@ const ChosenChallenge = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => 
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Description: </span>
 							<span className="text-color-gray-50">
-								{name} {isCustomChallenge ? '' : 'in total'}
+								{name} in total
 							</span>
 						</div>
-						{rewardName && (
-							<div className="text-[16px] md:text-[18px]">
-								<span className="font-bold">Reward: </span>
-								<span className="text-color-gray-50">{rewardName ? rewardName : 'N/A'}</span>
-							</div>
-						)}
-						{startDate && (
-							<div className="text-[16px] md:text-[18px]">
-								<span className="font-bold">Start Date: </span>
-								<span className="text-color-gray-50">{startDate ? startDate : 'N/A'}</span>
-							</div>
-						)}
-						{deadline && (
-							<div className="text-[16px] md:text-[18px]">
-								<span className="font-bold">Deadline: </span>
-								<span className="text-color-gray-50">{deadline ? deadline : 'N/A'}</span>
-							</div>
-						)}
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Completion Date: </span>
 							<span

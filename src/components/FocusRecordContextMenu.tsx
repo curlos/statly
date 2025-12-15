@@ -43,7 +43,7 @@ const FocusRecordContextMenu: React.FC<FocusRecordContextMenuProps> = ({
 	useEffect(() => {
 		if (isVisible && menuRef.current) {
 			const rect = menuRef.current.getBoundingClientRect();
-			const adjustedStyle: any = {};
+			const adjustedStyle: { left?: string; top?: string } = {};
 
 			if (rect.right > window.innerWidth) {
 				adjustedStyle.left = `${position.x - rect.width}px`;

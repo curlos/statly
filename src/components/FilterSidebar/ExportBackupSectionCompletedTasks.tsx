@@ -99,11 +99,11 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
 	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
 
-	const actionFunctions: Record<string, (...args: any[]) => Promise<any>> = {
+	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
 		downloadSingleMarkdownFile: downloadSingleMarkdownFile,
 		downloadZipFolderOfGroupedCompletedTasks: downloadZipFolderOfGroupedCompletedTasks,
-	};
+	} as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>;
 
 	return (
 		<div
@@ -117,9 +117,9 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 					const result = await actionFunction(...params);
 
 					// Handle clipboard-specific errors
-					if (action === 'handleCopyToClipboard' && result && !result.success) {
+					if (action === 'handleCopyToClipboard' && result && typeof result === 'object' && 'success' in result && !result.success) {
 						setCopiedToClipboardStatus('error');
-						console.error('Copy to clipboard failed:', result.error);
+						console.error('Copy to clipboard failed:', 'error' in result ? result.error : 'Unknown error');
 					} else {
 						setCopiedToClipboardStatus('done');
 					}

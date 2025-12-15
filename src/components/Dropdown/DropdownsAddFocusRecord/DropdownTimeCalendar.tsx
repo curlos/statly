@@ -124,7 +124,12 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	);
 };
 
-const SearchDateInput = ({ setConnectedCurrentDate, setDueDate }) => {
+interface SearchDateInputProps {
+	setConnectedCurrentDate: (date: Date) => void;
+	setDueDate: (date: Date | null) => void;
+}
+
+const SearchDateInput: React.FC<SearchDateInputProps> = ({ setConnectedCurrentDate, setDueDate }) => {
 	const [localSearchText, setLocalSearchText] = useState('');
 	const [isInvalidDate, setIsInvalidDate] = useState(false);
 

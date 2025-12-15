@@ -144,7 +144,13 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 	);
 };
 
-const InBetweenPages = ({ currentPage, setCurrentPage, totalPages }) => {
+interface InBetweenPagesProps {
+	currentPage: number;
+	setCurrentPage: (page: number) => void;
+	totalPages: number;
+}
+
+const InBetweenPages: React.FC<InBetweenPagesProps> = ({ currentPage, setCurrentPage, totalPages }) => {
 	const drodpownCustomPageNumberRef = useRef(null);
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -183,7 +189,7 @@ const DropdownCustomPageNumber: React.FC<DropdownProps> = ({
 		setLocalCurrentPage(currentPage);
 	}, [currentPage]);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		setIsVisible(false);
 

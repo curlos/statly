@@ -70,7 +70,11 @@ const loginValidationRules = {
 	}
 };
 
-const UserForm = ({ mode }) => {
+interface UserFormProps {
+	mode: 'login' | 'register';
+}
+
+const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 	const [submitError, setSubmitError] = useState(null);
 
 	const {

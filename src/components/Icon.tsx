@@ -9,7 +9,7 @@ interface IconProps {
 	grad?: number;
 	opsz?: number;
 	toggleRef?: React.MutableRefObject<null>;
-	onClick?: () => void;
+	onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
 	onMouseOver?: React.MouseEventHandler<HTMLSpanElement> | undefined;
 	onMouseLeave?: React.MouseEventHandler<HTMLSpanElement> | undefined;
 	key?: string | number;

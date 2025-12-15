@@ -1,16 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
-
-const UserSettingsContext = createContext();
-
-export const useUserSettingsContext = () => {
-	return useContext(UserSettingsContext);
-};
-
-export const UserSettingsProvider = ({ children }) => {
-	const value = useUserSettings();
-	return <UserSettingsContext.Provider value={value}>{children}</UserSettingsContext.Provider>;
-};
+import type {
+	Ring
+} from '../../types/api';
 
 const useUserSettings = () => {
 	// Initialize cached settings from localStorage with rings array
@@ -32,23 +24,23 @@ const useUserSettings = () => {
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
-	const focusRecordsPageSettings = userSettings?.pages?.focusRecords || {};
-	const completedTasksPageSettings = userSettings?.pages?.completedTasks || {};
-	const focusHoursGoalPageSettings = userSettings?.pages?.focusHoursGoal || {};
-	const challengesPageSettings = userSettings?.pages?.challenges || {};
-	const medalsPageSettings = userSettings?.pages?.medals || {};
+	const focusRecordsPageSettings = userSettings?.pages?.focusRecords
+	const completedTasksPageSettings = userSettings?.pages?.completedTasks
+	const focusHoursGoalPageSettings = userSettings?.pages?.focusHoursGoal
+	const challengesPageSettings = userSettings?.pages?.challenges
+	const medalsPageSettings = userSettings?.pages?.medals
 
 	// Extract rings from focusHoursGoal settings - use cached rings while loading
 	const rings = isLoadingGetUserSettings && cachedSettings?.rings?.length > 0
 		? cachedSettings.rings
 		: (focusHoursGoalPageSettings?.rings || []);
-	const activeRings = rings.filter(ring => ring.isActive);
+	const activeRings = rings.filter((ring: Ring) => ring.isActive);
 
 	// Auto-select first active ring if no selection yet
 	const effectiveSelectedRingId = selectedRingId || (activeRings[0]?.id || null);
 
 	// Find current ring by selectedRingId
-	const currentRing = rings.find(ring => ring.id === effectiveSelectedRingId) || null;
+	const currentRing = rings.find((ring: Ring) => ring.id === effectiveSelectedRingId) || null;
 
 	const {
 		showFocusNotes = true,
@@ -67,7 +59,7 @@ const useUserSettings = () => {
 		showFocusRecordEmotions = true,
 		showEmotionCount = false,
 		analyzeNoteEmotionsWhileSyncingFocusRecords = false,
-	} = focusRecordsPageSettings;
+	} = focusRecordsPageSettings || {};
 
 	const {
 		taskIdIncludeCompletedTasksFromSubtasks = true,
@@ -76,12 +68,12 @@ const useUserSettings = () => {
 		showIndentedTasks = true,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage = true,
 		maxDaysPerPage = 7,
-	} = completedTasksPageSettings;
+	} = completedTasksPageSettings || {};
 
-	const { showMultiRingViewForOneActiveRing = false } = focusHoursGoalPageSettings;
+	const { showMultiRingViewForOneActiveRing = false } = focusHoursGoalPageSettings || {};
 
-	const { selectedChallengeCardImage } = challengesPageSettings;
-	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings;
+	const { selectedChallengeCardImage } = challengesPageSettings || {};
+	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings || {};
 
 	// Sync rings array to localStorage after API fetch completes
 	useEffect(() => {
@@ -100,7 +92,7 @@ const useUserSettings = () => {
 	}, [isLoadingGetUserSettings, focusHoursGoalPageSettings?.rings, effectiveSelectedRingId, focusHoursGoalPageSettings]);
 
 	// Helper function to switch selected ring
-	const handleSetSelectedRing = (ringId) => {
+	const handleSetSelectedRing = (ringId: string) => {
 		setSelectedRingId(ringId);
 		try {
 			const currentCache = JSON.parse(localStorage.getItem('focusHoursGoalPageSettings') || '{}');
@@ -113,7 +105,7 @@ const useUserSettings = () => {
 
 	const [editUserSettings] = useEditUserSettingsMutation();
 
-	const handleUpdateUserSettingForPage = async (page, userSettingProperty, newValue) => {
+	const handleUpdateUserSettingForPage = async (page: string, userSettingProperty: string, newValue: boolean | string) => {
 		const restOfPageKeysAndVals = userSettings?.pages[page];
 		const restOfPagesKeysAndVals = userSettings?.pages;
 
@@ -131,12 +123,12 @@ const useUserSettings = () => {
 	};
 
 	// Helper function to update ring-specific settings
-	const handleUpdateRingSetting = async (ringId, settingProperty, newValue) => {
+	const handleUpdateRingSetting = async (ringId: string, settingProperty: string, newValue: boolean | object) => {
 		const restOfPagesKeysAndVals = userSettings?.pages;
 		const existingRings = focusHoursGoalPageSettings?.rings || [];
 
 		// Find and update the specific ring
-		const updatedRings = existingRings.map(ring => {
+		const updatedRings = existingRings.map((ring: Ring) => {
 			if (ring.id === ringId) {
 				return {
 					...ring,
@@ -220,4 +212,25 @@ const useUserSettings = () => {
 		},
 		isLoadingGetUserSettings
 	};
+};
+
+type UserSettingsContextValue = ReturnType<typeof useUserSettings>;
+
+const UserSettingsContext = createContext<UserSettingsContextValue | undefined>(undefined);
+
+export const useUserSettingsContext = () => {
+	const context = useContext(UserSettingsContext);
+	if (!context) {
+		throw new Error('useUserSettingsContext must be used within UserSettingsProvider');
+	}
+	return context;
+};
+
+interface UserSettingsProviderProps {
+	children: React.ReactNode;
+}
+
+export const UserSettingsProvider: React.FC<UserSettingsProviderProps> = ({ children }) => {
+	const value = useUserSettings();
+	return <UserSettingsContext.Provider value={value}>{children}</UserSettingsContext.Provider>;
 };

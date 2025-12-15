@@ -5,8 +5,8 @@ interface CustomRadioButtonProps {
 	label: string;
 	name: string;
 	checked: boolean;
-	onChange: (e: any) => void;
-	customLabelClass: string;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	customLabelClass?: string;
 	customOuterCircleClasses: string;
 	customInnerCircleClasses: string;
 	customOuterCircleBorderColorClasses: string;

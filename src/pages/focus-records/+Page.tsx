@@ -37,7 +37,7 @@ const FocusRecordsPage = () => {
 		projectsFromUrl,
 	} = useFocusRecordsQuery();
 
-	const focusRecordListRef = useRef(null);
+	const focusRecordListRef = useRef<HTMLDivElement>(null);
 
 	// For Filter Sidebar and Filter Bar
 	const [showFilterSidebar, setShowFilterSidebar] = useState(false);
@@ -80,8 +80,8 @@ const FocusRecordsPage = () => {
 							<FocusRecordList
 								{...{
 									isFetching,
-									focusRecords,
-									emotionCounts,
+									focusRecords: focusRecords || [],
+									emotionCounts: emotionCounts || {},
 									showEmotionCount,
 									sortBy,
 									currentPage: currentPageFromUrl,
@@ -100,7 +100,7 @@ const FocusRecordsPage = () => {
 								total={totalPages}
 								currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
 								setCurrentPage={(value) => {
-									updateQueryParams({ page: value === 1 ? '' : value });
+									updateQueryParams({ page: value === 1 ? '' : String(value) });
 								}}
 								totalPages={totalPages}
 							/>

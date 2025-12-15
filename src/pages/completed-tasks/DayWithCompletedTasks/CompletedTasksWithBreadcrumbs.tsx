@@ -2,8 +2,18 @@ import Accordion from '../../../components/Accordion/Accordion';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import CompletedTask from './CompletedTask';
+import type { AncestorTask } from '../../../types/api';
+import type { Task } from '../../../types/models';
 
-const CompletedTasksWithBreadcrumbs = ({
+interface CompletedTasksWithBreadcrumbsProps {
+	ancestorTasksById: Record<string, AncestorTask>;
+	groupedSubtasksByParentTask: Record<string, Task[]>;
+	dateStr: string;
+	updateTaskIdQueryParam: (taskId: string) => void;
+	groupedTasksCollapsedByDefault: boolean;
+}
+
+const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps> = ({
 	ancestorTasksById,
 	groupedSubtasksByParentTask,
 	dateStr,
@@ -24,7 +34,7 @@ const CompletedTasksWithBreadcrumbs = ({
 			const parentTaskTitle = parentTask?.title || parentTaskId;
 			const parentTaskBreadcrumbs = parentTask?.ancestorIds?.slice(1)
 
-			const taskProject = projectsById && parentTask?.projectId && projectsById[parentTask?.projectId]
+			const taskProject = (projectsById && parentTask?.projectId) ? projectsById[parentTask.projectId] : undefined;
 			const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
 
 			return (
@@ -44,7 +54,7 @@ const CompletedTasksWithBreadcrumbs = ({
 							{parentTaskBreadcrumbs?.length > 0 && (
 								<span className="ml-1 text-color-gray-25">
 									-{' '}
-									{parentTaskBreadcrumbs.map((taskId, index) => {
+									{parentTaskBreadcrumbs.map((taskId: string, index: number) => {
 										const taskObj = ancestorTasksById[taskId];
 										const title = taskObj?.title || taskId;
 
@@ -93,7 +103,12 @@ const CompletedTasksWithBreadcrumbs = ({
 				>
 					<div className="space-y-1">
 						{completedSubtasks.map((task, i) => (
-							<CompletedTask key={dateStr + task.id + i} task={task} />
+							<CompletedTask
+								key={dateStr + task.id + i}
+								task={task}
+								isFullTask={false}
+								updateTaskIdQueryParam={updateTaskIdQueryParam}
+							/>
 						))}
 					</div>
 				</Accordion>

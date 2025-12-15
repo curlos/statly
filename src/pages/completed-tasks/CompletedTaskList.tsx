@@ -7,8 +7,18 @@ import SyncButton from '../../components/SyncButton';
 import { useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
+import type { DayWithCompletedTasks as DayWithCompletedTasksType, AncestorTask } from '../../types/api';
 
-const CompletedTaskList = ({
+interface CompletedTaskListProps {
+	daysWithCompletedTasks: DayWithCompletedTasksType[];
+	ancestorTasksById: Record<string, AncestorTask>;
+	isFetching: boolean;
+	sortByOptions: string[];
+	showFilterSidebar: boolean;
+	setShowFilterSidebar: (show: boolean) => void;
+}
+
+const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 	daysWithCompletedTasks,
 	ancestorTasksById,
 	isFetching,

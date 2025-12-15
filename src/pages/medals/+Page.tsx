@@ -16,21 +16,22 @@ import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
+import type { MedalWithName } from '../../types/api';
 
 const Page = () => {
 	const pageContext = usePageContext();
 	const { type, interval } = pageContext.routeParams;
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
- 
-	const [chosenMedal, setChosenMedal] = useState({});
-	const chosenMedalRef = useRef(null);
+
+	const [chosenMedal, setChosenMedal] = useState<MedalWithName | null>(null);
+	const chosenMedalRef = useRef<HTMLDivElement>(null);
 	const [showChosenMedalModal, setShowChosenMedalModal] = useState(false);
 	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
-	const topHeaderRef = useRef(null);
+	const topHeaderRef = useRef<HTMLDivElement>(null);
 	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
@@ -144,7 +145,6 @@ const Page = () => {
 						<Modal
 							isOpen={showChosenMedalModal}
 							onClose={() => setShowChosenMedalModal(false)}
-							position="top-center"
 						>
 							<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">
 								{isLoading ? (

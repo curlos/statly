@@ -19,7 +19,11 @@ import { useEffect } from 'react';
 
 const globalClasses = 'text-white select-none';
 
-export const Wrapper = ({ children }) => {
+interface WrapperProps {
+	children: React.ReactNode;
+}
+
+export const Wrapper: React.FC<WrapperProps> = ({ children }) => {
 	return (
 		<Provider store={store}>
 			<FontLoadingProvider>
@@ -29,7 +33,11 @@ export const Wrapper = ({ children }) => {
 	);
 };
 
-const ProviderList = ({ children }) => {
+interface ProviderListProps {
+	children: React.ReactNode;
+}
+
+const ProviderList: React.FC<ProviderListProps> = ({ children }) => {
 	const pageContext = usePageContext();
 	const pageRoute = pageContext?.urlParsed?.pathname;
 	const isLoggedIn = useSelector(selectUserToken);
@@ -79,7 +87,11 @@ const ProviderList = ({ children }) => {
 	);
 };
 
-const LoggedInBase = ({ children }) => {
+interface LoggedInBaseProps {
+	children: React.ReactNode;
+}
+
+const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey } = themeContext;
 

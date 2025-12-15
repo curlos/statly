@@ -4,7 +4,21 @@ import { useThemeContext } from '../contexts/useThemeContext';
 import { formatCheckedInDayDate } from '../utils/date.utils';
 import DropdownTimeCalendar from './Dropdown/DropdownsAddFocusRecord/DropdownTimeCalendar';
 
-const FormPickDateRange = ({
+interface FormPickDateRangeProps {
+	startDate: Date;
+	setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+	endDate: Date;
+	setEndDate: React.Dispatch<React.SetStateAction<Date>>;
+	onCancel?: () => void;
+	onConfirm?: () => void;
+	onUpdateStartOrEndDate?: (startDate: Date | null, endDate: Date | null) => void;
+	confirmBeforeUpdating?: boolean;
+	isDropdownCalendarOpenForParent?: boolean;
+	setIsDropdownCalendarOpenForParent?: React.Dispatch<React.SetStateAction<boolean>>;
+	hideEndDate?: boolean;
+}
+
+const FormPickDateRange: React.FC<FormPickDateRangeProps> = ({
 	startDate,
 	setStartDate,
 	endDate,
@@ -103,7 +117,15 @@ const FormPickDateRange = ({
 	);
 };
 
-const DateInput = ({
+interface DateInputProps {
+	labelName: string;
+	date: Date;
+	setDate: (date: Date) => void;
+	isDropdownCalendarOpenForParent?: boolean;
+	setIsDropdownCalendarOpenForParent?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const DateInput: React.FC<DateInputProps> = ({
 	labelName,
 	date,
 	setDate,

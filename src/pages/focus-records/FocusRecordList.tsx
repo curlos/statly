@@ -8,8 +8,19 @@ import SyncButton from '../../components/SyncButton';
 import { useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import { useDispatch } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
+import type { FocusRecord as FocusRecordType } from '../../types/models';
 
-const FocusRecordList = ({
+interface FocusRecordListProps {
+	isFetching: boolean;
+	focusRecords: FocusRecordType[];
+	emotionCounts: Record<string, number>;
+	showEmotionCount: boolean;
+	sortByOptions: string[];
+	showFilterSidebar: boolean;
+	setShowFilterSidebar: (show: boolean) => void;
+}
+
+const FocusRecordList: React.FC<FocusRecordListProps> = ({
 	isFetching,
 	focusRecords,
 	emotionCounts,
