@@ -2,9 +2,10 @@ import classNames from 'classnames';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
+import type { OverviewStatsResponse } from '../../../../types/api';
 
 interface OverviewCardProps {
-	overviewStats: any;
+	overviewStats?: OverviewStatsResponse;
 	isLoading: boolean;
 }
 
