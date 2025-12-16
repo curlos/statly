@@ -3,7 +3,16 @@ import Icon from '../Icon';
 import Modal from './Modal';
 import FormPickDateRange from '../FormPickDateRange';
 
-const ModalPickDateRange: React.FC = ({
+interface ModalPickDateRangeProps {
+	isModalOpen: boolean;
+	setIsModalOpen: (open: boolean) => void;
+	startDate: Date;
+	setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+	endDate: Date;
+	setEndDate: React.Dispatch<React.SetStateAction<Date>>;
+}
+
+const ModalPickDateRange: React.FC<ModalPickDateRangeProps> = ({
 	isModalOpen,
 	setIsModalOpen,
 	startDate,
@@ -16,7 +25,7 @@ const ModalPickDateRange: React.FC = ({
 	};
 
 	return (
-		<Modal isOpen={isModalOpen} onClose={closeModal} position="top-center" customClasses="!w-[350px]">
+		<Modal isOpen={isModalOpen} onClose={closeModal}  customClasses="!w-[350px]">
 			<div className="rounded-xl shadow-lg bg-color-gray-650">
 				<div className={classNames('p-5')}>
 					<div className="flex items-center justify-between mb-4">

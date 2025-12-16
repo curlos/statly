@@ -8,6 +8,7 @@ import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
+import type { StatsByHourItem } from '../../../../types/api';
 
 const MostFocusedTimeCard = () => {
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
@@ -40,7 +41,7 @@ const MostFocusedTimeCard = () => {
 	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
 
 	// Transform API data to chart format
-	const data = (statsData?.byHour || []).map((hourData: any) => ({
+	const data = (statsData?.byHour || []).map((hourData: StatsByHourItem) => ({
 		name: convertTo12HourFormat(`${hourData.hour.toString().padStart(2, '0')}:00`),
 		seconds: hourData.duration
 	}));
@@ -116,7 +117,7 @@ const MostFocusedTimeCard = () => {
 							fill={chosenColorObj.hexColor}
 							background={{ fill: '#3a3a3a' }}
 							// TODO: Write function to get a slightly lighter color to show on hover/active.
-							activeBar={{ fill: nextLightestColorObj.hexColor, cursor: 'pointer' }}
+							activeBar={{ fill: nextLightestColorObj?.hexColor || chosenColorObj.hexColor, cursor: 'pointer' }}
 						/>
 					</BarChart>
 				</ResponsiveContainer>
