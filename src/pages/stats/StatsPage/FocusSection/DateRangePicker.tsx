@@ -9,7 +9,15 @@ import {
 	getFormattedShortMonthDay,
 } from '../../../../utils/date.utils';
 
-const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, startDate, endDate }) => {
+interface DateRangePickerProps {
+	selectedDates: Date[];
+	setSelectedDates: (dates: Date[]) => void;
+	selectedInterval: string;
+	startDate?: Date;
+	endDate?: Date;
+}
+
+const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSelectedDates, selectedInterval, startDate, endDate }) => {
 	useEffect(() => {
 		const firstDay = selectedDates[0] || new Date();
 
@@ -32,7 +40,7 @@ const DateRangePicker = ({ selectedDates, setSelectedDates, selectedInterval, st
 		}
 	}, [selectedInterval, startDate, endDate]);
 
-	const handleArrowClick = (arrowType) => {
+	const handleArrowClick = (arrowType: 'left' | 'right') => {
 		const firstDay = selectedDates[0] || new Date();
 		const date = new Date(firstDay);
 		switch (selectedInterval) {

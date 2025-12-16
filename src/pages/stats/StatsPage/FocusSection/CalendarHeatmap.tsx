@@ -4,16 +4,21 @@ import Dropdown from '../../../../components/Dropdown/Dropdown';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDatesInYear, getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
+import type { FocusStatsResponse, FocusStatsByDayItem } from '../../../../types/api';
+
+interface DayDurationData {
+	duration: number;
+}
 
 interface CalendarHeatmapProps {
 	selectedDates: Date[];
-	statsData: any;
+	statsData?: FocusStatsResponse;
 }
 
 const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsData }) => {
 	// Convert API data to grouped by date format
-	const focusRecordsGroupedByDate: Record<string, { duration: number }> = {};
-	(statsData?.byDay || []).forEach((day: any) => {
+	const focusRecordsGroupedByDate: Record<string, DayDurationData> = {};
+	(statsData?.byDay || []).forEach((day: FocusStatsByDayItem) => {
 		// Parse date as local date (YYYY-MM-DD format from backend)
 		const [year, month, dayNum] = day.date.split('-').map(Number);
 		const localDate = new Date(year, month - 1, dayNum);
@@ -100,7 +105,12 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 	);
 };
 
-const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
+interface CalendarDayProps {
+	date: Date;
+	focusRecordsGroupedByDate: Record<string, DayDurationData>;
+}
+
+const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDate }) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const dropdownRef = useRef(null);
 	const themeContext = useThemeContext();
@@ -141,7 +151,7 @@ const CalendarDay = ({ date, focusRecordsGroupedByDate }) => {
 	);
 };
 
-const getRangeClass = (seconds, themeContext): string => {
+const getRangeClass = (seconds: number, themeContext: ReturnType<typeof useThemeContext>): string => {
 	const { chosenColorName, chosenColorVariantsObj } = themeContext;
 
 	// 6 hours - 5m offset = 21300 seconds
