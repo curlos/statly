@@ -3,8 +3,22 @@ import { navigate } from 'vike/client/router';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { usePageContext } from 'vike-react/usePageContext';
 import { shouldBreakAllText } from '../../../../utils/text.utils';
+import type { ProgressBarItemData } from '../../../../types/stats';
+import type { Project } from '../../../../types/models';
+import type { AncestorTask } from '../../../../types/api';
 
-const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate, emotionId }) => {
+interface ProgressBarProps {
+	item: ProgressBarItemData;
+	projectsById: Record<string, Project>;
+	sessionCategoriesById: Record<string, Project>;
+	metricType?: 'duration' | 'count';
+	ancestorTasksById: Record<string, AncestorTask>;
+	intervalStartDate: string;
+	intervalEndDate: string;
+	emotionId?: string;
+}
+
+const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate, emotionId }) => {
 	const pageContext = usePageContext();
 	const searchParams = new URLSearchParams(pageContext.urlParsed.search);
 
@@ -59,39 +73,39 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 		? getFormattedDuration(item.duration, false)
 		: `${item.count?.toLocaleString() || 0} task${item.count !== 1 ? 's' : ''}`;
 
-	const color = item.type === 'task' ? (projectsById[item?.projectId]?.color || item.color || '#808080') : (item.color || '#808080')
+	const color = item.type === 'task' ? (item.projectId && projectsById[item.projectId]?.color || item.color || '#808080') : (item.color || '#808080')
 
 	let topMostAncestorTaskName = null
-	let topMostAncestorTaskId = null
+	let topMostAncestorTaskId: string | null = null
 	let projectName = null
-	let projectId = null
+	let projectId: string | null | undefined = null
 
 	// For "Stats - Focus", the tasks that are displayed can be unclear since it could be a task like "BUILD" which is the task's name BUT I need more context like "BUILD - MG JUSTICE (GUNPLA)" which'll tell me which GUNPLA this "BUILD" task is for.
-	if (item.type === 'task' && ancestorTasksById) {
+	if (item.type === 'task' && ancestorTasksById && item.id) {
 		const fullTask = ancestorTasksById[item.id]
-		topMostAncestorTaskId = fullTask?.ancestorIds[fullTask.ancestorIds.length - 1]
-		const fullTopMostAncestorTask = ancestorTasksById[topMostAncestorTaskId]
+		topMostAncestorTaskId = fullTask?.ancestorIds?.[fullTask.ancestorIds.length - 1]
+		const fullTopMostAncestorTask = topMostAncestorTaskId ? ancestorTasksById[topMostAncestorTaskId] : undefined
 
 		if (topMostAncestorTaskId !== item.id) {
 			topMostAncestorTaskName = fullTopMostAncestorTask?.title
 		}
 
 		projectId = item.projectId
-		const taskProject = projectsById[projectId]
+		const taskProject = projectId ? projectsById[projectId] : undefined
 		projectName = taskProject?.name || projectId
 	}
 
 	const shouldBreakAll = shouldBreakAllText(item.name);
 
 	// If no projectName, it's from a non-TickTick/Session app - use the app name
-	if (!projectName && item.value !== 'No Data') {
+	if (!projectName && item.name !== 'No Data') {
 		const sourceToAppName: Record<string, string> = {
 			'FocusRecordSession': 'Session',
 			'FocusRecordBeFocused': 'Be Focused',
 			'FocusRecordForest': 'Forest',
 			'FocusRecordTide': 'Tide'
 		};
-		projectName = sourceToAppName[item?.projectId] || null;
+		projectName = item.projectId ? sourceToAppName[item.projectId] || null : null;
 	}
 
 	return (
@@ -110,7 +124,7 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 					</div>
 
 					<div className="text-color-gray-100">
-						{topMostAncestorTaskName && (
+						{topMostAncestorTaskName && topMostAncestorTaskId && (
 							<span
 								className="cursor-pointer hover:underline"
 								onClick={() => handleGoToPage({ id: topMostAncestorTaskId, type: 'task' })}
@@ -120,7 +134,7 @@ const ProgressBar = ({ item, projectsById, sessionCategoriesById, metricType = '
 						)}
 						{topMostAncestorTaskName && <span>{" - "}</span>}
 						{projectName && topMostAncestorTaskName && <span>(</span>}
-						{projectName && (
+						{projectName && projectId && (
 							<span
 								className="cursor-pointer hover:underline"
 								onClick={() => handleGoToPage({ id: projectId, type: 'project' })}

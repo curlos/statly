@@ -2,42 +2,17 @@ import { arrayToObjectByKey } from './helpers.utils';
 import { getTasksWithParentIdAndNoParent, getGroupedSubtasksAndParentTasks } from '../pages/completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
 import type { Project } from '../types/models';
 import type { AncestorTask } from '../types/api';
-
-interface TaskData {
-	id: string;
-	name?: string;
-	value?: number;
-	percentage?: number;
-	count?: number;
-	duration?: number;
-	type?: 'project' | 'task';
-	projectId?: string;
-	color?: string;
-	[key: string]: unknown;
-}
-
-interface GroupedTaskInfo extends TaskData {
-	isGrouped: boolean;
-	instanceCount: number;
-}
-
-interface GroupedTaskById {
-	id: string;
-	title: string;
-	content: string;
-	projectId?: string;
-	color?: string;
-}
+import type { ProgressBarItemData, GroupedTaskInfo, GroupedTaskById } from '../types/stats';
 
 /**
  * For tasks that are passed in and that are not in "ancestorTasksById", this must mean that it's not connected to a task from the "tasks" collection in the DB which means that this task is NOT from TickTick or Todoist. The only way for that to be possible is to be a "virtual task" from a focus record. For example, in a "Forest" focus record, you'll have a "tasks" array inside and that "task" is virtually created in the sync endpoint based on the original Forest focus record. However, it's not a task connected to a "real" task from the "tasks" collection in the DB.
  */
 function separateRealTasksFromVirtualFocusTasks(
-	data: TaskData[],
+	data: ProgressBarItemData[],
 	ancestorTasksById: Record<string, AncestorTask>
 ) {
 	const tasksFromTickTickOrTodoist: AncestorTask[] = [];
-	const virtualFocusAppTasks: TaskData[] = [];
+	const virtualFocusAppTasks: ProgressBarItemData[] = [];
 
 	data.forEach((item) => {
 		const task = ancestorTasksById[item.id];
@@ -106,16 +81,16 @@ function buildAggregatedDataForTopLevelParents(
  * Returns the grouped data and updated tasksWithNoParent array.
  */
 function groupStandaloneTasksByNameWithBookkeeping(
-	aggregatedData: TaskData[],
+	aggregatedData: ProgressBarItemData[],
 	metricKey: string,
 	tasksWithNoParent: string[],
 	totalMetricOnParentTask: Record<string, { value: number; percentage: number }>,
-	progressBarDataById: Record<string, TaskData>,
+	progressBarDataById: Record<string, ProgressBarItemData>,
 	totalDurationOrCount: number = 0
 ) {
 	// Separate standalone tasks from those with children already aggregated
-	const standaloneTasksByName: Record<string, TaskData[]> = {};
-	const alreadyGroupedTasks: TaskData[] = [];
+	const standaloneTasksByName: Record<string, ProgressBarItemData[]> = {};
+	const alreadyGroupedTasks: ProgressBarItemData[] = [];
 
 	aggregatedData.forEach((item) => {
 		if (item[metricKey] === 1) {
@@ -213,7 +188,7 @@ function groupStandaloneTasksByNameWithBookkeeping(
  * Used for PieChart and NestedProgressBars to show parent-level aggregations.
  */
 export function aggregateNestedTasksByParent(
-	data: TaskData[],
+	data: ProgressBarItemData[],
 	ancestorTasksById: Record<string, AncestorTask>,
 	totalCount: number,
 	metricType: 'duration' | 'count' = 'count',
@@ -224,7 +199,13 @@ export function aggregateNestedTasksByParent(
 		return {
 			aggregatedData: [],
 			totalMetricOnParentTask: {},
-			tasksWithNoParent: []
+			tasksWithNoParent: [],
+			groupedTasksInfo: {},
+			groupedTasksById: {},
+			virtualAncestorsById: {},
+			groupedSubtasksByParentTask: {},
+			parentDirectChildrenTaskIdsByParentId: {},
+			progressBarDataById: {}
 		};
 	}
 

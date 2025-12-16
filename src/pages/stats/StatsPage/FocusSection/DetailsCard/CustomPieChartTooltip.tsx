@@ -1,7 +1,26 @@
-const CustomPieChartTooltip = ({ active, payload }) => {
-	if (active && payload?.length > 0) {
+interface TooltipPayloadItem {
+	payload: {
+		payload: {
+			name?: string;
+			value?: number;
+			duration?: number;
+			count?: number;
+			color?: string;
+			percentage?: number;
+		};
+	};
+}
+
+interface CustomPieChartTooltipProps {
+	active?: boolean;
+	payload?: TooltipPayloadItem[];
+}
+
+const CustomPieChartTooltip: React.FC<CustomPieChartTooltipProps> = ({ active, payload }) => {
+	if (active && payload && payload.length > 0) {
 		const dataItem = payload[0].payload.payload;
-		const { name, value, color, percentage } = dataItem;
+		const { name, value, duration, count, color, percentage } = dataItem;
+		const displayValue = value || duration || count || 0;
 
 		return (
 			<div className="bg-color-gray-600 border border-color-gray-50 rounded p-2 flex items-center gap-2">
@@ -9,11 +28,13 @@ const CustomPieChartTooltip = ({ active, payload }) => {
 					<div style={{ backgroundColor: color }} className="w-[10px] h-[10px] rounded-full" />
 				</div>
 				<div>
-					{name}, {value} ({percentage}%)
+					{name}, {displayValue} ({percentage}%)
 				</div>
 			</div>
 		);
 	}
+
+	return null;
 };
 
 export default CustomPieChartTooltip;

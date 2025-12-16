@@ -61,7 +61,7 @@ const TimelineItemSkeleton = ({
 								headerHeight,
 								headerWidth,
 								'rounded-md animate-pulse',
-								nextDarkestColorObj.bgColorHalfOpacity
+								nextDarkestColorObj?.bgColorHalfOpacity
 							)}
 						></div>
 
@@ -74,7 +74,7 @@ const TimelineItemSkeleton = ({
 										line.height,
 										line.width,
 										'rounded-md animate-pulse',
-										nextDarkestColorObj.bgColorHalfOpacity
+										nextDarkestColorObj?.bgColorHalfOpacity
 									)}
 								></div>
 							))}

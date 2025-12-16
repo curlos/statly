@@ -7,6 +7,12 @@ import { getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
+interface CountChartDataItem {
+	name: string;
+	fullName: string;
+	score: number;
+}
+
 const FocusRecordsCurveCard = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -36,7 +42,8 @@ const FocusRecordsCurveCard = () => {
 		let totalCount = 0;
 		let intervalsWithAtLeastOneFocusRecord = 0;
 
-		data.forEach((day) => {
+		const countData = data as CountChartDataItem[];
+		countData.forEach((day) => {
 			const { score } = day;
 			totalCount += score;
 
@@ -108,7 +115,7 @@ const FocusRecordsCurveCard = () => {
 					</defs>
 					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} />
 					<XAxis dataKey="name" dy={7} />
-					<YAxis tickFormatter={(value) => value.toLocaleString()} />
+					<YAxis tickFormatter={(value: number) => value.toLocaleString()} />
 					<Tooltip
 						offset={10}
 						contentStyle={{
@@ -117,7 +124,7 @@ const FocusRecordsCurveCard = () => {
 						content={({ payload }) => {
 							// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
 							if (payload && payload[0]) {
-								const { name, fullName, score } = payload[0].payload;
+								const { name, fullName, score } = payload[0].payload as CountChartDataItem;
 								const nameToUse = fullName ? fullName : name;
 								const unit = score === 1 ? 'record' : 'records';
 

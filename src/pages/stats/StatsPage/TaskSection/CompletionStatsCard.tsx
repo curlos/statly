@@ -81,7 +81,7 @@ const CompletionStatsCard = () => {
 			name?: string;
 			count?: number;
 			percentage?: number;
-			type?: 'project' | 'task';
+			type?: 'project' | 'task' | 'emotion';
 			projectId?: string;
 			color?: string;
 			[key: string]: unknown;
@@ -94,8 +94,6 @@ const CompletionStatsCard = () => {
 		// Group tasks by parent based on view mode
 		if (selected === 'Task' && ancestorTasksById && data?.[0]?.id !== 'No Data') {
 			const totalCount = statsData?.summary?.totalCount || 1;
-
-			console.log(ancestorTasksById)
 
 			if (showNestedProgressBars) {
 				// Use recursive aggregation for nested view (shows top-level parents with all descendants)

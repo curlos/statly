@@ -8,6 +8,14 @@ import Spinner from '../../../../components/Loaders/Spinner';
 import { useGetStatsForInterval } from '../hooks/useGetStatsForInterval';
 import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
+interface DurationChartDataItem {
+	name: string;
+	fullName: string;
+	seconds: number;
+	startTime?: string;
+	endTime?: string;
+}
+
 const FocusDurationCurveCard = () => {
 	// Use custom hook for focus stats with duration data type
 	const {
@@ -35,7 +43,8 @@ const FocusDurationCurveCard = () => {
 		let totalSeconds = 0;
 		let intervalsWithAtLeastOneFocusRecord = 0;
 
-		data.forEach((day) => {
+		const durationData = data as DurationChartDataItem[];
+		durationData.forEach((day) => {
 			const { seconds } = day;
 			totalSeconds += seconds;
 
@@ -114,7 +123,7 @@ const FocusDurationCurveCard = () => {
 						dataKey="seconds"
 						type="number"
 						domain={['dataMin', 'dataMax']}
-						tickFormatter={(seconds) => getFormattedDuration(seconds, false, true)}
+						tickFormatter={(seconds: number) => getFormattedDuration(seconds, false, true)}
 					/>
 					<Tooltip
 						offset={10}
@@ -124,7 +133,7 @@ const FocusDurationCurveCard = () => {
 						content={({ payload }) => {
 							// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
 							if (payload && payload[0]) {
-								const { fullName, name, seconds } = payload[0].payload;
+								const { fullName, name, seconds } = payload[0].payload as DurationChartDataItem;
 
 								// For Records interval, show fullName (with time range) on separate lines
 								if (selectedGroupedInterval === 'Records') {

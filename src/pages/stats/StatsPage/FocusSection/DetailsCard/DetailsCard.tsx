@@ -21,9 +21,11 @@ const noData = [
 	{
 		name: 'No Data',
 		color: 'gray',
-		value: 0,
+		duration: 0,
 		percentage: 100,
 		id: 'No Data',
+		type: undefined as 'project' | 'task' | 'emotion' | undefined,
+		projectId: undefined as string | undefined,
 	},
 ];
 
@@ -84,11 +86,11 @@ const DetailsCard = () => {
 	const { progressBarData, aggregationResults } = useMemo(() => {
 		let data;
 		if (selected === 'Project') {
-			data = statsData?.byProject?.length > 0 ? statsData?.byProject : noData;
+			data = (statsData?.byProject && statsData.byProject.length > 0) ? statsData.byProject : noData;
 		} else if (selected === 'Task') {
-			data = statsData?.byTask?.length > 0 ? statsData?.byTask : noData;
+			data = (statsData?.byTask && statsData.byTask.length > 0) ? statsData.byTask : noData;
 		} else if (selected === 'Emotion') {
-			data = statsData?.byEmotion?.length > 0 ? statsData?.byEmotion : noData;
+			data = (statsData?.byEmotion && statsData.byEmotion.length > 0) ? statsData.byEmotion : noData;
 		} else {
 			data = noData;
 		}
@@ -96,7 +98,7 @@ const DetailsCard = () => {
 		let aggregationResults = null;
 
 		// Group tasks by parent based on view mode
-		if (selected === 'Task' && showNestedProgressBars && data[0]?.id !== 'No Data') {
+		if (selected === 'Task' && showNestedProgressBars && ancestorTasksById && data[0]?.id !== 'No Data') {
 			const totalDuration = statsData?.summary?.totalDuration || 1;
 
 			aggregationResults = aggregateNestedTasksByParent(
@@ -130,7 +132,7 @@ const DetailsCard = () => {
 
 		// For Emotion view with nested progress bars, calculate aggregation from emotion-specific tasks
 		if (selected === 'Emotion' && showNestedProgressBars && statsData?.byEmotionWithTasks) {
-			const aggregationResultsByEmotion = {};
+			const aggregationResultsByEmotion: Record<string, ReturnType<typeof aggregateNestedTasksByParent>> = {};
 			const byEmotionWithTasks = statsData.byEmotionWithTasks;
 
 			// Process each emotion's data separately
@@ -162,7 +164,7 @@ const DetailsCard = () => {
 			data = [...data].map((item) => {
 				// Handle emotion type
 				if (item.type === 'emotion') {
-					const emotionId = item.id;
+					const emotionId = item.id as keyof typeof EMOTIONS;
 					const emotion = EMOTIONS[emotionId];
 					return {
 						...item,
@@ -172,12 +174,12 @@ const DetailsCard = () => {
 				}
 
 				// Handle project/task types
-				const projectId = item.type === 'project' ? item.id : item.projectId
+				const projectId = item.type === 'project' ? item.id : (item.projectId || '');
 
 				let name = item.type === 'project' ? projectsById && (projectsById[projectId]?.name || projectId) : item.name
 
 				// If no projectName, it's from a non-TickTick/Session app - use the app name
-				if (!name && item.value !== 'No Data') {
+				if (!name && item.id !== 'No Data') {
 					const sourceToAppName: Record<string, string> = {
 						'FocusRecordSession': 'Session',
 						'FocusRecordBeFocused': 'Be Focused',
@@ -198,9 +200,9 @@ const DetailsCard = () => {
 		}
 
 		return { progressBarData: data, aggregationResults };
-	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById]);
+	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById, focusDurationForInterval]);
 
-	const getCoreDetailsCard = (fromModal) => {
+	const getCoreDetailsCard = (fromModal: boolean) => {
 		return (
 			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative">
 				<div className="flex gap-4">
@@ -277,7 +279,7 @@ const DetailsCard = () => {
 								paddingAngle={getPieChartPaddingAngle(progressBarData.length)}
 								dataKey="percentage"
 							>
-								{progressBarData.map((entry, index) => (
+								{progressBarData.map((entry: { id: string; color?: string }, index: number) => (
 									<Cell
 										key={entry.id ? `${entry.id}-index` : index}
 										fill={entry.color}
@@ -288,7 +290,9 @@ const DetailsCard = () => {
 								<Label
 									position="center"
 									fill="white"
-									content={({ viewBox }) => {
+									content={(props: { viewBox?: unknown }) => {
+										const viewBox = props.viewBox as { cx?: number; cy?: number } | undefined;
+										if (!viewBox || !viewBox.cx || !viewBox.cy) return null;
 										const { cx, cy } = viewBox;
 
 										// In Recharts, the Label component inside a Pie (or other chart types) does not support rendering HTML elements such as <div> directly because it operates within an SVG context. This is why "svg" elements like "<text>" are used instead to display the HTML elements.
@@ -357,7 +361,6 @@ const DetailsCard = () => {
 			<Modal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
-				position="top-center"
 				customClasses="!w-[1000px]"
 			>
 				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>

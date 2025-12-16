@@ -4,9 +4,24 @@ import { useGetProjectsQuery } from '../../../../../services/resources/projectsA
 import NestedProgressBars from './NestedProgressBars';
 import Accordion from '../../../../../components/Accordion/Accordion';
 import { getFormattedDuration } from '../../../../../utils/helpers.utils';
+import type { ProgressBarItemData, AggregationResults, EmotionProgressBarData } from '../../../../../types/stats';
+import type { AncestorTask } from '../../../../../types/api';
 
 interface ProgressBarListProps {
-	data: Array<any>;
+	data: ProgressBarItemData[];
+	dataByTasks?: ProgressBarItemData[];
+	dataType: string;
+	fromModal: boolean;
+	setIsModalOpen: (open: boolean) => void;
+	focusDurationForInterval: number;
+	sortBy: string;
+	showNestedProgressBars?: boolean;
+	ancestorTasksById?: Record<string, AncestorTask>;
+	metricType?: 'duration' | 'count';
+	aggregationResults?: AggregationResults | Record<string, AggregationResults>;
+	intervalStartDate: string;
+	intervalEndDate: string;
+	byEmotionWithTasks?: Record<string, EmotionProgressBarData>;
 }
 
 const ProgressBarList: React.FC<ProgressBarListProps> = ({
@@ -14,7 +29,6 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	dataByTasks,
 	dataType,
 	fromModal,
-	isModalOpen,
 	setIsModalOpen,
 	focusDurationForInterval,
 	sortBy,
@@ -38,11 +52,13 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 
 	// Data is already grouped by parent in CompletionStatsCard for completed tasks
 	// So we just sort and display it here
-	const sortedData = [...data].sort((a, b) => {
+	const sortedData = [...data].sort((a: ProgressBarItemData, b: ProgressBarItemData) => {
 		// Primary sort: by metric value
+		const valueA = (a[metricKey] as number) || 0;
+		const valueB = (b[metricKey] as number) || 0;
 		const metricDiff = sortBy === 'Focus Hours: Most-Least' || sortBy === 'Tasks: Most-Least'
-			? b[metricKey] - a[metricKey]
-			: a[metricKey] - b[metricKey];
+			? valueB - valueA
+			: valueA - valueB;
 
 		// If metrics are equal, sort alphabetically by name
 		if (metricDiff === 0) {
@@ -72,17 +88,18 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			>
 				{/* Special handling for Emotion dataType with nested view */}
 				{dataType === 'Emotion' && shouldShowNestedView && byEmotionWithTasks && aggregationResults ? (
-					sortedData.slice(0, maxDataLen).map((emotion) => {
+					sortedData.slice(0, maxDataLen).map((emotion: ProgressBarItemData) => {
 						const emotionId = emotion.id;
 						const emotionData = byEmotionWithTasks[emotionId];
-						const emotionAggregation = aggregationResults[emotionId];
+						const aggregationByEmotion = aggregationResults as Record<string, AggregationResults>;
+						const emotionAggregation = aggregationByEmotion[emotionId];
 
 						if (!emotionData || !emotionAggregation) {
 							return null;
 						}
 
 						// Enrich project data with names and colors
-						const enrichedByProject = emotionData.byProject.map((project) => {
+						const enrichedByProject = emotionData.byProject.map((project: ProgressBarItemData) => {
 							const projectId = project.id;
 							let name = projectsById?.[projectId]?.name;
 
@@ -140,7 +157,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 										fromModal={fromModal}
 										setIsModalOpen={setIsModalOpen}
 										sortBy={sortBy}
-										projectsById={projectsById}
+										projectsById={projectsById || {}}
 										sessionCategoriesById={sessionCategoriesById}
 										metricType={metricType}
 										intervalStartDate={intervalStartDate}
@@ -152,29 +169,25 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 					})
 				) : shouldShowNestedView ? (
 					<NestedProgressBars
-						{...{
-							data,
-							dataByTasks,
-							dataType,
-							focusDurationForInterval,
-							fromModal,
-							isModalOpen,
-							setIsModalOpen,
-							sortBy,
-							projectsById,
-							sessionCategoriesById,
-							ancestorTasksById,
-							metricType,
-							aggregationResults,
-							intervalStartDate,
-							intervalEndDate,
-							byEmotionWithTasks
-						}}
+						data={data}
+						dataByTasks={dataByTasks}
+						dataType={dataType}
+						focusDurationForInterval={focusDurationForInterval}
+						fromModal={fromModal}
+						setIsModalOpen={setIsModalOpen}
+						sortBy={sortBy}
+						projectsById={projectsById || {}}
+						sessionCategoriesById={sessionCategoriesById}
+						ancestorTasksById={ancestorTasksById || {}}
+						metricType={metricType}
+						aggregationResults={aggregationResults as AggregationResults}
+						intervalStartDate={intervalStartDate}
+						intervalEndDate={intervalEndDate}
 					/>
 				) : (
 					sortedData
 						.slice(0, maxDataLen)
-						.map((item) => <ProgressBar key={item.id} item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />)
+						.map((item: ProgressBarItemData) => <ProgressBar key={item.id} item={item} projectsById={projectsById || {}} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById || {}} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />)
 				)}
 			</div>
 

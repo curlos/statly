@@ -1,7 +1,7 @@
 export interface DropdownProps {
 	isVisible: boolean;
 	setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-	toggleRef: React.MutableRefObject<null>;
+	toggleRef: React.RefObject<HTMLElement>;
 	customClasses?: string;
 	align?: 'left' | 'right';
 	innerClickElemRefs?: React.RefObject<HTMLElement>[];

@@ -22,8 +22,6 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 		return null;
 	}
 
-	console.log(chosenChallenge)
-
 	const { name, completedDate } = chosenChallenge;
 
 	const imgSrc =

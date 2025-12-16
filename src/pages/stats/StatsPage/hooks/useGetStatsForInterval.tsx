@@ -3,6 +3,12 @@ import { useGetFocusStatsQuery, useGetTasksStatsQuery } from '../../../../servic
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
+import type {
+	TaskStatsByDayItem,
+	FocusStatsByDayItem,
+	TaskStatsByRecordItem,
+	FocusStatsByRecordItem
+} from '../../../../types/api';
 
 interface UseGetStatsForIntervalOptions {
 	dataType: 'duration' | 'count' | 'completedTasks';
@@ -119,18 +125,20 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 		// Get the appropriate data array based on group-by parameter
 		const rawData = statsData.byDay || statsData.byWeek || statsData.byMonth || statsData.byYear || statsData.byRecord || [];
 
-		return rawData.map((item: any) => {
+		return rawData.map((item: TaskStatsByDayItem | FocusStatsByDayItem | TaskStatsByRecordItem | FocusStatsByRecordItem) => {
 			let name = '';
 
 			if (selectedGroupedInterval === 'Days') {
 				// Backend returns YYYY-MM-DD format for days
-				const [year, month, dayNum] = item.date.split('-').map(Number);
+				const dateItem = item as TaskStatsByDayItem | FocusStatsByDayItem;
+				const [year, month, dayNum] = dateItem.date.split('-').map(Number);
 				const date = new Date(year, month - 1, dayNum);
 				name = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 			} else if (selectedGroupedInterval === 'Weeks') {
 				// Backend returns "January 1, 2025" format (Monday of the week)
 				// Display as "Jan 1 - Jan 7, 2025" (start of week to end of week)
-				const startDate = new Date(item.date);
+				const dateItem = item as TaskStatsByDayItem | FocusStatsByDayItem;
+				const startDate = new Date(dateItem.date);
 				const endDate = new Date(startDate);
 				endDate.setDate(endDate.getDate() + 6); // Add 6 days to get Sunday
 
@@ -139,14 +147,17 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 				name = `${startStr} - ${endStr}`;
 			} else if (selectedGroupedInterval === 'Months') {
 				// Backend returns "January 2025" format
-				name = item.date;
+				const dateItem = item as TaskStatsByDayItem | FocusStatsByDayItem;
+				name = dateItem.date;
 			} else if (selectedGroupedInterval === 'Years') {
 				// Backend returns year as string (e.g., "2025")
-				name = item.date;
+				const dateItem = item as TaskStatsByDayItem | FocusStatsByDayItem;
+				name = dateItem.date;
 			} else if (selectedGroupedInterval === 'Records') {
 				// For Records: X-axis shows just date, tooltip shows full date + time range
-				const startDate = new Date(item.startTime);
-				const endDate = new Date(item.endTime);
+				const recordItem = item as TaskStatsByRecordItem | FocusStatsByRecordItem;
+				const startDate = new Date(recordItem.startTime);
+				const endDate = new Date(recordItem.endTime);
 
 				// Check if record spans multiple days
 				const startDay = getFormattedShortMonthDay(startDate);
@@ -163,27 +174,31 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 
 			// Return different data shape based on dataType
 			if (dataType === 'duration') {
+				const focusItem = item as FocusStatsByDayItem | FocusStatsByRecordItem;
+				const isRecordItem = 'startTime' in focusItem;
 				return {
 					name,
-					fullName: selectedGroupedInterval === 'Records'
-						? `${name}\n${new Date(item.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} - ${new Date(item.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`
+					fullName: selectedGroupedInterval === 'Records' && isRecordItem
+						? `${name}\n${new Date(focusItem.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} - ${new Date(focusItem.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`
 						: name,
-					seconds: item.duration,
-					startTime: item.startTime,
-					endTime: item.endTime,
+					seconds: focusItem.duration,
+					startTime: isRecordItem ? focusItem.startTime : undefined,
+					endTime: isRecordItem ? focusItem.endTime : undefined,
 				};
 			} else if (dataType === 'count') {
+				const countItem = item as FocusStatsByDayItem | FocusStatsByRecordItem;
 				return {
 					name,
 					fullName: name,
-					score: item.count || 0,
+					score: countItem.count || 0,
 				};
 			} else {
 				// dataType === 'completedTasks'
+				const taskItem = item as TaskStatsByDayItem | TaskStatsByRecordItem;
 				return {
 					name,
 					fullName: name,
-					score: item.count || 0,
+					score: taskItem.count || 0,
 				};
 			}
 		});

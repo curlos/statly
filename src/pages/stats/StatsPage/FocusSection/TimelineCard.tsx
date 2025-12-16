@@ -53,13 +53,18 @@ const TimelineCard = () => {
 	);
 };
 
-const CustomWeekPicker = ({ selectedDates, setSelectedDates }) => {
+interface CustomWeekPickerProps {
+	selectedDates: Date[];
+	setSelectedDates: (dates: Date[]) => void;
+}
+
+const CustomWeekPicker: React.FC<CustomWeekPickerProps> = ({ selectedDates, setSelectedDates }) => {
 	const dropdownTimeCalenderRef = useRef(null);
 	const [isDropdownTimeCalendarVisible, setIsDropdownTimeCalendarVisible] = useState(false);
 
 	const { chosenColorObj } = useThemeContext();
 
-	const [date, setDate] = useState(selectedDates && selectedDates.length > 0 ? selectedDates[0] : new Date());
+	const [date, setDate] = useState<Date | null>(selectedDates && selectedDates.length > 0 ? selectedDates[0] : new Date());
 
 	return (
 		<div className="flex items-center gap-2">

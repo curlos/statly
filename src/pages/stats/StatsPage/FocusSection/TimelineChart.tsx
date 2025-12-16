@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import {
 	convertTo12HourFormat,
@@ -8,136 +8,159 @@ import {
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import ReactApexChart from 'react-apexcharts';
 import apexchart from 'apexcharts';
+import type { FocusStatsResponse, FocusRecordDetail } from '../../../../types/api';
 
-const TimelineChart = ({ selectedDates, statsData }) => {
-	const focusRecords = statsData?.records || [];
+interface ApexChartTooltipParams {
+	seriesIndex: number;
+	dataPointIndex: number;
+	w: {
+		globals: {
+			series: number[][];
+			seriesNames: string[];
+		};
+	};
+}
+
+interface DailyHourBlock {
+	seconds: number;
+}
+
+interface TimelineChartProps {
+	selectedDates: Date[];
+	statsData?: FocusStatsResponse;
+}
+
+const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData }) => {
+	const focusRecords = useMemo(() => statsData?.records || [], [statsData?.records]);
 
 	// Create series in reverse order (12:00 AM at top, 11:00 PM at bottom)
-	const DEFAULT_SERIES = Array.from({ length: 24 }, (_, i) => {
+	const DEFAULT_SERIES = useMemo(() => Array.from({ length: 24 }, (_, i) => {
 		const startHour = convertTo12HourFormat(`${i.toString().padStart(2, '0')}:00`);
 		return {
 			name: startHour, // Y-axis label shows just start hour
 			data: Array.from({ length: 7 }, () => 0),
 		};
-	}).reverse();
+	}).reverse(), []);
 
 	const [series, setSeries] = useState(DEFAULT_SERIES);
 
 	const chartId = 'timeline';
 	const { chosenColorName, chosenColorVariantsObj, chosenColorObj } = useThemeContext();
 
-	const getColorScaleRanges = () => {
-		return [
-			{ from: 0, to: 0, color: '#2f2f2f', name: '0m' },
-			{ from: 1, to: 600, color: chosenColorVariantsObj[`${chosenColorName}-100`].hexColor, name: '0m-10m' }, // 100
-			{ from: 601, to: 1200, color: chosenColorVariantsObj[`${chosenColorName}-300`].hexColor, name: '10m-20m' }, // 300
-			{ from: 1201, to: 1800, color: chosenColorVariantsObj[`${chosenColorName}-400`].hexColor, name: '20m-30m' }, // 400
-			{ from: 1801, to: 2400, color: chosenColorVariantsObj[`${chosenColorName}-500`].hexColor, name: '30m-40m' }, // 500
-			{ from: 2401, to: 3000, color: chosenColorVariantsObj[`${chosenColorName}-600`].hexColor, name: '40m-50m' }, // 600
-			{ from: 3001, to: 3600, color: chosenColorVariantsObj[`${chosenColorName}-700`].hexColor, name: '50m-60m' }, // 700
-		];
-	};
+	const options = useMemo(() => {
+		const getColorScaleRanges = () => {
+			return [
+				{ from: 0, to: 0, color: '#2f2f2f', name: '0m' },
+				{ from: 1, to: 600, color: chosenColorVariantsObj[`${chosenColorName}-100`].hexColor, name: '0m-10m' }, // 100
+				{ from: 601, to: 1200, color: chosenColorVariantsObj[`${chosenColorName}-300`].hexColor, name: '10m-20m' }, // 300
+				{ from: 1201, to: 1800, color: chosenColorVariantsObj[`${chosenColorName}-400`].hexColor, name: '20m-30m' }, // 400
+				{ from: 1801, to: 2400, color: chosenColorVariantsObj[`${chosenColorName}-500`].hexColor, name: '30m-40m' }, // 500
+				{ from: 2401, to: 3000, color: chosenColorVariantsObj[`${chosenColorName}-600`].hexColor, name: '40m-50m' }, // 600
+				{ from: 3001, to: 3600, color: chosenColorVariantsObj[`${chosenColorName}-700`].hexColor, name: '50m-60m' }, // 700
+			];
+		};
 
-	const options = {
-		chart: {
-			id: chartId,
-			height: 250,
-			type: 'heatmap',
-			toolbar: {
-				show: false,
+		return {
+			chart: {
+				id: chartId,
+				height: 250,
+				type: 'heatmap',
+				toolbar: {
+					show: false,
+				},
+				background: 'transparent', // Dark background for the chart area
 			},
-			background: 'transparent', // Dark background for the chart area
-		},
-		plotOptions: {
-			heatmap: {
-				enableShades: false,
-				useFillColorAsStroke: true,
-				colorScale: {
-					ranges: getColorScaleRanges(),
+			plotOptions: {
+				heatmap: {
+					enableShades: false,
+					useFillColorAsStroke: true,
+					colorScale: {
+						ranges: getColorScaleRanges(),
+					},
 				},
 			},
-		},
-		dataLabels: {
-			enabled: false,
-		},
-		xaxis: {
-			type: 'category',
-			categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-			labels: {
-				style: {
-					colors: '#FFFFFF', // White labels for dark mode
+			dataLabels: {
+				enabled: false,
+			},
+			xaxis: {
+				type: 'category',
+				categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				labels: {
+					style: {
+						colors: '#FFFFFF', // White labels for dark mode
+					},
+				},
+				tooltip: {
+					enabled: false,
+				},
+				axisTicks: {
+					show: true,
+				},
+			},
+			yaxis: {
+				labels: {
+					style: {
+						colors: '#FFFFFF', // White labels for dark mode
+					},
 				},
 			},
 			tooltip: {
-				enabled: false,
-			},
-			axisTicks: {
-				show: true,
-			},
-		},
-		yaxis: {
-			labels: {
-				style: {
-					colors: '#FFFFFF', // White labels for dark mode
-				},
-			},
-		},
-		tooltip: {
-			theme: 'dark',
-			custom: ({ seriesIndex, dataPointIndex, w }) => {
-				const value = w.globals.series[seriesIndex][dataPointIndex];
-				const hourLabel = w.globals.seriesNames[seriesIndex];
+				theme: 'dark',
+				custom: ({ seriesIndex, dataPointIndex, w }: ApexChartTooltipParams) => {
+					const value = w.globals.series[seriesIndex][dataPointIndex];
+					const hourLabel = w.globals.seriesNames[seriesIndex];
 
-				// Get the date for this data point using the dataPointIndex (0-6 for days of week)
-				const date = selectedDates[dataPointIndex];
-				const formattedDate = date ? date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+					// Get the date for this data point using the dataPointIndex (0-6 for days of week)
+					const date = selectedDates[dataPointIndex];
+					const formattedDate = date ? date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
 
-				// Calculate the end hour (next hour)
-				// Extract hour from label like "12:00 AM" or "1:00 PM"
-				const hourMatch = hourLabel.match(/(\d+):00 (AM|PM)/);
-				if (hourMatch) {
-					let hour = parseInt(hourMatch[1]);
-					const period = hourMatch[2];
+					// Calculate the end hour (next hour)
+					// Extract hour from label like "12:00 AM" or "1:00 PM"
+					const hourMatch = hourLabel.match(/(\d+):00 (AM|PM)/);
+					if (hourMatch) {
+						const hour = parseInt(hourMatch[1]);
+						const period = hourMatch[2];
 
-					// Convert to next hour
-					let nextHour;
-					let nextPeriod;
+						// Convert to next hour
+						let nextHour;
+						let nextPeriod;
 
-					if (hour === 12) {
-						nextHour = 1;
-						nextPeriod = period; // 12 AM -> 1 AM, 12 PM -> 1 PM
-					} else if (hour === 11) {
-						nextHour = 12;
-						nextPeriod = period === 'AM' ? 'PM' : 'AM'; // 11 AM -> 12 PM, 11 PM -> 12 AM
-					} else {
-						nextHour = hour + 1;
-						nextPeriod = period;
+						if (hour === 12) {
+							nextHour = 1;
+							nextPeriod = period; // 12 AM -> 1 AM, 12 PM -> 1 PM
+						} else if (hour === 11) {
+							nextHour = 12;
+							nextPeriod = period === 'AM' ? 'PM' : 'AM'; // 11 AM -> 12 PM, 11 PM -> 12 AM
+						} else {
+							nextHour = hour + 1;
+							nextPeriod = period;
+						}
+
+						const endHour = `${nextHour}:00 ${nextPeriod}`;
+
+						return `
+							<div style="padding: 8px; background: black; border-radius: 4px; color: ${chosenColorObj.hexColor};">
+								<div style="margin-bottom: 4px;">${formattedDate}</div>
+								<div style="margin-bottom: 4px;">${hourLabel} - ${endHour}</div>
+								<div style="font-weight: bold;">${getFormattedDuration(value, false)}</div>
+							</div>
+						`;
 					}
-
-					const endHour = `${nextHour}:00 ${nextPeriod}`;
 
 					return `
 						<div style="padding: 8px; background: black; border-radius: 4px; color: ${chosenColorObj.hexColor};">
 							<div style="margin-bottom: 4px;">${formattedDate}</div>
-							<div style="margin-bottom: 4px;">${hourLabel} - ${endHour}</div>
+							<div style="margin-bottom: 4px;">${hourLabel}</div>
 							<div style="font-weight: bold;">${getFormattedDuration(value, false)}</div>
 						</div>
 					`;
-				}
-
-				return `
-					<div style="padding: 8px; background: black; border-radius: 4px; color: ${chosenColorObj.hexColor};">
-						<div style="margin-bottom: 4px;">${formattedDate}</div>
-						<div style="margin-bottom: 4px;">${hourLabel}</div>
-						<div style="font-weight: bold;">${getFormattedDuration(value, false)}</div>
-					</div>
-				`;
+				},
 			},
-		},
-		legend: {
-			show: false,
-		},
-	};
+			legend: {
+				show: false,
+			},
+		};
+	}, [selectedDates, chosenColorObj.hexColor, chosenColorName, chosenColorVariantsObj]);
 
 	useEffect(() => {
 		if (focusRecords.length === 0) {
@@ -151,8 +174,8 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 		const newSeries = DEFAULT_SERIES.map(s => ({ ...s, data: [...s.data] }));
 
 		// Group records by date - a record can span multiple days, so add it to all affected days
-		const recordsByDate: Record<string, any[]> = {};
-		focusRecords.forEach((record: any) => {
+		const recordsByDate: Record<string, FocusRecordDetail[]> = {};
+		focusRecords.forEach((record) => {
 			const startTime = new Date(record.startTime);
 			const endTime = new Date(record.endTime);
 
@@ -183,10 +206,10 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 			const recordsForTheDay = recordsByDate[dateKey] || [];
 
 			// Create hour blocks for the day
-			const newDailyHourBlocks = getDailyHourBlocks();
+			const newDailyHourBlocks = getDailyHourBlocks() as Record<string, DailyHourBlock>;
 
 			// Fill hour blocks with durations from records
-			recordsForTheDay.forEach((record: any) => {
+			recordsForTheDay.forEach((record) => {
 				const startTime = new Date(record.startTime);
 				const endTime = new Date(record.endTime);
 
@@ -217,9 +240,9 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 
 			// Update series data
 			// Since series is reversed (12 AM at top), we need to reverse the index mapping
-			Object.values(newDailyHourBlocks).forEach((dailyHourBlock: any, index: number) => {
+			Object.values(newDailyHourBlocks).forEach((dailyHourBlock, index: number) => {
 				const reversedIndex = 23 - index; // Hour 0 -> index 23, Hour 23 -> index 0
-				newSeries[reversedIndex].data[dayIndex] = dailyHourBlock.seconds;
+				newSeries[reversedIndex].data[dayIndex] = (dailyHourBlock as DailyHourBlock).seconds;
 			});
 		}
 
@@ -229,11 +252,11 @@ const TimelineChart = ({ selectedDates, statsData }) => {
 			tooltip: options.tooltip
 		}, false, false);
 		setSeries(newSeries);
-	}, [focusRecords, selectedDates]);
+	}, [focusRecords, selectedDates, DEFAULT_SERIES, options.tooltip]);
 
 	return (
 		<div className="relative">
-			<ReactApexChart options={options} series={series} type="heatmap" height={310} />
+			<ReactApexChart options={options as ApexCharts.ApexOptions} series={series} type="heatmap" height={310} />
 		</div>
 	);
 };
