@@ -74,14 +74,31 @@ interface UserFormProps {
 	mode: 'login' | 'register';
 }
 
+interface LoginFormData {
+	email: string;
+	password: string;
+}
+
+interface SignupFormData extends LoginFormData {
+	name: string;
+	confirmPassword: string;
+}
+
+interface FormError {
+	data?: {
+		message?: string;
+	};
+	message?: string;
+}
+
 const UserForm: React.FC<UserFormProps> = ({ mode }) => {
-	const [submitError, setSubmitError] = useState(null);
+	const [submitError, setSubmitError] = useState<string | null>(null);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm();
+	} = useForm<SignupFormData>();
 
 	// Selecting the correct mutation based on the mode
 	const [loginUser, { isLoading: isLoginLoading }] = useLoginUserMutation();
@@ -92,18 +109,19 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 	// Use different validation rules based on mode
 	const validationRules = mode === 'login' ? loginValidationRules : signupValidationRules;
 
-	const onSubmit = async (data: any) => {
+	const onSubmit = async (data: LoginFormData | SignupFormData) => {
 		try {
 			setSubmitError(null);
 			if (mode === 'login') {
-				await loginUser(data).unwrap();
+				await loginUser(data as LoginFormData).unwrap();
 			} else {
-				await registerUser(data).unwrap();
+				await registerUser(data as SignupFormData).unwrap();
 			}
 
 			navigate('/focus-records');
 		} catch (error) {
-			setSubmitError(error?.data?.message || error?.message || 'An error occurred. Please try again.');
+			const err = error as FormError;
+			setSubmitError(err?.data?.message || err?.message || 'An error occurred. Please try again.');
 		}
 	};
 
@@ -123,7 +141,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 					type="text"
 					placeholder="Name"
 					iconName="person"
-					register={register('name', validationRules.name)}
+					register={register('name', (validationRules as typeof signupValidationRules).name)}
 					error={errors.name}
 				/>
 			)}
@@ -150,7 +168,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 					placeholder="Confirm Password"
 					iconName="lock"
 					register={register('confirmPassword', {
-						...validationRules.confirmPassword,
+						...(validationRules as typeof signupValidationRules).confirmPassword,
 						validate: (value, formValues) => value === formValues.password || 'Passwords do not match'
 					})}
 					error={errors.confirmPassword}

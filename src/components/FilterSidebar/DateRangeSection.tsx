@@ -8,20 +8,22 @@ import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralS
 import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangePicker';
 import { useThemeContext } from '../../contexts/useThemeContext';
 
+type IntervalOption = 'Day' | 'Week' | 'Month' | 'Year' | 'All' | 'Custom';
+
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const { chosenColorObj } = useThemeContext();
 	const startDateFromUrl = searchParams.get('start-date');
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
-	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
+	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState<boolean>(false);
 
-	const [startDate, setStartDate] = useState(startDateFromUrl ? new Date(startDateFromUrl) : new Date());
-	const [endDate, setEndDate] = useState(new Date(endDateFromUrl));
-	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
-	const [selectedInterval, setSelectedInterval] = useState(intervalFromUrl);
-	const [selectedDates, setSelectedDates] = useState([startDate]);
-	const [isInitialMount, setIsInitialMount] = useState(true);
+	const [startDate, setStartDate] = useState<Date>(startDateFromUrl ? new Date(startDateFromUrl) : new Date());
+	const [endDate, setEndDate] = useState<Date>(new Date(endDateFromUrl));
+	const selectedIntervalOptions: IntervalOption[] = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
+	const [selectedInterval, setSelectedInterval] = useState<string>(intervalFromUrl);
+	const [selectedDates, setSelectedDates] = useState<Date[]>([startDate]);
+	const [isInitialMount, setIsInitialMount] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (isInitialMount) {
@@ -71,13 +73,6 @@ const DateRangeSection = () => {
 							selected={selectedInterval}
 							setSelected={setSelectedInterval}
 							selectedOptions={selectedIntervalOptions}
-							onClick={(name) => {
-								// if (name?.toLowerCase() !== 'custom') {
-								// 	return;
-								// }
-								// TODO: Show FormPickDateRange potentially when "Custom" is clicked.
-								// setIsModalPickDateRangeOpen(true);
-							}}
 							isDropdownOpenForParent={isDropdownOpenForParent}
 							setIsDropdownOpenForParent={setIsDropdownOpenForParent}
 						/>

@@ -100,12 +100,15 @@ const AppliedFilterItemList = () => {
 		isLoadingGetProjects,
 	]);
 
-	const getUrlNamesStr = (commaSeparatedStr, obj, entityPropToGetValue) => {
+	const getUrlNamesStr = (commaSeparatedStr: string | null, obj: Record<string, unknown> | undefined, entityPropToGetValue: string) => {
 		const commaSeparatedArr = commaSeparatedStr ? commaSeparatedStr.split(',') : [];
-		const namesArr = [];
+		const namesArr: string[] = [];
 
 		commaSeparatedArr.forEach((key) => {
-			const name = obj?.[key]?.[entityPropToGetValue] || key;
+			const value = obj?.[key];
+			const name = (value && typeof value === 'object' && entityPropToGetValue in value)
+				? (value as Record<string, unknown>)[entityPropToGetValue] as string
+				: key;
 			namesArr.push(name);
 		});
 
@@ -252,7 +255,7 @@ const AppliedFilterItemList = () => {
 				<div className="flex flex-wrap gap-3">
 					{nonDefaultFilterList.map((nonDefaultFilter) => {
 						const { name, value, handleRemove } = nonDefaultFilter;
-						return <AppliedFilterItem key={name + value} name={name} value={value} onRemove={handleRemove} />;
+						return <AppliedFilterItem key={name + value} name={name} value={value || ''} onRemove={handleRemove} />;
 					})}
 				</div>
 			)}
@@ -260,7 +263,7 @@ const AppliedFilterItemList = () => {
 	);
 };
 
-const getStrInBulletPointsMD = (strArr) => {
+const getStrInBulletPointsMD = (strArr: string[]) => {
 	return strArr
 		.map((item, index) => {
 			// Append a newline if the item is not the last in the array

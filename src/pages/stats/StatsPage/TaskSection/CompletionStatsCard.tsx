@@ -15,6 +15,7 @@ import Spinner from '../../../../components/Loaders/Spinner';
 import { groupTasksByParent } from '../../../../utils/taskGrouping.utils';
 import { aggregateNestedTasksByParent } from '../../../../utils/nestedTaskAggregation.utils';
 import { getPieChartPaddingAngle } from '../../../../utils/pieChart.utils';
+import type { AggregationResults } from '../../../../types/stats';
 
 const noData = [
 	{
@@ -59,8 +60,8 @@ const CompletionStatsCard = () => {
 	// Build query params for API using custom hook
 	const queryParams = useStatsQueryParams({
 		'group-by': selected === 'Project' ? 'project' : 'task',
-		'interval-start-date': apiStartDate,
-		'interval-end-date': apiEndDate,
+		'interval-start-date': apiStartDate ?? undefined,
+		'interval-end-date': apiEndDate ?? undefined,
 		'nested': showNestedProgressBars,
 	});
 
@@ -89,7 +90,7 @@ const CompletionStatsCard = () => {
 			? (statsData?.byProject && statsData.byProject.length > 0 ? statsData.byProject : noData)
 			: (statsData?.byTask && statsData.byTask.length > 0 ? statsData.byTask : noData);
 
-		let aggregationResults = null;
+		let aggregationResults: AggregationResults | null = null;
 
 		// Group tasks by parent based on view mode
 		if (selected === 'Task' && ancestorTasksById && data?.[0]?.id !== 'No Data') {
@@ -104,7 +105,7 @@ const CompletionStatsCard = () => {
 					'count',
 					projectsById,
 					totalCompletedTasks
-				);
+				) as AggregationResults;
 				data = aggregationResults.aggregatedData;
 			} else {
 				// Use simple flat aggregation for non-nested view
@@ -126,7 +127,7 @@ const CompletionStatsCard = () => {
 					'count',
 					projectsById,
 					totalCompletedTasks
-				);
+				) as AggregationResults;
 			}
 		}
 
@@ -286,16 +287,15 @@ const CompletionStatsCard = () => {
 							dataByTasks={statsData?.byTask}
 							dataType={selected}
 							fromModal={fromModal}
-							isModalOpen={isModalOpen}
 							setIsModalOpen={setIsModalOpen}
 							focusDurationForInterval={totalCompletedTasks}
 							sortBy={sortBy}
 							showNestedProgressBars={showNestedProgressBars}
 							ancestorTasksById={ancestorTasksById}
 							metricType="count"
-							aggregationResults={aggregationResults}
-							intervalStartDate={apiStartDate}
-							intervalEndDate={apiEndDate}
+							aggregationResults={aggregationResults ?? undefined}
+							intervalStartDate={apiStartDate ?? ''}
+							intervalEndDate={apiEndDate ?? ''}
 						/>
 					</div>
 				</div>

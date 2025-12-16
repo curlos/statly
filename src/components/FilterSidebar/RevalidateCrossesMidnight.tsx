@@ -4,6 +4,21 @@ import { useState } from 'react';
 import Tooltip from '../Tooltip';
 import Spinner from '../Loaders/Spinner';
 
+interface RevalidationResult {
+	updated: number;
+	falseToTrue: number;
+	trueToFalse: number;
+	unchanged: number;
+	failed: number;
+}
+
+interface RevalidationError {
+	data?: {
+		message?: string;
+	};
+	message?: string;
+}
+
 const RevalidateCrossesMidnight = () => {
 	const [isRevalidating, setIsRevalidating] = useState(false);
 
@@ -26,15 +41,16 @@ const RevalidateCrossesMidnight = () => {
 			setIsRevalidating(true);
 
 			// Process all records in single request
-			const revalidationResult = await revalidateCrossesMidnight({ timezone }).unwrap();
+			const revalidationResult = await revalidateCrossesMidnight({ timezone }).unwrap() as RevalidationResult;
 
 			// Show summary
 			const message = `Revalidation complete!\n\nUpdated: ${revalidationResult.updated.toLocaleString()} records\n  • Changed false → true: ${revalidationResult.falseToTrue.toLocaleString()}\n  • Changed true → false: ${revalidationResult.trueToFalse.toLocaleString()}\n\nUnchanged: ${revalidationResult.unchanged.toLocaleString()} records\nFailed: ${revalidationResult.failed.toLocaleString()} records`;
 
 			alert(message);
 		} catch (error) {
-			console.error('Error revalidating crossesMidnight:', error);
-			const errorMessage = error?.data?.message || 'Failed to revalidate records';
+			const err = error as RevalidationError;
+			console.error('Error revalidating crossesMidnight:', err);
+			const errorMessage = err?.data?.message || 'Failed to revalidate records';
 			alert(`Error: ${errorMessage}`);
 		} finally {
 			setIsRevalidating(false);

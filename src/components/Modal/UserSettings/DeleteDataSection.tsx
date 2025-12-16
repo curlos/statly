@@ -17,7 +17,7 @@ const DeleteDataSection = () => {
 	const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 	const [deleteCategory, setDeleteCategory] = useState<DeleteCategory | null>(null);
 
-	const { data: documentCounts, refetch: refetchCounts } = useGetDocumentCountsQuery(undefined);
+	const { data: documentCounts } = useGetDocumentCountsQuery(undefined);
 	const [deleteFocusRecords, { isLoading: isDeletingFocusRecords }] = useDeleteFocusRecordsMutation();
 	const [deleteTasks, { isLoading: isDeletingTasks }] = useDeleteTasksMutation();
 	const [deleteProjects, { isLoading: isDeletingProjects }] = useDeleteProjectsMutation();

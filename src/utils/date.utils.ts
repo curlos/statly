@@ -1,9 +1,9 @@
-export const setTimeOnDateString = (dateString, timeString) => {
+export const setTimeOnDateString = (dateString: string | Date, timeString?: string) => {
 	// Parse the existing date string to get a Date object
 	const date = new Date(dateString);
 
 	// Function to check if the date is in DST for Eastern Time
-	const isDST = (date) => {
+	const isDST = (date: Date) => {
 		const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
 		const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
 		return date.getTimezoneOffset() < Math.max(jan, jul);
@@ -12,9 +12,9 @@ export const setTimeOnDateString = (dateString, timeString) => {
 	if (timeString) {
 		// Extract hours and minutes from the time string (formatted as "HH:mm AM/PM")
 		const [time, period] = timeString.split(' ');
-		let [hours, minutes] = time.split(':');
-		hours = parseInt(hours);
-		minutes = parseInt(minutes);
+		const [hoursStr, minutesStr] = time.split(':');
+		let hours = parseInt(hoursStr);
+		const minutes = parseInt(minutesStr);
 
 		// Convert 12-hour format to 24-hour if necessary
 		if (period === 'PM' && hours !== 12) {
@@ -37,7 +37,7 @@ export const setTimeOnDateString = (dateString, timeString) => {
 	return date;
 };
 
-export const getTimeString = (dateToUse) => {
+export const getTimeString = (dateToUse?: Date) => {
 	const date = dateToUse || new Date();
 	let hours = date.getHours();
 	const minutes = date.getMinutes();
@@ -54,15 +54,15 @@ export const getTimeString = (dateToUse) => {
 	return `${hours}:${minutesStr} ${ampm}`;
 };
 
-export const formatDateTime = (dateTimeStr) => {
+export const formatDateTime = (dateTimeStr: string | Date) => {
 	const date = new Date(dateTimeStr);
 
 	// Extracting hours and minutes for the time without leading zeros
-	const optionsTime = { hour: 'numeric', minute: 'numeric', hour12: true };
+	const optionsTime: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
 	const time = date.toLocaleTimeString('en-US', optionsTime);
 
 	// Extracting the day and month for the date
-	const optionsDate = { month: 'long', day: 'numeric' };
+	const optionsDate: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
 	const day = date.toLocaleDateString('en-US', optionsDate);
 
 	return { time, day };
@@ -81,19 +81,19 @@ export function areDatesEqual(date1: Date | null, date2: Date | null) {
 	return datesEqual;
 }
 
-export const formatCheckedInDayDate = (inputDate) => {
+export const formatCheckedInDayDate = (inputDate: Date) => {
 	return inputDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 };
 
-export const getFormattedLongDay = (inputDate) => {
+export const getFormattedLongDay = (inputDate: Date) => {
 	return inputDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 };
 
-export const getFormattedShortMonthDay = (inputDate) => {
+export const getFormattedShortMonthDay = (inputDate: Date) => {
 	return inputDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
 
-export const getCalendarMonth = (year, month, weeksInCalendar = 6) => {
+export const getCalendarMonth = (year: number, month: number, weeksInCalendar: number = 6) => {
 	const calendar = [];
 	// Create date at noon to avoid timezone issues
 	const firstDayOfMonth = new Date(year, month, 1, 12, 0, 0);
@@ -118,18 +118,17 @@ export const getCalendarMonth = (year, month, weeksInCalendar = 6) => {
 };
 
 // TODO: Add a second, optional parameter in this function so that we can get X amount of days instead of only the surrounding week.
-export const getAllDaysInWeekFromDate = (date) => {
-	let result = [];
-	let dayOfWeek = date.getDay(); // Get day of the week (0 is Sunday, 1 is Monday, etc.)
-	let start = new Date(date); // Copy date to avoid mutating the original date
-	let end = new Date(date);
+export const getAllDaysInWeekFromDate = (date: Date) => {
+	const result: Date[] = [];
+	const dayOfWeek = date.getDay(); // Get day of the week (0 is Sunday, 1 is Monday, etc.)
+	const start = new Date(date); // Copy date to avoid mutating the original date
 
 	// Adjust start date to the previous Monday
 	start.setDate(start.getDate() - ((dayOfWeek + 6) % 7));
 
 	// Loop for 7 days from the start date to get the full week
 	for (let i = 0; i < 7; i++) {
-		let day = new Date(start);
+		const day = new Date(start);
 		day.setDate(day.getDate() + i);
 		result.push(day);
 	}
@@ -137,13 +136,13 @@ export const getAllDaysInWeekFromDate = (date) => {
 	return result;
 };
 
-export const getAllDaysInMonthFromDate = (date) => {
-	let result = [];
-	let year = date.getFullYear(); // Get the year of the date
-	let month = date.getMonth(); // Get the month of the date (0-indexed)
+export const getAllDaysInMonthFromDate = (date: Date) => {
+	const result: Date[] = [];
+	const year = date.getFullYear(); // Get the year of the date
+	const month = date.getMonth(); // Get the month of the date (0-indexed)
 
 	// Calculate the number of days in the month
-	let daysInMonth = new Date(year, month + 1, 0).getDate();
+	const daysInMonth = new Date(year, month + 1, 0).getDate();
 
 	// Loop through all days of the month
 	for (let day = 1; day <= daysInMonth; day++) {
@@ -153,14 +152,14 @@ export const getAllDaysInMonthFromDate = (date) => {
 	return result;
 };
 
-export const getAllDaysInYearFromDate = (date) => {
-	let result = [];
-	let year = date.getFullYear(); // Get the year of the date
+export const getAllDaysInYearFromDate = (date: Date) => {
+	const result: Date[] = [];
+	const year = date.getFullYear(); // Get the year of the date
 
 	// Loop through all months of the year
 	for (let month = 0; month < 12; month++) {
 		// Calculate the number of days in the month
-		let daysInMonth = new Date(year, month + 1, 0).getDate();
+		const daysInMonth = new Date(year, month + 1, 0).getDate();
 
 		// Loop through all days of the month
 		for (let day = 1; day <= daysInMonth; day++) {
@@ -177,10 +176,10 @@ export const getAllDaysInYearFromDate = (date) => {
  * @param {Date} endDate - The end date of the range.
  * @returns {Date[]} An array of all dates between the start and end date.
  */
-export const getAllDaysInRange = (startDate, endDate) => {
+export const getAllDaysInRange = (startDate: Date, endDate: Date) => {
 	const dates = [];
 	// Normalize to noon to avoid timezone issues
-	let currentDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 12, 0, 0);
+	const currentDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 12, 0, 0);
 	const normalizedEndDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 12, 0, 0);
 
 	while (currentDate <= normalizedEndDate) {
@@ -191,7 +190,7 @@ export const getAllDaysInRange = (startDate, endDate) => {
 	return dates;
 };
 
-export const getAllDatesInYear = (year) => {
+export const getAllDatesInYear = (year: number) => {
 	const startDate = new Date(year, 0, 1); // January 1st (month is 0-indexed)
 	const endDate = new Date(year, 11, 31); // December 31st
 	const dates = [];
@@ -204,7 +203,7 @@ export const getAllDatesInYear = (year) => {
 };
 
 export const getDailyHourBlocks = () => {
-	const hourBlocks = {};
+	const hourBlocks: Record<string, { from: string; to: string; seconds: number }> = {};
 
 	// Loop over each hour of the day
 	for (let hour = 0; hour < 24; hour++) {
@@ -223,7 +222,7 @@ export const getDailyHourBlocks = () => {
 	return hourBlocks;
 };
 
-export const convertTo12HourFormat = (hour24) => {
+export const convertTo12HourFormat = (hour24: string) => {
 	// Convert the hour string to an integer
 	const hour = parseInt(hour24.substring(0, 2), 10);
 
@@ -237,16 +236,16 @@ export const convertTo12HourFormat = (hour24) => {
 	return `${hour12}:00 ${suffix}`;
 };
 
-export const getAllMonths = (date) => {
-    let months = [];
+export const getAllMonths = (date: Date) => {
+    const months: Date[] = [];
     const year = date.getFullYear(); // Extract the year from the date
     const day = date.getDate(); // Extract the day from the date
 
     for (let month = 0; month < 12; month++) {
         // Handle cases where the day does not exist in the month by using the last day of the month
-        let testDate = new Date(year, month + 1, 0); // Gets the last day of this month
-        let finalDay = day > testDate.getDate() ? testDate.getDate() : day; // Use the smaller of the provided day or the last day of the month
-        
+        const testDate = new Date(year, month + 1, 0); // Gets the last day of this month
+        const finalDay = day > testDate.getDate() ? testDate.getDate() : day; // Use the smaller of the provided day or the last day of the month
+
         months.push(new Date(year, month, finalDay)); // Create the date with the final day
     }
     return months;
@@ -279,7 +278,7 @@ export const getFormattedDateAndTimeForFileName = () => {
  * @param selectedDates Array of dates from the date range picker
  * @returns Object with startDate and endDate as ISO strings (YYYY-MM-DD)
  */
-export const getDateRangeFromSelectedDates = (selectedDates) => {
+export const getDateRangeFromSelectedDates = (selectedDates: Date[]) => {
 	if (!selectedDates || selectedDates.length === 0) {
 		return { startDate: null, endDate: null };
 	}
@@ -313,14 +312,14 @@ export const formatDateWithoutTimezone = (dateString: string): string => {
 	});
 };
 
-export const parseDateRange = (rangeType, rangeValue) => {
-  const parseMonthYear = (str) => {
+export const parseDateRange = (rangeType: string, rangeValue: string) => {
+  const parseMonthYear = (str: string) => {
     const [monthName, year] = str.split(" ");
     const month = new Date(`${monthName} 1, ${year}`).getMonth();
     return { month, year: parseInt(year) };
   };
 
-  const parseWeek = (str) => {
+  const parseWeek = (str: string) => {
     const [startStr, endStr] = str.split(" - ");
     return [new Date(startStr), new Date(endStr)];
   };

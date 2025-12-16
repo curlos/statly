@@ -1,32 +1,36 @@
 import { useEffect, useRef } from 'react';
 
 // This hook now takes an additional parameter `setState` which is the state setter function for updating dimensions
-const useResizeObserver = (ref, setState, dimensions = 'width') => {
-	const observer = useRef(null);
+const useResizeObserver = (
+	ref: React.RefObject<HTMLElement>,
+	setState: (value: number | Record<string, number>) => void,
+	dimensions: string | string[] = 'width'
+) => {
+	const observer = useRef<ResizeObserver | null>(null);
 
 	useEffect(() => {
 		observer.current = new ResizeObserver((entries) => {
-			for (let entry of entries) {
+			for (const entry of entries) {
 				if (Array.isArray(dimensions)) {
-					const newState = {};
+					const newState: Record<string, number> = {};
 
-					for (let dimension of dimensions) {
+					for (const dimension of dimensions) {
 						const computedStyle = getComputedStyle(entry.target);
-						let size = parseFloat(computedStyle[dimension]);
+						const size = parseFloat(computedStyle[dimension as keyof CSSStyleDeclaration] as string);
 						newState[dimension] = size;
 					}
 
 					setState(newState);
 				} else {
 					const computedStyle = getComputedStyle(entry.target);
-					let size = parseFloat(computedStyle[dimensions]);
+					const size = parseFloat(computedStyle[dimensions as keyof CSSStyleDeclaration] as string);
 					setState(size);
 				}
 			}
 		});
 
 		const currentRef = ref.current;
-		if (currentRef) {
+		if (currentRef && observer.current) {
 			observer.current.observe(currentRef);
 		}
 
@@ -35,7 +39,7 @@ const useResizeObserver = (ref, setState, dimensions = 'width') => {
 				observer.current.disconnect();
 			}
 		};
-	}, [ref, setState]);
+	}, [ref, setState, dimensions]);
 
 	return observer.current;
 };

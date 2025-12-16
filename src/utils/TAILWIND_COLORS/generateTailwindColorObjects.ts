@@ -1,12 +1,31 @@
 import { TAILWIND_COLORS_STR } from './TAILWIND_COLORS_STR';
 
+interface TailwindColorVariant {
+	textColor: string;
+	bgColor: string;
+	bgColorHalfOpacity: string;
+	borderColor: string;
+	outlineColor: string;
+	hexColor: string | null;
+	hover: {
+		textColor: string;
+		bgColor: string;
+		bgColorHalfOpacity: string;
+		borderColor: string;
+		outlineColor: string;
+	};
+	focus: {
+		outlineColor: string;
+	};
+}
+
 /**
  * @description Generates a gigantic color object using the string of copy and pasted TailwindCSS colors from their color's page. This is necessary so that I can generate the colors object, copy that, and then paste it into the "TAILWIND_COLORS_OBJ.ts" file so that when Tailwind runs through the colors, it sees that the literal string is present and thus JIT won't screw me over. I would prefer to dynamically create the classNames such as "text-${colorName}-500" but JIT will not be able to detect that this is a real color due to how they match their strings. So, this giant object has to be created. I also didn't want to disable JIT as I still think it's mostly useful for reducing bloat.
  * @returns {Object}
  */
 export const generateTailwindColorObjects = () => {
 	const colorLines = TAILWIND_COLORS_STR.split('\n');
-	const colors = {};
+	const colors: Record<string, Record<string, TailwindColorVariant>> = {};
 	let currentColorGroupName = '';
 
 	colorLines.forEach((line, i) => {
@@ -54,4 +73,4 @@ export const generateTailwindColorObjects = () => {
 	return colors;
 };
 
-const isNumber = (value) => typeof value === 'number' || (typeof value === 'string' && !isNaN(Number(value)));
+const isNumber = (value: unknown): value is number | string => typeof value === 'number' || (typeof value === 'string' && !isNaN(Number(value)));

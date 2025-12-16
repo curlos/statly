@@ -20,35 +20,38 @@ export function secondsToHoursAndMinutes(seconds: number) {
  * @param {string} keyProperty - The property of the objects to use as keys in the resulting object.
  * @returns {Object} An object with keys derived from each object's specified property and values as the objects themselves.
  */
-export function arrayToObjectByKey(array: any[], keyProperty: string) {
+export function arrayToObjectByKey<T>(array: T[], keyProperty: string): Record<string, T> {
 	return array.reduce((acc, obj) => {
 		// Use the value of the specified property as the key
-		const key = keyProperty ? obj[keyProperty] : obj;
+		const key = keyProperty ? String((obj as Record<string, unknown>)[keyProperty]) : String(obj);
 		// Assign the entire object as the value for this key
 		acc[key] = obj;
 		return acc;
-	}, {});
+	}, {} as Record<string, T>);
 }
 
-export function debounce(func, wait, immediate = null) {
-	var timeout;
-	var cancelled = false; // flag to check if the debounce was cancelled
+interface DebouncedFunction<T extends unknown[]> {
+	(this: unknown, ...args: T): void;
+	cancel: () => void;
+}
 
-	var debounced = function () {
-		var context = this,
-			args = arguments;
-		var later = function () {
+export function debounce<T extends unknown[]>(func: (...args: T) => void, wait: number, immediate: boolean | null = null): DebouncedFunction<T> {
+	let timeout: ReturnType<typeof setTimeout> | null = null;
+	let cancelled = false; // flag to check if the debounce was cancelled
+
+	const debounced = function (this: unknown, ...args: T) {
+		const later = () => {
 			timeout = null;
-			if (!immediate && !cancelled) func.apply(context, args);
+			if (!immediate && !cancelled) func.apply(this, args);
 		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
+		const callNow = immediate && !timeout;
+		if (timeout !== null) clearTimeout(timeout);
 		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
+		if (callNow) func.apply(this, args);
+	} as DebouncedFunction<T>;
 
 	debounced.cancel = function () {
-		clearTimeout(timeout);
+		if (timeout !== null) clearTimeout(timeout);
 		cancelled = true; // set the flag
 	};
 
@@ -66,7 +69,7 @@ export function formatTimeToHoursMinutesSeconds(seconds: number) {
 	return { hours, minutes, seconds: secondsRemaining };
 }
 
-export const getFormattedDuration = (duration, includeSeconds = true, includeMinutes = true) => {
+export const getFormattedDuration = (duration: number, includeSeconds: boolean = true, includeMinutes: boolean = true) => {
 	if (!duration) {
 		return includeSeconds ? '0s' : includeMinutes ? '0m' : '0h';
 	}
@@ -85,8 +88,8 @@ export const getFormattedDuration = (duration, includeSeconds = true, includeMin
 	return `${hoursStr}${minutesStr}${secondsStr}`;
 };
 
-export const toTitleCase = (str) => {
-	return str.replace(/\w\S*/g, (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase());
+export const toTitleCase = (str: string) => {
+	return str.replace(/\w\S*/g, (text: string) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase());
 };
 
 export const isFromServer = () => typeof window === 'undefined';
@@ -100,15 +103,15 @@ export const isFromServer = () => typeof window === 'undefined';
  * ...
  * }
  */
-export const getCommaSeparatedObj = (commaSeparatedStr) => {
+export const getCommaSeparatedObj = (commaSeparatedStr: string | undefined): Record<string, boolean> => {
 	if (!commaSeparatedStr) {
 		return {};
 	}
 
 	const commaSeparatedStrArr = commaSeparatedStr.split(',');
-	const commaSeparatedObj = {};
+	const commaSeparatedObj: Record<string, boolean> = {};
 
-	for (let value of commaSeparatedStrArr) {
+	for (const value of commaSeparatedStrArr) {
 		commaSeparatedObj[value] = true;
 	}
 
