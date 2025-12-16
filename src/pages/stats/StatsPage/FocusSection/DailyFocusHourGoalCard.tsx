@@ -1,5 +1,3 @@
-import DailyHoursFocusGoal from '../../../focus-hours-goal/DailyHoursFocusGoal';
-
 const DailyHoursFocusGoalCard = () => {
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg h-full w-full">

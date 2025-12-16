@@ -1,5 +1,4 @@
 import FocusRecordsCurveCard from '../OverviewSection/FocusRecordsCurveCard';
-import DailyHoursFocusGoalCard from './DailyFocusHourGoalCard';
 import DetailsCard from './DetailsCard/DetailsCard';
 import MostFocusedTimeCard from './MostFocusedTimeCard';
 import OverviewCard from './OverviewCard';

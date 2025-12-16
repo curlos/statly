@@ -35,7 +35,9 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 				setSelectedDates(getAllDaysInYearFromDate(firstDay));
 				break;
 			case 'Custom':
-				setSelectedDates(getAllDaysInRange(startDate, endDate));
+				if (startDate && endDate) {
+					setSelectedDates(getAllDaysInRange(startDate, endDate));
+				}
 				break;
 		}
 	}, [selectedInterval, startDate, endDate]);
@@ -78,7 +80,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 			case 'Year':
 				return firstDay.toLocaleString('default', { year: 'numeric' });
 			case 'Custom':
-				return `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`;
+				return startDate && endDate ? `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}` : '';
 		}
 	};
 

@@ -20,6 +20,8 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 	const [numPagesToShow, setNumPagesToShow] = useState(9); // Maximum number of pages to display in the paginator
 
 	useEffect(() => {
+		if (!width) return;
+
 		if (width < 400) {
 			setNumPagesToShow(1);
 		} else if (width < 576) {
@@ -174,7 +176,13 @@ const InBetweenPages: React.FC<InBetweenPagesProps> = ({ currentPage, setCurrent
 	);
 };
 
-const DropdownCustomPageNumber: React.FC<DropdownProps> = ({
+interface DropdownCustomPageNumberProps extends DropdownProps {
+	currentPage: number;
+	setCurrentPage: (page: number) => void;
+	totalPages: number;
+}
+
+const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 	toggleRef,
 	isVisible,
 	setIsVisible,
@@ -223,7 +231,7 @@ const DropdownCustomPageNumber: React.FC<DropdownProps> = ({
 					className={classNames(
 						'mt-2 w-full rounded-md py-1 cursor-pointer p-3',
 						chosenColorObj.bgColor,
-						nextDarkestColorObj.hover.bgColor
+						(nextDarkestColorObj || chosenColorObj).hover.bgColor
 					)}
 				>
 					Ok

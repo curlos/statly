@@ -12,10 +12,11 @@ interface InfiniteScrollSelectorProps<T extends string | number> {
 const InfiniteScrollSelector = <T extends string | number>({ items, unit, selectedValue, setSelectedValue }: InfiniteScrollSelectorProps<T>) => {
 	const { chosenColorObj } = useThemeContext();
 
-	const scrollRef = useRef(null);
+	const scrollRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
 		const scrollElement = scrollRef.current;
+		if (!scrollElement) return;
 
 		const handleScroll = () => {
 			const { scrollTop, scrollHeight, clientHeight } = scrollElement;
@@ -35,10 +36,11 @@ const InfiniteScrollSelector = <T extends string | number>({ items, unit, select
 		const itemsCopy = [...items, ...items, ...items]; // Triple the items
 		const middleThirdStart = items.length; // Start of the middle third
 		const selectedIndex = itemsCopy.indexOf(selectedValue, middleThirdStart); // Find index in the middle third
-		const itemHeight = scrollElement.firstChild.firstChild.offsetHeight; // Assuming each item has the same height
+		const firstChild = scrollElement.firstChild?.firstChild as HTMLElement | null;
+		const itemHeight = firstChild?.offsetHeight || 0; // Assuming each item has the same height
 
 		// Scroll to the selected item
-		if (selectedIndex >= 0) {
+		if (selectedIndex >= 0 && itemHeight > 0) {
 			const scrollTarget = itemHeight * selectedIndex;
 			scrollElement.scrollTop = scrollTarget - scrollElement.clientHeight / 2 + itemHeight / 2;
 		}

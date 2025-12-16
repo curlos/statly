@@ -108,6 +108,8 @@ export interface OverviewStatsResponse {
 	todayFocusDuration: number;
 	totalProjectsCount: number;
 	activeDays: number;
+	firstCompletedTaskDate?: string;
+	firstFocusRecordDate?: string;
 }
 
 export interface TaskStatsResponse {

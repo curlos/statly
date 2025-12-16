@@ -96,7 +96,7 @@ const FormPickDateRange: React.FC<FormPickDateRangeProps> = ({
 					<button
 						className={classNames(
 							chosenColorObj.bgColor,
-							nextDarkestColorObj.hover.bgColor,
+							(nextDarkestColorObj || chosenColorObj).hover.bgColor,
 							'rounded py-1 cursor-pointer min-w-[114px]'
 						)}
 						onClick={async () => {
@@ -129,7 +129,6 @@ const DateInput: React.FC<DateInputProps> = ({
 	labelName,
 	date,
 	setDate,
-	isDropdownCalendarOpenForParent,
 	setIsDropdownCalendarOpenForParent
 }) => {
 	const dropdownTimeCalenderRef = useRef(null);
@@ -146,7 +145,7 @@ const DateInput: React.FC<DateInputProps> = ({
 					onClick={() => {
 						setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible);
 
-						if (isDropdownCalendarOpenForParent !== undefined) {
+						if (setIsDropdownCalendarOpenForParent) {
 							setIsDropdownCalendarOpenForParent(!isDropdownTimeCalendarVisible);
 						}
 					}}
@@ -164,12 +163,12 @@ const DateInput: React.FC<DateInputProps> = ({
 					setIsVisible={(value) => {
 						setIsDropdownTimeCalendarVisible(value);
 
-						if (isDropdownCalendarOpenForParent !== undefined) {
+						if (setIsDropdownCalendarOpenForParent) {
 							setIsDropdownCalendarOpenForParent(value);
 						}
 					}}
 					date={date}
-					setDate={setDate}
+					setDate={setDate as React.Dispatch<React.SetStateAction<Date | null>>}
 				/>
 			</div>
 		</div>

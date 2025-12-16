@@ -12,7 +12,7 @@ const ShowRecordsFromEmotionSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const { searchParams } = useSearchParamsContext();
 	const emotionsFromUrl = searchParams.get('emotions');
-	const emotionsByName = getCommaSeparatedObj(emotionsFromUrl);
+	const emotionsByName = getCommaSeparatedObj(emotionsFromUrl ?? undefined);
 	const { handleEmotionTagClick } = useHandleEmotionTagClick();
 
 	return (
@@ -48,7 +48,7 @@ const ShowRecordsFromEmotionSection = () => {
 							<Icon
 								name={isChecked ? 'check_box' : 'check_box_outline_blank'}
 								fill={1}
-								customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
+								customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
 							/>
 							<EmotionTag
 								emotionObj={{ emotion: emotion.id, score: 0 }}

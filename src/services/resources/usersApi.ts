@@ -20,7 +20,7 @@ export const usersApi = baseAPI.injectEndpoints({
 				return response;
 			},
 			// Handle side effects or update the cache after successful registration
-			onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
+			onQueryStarted: async (_arg, { queryFulfilled, dispatch }) => {
 				try {
 					const { data } = await queryFulfilled;
 					// Update user slice state on successful registration
@@ -40,7 +40,7 @@ export const usersApi = baseAPI.injectEndpoints({
 			transformResponse: (response: AuthResponse) => {
 				return response;
 			},
-			onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
+			onQueryStarted: async (_arg, { queryFulfilled, dispatch }) => {
 				try {
 					const { data } = await queryFulfilled;
 					// Update user slice state on successful login

@@ -16,7 +16,7 @@ const CheckboxOther: React.FC<CheckboxOtherProps> = ({ name, showValue, handleCh
 			<Icon
 				name={showValue ? 'check_box' : 'check_box_outline_blank'}
 				fill={1}
-				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
+				customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
 			/>
 			<div>{name}</div>
 		</div>
