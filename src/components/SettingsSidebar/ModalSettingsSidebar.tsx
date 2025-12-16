@@ -1,7 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import SettingsSidebar from './SettingsSidebar';
 
-const ModalSettingsSidebar = ({ isOpen, setIsOpen, page }) => {
+interface ModalSettingsSidebarProps {
+	isOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
+	page: string;
+}
+
+const ModalSettingsSidebar: React.FC<ModalSettingsSidebarProps> = ({ isOpen, setIsOpen, page }) => {
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
 		visible: { opacity: 0.3, transition: { duration: 0.3 } },

@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { navigate } from 'vike/client/router';
+import type { RootState } from '../../store/store';
 import Icon from '../Icon';
 import SyncSection from './SyncSection';
 import UserProfileSection from './UserProfileSection';
@@ -11,7 +12,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 
 const SidebarModal = () => {
 	const dispatch = useDispatch();
-	const isSidebarModalOpen = useSelector((state: any) => state.modals.modals.ModalSidebar?.isOpen);
+	const isSidebarModalOpen = useSelector((state: RootState) => state.modals.modals.ModalSidebar?.isOpen);
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 
@@ -28,7 +29,13 @@ const SidebarModal = () => {
 		visible: { opacity: 0.7, transition: { duration: 0.3 } },
 	};
 
-	const LinkLi = ({ name, linkUrl, iconName }) => {
+	interface LinkLiProps {
+		name: string;
+		linkUrl: string;
+		iconName?: string;
+	}
+
+	const LinkLi: React.FC<LinkLiProps> = ({ name, linkUrl, iconName }) => {
 		return (
 			<div
 				className="group flex items-center gap-2 cursor-pointer"
@@ -50,7 +57,7 @@ const SidebarModal = () => {
 	const getMedalsLinkUrl = () => {
 		if (dateInterval !== 'All' && startDate && endDate) {
 			return buildUrlWithQueryParams(
-				{ 'start-date': startDate, 'end-date': endDate, 'date-interval': dateInterval },
+				{ 'start-date': startDate, 'end-date': endDate, 'date-interval': dateInterval || '' },
 				'/medals/focus/daily',
 				false // Don't preserve existing params from current page
 			);

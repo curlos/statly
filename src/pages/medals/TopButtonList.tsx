@@ -3,7 +3,12 @@ import { navigate } from 'vike/client/router';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { usePageContext } from 'vike-react/usePageContext';
 
-const TopButtonList = ({ BUTTONS_OBJ, isForInterval = true }) => {
+interface TopButtonListProps {
+	BUTTONS_OBJ: Array<{ name: string; urlName: string }>;
+	isForInterval?: boolean;
+}
+
+const TopButtonList: React.FC<TopButtonListProps> = ({ BUTTONS_OBJ, isForInterval = true }) => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, bgColorHalfOpacity } = chosenColorObj;
@@ -26,7 +31,14 @@ const TopButtonList = ({ BUTTONS_OBJ, isForInterval = true }) => {
 	);
 };
 
-const TopButton = ({ buttonObj, selectedButtonStyle, unselectedButtonStyle, isForInterval }) => {
+interface TopButtonProps {
+	buttonObj: { name: string; urlName: string };
+	selectedButtonStyle: string;
+	unselectedButtonStyle: string;
+	isForInterval: boolean;
+}
+
+const TopButton: React.FC<TopButtonProps> = ({ buttonObj, selectedButtonStyle, unselectedButtonStyle, isForInterval }) => {
 	const pageContext = usePageContext();
 	const { type, interval } = pageContext.routeParams;
 

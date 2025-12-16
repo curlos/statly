@@ -3,7 +3,19 @@ import Dropdown from '../../../components/Dropdown/Dropdown';
 import Icon from '../../../components/Icon';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
-const DropdownGeneralSelect = ({
+interface DropdownGeneralSelectProps {
+	toggleRef: React.RefObject<HTMLElement>;
+	isVisible: boolean;
+	setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	customClasses?: string;
+	selected: string;
+	setSelected: (selected: string) => void;
+	selectedOptions: string[];
+	onClick?: (name: string) => void;
+	align?: 'left' | 'right';
+}
+
+const DropdownGeneralSelect: React.FC<DropdownGeneralSelectProps> = ({
 	toggleRef,
 	isVisible,
 	setIsVisible,
@@ -18,7 +30,7 @@ const DropdownGeneralSelect = ({
 	const { chosenColorObj } = themeContext;
 	const { textColor } = chosenColorObj;
 
-	const SelectOption = ({ name }) => {
+	const SelectOption = ({ name }: { name: string }) => {
 		return (
 			<div
 				className="flex items-center justify-between hover:bg-color-gray-300 p-2 rounded-md cursor-pointer"

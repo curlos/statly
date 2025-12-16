@@ -22,4 +22,8 @@ const store = configureStore({
 		getDefaultMiddleware().concat(baseAPI.middleware).concat(rtkQueryErrorMiddleware), // Add middleware for RTK Query and error handling
 });
 
+// Export types
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
 export default store;

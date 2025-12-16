@@ -4,7 +4,14 @@ import SyncButton from '../../components/SyncButton';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 
-const FilterBar = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isFetching = false }) => {
+interface FilterBarProps {
+	showFilterSidebar: boolean;
+	setShowFilterSidebar: (show: boolean) => void;
+	headerContent: React.ReactNode;
+	isFetching?: boolean;
+}
+
+const FilterBar: React.FC<FilterBarProps> = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isFetching = false }) => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 

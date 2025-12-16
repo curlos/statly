@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 import Icon from '../Icon';
 import ModalSettingsSidebar from '../SettingsSidebar/ModalSettingsSidebar';
 import ChecklistTimerIcon from '../ChecklistTimerIcon';
 import { setModalState } from '../../slices/modalSlice';
 import ModalFilterSidebar from '../FilterSidebar/ModalFilterSidebar';
 
-const Navbar = ({ page = null, showFilterSidebarIcon = false }) => {
+const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
 	const dispatch = useDispatch();
-	const isSidebarModalOpen = useSelector((state: any) => state.modals.modals.ModalSidebar?.isOpen);
+	const isSidebarModalOpen = useSelector((state: RootState) => state.modals.modals.ModalSidebar?.isOpen);
 	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
 	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store/store';
 
 export interface BatchStatus {
 	batchIndex: number;
@@ -61,12 +62,12 @@ const importProgressSlice = createSlice({
 export const { setBatches, updateBatch, setModalOpen, resetImport } = importProgressSlice.actions;
 
 // Selectors
-export const selectImportBatches = (state: any) => state.importProgress.batches;
-export const selectImportModalOpen = (state: any) => state.importProgress.isModalOpen;
-export const selectImportCancelled = (state: any) => state.importProgress.isCancelled;
-export const selectIsImporting = (state: any) => {
+export const selectImportBatches = (state: RootState) => state.importProgress.batches;
+export const selectImportModalOpen = (state: RootState) => state.importProgress.isModalOpen;
+export const selectImportCancelled = (state: RootState) => state.importProgress.isCancelled;
+export const selectIsImporting = (state: RootState) => {
 	const batches = state.importProgress.batches;
-	return batches.some((batch: BatchStatus) => batch.status === 'importing' || batch.status === 'idle');
+	return batches.some((batch) => batch.status === 'importing' || batch.status === 'idle');
 };
 
 export default importProgressSlice.reducer;

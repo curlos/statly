@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { RootState } from '../store/store';
 
 type SyncStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -47,9 +48,9 @@ const syncSlice = createSlice({
 export const { setShowFirstSyncModal, setSyncStatus, resetSyncStatus } = syncSlice.actions;
 
 // Selectors
-export const selectShowFirstSyncModal = (state: any) => state.sync.showFirstSyncModal;
-export const selectSyncStatus = (state: any) => state.sync.syncStatus;
-export const selectIsSyncing = (state: any) => {
+export const selectShowFirstSyncModal = (state: RootState) => state.sync.showFirstSyncModal;
+export const selectSyncStatus = (state: RootState) => state.sync.syncStatus;
+export const selectIsSyncing = (state: RootState) => {
 	const syncStatus = state.sync.syncStatus;
 	return (
 		syncStatus.projects === 'loading' ||

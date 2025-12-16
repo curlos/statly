@@ -1,9 +1,9 @@
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
+import type { RootState } from '../../../store/store';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
 import Icon from '../../../components/Icon';
-import SidebarModal from '../../../components/SidebarModal/SidebarModal';
 import { useState } from 'react';
 import ModalFilterSidebar from '../../../components/FilterSidebar/ModalFilterSidebar';
 import ChecklistTimerIcon from '../../../components/ChecklistTimerIcon';
@@ -23,7 +23,7 @@ const TopBar = () => {
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
 
-	const isSidebarModalOpen = useSelector((state: any) => state.modals.modals.ModalSidebar?.isOpen);
+	const isSidebarModalOpen = useSelector((state: RootState) => state.modals.modals.ModalSidebar?.isOpen);
 	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);
 
 	const queryParamsObj = Object.keys(pageContext.urlParsed.search).length > 0 ? pageContext.urlParsed.search : {};

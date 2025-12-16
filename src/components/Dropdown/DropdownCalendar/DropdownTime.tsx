@@ -1,10 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Dropdown from '../Dropdown';
 import classNames from 'classnames';
 import InfiniteScrollSelector from '../../InfiniteScrollSelector';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 
-const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSelectedTime, customClasses }) => {
+interface DropdownTimeProps {
+	toggleRef: React.RefObject<HTMLElement>;
+	isVisible: boolean;
+	setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	selectedTime: string;
+	setSelectedTime: (time: string) => void;
+	customClasses?: string;
+}
+
+const DropdownTime: React.FC<DropdownTimeProps> = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSelectedTime, customClasses }) => {
 	const defaultTime = extractTimeDetails(selectedTime);
 
 	const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
@@ -15,11 +24,7 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 	const [selectedMinute, setSelectedMinute] = useState(defaultTime.minutes);
 	const [selectedPeriod, setSelectedPeriod] = useState(defaultTime.period);
 
-	useEffect(() => {
-		handleTimeSelection();
-	}, [selectedHour, selectedMinute, selectedPeriod]);
-
-	const handleTimeSelection = () => {
+	const handleTimeSelection = useCallback(() => {
 		let time = `${selectedHour}:${selectedMinute} ${selectedPeriod}`;
 
 		if (!selectedHour || !selectedMinute || !selectedPeriod) {
@@ -27,7 +32,11 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 		}
 
 		setSelectedTime(time);
-	};
+	}, [selectedHour, selectedMinute, selectedPeriod, setSelectedTime]);
+
+	useEffect(() => {
+		handleTimeSelection();
+	}, [handleTimeSelection]);
 
 	const { chosenColorObj } = useThemeContext();
 
@@ -76,7 +85,7 @@ const DropdownTime = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSel
 
 export default DropdownTime;
 
-const extractTimeDetails = (timeStr) => {
+const extractTimeDetails = (timeStr: string) => {
 	if (!timeStr) {
 		return {
 			hours: '',

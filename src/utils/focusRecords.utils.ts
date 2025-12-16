@@ -1,6 +1,7 @@
 import { getFormattedLongDay, formatDateTime } from './date.utils';
 import { getFormattedDuration } from './helpers.utils';
 import { EMOTIONS } from './constants/constants.utils';
+import type { FocusRecord, Task, TaskTickTick, Project } from '../types/models';
 
 const sourceToAppName: Record<string, string> = {
 	'FocusRecordSession': 'Session',
@@ -18,10 +19,10 @@ const sourceToAppName: Record<string, string> = {
  * @param projectsById - Optional map of project IDs to project objects for getting project names
  */
 export const serializeFocusRecordToMarkdown = (
-	record: any,
+	record: FocusRecord,
 	showFocusRecordEmotions: boolean = true,
-	ancestorTasksById?: Record<string, any>,
-	projectsById?: Record<string, any>
+	ancestorTasksById?: Record<string, Task>,
+	projectsById?: Record<string, Project>
 ) => {
 	const { startTime, endTime, duration, tasks, completedTasks, note, emotions, source } = record;
 
@@ -47,7 +48,7 @@ export const serializeFocusRecordToMarkdown = (
 
 	// Tasks
 	if (tasks && tasks.length > 0) {
-		tasks.forEach((task: any) => {
+		tasks.forEach((task) => {
 			const taskStartTimeObj = formatDateTime(task.startTime);
 			const taskEndTimeObj = formatDateTime(task.endTime);
 			const taskTimeRange = `${taskStartTimeObj.time} - ${taskEndTimeObj.time}`;
@@ -59,13 +60,13 @@ export const serializeFocusRecordToMarkdown = (
 			if (ancestorTasksById && task.taskId) {
 				const parentTask = ancestorTasksById[task.taskId];
 				if (parentTask) {
-					const parentTaskTitle = parentTask.title || parentTask.content || task.title;
+					const parentTaskTitle = parentTask.title || (parentTask as TaskTickTick).content || task.title;
 					const ancestorIds = parentTask.ancestorIds?.filter((id: string) => id !== task.taskId) || [];
 
 					// Build breadcrumb trail
 					const breadcrumbs = ancestorIds.map((ancestorId: string) => {
 						const ancestorTask = ancestorTasksById[ancestorId];
-						return ancestorTask?.title || ancestorTask?.content || ancestorId;
+						return ancestorTask?.title || (ancestorTask as TaskTickTick)?.content || ancestorId;
 					});
 
 					// Format: **MainTask** > Ancestor1 > Ancestor2
@@ -92,7 +93,7 @@ export const serializeFocusRecordToMarkdown = (
 	if (completedTasks && completedTasks.length > 0) {
 		lines.push(''); // Add blank line for separation
 		lines.push(`###### ✅ Completed Tasks`);
-		completedTasks.forEach((task: any) => {
+		completedTasks.forEach((task) => {
 			lines.push(`- [x] ${task.title}`);
 		});
 	}
@@ -102,7 +103,7 @@ export const serializeFocusRecordToMarkdown = (
 		if (emotions && emotions.length > 0) {
 			lines.push(''); // Add blank line for separation
 			lines.push(`###### ❤️ Emotions`);
-			emotions.forEach((emotionObj: any) => {
+			emotions.forEach((emotionObj) => {
 				const emotionData = EMOTIONS[emotionObj.emotion as keyof typeof EMOTIONS];
 				const emoji = emotionData?.emoji || '';
 				const emotionName = emotionData?.name || emotionObj.emotion.toUpperCase();

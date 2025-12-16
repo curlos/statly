@@ -5,13 +5,17 @@ import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Accordion from '../Accordion/Accordion';
 
-const SortBySection = ({ sortByOptions }) => {
+interface SortBySectionProps {
+	sortByOptions: string[];
+}
+
+const SortBySection: React.FC<SortBySectionProps> = ({ sortByOptions }) => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const sortBy = searchParams.get('sort-by');
 
 	const { chosenColorObj } = useThemeContext();
 
-	const isSortByOptionChecked = (sortByOption) => {
+	const isSortByOptionChecked = (sortByOption: string) => {
 		if (sortByOption === 'Newest' && !sortBy) {
 			return true;
 		}

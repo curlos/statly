@@ -1,7 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import FilterSidebar from './FilterSidebar';
 
-const ModalFilterSidebar = ({ isOpen, setIsOpen, sortByOptions, page }) => {
+interface ModalFilterSidebarProps {
+	isOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
+	sortByOptions?: string[];
+	page: string;
+}
+
+const ModalFilterSidebar: React.FC<ModalFilterSidebarProps> = ({ isOpen, setIsOpen, sortByOptions, page }) => {
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
 		visible: { opacity: 0.3, transition: { duration: 0.3 } },

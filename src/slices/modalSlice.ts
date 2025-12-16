@@ -1,28 +1,43 @@
 // src/features/modals/modalSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const DEFAULT_MODAL_STATE = {
+interface ModalState {
+	isOpen: boolean;
+	props: Record<string, unknown>;
+}
+
+interface ModalsState {
+	modals: Record<string, ModalState>;
+}
+
+const DEFAULT_MODAL_STATE: ModalState = {
 	isOpen: false,
 	props: {},
 };
 
-const MODAL_IDS = [
+const MODAL_IDS: string[] = [
 	'ModalErrorMessenger',
 	'ModalSidebar',
 ];
 
-const initialState = {
+const initialState: ModalsState = {
 	modals: MODAL_IDS.reduce((acc, modalId) => {
 		acc[modalId] = { ...DEFAULT_MODAL_STATE };
 		return acc;
-	}, {}),
+	}, {} as Record<string, ModalState>),
 };
+
+interface SetModalStatePayload {
+	modalId: string;
+	isOpen?: boolean;
+	props?: Record<string, unknown>;
+}
 
 const modalSlice = createSlice({
 	name: 'modals',
 	initialState,
 	reducers: {
-		setModalState: (state, action) => {
+		setModalState: (state, action: PayloadAction<SetModalStatePayload>) => {
 			const { modalId, isOpen, props } = action.payload;
 			state.modals[modalId].isOpen = isOpen ? isOpen : DEFAULT_MODAL_STATE.isOpen;
 			state.modals[modalId].props = props ? props : DEFAULT_MODAL_STATE.props;
@@ -31,7 +46,7 @@ const modalSlice = createSlice({
 			state.modals = MODAL_IDS.reduce((acc, modalId) => {
 				acc[modalId] = { ...DEFAULT_MODAL_STATE };
 				return acc;
-			}, {});
+			}, {} as Record<string, ModalState>);
 		},
 	},
 });

@@ -11,7 +11,13 @@ import { useUserSettingsContext } from '../../pages/focus-records/useUserSetting
 import OtherSectionMedals from '../FilterSidebar/OtherSectionMedals';
 import FocusHoursGoalPageSettingsSection from '../FilterSidebar/FocusHoursGoalPageSettingsSection';
 
-const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
+interface SettingsSidebarProps {
+	setIsOpen: (isOpen: boolean) => void;
+	page: string;
+	useSlidingMotion?: boolean;
+}
+
+const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useSlidingMotion = true }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -31,7 +37,7 @@ const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 			initial="hidden"
 			animate="visible"
 			exit="hidden"
-			variants={useSlidingMotion && sidebarVariants}
+			variants={useSlidingMotion ? sidebarVariants : undefined}
 			className={classNames(
 				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 w-[85%] max-w-[400px]',
 			)}
@@ -94,8 +100,8 @@ const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 							cardType="Focus"
 							imageSrc={
 								isForChallengesPage
-									? selectedChallengeCardImage?.focus
-									: selectedMedalCardImage?.focus
+									? selectedChallengeCardImage?.focus || ''
+									: selectedMedalCardImage?.focus || ''
 							}
 							page={isForChallengesPage ? 'challenges' : 'medals'}
 						/>
@@ -103,8 +109,8 @@ const SettingsSidebar = ({ setIsOpen, page, useSlidingMotion = true }) => {
 							cardType="Tasks"
 							imageSrc={
 								isForChallengesPage
-									? selectedChallengeCardImage?.tasks
-									: selectedMedalCardImage?.tasks
+									? selectedChallengeCardImage?.tasks || ''
+									: selectedMedalCardImage?.tasks || ''
 							}
 							page={isForChallengesPage ? 'challenges' : 'medals'}
 						/>

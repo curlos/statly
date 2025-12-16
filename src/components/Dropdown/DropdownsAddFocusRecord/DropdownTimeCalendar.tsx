@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { DropdownProps } from '../../../interfaces/interfaces';
 import SelectCalendar from '../../SelectCalendar';
 import Dropdown from '../Dropdown';
@@ -12,6 +12,11 @@ import { debounce } from '../../../utils/helpers.utils';
 interface DropdownTimeCalendarProps extends DropdownProps {
 	date: Date | null;
 	setDate: React.Dispatch<React.SetStateAction<Date | null>>;
+	showTime?: boolean;
+	selectedInterval?: string | null;
+	outerCurrentDate?: Date | null;
+	setSelectedDates?: (dates: Date[]) => void;
+	selectedDates?: Date[];
 }
 
 const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
@@ -33,7 +38,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	const [isDropdownTimeVisible, setIsDropdownTimeVisible] = useState(false);
 	const dropdownTimeRef = useRef(null);
 
-	const [connectedCurrentDate, setConnectedCurrentDate] = useState(outerCurrentDate);
+	const [connectedCurrentDate, setConnectedCurrentDate] = useState<Date>(outerCurrentDate || new Date());
 
 	return (
 		<Dropdown
@@ -50,7 +55,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 						connectedCurrentDate,
 						setConnectedCurrentDate,
 						time: selectedTime,
-						selectedInterval,
+						selectedInterval: selectedInterval || undefined,
 						outerCurrentDate: connectedCurrentDate,
 					}}
 				/>
@@ -77,7 +82,6 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 						setIsVisible={setIsDropdownTimeVisible}
 						selectedTime={selectedTime}
 						setSelectedTime={setSelectedTime}
-						showTimeZoneOption={false}
 						customClasses="mt-[10px]"
 					/>
 				</div>
@@ -98,7 +102,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 				<button
 					className={classNames(
 						chosenColorObj.bgColor,
-						nextDarkestColorObj.hover.bgColor,
+						nextDarkestColorObj?.hover.bgColor,
 						'rounded py-1 cursor-pointer'
 					)}
 					onClick={() => {
@@ -129,28 +133,37 @@ interface SearchDateInputProps {
 	setDueDate: (date: Date | null) => void;
 }
 
+interface DebouncedFunction {
+	(): void;
+	cancel: () => void;
+}
+
 const SearchDateInput: React.FC<SearchDateInputProps> = ({ setConnectedCurrentDate, setDueDate }) => {
 	const [localSearchText, setLocalSearchText] = useState('');
 	const [isInvalidDate, setIsInvalidDate] = useState(false);
 
-	const handleDebouncedSearch = debounce(() => {
-		const newDate = localSearchText ? new Date(localSearchText) : new Date();
+	const handleDebouncedSearch = useMemo(
+		() =>
+			debounce(() => {
+				const newDate = localSearchText ? new Date(localSearchText) : new Date();
 
-		const isDateValid = !isNaN(newDate.getTime());
+				const isDateValid = !isNaN(newDate.getTime());
 
-		if (isDateValid) {
-			const typedInNewDate = localSearchText;
+				if (isDateValid) {
+					const typedInNewDate = localSearchText;
 
-			if (typedInNewDate) {
-				setConnectedCurrentDate(newDate);
-				setDueDate(newDate);
-			}
+					if (typedInNewDate) {
+						setConnectedCurrentDate(newDate);
+						setDueDate(newDate);
+					}
 
-			setIsInvalidDate(false);
-		} else {
-			setIsInvalidDate(true);
-		}
-	}, 1000);
+					setIsInvalidDate(false);
+				} else {
+					setIsInvalidDate(true);
+				}
+			}, 1000) as DebouncedFunction,
+		[localSearchText, setConnectedCurrentDate, setDueDate]
+	);
 
 	useEffect(() => {
 		handleDebouncedSearch();
@@ -158,7 +171,7 @@ const SearchDateInput: React.FC<SearchDateInputProps> = ({ setConnectedCurrentDa
 		return () => {
 			handleDebouncedSearch.cancel();
 		};
-	}, [localSearchText]);
+	}, [handleDebouncedSearch]);
 
 	return (
 		<div className="px-2">

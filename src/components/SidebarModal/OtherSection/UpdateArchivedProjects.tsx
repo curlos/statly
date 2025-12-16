@@ -6,11 +6,12 @@ import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import Accordion from '../../Accordion/Accordion';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
+import type { Project } from '../../../types/models';
 
 const UpdateArchivedProjects = () => {
 	const { chosenColorObj } = useThemeContext();
 	const [updateStatus, setUpdateStatus] = useState('none');
-	const [checkedArchivedProjects, setCheckedArchivedProjects] = useState({});
+	const [checkedArchivedProjects, setCheckedArchivedProjects] = useState<Record<string, boolean>>({});
 
 	const [syncTasksFromArchivedProjects] = useSyncTasksFromArchivedProjectsMutation();
 
@@ -73,14 +74,19 @@ const UpdateArchivedProjects = () => {
 	);
 };
 
-const ArchivedProjectsCheckboxList = ({ checkedArchivedProjects, setCheckedArchivedProjects }) => {
+interface ArchivedProjectsCheckboxListProps {
+	checkedArchivedProjects: Record<string, boolean>;
+	setCheckedArchivedProjects: (projects: Record<string, boolean>) => void;
+}
+
+const ArchivedProjectsCheckboxList: React.FC<ArchivedProjectsCheckboxListProps> = ({ checkedArchivedProjects, setCheckedArchivedProjects }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	// RTK Query - Projects
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
 	const { projectsTickTick } = fetchedProjects || {};
 
-	const [sortedArchivedProjects, setSortedArchivedProjects] = useState([]);
+	const [sortedArchivedProjects, setSortedArchivedProjects] = useState<Project[]>([]);
 
 	const selectedAll = sortedArchivedProjects.every((project) => checkedArchivedProjects[project.id]);
 
@@ -90,12 +96,12 @@ const ArchivedProjectsCheckboxList = ({ checkedArchivedProjects, setCheckedArchi
 		}
 
 		const archivedProjects = projectsTickTick.filter((project) => project.closed);
-		const sortedArchivedProjects = archivedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
+		const sortedArchivedProjects = archivedProjects.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 		setSortedArchivedProjects(sortedArchivedProjects);
 	}, [projectsTickTick, isLoadingGetProjects]);
 
 	const toggleSelectAllArchivedProjects = () => {
-		const newCheckedArchivedProjects = {};
+		const newCheckedArchivedProjects: Record<string, boolean> = {};
 
 		if (selectedAll) {
 			sortedArchivedProjects.map((project) => {
@@ -129,7 +135,7 @@ const ArchivedProjectsCheckboxList = ({ checkedArchivedProjects, setCheckedArchi
 				<div
 					className={classNames(
 						'flex items-center gap-1 mb-2 cursor-pointer',
-						nextLightestColorObj.hover.textColor
+						(nextLightestColorObj || chosenColorObj).hover.textColor
 					)}
 					onClick={toggleSelectAllArchivedProjects}
 				>
@@ -170,7 +176,13 @@ const ArchivedProjectsCheckboxList = ({ checkedArchivedProjects, setCheckedArchi
 	);
 };
 
-const CheckboxArchivedProject = ({ project, checkedArchivedProjects, setCheckedArchivedProjects }) => {
+interface CheckboxArchivedProjectProps {
+	project: Project;
+	checkedArchivedProjects: Record<string, boolean>;
+	setCheckedArchivedProjects: (projects: Record<string, boolean>) => void;
+}
+
+const CheckboxArchivedProject: React.FC<CheckboxArchivedProjectProps> = ({ project, checkedArchivedProjects, setCheckedArchivedProjects }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const isChecked = checkedArchivedProjects[project.id];
 
@@ -187,7 +199,7 @@ const CheckboxArchivedProject = ({ project, checkedArchivedProjects, setCheckedA
 			<Icon
 				name={isChecked ? 'check_box' : 'check_box_outline_blank'}
 				fill={1}
-				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
+				customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
 			/>
 			<div className="flex-1 flex justify-between items-center gap-1">
 				<div>{project.name}</div>

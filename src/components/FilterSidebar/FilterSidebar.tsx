@@ -13,7 +13,15 @@ import ProjectsTickTickSection from './ProjectsTickTickSection';
 import ProjectsTodoistSection from './ProjectsTodoistSection';
 import ShowRecordsFromEmotionSection from './ShowRecordsFromEmotionSection';
 
-const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingMotion = true }) => {
+interface FilterSidebarProps {
+	setIsOpen: (isOpen: boolean) => void;
+	sortByOptions?: string[];
+	isForModal: boolean;
+	page: string;
+	useSlidingMotion?: boolean;
+}
+
+const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingMotion = true }) => {
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -54,7 +62,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 	}
 
 	const clearAllFilters = () => {
-		const emptyFiltersObj = {};
+		const emptyFiltersObj: Record<string, string> = {};
 
 		allPossibleFilterStrings.forEach((filterName) => {
 			emptyFiltersObj[filterName] = '';
@@ -78,7 +86,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			initial="hidden"
 			animate="visible"
 			exit="hidden"
-			variants={useSlidingMotion && sidebarVariants}
+			variants={useSlidingMotion ? sidebarVariants : undefined}
 			className={classNames(
 				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4',
 				isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : ''
@@ -120,10 +128,10 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			<hr className="border-color-gray-200 my-4" />
 			<SearchSection />
 
-			{isFocusRecordsOrCompletedTasksPage && (
+			{isFocusRecordsOrCompletedTasksPage && sortByOptions && (
 				<>
 					<hr className="border-color-gray-200 my-4" />
-					<SortBySection {...{ sortByOptions }} />
+					<SortBySection sortByOptions={sortByOptions} />
 				</>
 			)}
 
@@ -145,7 +153,7 @@ const FilterSidebar = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingM
 			)}
 
 			<hr className="border-color-gray-200 my-4" />
-			<ProjectsTickTickSection />
+			<ProjectsTickTickSection page={page} />
 
 			{page !== 'focus-records-page' && (
 				<>

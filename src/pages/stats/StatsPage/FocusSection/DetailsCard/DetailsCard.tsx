@@ -16,6 +16,7 @@ import Spinner from '../../../../../components/Loaders/Spinner';
 import { getPieChartPaddingAngle } from '../../../../../utils/pieChart.utils';
 import { aggregateNestedTasksByParent } from '../../../../../utils/nestedTaskAggregation.utils';
 import { EMOTIONS } from '../../../../../utils/constants/constants.utils';
+import type { AggregationResults, ProgressBarItemData } from '../../../../../types/stats';
 
 const noData = [
 	{
@@ -84,7 +85,7 @@ const DetailsCard = () => {
 
 	// Extract and process data from API response
 	const { progressBarData, aggregationResults } = useMemo(() => {
-		let data;
+		let data: ProgressBarItemData[];
 		if (selected === 'Project') {
 			data = (statsData?.byProject && statsData.byProject.length > 0) ? statsData.byProject : noData;
 		} else if (selected === 'Task') {
@@ -95,21 +96,22 @@ const DetailsCard = () => {
 			data = noData;
 		}
 
-		let aggregationResults = null;
+		let aggregationResults: AggregationResults | Record<string, AggregationResults> | undefined = undefined;
 
 		// Group tasks by parent based on view mode
 		if (selected === 'Task' && showNestedProgressBars && ancestorTasksById && data[0]?.id !== 'No Data') {
 			const totalDuration = statsData?.summary?.totalDuration || 1;
 
-			aggregationResults = aggregateNestedTasksByParent(
+			const result = aggregateNestedTasksByParent(
 				data,
 				ancestorTasksById,
 				totalDuration,
 				'duration',
 				projectsById,
 				focusDurationForInterval
-			);
-			data = aggregationResults.aggregatedData;
+			) as AggregationResults;
+			aggregationResults = result;
+			data = result.aggregatedData || [];
 		}
 
 		// For Project view with nested progress bars, calculate aggregation from tasks
@@ -119,20 +121,21 @@ const DetailsCard = () => {
 
 			if (taskData.length > 0) {
 				// Calculate aggregation results from task data
-				aggregationResults = aggregateNestedTasksByParent(
+				const result = aggregateNestedTasksByParent(
 					taskData,
 					ancestorTasksById,
 					totalDuration,
 					'duration',
 					projectsById,
 					focusDurationForInterval
-				);
+				) as AggregationResults;
+				aggregationResults = result;
 			}
 		}
 
 		// For Emotion view with nested progress bars, calculate aggregation from emotion-specific tasks
 		if (selected === 'Emotion' && showNestedProgressBars && statsData?.byEmotionWithTasks) {
-			const aggregationResultsByEmotion: Record<string, ReturnType<typeof aggregateNestedTasksByParent>> = {};
+			const aggregationResultsByEmotion: Record<string, AggregationResults> = {};
 			const byEmotionWithTasks = statsData.byEmotionWithTasks;
 
 			// Process each emotion's data separately
@@ -144,14 +147,15 @@ const DetailsCard = () => {
 				const totalDuration = statsData?.summary?.totalDuration || 1;
 
 				if (emotionTaskData && emotionTaskData.length > 0) {
-					aggregationResultsByEmotion[emotionId] = aggregateNestedTasksByParent(
+					const result = aggregateNestedTasksByParent(
 						emotionTaskData,
 						emotionAncestorTasksById,
 						totalDuration,
 						'duration',
 						projectsById,
 						totalDuration
-					);
+					) as AggregationResults;
+					aggregationResultsByEmotion[emotionId] = result;
 				}
 			});
 
@@ -335,7 +339,6 @@ const DetailsCard = () => {
 							dataByTasks={statsData?.byTask}
 							dataType={selected}
 							fromModal={fromModal}
-							isModalOpen={isModalOpen}
 							setIsModalOpen={setIsModalOpen}
 							focusDurationForInterval={focusDurationForInterval}
 							sortBy={sortBy}

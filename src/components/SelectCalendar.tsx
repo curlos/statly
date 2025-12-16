@@ -14,6 +14,11 @@ import { useThemeContext } from '../contexts/useThemeContext';
 interface CalendarProps {
 	dueDate: Date | null;
 	setDueDate: React.Dispatch<React.SetStateAction<Date | null>>;
+	time?: string;
+	connectedCurrentDate?: Date;
+	setConnectedCurrentDate?: React.Dispatch<React.SetStateAction<Date>>;
+	selectedInterval?: string;
+	outerCurrentDate?: Date;
 }
 
 const SelectCalendar: React.FC<CalendarProps> = ({
@@ -28,7 +33,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 	const { chosenColorObj } = useThemeContext();
 
 	const [localCurrentDate, setLocalCurrentDate] = useState(new Date());
-	const [allDaysInWeekFromDate, setAllDaysInWeekFromDate] = useState(null);
+	const [allDaysInWeekFromDate, setAllDaysInWeekFromDate] = useState<Record<string, Date> | null>(null);
 
 	useEffect(() => {
 		if (dueDate) {
@@ -42,7 +47,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 
 			setLocalCurrentDate(newDueDate);
 		}
-	}, [dueDate]);
+	}, [dueDate, time]);
 
 	useEffect(() => {
 		if (connectedCurrentDate) {
@@ -77,7 +82,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 
 	useEffect(() => {
 		if (selectedInterval === 'Week') {
-			const newAllDaysInWeekFromDate = {};
+			const newAllDaysInWeekFromDate: Record<string, Date> = {};
 
 			getAllDaysInWeekFromDate(outerCurrentDate).forEach((day) => {
 				const dateKey = formatCheckedInDayDate(day);
@@ -155,7 +160,20 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 	);
 };
 
-const MonthView = ({
+interface MonthViewProps {
+	calendarMonth: Date[][];
+	allDaysInWeekFromDate: Record<string, Date> | null;
+	localCurrentDate: Date;
+	selectedInterval?: string;
+	setConnectedCurrentDate?: (date: Date) => void;
+	setLocalCurrentDate: (date: Date) => void;
+	chosenColorObj: ReturnType<typeof useThemeContext>['chosenColorObj'];
+	dueDate: Date | null;
+	setDueDate: (date: Date | null) => void;
+	time?: string;
+}
+
+const MonthView: React.FC<MonthViewProps> = ({
 	calendarMonth,
 	allDaysInWeekFromDate,
 	localCurrentDate,
@@ -184,7 +202,7 @@ const MonthView = ({
 
 					if (allDaysInWeekFromDate) {
 						const firstDayOfThisWeekKey = formatCheckedInDayDate(week[0]);
-						isSelectedWeek = allDaysInWeekFromDate[firstDayOfThisWeekKey];
+						isSelectedWeek = firstDayOfThisWeekKey in allDaysInWeekFromDate;
 					}
 
 					return (
@@ -199,7 +217,7 @@ const MonthView = ({
 								const isCurrentMonth = day.getMonth() === localCurrentDate.getMonth();
 								const isDayToday = areDatesEqual(new Date(), day);
 								const isChosenDay = areDatesEqual(dueDate, day);
-								let appliedStyles = [];
+								const appliedStyles = [];
 
 								if (isCurrentMonth) {
 									if (isChosenDay && selectedInterval !== 'Week') {
@@ -255,7 +273,14 @@ const MonthView = ({
 	);
 };
 
-const YearView = ({ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYearView }) => {
+interface YearViewProps {
+	localCurrentDate: Date;
+	setLocalCurrentDate: (date: Date) => void;
+	setDueDate: (date: Date | null) => void;
+	setShowYearView: (show: boolean) => void;
+}
+
+const YearView: React.FC<YearViewProps> = ({ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYearView }) => {
 	const { chosenColorObj } = useThemeContext();
 	const monthsOfYear = getAllMonths(localCurrentDate);
 

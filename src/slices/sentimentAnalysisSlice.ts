@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store/store';
 
 export interface ChunkStatus {
 	chunkIndex: number;
@@ -66,13 +67,13 @@ const sentimentAnalysisSlice = createSlice({
 export const { setChunks, updateChunk, setModalOpen, cancelAnalysis, resetAnalysis } = sentimentAnalysisSlice.actions;
 
 // Selectors
-export const selectSentimentChunks = (state: any) => state.sentimentAnalysis.chunks;
-export const selectSentimentRecordIds = (state: any) => state.sentimentAnalysis.recordIds;
-export const selectSentimentModalOpen = (state: any) => state.sentimentAnalysis.isModalOpen;
-export const selectSentimentCancelled = (state: any) => state.sentimentAnalysis.isCancelled;
-export const selectIsAnalyzing = (state: any) => {
+export const selectSentimentChunks = (state: RootState) => state.sentimentAnalysis.chunks;
+export const selectSentimentRecordIds = (state: RootState) => state.sentimentAnalysis.recordIds;
+export const selectSentimentModalOpen = (state: RootState) => state.sentimentAnalysis.isModalOpen;
+export const selectSentimentCancelled = (state: RootState) => state.sentimentAnalysis.isCancelled;
+export const selectIsAnalyzing = (state: RootState) => {
 	const chunks = state.sentimentAnalysis.chunks;
-	return chunks.some((chunk: ChunkStatus) => chunk.status === 'analyzing' || chunk.status === 'idle');
+	return chunks.some((chunk) => chunk.status === 'analyzing' || chunk.status === 'idle');
 };
 
 export default sentimentAnalysisSlice.reducer;

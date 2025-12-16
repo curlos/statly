@@ -11,11 +11,17 @@ import CheckboxOther from './CheckboxOther';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import AppliedFilterItem from './AppliedFilterItem';
+import type { ProjectTickTick, ProjectGroup } from '../../types/models';
+import type { ColorVariant } from '../../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
+
+interface ProjectsTickTickSectionProps {
+	page: string;
+}
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
  */
-const ProjectsTickTickSection = ({ page }) => {
+const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
@@ -37,15 +43,15 @@ const ProjectsTickTickSection = ({ page }) => {
 	const { projectGroupsById } = fetchedProjectGroups || {};
 
 	// RTK Query - User Settings
-	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
 	const [editUserSettings] = useEditUserSettingsMutation();
 
-	const [groupedProjectsByGroupId, setGroupedProjectsByGroupId] = useState([]);
-	const [sortedProjectGroups, setSortedProjectGroups] = useState([]);
-	const [sortedUngroupedProjects, setSortedUngroupedProjects] = useState([]);
-	const [sortedArchivedProjects, setSortedArchivedProjects] = useState([]);
+	const [groupedProjectsByGroupId, setGroupedProjectsByGroupId] = useState<Record<string, ProjectTickTick[]>>({});
+	const [sortedProjectGroups, setSortedProjectGroups] = useState<ProjectGroup[]>([]);
+	const [sortedUngroupedProjects, setSortedUngroupedProjects] = useState<ProjectTickTick[]>([]);
+	const [sortedArchivedProjects, setSortedArchivedProjects] = useState<ProjectTickTick[]>([]);
 
 	const projectsFromUrlById = getCommaSeparatedObj(projectsFromUrl);
 
@@ -55,25 +61,28 @@ const ProjectsTickTickSection = ({ page }) => {
 		}
 
 		// Go through all of the user's projects and separate them into 3 groups: Grouped, Ungrouped, and Archived projects.
-		const { groupedProjects, ungroupedProjects, archivedProjects } = projectsTickTick.reduce(
+		const { groupedProjects, ungroupedProjects, archivedProjects } = (projectsTickTick || []).reduce(
 			(acc, project) => {
-				if (project.closed) {
-					acc.archivedProjects.push(project);
-				} else if (project.groupId && project.groupId !== 'NONE' && projectGroupsById[project.groupId]) {
-					acc.groupedProjects.push(project);
+				const tickTickProject = project as ProjectTickTick;
+				if (tickTickProject.closed) {
+					acc.archivedProjects.push(tickTickProject);
+				} else if (tickTickProject.groupId && tickTickProject.groupId !== 'NONE' && projectGroupsById?.[tickTickProject.groupId]) {
+					acc.groupedProjects.push(tickTickProject);
 				} else {
-					acc.ungroupedProjects.push(project);
+					acc.ungroupedProjects.push(tickTickProject);
 				}
 				return acc;
 			},
-			{ groupedProjects: [], ungroupedProjects: [], archivedProjects: [] }
+			{ groupedProjects: [] as ProjectTickTick[], ungroupedProjects: [] as ProjectTickTick[], archivedProjects: [] as ProjectTickTick[] }
 		);
 
-		const groupedProjectsByGroupId = {};
+		const groupedProjectsByGroupId: Record<string, ProjectTickTick[]> = {};
 
 		// Go through each project that is has a valid "groupId" and push it into the array of projects for that specific Project Group. Will look something like "{ "66d0578f619d91029a6856ff": [{"name": "GUNPLA", ...}]}"".
 		groupedProjects.forEach((groupedProject) => {
 			const { groupId } = groupedProject;
+
+			if (!groupId) return;
 
 			if (!groupedProjectsByGroupId[groupId]) {
 				groupedProjectsByGroupId[groupId] = [];
@@ -82,33 +91,33 @@ const ProjectsTickTickSection = ({ page }) => {
 			groupedProjectsByGroupId[groupId].push(groupedProject);
 		});
 
-		const projectGroups = Object.keys(groupedProjectsByGroupId).map((groupId) => projectGroupsById[groupId]);
+		const projectGroups = Object.keys(groupedProjectsByGroupId).map((groupId) => projectGroupsById?.[groupId]).filter(Boolean) as ProjectGroup[];
 
 		// Sort all the grouped projects within the specifc Project Group project's array.
 		Object.keys(groupedProjectsByGroupId).forEach((groupId) => {
-			groupedProjectsByGroupId[groupId].sort((a, b) => a.sortOrder - b.sortOrder);
+			groupedProjectsByGroupId[groupId].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 		});
 
 		// "Project Groups" are different from "Projects". They are the "folders" that contain other projects within them. However, just like "Projects", they have a "sortOrder" property that determines the order it should appear in.
-		const sortedProjectGroups = projectGroups.sort((a, b) => a.sortOrder - b.sortOrder);
+		const sortedProjectGroups = projectGroups.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
-		const sortedArchivedProjects = archivedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
-		const sortedUngroupedProjects = ungroupedProjects.sort((a, b) => a.sortOrder - b.sortOrder);
+		const sortedArchivedProjects = archivedProjects.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+		const sortedUngroupedProjects = ungroupedProjects.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
 		setSortedProjectGroups(sortedProjectGroups);
 		setGroupedProjectsByGroupId(groupedProjectsByGroupId);
 		setSortedArchivedProjects(sortedArchivedProjects);
 		setSortedUngroupedProjects(sortedUngroupedProjects);
-	}, [projectsTickTick, projectGroupsById]);
+	}, [projectsTickTick, projectGroupsById, isLoadingGetProjects, isLoadingGetProjectGroups]);
 
 	// This is the combined array of the "Project Groups" and the ungrouped Projects. It's necessary for them to be a combined array because it's possible on TickTick 1.0 for them to be mixed together. You could have a "Project Group" between two ungrouped "Projects". So, to be as accurate as possible, they both need to be in the same array.
 	// Archived Projects don't need to be here as they're technically not an actual Project Group in TickTick 1.0 and are the lowest priority since they're not active anymore.
-	const sortedProjectsAndGroups = sortedUngroupedProjects &&
-		sortedProjectGroups && [...sortedUngroupedProjects, ...sortedProjectGroups];
+	const sortedProjectsAndGroups: (ProjectTickTick | ProjectGroup)[] = sortedUngroupedProjects &&
+		sortedProjectGroups ? [...sortedUngroupedProjects, ...sortedProjectGroups] : [];
 
-	sortedProjectsAndGroups?.sort((a, b) => a.sortOrder - b.sortOrder);
+	sortedProjectsAndGroups?.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
-	const handleCheckboxClick = async (userSettingProperty, newValue) => {
+	const handleCheckboxClick = async (userSettingProperty: string, newValue: Record<string, boolean>) => {
 		// If a ring is selected, update ring-specific settings
 		if (currentRing && selectedRingId) {
 			await handleUpdateRingSetting(selectedRingId, userSettingProperty, newValue);
@@ -138,8 +147,8 @@ const ProjectsTickTickSection = ({ page }) => {
 			return [];
 		}
 		return Object.entries(filteredProjects)
-			.filter(([_, isSelected]) => isSelected === true)
-			.map(([projectId, _]) => projectId);
+			.filter(([, isSelected]) => isSelected === true)
+			.map(([projectId]) => projectId);
 	};
 
 	// Get comma-separated project names for display
@@ -157,7 +166,7 @@ const ProjectsTickTickSection = ({ page }) => {
 	// Clear all selected projects
 	const handleClearAllProjects = async () => {
 		// Set all projects to false
-		const clearedProjects = {};
+		const clearedProjects: Record<string, boolean> = {};
 		if (filteredProjects) {
 			Object.keys(filteredProjects).forEach(projectId => {
 				clearedProjects[projectId] = false;
@@ -223,23 +232,22 @@ const ProjectsTickTickSection = ({ page }) => {
 								);
 							}
 
-							const project = projectOrProjectGroup;
+							const project = projectOrProjectGroup as ProjectTickTick;
 
 							if (page == 'focus-hours-goal') {
-								const showValue = filteredProjects[project.id];
+								const showValue = filteredProjects?.[project.id] ?? false;
 
 								return (
 									<CheckboxOther
 										key={project.id}
-										{...{
-											name: project.name,
-											showValue,
-											handleCheckboxClick: () =>
-												handleCheckboxClick('projects', {
-													...filteredProjects,
-													[project.id]: !showValue,
-												}),
-										}}
+										name={project.name}
+										showValue={showValue}
+										handleCheckboxClick={() =>
+											handleCheckboxClick('projects', {
+												...filteredProjects,
+												[project.id]: !showValue,
+											})
+										}
 									/>
 								);
 							}
@@ -247,14 +255,12 @@ const ProjectsTickTickSection = ({ page }) => {
 							return (
 								<CheckboxMultiSelectForUrl
 									key={project.id}
-									{...{
-										project,
-										chosenColorObj,
-										nextLightestColorObj,
-										commaSeparatedObj: projectsFromUrlById,
-										updateQueryParams,
-										urlQueryParamName: 'projects',
-									}}
+									project={project}
+									chosenColorObj={chosenColorObj}
+									nextLightestColorObj={nextLightestColorObj || chosenColorObj}
+									commaSeparatedObj={projectsFromUrlById}
+									updateQueryParams={updateQueryParams as () => void}
+									urlQueryParamName="projects"
 								/>
 							);
 						})}
@@ -282,10 +288,25 @@ const ProjectsTickTickSection = ({ page }) => {
 	);
 };
 
+interface ProjectGroupWithProjectsProps {
+	isArchivedGroup?: boolean;
+	archivedProjects?: ProjectTickTick[];
+	projectGroup?: ProjectGroup;
+	groupedProjectsByGroupId?: Record<string, ProjectTickTick[]>;
+	projectGroupsById?: Record<string, ProjectGroup>;
+	chosenColorObj: ColorVariant;
+	nextLightestColorObj: ColorVariant | null;
+	projectsFromUrlById: Record<string, string>;
+	updateQueryParams: (newParams: Record<string, string>, customNewUrl?: string) => void;
+	page: string;
+	filteredProjects?: Record<string, boolean>;
+	handleCheckboxClick: (property: string, value: Record<string, boolean>) => Promise<void>;
+}
+
 /**
  * @description A collapsible Accordion that will contain a "Project Group" and the list of projects under that speciifc "Project Group".
  */
-const ProjectGroupWithProjects = ({
+const ProjectGroupWithProjects: React.FC<ProjectGroupWithProjectsProps> = ({
 	isArchivedGroup,
 	archivedProjects,
 	projectGroup,
@@ -299,9 +320,9 @@ const ProjectGroupWithProjects = ({
 	filteredProjects,
 	handleCheckboxClick,
 }) => {
-	const { id } = isArchivedGroup ? 'Archived' : projectGroup;
-	const groupedProjects = isArchivedGroup ? archivedProjects : groupedProjectsByGroupId[id];
-	const groupName = isArchivedGroup ? 'Archived' : projectGroupsById[id].name;
+	const id = isArchivedGroup ? 'Archived' : projectGroup?.id || '';
+	const groupedProjects = isArchivedGroup ? archivedProjects : groupedProjectsByGroupId?.[id];
+	const groupName = isArchivedGroup ? 'Archived' : projectGroupsById?.[id]?.name || '';
 
 	// This was needed so that I know the state and can show a closing or opening folder icon depending on whether the Accordion is open or not.
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
@@ -331,20 +352,19 @@ const ProjectGroupWithProjects = ({
 				<div className="pl-4">
 					{groupedProjects?.map((project) => {
 						if (page == 'focus-hours-goal') {
-							const showValue = filteredProjects[project.id];
+							const showValue = filteredProjects?.[project.id] ?? false;
 
 							return (
 								<CheckboxOther
 									key={project.id}
-									{...{
-										name: project.name,
-										showValue,
-										handleCheckboxClick: () =>
-											handleCheckboxClick('projects', {
-												...filteredProjects,
-												[project.id]: !showValue,
-											}),
-									}}
+									name={project.name}
+									showValue={showValue}
+									handleCheckboxClick={() =>
+										handleCheckboxClick('projects', {
+											...filteredProjects,
+											[project.id]: !showValue,
+										})
+									}
 								/>
 							);
 						}
@@ -352,14 +372,12 @@ const ProjectGroupWithProjects = ({
 						return (
 							<CheckboxMultiSelectForUrl
 								key={project.id}
-								{...{
-									project,
-									chosenColorObj,
-									nextLightestColorObj,
-									commaSeparatedObj: projectsFromUrlById,
-									updateQueryParams,
-									urlQueryParamName: 'projects',
-								}}
+								project={project}
+								chosenColorObj={chosenColorObj}
+								nextLightestColorObj={nextLightestColorObj || chosenColorObj}
+								commaSeparatedObj={projectsFromUrlById}
+								updateQueryParams={updateQueryParams as () => void}
+								urlQueryParamName="projects"
 							/>
 						);
 					})}

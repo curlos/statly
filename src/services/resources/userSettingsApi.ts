@@ -1,14 +1,15 @@
 import { baseAPI } from '../api';
 import { invalidateOnSuccess } from '../utils/rtkHelpers';
+import type { GetUserSettingsResponse, UserSettings } from '../../types/api';
 
 export const userSettingsApi = baseAPI.injectEndpoints({
 	endpoints: (builder) => ({
-		getUserSettings: builder.query({
+		getUserSettings: builder.query<GetUserSettingsResponse, void>({
 			query: () => {
 				return `/user-settings`;
 			},
 			providesTags: ['UserSettings'],
-			transformResponse: (response) => {
+			transformResponse: (response: UserSettings): GetUserSettingsResponse => {
 				const userSettings = response;
 				return { userSettings };
 			},

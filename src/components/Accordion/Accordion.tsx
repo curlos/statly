@@ -3,7 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../Icon';
 import classNames from 'classnames';
 
-const Accordion = ({
+interface AccordionProps {
+	title: React.ReactNode;
+	children: React.ReactNode;
+	setIsOpenForParent?: (isOpen: boolean) => void;
+	openByDefault?: boolean;
+	isChildDropdownOpen?: boolean;
+	showArrowNextToText?: boolean;
+	customClasses?: string;
+	customToggleOpen?: () => void;
+	preventOpen?: boolean;
+}
+
+const Accordion: React.FC<AccordionProps> = ({
 	title,
 	children,
 	setIsOpenForParent,
