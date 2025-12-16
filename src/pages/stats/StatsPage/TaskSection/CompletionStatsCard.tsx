@@ -20,9 +20,11 @@ const noData = [
 	{
 		name: 'No Data',
 		color: 'gray',
-		value: 0,
+		count: 0,
 		percentage: 100,
 		id: 'No Data',
+		type: undefined as 'project' | 'task' | undefined,
+		projectId: undefined as string | undefined,
 	},
 ];
 
@@ -74,15 +76,26 @@ const CompletionStatsCard = () => {
 
 	// Extract and process data from API response
 	const { progressBarData, aggregationResults } = useMemo(() => {
-		let data = selected === 'Project'
-			? statsData?.byProject?.length > 0 ? statsData?.byProject : noData
-			: (statsData?.byTask?.length > 0 ? statsData?.byTask : noData);
+		let data: Array<{
+			id: string;
+			name?: string;
+			count?: number;
+			percentage?: number;
+			type?: 'project' | 'task';
+			projectId?: string;
+			color?: string;
+			[key: string]: unknown;
+		}> = selected === 'Project'
+			? (statsData?.byProject && statsData.byProject.length > 0 ? statsData.byProject : noData)
+			: (statsData?.byTask && statsData.byTask.length > 0 ? statsData.byTask : noData);
 
 		let aggregationResults = null;
 
 		// Group tasks by parent based on view mode
-		if (selected === 'Task' && ancestorTasksById && data[0]?.id !== 'No Data') {
+		if (selected === 'Task' && ancestorTasksById && data?.[0]?.id !== 'No Data') {
 			const totalCount = statsData?.summary?.totalCount || 1;
+
+			console.log(ancestorTasksById)
 
 			if (showNestedProgressBars) {
 				// Use recursive aggregation for nested view (shows top-level parents with all descendants)
@@ -122,10 +135,14 @@ const CompletionStatsCard = () => {
 		// Add project names and colors
 		if (data && data[0]?.id !== 'No Data') {
 			data = [...data].map((item) => {
-				const projectId = item.type === 'project' ? item.id : item.projectId
+				const projectId = item.type === 'project' ? item.id : item.projectId;
 
-				const name = item.type === 'project' ? projectsById && (projectsById[projectId]?.name || projectId) : item.name
-				const color = projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080'
+				const name = item.type === 'project' && projectId
+					? (projectsById?.[projectId]?.name || projectId)
+					: item.name;
+				const color = projectId && projectsById?.[projectId]?.color
+					? projectsById[projectId].color
+					: '#808080';
 
 				return {
 					...item,
@@ -136,9 +153,9 @@ const CompletionStatsCard = () => {
 		}
 
 		return { progressBarData: data, aggregationResults };
-	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById]);
+	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById, totalCompletedTasks]);
 
-	const getCoreDetailsCard = (fromModal) => {
+	const getCoreDetailsCard = (fromModal: boolean) => {
 		return (
 			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative">
 				<div className="flex gap-4">
@@ -207,15 +224,15 @@ const CompletionStatsCard = () => {
 					<div>
 						<PieChart width={220} height={220}>
 							<Pie
-								data={progressBarData}
+								data={progressBarData || []}
 								cx={100}
 								cy={100}
 								innerRadius={85}
 								outerRadius={100}
-								paddingAngle={getPieChartPaddingAngle(progressBarData.length)}
+								paddingAngle={getPieChartPaddingAngle(progressBarData?.length || 0)}
 								dataKey="percentage"
 							>
-								{progressBarData.map((entry, index) => (
+								{progressBarData?.map((entry, index) => (
 									<Cell
 										key={entry.id ? `${entry.id}-index` : index}
 										fill={entry.color}
@@ -226,7 +243,9 @@ const CompletionStatsCard = () => {
 								<Label
 									position="center"
 									fill="white"
-									content={({ viewBox }: any) => {
+									content={(props: { viewBox?: unknown }) => {
+										const viewBox = props.viewBox as { cx?: number; cy?: number } | undefined;
+										if (!viewBox || !viewBox.cx || !viewBox.cy) return null;
 										const { cx, cy } = viewBox;
 
 										// In Recharts, the Label component inside a Pie (or other chart types) does not support rendering HTML elements such as <div> directly because it operates within an SVG context. This is why "svg" elements like "<text>" are used instead to display the HTML elements.
@@ -265,18 +284,18 @@ const CompletionStatsCard = () => {
 
 					<div className="sm:mt-3 flex flex-col gap-2 w-full min-w-0">
 						<ProgressBarList
-							data={progressBarData as any}
-							dataByTasks={statsData?.byTask as any}
-							dataType={selected as any}
+							data={progressBarData}
+							dataByTasks={statsData?.byTask}
+							dataType={selected}
 							fromModal={fromModal}
 							isModalOpen={isModalOpen}
-							setIsModalOpen={setIsModalOpen as any}
-							focusDurationForInterval={totalCompletedTasks as any}
-							sortBy={sortBy as any}
-							showNestedProgressBars={showNestedProgressBars as any}
-							ancestorTasksById={ancestorTasksById as any}
+							setIsModalOpen={setIsModalOpen}
+							focusDurationForInterval={totalCompletedTasks}
+							sortBy={sortBy}
+							showNestedProgressBars={showNestedProgressBars}
+							ancestorTasksById={ancestorTasksById}
 							metricType="count"
-							aggregationResults={aggregationResults as any}
+							aggregationResults={aggregationResults}
 							intervalStartDate={apiStartDate}
 							intervalEndDate={apiEndDate}
 						/>
