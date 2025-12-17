@@ -13,7 +13,7 @@ const SyncUpdateSection = () => {
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
-	const handleCheckboxClick = (showValue, userSettingProperty) => {
+	const handleCheckboxClick = (showValue: boolean, userSettingProperty: string) => {
 		const newShowValue = !showValue;
 		handleUpdateUserSettingForPage('focusRecords', userSettingProperty, newShowValue);
 	};

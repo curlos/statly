@@ -3,6 +3,7 @@ import { resetModals } from '../slices/modalSlice';
 import { resetSyncStatus } from '../slices/syncSlice';
 import { resetAnalysis } from '../slices/sentimentAnalysisSlice';
 import { resetImport } from '../slices/importProgressSlice';
+import type { AppDispatch } from '../types/redux';
 
 /**
  * Handles complete logout process:
@@ -11,7 +12,7 @@ import { resetImport } from '../slices/importProgressSlice';
  * - Clears all localStorage and sessionStorage
  * - Reloads the page to ensure complete state cleanup
  */
-export const handleLogout = (dispatch: any) => {
+export const handleLogout = (dispatch: AppDispatch) => {
 	// 1. Clear the user state/token from Redux
 	dispatch(logoutUser());
 

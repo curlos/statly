@@ -36,6 +36,7 @@ const useOutsideClick = (
 			// Unbind the event listener on clean up
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ref, onOutsideClick]); // Only re-run if ref or callback changes
 };
 

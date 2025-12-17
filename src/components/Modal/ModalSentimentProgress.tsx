@@ -77,7 +77,7 @@ const ModalSentimentProgress: React.FC = () => {
 			case 'analyzing':
 				return {
 					icon: 'favorite',
-					color: chosenColorObj.color,
+					color: chosenColorObj.hexColor,
 					showSpinner: true,
 				};
 			case 'success':

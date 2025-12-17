@@ -10,14 +10,57 @@ import Spinner from '../../components/Loaders/Spinner';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import ModalFocusGoalProgress from '../../components/Modal/ModalFocusGoalProgress';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
+import type { Ring } from '../../types/api';
+
+// Inferred types from API responses
+interface RingTodayData {
+	ringId: string;
+	totalFocusDurationForDay: number;
+}
+
+interface RingTodayEntry {
+	todayData: RingTodayData;
+}
+
+interface Streak {
+	days: number;
+	from: string | null;
+	to: string | null;
+}
+
+interface RingStreakData {
+	ringId: string;
+	currentStreak?: Streak;
+	longestStreak?: Streak;
+	allStreaks?: Streak[];
+	dailyDurationsMap?: {
+		[dateKey: string]: number;
+	};
+}
+
+interface AllRingsTodayResponse {
+	rings: RingTodayEntry[];
+}
+
+interface AllRingsStreakResponse {
+	rings: RingStreakData[];
+}
+
+// Extended Ring type with custom properties
+interface RingWithCustomGoal extends Ring {
+	customDailyFocusGoal?: Record<string, number>;
+}
 
 const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	// Fetch today's focus data for all rings
 	const { queryParams } = useSharedQueryParams();
-	const { data: allRingsTodayData, isLoading: isTodayLoading } = useGetStreaksTodayQuery(queryParams);
+	const { data: allRingsTodayData, isLoading: isTodayLoading } = useGetStreaksTodayQuery(queryParams) as {
+		data: AllRingsTodayResponse | undefined;
+		isLoading: boolean;
+	};
 
 	const [isFocusGoalModalOpen, setIsFocusGoalModalOpen] = useState(false);
-	const [selectedModalRingId, setSelectedModalRingId] = useState(null);
+	const [selectedModalRingId, setSelectedModalRingId] = useState<string | null>(null);
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -25,12 +68,15 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { focusHoursGoalPageSettings: { activeRings, showMultiRingViewForOneActiveRing } } = useUserSettingsContext();
 
 	// Determine if we should fetch streak history
-	const shouldFetchStreakHistory = isFocusGoalModalOpen || activeRings.some(ring => ring.showStreakCount);
+	const shouldFetchStreakHistory = isFocusGoalModalOpen || activeRings.some((ring: Ring) => ring.showStreakCount);
 
 	// Fetch streak history for all rings (current + longest streaks)
 	const { data: allRingsStreakData, isLoading: isStreakLoading } = useGetStreakHistoryQuery(queryParams, {
 		skip: !shouldFetchStreakHistory,
-	});
+	}) as {
+		data: AllRingsStreakResponse | undefined;
+		isLoading: boolean;
+	};
 
 	const isLargeType = type === 'large';
 
@@ -41,13 +87,13 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	};
 
 	// Helper to get goal seconds for a ring (checks for custom goal today)
-	const getGoalSecondsForRing = (ring) => {
+	const getGoalSecondsForRing = (ring: RingWithCustomGoal) => {
 		const todayDateKey = getTodayDateKey();
 		return ring.customDailyFocusGoal?.[todayDateKey] ?? ring.goalSeconds ?? 3600;
 	};
 
 	// Helper function to render a single ring
-	const renderSingleRing = (ring, ringTodayData, ringStreakData, size = 'large') => {
+	const renderSingleRing = (ring: Ring, ringTodayData: RingTodayData | undefined, ringStreakData: RingStreakData | undefined, size = 'large') => {
 		const { showStreakCount = true, goalDays = 7, showGoalDays = true } = ring;
 		const { totalFocusDurationForDay = 0 } = ringTodayData || {};
 		const goalSeconds = getGoalSecondsForRing(ring);
@@ -83,7 +129,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					{showStreakCount && (
 						<span className={classNames(isLarge ? '!text-[20px]' : '!text-[18px]')}>
 							<span className={classNames(isLarge ? '!text-[36px]' : '!text-[28px]', 'font-bold')}>
-								{(ringStreakData?.currentStreak?.days || 0).toLocaleString()}
+								{(ringStreakData?.currentStreak?.days ?? 0).toLocaleString()}
 							</span>
 							{showGoalDays && (
 								<>
@@ -126,12 +172,20 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	// Get modal data for selected ring
 	const getModalData = () => {
 		const ringId = selectedModalRingId;
-		const ring = activeRings.find(r => r.id === ringId);
-		const ringStreakData = allRingsStreakData?.rings?.find(r => r.ringId === ringId);
+		const ring = activeRings.find((r: Ring) => r.id === ringId);
+		const ringStreakData = allRingsStreakData?.rings?.find((r: RingStreakData) => r.ringId === ringId);
 		return { ring, streakData: ringStreakData };
 	};
 
 	const { ring: modalRing, streakData: modalStreakData } = getModalData();
+
+	// Transform RingStreakData to StreakData for the modal (remove ringId)
+	const modalStreakDataForModal = modalStreakData ? {
+		currentStreak: modalStreakData.currentStreak,
+		longestStreak: modalStreakData.longestStreak,
+		allStreaks: modalStreakData.allStreaks,
+		dailyDurationsMap: modalStreakData.dailyDurationsMap
+	} as unknown : undefined;
 
 	return (
 		<div className="relative">
@@ -146,8 +200,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				<div>
 					{renderSingleRing(
 						activeRings[0],
-						allRingsTodayData?.rings?.find(r => r.todayData?.ringId === activeRings[0].id)?.todayData,
-						allRingsStreakData?.rings?.find(r => r.ringId === activeRings[0].id),
+						allRingsTodayData?.rings?.find((r: RingTodayEntry) => r.todayData?.ringId === activeRings[0].id)?.todayData,
+						allRingsStreakData?.rings?.find((r: RingStreakData) => r.ringId === activeRings[0].id),
 						type
 					)}
 				</div>
@@ -156,9 +210,9 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				<div className="flex gap-0 items-center">
 					{/* LEFT SIDE - Text Stats */}
 					<div className="flex-1 space-y-2">
-						{activeRings.map((ring) => {
-							const ringTodayData = allRingsTodayData?.rings?.find(r => r.todayData?.ringId === ring.id)?.todayData;
-							const ringStreakData = allRingsStreakData?.rings?.find(r => r.ringId === ring.id);
+						{activeRings.map((ring: Ring) => {
+							const ringTodayData = allRingsTodayData?.rings?.find((r: RingTodayEntry) => r.todayData?.ringId === ring.id)?.todayData;
+							const ringStreakData = allRingsStreakData?.rings?.find((r: RingStreakData) => r.ringId === ring.id);
 							const goalSeconds = getGoalSecondsForRing(ring);
 
 							return (
@@ -179,7 +233,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 												{ring.showStreakCount && (
 													<span className="text-orange-500">
 														<span className="text-[24px] font-bold">
-															{(ringStreakData?.currentStreak?.days || 0).toLocaleString()}
+															{(ringStreakData?.currentStreak?.days ?? 0).toLocaleString()}
 														</span>
 														{ring.showGoalDays && (
 															<>
@@ -213,8 +267,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 
 					{/* RIGHT SIDE - Concentric Rings */}
 					<div className="relative w-[300px] h-[300px] flex-shrink-0">
-						{activeRings.map((ring, index) => {
-							const ringTodayData = allRingsTodayData?.rings?.find(r => r.todayData?.ringId === ring.id)?.todayData;
+						{activeRings.map((ring: Ring, index: number) => {
+							const ringTodayData = allRingsTodayData?.rings?.find((r: RingTodayEntry) => r.todayData?.ringId === ring.id)?.todayData;
 							const goalSeconds = getGoalSecondsForRing(ring);
 							const largestSize = 280;
 							const size = largestSize - (index * 70);
@@ -252,7 +306,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					setIsFocusGoalModalOpen(false);
 					setSelectedModalRingId(null);
 				}}
-				streakData={modalStreakData}
+				streakData={modalStreakDataForModal as never}
 				ring={modalRing}
 			/>
 		</div>

@@ -8,7 +8,7 @@ const CookieSection = () => {
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
 	const { userSettings } = fetchedUserSettings || {};
 	const [editUserSettings, { isLoading: isUpdatingCookie }] = useEditUserSettingsMutation();
-	const themeContext = useThemeContext() as any;
+	const themeContext = useThemeContext();
 	const chosenColorObj = themeContext?.chosenColorObj;
 	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 
@@ -29,7 +29,7 @@ const CookieSection = () => {
 			setTimeout(() => setSuccessMessage(''), 1500);
 		} catch (error: unknown) {
 			const errorMessage = error && typeof error === 'object' && 'data' in error
-				? (error.data as any)?.message || 'Failed to update cookie'
+				? (error.data as { message?: string })?.message || 'Failed to update cookie'
 				: 'Failed to update cookie';
 			setErrorMessage(errorMessage);
 			setTimeout(() => setErrorMessage(''), 5000);

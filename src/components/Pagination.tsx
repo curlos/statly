@@ -220,7 +220,7 @@ const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 			<form onSubmit={handleSubmit} className="p-2 w-[80px]">
 				<CustomInput
 					value={localCurrentPage}
-					setValue={setLocalCurrentPage}
+					setValue={setLocalCurrentPage as React.Dispatch<React.SetStateAction<string | number>>}
 					type="number"
 					min={1}
 					max={totalPages}

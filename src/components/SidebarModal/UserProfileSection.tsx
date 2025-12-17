@@ -55,7 +55,7 @@ const UserProfileSection = () => {
 						className="w-[60px] h-[60px] rounded-full flex items-center justify-center text-white font-bold text-[20px]"
 						style={{ backgroundColor: themeColor }}
 					>
-						{getInitials(user.name)}
+						{getInitials(user.name || '')}
 					</div>
 				)}
 				<div className="flex-1 min-w-0">

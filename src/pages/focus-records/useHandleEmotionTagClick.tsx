@@ -4,7 +4,7 @@ import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 export const useHandleEmotionTagClick = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const emotionsFromUrl = searchParams.get('emotions');
-	const emotionsByName = getCommaSeparatedObj(emotionsFromUrl);
+	const emotionsByName = getCommaSeparatedObj(emotionsFromUrl ?? undefined);
 
 	const handleEmotionTagClick = (emotionId: string, multiSelect: boolean = false) => {
 		if (!multiSelect) {

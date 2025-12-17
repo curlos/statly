@@ -352,6 +352,7 @@ export interface Ring {
 	selectedDaysOfWeek: SelectedDaysOfWeek;
 	projects?: Record<string, boolean>;
 	restDays?: Record<string, boolean>;
+	customDailyFocusGoal?: Record<string, number>;
 	inactivePeriods: unknown[];
 	createdAt: string;
 	updatedAt: string;

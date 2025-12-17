@@ -40,6 +40,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 				}
 				break;
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedInterval, startDate, endDate]);
 
 	const handleArrowClick = (arrowType: 'left' | 'right') => {

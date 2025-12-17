@@ -4,8 +4,8 @@ import { useThemeContext } from '../contexts/useThemeContext';
 
 export const useSyncStatusHelpers = () => {
 	const syncStatus = useSelector(selectSyncStatus);
-	const themeContext = useThemeContext() as any;
-	const themeColor = themeContext?.chosenColorObj?.hex || '#3b82f6';
+	const themeContext = useThemeContext();
+	const themeColor = themeContext?.chosenColorObj?.hexColor || '#3b82f6';
 
 	const getStatusIcon = (key: 'projects' | 'projectGroups' | 'tasks' | 'focusRecords') => {
 		const status = syncStatus[key];

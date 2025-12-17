@@ -88,7 +88,7 @@ const AnalyzeNoteEmotions = () => {
 				try {
 					// Get the record IDs for this chunk from stored recordIds
 					const chunkIds = recordIds.slice(initialChunks[i].startRecord - 1, initialChunks[i].endRecord);
-					const analysisResult = await analyzeNoteEmotions(chunkIds).unwrap();
+					const analysisResult = await analyzeNoteEmotions(chunkIds).unwrap() as { analyzed: number; failed: number };
 
 					// Update status to 'success' with result
 					dispatch(
@@ -103,8 +103,8 @@ const AnalyzeNoteEmotions = () => {
 							},
 						})
 					);
-				} catch (error: any) {
-					const errorMessage = error?.data?.message || 'Failed to update emotions for these records';
+				} catch (error: unknown) {
+					const errorMessage = (error as { data?: { message?: string } })?.data?.message || 'Failed to update emotions for these records';
 
 					// Update status to 'error'
 					dispatch(

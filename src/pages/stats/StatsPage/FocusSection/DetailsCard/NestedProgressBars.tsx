@@ -92,7 +92,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 
         const shouldBreakAll = shouldBreakAllText(item?.name);
         const formattedMetric = isFocusDuration
-        ? getFormattedDuration(item?.[metricType], false)
+        ? getFormattedDuration(item?.[metricType] ?? 0, false)
         : `${item?.[metricType]?.toLocaleString() || 0} task${totalMetricOnParentTask[parentTaskId].value !== 1 ? 's' : ''}`;
 
         const renderProgressBar = () => (

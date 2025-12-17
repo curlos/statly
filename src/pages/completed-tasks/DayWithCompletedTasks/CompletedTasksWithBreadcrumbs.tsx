@@ -7,7 +7,7 @@ import type { Task } from '../../../types/models';
 
 interface CompletedTasksWithBreadcrumbsProps {
 	ancestorTasksById: Record<string, AncestorTask>;
-	groupedSubtasksByParentTask: Record<string, Task[]>;
+	groupedSubtasksByParentTask: Record<string, (Task | AncestorTask)[]>;
 	dateStr: string;
 	updateTaskIdQueryParam: (taskId: string) => void;
 	groupedTasksCollapsedByDefault: boolean;

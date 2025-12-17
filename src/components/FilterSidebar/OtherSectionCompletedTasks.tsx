@@ -116,7 +116,7 @@ const OtherSectionFocusRecords = () => {
 						<InputNumUserSettings
 							{...{
 								defaultValue: maxDaysPerPage,
-								userSettings,
+								userSettings: userSettings!,
 								editUserSettings,
 								minNum: 7,
 								maxNum: 14,

@@ -3,10 +3,11 @@ import { useDeleteFocusRecordMutation } from '../../../services/resources/delete
 import { serializeFocusRecordToMarkdown } from '../../../utils/focusRecords.utils';
 import { useFocusRecordsQuery } from '../useFocusRecordsQuery';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
+import type { FocusRecord, Task, Project } from '../../../types/models';
 
 interface UseFocusRecordMenuParams {
-	focusRecord: any;
-	completedTasksDuringFocusSession: any[];
+	focusRecord: FocusRecord;
+	completedTasksDuringFocusSession: Task[];
 	showFocusRecordEmotions: boolean;
 }
 
@@ -52,14 +53,14 @@ export const useFocusRecordMenu = ({
 	const handleCopyCompletedTasks = () => {
 		if (completedTasksDuringFocusSession.length > 0) {
 			const tasksText = completedTasksDuringFocusSession
-				.map((task: any) => `- [x] ${task.title}`)
+				.map((task) => `- [x] ${task.title}`)
 				.join('\n');
 			navigator.clipboard.writeText(tasksText);
 		}
 	};
 
 	const handleCopyFocusRecord = () => {
-		const markdown = serializeFocusRecordToMarkdown(focusRecord, showFocusRecordEmotions, ancestorTasksById, projectsById);
+		const markdown = serializeFocusRecordToMarkdown(focusRecord, showFocusRecordEmotions, ancestorTasksById as Record<string, Task> | undefined, projectsById as Record<string, Project> | undefined);
 		navigator.clipboard.writeText(markdown);
 	};
 

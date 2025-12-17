@@ -20,8 +20,8 @@ const TimelineCard = () => {
 	// Build query params for API using custom hook
 	const queryParams = useStatsQueryParams({
 		'group-by': 'timeline',
-		'interval-start-date': apiStartDate,
-		'interval-end-date': apiEndDate,
+		'interval-start-date': apiStartDate ?? undefined,
+		'interval-end-date': apiEndDate ?? undefined,
 	});
 
 	// Fetch stats from API

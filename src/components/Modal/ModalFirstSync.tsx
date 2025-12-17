@@ -11,9 +11,9 @@ const ModalFirstSync = () => {
 	const isSyncing = useSelector(selectIsSyncing);
 	const syncStatus = useSelector(selectSyncStatus);
 	const { getStatusIcon } = useSyncStatusHelpers();
-	const themeContext = useThemeContext() as any;
+	const themeContext = useThemeContext();
 	const chosenColorObj = themeContext?.chosenColorObj;
-	const themeColor = chosenColorObj?.hex || '#3b82f6'; // Default to blue-500 if no theme
+	const themeColor = chosenColorObj?.hexColor || '#3b82f6'; // Default to blue-500 if no theme
 
 	// Check if any sync failed
 	const hasError = Object.values(syncStatus).some((status) => status === 'error');

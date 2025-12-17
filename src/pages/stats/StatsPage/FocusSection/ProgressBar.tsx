@@ -70,7 +70,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 	};
 
 	const formattedMetric = isFocusDuration
-		? getFormattedDuration(item.duration, false)
+		? getFormattedDuration(item.duration ?? 0, false)
 		: `${item.count?.toLocaleString() || 0} task${item.count !== 1 ? 's' : ''}`;
 
 	const color = item.type === 'task' ? (item.projectId && projectsById[item.projectId]?.color || item.color || '#808080') : (item.color || '#808080')

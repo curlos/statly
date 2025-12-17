@@ -89,6 +89,7 @@ const AppliedFilterItemList = () => {
 		setFocusAppNamesStr(newFocusAppNamesStr);
 		setToDoListAppNamesStr(newToDoListAppNamesStr);
 		setProjectTodoistNamesStr(newProjectTodoistNamesStr);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		projectsFromUrl,
 		categoriesFromUrl,

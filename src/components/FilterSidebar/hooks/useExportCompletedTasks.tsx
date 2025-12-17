@@ -3,10 +3,53 @@ import { useUserSettingsContext } from '../../../pages/focus-records/useUserSett
 import { saveAs } from 'file-saver';
 import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
 import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
-import { baseAPI } from '../../../services/api';
+import { tasksApi } from '../../../services/resources/tasksApi';
 import { useDispatch } from 'react-redux';
 import { getAppliedFiltersMarkdown } from './getAppliedFiltersMarkdown';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
+import type { Task } from '../../../types/models';
+import type { AncestorTask } from '../../../types/api';
+
+interface ParentTaskData {
+	name: string;
+	completedSubtasks: Task[];
+}
+
+interface NestedTaskNode {
+	parentDirectChildrenCompletedTasks?: Record<string, NestedTaskNode>;
+	directCompletedSubtasks?: Task[];
+}
+
+interface DayData {
+	taskCount: number;
+	[key: string]: NestedTaskNode | number;
+}
+
+// Export API Response Types
+interface FlatExportResponse {
+	days: Array<{ dateStr: string; parentTasks: ParentTaskData[]; taskCount: number }>;
+	totalTasks: number;
+}
+
+interface FlatGroupedExportResponse {
+	grouped: Record<string, {
+		days: Array<{ dateStr: string; parentTasks: ParentTaskData[]; taskCount: number }>;
+		totalCompletedTasks: number;
+		groupName: string;
+	}>;
+}
+
+interface NestedExportResponse {
+	[dateStr: string]: DayData | Record<string, AncestorTask> | number;
+	ancestorTasksById: Record<string, AncestorTask>;
+	totalTasks: number;
+}
+
+interface NestedGroupedExportResponse {
+	[groupId: string]: Record<string, DayData> | Record<string, AncestorTask> | number;
+	ancestorTasksById: Record<string, AncestorTask>;
+	totalTasks: number;
+}
 
 const useExportCompletedTasks = () => {
 	const dispatch = useDispatch();
@@ -23,13 +66,17 @@ const useExportCompletedTasks = () => {
 	 * status === -1 means "won't do" (red X)
 	 * otherwise it's completed (checkmark)
 	 */
-	function getTaskCheckbox(task) {
-		const statusIsWillNotDo = task.status === -1;
+	function getTaskCheckbox(task: Task): string {
+		const statusIsWillNotDo = task.source === 'TaskTickTick' && task.status === -1;
 		return statusIsWillNotDo ? '❌' : '[x]';
 	}
 
-	function serializeDayWithCompletedTasks(dateStr, parentTasks, taskCount) {
-		const lines = [];
+	function getTaskTitle(task: Task): string {
+		return task.title || (task.source === 'TaskTickTick' ? task.content : undefined) || '';
+	}
+
+	function serializeDayWithCompletedTasks(dateStr: string, parentTasks: ParentTaskData[], taskCount: number): string {
+		const lines: string[] = [];
 		// Remove leading zero from day (e.g., "January 01, 2025" -> "January 1, 2025")
 		const formattedDateStr = dateStr.replace(/\b0(\d),/, '$1,');
 		lines.push(`### 📅 ${formattedDateStr} (${taskCount})\n`);
@@ -42,7 +89,7 @@ const useExportCompletedTasks = () => {
 
 			completedSubtasks.forEach((task) => {
 				const checkbox = getTaskCheckbox(task);
-				lines.push(`- ${checkbox} ${task.title || task.content}`);
+				lines.push(`- ${checkbox} ${getTaskTitle(task)}`);
 			});
 
 			// Add an empty line after each task group, but no extra newline
@@ -62,8 +109,8 @@ const useExportCompletedTasks = () => {
 	/**
 	 * Recursively serialize a nested task node to markdown
 	 */
-	function serializeNestedTaskNode(taskId, node, ancestorTasksById, level) {
-		const lines = [];
+	function serializeNestedTaskNode(taskId: string, node: NestedTaskNode, ancestorTasksById: Record<string, AncestorTask>, level: number): string {
+		const lines: string[] = [];
 		const indent = '  '.repeat(level);
 
 		// Handle grouped task IDs (like "grouped-Check Streaks")
@@ -71,7 +118,7 @@ const useExportCompletedTasks = () => {
 		if (!taskInfo && taskId.startsWith('grouped-')) {
 			// Extract task name from grouped ID
 			const taskName = taskId.replace('grouped-', '');
-			taskInfo = { title: taskName, projectId: null };
+			taskInfo = { id: taskId, title: taskName, projectId: '', parentId: null, ancestorIds: [] };
 		}
 
 		if (!taskInfo) {
@@ -86,7 +133,7 @@ const useExportCompletedTasks = () => {
 
 		// Special case: if this task only has itself as a child (nesting under itself)
 		// Don't show the parent name twice - just show the checkboxes from the nested child
-		const childIds = hasChildren ? Object.keys(node.parentDirectChildrenCompletedTasks) : [];
+		const childIds = hasChildren && node.parentDirectChildrenCompletedTasks ? Object.keys(node.parentDirectChildrenCompletedTasks) : [];
 		const onlyChildIsItself = childIds.length === 1 && childIds[0] === taskId;
 
 		if (onlyChildIsItself) {
@@ -101,19 +148,19 @@ const useExportCompletedTasks = () => {
 			}
 
 			// Render direct completed subtasks at this level (siblings of the task itself)
-			if (hasDirectCompletedSubtasks) {
+			if (hasDirectCompletedSubtasks && node.directCompletedSubtasks) {
 				node.directCompletedSubtasks.forEach(task => {
 					const checkbox = getTaskCheckbox(task);
-					lines.push(`${indent}  - ${checkbox} ${task.title || task.content}`);
+					lines.push(`${indent}  - ${checkbox} ${getTaskTitle(task)}`);
 				});
 			}
 
 			// Render the nested child's subtasks (the task itself completing)
-			const childNode = node.parentDirectChildrenCompletedTasks[taskId];
-			if (childNode.directCompletedSubtasks && childNode.directCompletedSubtasks.length > 0) {
+			const childNode = node.parentDirectChildrenCompletedTasks?.[taskId];
+			if (childNode?.directCompletedSubtasks && childNode.directCompletedSubtasks.length > 0) {
 				childNode.directCompletedSubtasks.forEach(task => {
 					const checkbox = getTaskCheckbox(task);
-					lines.push(`${indent}  - ${checkbox} ${task.title || task.content}`);
+					lines.push(`${indent}  - ${checkbox} ${getTaskTitle(task)}`);
 				});
 			}
 		} else if (hasChildren || hasDirectCompletedSubtasks) {
@@ -127,15 +174,15 @@ const useExportCompletedTasks = () => {
 			}
 
 			// Render direct completed subtasks (tasks completed at this level)
-			if (hasDirectCompletedSubtasks) {
+			if (hasDirectCompletedSubtasks && node.directCompletedSubtasks) {
 				node.directCompletedSubtasks.forEach(task => {
 					const checkbox = getTaskCheckbox(task);
-					lines.push(`${indent}  - ${checkbox} ${task.title || task.content}`);
+					lines.push(`${indent}  - ${checkbox} ${getTaskTitle(task)}`);
 				});
 			}
 
 			// Recursively render children
-			if (hasChildren) {
+			if (hasChildren && node.parentDirectChildrenCompletedTasks) {
 				Object.entries(node.parentDirectChildrenCompletedTasks).forEach(([childId, childNode]) => {
 					const childMarkdown = serializeNestedTaskNode(childId, childNode, ancestorTasksById, level + 1);
 					if (childMarkdown) {
@@ -151,8 +198,8 @@ const useExportCompletedTasks = () => {
 	/**
 	 * Serialize one day's nested structure to markdown
 	 */
-	function serializeNestedDay(dateStr, dayData, ancestorTasksById) {
-		const lines = [];
+	function serializeNestedDay(dateStr: string, dayData: DayData, ancestorTasksById: Record<string, AncestorTask>): string {
+		const lines: string[] = [];
 
 		// Extract taskCount from backend (already calculated)
 		const { taskCount, ...nestedTasks } = dayData;
@@ -165,6 +212,9 @@ const useExportCompletedTasks = () => {
 		const rootTaskIds = Object.keys(nestedTasks);
 		rootTaskIds.forEach((rootTaskId, index) => {
 			const rootNode = nestedTasks[rootTaskId];
+			// Skip if rootNode is the taskCount number
+			if (typeof rootNode === 'number') return;
+
 			const rootMarkdown = serializeNestedTaskNode(rootTaskId, rootNode, ancestorTasksById, 0);
 			if (rootMarkdown) {
 				lines.push(rootMarkdown);
@@ -179,8 +229,12 @@ const useExportCompletedTasks = () => {
 		return lines.join('\n');
 	}
 
-	const getCompletedTasksMarkdown = (days, customTitle, totalTasks) => {
-		const allDaysWithCompletedTasksMarkdown = [];
+	const getCompletedTasksMarkdown = (
+		days: Array<{ dateStr: string; parentTasks: ParentTaskData[]; taskCount: number }>,
+		customTitle: string | null,
+		totalTasks: number
+	): string => {
+		const allDaysWithCompletedTasksMarkdown: string[] = [];
 
 		// Add title as H1 at the beginning
 		const titleInfo = customTitle || `Completed Tasks (${totalTasks.toLocaleString()})`;
@@ -217,8 +271,8 @@ const useExportCompletedTasks = () => {
 		const exportMode = showIndentedTasks ? 'nested' : 'flat';
 
 		// Trigger the export query manually
-		const result = await dispatch(
-			baseAPI.endpoints.getDaysWithCompletedTasksExport.initiate({
+		const result: { data?: unknown } = await (dispatch as (arg: unknown) => Promise<{ data?: unknown }>)(
+			tasksApi.endpoints.getDaysWithCompletedTasksExport.initiate({
 				...queryParams,
 				'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
@@ -231,20 +285,21 @@ const useExportCompletedTasks = () => {
 			let finalMarkdown;
 
 			if (exportMode === 'nested') {
-				const nestedData = result.data;
-				const ancestorTasksById = result.data.ancestorTasksById || {};
-				const totalTasks = result.data.totalTasks || 0;
+				const nestedData = result.data as unknown as NestedExportResponse;
+				const ancestorTasksById = nestedData.ancestorTasksById || {};
+				const totalTasks = nestedData.totalTasks || 0;
 
 				// Since we hardcode 'group-by': 'none', the structure is always { [dateStr]: { [rootTaskId]: NestedTaskNode } }
 				const days = Object.entries(nestedData)
 					.filter(([key]) => key !== 'ancestorTasksById' && key !== 'totalTasks') // Filter out metadata
-					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks, ancestorTasksById))
+					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks as DayData, ancestorTasksById))
 					.join('\n---\n');
 
 				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
 			} else {
 				// Flat mode (existing logic)
-				const { days, totalTasks } = result.data;
+				const flatData = result.data as unknown as FlatExportResponse;
+				const { days, totalTasks } = flatData;
 				finalMarkdown = getCompletedTasksMarkdown(days, null, totalTasks);
 			}
 
@@ -265,8 +320,8 @@ const useExportCompletedTasks = () => {
 		const exportMode = showIndentedTasks ? 'nested' : 'flat';
 
 		// Trigger the export query manually
-		const result = await dispatch(
-			baseAPI.endpoints.getDaysWithCompletedTasksExport.initiate({
+		const result: { data?: unknown } = await (dispatch as (arg: unknown) => Promise<{ data?: unknown }>)(
+			tasksApi.endpoints.getDaysWithCompletedTasksExport.initiate({
 				...queryParams,
 				'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
@@ -279,20 +334,21 @@ const useExportCompletedTasks = () => {
 			let finalMarkdown;
 
 			if (exportMode === 'nested') {
-				const nestedData = result.data;
-				const ancestorTasksById = result.data.ancestorTasksById || {};
-				const totalTasks = result.data.totalTasks || 0;
+				const nestedData = result.data as unknown as NestedExportResponse;
+				const ancestorTasksById = nestedData.ancestorTasksById || {};
+				const totalTasks = nestedData.totalTasks || 0;
 
 				// nestedData is { [dateStr]: { [rootTaskId]: NestedTaskNode }, ancestorTasksById, totalTasks }
 				const days = Object.entries(nestedData)
 					.filter(([key]) => key !== 'ancestorTasksById' && key !== 'totalTasks')
-					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks, ancestorTasksById))
+					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks as DayData, ancestorTasksById))
 					.join('\n---\n');
 
 				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
 			} else {
 				// Flat mode (existing logic)
-				const { days, totalTasks } = result.data;
+				const flatData = result.data as unknown as FlatExportResponse;
+				const { days, totalTasks } = flatData;
 				finalMarkdown = getCompletedTasksMarkdown(days, null, totalTasks);
 			}
 
@@ -302,12 +358,12 @@ const useExportCompletedTasks = () => {
 		}
 	};
 
-	const downloadZipFolderOfGroupedCompletedTasks = async (groupType) => {
+	const downloadZipFolderOfGroupedCompletedTasks = async (groupType: 'project' | 'task') => {
 		const exportMode = showIndentedTasks ? 'nested' : 'flat';
 
 		// Trigger the export query manually
-		const result = await dispatch(
-			baseAPI.endpoints.getDaysWithCompletedTasksExport.initiate({
+		const result: { data?: unknown } = await (dispatch as (arg: unknown) => Promise<{ data?: unknown }>)(
+			tasksApi.endpoints.getDaysWithCompletedTasksExport.initiate({
 				...queryParams,
 				'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
@@ -324,15 +380,18 @@ const useExportCompletedTasks = () => {
 
 		if (exportMode === 'nested') {
 			// Nested mode: data is { [groupId]: { [dateStr]: { [rootTaskId]: NestedTaskNode } }, ancestorTasksById, totalTasks }
-			const ancestorTasksById = result.data.ancestorTasksById || {};
-			const groupedData = { ...result.data };
-			delete groupedData.ancestorTasksById;
-			delete groupedData.totalTasks;
+			const nestedGroupedData = result.data as unknown as NestedGroupedExportResponse;
+			const ancestorTasksById = nestedGroupedData.ancestorTasksById || {};
+
+			// Extract only the group data (exclude ancestorTasksById and totalTasks)
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { ancestorTasksById: _, totalTasks: __, ...groupedData } = nestedGroupedData;
 
 			// Build array for sorting - calculate task counts per group
 			const groupsArray = Object.entries(groupedData).map(([groupId, daysData]) => {
 				// Count tasks in this group by summing taskCount from each day
-				const totalCompletedTasks = Object.values(daysData).reduce((sum, dayData) => {
+				const daysDataTyped = daysData as Record<string, DayData>;
+				const totalCompletedTasks = Object.values(daysDataTyped).reduce((sum, dayData) => {
 					return sum + (dayData.taskCount || 0);
 				}, 0);
 
@@ -349,7 +408,7 @@ const useExportCompletedTasks = () => {
 				return {
 					groupId,
 					groupName,
-					daysData,
+					daysData: daysDataTyped,
 					totalCompletedTasks
 				};
 			});
@@ -380,7 +439,8 @@ const useExportCompletedTasks = () => {
 			});
 		} else {
 			// Flat mode (existing logic)
-			const { grouped } = result.data;
+			const flatGroupedData = result.data as unknown as FlatGroupedExportResponse;
+			const { grouped } = flatGroupedData;
 
 			// Convert grouped object to array and sort by totalCompletedTasks (descending)
 			const sortedGroups = Object.values(grouped)

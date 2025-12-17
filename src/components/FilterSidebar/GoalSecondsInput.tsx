@@ -7,20 +7,20 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 	defaultValue: number;
 	customDateKey?: string | null;
 	ringId: string;
-	handleUpdateRingSetting: (ringId: string, property: string, value: any) => Promise<void>;
+	handleUpdateRingSetting: (ringId: string, property: string, value: number | Record<string, number>) => Promise<void>;
 	customDailyFocusGoal?: Record<string, number>;
 }) => {
 	const { hours: defaultHours, minutes: defaultMinutes } = secondsToHoursAndMinutes(defaultValue);
 
-	const [hours, setHours] = useState(defaultHours);
-	const [minutes, setMinutes] = useState(defaultMinutes);
+	const [hours, setHours] = useState<number | string>(defaultHours);
+	const [minutes, setMinutes] = useState<number | string>(defaultMinutes);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [apiRequestLoading, setApiRequestLoading] = useState(false);
 
 	const getErrorMessage = () => {
 		if (hours === '' || minutes === '') {
 			return 'Invalid input.';
-		} else if (isNaN(hours) || isNaN(minutes)) {
+		} else if (isNaN(Number(hours)) || isNaN(Number(minutes))) {
 			return 'Input must be a number.';
 		} else if (Number(hours) < 0 || Number(minutes) < 0) {
 			return 'Values must be positive.';
@@ -70,6 +70,7 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 		return () => {
 			handleDebouncedUpdate.cancel();
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hours, minutes]);
 
 	return (

@@ -42,7 +42,7 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 					setIsDropdownVisible(!isDropdownVisible);
 
 					if (isDropdownOpenForParent !== undefined) {
-						setIsDropdownOpenForParent(!isDropdownOpenForParent);
+						setIsDropdownOpenForParent?.(!isDropdownOpenForParent);
 					}
 				}}
 			>
@@ -56,8 +56,8 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 				setIsVisible={(value) => {
 					setIsDropdownVisible(value);
 
-					if (isDropdownOpenForParent !== undefined) {
-						setIsDropdownOpenForParent(value);
+					if (isDropdownOpenForParent !== undefined && typeof value === 'boolean') {
+						setIsDropdownOpenForParent?.(value);
 					}
 				}}
 				selected={selected}

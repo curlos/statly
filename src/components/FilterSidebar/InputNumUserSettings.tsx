@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { debounce } from '../../utils/helpers.utils';
 import CustomInput from '../CustomInput';
 import Spinner from '../Loaders/Spinner';
+import type { UserSettings } from '../../types/api';
 
 const InputNumUserSettings = ({
 	defaultValue,
@@ -15,16 +16,16 @@ const InputNumUserSettings = ({
 	ringId = null,
 	handleUpdateRingSetting = null,
 }: {
-	defaultValue: any;
-	userSettings: any;
-	editUserSettings: any;
+	defaultValue: number;
+	userSettings: UserSettings;
+	editUserSettings: (payload: Partial<UserSettings>) => Promise<unknown>;
 	minNum?: number;
 	maxNum?: number;
 	name: string;
 	page: string;
 	inputMaxWidth?: string;
 	ringId?: string | null;
-	handleUpdateRingSetting?: ((ringId: string, property: string, value: any) => Promise<void>) | null;
+	handleUpdateRingSetting?: ((ringId: string, property: string, value: number) => Promise<void>) | null;
 }) => {
 	const [localValue, setLocalValue] = useState(defaultValue);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -86,24 +87,9 @@ const InputNumUserSettings = ({
 				},
 			};
 		} else if (page === 'focus-hours-goal-page') {
-			const restOfFocusHoursGoalKeysAndVals = userSettings?.pages?.focusHoursGoal;
-			const currentGoalDays = restOfFocusHoursGoalKeysAndVals?.goalDays;
-
-			if (currentGoalDays === localValue) {
-				return;
-			}
-
-			const restOfPagesKeysAndVals = userSettings?.pages;
-
-			payload = {
-				pages: {
-					...restOfPagesKeysAndVals,
-					focusHoursGoal: {
-						...restOfFocusHoursGoalKeysAndVals,
-						goalDays: localValue,
-					},
-				},
-			};
+			// This case is now handled by ring-specific updates via handleUpdateRingSetting
+			// No need to update user settings directly for focus-hours-goal-page
+			return;
 		}
 
 		return payload;
@@ -147,6 +133,7 @@ const InputNumUserSettings = ({
 		return () => {
 			handleDebouncedUpdate.cancel();
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [localValue]);
 
 	return (
@@ -155,7 +142,7 @@ const InputNumUserSettings = ({
 				<div>
 					<CustomInput
 						value={localValue}
-						setValue={setLocalValue}
+						setValue={setLocalValue as React.Dispatch<React.SetStateAction<string | number>>}
 						type="number"
 						min={minNum}
 						max={maxNum}

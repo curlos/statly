@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import Icon from '../../../components/Icon';
 import type { Task } from '../../../types/models';
+import type { AncestorTask } from '../../../types/api';
 
 interface CompletedTaskProps {
-	task: Task;
+	task: Task | AncestorTask;
 	isFullTask: boolean;
 	updateTaskIdQueryParam: (taskId: string) => void;
 }

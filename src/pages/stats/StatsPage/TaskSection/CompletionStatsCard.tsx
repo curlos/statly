@@ -109,7 +109,8 @@ const CompletionStatsCard = () => {
 				data = aggregationResults.aggregatedData;
 			} else {
 				// Use simple flat aggregation for non-nested view
-				data = groupTasksByParent(data, ancestorTasksById, totalCount, 'count');
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				data = groupTasksByParent(data as any, ancestorTasksById, totalCount, 'count') as typeof data;
 			}
 		}
 

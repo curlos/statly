@@ -2,6 +2,7 @@ import Modal from './Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import Icon from '../Icon';
+import type { RootState } from '../../types/redux';
 
 /**
  * Returns helpful context for known TickTick error messages
@@ -16,7 +17,7 @@ const getErrorContext = (errorMessage: string) => {
 };
 
 const ModalErrorMessenger: React.FC = () => {
-	const modal = useSelector((state) => state.modals.modals['ModalErrorMessenger']);
+	const modal = useSelector((state: RootState) => state.modals.modals['ModalErrorMessenger']);
 	const dispatch = useDispatch();
 
 	if (!modal) {
@@ -30,14 +31,14 @@ const ModalErrorMessenger: React.FC = () => {
 		return null;
 	}
 
-	const { status, data, message, endpoint } = error;
+	const { status, data, message, endpoint } = error as { status?: number; data?: { message?: string }; message?: string; endpoint?: string };
 	const errorMessage = data?.message || message;
-	const contextMessage = getErrorContext(errorMessage);
+	const contextMessage = getErrorContext(errorMessage || '');
 
 	const closeModal = () => dispatch(setModalState({ modalId: 'ModalErrorMessenger', isOpen: false }));
 
 	return (
-		<Modal isOpen={isOpen} onClose={closeModal} position="top-center" customClasses="!w-[700px]">
+		<Modal isOpen={isOpen} onClose={closeModal} customClasses="!w-[700px]">
 			<div className="rounded-lg shadow-lg bg-color-gray-600 p-4 pt-2">
 				<div className="flex justify-end">
 					<Icon

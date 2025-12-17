@@ -1,15 +1,18 @@
 import classNames from 'classnames';
 import Icon from '../Icon';
+import type { Project } from '../../types/models';
+import type { ColorVariant } from '../../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 
 interface CheckboxMultiSelectForUrlProps {
-	project?: object;
-	chosenColorObj: object;
-	nextLightestColorObj: object;
-	commaSeparatedObj: object;
-	updateQueryParams: () => void;
+	project?: Project;
+	chosenColorObj: ColorVariant;
+	nextLightestColorObj: ColorVariant | null;
+	commaSeparatedObj: Record<string, boolean>;
+	updateQueryParams: (params: Record<string, string>) => void;
 	urlQueryParamName: string;
 	checkboxId?: string;
 	checkboxName?: string;
+	nameParentheses?: string;
 }
 
 /**
@@ -35,6 +38,11 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 	let name = isProjectOrCategory ? project?.name : checkboxName;
 	const color = isProjectOrCategory ? project?.color : null;
 
+	// Return early if id is undefined
+	if (!id) {
+		return null;
+	}
+
 	// TODO: Change this to also check for DB value possibly.
 	const isChecked = commaSeparatedObj[id];
 
@@ -59,7 +67,7 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 			<Icon
 				name={isChecked ? 'check_box' : 'check_box_outline_blank'}
 				fill={1}
-				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj.hover.textColor)}
+				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj?.hover.textColor)}
 			/>
 			<div className="flex-1 flex justify-between items-center gap-1">
 				<div>{name}</div>
@@ -77,10 +85,10 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
  * @description Using "projectsFromUrlById", this will check all of the project ids that are checked and will create a comma separated string from this passed-in object. Mostly meant to update the query params of "projects" with this string.
  * @returns {String}
  */
-const getCommaSeparatedSelectedValues = (projectsFromUrlById) => {
-	const selectedProjectsArr = [];
+const getCommaSeparatedSelectedValues = (projectsFromUrlById: Record<string, boolean>) => {
+	const selectedProjectsArr: string[] = [];
 
-	for (let projectId of Object.keys(projectsFromUrlById)) {
+	for (const projectId of Object.keys(projectsFromUrlById)) {
 		const isChecked = projectsFromUrlById[projectId];
 
 		if (isChecked) {

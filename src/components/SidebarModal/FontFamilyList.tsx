@@ -30,7 +30,7 @@ const FontFamilyList = () => {
 		'Jost',
 	];
 
-	const handleChangeFontFamily = async (fontFamilyKey) => {
+	const handleChangeFontFamily = async (fontFamilyKey: string) => {
 		const restOfThemeKeysAndVals = userSettings?.theme;
 
 		const payload = {

@@ -1,4 +1,6 @@
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import type { Project } from '../../../types/models';
+import type { AncestorTask } from '../../../types/api';
 
 interface AppliedFiltersParams {
 	sortBy?: string;
@@ -11,11 +13,11 @@ interface AppliedFiltersParams {
 	toDoListAppsFromUrl?: string;
 	focusAppsFromUrl?: string;
 	crossesMidnight?: boolean;
-	ancestorTasksById?: Record<string, any>;
+	ancestorTasksById?: Record<string, AncestorTask>;
 	projectsFromUrl?: string;
 	projectsTodoistFromUrl?: string;
 	categoriesFromUrl?: string;
-	projectsById?: Record<string, any>;
+	projectsById?: Record<string, Project>;
 }
 
 /**

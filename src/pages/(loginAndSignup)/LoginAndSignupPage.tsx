@@ -14,7 +14,7 @@ const LoginAndSignupPage = () => {
 		if (isLoggedIn) {
 			navigate('/focus-records');
 		}
-	}, []);
+	}, [isLoggedIn]);
 
 	// Determine the mode based on the pathname
 	const isSignupRoute = pageContext?.urlParsed?.pathname?.includes('/signup');

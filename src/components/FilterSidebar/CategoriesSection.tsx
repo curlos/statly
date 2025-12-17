@@ -20,7 +20,7 @@ const CategoriesSection = () => {
 	const { data: fetchedProjects, isLoading: isLoadingGetProjects } = useGetProjectsQuery();
 	const { projectsSession } = fetchedProjects || {};
 
-	const categoriesFromUrlById = getCommaSeparatedObj(categoriesFromUrl);
+	const categoriesFromUrlById = getCommaSeparatedObj(categoriesFromUrl ?? undefined);
 	const sessionCategories = projectsSession
 
 	return (

@@ -84,7 +84,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 		if (selectedInterval === 'Week') {
 			const newAllDaysInWeekFromDate: Record<string, Date> = {};
 
-			getAllDaysInWeekFromDate(outerCurrentDate).forEach((day) => {
+			getAllDaysInWeekFromDate(outerCurrentDate ?? new Date()).forEach((day) => {
 				const dateKey = formatCheckedInDayDate(day);
 				newAllDaysInWeekFromDate[dateKey] = day;
 			});

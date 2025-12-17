@@ -68,8 +68,8 @@ const DetailsCard = () => {
 
 	const queryParams = useStatsQueryParams({
 		'group-by': getGroupBy(),
-		'interval-start-date': apiStartDate,
-		'interval-end-date': apiEndDate,
+		'interval-start-date': apiStartDate ?? undefined,
+		'interval-end-date': apiEndDate ?? undefined,
 		'nested': showNestedProgressBars,
 	});
 
@@ -345,8 +345,8 @@ const DetailsCard = () => {
 							showNestedProgressBars={showNestedProgressBars}
 							ancestorTasksById={ancestorTasksById}
 							aggregationResults={aggregationResults}
-							intervalStartDate={apiStartDate}
-							intervalEndDate={apiEndDate}
+							intervalStartDate={apiStartDate ?? ''}
+							intervalEndDate={apiEndDate ?? ''}
 							byEmotionWithTasks={statsData?.byEmotionWithTasks}
 						/>
 					</div>

@@ -17,7 +17,7 @@ const ThemeColorList = () => {
 	const themeContext = useThemeContext();
 	const { themeColorKey, cssStyles, chosenColorObj } = themeContext;
 
-	const handleChangeThemeColor = async (colorKey) => {
+	const handleChangeThemeColor = async (colorKey: string) => {
 		const restOfThemeKeysAndVals = userSettings?.theme;
 
 		const payload = {

@@ -50,6 +50,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({ maxHeight, chosenChalleng
 		if (firstCompletedChallenge) {
 			setChosenChallenge(firstCompletedChallenge);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [challengesData, isLoadingFocusOrTasksData, type]);
 
 	const getChallengesToUse = () => {

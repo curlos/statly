@@ -10,7 +10,7 @@ const ShowRecordsFromFocusAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const focusAppsFromUrl = searchParams.get('focus-apps');
-	const focusAppsByName = getCommaSeparatedObj(focusAppsFromUrl);
+	const focusAppsByName = getCommaSeparatedObj(focusAppsFromUrl ?? undefined);
 
 	return (
 		<div>
@@ -31,15 +31,13 @@ const ShowRecordsFromFocusAppSection = () => {
 					return (
 						<CheckboxMultiSelectForUrl
 							key={focusApp.id}
-							{...{
-								chosenColorObj,
-								nextLightestColorObj,
-								commaSeparatedObj: focusAppsByName,
-								updateQueryParams,
-								urlQueryParamName: 'focus-apps',
-								checkboxId: focusApp.id,
-								checkboxName: focusApp.name,
-							}}
+							chosenColorObj={chosenColorObj}
+							nextLightestColorObj={nextLightestColorObj}
+							commaSeparatedObj={focusAppsByName}
+							updateQueryParams={updateQueryParams}
+							urlQueryParamName={'focus-apps'}
+							checkboxId={focusApp.id}
+							checkboxName={focusApp.name}
 						/>
 					);
 				})}

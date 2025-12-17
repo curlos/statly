@@ -123,7 +123,7 @@ const useUserSettings = () => {
 	};
 
 	// Helper function to update ring-specific settings
-	const handleUpdateRingSetting = async (ringId: string, settingProperty: string, newValue: boolean | object) => {
+	const handleUpdateRingSetting = async (ringId: string, settingProperty: string, newValue: unknown) => {
 		const restOfPagesKeysAndVals = userSettings?.pages;
 		const existingRings = focusHoursGoalPageSettings?.rings || [];
 
@@ -166,6 +166,8 @@ const useUserSettings = () => {
 	};
 
 	return {
+		userSettings,
+		editUserSettings,
 		handleUpdateUserSettingForPage,
 		handleUpdateRingSetting,
 		handleSetSelectedRing,
@@ -218,6 +220,7 @@ type UserSettingsContextValue = ReturnType<typeof useUserSettings>;
 
 const UserSettingsContext = createContext<UserSettingsContextValue | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useUserSettingsContext = () => {
 	const context = useContext(UserSettingsContext);
 	if (!context) {

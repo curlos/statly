@@ -7,12 +7,6 @@ import { getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getStrokeWidthByDataLength } from '../../../../utils/chart.utils';
 
-interface ChartDataItem {
-	name: string;
-	fullName: string;
-	score: number;
-}
-
 const CompletedTasksCurveCard = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -42,12 +36,14 @@ const CompletedTasksCurveCard = () => {
 		let totalCount = 0;
 		let intervalsWithAtLeastOneCompletedTask = 0;
 
-		data.forEach((day: ChartDataItem) => {
-			const { score } = day;
-			totalCount += score;
+		data.forEach((day) => {
+			if ('score' in day) {
+				const { score } = day;
+				totalCount += score ?? 0;
 
-			if (score) {
-				intervalsWithAtLeastOneCompletedTask += 1;
+				if (score) {
+					intervalsWithAtLeastOneCompletedTask += 1;
+				}
 			}
 		});
 

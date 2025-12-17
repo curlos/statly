@@ -9,8 +9,8 @@ interface CustomRadioButtonProps {
 	customLabelClass?: string;
 	customOuterCircleClasses: string;
 	customInnerCircleClasses: string;
-	customOuterCircleBorderColorClasses: string;
-	customInnerCircleBgColorClasses: string;
+	customOuterCircleBorderColorClasses?: string;
+	customInnerCircleBgColorClasses?: string;
 }
 
 const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({

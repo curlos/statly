@@ -53,7 +53,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 	const [sortedUngroupedProjects, setSortedUngroupedProjects] = useState<ProjectTickTick[]>([]);
 	const [sortedArchivedProjects, setSortedArchivedProjects] = useState<ProjectTickTick[]>([]);
 
-	const projectsFromUrlById = getCommaSeparatedObj(projectsFromUrl);
+	const projectsFromUrlById = getCommaSeparatedObj(projectsFromUrl ?? undefined);
 
 	useEffect(() => {
 		if (isLoadingGetProjects || isLoadingGetProjectGroups) {
@@ -296,7 +296,7 @@ interface ProjectGroupWithProjectsProps {
 	projectGroupsById?: Record<string, ProjectGroup>;
 	chosenColorObj: ColorVariant;
 	nextLightestColorObj: ColorVariant | null;
-	projectsFromUrlById: Record<string, string>;
+	projectsFromUrlById: Record<string, boolean>;
 	updateQueryParams: (newParams: Record<string, string>, customNewUrl?: string) => void;
 	page: string;
 	filteredProjects?: Record<string, boolean>;

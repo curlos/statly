@@ -1,6 +1,7 @@
 import Icon from '../../components/Icon';
+import type { RefObject } from 'react';
 
-const ChosenMedalSkeleton = ({ maxHeight, chosenMedalRef }: { maxHeight: string; chosenMedalRef: any }) => {
+const ChosenMedalSkeleton = ({ maxHeight, chosenMedalRef }: { maxHeight: string; chosenMedalRef: RefObject<HTMLDivElement> }) => {
 	return (
 		<div
 			ref={chosenMedalRef}

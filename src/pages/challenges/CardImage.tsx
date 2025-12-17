@@ -49,9 +49,9 @@ const CardImage: React.FC<CardImageProps> = ({ cardType, imageSrc, page, showGlo
 			<ModalChangeCardImage
 				{...{
 					showModal: showModalChangeCardImage,
-					setShowModal: setShowModalChangeCardImage,
-					cardType: cardType.toLowerCase(),
-					page,
+					setShowModal: setShowModalChangeCardImage as (show: boolean) => void,
+					cardType: cardType.toLowerCase() as 'focus' | 'tasks',
+					page: page as 'challenges' | 'medals' | 'focus-records' | 'completed-tasks',
 					imageSrc,
 				}}
 			/>

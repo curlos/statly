@@ -16,9 +16,10 @@ export async function syncWithRetry<T>(
 		try {
 			const result = await syncOperation();
 			return result;
-		} catch (error: any) {
+		} catch (error: unknown) {
 			// Check if it's a 409 Conflict (sync already in progress)
-			if (error?.status === 409 && attempt < maxRetries) {
+			const err = error as { status?: number };
+			if (err?.status === 409 && attempt < maxRetries) {
 				attempt++;
 				// Exponential backoff: 2s, 4s, 8s, 16s, 32s, 64s, 128s, 256s
 				const delayMs = Math.min(Math.pow(2, attempt) * 1000, 256000);

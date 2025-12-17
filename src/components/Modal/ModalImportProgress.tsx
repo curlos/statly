@@ -40,7 +40,7 @@ const ModalImportProgress: React.FC = () => {
 			case 'importing':
 				return {
 					icon: 'sync',
-					color: chosenColorObj.color,
+					color: chosenColorObj.hexColor,
 					showSpinner: true,
 				};
 			case 'success':

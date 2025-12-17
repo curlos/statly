@@ -1,19 +1,33 @@
+import type { AncestorTask } from '../types/api';
+
 /**
  * Groups standalone tasks (with only 1 instance) by their name.
  * Used to consolidate daily habit tasks like "Check Streaks" that appear multiple times.
  */
+interface GroupedDataItem {
+	id: string;
+	name: string;
+	projectId?: string;
+	color?: string;
+	duration?: number;
+	count?: number;
+	percentage: number;
+	type: string;
+	isGrouped?: boolean;
+}
+
 export function groupTasksByName(
-	groupedData: any[],
+	groupedData: GroupedDataItem[],
 	metricKey: 'duration' | 'count' = 'count',
-	totalCount
+	totalCount: number
 ) {
 	if (!groupedData || groupedData.length === 0) {
 		return groupedData;
 	}
 
 	// Separate tasks that have only 1 count from those that don't
-	const standaloneTasksByName: Record<string, any> = {};
-	const tasksWithChildren: any[] = [];
+	const standaloneTasksByName: Record<string, GroupedDataItem> = {};
+	const tasksWithChildren: GroupedDataItem[] = [];
 
 	groupedData.forEach((item) => {
 		if (item.type !== 'task') {
@@ -38,9 +52,10 @@ export function groupTasksByName(
 				};
 			} else {
 				// Subsequent occurrence - increment count and percentage
-				standaloneTasksByName[taskName][metricKey] += 1;
-				standaloneTasksByName[taskName].percentage = ((standaloneTasksByName[taskName][metricKey]) / totalCount) * 100;
-				standaloneTasksByName[taskName].isGrouped = true;
+				const existing = standaloneTasksByName[taskName]!;
+				existing[metricKey] = (existing[metricKey] ?? 0) + 1;
+				existing.percentage = ((existing[metricKey]!) / totalCount) * 100;
+				existing.isGrouped = true;
 			}
 		} else {
 			// Tasks with children already aggregated - keep as-is
@@ -62,8 +77,8 @@ export function groupTasksByName(
  * Used for Completion Stats to aggregate child tasks under their parent.
  */
 export function groupTasksByParent(
-	data: any[],
-	ancestorTasksById: Record<string, any>,
+	data: GroupedDataItem[],
+	ancestorTasksById: Record<string, AncestorTask>,
 	totalCount: number,
 	metricKey: 'duration' | 'count' = 'count'
 ) {
@@ -71,7 +86,7 @@ export function groupTasksByParent(
 		return data;
 	}
 
-	const groupedByParent: Record<string, any> = {};
+	const groupedByParent: Record<string, GroupedDataItem> = {};
 
 	data.forEach((item) => {
 		const taskInfo = ancestorTasksById[item.id];
@@ -93,13 +108,13 @@ export function groupTasksByParent(
 		}
 
 		// Aggregate metrics
-		groupedByParent[parentId][metricKey] += item[metricKey] || 0;
+		groupedByParent[parentId]![metricKey] = (groupedByParent[parentId]![metricKey] ?? 0) + (item[metricKey] || 0);
 	});
 
 	// Calculate percentages and convert to array
 	const groupedArray = Object.values(groupedByParent).map((item) => ({
 		...item,
-		percentage: Number(((item[metricKey] / totalCount) * 100).toFixed(2))
+		percentage: Number((((item[metricKey] ?? 0) / totalCount) * 100).toFixed(2))
 	}));
 
 	// Apply name-based grouping to consolidate daily habit tasks

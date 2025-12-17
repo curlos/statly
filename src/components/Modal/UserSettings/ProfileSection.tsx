@@ -56,7 +56,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 					className="w-24 h-24 rounded-full flex items-center justify-center text-white font-bold text-3xl mb-4"
 					style={{ backgroundColor: themeColor }}
 				>
-					{getInitials(user.name)}
+					{getInitials(user.name || '')}
 				</div>
 			)}
 			<h2 className="text-2xl font-bold mb-1">{user.name}</h2>

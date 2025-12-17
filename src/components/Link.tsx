@@ -1,6 +1,10 @@
 import { usePageContext } from 'vike-react/usePageContext';
 
-const Link = (props) => {
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+	href: string;
+}
+
+const Link = (props: LinkProps) => {
 	const { className, href } = props;
 	const pageContext = usePageContext();
 	const { urlPathname } = pageContext;

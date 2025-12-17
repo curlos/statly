@@ -41,6 +41,7 @@ const MedalList: React.FC<MedalListProps> = ({ maxHeight, chosenMedal, setChosen
 		if (firstEarnedMedal) {
 			setChosenMedal(firstEarnedMedal);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [medalsData, isLoading, type, interval]);
 
 	const medalsThatHaveBeenEarned = medalsToUse.filter((medal) => medal.intervalsEarned.length > 0);

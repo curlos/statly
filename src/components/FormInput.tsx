@@ -1,12 +1,13 @@
 import Icon from './Icon';
+import type { UseFormRegisterReturn, FieldError } from 'react-hook-form';
 
 interface FormInputProps {
 	id: string;
 	type: string;
 	placeholder: string;
 	iconName: string;
-	register: any;
-	error?: any;
+	register: UseFormRegisterReturn;
+	error?: FieldError;
 }
 
 const FormInput = ({ id, type, placeholder, iconName, register, error }: FormInputProps) => {

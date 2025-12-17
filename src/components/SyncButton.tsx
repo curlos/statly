@@ -5,7 +5,7 @@ import { useGetSyncMetadataQuery } from '../services/resources/syncApi';
 import { intlFormatDistance } from 'date-fns';
 import Tooltip from './Tooltip';
 import { setShowFirstSyncModal } from '../slices/syncSlice';
-import { isFirstTimeTickTickSync } from '../utils/syncHelpers';
+import { isFirstTimeTickTickSync, type SyncMetadata } from '../utils/syncHelpers';
 import { useSyncOrchestration } from '../hooks/useSyncOrchestration';
 import { useSyncStatusHelpers } from '../hooks/useSyncStatusHelpers';
 import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
@@ -16,16 +16,16 @@ interface SyncButtonProps {
 	showTooltip?: boolean;
 }
 
-interface SyncMetadata {
+interface SyncMetadataItemForTooltip {
 	lastSyncTime: string;
 	tasksUpdated?: number;
 }
 
 interface SyncMetadataByType {
-	tickTickTasks?: SyncMetadata;
-	tickTickProjects?: SyncMetadata;
-	tickTickProjectGroups?: SyncMetadata;
-	tickTickFocusRecords?: SyncMetadata;
+	tickTickTasks?: SyncMetadataItemForTooltip;
+	tickTickProjects?: SyncMetadataItemForTooltip;
+	tickTickProjectGroups?: SyncMetadataItemForTooltip;
+	tickTickFocusRecords?: SyncMetadataItemForTooltip;
 }
 
 const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: SyncButtonProps) => {
@@ -40,8 +40,8 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 		if (isSyncing || isLoadingMetadata) return;
 
 		// Check if this is the first sync by verifying all core TickTick sync metadata exist
-		const needsFirstSync = isFirstTimeTickTickSync(syncMetadata);
-		const hasCookie = !!userSettings?.tickTickCookie;
+		const needsFirstSync = isFirstTimeTickTickSync(syncMetadata as SyncMetadata);
+		const hasCookie = !!userSettings?.tickTickCookieSet;
 
 		// Only show first sync modal if cookie is set
 		if (needsFirstSync && hasCookie) {
@@ -62,7 +62,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 		if (!syncMetadata) return 'No sync data available';
 		const syncMetadataByType = syncMetadata as SyncMetadataByType;
 
-		const formatSync = (metadata?: SyncMetadata) => {
+		const formatSync = (metadata?: SyncMetadataItemForTooltip) => {
 			if (!metadata?.lastSyncTime) return 'Never';
 			return intlFormatDistance(new Date(metadata.lastSyncTime), new Date());
 		};

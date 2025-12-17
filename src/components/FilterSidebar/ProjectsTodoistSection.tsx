@@ -7,6 +7,7 @@ import Spinner from '../Loaders/Spinner';
 import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import { useGetProjectsQuery } from '../../services/resources/projectsApi';
+import type { ProjectTodoist } from '../../types/models';
 
 /**
  * @description Displays all of the ungrouped, grouped, and archived projects. All of the projects present here have a checkbox that can be clicked to filter the list of focus records by the selected projects.
@@ -21,36 +22,37 @@ const ProjectsTodoistSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const projectsTodoistFromUrl = searchParams.get('projects-todoist');
 
-	const projectsTodoistFromUrlById = getCommaSeparatedObj(projectsTodoistFromUrl);
+	const projectsTodoistFromUrlById = getCommaSeparatedObj(projectsTodoistFromUrl ?? undefined);
 
-	const [activeProjects, setActiveProjects] = useState([]);
-	const [archivedProjects, setArchivedProjects] = useState([]);
+	const [activeProjects, setActiveProjects] = useState<ProjectTodoist[]>([]);
+	const [archivedProjects, setArchivedProjects] = useState<ProjectTodoist[]>([]);
 
 	useEffect(() => {
 		if (!projectsTodoist) {
 			return;
 		}
 
-		const newActiveProjects = [];
-		const newArchivedProjects = [];
+		const newActiveProjects: ProjectTodoist[] = [];
+		const newArchivedProjects: ProjectTodoist[] = [];
 
-		for (let project of projectsTodoist) {
-			const { isInboxProject, isArchived } = project;
+		for (const project of projectsTodoist) {
+			const { isInboxProject, isArchived } = project as ProjectTodoist;
 
 			if (!isInboxProject && isArchived) {
-				newArchivedProjects.push(project);
+				newArchivedProjects.push(project as ProjectTodoist);
 			} else {
-				newActiveProjects.push(project);
+				newActiveProjects.push(project as ProjectTodoist);
 			}
 		}
 
-		setActiveProjects(newActiveProjects.toSorted((a, b) => a.order - b.order));
-		setArchivedProjects(newArchivedProjects.toSorted((a, b) => a.order - b.order));
+		setActiveProjects(newActiveProjects.toSorted((a, b) => (a.order ?? 0) - (b.order ?? 0)));
+		setArchivedProjects(newArchivedProjects.toSorted((a, b) => (a.order ?? 0) - (b.order ?? 0)));
 	}, [projectsTodoist]);
 
 	const [isOpenForParent, setIsOpenForParent] = useState(false);
 
-	const isFromQLinkAccount = (project) => {
+	const isFromQLinkAccount = (project: ProjectTodoist) => {
+		// TODO: This needs to be refactored potentially? Or maybe not since I won't allow users to see anything but TickTick data...
 		// Checks both the "sync" and "api/v1" ids for the "Inbox" and "Address" projects, the only two projects I actively used on my Q Link account.
 		return (
 			project.id === '2289588215' ||
@@ -81,15 +83,13 @@ const ProjectsTodoistSection = () => {
 						{activeProjects.map((project) => (
 							<CheckboxMultiSelectForUrl
 								key={project.id}
-								{...{
-									project,
-									chosenColorObj,
-									nextLightestColorObj,
-									commaSeparatedObj: projectsTodoistFromUrlById,
-									updateQueryParams,
-									urlQueryParamName: 'projects-todoist',
-									nameParentheses: isFromQLinkAccount(project) ? ' (Q Link)' : '',
-								}}
+								project={project}
+								chosenColorObj={chosenColorObj}
+								nextLightestColorObj={nextLightestColorObj}
+								commaSeparatedObj={projectsTodoistFromUrlById}
+								updateQueryParams={updateQueryParams}
+								urlQueryParamName={'projects-todoist'}
+								nameParentheses={isFromQLinkAccount(project) ? ' (Q Link)' : ''}
 							/>
 						))}
 
@@ -116,16 +116,13 @@ const ProjectsTodoistSection = () => {
 									{archivedProjects.map((project) => (
 										<CheckboxMultiSelectForUrl
 											key={project.id}
-											{...{
-												project,
-												chosenColorObj,
-												nextLightestColorObj,
-												commaSeparatedObj: projectsTodoistFromUrlById,
-												updateQueryParams,
-												urlQueryParamName: 'projects-todoist',
-												// Not technically needed here since I have no archived projects from my Q Link account but keeping it for the sake of consistency. Could definitely be removed and nothing would change.
-												nameParentheses: isFromQLinkAccount(project) ? ' (Q Link)' : '',
-											}}
+											project={project}
+											chosenColorObj={chosenColorObj}
+											nextLightestColorObj={nextLightestColorObj}
+											commaSeparatedObj={projectsTodoistFromUrlById}
+											updateQueryParams={updateQueryParams}
+											urlQueryParamName={'projects-todoist'}
+											nameParentheses={isFromQLinkAccount(project) ? ' (Q Link)' : ''}
 										/>
 									))}
 								</div>

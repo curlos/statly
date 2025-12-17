@@ -10,6 +10,7 @@ import StreaksList, { SortOption } from './StreaksList';
 import { useStatsDateRange } from '../../hooks/useStatsDateRange';
 import FocusStatsCard from './ModalFocusGoalProgress/FocusStatsCard';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
+import type { Ring } from '../../types/api';
 
 interface Streak {
 	days: number;
@@ -30,7 +31,7 @@ interface ModalFocusGoalProgressProps {
 	isOpen: boolean;
 	onClose: () => void;
 	streakData: StreakData;
-	ring: any; // The specific ring this modal is for
+	ring: Ring; // The specific ring this modal is for
 }
 
 const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
@@ -39,7 +40,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	streakData,
 	ring,
 }) => {
-	const { chosenColorObj } = useThemeContext() as any;
+	const { chosenColorObj } = useThemeContext();
 
 	const customDailyFocusGoal = ring?.customDailyFocusGoal ?? {};
 	const selectedDaysOfWeek = ring?.selectedDaysOfWeek ?? {};
@@ -222,7 +223,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 								goalSeconds={goalSeconds}
 								ringColor={ringColor}
 								useThemeColor={useThemeColor}
-								selectedDaysOfWeek={selectedDaysOfWeek}
+								selectedDaysOfWeek={selectedDaysOfWeek as unknown as Record<string, boolean>}
 								restDays={restDays}
 								customDailyFocusGoal={customDailyFocusGoal}
 							/>
@@ -445,7 +446,7 @@ const CalendarGrid = ({
 							goalSeconds={goalSeconds}
 							restDays={restDays}
 							dateKey={dateKey}
-							selectedDaysOfWeek={selectedDaysOfWeek}
+							selectedDaysOfWeek={selectedDaysOfWeek as unknown as Record<string, boolean>}
 							customDailyFocusGoal={customDailyFocusGoal}
 						/>
 					);
@@ -465,7 +466,7 @@ const YearView = ({
 	setCurrentDate: (date: Date) => void;
 	setShowYearView: (value: boolean) => void;
 }) => {
-	const { chosenColorObj } = useThemeContext() as any;
+	const { chosenColorObj } = useThemeContext();
 	const monthsOfYear = getAllMonths(currentDate);
 
 	return (

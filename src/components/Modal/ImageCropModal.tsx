@@ -29,7 +29,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
 	const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
 		const { width, height } = e.currentTarget;
-		imgRef.current = e.currentTarget;
 
 		// Calculate initial crop centered with square aspect ratio
 		const cropSize = Math.min(width, height) * 0.9;

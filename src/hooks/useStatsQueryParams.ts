@@ -27,16 +27,22 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 		}
 	} = useUserSettingsContext();
 
+	// Extract options properties to avoid complex expressions in dependency array
+	const groupBy = options['group-by'];
+	const intervalStartDate = options['interval-start-date'];
+	const intervalEndDate = options['interval-end-date'];
+	const nested = options['nested'];
+
 	const queryParams = useMemo(() => {
 		return {
-			'group-by': options['group-by'] || undefined,
+			'group-by': groupBy || undefined,
 			// Filter Sidebar dates (from URL params) - first tier filter
 			'start-date': searchParams.get('start-date') || undefined,
 			'end-date': searchParams.get('end-date') || undefined,
 			// Interval Dropdown dates (from component options) - second tier filter
-			'interval-start-date': options['interval-start-date'] || undefined,
-			'interval-end-date': options['interval-end-date'] || undefined,
-			'nested': options['nested'] || undefined,
+			'interval-start-date': intervalStartDate || undefined,
+			'interval-end-date': intervalEndDate || undefined,
+			'nested': nested || undefined,
 			'search': searchParams.get('search') || undefined,
 			'focus-apps': searchParams.get('focus-apps') || undefined,
 			'projects-ticktick': searchParams.get('projects') || undefined,
@@ -50,12 +56,13 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 			'emotions': searchParams.get('emotions') || undefined,
 		};
 	}, [
-		options['group-by'],
-		options['interval-start-date'],
-		options['interval-end-date'],
-		options['nested'],
+		groupBy,
+		intervalStartDate,
+		intervalEndDate,
+		nested,
 		searchParams,
-		timezone
+		timezone,
+		taskIdIncludeFocusRecordsFromSubtasks
 	]);
 
 	return queryParams;

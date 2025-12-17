@@ -13,7 +13,7 @@
  * invalidatesTags: invalidateOnSuccess(['User', 'UserSettings'])
  */
 export const invalidateOnSuccess = <T extends string>(tags: readonly T[]) => {
-	return (_result: any, error: any) => {
+	return (_result: unknown, error: unknown) => {
 		if (error) {
 			return [] as const;  // Don't invalidate on error
 		}

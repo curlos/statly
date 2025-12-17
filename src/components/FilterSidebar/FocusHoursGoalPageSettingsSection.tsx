@@ -13,9 +13,12 @@ import RingColorPicker from '../ColorPicker/RingColorPicker';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import ProjectsTickTickSection from './ProjectsTickTickSection';
 import Accordion from '../Accordion/Accordion';
+import type { Ring } from '../../types/api';
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
+		userSettings,
+		editUserSettings,
 		focusHoursGoalPageSettings: { rings, activeRings, currentRing, selectedRingId, showMultiRingViewForOneActiveRing },
 		handleUpdateRingSetting,
 		handleSetSelectedRing,
@@ -193,7 +196,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				await handleUpdateRingSetting(selectedRingId, 'name', newName);
 				setIsUpdatingRingName(false);
 			}
-		}, 1000) as any;
+		}, 1000) as unknown as null;
 	};
 
 	return (
@@ -219,7 +222,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 			>
 				<div className="mb-4 bg-color-gray-700 rounded-lg">
 					<div className="space-y-2">
-						{rings.map((ring: any) => {
+						{rings.map((ring: Ring) => {
 							const ringColor = ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor);
 
 							return (
@@ -390,6 +393,8 @@ const FocusHoursGoalPageSettingsSection = () => {
 					<InputNumUserSettings
 						key={`goal-days-${selectedRingId}`}
 						defaultValue={goalDays}
+						userSettings={userSettings!}
+						editUserSettings={editUserSettings}
 						minNum={1}
 						maxNum={36524}
 						name="Goal Days"

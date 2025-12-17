@@ -1,7 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { isFromServer } from '../utils/helpers.utils';
+import type { RootState } from '../types/redux';
+import type { User } from '../types/models';
 
-const initialState = {
+interface UserState {
+	user: User | null;
+	token: string | null;
+	isLoggedIn: boolean | null;
+}
+
+const initialState: UserState = {
 	user: null,
 	token: isFromServer() ? null : localStorage.getItem('token'),
 	isLoggedIn: isFromServer() ? null : (localStorage.getItem('token') ? true : false),
@@ -26,8 +34,8 @@ const userSlice = createSlice({
 });
 
 // Selector to access the user object
-export const selectUserToken = (state) => state.user.token;
-export const selectUser = (state) => state.user.user;
+export const selectUserToken = (state: RootState) => state.user.token;
+export const selectUser = (state: RootState) => state.user.user;
 
 export const { loginUserSuccess, logoutUser } = userSlice.actions;
 export default userSlice.reducer;

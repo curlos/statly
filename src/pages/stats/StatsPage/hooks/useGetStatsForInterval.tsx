@@ -43,11 +43,10 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 		initialDates,
 	});
 
-	const selectedGroupedIntervalOptions = ['Days', 'Weeks', 'Months', 'Years'];
-
 	// Determine which grouped interval options to show based on selected interval
 	// Memoize to prevent recalculation on every render
 	const availableGroupedIntervalOptions = useMemo(() => {
+		const selectedGroupedIntervalOptions = ['Days', 'Weeks', 'Months', 'Years'];
 		let options: string[] = [];
 
 		if (selectedInterval === 'Day') {
@@ -101,8 +100,8 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 	// Build query params for API using custom hook
 	const queryParams = useStatsQueryParams({
 		'group-by': getGroupByParam(),
-		'interval-start-date': apiStartDate,
-		'interval-end-date': apiEndDate,
+		'interval-start-date': apiStartDate ?? undefined,
+		'interval-end-date': apiEndDate ?? undefined,
 	});
 
 	// Fetch stats from API - use different query based on dataType

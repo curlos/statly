@@ -2,7 +2,7 @@
 function getImgurImages() {
   const prefix = "https://i.imgur.com";
   const imgs = document.querySelectorAll(`img[src^="${prefix}"]`);
-  return Array.from(imgs).map(img => img.src);
+  return Array.from(imgs).map(img => (img as HTMLImageElement).src);
 }
 
 // Example:

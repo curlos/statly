@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useGetSyncMetadataQuery } from '../services/resources/syncApi';
 import { setShowFirstSyncModal } from '../slices/syncSlice';
-import { isFirstTimeTickTickSync } from '../utils/syncHelpers';
+import { isFirstTimeTickTickSync, type SyncMetadata } from '../utils/syncHelpers';
 import { useSyncOrchestration } from './useSyncOrchestration';
 import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
 
@@ -25,8 +25,8 @@ export const useAutoSync = () => {
 		// Only proceed if we've finished loading the sync metadata
 		if (!hasAutoSynced && !isSyncing && !hasTriggeredSync.current && !isLoadingMetadata) {
 			// Check if this is the first sync by checking if all core TickTick sync metadata exist
-			const needsFirstSync = isFirstTimeTickTickSync(syncMetadata);
-			const hasCookie = !!userSettings?.tickTickCookie;
+			const needsFirstSync = isFirstTimeTickTickSync(syncMetadata as SyncMetadata);
+			const hasCookie = !!userSettings?.tickTickCookieSet;
 
 			// Only show first sync modal if cookie is set
 			if (needsFirstSync && hasCookie) {

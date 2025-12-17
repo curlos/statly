@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useMaxHeight(headerHeight, baseHeight = '100dvh') {
+function useMaxHeight(headerHeight: number, baseHeight = '100dvh') {
 	const [maxHeight, setMaxHeight] = useState(`calc(${baseHeight} - ${headerHeight}px)`);
 
 	useEffect(() => {

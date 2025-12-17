@@ -6,10 +6,10 @@ interface CustomInputProps {
 	placeholder?: string;
 	min?: number;
 	max?: number;
-	value: any;
-	setValue: React.Dispatch<React.SetStateAction<any>>;
+	value: string | number;
+	setValue: React.Dispatch<React.SetStateAction<string | number>>;
 	customClasses?: string;
-	onChange?: any;
+	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 	required?: boolean;
 }
 

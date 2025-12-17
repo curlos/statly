@@ -32,7 +32,7 @@ const Page = () => {
 	// Top Header
 	const [headerHeight, setHeaderHeight] = useState(0);
 	const topHeaderRef = useRef<HTMLDivElement>(null);
-	useResizeObserver(topHeaderRef, setHeaderHeight, 'height');
+	useResizeObserver(topHeaderRef, setHeaderHeight as (value: number | Record<string, number>) => void, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
 	const { queryParams } = useSharedQueryParams();

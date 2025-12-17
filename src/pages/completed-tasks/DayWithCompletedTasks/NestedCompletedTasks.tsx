@@ -10,7 +10,7 @@ import type { AncestorTask } from '../../../types/api';
 interface NestedCompletedTasksProps {
 	tasksWithNoParent: string[];
 	tasksWithParentId: Record<string, string | null>;
-	groupedSubtasksByParentTask: Record<string, Task[]>;
+	groupedSubtasksByParentTask: Record<string, (Task | AncestorTask)[]>;
 	groupedTasksCollapsedByDefault: boolean;
 	dateStr: string;
 	updateTaskIdQueryParam: (taskId: string) => void;
@@ -62,10 +62,10 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 	 * @description
 	 * @param directCompletedSubtasks
 	 */
-	const renderDirectCompletedSubtasks = (directCompletedSubtasks: Task[]) => {
+	const renderDirectCompletedSubtasks = (directCompletedSubtasks: (Task | AncestorTask)[]) => {
 		return (
 			<ul className="">
-				{directCompletedSubtasks?.map((subtask: Task, index: number) => (
+				{directCompletedSubtasks?.map((subtask: Task | AncestorTask, index: number) => (
 					<li
 						key={subtask.id + index + dateStr}
 						className={classNames(

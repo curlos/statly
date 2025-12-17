@@ -31,8 +31,8 @@ const OverviewCard = () => {
 
 	// Helper function to get previous interval date range
 	const getPrevIntervalDateRange = () => {
-		const start = new Date(apiStartDate);
-		const end = new Date(apiEndDate);
+		const start = new Date(apiStartDate ?? '');
+		const end = new Date(apiEndDate ?? '');
 
 		switch (selectedInterval) {
 			case 'Day':
@@ -79,11 +79,12 @@ const OverviewCard = () => {
 	// Build query params for current interval
 	const currentQueryParams = useStatsQueryParams({
 		'group-by': 'day',
-		'interval-start-date': apiStartDate,
-		'interval-end-date': apiEndDate,
+		'interval-start-date': apiStartDate ?? undefined,
+		'interval-end-date': apiEndDate ?? undefined,
 	});
 
 	// Build query params for previous interval
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const prevIntervalDateRange = useMemo(() => getPrevIntervalDateRange(), [apiStartDate, apiEndDate, selectedInterval]);
 	const prevQueryParams = useStatsQueryParams({
 		'group-by': 'day',

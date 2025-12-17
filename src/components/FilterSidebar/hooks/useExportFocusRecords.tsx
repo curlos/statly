@@ -5,14 +5,28 @@ import { serializeFocusRecordToMarkdown } from '../../../utils/focusRecords.util
 import { getFormattedDuration } from '../../../utils/helpers.utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { baseAPI } from '../../../services/api';
+import { focusRecordsApi } from '../../../services/resources/focusRecordsApi';
 import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../../types/redux';
 import { getAppliedFiltersMarkdown } from './getAppliedFiltersMarkdown';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { EMOTIONS } from '../../../utils/constants/constants.utils';
+import type { FocusRecord } from '../../../types/models';
+
+interface FocusRecordsExportData {
+	records: FocusRecord[];
+	totalDuration: number;
+	emotionCounts?: Record<string, number>;
+	grouped?: Record<string, {
+		records: FocusRecord[];
+		totalDuration: number;
+		groupName: string;
+		emotionCounts?: Record<string, number>;
+	}>;
+}
 
 const useExportFocusRecords = () => {
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const { queryParams, urlValues } = useSharedQueryParams();
 	const userSettings = useUserSettingsContext();
 	const taskIdIncludeFocusRecordsFromSubtasks = userSettings?.focusRecordsPageSettings?.taskIdIncludeFocusRecordsFromSubtasks ?? true;
@@ -23,7 +37,7 @@ const useExportFocusRecords = () => {
 	const { projectsById } = fetchedProjects || {};
 
 
-	const getFocusRecordsMarkdown = (focusRecords: any[], customTitle: string | null, totalDuration: number, emotionCounts?: Record<string, number>) => {
+	const getFocusRecordsMarkdown = (focusRecords: FocusRecord[], customTitle: string | null, totalDuration: number, emotionCounts?: Record<string, number>) => {
 		const allFocusRecordsMarkdown: string[] = [];
 
 		// Add title as H1 at the beginning
@@ -80,7 +94,7 @@ const useExportFocusRecords = () => {
 	const handleCopyToClipboard = async () => {
 		// Trigger the export query manually
 		const result = await dispatch(
-			baseAPI.endpoints.getFocusRecordsExport.initiate({
+			focusRecordsApi.endpoints.getFocusRecordsExport.initiate({
 				...queryParams,
 				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
@@ -89,7 +103,8 @@ const useExportFocusRecords = () => {
 		);
 
 		if (result.data) {
-			const { records, totalDuration, emotionCounts } = result.data;
+			const data = result.data as FocusRecordsExportData;
+			const { records, totalDuration, emotionCounts } = data;
 			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts);
 
 			// Copy to clipboard
@@ -100,7 +115,7 @@ const useExportFocusRecords = () => {
 	const downloadSingleMarkdownFile = async () => {
 		// Trigger the export query manually
 		const result = await dispatch(
-			baseAPI.endpoints.getFocusRecordsExport.initiate({
+			focusRecordsApi.endpoints.getFocusRecordsExport.initiate({
 				...queryParams,
 				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
@@ -109,7 +124,8 @@ const useExportFocusRecords = () => {
 		);
 
 		if (result.data) {
-			const { records, totalDuration, emotionCounts } = result.data;
+			const data = result.data as FocusRecordsExportData;
+			const { records, totalDuration, emotionCounts } = data;
 			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts);
 
 			// Download as single markdown file
@@ -121,7 +137,7 @@ const useExportFocusRecords = () => {
 	const downloadZipFolderOfGroupedFocusRecords = async (groupType: 'project' | 'task' | 'emotion') => {
 		// Trigger the export query manually
 		const result = await dispatch(
-			baseAPI.endpoints.getFocusRecordsExport.initiate({
+			focusRecordsApi.endpoints.getFocusRecordsExport.initiate({
 				...queryParams,
 				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
@@ -133,12 +149,17 @@ const useExportFocusRecords = () => {
 			return;
 		}
 
-		const { grouped } = result.data;
+		const data = result.data as FocusRecordsExportData;
+		const { grouped } = data;
 		const zip = new JSZip();
+
+		if (!grouped) {
+			return;
+		}
 
 		// Convert grouped object to array and sort by totalDuration (descending)
 		const sortedGroups = Object.values(grouped)
-			.map((groupData: any) => ({
+			.map((groupData) => ({
 				records: groupData.records,
 				totalDuration: groupData.totalDuration,
 				groupName: groupData.groupName,
@@ -170,7 +191,7 @@ const useExportFocusRecords = () => {
 			const markdown = getFocusRecordsMarkdown(records, customTitle, totalDuration, groupEmotionCounts);
 
 			// Filename for the markdown file - sanitize forward slashes to prevent folder creation
-			const sanitizedName = `${paddedIndex}_${displayName}_${formattedDuration}`.replace(/[\/\\?%*:|"<>]/g, '-');
+			const sanitizedName = `${paddedIndex}_${displayName}_${formattedDuration}`.replace(/[/\\?%*:|"<>]/g, '-');
 			// Adjust date to local timezone to fix zip file timestamp display
 			const localDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
 			zip.file(`${sanitizedName}_.md`, markdown, { date: localDate });

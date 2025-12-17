@@ -187,7 +187,7 @@ const OtherSectionFocusRecords = () => {
 						<InputNumUserSettings
 							{...{
 								defaultValue: maxFocusRecordsPerPage,
-								userSettings,
+								userSettings: userSettings!,
 								editUserSettings,
 								minNum: 5,
 								maxNum: 100,

@@ -9,6 +9,16 @@ import { projectsApi } from '../../../services/resources/projectsApi';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
 import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
+import type { Task, FocusRecord, Project, ProjectGroup } from '../../../types/models';
+
+interface PaginatedResponse<T> {
+	data: T[];
+	totalPages?: number;
+}
+
+interface QueryResponse<T> {
+	data?: T;
+}
 
 const BackupData = () => {
 	// RTK Query - Lazy queries that only trigger on button click
@@ -28,10 +38,10 @@ const BackupData = () => {
 	const [status, setStatus] = useState('none');
 
 	// Helper function to fetch all pages in parallel
-	const fetchAllPages = async (
-		triggerQuery: any,
+	const fetchAllPages = async <T,>(
+		triggerQuery: (args: { page: number; limit: number }) => Promise<QueryResponse<PaginatedResponse<T>>>,
 		limit = 5000
-	): Promise<any[]> => {
+	): Promise<T[]> => {
 		// Fetch first page to get total count
 		const { data: firstPageResponse } = await triggerQuery({ page: 1, limit });
 
@@ -41,7 +51,7 @@ const BackupData = () => {
 
 		// If response is not paginated (old format), return as-is
 		if (!firstPageResponse.totalPages) {
-			return firstPageResponse;
+			return firstPageResponse.data || [];
 		}
 
 		const { data: firstPageData, totalPages } = firstPageResponse;
@@ -62,7 +72,7 @@ const BackupData = () => {
 		// Combine all pages
 		const allData = [
 			firstPageData,
-			...remainingPagesResponses.map((response: any) => response.data?.data || []),
+			...remainingPagesResponses.map((response) => response.data?.data || []),
 		].flat();
 
 		return allData;
@@ -71,8 +81,8 @@ const BackupData = () => {
 	const zip = new JSZip();
 
 	// Helper function to chunk array into groups of 1000
-	const chunkArray = (arr: any[], chunkSize = 1000) => {
-		const chunks: any[][] = [];
+	const chunkArray = <T,>(arr: T[], chunkSize = 1000): T[][] => {
+		const chunks: T[][] = [];
 		for (let i = 0; i < arr.length; i += chunkSize) {
 			chunks.push(arr.slice(i, i + chunkSize));
 		}
@@ -80,10 +90,10 @@ const BackupData = () => {
 	};
 
 	const downloadZipFolderOfImportantData = (
-		allTasks: any,
-		allFocusRecords: any,
-		projects: any,
-		projectGroups: any
+		allTasks: Task[],
+		allFocusRecords: FocusRecord[],
+		projects: Project[],
+		projectGroups: ProjectGroup[]
 	) => {
 		const importantApiResponsesArr = [
 			// ALL TASKS
@@ -130,7 +140,7 @@ const BackupData = () => {
 			});
 
 			// All responses are now arrays, so we can directly chunk them
-			const arrayToChunk = data.response;
+			const arrayToChunk = data.response as Task[];
 
 			// Chunk the array into groups of 1000
 			const chunks = chunkArray(arrayToChunk, 1000);
@@ -182,10 +192,12 @@ const BackupData = () => {
 					try {
 						// Fetch all paginated data in parallel
 						const [allTasks, allFocusRecords, projects, projectGroups] = await Promise.all([
-							fetchAllPages(triggerGetAllTasks),
-							fetchAllPages(triggerGetAllFocusRecords),
-							triggerGetProjects({ fullData: true }).then((res: any) => res.data?.projects || []),
-							triggerGetProjectGroups({ fullData: true }).then((res: any) => res.data?.projectGroups || []),
+							// eslint-disable-next-line @typescript-eslint/no-explicit-any
+							fetchAllPages<Task>(triggerGetAllTasks as any),
+							// eslint-disable-next-line @typescript-eslint/no-explicit-any
+							fetchAllPages<FocusRecord>(triggerGetAllFocusRecords as any),
+							triggerGetProjects({ fullData: true }).then((res) => res.data?.projects || []),
+							triggerGetProjectGroups({ fullData: true }).then((res) => res.data?.projectGroups || []),
 						]);
 
 						// Let the UI update before doing heavy work

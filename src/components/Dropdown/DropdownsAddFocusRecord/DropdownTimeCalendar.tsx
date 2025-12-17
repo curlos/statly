@@ -33,7 +33,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
 	// TODO: Get default date of today
-	const [selectedTime, setSelectedTime] = useState(getTimeString(date));
+	const [selectedTime, setSelectedTime] = useState(getTimeString(date ?? undefined));
 	const [selectedDate, setSelectedDate] = useState(date);
 	const [isDropdownTimeVisible, setIsDropdownTimeVisible] = useState(false);
 	const dropdownTimeRef = useRef(null);

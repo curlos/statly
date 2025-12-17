@@ -48,7 +48,8 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 				setChosenChallenge(challenge);
 			}
 		}
-	}, [isChosenChallenge, challenge, isChosenChallenge, completedChallenges]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isChosenChallenge, challenge, completedChallenges]);
 
 	return (
 		<div

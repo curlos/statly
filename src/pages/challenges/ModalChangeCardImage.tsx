@@ -12,7 +12,18 @@ import Fuse from 'fuse.js';
 import { debounce } from '../../utils/helpers.utils';
 import Pagination from '../../components/Pagination';
 
-const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
+type PageType = 'challenges' | 'medals' | 'focus-records' | 'completed-tasks';
+type CardType = 'focus' | 'tasks';
+
+interface ModalChangeCardImageProps {
+	showModal: boolean;
+	setShowModal: (show: boolean) => void;
+	cardType: CardType;
+	page: PageType;
+	imageSrc: string;
+}
+
+const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	// RTK Query - User Settings
@@ -27,14 +38,14 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		focusRecordsPageSettings,
 	} = useUserSettingsContext();
 
-	const defaultSelectedCardImage = {
-		challenges: selectedChallengeCardImage && selectedChallengeCardImage[cardType],
-		medals: selectedMedalCardImage && selectedMedalCardImage[cardType],
+	const defaultSelectedCardImage: Record<PageType, string | undefined> = {
+		challenges: selectedChallengeCardImage?.[cardType],
+		medals: selectedMedalCardImage?.[cardType],
 		'focus-records': focusRecordsPageSettings?.selectedMedalImage,
 		'completed-tasks': focusRecordsPageSettings?.selectedMedalImage,
 	};
 
-	const [selectedImageSrc, setSelectedImageSrc] = useState(defaultSelectedCardImage[page]);
+	const [selectedImageSrc, setSelectedImageSrc] = useState<string | undefined>(defaultSelectedCardImage[page]);
 
 	const handleGetPayload = () => {
 		switch (page) {
@@ -139,12 +150,12 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 	const [selectedGame, setSelectedGame] = useState(initialGame);
 	const [selectedMedalType, setSelectedMedalType] = useState(initialMedalType);
 	const [searchText, setSearchText] = useState('');
-	const [filteredCardImageSrcs, setFilteredCardImageSrcs] = useState([]);
-	const scrollContainerRef = useRef(null);
+	const [filteredCardImageSrcs, setFilteredCardImageSrcs] = useState<unknown[]>([]);
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 24;
 
-	const medalCardImageSrcs = MEDALS_GAMES[selectedGame]['MEDALS_OBJ'][selectedMedalType];
+	const medalCardImageSrcs = (MEDALS_GAMES as unknown as Record<string, Record<string, Record<string, unknown[]>>>)[selectedGame]['MEDALS_OBJ'][selectedMedalType];
 
 	// Initialize Fuse.js for Pokemon card search
 	const fuse =
@@ -173,11 +184,11 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 
 		let searchedItems;
 		if (searchText.trim() === '') {
-			searchedItems = medalCardImageSrcs.map((item) => ({ item }));
+			searchedItems = medalCardImageSrcs.map((item: unknown) => ({ item }));
 		} else {
 			searchedItems = fuse?.search(searchText) || [];
 		}
-		setFilteredCardImageSrcs(searchedItems.map((result) => result.item));
+		setFilteredCardImageSrcs(searchedItems.map((result: { item: unknown }) => result.item));
 
 		// Scroll to top after search results are updated
 		if (scrollContainerRef.current) {
@@ -194,6 +205,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		return () => {
 			handleDebouncedSearch.cancel();
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchText, selectedGame, selectedMedalType]);
 
 	// Reset search when game or medal type changes
@@ -219,7 +231,7 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		}
 	};
 
-	const pageType = {
+	const pageType: Record<string, string> = {
 		challenges: 'Challenges',
 		medals: 'Medals',
 		loader: 'Loader',
@@ -231,7 +243,6 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 		<Modal
 			isOpen={showModal}
 			onClose={() => setShowModal(false)}
-			position="top-center"
 			customClasses="md:w-[700px] lg:w-[750px]"
 		>
 			<div className="bg-color-gray-600 rounded-lg">
@@ -265,14 +276,15 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 							]}
 							onClick={(selectedOption: string) => {
 								setSelectedGame(selectedOption);
-								setSelectedMedalType(MEDALS_GAMES[selectedOption]['MEDALS_ORDER'][0]);
+								const gamesData = MEDALS_GAMES as Record<string, { MEDALS_ORDER: string[] }>;
+								setSelectedMedalType(gamesData[selectedOption]['MEDALS_ORDER'][0]);
 							}}
 						/>
 
 						<GeneralSelectButtonAndDropdown
 							selected={selectedMedalType}
 							setSelected={setSelectedMedalType}
-							selectedOptions={MEDALS_GAMES[selectedGame]['MEDALS_ORDER']}
+							selectedOptions={(MEDALS_GAMES as Record<string, { MEDALS_ORDER: string[] }>)[selectedGame]['MEDALS_ORDER']}
 						/>
 					</div>
 
@@ -294,11 +306,12 @@ const ModalChangeCardImage: React.FC = ({ showModal, setShowModal, cardType, pag
 
 					<div ref={scrollContainerRef} className="overflow-auto h-[250px] md:h-[420px] gray-scrollbar">
 						<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
-							{currentItems.map((obj) => {
-								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? obj : obj.imgurImageUrl;
+							{currentItems.map((obj: unknown) => {
+								const objRecord = obj as Record<string, unknown>;
+								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
 								const isSelected = imageSrc === selectedImageSrc;
 								const uniqueKey =
-									selectedGame === 'POKEMON TCG CARDS' ? `${obj.name}-${imageSrc}` : imageSrc;
+									selectedGame === 'POKEMON TCG CARDS' ? `${objRecord.name}-${imageSrc}` : imageSrc;
 
 								return (
 									<div

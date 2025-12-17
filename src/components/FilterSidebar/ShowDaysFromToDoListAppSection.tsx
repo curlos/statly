@@ -10,7 +10,7 @@ const ShowDaysFromToDoListAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
-	const toDoListAppsByName = getCommaSeparatedObj(toDoListAppsFromUrl);
+	const toDoListAppsByName = getCommaSeparatedObj(toDoListAppsFromUrl ?? undefined);
 
 	return (
 		<div>
@@ -31,15 +31,13 @@ const ShowDaysFromToDoListAppSection = () => {
 					return (
 						<CheckboxMultiSelectForUrl
 							key={toDoListApp.id}
-							{...{
-								chosenColorObj,
-								nextLightestColorObj,
-								commaSeparatedObj: toDoListAppsByName,
-								updateQueryParams,
-								urlQueryParamName: 'to-do-list-apps',
-								checkboxId: toDoListApp.id,
-								checkboxName: toDoListApp.name,
-							}}
+							chosenColorObj={chosenColorObj}
+							nextLightestColorObj={nextLightestColorObj}
+							commaSeparatedObj={toDoListAppsByName}
+							updateQueryParams={updateQueryParams}
+							urlQueryParamName={'to-do-list-apps'}
+							checkboxId={toDoListApp.id}
+							checkboxName={toDoListApp.name}
 						/>
 					);
 				})}

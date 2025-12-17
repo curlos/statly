@@ -33,8 +33,8 @@ const MostFocusedTimeCard = () => {
 	// Build query params for API using custom hook
 	const queryParams = useStatsQueryParams({
 		'group-by': 'hour',
-		'interval-start-date': apiStartDate,
-		'interval-end-date': apiEndDate,
+		'interval-start-date': apiStartDate ?? undefined,
+		'interval-end-date': apiEndDate ?? undefined,
 	});
 
 	// Fetch stats from API

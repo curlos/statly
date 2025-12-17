@@ -56,6 +56,7 @@ type SearchParamsContextValue = ReturnType<typeof useSearchParamsCustom>;
 
 const SearchParamsContext = createContext<SearchParamsContextValue | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSearchParamsContext = () => {
 	const context = useContext(SearchParamsContext);
 	if (!context) {
@@ -73,4 +74,5 @@ export const SearchParamsProvider: React.FC<SearchParamsProviderProps> = ({ chil
 	return <SearchParamsContext.Provider value={value}>{children}</SearchParamsContext.Provider>;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { useSearchParamsCustom };

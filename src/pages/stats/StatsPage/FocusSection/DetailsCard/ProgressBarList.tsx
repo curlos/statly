@@ -137,7 +137,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 											<span>{emotion.name}</span>
 											{" "}
 											<span className="text-color-gray-25">
-												({isFocusDuration ? getFormattedDuration(emotion[metricKey], false) : `${emotion[metricKey]} tasks`}, {emotion.percentage}%)
+												({isFocusDuration ? getFormattedDuration(emotion[metricKey] ?? 0, false) : `${emotion[metricKey]} tasks`}, {emotion.percentage}%)
 											</span>
 										</span>
 									</li>
