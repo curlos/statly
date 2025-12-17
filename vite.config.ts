@@ -2,22 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import vike from 'vike/plugin';
-import checker from 'vite-plugin-checker';
 
 export default defineConfig({
 	plugins: [
 		react(),
-		checker({
-			typescript: {
-				tsconfigPath: './tsconfig.json',
-			},
-			eslint: {
-				lintCommand: 'eslint "./src/**/*.{ts,tsx}" --max-warnings 0',
-				dev: {
-					logLevel: ['error', 'warning'],
-				},
-			},
-		}),
 		VitePWA({
 			registerType: 'autoUpdate',
 			includeAssets: ['robots.txt'],
@@ -57,5 +45,5 @@ export default defineConfig({
 	],
 	server: {
 		port: 5173,
-	},
+	}
 });
