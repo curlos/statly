@@ -65,12 +65,14 @@ const ProviderList: React.FC<ProviderListProps> = ({ children }) => {
 		} else {
 			// On login/signup page: render without providers
 			return (
-				<div className={globalClasses}>
-					{children}
+				<ThemeProvider>
+					<div className={globalClasses}>
+						{children}
 
-					{/* Modals */}
-					<GlobalModalList isAuthPage={true} />
-				</div>
+						{/* Modals */}
+						<GlobalModalList isAuthPage={true} />
+					</div>
+				</ThemeProvider>
 			);
 		}
 	}

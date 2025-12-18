@@ -3,8 +3,13 @@ import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 
 const useTheme = () => {
-	// RTK Query - User Settings
-	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
+	// Check if user is logged in
+	const isLoggedIn = !!localStorage.getItem('token');
+
+	// RTK Query - User Settings (only fetch if logged in)
+	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined, {
+		skip: !isLoggedIn
+	});
 	const { userSettings } = fetchedUserSettings || {};
 
 	const themeColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
