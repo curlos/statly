@@ -63,7 +63,9 @@ export const baseAPI = createApi({
 		'SyncMetadata',
 		'DocumentCounts',
 		'TodayFocus',
-		'StreakHistory'
+		'StreakHistory',
+		'CustomImage',
+		'CustomImageFolder'
 	],
 	endpoints: () => ({}),
 });

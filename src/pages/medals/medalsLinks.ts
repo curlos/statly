@@ -771,6 +771,14 @@ export const MEDALS_GAMES = {
         ],
         "MEDALS_OBJ": POKEMON_TCG_CARDS
     },
+    "CUSTOM": {
+        "MEDALS_ORDER": [
+            "GENERAL"
+        ],
+        "MEDALS_OBJ": {
+            "GENERAL": [] // Populated dynamically from API
+        }
+    },
 }
 
 export const BATTLEFIELD_1_MEDALS_BY_URL = Object.entries(BATTLEFIELD_1_MEDALS).reduce((acc: Record<string, string>, [category, urls]) => {

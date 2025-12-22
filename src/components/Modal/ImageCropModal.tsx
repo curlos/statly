@@ -3,12 +3,14 @@ import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import Modal from './Modal';
 import Icon from '../Icon';
+import Spinner from '../Loaders/Spinner';
 
 interface ImageCropModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	imageSrc: string;
 	onCropComplete: (croppedImageUrl: string) => void;
+	aspect?: number; // Optional aspect ratio (e.g., 1 for square). Undefined = no restriction
 }
 
 const ImageCropModal: React.FC<ImageCropModalProps> = ({
@@ -16,9 +18,11 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 	onClose,
 	imageSrc,
 	onCropComplete,
+	aspect,
 }) => {
 	const [crop, setCrop] = useState<Crop>();
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+	const [isApplying, setIsApplying] = useState(false);
 	const imgRef = useRef<HTMLImageElement>(null);
 
 	// Reset crop when image changes
@@ -30,17 +34,29 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 	const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
 		const { width, height } = e.currentTarget;
 
-		// Calculate initial crop centered with square aspect ratio
-		const cropSize = Math.min(width, height) * 0.9;
-
-		setCrop({
-			unit: 'px',
-			width: cropSize,
-			height: cropSize,
-			x: (width - cropSize) / 2,
-			y: (height - cropSize) / 2,
-		});
-	}, []);
+		if (aspect === 1) {
+			// Square aspect ratio - calculate crop centered
+			const cropSize = Math.min(width, height) * 0.9;
+			setCrop({
+				unit: 'px',
+				width: cropSize,
+				height: cropSize,
+				x: (width - cropSize) / 2,
+				y: (height - cropSize) / 2,
+			});
+		} else {
+			// No aspect restriction - default to 90% of image dimensions, centered
+			const cropWidth = width * 0.9;
+			const cropHeight = height * 0.9;
+			setCrop({
+				unit: 'px',
+				width: cropWidth,
+				height: cropHeight,
+				x: (width - cropWidth) / 2,
+				y: (height - cropHeight) / 2,
+			});
+		}
+	}, [aspect]);
 
 	const getCroppedImg = useCallback(
 		(image: HTMLImageElement, crop: PixelCrop): Promise<string> => {
@@ -86,9 +102,16 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
 	const handleApplyCrop = async () => {
 		if (completedCrop && imgRef.current) {
-			const croppedImageUrl = await getCroppedImg(imgRef.current, completedCrop);
-			onCropComplete(croppedImageUrl);
-			// Don't call onClose here - let the parent handle closing after processing
+			setIsApplying(true);
+			try {
+				const croppedImageUrl = await getCroppedImg(imgRef.current, completedCrop);
+				onCropComplete(croppedImageUrl);
+				// Don't call onClose here - let the parent handle closing after processing
+			} catch (error) {
+				console.error('Failed to apply crop:', error);
+			} finally {
+				setIsApplying(false);
+			}
 		}
 	};
 
@@ -103,14 +126,16 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 							customClass="!text-[24px] cursor-pointer text-color-gray-100 hover:text-white transition"
 							onClick={onClose}
 						/>
-						<h3 className="text-xl font-bold">Crop Profile Picture</h3>
+						<h3 className="text-xl font-bold">Crop Image</h3>
 					</div>
 					<button
 						type="button"
 						onClick={handleApplyCrop}
-						className="px-5 py-2 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition"
+						disabled={isApplying}
+						className="px-5 py-2 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
 					>
 						Apply
+						{isApplying && <Spinner size="sm" customClass="!text-black" />}
 					</button>
 				</div>
 
@@ -120,13 +145,14 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 						crop={crop}
 						onChange={(c) => setCrop(c)}
 						onComplete={(c) => setCompletedCrop(c)}
-						aspect={1}
+						aspect={aspect}
 					>
 						<img
 							ref={imgRef}
 							src={imageSrc}
 							alt="Crop preview"
 							onLoad={onImageLoad}
+							crossOrigin="anonymous"
 							style={{ maxHeight: '55vh', maxWidth: '100%' }}
 						/>
 					</ReactCrop>
@@ -135,7 +161,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 				{/* Footer */}
 				<div className="p-3 bg-color-gray-700 border-t border-color-gray-600">
 					<p className="text-sm text-color-gray-100 text-center">
-						Drag the selection to reposition your profile picture
+						Drag the selection to reposition your image
 					</p>
 				</div>
 			</div>

@@ -259,6 +259,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 				onClose={handleCropModalClose}
 				imageSrc={imageToCrop || ''}
 				onCropComplete={handleCropComplete}
+				aspect={1}
 			/>
 		</form>
 	);

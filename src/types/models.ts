@@ -19,6 +19,21 @@ export interface User {
 }
 
 // ============================================================================
+// Custom Image Types
+// ============================================================================
+
+export interface CustomImage {
+	_id: string;
+	userId: string;
+	imageUrl: string;
+	cloudinaryPublicId: string;
+	folder: string;
+	sortOrder: number;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+// ============================================================================
 // Project Types
 // ============================================================================
 

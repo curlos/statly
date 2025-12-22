@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Icon from '../../components/Icon';
 import Modal from '../../components/Modal/Modal';
 import LazyImage from '../../components/LazyImage';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
+import { useGetCustomImagesQuery } from '../../services/resources/customImagesApi';
 import classNames from 'classnames';
 import GeneralSelectButtonAndDropdown from '../stats/StatsPage/GeneralSelectButtonAndDropdown';
 import { MEDALS_GAMES, URL_TO_GAME_MEDAL_MAP } from '../medals/medalsLinks';
@@ -11,6 +12,8 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import Fuse from 'fuse.js';
 import { debounce } from '../../utils/helpers.utils';
 import Pagination from '../../components/Pagination';
+import CustomImagesSection from '../../components/CustomImagesSection/CustomImagesSection';
+import { useCustomFolderNames } from '../../hooks/useCustomFolderNames';
 
 type PageType = 'challenges' | 'medals' | 'focus-records' | 'completed-tasks';
 type CardType = 'focus' | 'tasks';
@@ -31,6 +34,12 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 	const { userSettings } = fetchedUserSettings || {};
 
 	const [editUserSettings] = useEditUserSettingsMutation();
+
+	// RTK Query - Custom Images
+	const { data: customImages } = useGetCustomImagesQuery();
+
+	// Custom folder names hook
+	const customFolderNames = useCustomFolderNames();
 
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
@@ -125,7 +134,10 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		return payload;
 	};
 
-	const getGameAndMedalTypeFromImageSrc = (imageSrc: string) => {
+	const [selectedGame, setSelectedGame] = useState<string>(page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)');
+	const [selectedMedalType, setSelectedMedalType] = useState<string>(page === 'challenges' ? 'GENERAL' : 'COMBAT');
+
+	const getGameAndMedalTypeFromImageSrc = useCallback((imageSrc: string) => {
 		if (!imageSrc) {
 			return {
 				game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
@@ -139,23 +151,56 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 			return result;
 		}
 
+		// Check if image is from CUSTOM folder
+		if (customImages) {
+			const customImage = customImages.find(img => img.imageUrl === imageSrc);
+			if (customImage) {
+				return {
+					game: 'CUSTOM',
+					medalType: customImage.folder,
+				};
+			}
+		}
+
 		// Fallback if not found
 		return {
 			game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
 			medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT',
 		};
-	};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [customImages]);
 
-	const { game: initialGame, medalType: initialMedalType } = getGameAndMedalTypeFromImageSrc(imageSrc);
-	const [selectedGame, setSelectedGame] = useState(initialGame);
-	const [selectedMedalType, setSelectedMedalType] = useState(initialMedalType);
+	// Update selectedGame and selectedMedalType when imageSrc changes
+	useEffect(() => {
+		const { game, medalType } = getGameAndMedalTypeFromImageSrc(imageSrc);
+		setSelectedGame(game);
+		setSelectedMedalType(medalType);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [imageSrc]);
+
+	// Initial setup when customImages first loads (only runs once when customImages becomes available)
+	useEffect(() => {
+		if (customImages && customImages.length > 0) {
+			const { game, medalType } = getGameAndMedalTypeFromImageSrc(imageSrc);
+			// Only update if it's a custom image
+			if (game === 'CUSTOM') {
+				setSelectedGame(game);
+				setSelectedMedalType(medalType);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [customImages?.length ? 'loaded' : 'loading']);
+
 	const [searchText, setSearchText] = useState('');
 	const [filteredCardImageSrcs, setFilteredCardImageSrcs] = useState<unknown[]>([]);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 24;
 
-	const medalCardImageSrcs = (MEDALS_GAMES as unknown as Record<string, Record<string, Record<string, unknown[]>>>)[selectedGame]['MEDALS_OBJ'][selectedMedalType];
+	// Get medal card image sources - use empty array for CUSTOM game (images handled by CustomImagesSection)
+	const medalCardImageSrcs = selectedGame === 'CUSTOM'
+		? []
+		: (MEDALS_GAMES as unknown as Record<string, Record<string, Record<string, unknown[]>>>)[selectedGame]['MEDALS_OBJ'][selectedMedalType];
 
 	// Initialize Fuse.js for Pokemon card search
 	const fuse =
@@ -172,11 +217,18 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 			? filteredCardImageSrcs
 			: medalCardImageSrcs;
 
-	// Calculate pagination
+	// Calculate pagination for CUSTOM sections
+	const customImagesByFolder = customImages?.filter(img => img.folder === selectedMedalType) || [];
+	const totalPagesCustom = Math.ceil(customImagesByFolder.length / itemsPerPage);
+
+	// Calculate pagination for game medals
 	const totalPages = Math.ceil(allItems.length / itemsPerPage);
 	const startIndex = (currentPage - 1) * itemsPerPage;
 	const endIndex = startIndex + itemsPerPage;
 	const currentItems = allItems.slice(startIndex, endIndex);
+
+	// Determine which totalPages to use
+	const displayTotalPages = selectedGame === 'CUSTOM' ? totalPagesCustom : totalPages;
 
 	// Debounced search function
 	const handleDebouncedSearch = debounce(() => {
@@ -273,6 +325,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 								'BO2 (MEDALS)',
 								'AC7 (MEDALS)',
 								'POKEMON TCG CARDS',
+								'CUSTOM',
 							]}
 							onClick={(selectedOption: string) => {
 								setSelectedGame(selectedOption);
@@ -284,7 +337,11 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 						<GeneralSelectButtonAndDropdown
 							selected={selectedMedalType}
 							setSelected={setSelectedMedalType}
-							selectedOptions={(MEDALS_GAMES as Record<string, { MEDALS_ORDER: string[] }>)[selectedGame]['MEDALS_ORDER']}
+							selectedOptions={
+								selectedGame === 'CUSTOM'
+									? customFolderNames
+									: (MEDALS_GAMES as Record<string, { MEDALS_ORDER: string[] }>)[selectedGame]['MEDALS_ORDER']
+							}
 						/>
 					</div>
 
@@ -304,56 +361,68 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 						</div>
 					)}
 
-					<div ref={scrollContainerRef} className="overflow-auto h-[250px] md:h-[420px] gray-scrollbar">
-						<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
-							{currentItems.map((obj: unknown) => {
-								const objRecord = obj as Record<string, unknown>;
-								const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
-								const isSelected = imageSrc === selectedImageSrc;
-								const uniqueKey =
-									selectedGame === 'POKEMON TCG CARDS' ? `${objRecord.name}-${imageSrc}` : imageSrc;
+					{selectedGame === 'CUSTOM' ? (
+						<CustomImagesSection
+							selectedMedalType={selectedMedalType}
+							setSelectedMedalType={setSelectedMedalType}
+							selectedImageSrc={selectedImageSrc}
+							setSelectedImageSrc={setSelectedImageSrc}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+							itemsPerPage={itemsPerPage}
+						/>
+					) : (
+						<div ref={scrollContainerRef} className="overflow-auto h-[250px] md:h-[420px] gray-scrollbar">
+							<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
+								{currentItems.map((obj: unknown) => {
+									const objRecord = obj as Record<string, unknown>;
+									const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
+									const isSelected = imageSrc === selectedImageSrc;
+									const uniqueKey =
+										selectedGame === 'POKEMON TCG CARDS' ? `${objRecord.name}-${imageSrc}` : imageSrc;
 
-								return (
-									<div
-										key={uniqueKey}
-										className="cursor-pointer relative"
-										onClick={() => setSelectedImageSrc(imageSrc)}
-									>
-										<LazyImage
-											src={imageSrc}
-											alt="Medal/Card image"
-										/>
+									return (
+										<div
+											key={uniqueKey}
+											className="cursor-pointer relative"
+											onClick={() => setSelectedImageSrc(imageSrc)}
+										>
+											<LazyImage
+												src={imageSrc}
+												alt="Medal/Card image"
+											/>
 
-										{isSelected && (
-											<div className="absolute bottom-[10px] right-[10px] z-10">
-												<div
-													className={classNames(
-														chosenColorObj.bgColor,
-														'rounded-full h-[20px] w-[20px] flex items-center justify-center'
-													)}
-												>
-													<Icon
-														name="check"
-														customClass={
-															'!text-[20px] text-white group-hover:text-white cursor-pointer'
-														}
-													/>
+											{isSelected && (
+												<div className="absolute bottom-[10px] right-[10px] z-10">
+													<div
+														className={classNames(
+															chosenColorObj.bgColor,
+															'rounded-full h-[20px] w-[20px] flex items-center justify-center'
+														)}
+													>
+														<Icon
+															name="check"
+															customClass={
+																'!text-[20px] text-white group-hover:text-white cursor-pointer'
+															}
+														/>
+													</div>
 												</div>
-											</div>
-										)}
-									</div>
-								);
-							})}
+											)}
+										</div>
+									);
+								})}
+							</div>
 						</div>
-					</div>
+					)}
 
-					{totalPages > 1 && (
+					{displayTotalPages > 1 && (
 						<div className="flex justify-center mt-4">
 							<Pagination
-								total={totalPages}
+								total={displayTotalPages}
 								currentPage={currentPage}
 								setCurrentPage={setCurrentPage}
-								totalPages={totalPages}
+								totalPages={displayTotalPages}
 							/>
 						</div>
 					)}
