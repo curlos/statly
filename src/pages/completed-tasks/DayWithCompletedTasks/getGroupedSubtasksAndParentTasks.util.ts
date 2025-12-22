@@ -5,7 +5,7 @@ import type { AncestorTask } from '../../../types/api';
  * @description // Go through all of the Completed Tasks for the day and group them up together by parent. So, all of the tasks with the same parent will be in the same array like "{ "5391586608": [{...}, {...}, ...] }". Also, get the "parentTasks" which are the tasks that have no parent.
  * @returns {Object}
  */
-export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancestorTasksById }: { completedTasksForDay: (Task | AncestorTask)[]; ancestorTasksById: Record<string, AncestorTask> }) => {
+export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancestorTasksById }: { completedTasksForDay: (Task | AncestorTask)[]; ancestorTasksById: Record<string, Task | AncestorTask> }) => {
 	const groupedSubtasksByParentTask: Record<string, (Task | AncestorTask)[]> = {};
 	const parentTasksArr: (Task | AncestorTask)[] = [];
 	const parentTasksObj: Record<string, boolean> = {};
@@ -55,7 +55,7 @@ export const getTasksWithParentIdAndNoParent = ({
 	includeDirectParentTasksWithNoChild = false
 }: {
 	completedTasksForDay: (Task | AncestorTask)[];
-	ancestorTasksById: Record<string, AncestorTask>;
+	ancestorTasksById: Record<string, Task | AncestorTask>;
 	includeDirectParentTasksWithNoChild?: boolean;
 }) => {
 	const tasksWithParentId: Record<string, string | null> = {};

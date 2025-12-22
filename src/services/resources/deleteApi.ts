@@ -27,6 +27,15 @@ export const deleteApi = baseAPI.injectEndpoints({
 			}),
 			invalidatesTags: invalidateOnSuccess(['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
 		}),
+		bulkDeleteTasks: builder.mutation({
+			query: (taskIds: string[]) => ({
+				url: `/delete/tasks/bulk-delete`,
+				method: 'POST',
+				body: { taskIds },
+			}),
+			invalidatesTags: (_result, error) =>
+				error ? [] : ['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+		}),
 		deleteProjects: builder.mutation({
 			query: () => ({
 				url: `/delete/projects`,
@@ -65,6 +74,7 @@ export const {
 	useDeleteFocusRecordMutation,
 	useDeleteFocusRecordsMutation,
 	useDeleteTasksMutation,
+	useBulkDeleteTasksMutation,
 	useDeleteProjectsMutation,
 	useDeleteProjectGroupsMutation,
 	useDeleteAllDocumentsMutation

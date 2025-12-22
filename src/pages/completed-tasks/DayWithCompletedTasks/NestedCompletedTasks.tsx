@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import Accordion from '../../../components/Accordion/Accordion';
-import Icon from '../../../components/Icon';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { useSearchParamsContext } from '../../../contexts/useSearchParamsContext';
+import CompletedTask from './CompletedTask';
 import type { Task } from '../../../types/models';
 import type { AncestorTask } from '../../../types/api';
 
@@ -69,15 +69,10 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 					<li
 						key={subtask.id + index + dateStr}
 						className={classNames(
-							'flex items-start gap-1',
 							showMedals ? 'break-all sm:break-words sm:break-normal' : 'break-words'
 						)}
 					>
-						<Icon
-							name={'status' in subtask && subtask.status === -1 ? 'disabled_by_default' : 'check_box'}
-							customClass={classNames('!text-[20px] text-white mt-[2px]')}
-						/>
-						<span>{subtask.title}</span>
+						<CompletedTask task={subtask} updateTaskIdQueryParam={updateTaskIdQueryParam} isFullTask={false} />
 					</li>
 				))}
 			</ul>
