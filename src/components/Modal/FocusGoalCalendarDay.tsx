@@ -112,7 +112,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 						return (
 							<div key={ring.ringId} className="whitespace-nowrap">
 								<div className="text-xs font-semibold flex items-center gap-1" style={{ color: displayColor }}>
-									{ring.ringName}
+									{ring.ringName.length > 20 ? ring.ringName.substring(0, 20) + '...' : ring.ringName}
 									{ring.customDailyFocusGoal?.[dateKey] !== undefined && (
 										<Icon
 											name="acute"

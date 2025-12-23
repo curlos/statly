@@ -148,7 +148,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				{/* Header */}
 				<div className="flex justify-between items-center mb-6">
 					<h2 className="text-2xl font-semibold">
-						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${ringName} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
+						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${ringName.length > 20 ? ringName.substring(0, 20) + '...' : ringName} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
 					</h2>
 					<Icon
 						name="close"

@@ -281,7 +281,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 											/>
 										</div>
 									)}
-									<span>{ring.name} {!ring.isActive && (
+									<span>{ring.name.length > 20 ? ring.name.substring(0, 20) + '...' : ring.name} {!ring.isActive && (
 										<span className="text-color-gray-100">(Paused)</span>
 									)}</span>
 								</button>

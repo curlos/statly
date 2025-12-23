@@ -261,8 +261,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 								>
 									<div className="flex-1 min-w-0">
 										{/* Ring name with fire icon and streak */}
-										<h3 className="text-[22px] text-color-gray-25 truncate flex items-center gap-2">
-											<span>{ring.name}</span>
+										<h3 className="text-[22px] text-color-gray-25 flex items-center gap-2">
+											<span className="truncate">{ring.name.length > 20 ? ring.name.substring(0, 20) + '...' : ring.name}</span>
 											<div className="flex items-center">
 												<Icon name="local_fire_department" customClass="!text-[24px] text-orange-500" />
 												{ring.showStreakCount && (
