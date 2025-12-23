@@ -64,6 +64,7 @@ export const baseAPI = createApi({
 		'DocumentCounts',
 		'TodayFocus',
 		'StreakHistory',
+		'CombinedStreakHistory',
 		'CustomImage',
 		'CustomImageFolder'
 	],

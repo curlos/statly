@@ -25,11 +25,22 @@ export const streaksApi = baseAPI.injectEndpoints({
 			},
 			providesTags: ['StreakHistory'],
 		}),
+		getCombinedStreakHistory: builder.query({
+			query: (queryParams) => {
+				const queryString = buildQueryString(queryParams);
+				return queryString ? `/streaks/combined?${queryString}` : '/streaks/combined';
+			},
+			transformResponse: (response) => {
+				return response;
+			},
+			providesTags: ['CombinedStreakHistory'],
+		}),
 	}),
 	overrideExisting: false,
 });
 
 export const {
 	useGetStreaksTodayQuery,
-	useGetStreakHistoryQuery
+	useGetStreakHistoryQuery,
+	useGetCombinedStreakHistoryQuery
 } = streaksApi;

@@ -27,24 +27,57 @@ interface StreakData {
 	};
 }
 
+interface CombinedRing {
+	ringId: string;
+	ringName: string;
+	ringColor: string | null;
+	useThemeColor?: boolean;
+	goalSeconds?: number;
+	customDailyFocusGoal?: Record<string, number>;
+	restDays?: Record<string, boolean>;
+	selectedDaysOfWeek?: Record<string, boolean>;
+	dailyDurationsMap?: Record<string, number>;
+	inactivePeriods?: Array<{ startDate: string; endDate: string | null }>;
+}
+
+interface CombinedStreakData {
+	combinedStreaks?: {
+		currentStreak?: Streak;
+		longestStreak?: Streak;
+		allStreaks?: Streak[];
+	};
+	rings?: CombinedRing[];
+	combinedGoalMetMap?: Record<string, boolean>;
+	dailyDurationsMap?: Record<string, number>;
+}
+
 interface ModalFocusGoalProgressProps {
 	isOpen: boolean;
 	onClose: () => void;
-	streakData: StreakData;
-	ring: Ring; // The specific ring this modal is for
+	mode: 'single' | 'combined';
+	// Single mode props
+	streakData?: StreakData;
+	ring?: Ring;
+	// Combined mode props
+	combinedStreakData?: CombinedStreakData;
+	rings?: CombinedRing[];
 }
 
 const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	isOpen,
 	onClose,
+	mode,
 	streakData,
 	ring,
+	combinedStreakData,
+	rings,
 }) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const customDailyFocusGoal = ring?.customDailyFocusGoal ?? {};
 	const selectedDaysOfWeek = ring?.selectedDaysOfWeek ?? {};
 	const restDays = ring?.restDays ?? {};
+	const inactivePeriods = (ring?.inactivePeriods ?? []) as Array<{ startDate: string; endDate: string | null }>;
 	const ringName = ring?.name;
 	const ringColor = ring?.color;
 	const useThemeColor = ring?.useThemeColor;
@@ -115,7 +148,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				{/* Header */}
 				<div className="flex justify-between items-center mb-6">
 					<h2 className="text-2xl font-semibold">
-						{ringName ? `${ringName} - ` : ''}Focus {getFormattedDuration(goalSeconds, false, true)}
+						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${ringName} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
 					</h2>
 					<Icon
 						name="close"
@@ -128,13 +161,13 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				<div className="grid grid-cols-2 gap-3 mb-3">
 					<StreakDisplay
 						title="Current Streak"
-						streak={streakData?.currentStreak}
+						streak={mode === 'combined' ? combinedStreakData?.combinedStreaks?.currentStreak : streakData?.currentStreak}
 						iconName="local_fire_department"
 						iconColor="text-orange-500"
 					/>
 					<StreakDisplay
 						title="Longest Streak"
-						streak={streakData?.longestStreak}
+						streak={mode === 'combined' ? combinedStreakData?.combinedStreaks?.longestStreak : streakData?.longestStreak}
 						iconName="local_fire_department"
 						iconColor="text-purple-500"
 					/>
@@ -143,14 +176,22 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				{/* Focus Stats Card */}
 				<div className="mb-6">
 					<FocusStatsCard
+						mode={mode}
 						selectedInterval={selectedInterval}
 						setSelectedInterval={setSelectedInterval}
 						selectedDates={selectedDates}
 						setSelectedDates={setSelectedDates}
 						selectedIntervalOptions={selectedIntervalOptions}
-						dailyDurationsMap={streakData?.dailyDurationsMap || {}}
+						dailyDurationsMap={mode === 'combined'
+							? (combinedStreakData?.dailyDurationsMap || {})
+							: (streakData?.dailyDurationsMap || {})
+						}
 						goalSeconds={goalSeconds}
 						customDailyFocusGoal={customDailyFocusGoal}
+						combinedGoalMetMap={mode === 'combined'
+							? (combinedStreakData?.combinedGoalMetMap || {})
+							: undefined
+						}
 						setIsModalPickDateRangeOpen={setIsModalPickDateRangeOpen}
 						startDate={startDate}
 						endDate={endDate}
@@ -217,6 +258,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 							/>
 						) : (
 							<CalendarGrid
+								mode={mode}
 								currentDate={currentDate}
 								dailyDurationsMap={streakData?.dailyDurationsMap}
 								themeColor={chosenColorObj.hexColor}
@@ -226,13 +268,15 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 								selectedDaysOfWeek={selectedDaysOfWeek as unknown as Record<string, boolean>}
 								restDays={restDays}
 								customDailyFocusGoal={customDailyFocusGoal}
+								inactivePeriods={inactivePeriods}
+								rings={rings}
 							/>
 						)}
 					</>
 				) : (
 					<StreaksList
-						allStreaks={streakData?.allStreaks || []}
-						currentStreak={streakData?.currentStreak}
+						allStreaks={mode === 'combined' ? combinedStreakData?.combinedStreaks?.allStreaks || [] : streakData?.allStreaks || []}
+						currentStreak={mode === 'combined' ? combinedStreakData?.combinedStreaks?.currentStreak : streakData?.currentStreak}
 						sortBy={getSortByValue()}
 					/>
 				)}
@@ -334,6 +378,7 @@ const CalendarNavigation = ({
 
 // Calendar Grid Component
 const CalendarGrid = ({
+	mode,
 	currentDate,
 	dailyDurationsMap,
 	themeColor,
@@ -343,7 +388,10 @@ const CalendarGrid = ({
 	selectedDaysOfWeek,
 	restDays,
 	customDailyFocusGoal,
+	inactivePeriods,
+	rings,
 }: {
+	mode: 'single' | 'combined';
 	currentDate: Date;
 	dailyDurationsMap?: { [dateKey: string]: number };
 	themeColor: string;
@@ -353,6 +401,8 @@ const CalendarGrid = ({
 	selectedDaysOfWeek: Record<string, boolean>;
 	restDays: Record<string, boolean>;
 	customDailyFocusGoal: Record<string, number>;
+	inactivePeriods: Array<{ startDate: string; endDate: string | null }>;
+	rings?: CombinedRing[];
 }) => {
 	// Determine which color to use for the ring
 	const ringDisplayColor = useThemeColor ? themeColor : (ringColor || themeColor);
@@ -419,37 +469,73 @@ const CalendarGrid = ({
 			<div className="grid grid-cols-7 gap-2">
 				{days.map((day, index) => {
 					if (day === null) {
-						return <div key={`empty-${index}`} className="w-[40px] h-[40px]"></div>;
+						return <div key={`empty-${index}`} className={mode === 'combined' ? 'w-[50px] h-[50px]' : 'w-[40px] h-[40px]'}></div>;
 					}
 
-					// Format date as YYYY-MM-DD to match API format
 					const dateKey = formatDateAsAPIKey(day);
-					const totalFocusDurationForDay = dailyDurationsMap?.[dateKey] || 0;
 
-					// Check if this day has a custom goal, otherwise use default
-					const customGoalForDay = customDailyFocusGoal?.[dateKey];
-					const goalForDay = customGoalForDay !== undefined ? customGoalForDay : goalSeconds;
-					const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalForDay) * 100;
+					if (mode === 'combined' && rings) {
+						// Multi-ring mode: prepare data for each ring
+						const ringsData = rings.map(ring => {
+							const duration = ring.dailyDurationsMap?.[dateKey] || 0;
+							const customGoalForDay = ring.customDailyFocusGoal?.[dateKey];
+							const goalForDay = customGoalForDay !== undefined ? customGoalForDay : (ring.goalSeconds || 3600);
+							const percentage = (duration / goalForDay) * 100;
 
-					const dayData = {
-						goalSeconds: goalForDay, // Use day-specific goal (custom or default)
-						totalFocusDurationForDay,
-						percentageOfFocusedGoalHours,
-					};
+							return {
+								ringId: ring.ringId,
+								ringName: ring.ringName,
+								color: ring.ringColor,
+								useThemeColor: ring.useThemeColor,
+								duration,
+								goal: goalForDay,
+								percentage,
+								restDays: ring.restDays || {},
+								selectedDaysOfWeek: ring.selectedDaysOfWeek || {},
+								customDailyFocusGoal: ring.customDailyFocusGoal || {},
+								inactivePeriods: ring.inactivePeriods || [],
+							};
+						});
 
-					return (
-						<FocusGoalCalendarDay
-							key={index}
-							day={day}
-							dayData={dayData}
-							themeColor={ringDisplayColor}
-							goalSeconds={goalSeconds}
-							restDays={restDays}
-							dateKey={dateKey}
-							selectedDaysOfWeek={selectedDaysOfWeek as unknown as Record<string, boolean>}
-							customDailyFocusGoal={customDailyFocusGoal}
-						/>
-					);
+						return (
+							<FocusGoalCalendarDay
+								key={index}
+								mode="combined"
+								day={day}
+								dateKey={dateKey}
+								themeColor={themeColor}
+								ringsData={ringsData}
+							/>
+						);
+					} else {
+						// Single ring mode: existing logic
+						const totalFocusDurationForDay = dailyDurationsMap?.[dateKey] || 0;
+						const customGoalForDay = customDailyFocusGoal?.[dateKey];
+						const goalForDay = customGoalForDay !== undefined ? customGoalForDay : goalSeconds;
+						const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalForDay) * 100;
+
+						const dayData = {
+							goalSeconds: goalForDay,
+							totalFocusDurationForDay,
+							percentageOfFocusedGoalHours,
+						};
+
+						return (
+							<FocusGoalCalendarDay
+								key={index}
+								mode="single"
+								day={day}
+								dayData={dayData}
+								themeColor={ringDisplayColor}
+								goalSeconds={goalSeconds}
+								restDays={restDays}
+								dateKey={dateKey}
+								selectedDaysOfWeek={selectedDaysOfWeek as unknown as Record<string, boolean>}
+								customDailyFocusGoal={customDailyFocusGoal}
+								inactivePeriods={inactivePeriods}
+							/>
+						);
+					}
 				})}
 			</div>
 		</div>

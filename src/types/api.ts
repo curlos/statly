@@ -390,6 +390,11 @@ export interface CompletedTasksPageSettings {
 export interface FocusHoursGoalPageSettings {
 	rings: Ring[];
 	showMultiRingViewForOneActiveRing: boolean;
+	combinedRingsSettings?: {
+		showStreakCount: boolean;
+		showGoalDays: boolean;
+		goalDays: number;
+	};
 }
 
 export interface ChallengesPageSettings {

@@ -105,7 +105,7 @@ const useUserSettings = () => {
 
 	const [editUserSettings] = useEditUserSettingsMutation();
 
-	const handleUpdateUserSettingForPage = async (page: string, userSettingProperty: string, newValue: boolean | string) => {
+	const handleUpdateUserSettingForPage = async (page: string, userSettingProperty: string, newValue: unknown) => {
 		const restOfPageKeysAndVals = userSettings?.pages[page];
 		const restOfPagesKeysAndVals = userSettings?.pages;
 

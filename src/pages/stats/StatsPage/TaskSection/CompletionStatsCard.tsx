@@ -12,7 +12,7 @@ import CustomPieChartTooltip from '../FocusSection/DetailsCard/CustomPieChartToo
 import ProgressBarList from '../FocusSection/DetailsCard/ProgressBarList';
 import { useGetProjectsQuery } from '../../../../services/resources/projectsApi';
 import Spinner from '../../../../components/Loaders/Spinner';
-import { groupTasksByParent } from '../../../../utils/taskGrouping.utils';
+import { groupTasksByParent, type GroupedDataItem } from '../../../../utils/taskGrouping.utils';
 import { aggregateNestedTasksByParent } from '../../../../utils/nestedTaskAggregation.utils';
 import { getPieChartPaddingAngle } from '../../../../utils/pieChart.utils';
 import type { AggregationResults } from '../../../../types/stats';
@@ -109,8 +109,7 @@ const CompletionStatsCard = () => {
 				data = aggregationResults.aggregatedData;
 			} else {
 				// Use simple flat aggregation for non-nested view
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				data = groupTasksByParent(data as any, ancestorTasksById, totalCount, 'count') as typeof data;
+				data = groupTasksByParent(data as GroupedDataItem[], ancestorTasksById, totalCount, 'count') as typeof data;
 			}
 		}
 

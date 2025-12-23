@@ -15,6 +15,7 @@ import {
 	PointerSensor,
 	useSensor,
 	useSensors,
+	type DragEndEvent,
 } from '@dnd-kit/core';
 import {
 	arrayMove,
@@ -127,11 +128,10 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 	};
 
 	// Handle drag end for reordering images
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleDragEnd = async (event: any) => {
+	const handleDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event;
 
-		if (active.id !== over?.id) {
+		if (over && active.id !== over.id) {
 			const oldIndex = localImages.findIndex(img => img._id === active.id);
 			const newIndex = localImages.findIndex(img => img._id === over.id);
 

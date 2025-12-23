@@ -41,7 +41,7 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 					patchResult.undo();
 				}
 			},
-			invalidatesTags: invalidateOnSuccess(['UserSettings', 'TodayFocus', 'StreakHistory'] as const),
+			invalidatesTags: invalidateOnSuccess(['UserSettings', 'TodayFocus', 'StreakHistory', 'CombinedStreakHistory'] as const),
 		}),
 		getDocumentCounts: builder.query({
 			query: () => `/user-settings/document-counts`,

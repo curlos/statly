@@ -15,6 +15,17 @@ import ProjectsTickTickSection from './ProjectsTickTickSection';
 import Accordion from '../Accordion/Accordion';
 import type { Ring } from '../../types/api';
 
+/**
+ * Filters out same-day inactive periods (where startDate === endDate).
+ * These occur when a ring is paused and unpaused on the same day,
+ * resulting in 0 days of actual inactivity.
+ */
+const cleanupSameDayInactivePeriods = (
+	periods: Array<{ startDate: string; endDate: string | null }>
+): Array<{ startDate: string; endDate: string | null }> => {
+	return periods.filter(period => period.startDate !== period.endDate);
+};
+
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
 		userSettings,
@@ -41,6 +52,13 @@ const FocusHoursGoalPageSettingsSection = () => {
 	};
 	const restDays = currentRing?.restDays ?? {};
 	const customDailyFocusGoal = currentRing?.customDailyFocusGoal ?? {};
+
+	// Extract Combined Rings Settings
+	const combinedRingsSettings = userSettings?.pages?.focusHoursGoal?.combinedRingsSettings || {
+		showStreakCount: true,
+		showGoalDays: true,
+		goalDays: 7
+	};
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -81,6 +99,18 @@ const FocusHoursGoalPageSettingsSection = () => {
 	const handleCheckboxClick = (showValue: boolean, userSettingProperty: string) => {
 		const newShowValue = !showValue;
 		handleUpdateRingSetting(selectedRingId, userSettingProperty, newShowValue);
+	};
+
+	const handleCombinedCheckboxClick = (showValue: boolean, propertyName: string) => {
+		const newShowValue = !showValue;
+		handleUpdateUserSettingForPage(
+			'focusHoursGoal',
+			'combinedRingsSettings',
+			{
+				...combinedRingsSettings,
+				[propertyName]: newShowValue
+			}
+		);
 	};
 
 	const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
@@ -170,8 +200,11 @@ const FocusHoursGoalPageSettingsSection = () => {
 			}
 		}
 
+		// Clean up same-day periods (pause/unpause on same day = 0 days inactive)
+		const cleanedInactivePeriods = cleanupSameDayInactivePeriods(inactivePeriods);
+
 		// Update both isActive and inactivePeriods
-		await handleUpdateRingSetting(selectedRingId, 'inactivePeriods', inactivePeriods);
+		await handleUpdateRingSetting(selectedRingId, 'inactivePeriods', cleanedInactivePeriods);
 		await handleUpdateRingSetting(selectedRingId, 'isActive', newIsActive);
 
 		setIsTogglingRingStatus(false);
@@ -459,6 +492,75 @@ const FocusHoursGoalPageSettingsSection = () => {
 					customDailyFocusGoal={customDailyFocusGoal}
 				/>
 			</Accordion>
+
+			<hr className="border-color-gray-200 mb-4" />
+
+			{/* Combined Rings Settings Accordion */}
+			<Accordion
+				title={
+					<div className="flex items-center gap-1">
+						<h3 className="text-[16px] font-bold">Combined Rings Settings</h3>
+						<Icon
+							name="groups"
+							fill={1}
+							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
+						/>
+						<Icon
+							name="nest_thermostat_gen_3"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
+						/>
+					</div>
+				}
+				openByDefault={true}
+				setIsOpenForParent={undefined}
+				isChildDropdownOpen={false}
+				showArrowNextToText={undefined}
+				customClasses={undefined}
+				customToggleOpen={undefined}
+				preventOpen={false}
+			>
+				{/* General Section */}
+				<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
+					<CheckboxOther
+						{...{
+							name: 'Show Streak Count',
+							showValue: combinedRingsSettings.showStreakCount,
+							handleCheckboxClick: () => handleCombinedCheckboxClick(combinedRingsSettings.showStreakCount, 'showStreakCount'),
+						}}
+					/>
+					<CheckboxOther
+						{...{
+							name: 'Show Goal Days',
+							showValue: combinedRingsSettings.showGoalDays,
+							handleCheckboxClick: () => handleCombinedCheckboxClick(combinedRingsSettings.showGoalDays, 'showGoalDays'),
+						}}
+					/>
+				</div>
+
+				{/* Streak Goal Section */}
+				<div className="mb-4">
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Streak Goal</h4>
+					<InputNumUserSettings
+						key="combined-goal-days"
+						defaultValue={combinedRingsSettings.goalDays}
+						userSettings={userSettings!}
+						editUserSettings={editUserSettings}
+						minNum={1}
+						maxNum={36524}
+						name="Goal Days"
+						page="focus-hours-goal-page"
+						inputMaxWidth="w-[70px]"
+						pageLevel={true}
+						pageProperty="combinedRingsSettings"
+						currentPageValue={combinedRingsSettings}
+						handleUpdateUserSettingForPage={handleUpdateUserSettingForPage}
+					/>
+				</div>
+			</Accordion>
+
+			<hr className="border-color-gray-200 mt-2 mb-4" />
 
 			<Accordion
 				title={

@@ -4,7 +4,7 @@ import type { AncestorTask } from '../types/api';
  * Groups standalone tasks (with only 1 instance) by their name.
  * Used to consolidate daily habit tasks like "Check Streaks" that appear multiple times.
  */
-interface GroupedDataItem {
+export interface GroupedDataItem {
 	id: string;
 	name: string;
 	projectId?: string;

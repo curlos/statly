@@ -4,6 +4,7 @@ import { formatDateAsAPIKey, getFormattedShortMonthDay, getAllDaysInWeekFromDate
 import Icon from "../../Icon";
 
 const FocusStatsCard = ({
+	mode,
 	selectedInterval,
 	setSelectedInterval,
 	selectedDates,
@@ -12,10 +13,12 @@ const FocusStatsCard = ({
 	dailyDurationsMap,
 	goalSeconds,
 	customDailyFocusGoal,
+	combinedGoalMetMap,
 	setIsModalPickDateRangeOpen,
 	startDate,
 	endDate,
 }: {
+	mode: 'single' | 'combined';
 	selectedInterval: string;
 	setSelectedInterval: (value: string) => void;
 	selectedDates: Date[];
@@ -24,6 +27,7 @@ const FocusStatsCard = ({
 	dailyDurationsMap: { [dateKey: string]: number };
 	goalSeconds: number;
 	customDailyFocusGoal?: Record<string, number>;
+	combinedGoalMetMap?: Record<string, boolean>;
 	setIsModalPickDateRangeOpen: (value: boolean) => void;
 	startDate: Date | null;
 	endDate: Date | null;
@@ -76,45 +80,65 @@ const FocusStatsCard = ({
 		const today = new Date();
 		const todayKey = formatDateAsAPIKey(today);
 
-		// Get all date keys from dailyDurationsMap
-		const allDateKeys = Object.keys(dailyDurationsMap);
+		// Determine which data map to use based on mode
+		const dataMap = mode === 'combined' && combinedGoalMetMap ? combinedGoalMetMap : dailyDurationsMap;
+		const allDateKeys = Object.keys(dataMap);
 
+		// Handle empty data
+		if (allDateKeys.length === 0) {
+			return { totalDays: 0, daysMetGoal: 0, percentage: 0 };
+		}
+
+		// Common logic: Calculate total possible days and days with records
+		let totalPossibleDays: number;
 		let daysWithRecords: string[];
 
 		if (selectedInterval === 'All') {
-			// For "All", use all dates from the map
+			// Get earliest date from map keys
+			const sortedKeys = allDateKeys.sort();
+			const firstDateKey = sortedKeys[0];
+			const [year, month, day] = firstDateKey.split('-').map(Number);
+			const firstDate = new Date(year, month - 1, day);
+
+			// Calculate all days from first record to today
+			const allPossibleDates = getAllDaysInRange(firstDate, today);
+			totalPossibleDays = allPossibleDates.filter(date =>
+				formatDateAsAPIKey(date) <= todayKey
+			).length;
+
 			daysWithRecords = allDateKeys;
 		} else {
-			// Create a set of date keys for the selected interval (up to today)
+			// Use selectedDates for total possible days
+			totalPossibleDays = selectedDates.filter(date =>
+				formatDateAsAPIKey(date) <= todayKey
+			).length;
+
+			// Filter to days with records (still needed for daysMetGoal)
 			const intervalDateKeys = new Set(
 				selectedDates
-					.filter(date => {
-						const dateKey = formatDateAsAPIKey(date);
-						return dateKey <= todayKey;
-					})
+					.filter(date => formatDateAsAPIKey(date) <= todayKey)
 					.map(date => formatDateAsAPIKey(date))
 			);
-
-			// Filter dailyDurationsMap keys to only include dates in the interval
-			daysWithRecords = allDateKeys.filter(dateKey => {
-				return intervalDateKeys.has(dateKey);
-			});
+			daysWithRecords = allDateKeys.filter(dateKey =>
+				intervalDateKeys.has(dateKey)
+			);
 		}
 
-		// Count days where goal was met
-		const daysMetGoal = daysWithRecords.filter(dateKey => {
-			const duration = dailyDurationsMap[dateKey];
-			// Use custom goal if set for this date, otherwise use default goal
-			const dailyGoalSeconds = customDailyFocusGoal?.[dateKey] ?? goalSeconds;
-			const offsetDailyGoal = dailyGoalSeconds - 300; // 5-minute offset
-			return duration >= offsetDailyGoal;
-		});
+		// Mode-specific logic: Count days where goal was met
+		const daysMetGoal = mode === 'combined' && combinedGoalMetMap
+			? daysWithRecords.filter(dateKey => combinedGoalMetMap[dateKey] === true)
+			: daysWithRecords.filter(dateKey => {
+				const duration = dailyDurationsMap[dateKey];
+				const dailyGoalSeconds = customDailyFocusGoal?.[dateKey] ?? goalSeconds;
+				const offsetDailyGoal = dailyGoalSeconds - 300; // 5-minute offset
+				return duration >= offsetDailyGoal;
+			});
 
 		return {
-			totalDays: daysWithRecords.length,
+			totalDays: totalPossibleDays,
 			daysMetGoal: daysMetGoal.length,
-			percentage: daysWithRecords.length > 0
-				? (daysMetGoal.length / daysWithRecords.length) * 100
+			percentage: totalPossibleDays > 0
+				? (daysMetGoal.length / totalPossibleDays) * 100
 				: 0
 		};
 	};
