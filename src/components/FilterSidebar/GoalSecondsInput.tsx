@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { debounce, secondsToHoursAndMinutes } from '../../utils/helpers.utils';
 import CustomInput from '../CustomInput';
 import Spinner from '../Loaders/Spinner';
@@ -16,6 +16,7 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 	const [minutes, setMinutes] = useState<number | string>(defaultMinutes);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [apiRequestLoading, setApiRequestLoading] = useState(false);
+	const isFirstRender = useRef(true);
 
 	const getErrorMessage = () => {
 		if (hours === '' || minutes === '') {
@@ -34,6 +35,14 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 	};
 
 	const handleDebouncedUpdate = debounce(async () => {
+		// Convert hours and minutes to seconds
+		const newGoalSeconds = (Number(hours) * 3600) + (Number(minutes) * 60);
+
+		// Don't send API call if value hasn't changed from default
+		if (newGoalSeconds === defaultValue) {
+			return;
+		}
+
 		const errorMessage = getErrorMessage();
 		const isThereAnError = errorMessage;
 
@@ -43,9 +52,6 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 		}
 
 		setErrorMessage('');
-
-		// Convert hours and minutes to seconds
-		const newGoalSeconds = (Number(hours) * 3600) + (Number(minutes) * 60);
 
 		setApiRequestLoading(true);
 
@@ -65,6 +71,12 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 	}, 1000);
 
 	useEffect(() => {
+		// Skip API call on mount - only run when hours/minutes actually change
+		if (isFirstRender.current) {
+			isFirstRender.current = false;
+			return;
+		}
+
 		handleDebouncedUpdate();
 
 		return () => {

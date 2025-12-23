@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { debounce } from '../../utils/helpers.utils';
 import CustomInput from '../CustomInput';
 import Spinner from '../Loaders/Spinner';
@@ -38,6 +38,7 @@ const InputNumUserSettings = ({
 	const [localValue, setLocalValue] = useState(defaultValue);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [apiRequestLoading, setApiRequestLoading] = useState(false);
+	const isFirstRender = useRef(true);
 
 	const getErrorMessage = () => {
 		if (!localValue) {
@@ -104,6 +105,11 @@ const InputNumUserSettings = ({
 	};
 
 	const handleDebouncedUpdate = debounce(async () => {
+		// Don't send API call if value hasn't changed from default
+		if (localValue === defaultValue) {
+			return;
+		}
+
 		const errorMessage = getErrorMessage();
 		const isThereAnError = errorMessage;
 
@@ -151,6 +157,12 @@ const InputNumUserSettings = ({
 	}, 1000);
 
 	useEffect(() => {
+		// Skip API call on mount - only run when localValue actually changes
+		if (isFirstRender.current) {
+			isFirstRender.current = false;
+			return;
+		}
+
 		handleDebouncedUpdate();
 
 		return () => {
