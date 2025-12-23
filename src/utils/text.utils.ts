@@ -16,3 +16,15 @@ export const shouldBreakAllText = (text: string | undefined | null, maxWordLengt
 
 	return longestWord.length > maxWordLength;
 };
+
+/**
+ * Truncates text to a specified length and adds ellipsis if truncated.
+ *
+ * @param text - The text to truncate
+ * @param maxLength - Maximum length before truncation (default: 15)
+ * @returns The truncated text with '...' appended if it was truncated
+ */
+export const truncateText = (text: string, maxLength = 15): string => {
+	if (!text || text.length <= maxLength) return text;
+	return text.substring(0, maxLength) + '...';
+};

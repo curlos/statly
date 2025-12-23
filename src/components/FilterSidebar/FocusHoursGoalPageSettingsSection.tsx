@@ -4,6 +4,7 @@ import { useUserSettingsContext } from '../../pages/focus-records/useUserSetting
 import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
 import GoalSecondsInput from './GoalSecondsInput';
+import { truncateText } from '../../utils/text.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import ModalRestDays from '../Modal/ModalRestDays';
@@ -13,6 +14,7 @@ import RingColorPicker from '../ColorPicker/RingColorPicker';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import ProjectsTickTickSection from './ProjectsTickTickSection';
 import Accordion from '../Accordion/Accordion';
+import useWindowSize from '../../hooks/useWindowSize';
 import type { Ring } from '../../types/api';
 
 /**
@@ -35,6 +37,8 @@ const FocusHoursGoalPageSettingsSection = () => {
 		handleSetSelectedRing,
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
+	const { width } = useWindowSize();
+	const truncateLength = (width ?? 0) >= 576 ? 20 : 15;
 
 	// Extract properties from currentRing
 	const showStreakCount = currentRing?.showStreakCount ?? true;
@@ -281,7 +285,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 											/>
 										</div>
 									)}
-									<span>{ring.name.length > 20 ? ring.name.substring(0, 20) + '...' : ring.name} {!ring.isActive && (
+									<span>{truncateText(ring.name, truncateLength)} {!ring.isActive && (
 										<span className="text-color-gray-100">(Paused)</span>
 									)}</span>
 								</button>

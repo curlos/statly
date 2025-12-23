@@ -5,6 +5,7 @@ import OverviewCard from './OverviewCard';
 import TimelineCard from './TimelineCard';
 import FocusDurationCurveCard from './FocusDurationCurveCard';
 import YearGridsCard from './YearGridsCard';
+import DailyHoursFocusGoalCard from './DailyFocusHourGoalCard';
 
 const FocusSection = () => {
 	return (
@@ -17,7 +18,7 @@ const FocusSection = () => {
 				</div>
 
 				<div className="flex-[4] w-full h-[380px]">
-					{/* <DailyHoursFocusGoalCard /> */}
+					<DailyHoursFocusGoalCard />
 				</div>
 			</div>
 

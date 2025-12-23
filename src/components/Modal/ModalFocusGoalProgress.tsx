@@ -3,6 +3,7 @@ import Modal from './Modal';
 import Icon from '../Icon';
 import { getFormattedDuration } from '../../utils/helpers.utils';
 import { formatDateAsAPIKey, formatDateWithoutTimezone, getAllMonths } from '../../utils/date.utils';
+import { truncateText } from '../../utils/text.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import FocusGoalCalendarDay from './FocusGoalCalendarDay';
@@ -10,6 +11,7 @@ import StreaksList, { SortOption } from './StreaksList';
 import { useStatsDateRange } from '../../hooks/useStatsDateRange';
 import FocusStatsCard from './ModalFocusGoalProgress/FocusStatsCard';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
+import useWindowSize from '../../hooks/useWindowSize';
 import type { Ring } from '../../types/api';
 
 interface Streak {
@@ -73,6 +75,8 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	rings,
 }) => {
 	const { chosenColorObj } = useThemeContext();
+	const { width } = useWindowSize();
+	const truncateLength = (width ?? 0) >= 576 ? 20 : 15;
 
 	const customDailyFocusGoal = ring?.customDailyFocusGoal ?? {};
 	const selectedDaysOfWeek = ring?.selectedDaysOfWeek ?? {};
@@ -156,7 +160,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				{/* Header */}
 				<div className="flex justify-between items-center mb-6">
 					<h2 className="text-2xl font-semibold">
-						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${ringName.length > 20 ? ringName.substring(0, 20) + '...' : ringName} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
+						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${truncateText(ringName, truncateLength)} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
 					</h2>
 					<Icon
 						name="close"

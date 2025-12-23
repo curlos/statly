@@ -3,9 +3,11 @@ import Tooltip from '../Tooltip';
 import { getFormattedDuration } from '../../utils/helpers.utils';
 import { areDatesEqual } from '../../utils/date.utils';
 import { hexToRgba } from '../../utils/color.utils';
+import { truncateText } from '../../utils/text.utils';
 import classNames from 'classnames';
 import Icon from '../Icon';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import useWindowSize from '../../hooks/useWindowSize';
 
 // Helper function to check if a date falls within any inactive period
 const isDateInInactivePeriod = (
@@ -77,6 +79,8 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	ringsData,
 }) => {
 	const { chosenColorObj } = useThemeContext();
+	const { width } = useWindowSize();
+	const truncateLength = (width ?? 0) >= 576 ? 20 : 15;
 
 	// Check if today
 	const isToday = areDatesEqual(new Date(), day);
@@ -112,7 +116,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 						return (
 							<div key={ring.ringId} className="whitespace-nowrap">
 								<div className="text-xs font-semibold flex items-center gap-1" style={{ color: displayColor }}>
-									{ring.ringName.length > 20 ? ring.ringName.substring(0, 20) + '...' : ring.ringName}
+									{truncateText(ring.ringName, truncateLength)}
 									{ring.customDailyFocusGoal?.[dateKey] !== undefined && (
 										<Icon
 											name="acute"
