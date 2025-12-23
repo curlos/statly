@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from './Modal';
 import Icon from '../Icon';
 import { getFormattedDuration } from '../../utils/helpers.utils';
@@ -102,6 +102,14 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 		initialInterval: 'Month',
 		initialDates: [new Date()],
 	});
+
+	// Reset calendar to current month when modal opens or ring changes
+	useEffect(() => {
+		if (isOpen) {
+			setCurrentDate(new Date());
+			setShowYearView(false);
+		}
+	}, [isOpen, ring?.id]);
 
 	// Calendar navigation handlers
 	const goToPreviousMonth = () => {
