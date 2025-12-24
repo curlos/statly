@@ -294,6 +294,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		switch (selectedGame) {
 			case 'POKEMON TCG CARDS':
 			case 'AC7 (MEDALS)':
+			case 'MW2019 (WEAPON CAMOS)':
 			case 'BO2 (MEDALS)':
 				return 'grid-cols-3 md:grid-cols-4';
 			default:
@@ -343,6 +344,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 								'BO2 (MEDALS)',
 								'AC7 (MEDALS)',
 								'POKEMON TCG CARDS',
+								'MW2019 (WEAPON CAMOS)',
 								'CUSTOM',
 							]}
 							onClick={(selectedOption: string) => {

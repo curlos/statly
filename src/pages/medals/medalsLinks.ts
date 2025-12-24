@@ -650,6 +650,135 @@ export const ACE_COMBAT_7_MEDALS = {
     ],
 }
 
+export const MW2019_WEAPON_CAMOS = {
+    "SPRAY PAINT": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Desert_Snake_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Commando_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Rip_N%2527Tear_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609477/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Moroccan_Snake_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609479/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Pitter_Patter_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/China_Lake_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Pinstripe_Suit_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609476/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Chain_Link_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Nightfall_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Smoke_Camo_Icon_MW2019.webp",
+    ],
+    "WOODLAND": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609488/Statly/mw2019-weapon-camos/WOODLAND/Swamp_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609487/Statly/mw2019-weapon-camos/WOODLAND/Modern_Woodland_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609487/Statly/mw2019-weapon-camos/WOODLAND/Desert_Hybrid_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609488/Statly/mw2019-weapon-camos/WOODLAND/Sand_Dance_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609487/Statly/mw2019-weapon-camos/WOODLAND/Marshland_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609487/Statly/mw2019-weapon-camos/WOODLAND/Kill_Brush_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609488/Statly/mw2019-weapon-camos/WOODLAND/WARCOM_Greens_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609488/Statly/mw2019-weapon-camos/WOODLAND/WARCOM_Blues_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609487/Statly/mw2019-weapon-camos/WOODLAND/Nightfrost_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609486/Statly/mw2019-weapon-camos/WOODLAND/Canopy_Camo_Icon_MW2019.webp"
+    ],
+    "DIGITAL": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609465/Statly/mw2019-weapon-camos/DIGITAL/Urban_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609465/Statly/mw2019-weapon-camos/DIGITAL/Jungle_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609435/Statly/mw2019-weapon-camos/DIGITAL/Arctic_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609436/Statly/mw2019-weapon-camos/DIGITAL/Forest_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609465/Statly/mw2019-weapon-camos/DIGITAL/Marsh_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609436/Statly/mw2019-weapon-camos/DIGITAL/Bark_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609436/Statly/mw2019-weapon-camos/DIGITAL/Blue_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609436/Statly/mw2019-weapon-camos/DIGITAL/Classic_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609437/Statly/mw2019-weapon-camos/DIGITAL/Desert_Digital_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609465/Statly/mw2019-weapon-camos/DIGITAL/Green_Digital_Camo_Icon_MW2019.webp",
+    ],
+    "DRAGON": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609466/Statly/mw2019-weapon-camos/DRAGON/H20_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609466/Statly/mw2019-weapon-camos/DRAGON/Dirt_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609467/Statly/mw2019-weapon-camos/DRAGON/Moss_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609467/Statly/mw2019-weapon-camos/DRAGON/Tagged_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609466/Statly/mw2019-weapon-camos/DRAGON/Black_Top_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609465/Statly/mw2019-weapon-camos/DRAGON/Asphalt_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609466/Statly/mw2019-weapon-camos/DRAGON/Crime_Scene_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609468/Statly/mw2019-weapon-camos/DRAGON/Neon_Pink_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609468/Statly/mw2019-weapon-camos/DRAGON/Trailblazer_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609466/Statly/mw2019-weapon-camos/DRAGON/Foliage_Camo_Icon_MW2019.webp"
+    ],
+    "SPLINTER": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609476/Statly/mw2019-weapon-camos/SPLINTER/Tundra_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609476/Statly/mw2019-weapon-camos/SPLINTER/Undergrowth_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609475/Statly/mw2019-weapon-camos/SPLINTER/Frostbite_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609475/Statly/mw2019-weapon-camos/SPLINTER/Ice_Breaker_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609476/Statly/mw2019-weapon-camos/SPLINTER/Ruins_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609475/Statly/mw2019-weapon-camos/SPLINTER/Arctic_Seafoam_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609474/Statly/mw2019-weapon-camos/SPLINTER/Angles_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609475/Statly/mw2019-weapon-camos/SPLINTER/Autumn_Dazzle_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609475/Statly/mw2019-weapon-camos/SPLINTER/Arctic_Abstract_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609476/Statly/mw2019-weapon-camos/SPLINTER/Sharp_Edges_Camo_Icon_MW2019.webp"
+    ],
+    "TOPO": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609484/Statly/mw2019-weapon-camos/TOPO/Off-Grid_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609484/Statly/mw2019-weapon-camos/TOPO/Night_Seas_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609484/Statly/mw2019-weapon-camos/TOPO/Marsh_Ops_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609484/Statly/mw2019-weapon-camos/TOPO/Forestation_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609484/Statly/mw2019-weapon-camos/TOPO/Phosphor_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609486/Statly/mw2019-weapon-camos/TOPO/Vector_Trails_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609486/Statly/mw2019-weapon-camos/TOPO/Topo_Trip_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609483/Statly/mw2019-weapon-camos/TOPO/Barren_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609486/Statly/mw2019-weapon-camos/TOPO/Vanished_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609486/Statly/mw2019-weapon-camos/TOPO/SandStorm_Camouflage_MW2019.webp"
+    ],
+    "TIGER": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Overgrown_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609483/Statly/mw2019-weapon-camos/TIGER/Mudslide_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Dank_Forest_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/TIGER/Abominable_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Faded_Veil_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Feral_Beast_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609483/Statly/mw2019-weapon-camos/TIGER/Tiger_Stripes_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Desert_Cat_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Red_Tiger_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Blue_Tiger_Camo_Icon_MW2019.webp"
+    ],
+    "STRIPES": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/STRIPES/Grassland_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/STRIPES/Tigers_Mane_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/STRIPES/The_Khan_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/STRIPES/Savannah_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/STRIPES/Zebra_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/STRIPES/Bluegrass_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/STRIPES/Africa_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609479/Statly/mw2019-weapon-camos/STRIPES/Nu_Wave_Zebra_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609480/Statly/mw2019-weapon-camos/STRIPES/Greengrass_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609479/Statly/mw2019-weapon-camos/STRIPES/Pink_Zebra_Camo_Icon_MW2019.webp"
+    ],
+     "REPTILE": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609472/Statly/mw2019-weapon-camos/REPTILE/Python_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609471/Statly/mw2019-weapon-camos/REPTILE/Rattlesnake_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609471/Statly/mw2019-weapon-camos/REPTILE/Komodo_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609469/Statly/mw2019-weapon-camos/REPTILE/Blue_Iguana_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609469/Statly/mw2019-weapon-camos/REPTILE/Chupacabra_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609471/Statly/mw2019-weapon-camos/REPTILE/Pink_Python_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609467/Statly/mw2019-weapon-camos/REPTILE/Anaconda_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609469/Statly/mw2019-weapon-camos/REPTILE/Bullsnake_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609469/Statly/mw2019-weapon-camos/REPTILE/Gecko_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609469/Statly/mw2019-weapon-camos/REPTILE/Gartersnake_Camo_Icon_MW2019.webp"
+    ],
+     "SKULLS": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609474/Statly/mw2019-weapon-camos/SKULLS/Necropolis_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609471/Statly/mw2019-weapon-camos/SKULLS/Corpse_Digger_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609474/Statly/mw2019-weapon-camos/SKULLS/Ossuary_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609472/Statly/mw2019-weapon-camos/SKULLS/Haunting_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609474/Statly/mw2019-weapon-camos/SKULLS/Phantom_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609472/Statly/mw2019-weapon-camos/SKULLS/Forest_Wraith_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609472/Statly/mw2019-weapon-camos/SKULLS/Hemophiliac_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609474/Statly/mw2019-weapon-camos/SKULLS/Skullduggery_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609473/Statly/mw2019-weapon-camos/SKULLS/Cthulhu_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609472/Statly/mw2019-weapon-camos/SKULLS/Lichyard_Camo_Icon_MW2019.webp"
+    ],
+     "COMPLETIONIST": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609435/Statly/mw2019-weapon-camos/COMPLETIONIST/Gold_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609435/Statly/mw2019-weapon-camos/COMPLETIONIST/Platinum_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609435/Statly/mw2019-weapon-camos/COMPLETIONIST/Damascus_Camo_Icon_MW2019.webp",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609435/Statly/mw2019-weapon-camos/COMPLETIONIST/Obsidian_Camo_Icon_MW2019.webp",
+    ],
+}
+
 export const POKEMON_TCG_CARDS = {
     "FULL ART": fullArtPokemonCardImages,
     "GOOGLE SHEETS": googleSheetsPokemonCardImages
@@ -770,6 +899,22 @@ export const MEDALS_GAMES = {
             "GOOGLE SHEETS",
         ],
         "MEDALS_OBJ": POKEMON_TCG_CARDS
+    },
+    "MW2019 (WEAPON CAMOS)": {
+        "MEDALS_ORDER": [
+            "SPRAY PAINT",
+            "WOODLAND",
+            "DIGITAL",
+            "DRAGON",
+            "SPLINTER",
+            "TOPO",
+            "TIGER",
+            "STRIPES",
+            "REPTILE",
+            "SKULLS",
+            "COMPLETIONIST",
+        ],
+        "MEDALS_OBJ": MW2019_WEAPON_CAMOS
     },
     "CUSTOM": {
         "MEDALS_ORDER": [
