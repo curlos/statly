@@ -7,6 +7,16 @@ import CompletedTask from './CompletedTask';
 import type { Task } from '../../../types/models';
 import type { AncestorTask } from '../../../types/api';
 
+interface CustomDisplay {
+	useBackgroundColor: boolean;
+	backgroundColor: string;
+	useTextColor: boolean;
+	textColor: string;
+	useBackgroundImage: boolean;
+	backgroundImage: string;
+	backgroundImageOpacity: number;
+}
+
 interface NestedCompletedTasksProps {
 	tasksWithNoParent: string[];
 	tasksWithParentId: Record<string, string | null>;
@@ -15,6 +25,8 @@ interface NestedCompletedTasksProps {
 	dateStr: string;
 	updateTaskIdQueryParam: (taskId: string) => void;
 	ancestorTasksById: Record<string, AncestorTask>;
+	cardTextColor?: string;
+	customDisplay: CustomDisplay;
 }
 
 const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
@@ -24,7 +36,9 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 	groupedTasksCollapsedByDefault,
 	dateStr,
 	updateTaskIdQueryParam,
-	ancestorTasksById
+	ancestorTasksById,
+	cardTextColor,
+	customDisplay
 }) => {
 	const {
 		focusRecordsPageSettings: { showMedals },
@@ -72,7 +86,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 							showMedals ? 'break-all sm:break-words sm:break-normal' : 'break-words'
 						)}
 					>
-						<CompletedTask task={subtask} updateTaskIdQueryParam={updateTaskIdQueryParam} isFullTask={false} />
+						<CompletedTask task={subtask} updateTaskIdQueryParam={updateTaskIdQueryParam} isFullTask={false} cardTextColor={cardTextColor} />
 					</li>
 				))}
 			</ul>
@@ -99,22 +113,26 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 							<li
 								className="underline cursor-pointer hover:text-blue-500 font-bold"
 								onClick={() => updateTaskIdQueryParam(parentTask.id)}
+								style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 							>
 								{parentTask.title}
 							</li>
 
 							{(taskProject || parentTask?.projectId) && (
-								<li className={classNames("text-color-gray-25 hover:underline hover:text-blue-500", parentTask.parentId && "hidden sm:block")} onClick={() => {
+								<li
+									className={classNames("text-color-gray-25 hover:underline hover:text-blue-500", parentTask.parentId && "hidden sm:block")}
+									onClick={() => {
 									updateQueryParams({
 										[projectQueryParam]: parentTask?.projectId,
-										'task-id': '',
-										'sort-by': '',
-										search: '',
-										'start-date': '',
-										'end-date': '',
-										page: '',
-									});
-								}}>
+											'task-id': '',
+											'sort-by': '',
+											search: '',
+											'start-date': '',
+											'end-date': '',
+											page: '',
+										});
+									}} 
+									style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
 									({taskProject?.name || parentTask?.projectId})
 								</li>
 							)}

@@ -10,9 +10,10 @@ interface CompletedTaskProps {
 	task: Task | AncestorTask;
 	isFullTask: boolean;
 	updateTaskIdQueryParam: (taskId: string) => void;
+	cardTextColor?: string;
 }
 
-const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateTaskIdQueryParam }) => {
+const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateTaskIdQueryParam, cardTextColor }) => {
 	// Really just for TickTick tasks, don't see anything like this for Todoist tasks. They seem to only have two statuses: "Complete" and "Not Complete".
 	const statusIsWillNotDo = 'status' in task && task.status === -1;
 
@@ -35,6 +36,7 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateT
 				<Icon
 					name={statusIsWillNotDo ? 'disabled_by_default' : 'check_box'}
 					customClass={classNames('!text-[20px] text-white')}
+					customStyle={{ color: cardTextColor }}
 				/>
 				<div
 					className={classNames('mt-[-2px] flex-1', isFullTask && 'hover:underline cursor-pointer')}
@@ -46,6 +48,7 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateT
 
 						updateTaskIdQueryParam(task.id);
 					}}
+					style={{ color: cardTextColor }}
 				>
 					{task.title}
 				</div>

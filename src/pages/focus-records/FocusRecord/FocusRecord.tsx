@@ -17,6 +17,7 @@ import FocusRecordTasks from "./FocusRecordTasks";
 import { useFocusRecordMenu } from "./useFocusRecordMenu";
 import FocusRecordMenuItems from "../../../components/FocusRecordMenuItems";
 import type { FocusRecord, Emotion, Task } from "../../../types/models";
+import { useFocusRecordCardColors } from "./useFocusRecordCardColors";
 
 interface FocusRecordProps {
     focusRecord: FocusRecord;
@@ -80,47 +81,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
         showFocusRecordEmotions
     });
 
-    // Custom display helper functions
-    const getCardBackgroundStyle = () => {
-        if (customDisplay.useBackgroundColor) {
-            return { backgroundColor: customDisplay.backgroundColor };
-        }
-        return {};
-    };
-
-    // Separate background image style (applied to dedicated background layer)
-    const getBackgroundImageStyle = () => {
-        if (customDisplay.useBackgroundImage && customDisplay.backgroundImage) {
-            return {
-                backgroundImage: `url(${customDisplay.backgroundImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                opacity: customDisplay.backgroundImageOpacity,
-            };
-        }
-        return {};
-    };
-
-    const getCardBgColor = () => {
-        // Use theme only if no custom background
-        if (customDisplay.useBackgroundColor) {
-            return customDisplay.backgroundColor
-        }
-        
-        return chosenColorObj.hexColor
-    };
-
-    const getCardTextColor = () => {
-        // Use theme only if no custom background
-        if (customDisplay.useTextColor) {
-            return customDisplay.textColor
-        }
-        return 'white'
-    };
-
-    const cardBgColor = getCardBgColor()
-    const cardTextColor = getCardTextColor()
+    const { cardBackgroundStyle, backgroundImageStyle, cardBgColor, cardTextColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj });
 
     return (
         <div
@@ -169,8 +130,8 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                 )}
 
                 <div
-                    className={classNames("p-2 rounded-lg w-[95%] sm:w-full relative", customDisplay.useBackgroundImage ? 'bg-white' : !customDisplay.useBackgroundColor && bgColorHalfOpacity )}
-                    style={getCardBackgroundStyle()}
+                    className={classNames("p-2 rounded-lg w-[95%] sm:w-full relative", customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && bgColorHalfOpacity )}
+                    style={cardBackgroundStyle}
                     onContextMenu={handleContextMenu}
                 >
                     {/* Separate background image layer */}
@@ -178,7 +139,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                         <div
                             className="absolute inset-0 rounded-lg"
                             style={{
-                                ...getBackgroundImageStyle(),
+                                ...backgroundImageStyle,
                                 zIndex: 0,
                             }}
                         ></div>

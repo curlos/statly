@@ -40,7 +40,7 @@ const CustomCardDisplay = () => {
 
 	return (
 		<div className="mb-4">
-			<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Custom Card Display</h4>
+			<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Card Display</h4>
 
 			{/* Background Image */}
 			<CheckboxOther

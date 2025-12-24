@@ -15,6 +15,7 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTe
 	const {
 		focusRecordsPageSettings: {
 			showTaskAncestors,
+			customDisplay
 		},
 	} = useUserSettingsContext();
 
@@ -43,7 +44,7 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTe
 
 		return (
 			<h3 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
-				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline font-bold" style={{ color: cardTextColor }}>
+				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline font-bold" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
 					{task?.title}
 				</span>
 				<TaskProjectName {...{ taskId: taskId, cardTextColor }} />

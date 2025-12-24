@@ -21,6 +21,7 @@ import FocusRecordMenuItems from '../../../components/FocusRecordMenuItems';
 import { useDayCardMenu } from './useDayCardMenu';
 import type { DayWithCompletedTasks as DayWithCompletedTasksType, AncestorTask } from '../../../types/api';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
+import { useFocusRecordCardColors } from '../../focus-records/FocusRecord/useFocusRecordCardColors';
 
 interface DayWithCompletedTasksProps {
 	dateWithCompletedTasks: DayWithCompletedTasksType;
@@ -37,13 +38,13 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 	const { updateQueryParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
-		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow },
+		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow, customDisplay },
 	} = useUserSettingsContext();
 
 	// Theme Context
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
-	const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
+	const { bgColorHalfOpacity } = chosenColorObj;
 
 	const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
 
@@ -105,6 +106,8 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage]
 	);
 
+	const { cardBackgroundStyle, backgroundImageStyle, cardTextColor, cardBgColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj });
+
 	return (
 		<div
 			className={classNames(
@@ -125,17 +128,16 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 
 			{!showMedals && (
 				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
-					<Icon name="check_box" customClass={classNames('!text-[20px]', textColor)} />
+					<Icon name="check_box" customClass={classNames('!text-[20px]')} customStyle={{ color: cardBgColor }} />
 				</div>
 			)}
 
 			{!isLastItemForTheDay && !showMedals && (
 				<div
 					className={classNames(
-						'absolute top-[28px] left-[11px] h-full border-solid border-l-[1px]',
-						borderColor
+						'absolute top-[28px] left-[11px] h-full border-solid border-l-[1px]'
 					)}
-					style={{ height: 'calc(100% - 16px)' }}
+					style={{ height: 'calc(100% - 16px)', borderColor: cardBgColor }}
 				></div>
 			)}
 
@@ -146,27 +148,41 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 				{!isLastItemForTheDay && !showMedals && (
 					<div
 						className={classNames(
-							'absolute left-[-18px] sm:left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600',
-							borderColor
+							'absolute left-[-18px] sm:left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600'
 						)}
-						style={{ top: '34px' }}
+						style={{ top: '34px', borderColor: cardBgColor }}
 					></div>
 				)}
 
 				<div
-					className={classNames(bgColorHalfOpacity, 'p-2 rounded-lg w-[95%] sm:w-full relative')}
+					className={classNames('p-2 rounded-lg w-[95%] sm:w-full relative', customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && bgColorHalfOpacity)}
+					style={cardBackgroundStyle}
 					onContextMenu={handleContextMenu}
 				>
+					{/* Separate background image layer */}
+                    {customDisplay.useBackgroundImage && customDisplay.backgroundImage && (
+                        <div
+                            className="absolute inset-0 rounded-lg"
+                            style={{
+                                ...backgroundImageStyle,
+                                zIndex: 0,
+                                pointerEvents: 'none',
+                            }}
+                        ></div>
+                    )}
+
 					{/* Three-dot dropdown menu (positioned outside Accordion button to avoid nested buttons) */}
-					<div className="absolute top-[14px] right-[30px] z-10 flex-shrink-0" ref={dropdownToggleRef}>
+					<div className="absolute top-[14px] right-[30px] z-[11] flex-shrink-0" ref={dropdownToggleRef}>
 						<Icon
 							name="more_horiz"
 							customClass="text-color-gray-50 !text-[20px] cursor-pointer hover:text-white transition-colors"
 							onClick={(e) => {
+								console.log('Icon clicked!');
 								e.stopPropagation();
 								setContextMenuVisible(false);
 								setDropdownOpen(!dropdownOpen);
 							}}
+							customStyle={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 						/>
 
 						<Dropdown
@@ -182,46 +198,53 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 						</Dropdown>
 					</div>
 
-					<Accordion
-						title={
-							<div className="flex items-center justify-between w-full gap-2">
-								<div
-									className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
-									onClick={handleClickDay}
-								>
-									<span>{dateStr.replace(/\b0(\d),/, '$1,')}</span>
-									<span> ({completedTasksForDay.length})</span>
+					<div className="relative z-10">
+						<Accordion
+							title={
+								<div className="flex items-center justify-between w-full gap-2">
+									<div
+										className="text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline"
+										onClick={handleClickDay}
+										style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+									>
+										<span>{dateStr.replace(/\b0(\d),/, '$1,')}</span>
+										<span> ({completedTasksForDay.length})</span>
+									</div>
 								</div>
+							}
+							openByDefault={true}
+						>
+							<div className="space-y-5">
+								{showIndentedTasks ? (
+									<NestedCompletedTasks
+										{...{
+											tasksWithNoParent,
+											tasksWithParentId,
+											groupedSubtasksByParentTask,
+											groupedTasksCollapsedByDefault,
+											dateStr,
+											updateTaskIdQueryParam,
+											ancestorTasksById,
+											cardTextColor,
+											customDisplay
+										}}
+									/>
+								) : (
+									<CompletedTasksWithBreadcrumbs
+										{...{
+											ancestorTasksById,
+											groupedSubtasksByParentTask,
+											dateStr,
+											updateTaskIdQueryParam,
+											groupedTasksCollapsedByDefault,
+											cardTextColor,
+											customDisplay
+										}}
+									/>
+								)}
 							</div>
-						}
-						openByDefault={true}
-					>
-						<div className="space-y-5">
-							{showIndentedTasks ? (
-								<NestedCompletedTasks
-									{...{
-										tasksWithNoParent,
-										tasksWithParentId,
-										groupedSubtasksByParentTask,
-										groupedTasksCollapsedByDefault,
-										dateStr,
-										updateTaskIdQueryParam,
-										ancestorTasksById
-									}}
-								/>
-							) : (
-								<CompletedTasksWithBreadcrumbs
-									{...{
-										ancestorTasksById,
-										groupedSubtasksByParentTask,
-										dateStr,
-										updateTaskIdQueryParam,
-										groupedTasksCollapsedByDefault,
-									}}
-								/>
-							)}
-						</div>
-					</Accordion>
+						</Accordion>
+					</div>
 				</div>
 			</div>
 

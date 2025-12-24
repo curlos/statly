@@ -5,8 +5,9 @@ import { useUserSettingsContext } from '../../pages/focus-records/useUserSetting
 import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
 import MedalImage from './MedalImage';
+import CustomCardDisplay from './CustomCardDisplay';
 
-const OtherSectionFocusRecords = () => {
+const OtherSectionCompletedTasks = () => {
 	const {
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
@@ -52,78 +53,84 @@ const OtherSectionFocusRecords = () => {
 			>
 				{!isLoadingGetUserSettings && (
 					<>
-						<CheckboxOther
-							{...{
-								name: 'Task ID: Include Completed Tasks From Subtasks',
-								showValue: taskIdIncludeCompletedTasksFromSubtasks,
-								handleCheckboxClick: () =>
-									handleCheckboxClick(
-										taskIdIncludeCompletedTasksFromSubtasks,
-										'taskIdIncludeCompletedTasksFromSubtasks'
-									),
-							}}
-						/>
+						<div className="mb-4">
+							<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
 
-						<CheckboxOther
-							{...{
-								name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
-								showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
-								handleCheckboxClick: () =>
-									handleCheckboxClick(
-										filterOutUnrelatedTasksWhenTaskIdIsApplied,
-										'filterOutUnrelatedTasksWhenTaskIdIsApplied'
-									),
-							}}
-						/>
+							<CheckboxOther
+								{...{
+									name: 'Task ID: Include Completed Tasks From Subtasks',
+									showValue: taskIdIncludeCompletedTasksFromSubtasks,
+									handleCheckboxClick: () =>
+										handleCheckboxClick(
+											taskIdIncludeCompletedTasksFromSubtasks,
+											'taskIdIncludeCompletedTasksFromSubtasks'
+										),
+								}}
+							/>
 
-						<CheckboxOther
-							{...{
-								name: 'Grouped Tasks Collapsed By Default',
-								showValue: groupedTasksCollapsedByDefault,
-								handleCheckboxClick: () =>
-									handleCheckboxClick(
-										groupedTasksCollapsedByDefault,
-										'groupedTasksCollapsedByDefault'
-									),
-							}}
-						/>
+							<CheckboxOther
+								{...{
+									name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
+									showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
+									handleCheckboxClick: () =>
+										handleCheckboxClick(
+											filterOutUnrelatedTasksWhenTaskIdIsApplied,
+											'filterOutUnrelatedTasksWhenTaskIdIsApplied'
+										),
+								}}
+							/>
 
-						<CheckboxOther
-							{...{
-								name: 'Show Indented Tasks',
-								showValue: showIndentedTasks,
-								handleCheckboxClick: () => handleCheckboxClick(showIndentedTasks, 'showIndentedTasks'),
-							}}
-						/>
+							<CheckboxOther
+								{...{
+									name: 'Grouped Tasks Collapsed By Default',
+									showValue: groupedTasksCollapsedByDefault,
+									handleCheckboxClick: () =>
+										handleCheckboxClick(
+											groupedTasksCollapsedByDefault,
+											'groupedTasksCollapsedByDefault'
+										),
+								}}
+							/>
 
-						<CheckboxOther
-							{...{
-								name: 'Show Medals',
-								showValue: showMedals,
-								handleCheckboxClick: () => {
-									handleUpdateUserSettingForPage('focusRecords', 'showMedals', !showMedals);
-								},
-							}}
-						/>
+							<CheckboxOther
+								{...{
+									name: 'Show Indented Tasks',
+									showValue: showIndentedTasks,
+									handleCheckboxClick: () => handleCheckboxClick(showIndentedTasks, 'showIndentedTasks'),
+								}}
+							/>
 
-						{showMedals && (
-							<div className="pl-10">
-								<MedalImage />
-							</div>
-						)}
+							<CheckboxOther
+								{...{
+									name: 'Show Medals',
+									showValue: showMedals,
+									handleCheckboxClick: () => {
+										handleUpdateUserSettingForPage('focusRecords', 'showMedals', !showMedals);
+									},
+								}}
+							/>
 
-						{/* Input - Max Days Per Page */}
-						<InputNumUserSettings
-							{...{
-								defaultValue: maxDaysPerPage,
-								userSettings: userSettings!,
-								editUserSettings,
-								minNum: 7,
-								maxNum: 14,
-								name: 'Max Days Per Page',
-								page: 'completed-tasks-page',
-							}}
-						/>
+							{showMedals && (
+								<div className="pl-10">
+									<MedalImage />
+								</div>
+							)}
+
+							{/* Input - Max Days Per Page */}
+							<InputNumUserSettings
+								{...{
+									defaultValue: maxDaysPerPage,
+									userSettings: userSettings!,
+									editUserSettings,
+									minNum: 7,
+									maxNum: 14,
+									name: 'Max Days Per Page',
+									page: 'completed-tasks-page',
+								}}
+							/>
+						</div>
+
+						<CustomCardDisplay />
 					</>
 				)}
 			</Accordion>
@@ -131,4 +138,4 @@ const OtherSectionFocusRecords = () => {
 	);
 };
 
-export default OtherSectionFocusRecords;
+export default OtherSectionCompletedTasks;

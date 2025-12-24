@@ -16,7 +16,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ showFilterSidebar, setShowFilterS
 	const { chosenColorObj } = themeContext;
 
 	return (
-		<div className="bg-color-gray-700 sticky top-0 z-[11] pt-2">
+		<div className="bg-color-gray-700 sticky top-0 z-[12] pt-2">
 			<div className="flex justify-between items-center pb-5 container">
 				<div className="flex justify-between items-center gap-3 w-full">
 					<div className="flex items-center gap-4">

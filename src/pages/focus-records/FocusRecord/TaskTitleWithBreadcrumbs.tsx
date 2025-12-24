@@ -41,7 +41,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
                 onClick={() => {
                     updateTaskIdQueryParam(parentTaskId);
                 }}
-                style={{ color: cardTextColor }}
+                style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
             >
                 {parentTaskTitle}
             </span>

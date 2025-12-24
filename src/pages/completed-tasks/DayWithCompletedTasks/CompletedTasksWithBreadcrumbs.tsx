@@ -5,12 +5,24 @@ import CompletedTask from './CompletedTask';
 import type { AncestorTask } from '../../../types/api';
 import type { Task } from '../../../types/models';
 
+interface CustomDisplay {
+	useBackgroundColor: boolean;
+	backgroundColor: string;
+	useTextColor: boolean;
+	textColor: string;
+	useBackgroundImage: boolean;
+	backgroundImage: string;
+	backgroundImageOpacity: number;
+}
+
 interface CompletedTasksWithBreadcrumbsProps {
 	ancestorTasksById: Record<string, AncestorTask>;
 	groupedSubtasksByParentTask: Record<string, (Task | AncestorTask)[]>;
 	dateStr: string;
 	updateTaskIdQueryParam: (taskId: string) => void;
 	groupedTasksCollapsedByDefault: boolean;
+	cardTextColor?: string;
+	customDisplay: CustomDisplay;
 }
 
 const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps> = ({
@@ -19,6 +31,8 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 	dateStr,
 	updateTaskIdQueryParam,
 	groupedTasksCollapsedByDefault,
+	cardTextColor,
+	customDisplay
 }) => {
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
@@ -47,12 +61,13 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 								onClick={() => {
 									updateTaskIdQueryParam(parentTaskId);
 								}}
+								style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 							>
 								{parentTaskTitle}
 							</span>
 
 							{parentTaskBreadcrumbs?.length > 0 && (
-								<span className="ml-1 text-color-gray-25">
+								<span className="ml-1 text-color-gray-25" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
 									-{' '}
 									{parentTaskBreadcrumbs.map((taskId: string, index: number) => {
 										const taskObj = ancestorTasksById[taskId];
@@ -76,7 +91,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 							)}
 
 							{(taskProject || parentTask?.projectId) && (
-								<span className="text-color-gray-25">
+								<span className="text-color-gray-25" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
 									{' - '}
 								</span>
 							)}
@@ -92,7 +107,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 										'end-date': '',
 										page: '',
 									});
-								}}>
+								}} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
 									({taskProject?.name || parentTask?.projectId})
 								</span>
 							)}
@@ -108,6 +123,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 								task={task}
 								isFullTask={false}
 								updateTaskIdQueryParam={updateTaskIdQueryParam}
+								cardTextColor={cardTextColor}
 							/>
 						))}
 					</div>
