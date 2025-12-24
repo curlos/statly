@@ -31,7 +31,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 
     const themeContext = useThemeContext();
     const { chosenColorObj } = themeContext;
-    const { textColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
+    const { bgColorHalfOpacity } = chosenColorObj;
 
     const {
         focusRecordsPageSettings: {
@@ -42,6 +42,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
             medalImageSizePx,
             showMedalGlow,
             showFocusRecordEmotions,
+            customDisplay,
         },
     } = useUserSettingsContext();
 
@@ -79,6 +80,48 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
         showFocusRecordEmotions
     });
 
+    // Custom display helper functions
+    const getCardBackgroundStyle = () => {
+        if (customDisplay.useBackgroundColor) {
+            return { backgroundColor: customDisplay.backgroundColor };
+        }
+        return {};
+    };
+
+    // Separate background image style (applied to dedicated background layer)
+    const getBackgroundImageStyle = () => {
+        if (customDisplay.useBackgroundImage && customDisplay.backgroundImage) {
+            return {
+                backgroundImage: `url(${customDisplay.backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                opacity: customDisplay.backgroundImageOpacity,
+            };
+        }
+        return {};
+    };
+
+    const getCardBgColor = () => {
+        // Use theme only if no custom background
+        if (customDisplay.useBackgroundColor) {
+            return customDisplay.backgroundColor
+        }
+        
+        return chosenColorObj.hexColor
+    };
+
+    const getCardTextColor = () => {
+        // Use theme only if no custom background
+        if (customDisplay.useTextColor) {
+            return customDisplay.textColor
+        }
+        return 'white'
+    };
+
+    const cardBgColor = getCardBgColor()
+    const cardTextColor = getCardTextColor()
+
     return (
         <div
             className={classNames(
@@ -99,7 +142,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 
             {!showMedals && (
                 <div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
-                    <Icon name="timer" customClass={classNames("!text-[20px]", textColor)} />
+                    <Icon name="timer" customClass={classNames("!text-[20px]")} customStyle={{ color: cardBgColor }} />
                 </div>
             )}
 
@@ -107,9 +150,8 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                 <div
                     className={classNames(
                         "absolute top-[28px] left-[11px] h-full border-solid border-l-[1px]",
-                        borderColor,
                     )}
-                    style={{ height: "calc(100% - 16px)" }}
+                    style={{ height: "calc(100% - 16px)", borderColor: cardBgColor }}
                 ></div>
             )}
 
@@ -120,18 +162,29 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                 {!isLastItemForTheDay && !showMedals && (
                     <div
                         className={classNames(
-                            "absolute left-[-18px] sm:left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600",
-                            borderColor,
+                            "absolute left-[-18px] sm:left-[-33px] w-[10px] h-[10px] border-solid rounded-full border-[2px] bg-color-gray-600"
                         )}
-                        style={{ top: "34px" }}
+                        style={{ top: "34px", borderColor: cardBgColor }}
                     ></div>
                 )}
 
                 <div
-                    className={classNames(bgColorHalfOpacity, "p-2 rounded-lg w-[95%] sm:w-full")}
+                    className={classNames("p-2 rounded-lg w-[95%] sm:w-full relative", customDisplay.useBackgroundImage ? 'bg-white' : !customDisplay.useBackgroundColor && bgColorHalfOpacity )}
+                    style={getCardBackgroundStyle()}
                     onContextMenu={handleContextMenu}
                 >
-                    <div className="hidden sm:flex items-center justify-between text-gray-200">
+                    {/* Separate background image layer */}
+                    {customDisplay.useBackgroundImage && customDisplay.backgroundImage && (
+                        <div
+                            className="absolute inset-0 rounded-lg"
+                            style={{
+                                ...getBackgroundImageStyle(),
+                                zIndex: 0,
+                            }}
+                        ></div>
+                    )}
+
+                    <div className="hidden sm:flex items-center justify-between relative" style={{ color: cardTextColor }}>
                         <div>
                             <span
                                 className="font-bold hover:underline cursor-pointer"
@@ -173,6 +226,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                     setContextMenuVisible(false);
                                     setDropdownOpen(!dropdownOpen);
                                 }}
+                                customStyle={{ color: cardTextColor }}
                             />
 
                             <Dropdown
@@ -251,21 +305,24 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                         </div>
                     </div>
 
-                    <FocusRecordTasks focusRecord={focusRecord} />
+                    <div className="relative z-10">
+                        <FocusRecordTasks focusRecord={focusRecord} cardTextColor={cardTextColor} />
+                    </div>
 
                     {showFocusNotes && (
                         <div
                             className={classNames(
-                                "text-color-gray-100 text-white text-[15px] break-words react-markdown",
+                                "text-color-gray-100 text-[15px] break-words react-markdown relative z-10",
                             )}
+                            style={{ color: cardTextColor }}
                         >
                             <ReactMarkdown>{note}</ReactMarkdown>
                         </div>
                     )}
 
                     {showCompletedTasks && thereAreCompletedTasks && (
-                        <>
-                            <h4 className="text-[16px] font-bold underline mt-4">Completed Tasks</h4>
+                        <div className="relative z-10">
+                            <h4 className="text-[16px] font-bold underline mt-4" style={{ color: cardTextColor }}>Completed Tasks</h4>
 
                             <ul>
                                 {completedTasksDuringFocusSession.map((completedTask: Task, index: number) => {
@@ -276,7 +333,8 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                         <li key={`${focusRecord.id}-${index}`} className="flex items-start gap-1">
                                             <Icon
                                                 name="check_box"
-                                                customClass={classNames("!text-[20px] text-white mt-[2px]")}
+                                                customClass={classNames("!text-[20px] mt-[2px]")}
+                                                customStyle={{ color: cardTextColor }}
                                             />
                                             <span
                                                 className={classNames(
@@ -284,6 +342,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                                         ? "break-all md:break-normal md:break-words"
                                                         : "break-words",
                                                 )}
+                                                style={{ color: cardTextColor }}
                                             >
                                                 {completedTaskText}
                                             </span>
@@ -291,12 +350,12 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                     );
                                 })}
                             </ul>
-                        </>
+                        </div>
                     )}
 
                     {/* Emotion Tags */}
                     {showFocusRecordEmotions && (
-                        <div className="mt-3">
+                        <div className="mt-3 relative">
                             <div className="flex flex-wrap gap-2">
                                 {focusRecord.emotions && focusRecord.emotions.length > 0 ? (
                                     focusRecord.emotions.map((emotionObj: Emotion, index: number) => (

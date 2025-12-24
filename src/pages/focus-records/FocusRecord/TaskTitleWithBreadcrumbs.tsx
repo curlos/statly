@@ -1,15 +1,21 @@
 import { useFocusRecordsQuery } from "../useFocusRecordsQuery";
 import TaskProjectName from "./TaskProjectName";
 import type { FocusRecordTask } from "../../../types/models";
+import classNames from "classnames";
+import { useUserSettingsContext } from "../useUserSettingsContext";
 
 interface TaskTitleWithBreadcrumbsProps {
     task: FocusRecordTask;
     updateTaskIdQueryParam: (taskId?: string) => void;
     headerStyling: string;
     dateStr: string;
+    cardTextColor?: string;
 }
 
-const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ task, updateTaskIdQueryParam, headerStyling, dateStr }) => {
+const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ task, updateTaskIdQueryParam, headerStyling, dateStr, cardTextColor }) => {
+    const {
+            focusRecordsPageSettings: { customDisplay },
+        } = useUserSettingsContext();
     const { ancestorTasksById, isLoading } = useFocusRecordsQuery();
 
     if (isLoading) {
@@ -35,12 +41,13 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
                 onClick={() => {
                     updateTaskIdQueryParam(parentTaskId);
                 }}
+                style={{ color: cardTextColor }}
             >
                 {parentTaskTitle}
             </span>
 
             {parentTaskBreadcrumbs?.length > 0 && (
-                <span className="ml-1 text-color-gray-25">
+                <span className={classNames("ml-1", customDisplay.useTextColor ? "" : "text-color-gray-25")} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
                     -{' '}
                     {parentTaskBreadcrumbs.map((taskId: string, index: number) => {
                         const taskObj = ancestorTasksById?.[taskId];
@@ -63,7 +70,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
                 </span>
             )}
 
-            <TaskProjectName {...{ taskId: parentTaskId, task }} />
+            <TaskProjectName {...{ taskId: parentTaskId, task, cardTextColor }} />
         </div>
     );
 };

@@ -6,6 +6,7 @@ import CheckboxOther from './CheckboxOther';
 import InputNumUserSettings from './InputNumUserSettings';
 import MedalImage from './MedalImage';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
+import CustomCardDisplay from './CustomCardDisplay';
 
 const OtherSectionFocusRecords = () => {
 	const {
@@ -181,20 +182,22 @@ const OtherSectionFocusRecords = () => {
 									handleCheckboxClick: handleCrossesMidnightToggle,
 								}}
 							/>
+
+							{/* Input - Max Focus Records Per Page */}
+							<InputNumUserSettings
+								{...{
+									defaultValue: maxFocusRecordsPerPage,
+									userSettings: userSettings!,
+									editUserSettings,
+									minNum: 5,
+									maxNum: 100,
+									name: 'Max Focus Records Per Page',
+									page: 'focus-records-page',
+								}}
+							/>
 						</div>
 
-						{/* Input - Max Focus Records Per Page */}
-						<InputNumUserSettings
-							{...{
-								defaultValue: maxFocusRecordsPerPage,
-								userSettings: userSettings!,
-								editUserSettings,
-								minNum: 5,
-								maxNum: 100,
-								name: 'Max Focus Records Per Page',
-								page: 'focus-records-page',
-							}}
-						/>
+						<CustomCardDisplay />
 					</>
 				)}
 			</Accordion>

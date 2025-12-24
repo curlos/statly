@@ -16,7 +16,7 @@ import CustomImagesSection from '../../components/CustomImagesSection/CustomImag
 import { useCustomFolderNames } from '../../hooks/useCustomFolderNames';
 
 type PageType = 'challenges' | 'medals' | 'focus-records' | 'completed-tasks';
-type CardType = 'focus' | 'tasks';
+type CardType = 'focus' | 'tasks' | 'background';
 
 interface ModalChangeCardImageProps {
 	showModal: boolean;
@@ -48,9 +48,11 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 	} = useUserSettingsContext();
 
 	const defaultSelectedCardImage: Record<PageType, string | undefined> = {
-		challenges: selectedChallengeCardImage?.[cardType],
-		medals: selectedMedalCardImage?.[cardType],
-		'focus-records': focusRecordsPageSettings?.selectedMedalImage,
+		challenges: cardType !== 'background' ? selectedChallengeCardImage?.[cardType] : '',
+		medals: cardType !== 'background' ? selectedMedalCardImage?.[cardType] : '',
+		'focus-records': cardType === 'background'
+			? focusRecordsPageSettings?.customDisplay?.backgroundImage
+			: focusRecordsPageSettings?.selectedMedalImage,
 		'completed-tasks': focusRecordsPageSettings?.selectedMedalImage,
 	};
 
@@ -121,6 +123,22 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		const restOfFocusRecordsKeysAndVals = userSettings?.pages?.focusRecords;
 		const restOfPagesKeysAndVals = userSettings?.pages;
 
+		if (cardType === 'background') {
+			return {
+				pages: {
+					...restOfPagesKeysAndVals,
+					focusRecords: {
+						...restOfFocusRecordsKeysAndVals,
+						customDisplay: {
+							...restOfFocusRecordsKeysAndVals?.customDisplay,
+							backgroundImage: selectedImageSrc,
+						},
+					},
+				},
+			};
+		}
+
+		// Existing logic for medal images
 		const payload = {
 			pages: {
 				...restOfPagesKeysAndVals,

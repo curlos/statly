@@ -3,6 +3,7 @@ import ModalChangeCardImage from './ModalChangeCardImage';
 import Icon from '../../components/Icon';
 import { useState } from 'react';
 import LazyImage from '../../components/LazyImage';
+import { toTitleCase } from '../../utils/helpers.utils';
 
 interface CardImageProps {
 	cardType: string;
@@ -19,7 +20,7 @@ const CardImage: React.FC<CardImageProps> = ({ cardType, imageSrc, page, showGlo
 		<div>
 			<div className="flex items-center gap-1 mb-2">
 				<h3 className={page !== 'focus-records' && page !== 'completed-tasks' ? 'text-[20px] font-bold' : ''}>
-					{cardType} - Card Image
+					{toTitleCase(cardType)} - Card Image
 				</h3>
 				<Icon name="image" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
 			</div>
@@ -50,7 +51,7 @@ const CardImage: React.FC<CardImageProps> = ({ cardType, imageSrc, page, showGlo
 				{...{
 					showModal: showModalChangeCardImage,
 					setShowModal: setShowModalChangeCardImage as (show: boolean) => void,
-					cardType: cardType.toLowerCase() as 'focus' | 'tasks',
+					cardType: cardType.toLowerCase() as 'focus' | 'tasks' | 'background',
 					page: page as 'challenges' | 'medals' | 'focus-records' | 'completed-tasks',
 					imageSrc,
 				}}

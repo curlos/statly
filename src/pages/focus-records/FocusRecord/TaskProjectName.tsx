@@ -7,9 +7,10 @@ import type { FocusRecordTask } from "../../../types/models";
 interface TaskProjectNameProps {
     taskId: string;
     task?: FocusRecordTask;
+    cardTextColor?: string;
 }
 
-const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task }) => {
+const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task, cardTextColor }) => {
     const { ancestorTasksById } = useFocusRecordsQuery();
 
     const { data: fetchedProjects } = useGetProjectsQuery();
@@ -18,7 +19,7 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task }) => {
     const { updateQueryParams } = useSearchParamsContext();
 
     const {
-        focusRecordsPageSettings: { showTaskProjectName },
+        focusRecordsPageSettings: { showTaskProjectName, customDisplay },
     } = useUserSettingsContext();
 
     // Map special focus app source IDs to friendly names
@@ -78,7 +79,7 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task }) => {
     };
 
     return (
-        <span className="text-color-gray-25">
+        <span className={customDisplay.useTextColor ? "" : "text-color-gray-25"} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
             {' '}
             -{' '}
             <span

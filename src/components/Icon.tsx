@@ -4,6 +4,7 @@ import Spinner from './Loaders/Spinner';
 interface IconProps {
 	name: string;
 	customClass?: string;
+	customStyle?: object;
 	fill?: number;
 	wght?: number;
 	grad?: number;
@@ -19,6 +20,7 @@ interface IconProps {
 const Icon: React.FC<IconProps> = ({
 	name,
 	customClass,
+	customStyle = {},
 	fill = 1,
 	wght = 400,
 	grad = 0,
@@ -49,6 +51,7 @@ const Icon: React.FC<IconProps> = ({
 			className={'material-symbols-rounded' + (customClass ? ' ' + customClass : '')}
 			style={{
 				fontVariationSettings: `'FILL' ${fill}, 'wght' ${wght}, 'GRAD' ${grad}, 'opsz' ${opsz}`,
+				...customStyle
 			}}
 			onClick={onClick}
 			onMouseOver={onMouseOver}

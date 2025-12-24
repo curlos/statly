@@ -376,6 +376,15 @@ export interface FocusRecordsPageSettings {
 	showFocusRecordEmotions: boolean;
 	showEmotionCount: boolean;
 	analyzeNoteEmotionsWhileSyncingFocusRecords: boolean;
+	customDisplay: {
+		useBackgroundImage: boolean;
+		backgroundImage: string;
+		backgroundImageOpacity: number;
+		useBackgroundColor: boolean;
+		backgroundColor: string;
+		useTextColor: boolean;
+		textColor: string;
+	};
 }
 
 export interface CompletedTasksPageSettings {

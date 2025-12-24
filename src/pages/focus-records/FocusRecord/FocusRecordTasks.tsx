@@ -7,9 +7,10 @@ import type { FocusRecord, FocusRecordTask } from "../../../types/models";
 
 interface FocusRecordTasksProps {
 	focusRecord: FocusRecord;
+	cardTextColor?: string;
 }
 
-const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord }) => {
+const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTextColor }) => {
 	const { updateQueryParams } = useSearchParamsContext();
 	const {
 		focusRecordsPageSettings: {
@@ -35,17 +36,17 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord }) => {
 
 	const getTaskTitle = (task: FocusRecordTask, dateStr: string) => {
 		if (showTaskAncestors) {
-			return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr }} />;
+			return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr, cardTextColor }} />;
 		}
 
 		const taskId = task.taskId;
 
 		return (
 			<h3 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer">
-				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline font-bold">
+				<span onClick={() => updateTaskIdQueryParam(taskId)} className="hover:text-blue-500 hover:underline font-bold" style={{ color: cardTextColor }}>
 					{task?.title}
 				</span>
-				<TaskProjectName {...{ taskId: taskId }} />
+				<TaskProjectName {...{ taskId: taskId, cardTextColor }} />
 			</h3>
 		);
 	};
@@ -63,7 +64,10 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord }) => {
 					`${startTimeObj.day + ' ' + startTimeObj.time} - ${endTimeObj.day + ' ' + endTimeObj.time}`
 				)}
 
-				<div className="sm:ml-3 text-white min-w-[150px] flex justify-end md:mt-[6px]">
+				<div
+					className={`sm:ml-3 min-w-[150px] flex justify-end md:mt-[6px]`}
+					style={{ color: cardTextColor }}
+				>
 					{startTimeObj.time} - {endTimeObj.time}
 				</div>
 			</div>

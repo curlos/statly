@@ -59,6 +59,16 @@ const useUserSettings = () => {
 		showFocusRecordEmotions = true,
 		showEmotionCount = false,
 		analyzeNoteEmotionsWhileSyncingFocusRecords = false,
+		customDisplay = {
+			useBackgroundImage: false,
+			// TODO: Also, add the default weapon camo URL from Cloudinary here.
+			backgroundImage: "",
+			backgroundImageOpacity: 1,
+			useBackgroundColor: false,
+			backgroundColor: "#3b82f6",
+			useTextColor: false,
+			textColor: "#ffffff"
+		},
 	} = focusRecordsPageSettings || {};
 
 	const {
@@ -188,6 +198,7 @@ const useUserSettings = () => {
 			showFocusRecordEmotions,
 			showEmotionCount,
 			analyzeNoteEmotionsWhileSyncingFocusRecords,
+			customDisplay,
 		},
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
