@@ -3,6 +3,7 @@ import { useGetProjectsQuery } from "../../../services/resources/projectsApi";
 import { useFocusRecordsQuery } from "../useFocusRecordsQuery";
 import { useUserSettingsContext } from "../useUserSettingsContext";
 import type { FocusRecordTask } from "../../../types/models";
+import { sourceToAppName } from "../../../utils/focusRecords.utils";
 
 interface TaskProjectNameProps {
     taskId: string;
@@ -21,14 +22,6 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task, cardTex
     const {
         focusRecordsPageSettings: { showTaskProjectName, customDisplay },
     } = useUserSettingsContext();
-
-    // Map special focus app source IDs to friendly names
-    const sourceToAppName: Record<string, string> = {
-        'FocusRecordSession': 'Session',
-        'FocusRecordBeFocused': 'Be Focused',
-        'FocusRecordForest': 'Forest',
-        'FocusRecordTide': 'Tide'
-    };
 
     // Map source IDs to focus app filter IDs
     const sourceToFocusAppId: Record<string, string> = {

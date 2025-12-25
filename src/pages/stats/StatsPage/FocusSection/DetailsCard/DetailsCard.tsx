@@ -17,6 +17,7 @@ import { getPieChartPaddingAngle } from '../../../../../utils/pieChart.utils';
 import { aggregateNestedTasksByParent } from '../../../../../utils/nestedTaskAggregation.utils';
 import { EMOTIONS } from '../../../../../utils/constants/constants.utils';
 import type { AggregationResults, ProgressBarItemData } from '../../../../../types/stats';
+import { sourceToAppName } from '../../../../../utils/focusRecords.utils';
 
 const noData = [
 	{
@@ -183,13 +184,7 @@ const DetailsCard = () => {
 				let name = item.type === 'project' ? projectsById && (projectsById[projectId]?.name || projectId) : item.name
 
 				// If no projectName, it's from a non-TickTick/Session app - use the app name
-				if (!name && item.id !== 'No Data') {
-					const sourceToAppName: Record<string, string> = {
-						'FocusRecordSession': 'Session',
-						'FocusRecordBeFocused': 'Be Focused',
-						'FocusRecordForest': 'Forest',
-						'FocusRecordTide': 'Tide'
-					};
+				if (name && name in sourceToAppName) {
 					name = sourceToAppName[projectId] || 'Inbox';
 				}
 

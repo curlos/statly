@@ -6,6 +6,7 @@ import { shouldBreakAllText } from '../../../../utils/text.utils';
 import type { ProgressBarItemData } from '../../../../types/stats';
 import type { Project } from '../../../../types/models';
 import type { AncestorTask } from '../../../../types/api';
+import { sourceToAppName } from '../../../../utils/focusRecords.utils';
 
 interface ProgressBarProps {
 	item: ProgressBarItemData;
@@ -98,13 +99,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 	const shouldBreakAll = shouldBreakAllText(item.name);
 
 	// If no projectName, it's from a non-TickTick/Session app - use the app name
-	if (!projectName && item.name !== 'No Data') {
-		const sourceToAppName: Record<string, string> = {
-			'FocusRecordSession': 'Session',
-			'FocusRecordBeFocused': 'Be Focused',
-			'FocusRecordForest': 'Forest',
-			'FocusRecordTide': 'Tide'
-		};
+	if (!projectName && item.name !== 'No Data' || (projectName && projectName in sourceToAppName)) {
 		projectName = item.projectId ? sourceToAppName[item.projectId] || null : null;
 	}
 

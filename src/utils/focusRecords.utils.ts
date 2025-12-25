@@ -3,11 +3,11 @@ import { getFormattedDuration } from './helpers.utils';
 import { EMOTIONS } from './constants/constants.utils';
 import type { FocusRecord, Task, TaskTickTick, Project } from '../types/models';
 
-const sourceToAppName: Record<string, string> = {
-	'FocusRecordSession': 'Session',
-	'FocusRecordBeFocused': 'Be Focused',
-	'FocusRecordForest': 'Forest',
-	'FocusRecordTide': 'Tide'
+export const sourceToAppName: Record<string, string> = {
+	'FocusRecordSession': 'Session App',
+	'FocusRecordBeFocused': 'Be Focused App',
+	'FocusRecordForest': 'Forest App',
+	'FocusRecordTide': 'Tide App'
 };
 
 /**

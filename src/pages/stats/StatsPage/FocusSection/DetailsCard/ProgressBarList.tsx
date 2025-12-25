@@ -6,6 +6,7 @@ import Accordion from '../../../../../components/Accordion/Accordion';
 import { getFormattedDuration } from '../../../../../utils/helpers.utils';
 import type { ProgressBarItemData, AggregationResults, EmotionProgressBarData } from '../../../../../types/stats';
 import type { AncestorTask } from '../../../../../types/api';
+import { sourceToAppName } from '../../../../../utils/focusRecords.utils';
 
 interface ProgressBarListProps {
 	data: ProgressBarItemData[];
@@ -104,13 +105,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 							let name = projectsById?.[projectId]?.name;
 
 							// If no projectName, it's from a non-TickTick/Session app - use the app name
-							if (!name) {
-								const sourceToAppName: Record<string, string> = {
-									'FocusRecordSession': 'Session',
-									'FocusRecordBeFocused': 'Be Focused',
-									'FocusRecordForest': 'Forest',
-									'FocusRecordTide': 'Tide'
-								};
+							if (!name || name in sourceToAppName) {
 								name = sourceToAppName[projectId] || projectId;
 							}
 
