@@ -1,3 +1,5 @@
+import { getFormattedDuration } from "../../../../../utils/helpers.utils";
+
 interface TooltipPayloadItem {
 	payload: {
 		payload: {
@@ -20,7 +22,16 @@ const CustomPieChartTooltip: React.FC<CustomPieChartTooltipProps> = ({ active, p
 	if (active && payload && payload.length > 0) {
 		const dataItem = payload[0].payload.payload;
 		const { name, value, duration, count, color, percentage } = dataItem;
-		const displayValue = value || duration || count || 0;
+
+		// Format display value based on data type
+		let displayValue: string | number;
+		if (duration !== undefined) {
+			displayValue = getFormattedDuration(duration, false);
+		} else if (count !== undefined) {
+			displayValue = `${count.toLocaleString()} tasks`;
+		} else {
+			displayValue = value || 0;
+		}
 
 		return (
 			<div className="bg-color-gray-600 border border-color-gray-50 rounded p-2 flex items-center gap-2">

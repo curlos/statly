@@ -82,7 +82,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 		<div className="space-y-4 w-full p-2">
 			<div
 				className={classNames(
-					'space-y-4 w-full overflow-auto gray-scrollbar pr-3',
+					'space-y-4 w-full overflow-auto gray-scrollbar',
 					fromModal ? 'max-h-[300px] md:max-h-[500px]' : 'md:max-h-[230px]'
 				)}
 			>

@@ -13,7 +13,7 @@ const FocusSection = () => {
 			<OverviewCard />
 
 			<div className="mt-5 flex flex-col lg:flex-row items-center gap-5">
-				<div className="flex-[5] w-full h-[380px]">
+				<div className="flex-[6] w-full h-[380px]">
 					<DetailsCard />
 				</div>
 
