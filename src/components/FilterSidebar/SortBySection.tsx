@@ -38,7 +38,7 @@ const SortBySection: React.FC<SortBySectionProps> = ({ sortByOptions }) => {
 				}
 				openByDefault={true}
 			>
-				<div className="space-y-2">
+				<div className="space-y-1">
 					{sortByOptions.map((sortByOption) => {
 						return (
 							<CustomRadioButton

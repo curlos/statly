@@ -23,8 +23,6 @@ const OtherSectionFocusRecords = () => {
 			showFocusRecordEmotions,
 			showEmotionCount,
 			showNoteStats,
-			showOnlyWithNotes,
-			showOnlyWithoutNotes,
 		},
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
@@ -102,22 +100,6 @@ const OtherSectionFocusRecords = () => {
 									name: "Show Note Words & Chars Count",
 									showValue: showNoteStats,
 									handleCheckboxClick: () => handleCheckboxClick(showNoteStats, 'showNoteStats'),
-								}}
-							/>
-
-							<CheckboxOther
-								{...{
-									name: 'Show Only Focus Records With Notes',
-									showValue: showOnlyWithNotes,
-									handleCheckboxClick: () => handleCheckboxClick(showOnlyWithNotes, 'showOnlyWithNotes'),
-								}}
-							/>
-
-							<CheckboxOther
-								{...{
-									name: 'Show Only Focus Records Without Notes',
-									showValue: showOnlyWithoutNotes,
-									handleCheckboxClick: () => handleCheckboxClick(showOnlyWithoutNotes, 'showOnlyWithoutNotes'),
 								}}
 							/>
 						</div>

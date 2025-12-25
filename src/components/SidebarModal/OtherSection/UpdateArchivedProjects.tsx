@@ -131,7 +131,7 @@ const ArchivedProjectsCheckboxList: React.FC<ArchivedProjectsCheckboxListProps> 
 			}
 			openByDefault={false}
 		>
-			<div className="space-y-2">
+			<div>
 				<div
 					className={classNames(
 						'flex items-center gap-1 mb-2 cursor-pointer',

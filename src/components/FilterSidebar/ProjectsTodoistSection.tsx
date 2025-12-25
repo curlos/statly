@@ -79,7 +79,7 @@ const ProjectsTodoistSection = () => {
 				openByDefault={true}
 			>
 				<div>
-					<div className="space-y-2">
+					<div>
 						{activeProjects.map((project) => (
 							<CheckboxMultiSelectForUrl
 								key={project.id}

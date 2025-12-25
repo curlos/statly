@@ -25,6 +25,7 @@ export const useSharedQueryParams = () => {
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const currentPageFromUrl = searchParams.get('page') || 1;
 	const crossesMidnight = searchParams.get('crosses-midnight') === 'true';
+	const generalFromUrl = searchParams.get('general') || '';
 
 	return {
 		// Raw values for display/state
@@ -60,7 +61,8 @@ export const useSharedQueryParams = () => {
 			'to-do-list-apps': toDoListAppsFromUrl,
 			'emotions': emotionsFromUrl,
 			'sort-by': sortBy,
-			'crosses-midnight': crossesMidnight
+			'crosses-midnight': crossesMidnight,
+			'general': generalFromUrl
 		}
 	};
 };

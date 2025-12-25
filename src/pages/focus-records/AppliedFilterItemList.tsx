@@ -35,6 +35,7 @@ const AppliedFilterItemList = () => {
 	const categoriesFromUrl = searchParams.get('categories') || '';
 	const crossesMidnightFromUrl = searchParams.get('crosses-midnight') || '';
 	const emotionsFromUrl = searchParams.get('emotions') || '';
+	const generalFromUrl = searchParams.get('general') || '';
 
 	// TickTick & Todoist (Completed Tasks Page)
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
@@ -220,6 +221,21 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	const GENERAL_FILTER_NAMES: Record<string, string> = {
+		'with-notes': 'Show Only Focus Records With Notes',
+		'without-notes': 'Show Only Focus Records Without Notes'
+	};
+
+	const generalFilter = {
+		name: 'General',
+		value: generalFromUrl
+			? generalFromUrl.split(',').map(id => GENERAL_FILTER_NAMES[id] || id).join(', ')
+			: '',
+		handleRemove: () => {
+			updateQueryParams({ general: '', page: '' });
+		},
+	};
+
 	const allFilters = [
 		taskIdFilter,
 		dateRangeFilter,
@@ -233,6 +249,7 @@ const AppliedFilterItemList = () => {
 		projectsTodoistFilter,
 		crossesMidnightFilter,
 		emotionsFilter,
+		generalFilter,
 	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 

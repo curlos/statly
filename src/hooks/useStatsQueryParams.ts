@@ -54,6 +54,7 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 			'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 			'timezone': timezone,
 			'emotions': searchParams.get('emotions') || undefined,
+			'general': searchParams.get('general') || undefined,
 		};
 	}, [
 		groupBy,

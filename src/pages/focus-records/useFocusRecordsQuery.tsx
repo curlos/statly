@@ -10,9 +10,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 			taskIdIncludeFocusRecordsFromSubtasks,
 			maxFocusRecordsPerPage,
 			showEmotionCount,
-			showNoteStats,
-			showOnlyWithNotes,
-			showOnlyWithoutNotes
+			showNoteStats
 		},
 		isLoadingGetUserSettings
 	} = useUserSettingsContext();
@@ -23,9 +21,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 		'limit': maxFocusRecordsPerPage,
 		'show-emotion-count': showEmotionCount,
-		'show-note-stats': showNoteStats,
-		'show-only-with-notes': showOnlyWithNotes,
-		'show-only-without-notes': showOnlyWithoutNotes
+		'show-note-stats': showNoteStats
 	}, { skip: skip || isLoadingGetUserSettings });
 
 	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById, emotionCounts, noteStats } = fetchedFocusRecords || {};

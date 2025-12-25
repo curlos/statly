@@ -12,6 +12,7 @@ import ShowDaysFromToDoListAppSection from './ShowDaysFromToDoListAppSection';
 import ProjectsTickTickSection from './ProjectsTickTickSection';
 import ProjectsTodoistSection from './ProjectsTodoistSection';
 import ShowRecordsFromEmotionSection from './ShowRecordsFromEmotionSection';
+import GeneralFocusRecordsFilters from './GeneralFocusRecordsFilters';
 
 interface FilterSidebarProps {
 	setIsOpen: (isOpen: boolean) => void;
@@ -44,7 +45,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 		'crosses-midnight',
 		'emotions',
 		'focus-apps',
-		'to-do-list-apps'
+		'to-do-list-apps',
+		'general'
 	];
 
 	switch (page) {
@@ -173,6 +175,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 				<>
 					<hr className="border-color-gray-200 my-4" />
 					<ShowRecordsFromEmotionSection />
+				</>
+			)}
+
+			{page !== 'completed-tasks-page' && (
+				<>
+					<hr className="border-color-gray-200 my-4" />
+					<GeneralFocusRecordsFilters />
 				</>
 			)}
 		</motion.div>

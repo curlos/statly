@@ -49,7 +49,7 @@ const Accordion: React.FC<AccordionProps> = ({
 			<button
 				onClick={toggleOpen}
 				className={classNames(
-					'w-full text-left flex gap-2 items-center focus:outline-none rounded-xl mb-3',
+					'w-full text-left flex gap-2 items-center focus:outline-none rounded-xl',
 					showArrowNextToText ? 'justify-start' : 'justify-between'
 				)}
 			>
@@ -67,7 +67,7 @@ const Accordion: React.FC<AccordionProps> = ({
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
 						transition={{ duration: 0.3 }}
-						className={isOpen && isChildDropdownOpen ? 'overflow-visible' : 'overflow-hidden'}
+						className={isOpen && isChildDropdownOpen ? 'overflow-visible mt-3' : 'overflow-hidden mt-3'}
 					>
 						{children}
 					</motion.div>

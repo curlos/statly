@@ -205,7 +205,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 				openByDefault={true}
 			>
 				<div>
-					<div className="space-y-2">
+					<div>
 						{/* Project Groups with their Projects AND Ungrouped Projects */}
 						{sortedProjectsAndGroups?.map((projectOrProjectGroup) => {
 							const { id } = projectOrProjectGroup;

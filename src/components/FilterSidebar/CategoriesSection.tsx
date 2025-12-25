@@ -40,7 +40,7 @@ const CategoriesSection = () => {
 				openByDefault={true}
 			>
 				<div>
-					<div className="space-y-2">
+					<div>
 						{sessionCategories?.map((category) => {
 							return (
 								<CheckboxMultiSelectForUrl
