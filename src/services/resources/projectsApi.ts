@@ -25,6 +25,7 @@ export const projectsApi = baseAPI.injectEndpoints({
 						source: 'ProjectTickTick',
 					} as Project,
 				];
+
                 const projectsById = arrayToObjectByKey(projectsWithInbox, 'id');
                 const projectsTickTick = projectsWithInbox.filter((project) => project.source === 'ProjectTickTick' || project.id === 'inbox116577688');
                 const projectsTodoist = projects.filter((project) => project.source === 'ProjectTodoist');

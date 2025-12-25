@@ -9,7 +9,8 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		focusRecordsPageSettings: {
 			taskIdIncludeFocusRecordsFromSubtasks,
 			maxFocusRecordsPerPage,
-			showEmotionCount
+			showEmotionCount,
+			showNoteStats
 		},
 		isLoadingGetUserSettings
 	} = useUserSettingsContext();
@@ -19,10 +20,11 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		page: Number(urlValues.currentPageFromUrl) - 1,
 		'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 		'limit': maxFocusRecordsPerPage,
-		'show-emotion-count': showEmotionCount
+		'show-emotion-count': showEmotionCount,
+		'show-note-stats': showNoteStats
 	}, { skip: skip || isLoadingGetUserSettings });
 
-	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById, emotionCounts } = fetchedFocusRecords || {};
+	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById, emotionCounts, noteStats } = fetchedFocusRecords || {};
 
 	return {
 		fetchedFocusRecords,
@@ -33,6 +35,7 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 		onlyTasksTotalDuration,
 		ancestorTasksById,
 		emotionCounts,
+		noteStats,
 		isLoading,
 		isFetching,
 		...urlValues,

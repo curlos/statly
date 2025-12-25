@@ -17,6 +17,7 @@ interface FocusRecordsExportData {
 	records: FocusRecord[];
 	totalDuration: number;
 	emotionCounts?: Record<string, number>;
+	noteStats?: { totalCharacters: number; totalWords: number };
 	grouped?: Record<string, {
 		records: FocusRecord[];
 		totalDuration: number;
@@ -33,16 +34,24 @@ const useExportFocusRecords = () => {
 	const onlyExportTasksWithNoParent = userSettings?.focusRecordsPageSettings?.onlyExportTasksWithNoParent ?? true;
 	const showFocusRecordEmotions = userSettings?.focusRecordsPageSettings?.showFocusRecordEmotions ?? true;
 	const showEmotionCount = userSettings?.focusRecordsPageSettings?.showEmotionCount ?? false;
+	const showNoteStats = userSettings?.focusRecordsPageSettings?.showNoteStats ?? false;
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
 
-	const getFocusRecordsMarkdown = (focusRecords: FocusRecord[], customTitle: string | null, totalDuration: number, emotionCounts?: Record<string, number>) => {
+	const getFocusRecordsMarkdown = (focusRecords: FocusRecord[], customTitle: string | null, totalDuration: number, emotionCounts?: Record<string, number>, noteStats?: { totalCharacters: number; totalWords: number }) => {
 		const allFocusRecordsMarkdown: string[] = [];
 
 		// Add title as H1 at the beginning
 		const titleInfo = customTitle || `Focus Records (${focusRecords.length.toLocaleString()}) - ${getFormattedDuration(totalDuration, false)}`;
 		allFocusRecordsMarkdown.push(`# ${titleInfo}\n`);
+
+		// Add note stats if showNoteStats is true and noteStats exist
+		if (showNoteStats && noteStats && (noteStats.totalCharacters > 0 || noteStats.totalWords > 0)) {
+			allFocusRecordsMarkdown.push('### Notes\n');
+			allFocusRecordsMarkdown.push(`- ${noteStats.totalCharacters.toLocaleString()} characters`);
+			allFocusRecordsMarkdown.push(`- ${noteStats.totalWords.toLocaleString()} words\n`);
+		}
 
 		// Add applied filters section (always shows, displays "None" if no filters)
 		const appliedFiltersMarkdown = getAppliedFiltersMarkdown({ ...urlValues, projectsById });
@@ -104,8 +113,8 @@ const useExportFocusRecords = () => {
 
 		if (result.data) {
 			const data = result.data as FocusRecordsExportData;
-			const { records, totalDuration, emotionCounts } = data;
-			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts);
+			const { records, totalDuration, emotionCounts, noteStats } = data;
+			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts, noteStats);
 
 			// Copy to clipboard
 			navigator.clipboard.writeText(finalMarkdown);
@@ -125,8 +134,8 @@ const useExportFocusRecords = () => {
 
 		if (result.data) {
 			const data = result.data as FocusRecordsExportData;
-			const { records, totalDuration, emotionCounts } = data;
-			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts);
+			const { records, totalDuration, emotionCounts, noteStats } = data;
+			const finalMarkdown = getFocusRecordsMarkdown(records, null, totalDuration, emotionCounts, noteStats);
 
 			// Download as single markdown file
 			const blob = new Blob([finalMarkdown], { type: 'text/markdown;charset=utf-8' });
@@ -186,9 +195,26 @@ const useExportFocusRecords = () => {
 				}
 			}
 
+			// Calculate note stats for this group if showNoteStats is enabled
+			let groupNoteStats = undefined;
+			if (showNoteStats) {
+				let totalCharacters = 0;
+				let totalWords = 0;
+				records.forEach(record => {
+					if (record.note) {
+						totalCharacters += record.note.length;
+						const trimmedNote = record.note.trim();
+						if (trimmedNote) {
+							totalWords += trimmedNote.split(' ').length;
+						}
+					}
+				});
+				groupNoteStats = { totalCharacters, totalWords };
+			}
+
 			// Title used in the markdown content
 			const customTitle = `${displayName} - Focus Records (${records.length.toLocaleString()}) - ${formattedDuration}`;
-			const markdown = getFocusRecordsMarkdown(records, customTitle, totalDuration, groupEmotionCounts);
+			const markdown = getFocusRecordsMarkdown(records, customTitle, totalDuration, groupEmotionCounts, groupNoteStats);
 
 			// Filename for the markdown file - sanitize forward slashes to prevent folder creation
 			const sanitizedName = `${paddedIndex}_${displayName}_${formattedDuration}`.replace(/[/\\?%*:|"<>]/g, '-');

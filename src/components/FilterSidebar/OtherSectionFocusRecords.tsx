@@ -22,6 +22,7 @@ const OtherSectionFocusRecords = () => {
 			showMedals,
 			showFocusRecordEmotions,
 			showEmotionCount,
+			showNoteStats,
 		},
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
@@ -91,6 +92,14 @@ const OtherSectionFocusRecords = () => {
 									name: 'Show Emotion Count',
 									showValue: showEmotionCount,
 									handleCheckboxClick: () => handleCheckboxClick(showEmotionCount, 'showEmotionCount'),
+								}}
+							/>
+
+							<CheckboxOther
+								{...{
+									name: "Show Note Words & Chars Count",
+									showValue: showNoteStats,
+									handleCheckboxClick: () => handleCheckboxClick(showNoteStats, 'showNoteStats'),
 								}}
 							/>
 						</div>

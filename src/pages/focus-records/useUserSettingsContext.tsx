@@ -58,11 +58,11 @@ const useUserSettings = () => {
 		showMedalGlow = false,
 		showFocusRecordEmotions = true,
 		showEmotionCount = false,
+		showNoteStats = false,
 		analyzeNoteEmotionsWhileSyncingFocusRecords = false,
 		customDisplay = {
 			useBackgroundImage: false,
-			// TODO: Also, add the default weapon camo URL from Cloudinary here.
-			backgroundImage: "",
+			backgroundImage: "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Blue_Tiger_Camo_Icon_MW2019.webp",
 			backgroundImageOpacity: 1,
 			useBackgroundColor: false,
 			backgroundColor: "#3b82f6",
@@ -197,6 +197,7 @@ const useUserSettings = () => {
 			showMedalGlow,
 			showFocusRecordEmotions,
 			showEmotionCount,
+			showNoteStats,
 			analyzeNoteEmotionsWhileSyncingFocusRecords,
 			customDisplay,
 		},

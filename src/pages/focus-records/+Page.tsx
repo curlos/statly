@@ -19,6 +19,7 @@ const FocusRecordsPage = () => {
 		focusRecordsPageSettings: {
 			showTotalFocusDuration,
 			showEmotionCount,
+			showNoteStats,
 		},
 	} = useUserSettingsContext();
 
@@ -28,6 +29,7 @@ const FocusRecordsPage = () => {
 		totalPages,
 		onlyTasksTotalDuration,
 		emotionCounts,
+		noteStats,
 		isLoading,
 		isFetching,
 		sortBy,
@@ -53,10 +55,18 @@ const FocusRecordsPage = () => {
 
 	const getFilterBarHeaderContent = () => {
 		return (
-			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Focus Records {!isLoading && `(${total?.toLocaleString() || 0})`}
-				{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(onlyTasksTotalDuration ?? 0, false)}`}
-			</h2>
+			<div>
+				<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
+					Focus Records {!isLoading && `(${total?.toLocaleString() || 0})`}
+					{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(onlyTasksTotalDuration ?? 0, false)}`}
+				</h2>
+
+				{showNoteStats && !isLoading && noteStats &&
+					<div className="text-color-gray-25">
+						<span className="font-bold">Notes: </span><span>{`${noteStats.totalCharacters.toLocaleString()} characters · ${noteStats.totalWords.toLocaleString()} words`}</span>
+					</div>
+				}
+			</div>
 		);
 	};
 

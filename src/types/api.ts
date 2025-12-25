@@ -185,6 +185,11 @@ export interface AncestorTask {
 	projectId: string;
 }
 
+export interface NoteStats {
+	totalCharacters: number;
+	totalWords: number;
+}
+
 export interface DayWithCompletedTasks {
 	completedTasksForDay: Task[];
 	dateStr: string;
@@ -269,6 +274,7 @@ export interface FocusRecordsResponse {
 	totalDuration: number;
 	onlyTasksTotalDuration: number;
 	emotionCounts: Record<string, number>;
+	noteStats: NoteStats;
 	ancestorTasksById?: Record<string, AncestorTask>;
 }
 
@@ -375,6 +381,7 @@ export interface FocusRecordsPageSettings {
 	showMedalGlow: boolean;
 	showFocusRecordEmotions: boolean;
 	showEmotionCount: boolean;
+	showNoteStats: boolean;
 	analyzeNoteEmotionsWhileSyncingFocusRecords: boolean;
 	customDisplay: {
 		useBackgroundImage: boolean;
