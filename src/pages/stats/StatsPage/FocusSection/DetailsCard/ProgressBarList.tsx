@@ -1,8 +1,10 @@
+import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import ProgressBar from '../ProgressBar';
 import { useGetProjectsQuery } from '../../../../../services/resources/projectsApi';
 import NestedProgressBars from './NestedProgressBars';
 import Accordion from '../../../../../components/Accordion/Accordion';
+import Pagination from '../../../../../components/Pagination';
 import { getFormattedDuration } from '../../../../../utils/helpers.utils';
 import type { ProgressBarItemData, AggregationResults, EmotionProgressBarData } from '../../../../../types/stats';
 import type { AncestorTask } from '../../../../../types/api';
@@ -41,6 +43,10 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	intervalEndDate,
 	byEmotionWithTasks
 }) => {
+	// Pagination state for modal view
+	const [currentPage, setCurrentPage] = useState(1);
+	const scrollableContainerRef = useRef<HTMLDivElement>(null);
+
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById, projectsSessionById } = fetchedProjects || {};
@@ -70,7 +76,24 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 
 		return metricDiff;
 	});
+
+	// Reset to page 1 when sorting changes or data length changes
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [sortBy, data]);
+
+	// Scroll to top when page changes
+	useEffect(() => {
+		scrollableContainerRef?.current?.scrollTo(0, 0);
+	}, [currentPage]);
+
 	const maxDataLen = fromModal ? sortedData.length : 5;
+
+	// Pagination calculations for modal view
+	const itemsPerPage = 10;
+	const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
 
 	// Determine if we should show nested view
 	// For emotions, ancestorTasksById is nested inside byEmotionWithTasks
@@ -82,14 +105,15 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	return (
 		<div className="space-y-4 w-full p-2">
 			<div
+				ref={scrollableContainerRef}
 				className={classNames(
-					'space-y-4 w-full overflow-auto gray-scrollbar',
+					'space-y-4 w-full overflow-auto gray-scrollbar pr-3',
 					fromModal ? 'max-h-[300px] md:max-h-[500px]' : 'md:max-h-[230px]'
 				)}
 			>
 				{/* Special handling for Emotion dataType with nested view */}
 				{dataType === 'Emotion' && shouldShowNestedView && byEmotionWithTasks && aggregationResults ? (
-					sortedData.slice(0, maxDataLen).map((emotion: ProgressBarItemData) => {
+					sortedData.slice(fromModal ? startIndex : 0, fromModal ? endIndex : maxDataLen).map((emotion: ProgressBarItemData) => {
 						const emotionId = emotion.id;
 						const emotionData = byEmotionWithTasks[emotionId];
 						const aggregationByEmotion = aggregationResults as Record<string, AggregationResults>;
@@ -157,6 +181,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 										metricType={metricType}
 										intervalStartDate={intervalStartDate}
 										intervalEndDate={intervalEndDate}
+										showPagination={false}
 									/>
 								</div>
 							</Accordion>
@@ -178,13 +203,26 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 						aggregationResults={aggregationResults as AggregationResults}
 						intervalStartDate={intervalStartDate}
 						intervalEndDate={intervalEndDate}
+						showPagination={true}
 					/>
 				) : (
 					sortedData
-						.slice(0, maxDataLen)
+						.slice(fromModal ? startIndex : 0, fromModal ? endIndex : maxDataLen)
 						.map((item: ProgressBarItemData) => <ProgressBar key={item.id} item={item} projectsById={projectsById || {}} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById || {}} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />)
 				)}
 			</div>
+
+			{fromModal && !shouldShowNestedView && totalPages > 1 && (
+				<div className="flex justify-center pt-4">
+					<Pagination
+						total={totalPages}
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
+						totalPages={totalPages}
+						compactView={true}
+					/>
+				</div>
+			)}
 
 			{!fromModal && (
 				<div

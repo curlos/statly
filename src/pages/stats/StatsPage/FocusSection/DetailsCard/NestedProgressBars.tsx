@@ -1,6 +1,7 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Accordion from "../../../../../components/Accordion/Accordion";
+import Pagination from "../../../../../components/Pagination";
 import { getFormattedDuration } from "../../../../../utils/helpers.utils";
 import ProgressBar from "../ProgressBar";
 import { shouldBreakAllText } from "../../../../../utils/text.utils";
@@ -25,6 +26,7 @@ interface NestedProgressBarsProps {
     intervalStartDate: string;
     intervalEndDate: string;
     emotionId?: string;
+    showPagination?: boolean;
 }
 
 const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
@@ -42,12 +44,27 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
     aggregationResults,
     intervalStartDate,
     intervalEndDate,
-    emotionId
+    emotionId,
+    showPagination = true
 }) => {
+    // Pagination state for modal view
+    const [currentPage, setCurrentPage] = useState(1);
+    const scrollableContainerRef = useRef<HTMLDivElement>(null);
+
     const groupedTasksCollapsedByDefault = useState(false);
 
     const isFocusDuration = metricType === 'duration';
     const metricKey = isFocusDuration ? 'duration' : 'count';
+
+    // Reset to page 1 when sorting changes or data length changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [sortBy, data]);
+
+    // Scroll to top when page changes
+    useEffect(() => {
+        scrollableContainerRef?.current?.scrollTo(0, 0);
+    }, [currentPage]);
 
     if (!data || !ancestorTasksById || (dataType === 'Project' && !dataByTasks)) {
         return (
@@ -332,7 +349,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
         );
     };
 
-    const sortedTasksWithNoParent = tasksWithNoParent.sort((taskIdOne: string, taskIdTwo: string) => {
+    const sortedTasksWithNoParent = [...tasksWithNoParent].sort((taskIdOne: string, taskIdTwo: string) => {
         const valueOne = totalMetricOnParentTask[taskIdOne].value;
         const valueTwo = totalMetricOnParentTask[taskIdTwo].value;
 
@@ -344,6 +361,12 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
     });
 
     const maxTasksWithNoParent = fromModal ? sortedTasksWithNoParent.length : 4;
+
+    // Pagination calculations for modal view
+    const itemsPerPage = 10;
+    const totalTaskPages = Math.ceil(sortedTasksWithNoParent.length / itemsPerPage);
+    const taskStartIndex = (currentPage - 1) * itemsPerPage;
+    const taskEndIndex = taskStartIndex + itemsPerPage;
 
     if (dataType === 'Project') {
         const groupedProjectsAndTasks: Record<string, string[]> = {};
@@ -381,9 +404,15 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 
         const maxProjects = fromModal ? sortedProjects.length : 5;
 
+        // Pagination calculations for Project view in modal
+        const totalProjectPages = Math.ceil(sortedProjects.length / itemsPerPage);
+        const projectStartIndex = (currentPage - 1) * itemsPerPage;
+        const projectEndIndex = projectStartIndex + itemsPerPage;
+
         return (
-            <div>
-                {sortedProjects.slice(0, maxProjects)?.map((project: ProgressBarItemData) => {
+            <>
+                <div ref={scrollableContainerRef}>
+                    {sortedProjects.slice(fromModal ? projectStartIndex : 0, fromModal ? projectEndIndex : maxProjects)?.map((project: ProgressBarItemData) => {
                     const projectMetricValue = project[metricKey] as number || 0;
                     const projectFormattedMetric = isFocusDuration
                         ? getFormattedDuration(projectMetricValue, false)
@@ -421,24 +450,51 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                                 preventOpen={!fromModal}
                             >
                                 <div className="pl-6">
-                                    {groupedProjectsAndTasks[project.id]?.map((taskId: string, index: number) => {
-                                        return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
+                                    {groupedProjectsAndTasks[project.id]?.map((taskId: string) => {
+                                        return <div key={taskId}>{renderNestedTasks(taskId)}</div>;
                                     })}
                                 </div>
                             </Accordion>
                         </ul>
                     );
                 })}
-            </div>
+                </div>
+
+                {fromModal && showPagination && totalProjectPages > 1 && (
+                    <div className="flex justify-center pt-4">
+                        <Pagination
+                            total={totalProjectPages}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            totalPages={totalProjectPages}
+                            compactView={true}
+                        />
+                    </div>
+                )}
+            </>
         );
     }
 
     return (
-        <div className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')}>
-            {sortedTasksWithNoParent.slice(0, maxTasksWithNoParent)?.map((taskId: string, index: number) => {
-                return <div key={taskId + index} className="w-full">{renderNestedTasks(taskId)}</div>;
-            })}
-        </div>
+        <>
+            <div className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')} ref={scrollableContainerRef}>
+                {sortedTasksWithNoParent.slice(fromModal ? taskStartIndex : 0, fromModal ? taskEndIndex : maxTasksWithNoParent)?.map((taskId: string) => {
+                    return <div key={taskId} className="w-full">{renderNestedTasks(taskId)}</div>;
+                })}
+            </div>
+
+            {fromModal && showPagination && totalTaskPages > 1 && (
+                <div className="flex justify-center pt-4">
+                    <Pagination
+                        total={totalTaskPages}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        totalPages={totalTaskPages}
+                        compactView={true}
+                    />
+                </div>
+            )}
+        </>
     );
 };
 

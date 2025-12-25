@@ -11,29 +11,44 @@ interface PaginationProps {
 	currentPage: number; // Current page number
 	setCurrentPage: (page: number) => void; // Function to call when a new page is selected
 	totalPages: number;
+	compactView?: boolean; // If true, shows fewer page numbers (7 max on desktop, 5 on <992px, 3 on <768px)
 }
 
-const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentPage, totalPages }) => {
+const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentPage, totalPages, compactView = false }) => {
 	const { chosenColorObj } = useThemeContext();
 	const { width } = useWindowSize();
 
-	const [numPagesToShow, setNumPagesToShow] = useState(9); // Maximum number of pages to display in the paginator
+	const [numPagesToShow, setNumPagesToShow] = useState(compactView ? 7 : 9); // Maximum number of pages to display in the paginator
 
 	useEffect(() => {
 		if (!width) return;
 
-		if (width < 400) {
-			setNumPagesToShow(1);
-		} else if (width < 576) {
-			setNumPagesToShow(3);
-		} else if (width < 768) {
-			setNumPagesToShow(5);
-		} else if (width < 992) {
-			setNumPagesToShow(7);
+		if (compactView) {
+			// Compact view: max 7 on desktop, 5 on <992px, 3 on <768px, 2 on 576-620px
+			if (width >= 576 && width < 620) {
+				setNumPagesToShow(1);
+			} else if (width < 768) {
+				setNumPagesToShow(3);
+			} else if (width < 992) {
+				setNumPagesToShow(5);
+			} else {
+				setNumPagesToShow(7);
+			}
 		} else {
-			setNumPagesToShow(9);
+			// Default view: max 9 on desktop
+			if (width < 400) {
+				setNumPagesToShow(1);
+			} else if (width < 576) {
+				setNumPagesToShow(3);
+			} else if (width < 768) {
+				setNumPagesToShow(5);
+			} else if (width < 992) {
+				setNumPagesToShow(7);
+			} else {
+				setNumPagesToShow(9);
+			}
 		}
-	}, [width]);
+	}, [width, compactView]);
 
 	// Generate the list of page numbers to display
 	const getPages = (): number[] => {
@@ -83,7 +98,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 			>
 				{'<'}
 			</button>
-			{currentPage > numPagesToShow / 2 + 1 && (
+			{currentPage > numPagesToShow / 2 + 1 && pages[0] !== 1 && (
 				<>
 					<button className="px-2 py-1" onClick={() => setCurrentPage(1)}>
 						1
@@ -112,7 +127,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 					</button>
 				)
 			)}
-			{currentPage < total - numPagesToShow / 2 && (
+			{currentPage < total - numPagesToShow / 2 && pages[pages.length - 1] !== total && (
 				<>
 					{currentPage < total - numPagesToShow / 2 - 1 && (
 						<InBetweenPages {...{ currentPage, setCurrentPage, totalPages }} />
@@ -201,11 +216,13 @@ const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 		e.preventDefault();
 		setIsVisible(false);
 
-		if (currentPage === localCurrentPage) {
+		const pageNumber = Number(localCurrentPage);
+
+		if (currentPage === pageNumber) {
 			return;
 		}
 
-		setCurrentPage(localCurrentPage);
+		setCurrentPage(pageNumber);
 	};
 
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
@@ -216,6 +233,7 @@ const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 			isVisible={isVisible}
 			setIsVisible={setIsVisible}
 			customClasses={classNames('shadow-2xl border border-color-gray-200 rounded-lg', customClasses)}
+			openUpward={true}
 		>
 			<form onSubmit={handleSubmit} className="p-2 w-[80px]">
 				<CustomInput

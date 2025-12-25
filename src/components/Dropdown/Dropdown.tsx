@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface BaseDropdownProps extends DropdownProps {
 	children: React.ReactNode;
 	positionAdjustment?: string;
+	openUpward?: boolean;
 }
 
 const Dropdown: React.FC<BaseDropdownProps> = ({
@@ -19,6 +20,7 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	innerClickElemRefs,
 	parentElemRef,
 	align,
+	openUpward = false,
 }) => {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -32,16 +34,16 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 			const toggleRect = (toggleRef?.current as HTMLElement | null)?.getBoundingClientRect();
 			const adjustments: Record<string, string> = {};
 
-			// Check if dropdown exceeds the bottom of the viewport
+			// Check if dropdown exceeds the bottom of the viewport or if forced to open upward
 			const margin = 8; // Small buffer
-			if (dropdownRect.bottom > window.innerHeight - margin) {
+			if (openUpward || dropdownRect.bottom > window.innerHeight - margin) {
 				// Position above the toggle button instead
 				const dropdownHeight = dropdownRect.height;
 				const toggleTop = toggleRect?.top || 0;
 				const spaceAbove = toggleTop;
 
-				if (spaceAbove >= dropdownHeight) {
-					// Enough space above - position it there
+				if (spaceAbove >= dropdownHeight || openUpward) {
+					// Enough space above - position it there (or forced to open upward)
 					adjustments.top = 'auto';
 					adjustments.bottom = '100%';
 					adjustments.marginBottom = '4px';
@@ -73,7 +75,7 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 			// Apply styles directly to adjust the dropdown's positioning
 			Object.assign(dropdownRef.current.style, adjustments);
 		}
-	}, [isVisible, toggleRef, parentElemRef, align]);
+	}, [isVisible, toggleRef, parentElemRef, align, openUpward]);
 
 	// Animation variants
 	const variants = {
