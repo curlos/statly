@@ -35,6 +35,8 @@ const useExportFocusRecords = () => {
 	const showFocusRecordEmotions = userSettings?.focusRecordsPageSettings?.showFocusRecordEmotions ?? true;
 	const showEmotionCount = userSettings?.focusRecordsPageSettings?.showEmotionCount ?? false;
 	const showNoteStats = userSettings?.focusRecordsPageSettings?.showNoteStats ?? false;
+	const showOnlyWithNotes = userSettings?.focusRecordsPageSettings?.showOnlyWithNotes ?? false;
+	const showOnlyWithoutNotes = userSettings?.focusRecordsPageSettings?.showOnlyWithoutNotes ?? false;
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
@@ -108,6 +110,8 @@ const useExportFocusRecords = () => {
 				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
 				'group-by': 'none',
+				'show-only-with-notes': showOnlyWithNotes,
+				'show-only-without-notes': showOnlyWithoutNotes,
 			})
 		);
 
@@ -129,6 +133,8 @@ const useExportFocusRecords = () => {
 				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
 				'group-by': 'none',
+				'show-only-with-notes': showOnlyWithNotes,
+				'show-only-without-notes': showOnlyWithoutNotes,
 			})
 		);
 
@@ -151,6 +157,8 @@ const useExportFocusRecords = () => {
 				'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 				'only-export-tasks-with-no-parent': onlyExportTasksWithNoParent,
 				'group-by': groupType,
+				'show-only-with-notes': showOnlyWithNotes,
+				'show-only-without-notes': showOnlyWithoutNotes,
 			})
 		);
 
