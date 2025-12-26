@@ -158,8 +158,6 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 		);
 	}
 
-	console.log(localImages)
-
 	return (
 		<div>
 			{/* Images Grid with Drag and Drop */}

@@ -25,6 +25,11 @@ export const rtkQueryErrorMiddleware: Middleware = (api) => (next) => (action) =
 		const error = action.payload as RTKQueryError;
 		const meta = action.meta as RTKQueryActionMeta;
 
+		// Skip modal for authentication errors (expected behavior when user is not logged in)
+		if (error?.status === 'CUSTOM_ERROR') {
+			return next(action);
+		}
+
 		// Extract endpoint name from action metadata
 		const endpointName = meta?.arg?.endpointName || 'Unknown endpoint';
 

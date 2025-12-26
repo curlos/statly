@@ -44,9 +44,7 @@ const ProviderList: React.FC<ProviderListProps> = ({ children }) => {
 	const dispatch = useDispatch();
 
 	// Fetch user data if token exists but user data is not loaded
-	const { data: userData } = useGetLoggedInUserQuery(undefined, {
-		skip: !isLoggedIn,
-	});
+	const { data: userData } = useGetLoggedInUserQuery();
 
 	useEffect(() => {
 		if (userData && isLoggedIn) {

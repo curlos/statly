@@ -1,16 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-interface RootState {
-	user: {
-		token?: string;
-	};
-}
-
-interface ViteImportMeta {
-	readonly env: {
-		readonly VITE_SERVER_URL: string;
-	};
-}
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { createAuthenticatedBaseQuery } from './utils/customBaseQuery';
 
 // Utility function to build query strings
 export const buildQueryString = (params: Record<string, unknown>) => {
@@ -30,17 +19,7 @@ export const buildQueryString = (params: Record<string, unknown>) => {
 // Define the API with tasks endpoints
 export const baseAPI = createApi({
 	reducerPath: 'api', // Unique identifier for the reducer
-	baseQuery: fetchBaseQuery({
-		baseUrl: (import.meta as unknown as ViteImportMeta).env.VITE_SERVER_URL,
-		prepareHeaders: (headers, { getState }) => {
-			const state = getState() as RootState;
-			const token = state.user.token;
-			if (token) {
-				headers.set('authorization', `Bearer ${token}`);
-			}
-			return headers;
-		},
-	}),
+	baseQuery: createAuthenticatedBaseQuery(),
 	tagTypes: [
 		'User',
 		'UserSettings',
