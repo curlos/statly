@@ -650,6 +650,25 @@ export const ACE_COMBAT_7_MEDALS = {
     ],
 }
 
+export const TICKTICK_BADGES = {
+    "PERSEVERANCE": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/perserverance/I.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766768308/II_wnswlk.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/perserverance/III.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765553/Statly/ticktick-badges/perserverance/IV.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765715/Statly/ticktick-badges/perserverance/V.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765715/Statly/ticktick-badges/perserverance/VI.png"
+    ],
+    "MINDFULNESS": [
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/mindfulness/I.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/mindfulness/II.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/mindfulness/III.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/mindfulness/IV.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/mindfulness/V.png",
+        "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766765552/Statly/ticktick-badges/mindfulness/VI.png",
+    ]
+}
+
 export const MW2019_WEAPON_CAMOS = {
     "SPRAY PAINT": [
         "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609478/Statly/mw2019-weapon-camos/SPRAY%20PAINT/Desert_Snake_Camo_Icon_MW2019.webp",
@@ -892,6 +911,13 @@ export const MEDALS_GAMES = {
             "MULTIPLAYER"
         ],
         "MEDALS_OBJ": ACE_COMBAT_7_MEDALS
+    },
+    "TICKTICK (BADGES)": {
+        "MEDALS_ORDER": [
+            "PERSEVERANCE",
+            "MINDFULNESS"
+        ],
+        "MEDALS_OBJ": TICKTICK_BADGES
     },
     "POKEMON TCG CARDS": {
         "MEDALS_ORDER": [
