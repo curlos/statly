@@ -256,6 +256,7 @@ const DetailsCard = () => {
 
 										setIsModalPickDateRangeOpen(true);
 									}}
+									align="right"
 								/>
 							</div>
 

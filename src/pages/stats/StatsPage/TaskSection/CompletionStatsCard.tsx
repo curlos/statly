@@ -209,6 +209,7 @@ const CompletionStatsCard = () => {
 
 										setIsModalPickDateRangeOpen(true);
 									}}
+									align="right"
 								/>
 							</div>
 
