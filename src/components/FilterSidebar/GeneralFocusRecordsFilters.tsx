@@ -5,8 +5,10 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 
 const GENERAL_FILTERS = {
-	WITH_NOTES: { id: 'with-notes', name: 'Show Only Focus Records With Notes' },
-	WITHOUT_NOTES: { id: 'without-notes', name: 'Show Only Focus Records Without Notes' }
+	WITH_NOTES: { id: 'with-notes', name: 'With Notes' },
+	WITHOUT_NOTES: { id: 'without-notes', name: 'Without Notes' },
+	POMODORO_MODE: { id: 'pomodoro-mode', name: 'Pomodoro Mode' },
+	STOPWATCH_MODE: { id: 'stopwatch-mode', name: 'Stopwatch Mode' }
 };
 
 const GeneralFocusRecordsFilters = () => {

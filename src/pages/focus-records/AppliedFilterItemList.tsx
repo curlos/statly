@@ -222,8 +222,10 @@ const AppliedFilterItemList = () => {
 	};
 
 	const GENERAL_FILTER_NAMES: Record<string, string> = {
-		'with-notes': 'Show Only Focus Records With Notes',
-		'without-notes': 'Show Only Focus Records Without Notes'
+		'with-notes': 'With Notes',
+		'without-notes': 'Without Notes',
+		'pomodoro-mode': 'Pomodoro Mode',
+		'stopwatch-mode': 'Stopwatch Mode'
 	};
 
 	const generalFilter = {
