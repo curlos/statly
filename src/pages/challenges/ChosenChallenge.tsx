@@ -53,12 +53,12 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 	return (
 		<div
 			ref={chosenChallengeRef}
-			className="flex justify-center mt-5 overflow-auto gray-scrollbar"
+			className="mt-5 overflow-auto gray-scrollbar"
 			style={{ maxHeight }}
 		>
 			<div>
 				<div className="flex justify-center mb-2">
-					<img src={imgSrc} />
+					<img src={imgSrc} className="max-h-[300px]" />
 				</div>
 				<div>
 					<div className="text-[20px] md:text-[24px] font-bold bg-color-gray-200 px-2 sticky">{name}</div>

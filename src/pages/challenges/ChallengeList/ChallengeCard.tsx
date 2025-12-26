@@ -66,7 +66,9 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 				}
 			}}
 		>
-			<img src={imgSrc} className="w-full" />
+			<div className="flex justify-center">
+				<img src={imgSrc} className="max-h-[250px]" />
+			</div>
 
 			<div
 				className={classNames(
