@@ -7,7 +7,7 @@ const Page = () => {
 
 	useEffect(() => {
 		if (pageContext.is404) {
-			navigate('/focus-records');
+			navigate('/stats/overview');
 		}
 	}, [pageContext.is404]);
 
