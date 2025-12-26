@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useUploadCustomImagesMutation } from '../services/resources/customImagesApi';
 import ImageCropModal from './Modal/ImageCropModal';
 import Icon from './Icon';
+import Spinner from './Loaders/Spinner';
 import classNames from 'classnames';
 import { useThemeContext } from '../contexts/useThemeContext';
 import {
@@ -327,10 +328,17 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 						className={classNames(
 							chosenColorObj.bgColor,
 							chosenColorObj.hover.bgColorHalfOpacity,
-							'w-full py-2 rounded font-medium disabled:opacity-50 disabled:cursor-not-allowed'
+							'w-full py-2 rounded font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
 						)}
 					>
-						{isLoading ? 'Uploading...' : `Upload ${selectedFiles.length} Image(s)`}
+						{isLoading ? (
+							<>
+								<Spinner size="sm" customClass="!text-white" />
+								Uploading...
+							</>
+						) : (
+							`Upload ${selectedFiles.length} Image(s)`
+						)}
 					</button>
 				</div>
 			)}

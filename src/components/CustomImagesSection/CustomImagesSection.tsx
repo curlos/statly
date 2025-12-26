@@ -184,7 +184,7 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 				isOpen={showDeleteFolderModal}
 				onClose={() => setShowDeleteFolderModal(false)}
 				selectedMedalType={selectedMedalType}
-				filteredCustomImages={paginatedCustomImages}
+				filteredCustomImages={filteredCustomImages}
 				customFolders={customFolders}
 				setSelectedMedalType={setSelectedMedalType}
 			/>

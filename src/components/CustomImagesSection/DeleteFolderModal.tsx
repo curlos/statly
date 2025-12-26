@@ -1,6 +1,6 @@
 import Icon from '../Icon';
 import Spinner from '../Loaders/Spinner';
-import { useDeleteCustomImageMutation } from '../../services/resources/customImagesApi';
+import { useBulkDeleteCustomImagesMutation } from '../../services/resources/customImagesApi';
 import { useDeleteCustomImageFolderMutation, type CustomImageFolder } from '../../services/resources/customImageFoldersApi';
 import type { CustomImage } from '../../types/models';
 
@@ -21,14 +21,12 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 	customFolders,
 	setSelectedMedalType,
 }) => {
-	const [deleteCustomImage] = useDeleteCustomImageMutation();
+	const [bulkDeleteCustomImages, { isLoading: isDeletingImages }] = useBulkDeleteCustomImagesMutation();
 	const [deleteFolder, { isLoading: isDeletingFolder }] = useDeleteCustomImageFolderMutation();
 
 	const handleDeleteAllImages = async () => {
 		try {
-			await Promise.all(
-				filteredCustomImages.map(img => deleteCustomImage(img._id).unwrap())
-			);
+			await bulkDeleteCustomImages(selectedMedalType).unwrap();
 			onClose();
 		} catch (error) {
 			console.error('Failed to delete images:', error);
@@ -111,12 +109,12 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 					{filteredCustomImages.length > 0 && (
 						<button
 							onClick={handleDeleteAllImages}
-							disabled={isDeletingFolder}
+							disabled={isDeletingImages || isDeletingFolder}
 							className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded font-medium text-left disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							<div className="flex items-start gap-2">
-								{isDeletingFolder ? (
-									<Spinner size="sm" customClass="mt-0.5" />
+								{isDeletingImages || isDeletingFolder ? (
+									<Spinner size="sm" customClass="mt-0.5 !text-white" />
 								) : (
 									<Icon name="delete_sweep" customClass="!text-[20px] mt-0.5" />
 								)}
@@ -142,7 +140,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 								>
 									<div className="flex items-start gap-2">
 										{isDeletingFolder ? (
-											<Spinner size="sm" customClass="mt-0.5" />
+											<Spinner size="sm" customClass="mt-0.5 !text-white" />
 										) : (
 											<Icon name="drive_file_move" customClass="!text-[20px] mt-0.5" />
 										)}
@@ -165,7 +163,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 								>
 									<div className="flex items-start gap-2">
 										{isDeletingFolder ? (
-											<Spinner size="sm" customClass="mt-0.5" />
+											<Spinner size="sm" customClass="mt-0.5 !text-white" />
 										) : (
 											<Icon name="delete_forever" customClass="!text-[20px] mt-0.5" />
 										)}
@@ -186,7 +184,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 									disabled={isDeletingFolder}
 									className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
 								>
-									{isDeletingFolder && <Spinner size="sm" />}
+									{isDeletingFolder && <Spinner size="sm" customClass="!text-white" />}
 									Delete Folder
 								</button>
 							)}

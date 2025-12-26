@@ -31,6 +31,16 @@ export const customImagesApi = baseAPI.injectEndpoints({
 			}),
 			invalidatesTags: invalidateOnSuccess(['CustomImage'] as const),
 		}),
+		bulkDeleteCustomImages: builder.mutation<
+			{ deletedCount: number; cloudinaryFailures: number; message: string },
+			string
+		>({
+			query: (folder) => ({
+				url: `/custom-images/bulk?folder=${encodeURIComponent(folder)}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: invalidateOnSuccess(['CustomImage'] as const),
+		}),
 		reorderCustomImages: builder.mutation<{ message: string }, string[]>({
 			query: (imageIds) => ({
 				url: '/custom-images/reorder',
@@ -55,6 +65,7 @@ export const {
 	useUploadCustomImagesMutation,
 	useUpdateCustomImageMutation,
 	useDeleteCustomImageMutation,
+	useBulkDeleteCustomImagesMutation,
 	useReorderCustomImagesMutation,
 	useMoveCustomImageMutation,
 } = customImagesApi;
