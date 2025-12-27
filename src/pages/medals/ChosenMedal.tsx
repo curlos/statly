@@ -74,6 +74,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(startDate),
 				'end-date': getFormattedShortMonthDay(endDate),
+				'year-agnostic': ''
 			},
 			`/${isForFocusMedals ? 'focus-records' : 'completed-tasks'}`
 		);
