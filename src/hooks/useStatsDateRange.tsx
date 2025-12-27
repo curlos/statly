@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { getDateRangeFromSelectedDates, getFormattedShortMonthDay } from '../utils/date.utils';
 import DateRangePicker from '../pages/stats/StatsPage/FocusSection/DateRangePicker';
 import ModalPickDateRange from '../components/Modal/ModalPickDateRange';
+import { useSearchParamsCustom } from '../contexts/useSearchParamsContext';
 
 interface UseStatsDateRangeOptions {
 	initialInterval: string;
@@ -14,6 +15,7 @@ interface UseStatsDateRangeOptions {
  */
 export const useStatsDateRange = (options: UseStatsDateRangeOptions) => {
 	const { initialInterval, initialDates } = options;
+	const { searchParams } = useSearchParamsCustom();
 
 	const [selectedInterval, setSelectedInterval] = useState(initialInterval);
 	const [selectedDates, setSelectedDates] = useState(initialDates);
@@ -26,9 +28,18 @@ export const useStatsDateRange = (options: UseStatsDateRangeOptions) => {
 	// Get API-formatted date range
 	const getApiDateRange = () => {
 		if (selectedInterval === 'All') {
+			const yearAgnostic = searchParams.get('year-agnostic') === 'true';
+			const today = new Date();
+
+			// When year-agnostic is enabled, use Dec 31 of current year to include full months
+			// Otherwise, use today's date for up-to-date stats
+			const endDateForAll = yearAgnostic
+				? new Date(today.getFullYear(), 11, 31) // December 31 of current year
+				: today;
+
 			return {
 				startDate: 'Jan 1, 1900', // Account creation date
-				endDate: getFormattedShortMonthDay(new Date()),
+				endDate: getFormattedShortMonthDay(endDateForAll),
 			};
 		}
 		return getDateRangeFromSelectedDates(selectedDates);

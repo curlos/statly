@@ -44,7 +44,7 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 			{
 				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(new Date(startDate)),
-				'end-date': getFormattedShortMonthDay(new Date(completedDate || startDate)),
+				'end-date': getFormattedShortMonthDay(new Date(completedDate || startDate))
 			},
 			`/${isForFocusChallenges ? 'focus-records' : 'completed-tasks'}`
 		);
