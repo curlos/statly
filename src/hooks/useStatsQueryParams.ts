@@ -55,6 +55,7 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 			'timezone': timezone,
 			'emotions': searchParams.get('emotions') || undefined,
 			'general': searchParams.get('general') || undefined,
+			'year-agnostic': searchParams.get('year-agnostic') || undefined,
 		};
 	}, [
 		groupBy,

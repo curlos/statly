@@ -36,6 +36,7 @@ const AppliedFilterItemList = () => {
 	const crossesMidnightFromUrl = searchParams.get('crosses-midnight') || '';
 	const emotionsFromUrl = searchParams.get('emotions') || '';
 	const generalFromUrl = searchParams.get('general') || '';
+	const yearAgnosticFromUrl = searchParams.get('year-agnostic') || '';
 
 	// TickTick & Todoist (Completed Tasks Page)
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
@@ -238,6 +239,14 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	const yearAgnosticFilter = {
+		name: 'Year-Agnostic',
+		value: yearAgnosticFromUrl === 'true' ? 'True' : '',
+		handleRemove: () => {
+			updateQueryParams({ 'year-agnostic': '', page: '' });
+		},
+	};
+
 	const allFilters = [
 		taskIdFilter,
 		dateRangeFilter,
@@ -252,6 +261,7 @@ const AppliedFilterItemList = () => {
 		crossesMidnightFilter,
 		emotionsFilter,
 		generalFilter,
+		yearAgnosticFilter,
 	];
 	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 

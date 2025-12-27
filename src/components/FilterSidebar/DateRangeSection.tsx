@@ -7,15 +7,17 @@ import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangePicker';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import classNames from 'classnames';
 
 type IntervalOption = 'Day' | 'Week' | 'Month' | 'Year' | 'All' | 'Custom';
 
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const { chosenColorObj } = useThemeContext();
+	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const startDateFromUrl = searchParams.get('start-date');
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
+	const yearAgnosticFromUrl = searchParams.get('year-agnostic') === 'true';
 	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState<boolean>(false);
 
 	const [startDate, setStartDate] = useState<Date>(startDateFromUrl ? new Date(startDateFromUrl) : new Date());
@@ -43,12 +45,21 @@ const DateRangeSection = () => {
 					);
 		const newInterval = selectedInterval === 'All' ? '' : selectedInterval;
 
-		updateQueryParams({
+		// Clear year-agnostic when switching to 'All' or 'Year' intervals
+		const shouldClearYearAgnostic = selectedInterval === 'All' || selectedInterval === 'Year';
+
+		const params: Record<string, string> = {
 			'start-date': newStartDate,
 			'end-date': newEndDate,
 			'date-interval': newInterval,
 			page: '',
-		});
+		};
+
+		if (shouldClearYearAgnostic) {
+			params['year-agnostic'] = '';
+		}
+
+		updateQueryParams(params);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedDates, selectedInterval]);
 
@@ -112,6 +123,26 @@ const DateRangeSection = () => {
 							showTime: true,
 						}}
 					/>
+				)}
+
+				{selectedInterval !== 'All' && selectedInterval !== 'Year' && (
+					<div
+						className="flex items-center gap-1 mt-3 cursor-pointer"
+						onClick={() => {
+							updateQueryParams({ 'year-agnostic': yearAgnosticFromUrl ? '' : 'true', page: '' });
+						}}
+					>
+						<Icon
+							name={yearAgnosticFromUrl ? 'check_box' : 'check_box_outline_blank'}
+							fill={1}
+							customClass={classNames(
+								'!text-[22px]',
+								chosenColorObj.textColor,
+								nextLightestColorObj?.hover.textColor
+							)}
+						/>
+						<div className="flex-1">Year-Agnostic</div>
+					</div>
 				)}
 			</Accordion>
 		</div>
