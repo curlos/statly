@@ -65,26 +65,31 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 
 			// Check for 401 Unauthorized response (expired/invalid token)
 			if (result.error && result.error.status === 401) {
-				// Dispatch logout action to clear Redux state
-				api.dispatch(logoutUser());
+				const errorData = result.error.data as { message?: string } | undefined;
+				const signedOutOfTickTickAccount = errorData?.message === "user_not_sign_on"
 
-				// Clear localStorage and sessionStorage
-				localStorage.clear();
-				sessionStorage.clear();
+				if (!signedOutOfTickTickAccount) {
+					// Dispatch logout action to clear Redux state
+					api.dispatch(logoutUser());
 
-				// Redirect to login page
-				window.location.href = '/login';
+					// Clear localStorage and sessionStorage
+					localStorage.clear();
+					sessionStorage.clear();
 
-				// Return custom error to prevent error modal from showing
-				return {
-					error: {
-						status: 'CUSTOM_ERROR',
-						error: 'Session expired',
-						data: {
-							message: 'Your session has expired. Please log in again.',
-						},
-					} as FetchBaseQueryError,
-				};
+					// Redirect to login page
+					window.location.href = '/login';
+
+					// Return custom error to prevent error modal from showing
+					return {
+						error: {
+							status: 'CUSTOM_ERROR',
+							error: 'Session expired',
+							data: {
+								message: 'Your session has expired. Please log in again.',
+							},
+						} as FetchBaseQueryError,
+					};	
+				}
 			}
 
 			return result;

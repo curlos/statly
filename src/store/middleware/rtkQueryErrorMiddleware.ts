@@ -1,7 +1,6 @@
 import { isRejectedWithValue } from '@reduxjs/toolkit';
 import type { Middleware } from '@reduxjs/toolkit';
 import { setModalState } from '../../slices/modalSlice';
-import { logoutUser } from '../../slices/userSlice';
 
 interface RTKQueryError {
 	status?: number | string;
@@ -20,9 +19,6 @@ interface RTKQueryActionMeta {
 	[key: string]: unknown;
 }
 
-// Public endpoints that shouldn't trigger logout on 401
-const PUBLIC_ENDPOINT_NAMES = new Set(['loginUser', 'registerUser']);
-
 export const rtkQueryErrorMiddleware: Middleware = (api) => (next) => (action) => {
 	// Check if the action is a rejected RTK Query action
 	if (isRejectedWithValue(action)) {
@@ -30,32 +26,13 @@ export const rtkQueryErrorMiddleware: Middleware = (api) => (next) => (action) =
 		const meta = action.meta as RTKQueryActionMeta;
 
 		// Skip modal for authentication errors (expected behavior when user is not logged in)
+		// These are handled by customBaseQuery
 		if (error?.status === 'CUSTOM_ERROR') {
 			return next(action);
 		}
 
-		// Extract endpoint name to check if it's a public endpoint
-		const endpointName = meta?.arg?.endpointName;
-
-		// Handle 401 Unauthorized - token expired or invalid (backup handler)
-		// Only trigger logout/redirect for protected endpoints, not public ones like login
-		if (error?.status === 401 && endpointName && !PUBLIC_ENDPOINT_NAMES.has(endpointName)) {
-			// Dispatch logout action to clear Redux state
-			api.dispatch(logoutUser());
-
-			// Clear localStorage and sessionStorage
-			localStorage.clear();
-			sessionStorage.clear();
-
-			// Redirect to login page
-			window.location.href = '/login';
-
-			// Don't show error modal for 401
-			return next(action);
-		}
-
 		// Get endpoint name for error logging (with fallback)
-		const endpointNameForLogging = endpointName || 'Unknown endpoint';
+		const endpointNameForLogging = meta?.arg?.endpointName || 'Unknown endpoint';
 
 		const errorDetails = {
 			status: error?.status,
