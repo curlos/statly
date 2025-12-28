@@ -63,12 +63,15 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 		if (token) {
 			const result = await baseQuery(args, api, extraOptions);
 
-			// Check for 401 Unauthorized response (expired/invalid token)
-			if (result.error && result.error.status === 401) {
+			// Check for auth errors that require logout
+			if (result.error) {
 				const errorData = result.error.data as { message?: string } | undefined;
-				const signedOutOfTickTickAccount = errorData?.message === "user_not_sign_on"
+				const is401 = result.error.status === 401;
+				const is404UserNotFound = result.error.status === 404 && errorData?.message === "User not found";
+				const isTickTickSignOut = errorData?.message === "user_not_sign_on";
 
-				if (!signedOutOfTickTickAccount) {
+				// Logout for: 401 (except TickTick signout) OR 404 user not found
+				if ((is401 && !isTickTickSignOut) || is404UserNotFound) {
 					// Dispatch logout action to clear Redux state
 					api.dispatch(logoutUser());
 
@@ -83,12 +86,14 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 					return {
 						error: {
 							status: 'CUSTOM_ERROR',
-							error: 'Session expired',
+							error: is404UserNotFound ? 'User not found' : 'Session expired',
 							data: {
-								message: 'Your session has expired. Please log in again.',
+								message: is404UserNotFound
+									? 'Your account was not found. Please log in again.'
+									: 'Your session has expired. Please log in again.',
 							},
 						} as FetchBaseQueryError,
-					};	
+					};
 				}
 			}
 
