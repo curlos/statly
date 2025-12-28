@@ -73,6 +73,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 	const [ringName, setRingName] = useState(currentRing?.name || '');
 	const [isUpdatingRingName, setIsUpdatingRingName] = useState(false);
 	const [isTogglingRingStatus, setIsTogglingRingStatus] = useState(false);
+	const [ringNameError, setRingNameError] = useState('');
 
 	// Ref to store the debounce timer
 	const debounceTimerRef = useRef(null);
@@ -80,6 +81,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 	// Update ringName when currentRing changes
 	useEffect(() => {
 		setRingName(currentRing?.name || '');
+		setRingNameError(''); // Clear error when switching rings
 	}, [currentRing]);
 
 	// Cleanup timer on unmount
@@ -90,6 +92,14 @@ const FocusHoursGoalPageSettingsSection = () => {
 			}
 		};
 	}, []);
+
+	// Validation function for ring name
+	const getRingNameErrorMessage = (name: string) => {
+		if (!name || name.trim().length === 0) {
+			return 'Ring name cannot be empty';
+		}
+		return '';
+	};
 
 	// Early return if no current ring - show loading spinner
 	if (!currentRing) {
@@ -228,6 +238,16 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 		// Set new timer to update ring name after 1 second
 		debounceTimerRef.current = setTimeout(async () => {
+			// Validate ring name
+			const errorMessage = getRingNameErrorMessage(newName);
+
+			if (errorMessage) {
+				setRingNameError(errorMessage);
+				return; // Prevent API call
+			}
+
+			setRingNameError(''); // Clear any previous errors
+
 			if (newName !== currentRing.name) {
 				setIsUpdatingRingName(true);
 				await handleUpdateRingSetting(selectedRingId, 'name', newName);
@@ -337,6 +357,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 							</div>
 						)}
 					</div>
+					{ringNameError && <div className="text-[14px] text-red-500 mt-1 ml-1">{ringNameError}</div>}
 				</div>
 
 				{/* Ring Appearance Section */}
