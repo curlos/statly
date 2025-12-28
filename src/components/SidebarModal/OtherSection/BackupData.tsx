@@ -6,10 +6,14 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { tasksApi } from '../../../services/resources/tasksApi';
 import { focusRecordsApi } from '../../../services/resources/focusRecordsApi';
 import { projectsApi } from '../../../services/resources/projectsApi';
+import { userSettingsApi } from '../../../services/resources/userSettingsApi';
+import { customImagesApi } from '../../../services/resources/customImagesApi';
+import { customImageFoldersApi } from '../../../services/resources/customImageFoldersApi';
 import Icon from '../../Icon';
 import Spinner from '../../Loaders/Spinner';
 import { getFormattedDateAndTimeForFileName } from '../../../utils/date.utils';
-import type { Task, FocusRecord, Project, ProjectGroup } from '../../../types/models';
+import type { Task, FocusRecord, Project, ProjectGroup, CustomImage, CustomImageFolder } from '../../../types/models';
+import type { UserSettings } from '../../../types/api';
 
 interface PaginatedResponse<T> {
 	data: T[];
@@ -33,6 +37,15 @@ const BackupData = () => {
 
 	const [triggerGetProjectGroups, { isLoading: isLoadingGetDocumentsProjectGroups }] =
 		projectsApi.useLazyGetProjectGroupsQuery();
+
+	const [triggerGetUserSettings, { isLoading: isLoadingGetUserSettings }] =
+		userSettingsApi.useLazyGetUserSettingsQuery();
+
+	const [triggerGetCustomImages, { isLoading: isLoadingGetCustomImages }] =
+		customImagesApi.useLazyGetCustomImagesQuery();
+
+	const [triggerGetCustomImageFolders, { isLoading: isLoadingGetCustomImageFolders }] =
+		customImageFoldersApi.useLazyGetCustomImageFoldersQuery();
 
 	const { chosenColorObj } = useThemeContext();
 	const [status, setStatus] = useState('none');
@@ -93,7 +106,10 @@ const BackupData = () => {
 		allTasks: Task[],
 		allFocusRecords: FocusRecord[],
 		projects: Project[],
-		projectGroups: ProjectGroup[]
+		projectGroups: ProjectGroup[],
+		userSettings: UserSettings | null,
+		customImages: CustomImage[],
+		customImageFolders: CustomImageFolder[]
 	) => {
 		const importantApiResponsesArr = [
 			// ALL TASKS
@@ -126,6 +142,30 @@ const BackupData = () => {
 				fileName: 'project-groups',
 				apiEndpointName: '/projects/project-groups',
 				response: projectGroups,
+			},
+
+			// USER SETTINGS
+			{
+				folderName: 'user-settings',
+				fileName: 'user-settings',
+				apiEndpointName: '/user-settings',
+				response: userSettings ? [userSettings] : [],
+			},
+
+			// CUSTOM IMAGES
+			{
+				folderName: 'custom-images',
+				fileName: 'custom-images',
+				apiEndpointName: '/custom-images',
+				response: customImages,
+			},
+
+			// CUSTOM IMAGE FOLDERS
+			{
+				folderName: 'custom-image-folders',
+				fileName: 'custom-image-folders',
+				apiEndpointName: '/custom-image-folders',
+				response: customImageFolders,
 			},
 		];
 
@@ -168,7 +208,7 @@ const BackupData = () => {
 		}
 
 		zip.generateAsync({ type: 'blob' }).then((blob) => {
-			FileSaver.saveAs(blob, `Backup_Tasks_FocusRecords_Projects_${getFormattedDateAndTimeForFileName()}.zip`);
+			FileSaver.saveAs(blob, `Backup_All_Data_${getFormattedDateAndTimeForFileName()}.zip`);
 		});
 	};
 
@@ -176,7 +216,10 @@ const BackupData = () => {
 		isLoadingGetAllTasks ||
 		isLoadingGetAllFocusRecords ||
 		isLoadingGetDocumentsProjects ||
-		isLoadingGetDocumentsProjectGroups;
+		isLoadingGetDocumentsProjectGroups ||
+		isLoadingGetUserSettings ||
+		isLoadingGetCustomImages ||
+		isLoadingGetCustomImageFolders;
 
 	return (
 		<div>
@@ -191,13 +234,16 @@ const BackupData = () => {
 
 					try {
 						// Fetch all paginated data in parallel
-						const [allTasks, allFocusRecords, projects, projectGroups] = await Promise.all([
+						const [allTasks, allFocusRecords, projects, projectGroups, userSettingsData, customImages, customImageFolders] = await Promise.all([
 							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							fetchAllPages<Task>(triggerGetAllTasks as any),
 							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							fetchAllPages<FocusRecord>(triggerGetAllFocusRecords as any),
 							triggerGetProjects({ fullData: true }).then((res) => res.data?.projects || []),
 							triggerGetProjectGroups({ fullData: true }).then((res) => res.data?.projectGroups || []),
+							triggerGetUserSettings().then((res) => res.data?.userSettings || null),
+							triggerGetCustomImages().then((res) => res.data || []),
+							triggerGetCustomImageFolders().then((res) => res.data || []),
 						]);
 
 						// Let the UI update before doing heavy work
@@ -206,7 +252,10 @@ const BackupData = () => {
 								allTasks,
 								allFocusRecords,
 								projects,
-								projectGroups
+								projectGroups,
+								userSettingsData,
+								customImages,
+								customImageFolders
 							);
 							setStatus('done');
 
@@ -234,7 +283,7 @@ const BackupData = () => {
 						)}
 					/>
 				)}
-				<div>Backup Focus Records, Tasks, Projects, and Project Groups</div>
+				<div>Backup All Data (Tasks, Focus Records, Projects, Project Groups, etc.)</div>
 			</div>
 		</div>
 	);

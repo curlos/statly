@@ -18,6 +18,9 @@ export interface BatchStatus {
 			tasks: { created: number; modified: number; matched: number; failed: number };
 			projects: { created: number; modified: number; matched: number; failed: number };
 			projectGroups: { created: number; modified: number; matched: number; failed: number };
+			userSettings: { created: number; modified: number; matched: number; failed: number };
+			customImages: { created: number; modified: number; matched: number; failed: number };
+			customImageFolders: { created: number; modified: number; matched: number; failed: number };
 		};
 	};
 }

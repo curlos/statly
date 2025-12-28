@@ -33,6 +33,16 @@ export interface CustomImage {
 	updatedAt: Date;
 }
 
+export interface CustomImageFolder {
+	_id: string;
+	userId: string;
+	source: string;
+	name: string;
+	sortOrder: number;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
 // ============================================================================
 // Project Types
 // ============================================================================

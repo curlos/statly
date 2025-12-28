@@ -87,6 +87,9 @@ const ImportData = () => {
 				'FocusMedal',
 				'FocusChallenge',
 				'FocusStats',
+				'UserSettings',
+				'CustomImage',
+				'CustomImageFolder',
 			])
 		);
 	};
@@ -223,7 +226,7 @@ const ImportData = () => {
 							)}
 						/>
 					)}
-					<div>Import Focus Records, Tasks, Projects, and Project Groups</div>
+					<div>Import All Data (Tasks, Focus Records, Projects, Project Groups, etc.)</div>
 				</div>
 
 				{/* View Progress button - only show while importing */}

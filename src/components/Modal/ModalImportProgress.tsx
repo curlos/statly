@@ -184,6 +184,15 @@ const ModalImportProgress: React.FC = () => {
 												<div>
 													{formatCategoryResult('Project Groups', batch.result.details.projectGroups)}
 												</div>
+												<div>
+													{formatCategoryResult('User Settings', batch.result.details.userSettings)}
+												</div>
+												<div>
+													{formatCategoryResult('Custom Images', batch.result.details.customImages)}
+												</div>
+												<div>
+													{formatCategoryResult('Custom Image Folders', batch.result.details.customImageFolders)}
+												</div>
 											</div>
 										</div>
 									)}

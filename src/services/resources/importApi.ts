@@ -20,6 +20,9 @@ interface ImportResponse {
 		tasks: ImportCategoryResult;
 		projects: ImportCategoryResult;
 		projectGroups: ImportCategoryResult;
+		userSettings: ImportCategoryResult;
+		customImages: ImportCategoryResult;
+		customImageFolders: ImportCategoryResult;
 	};
 	errors?: string[];
 }
