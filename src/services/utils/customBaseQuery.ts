@@ -24,7 +24,9 @@ const PUBLIC_ENDPOINTS = new Set([
 const isPublicEndpoint = (url: string): boolean => {
 	// Extract pathname (remove query params if present)
 	const pathname = url.split('?')[0];
-	return PUBLIC_ENDPOINTS.has(pathname);
+	// Normalize by ensuring leading slash
+	const normalizedPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
+	return PUBLIC_ENDPOINTS.has(normalizedPath);
 };
 
 export const createAuthenticatedBaseQuery = (): BaseQueryFn<
@@ -53,8 +55,12 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 		// Extract URL from args
 		const url = typeof args === 'string' ? args : args.url;
 
+		if (isPublicEndpoint(url)) {
+			return await baseQuery(args, api, extraOptions);
+		}
+
 		// Allow if: public endpoint OR has token
-		if (isPublicEndpoint(url) || token) {
+		if (token) {
 			const result = await baseQuery(args, api, extraOptions);
 
 			// Check for 401 Unauthorized response (expired/invalid token)

@@ -20,6 +20,9 @@ interface RTKQueryActionMeta {
 	[key: string]: unknown;
 }
 
+// Public endpoints that shouldn't trigger logout on 401
+const PUBLIC_ENDPOINT_NAMES = new Set(['loginUser', 'registerUser']);
+
 export const rtkQueryErrorMiddleware: Middleware = (api) => (next) => (action) => {
 	// Check if the action is a rejected RTK Query action
 	if (isRejectedWithValue(action)) {
@@ -31,8 +34,12 @@ export const rtkQueryErrorMiddleware: Middleware = (api) => (next) => (action) =
 			return next(action);
 		}
 
+		// Extract endpoint name to check if it's a public endpoint
+		const endpointName = meta?.arg?.endpointName;
+
 		// Handle 401 Unauthorized - token expired or invalid (backup handler)
-		if (error?.status === 401) {
+		// Only trigger logout/redirect for protected endpoints, not public ones like login
+		if (error?.status === 401 && endpointName && !PUBLIC_ENDPOINT_NAMES.has(endpointName)) {
 			// Dispatch logout action to clear Redux state
 			api.dispatch(logoutUser());
 
@@ -47,17 +54,17 @@ export const rtkQueryErrorMiddleware: Middleware = (api) => (next) => (action) =
 			return next(action);
 		}
 
-		// Extract endpoint name from action metadata
-		const endpointName = meta?.arg?.endpointName || 'Unknown endpoint';
+		// Get endpoint name for error logging (with fallback)
+		const endpointNameForLogging = endpointName || 'Unknown endpoint';
 
 		const errorDetails = {
 			status: error?.status,
 			data: error?.data,
 			message: error?.data?.message || error?.error || 'An error occurred',
-			endpoint: endpointName,
+			endpoint: endpointNameForLogging,
 		};
 
-		console.log(`[RTK Query Error] Endpoint: ${endpointName}`, errorDetails);
+		console.log(`[RTK Query Error] Endpoint: ${endpointNameForLogging}`, errorDetails);
 
 		// Dispatch modal state to show error
 		api.dispatch(
