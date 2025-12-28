@@ -49,7 +49,6 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 			'projects-todoist': searchParams.get('projects-todoist') || undefined,
 			'categories': searchParams.get('categories') || undefined,
 			'to-do-list-apps': searchParams.get('to-do-list-apps') || undefined,
-			'crosses-midnight': searchParams.get('crosses-midnight') || undefined,
 			'task-id': searchParams.get('task-id') || undefined,
 			'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
 			'timezone': timezone,

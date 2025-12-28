@@ -8,7 +8,8 @@ const GENERAL_FILTERS = {
 	WITH_NOTES: { id: 'with-notes', name: 'With Notes' },
 	WITHOUT_NOTES: { id: 'without-notes', name: 'Without Notes' },
 	POMODORO_MODE: { id: 'pomodoro-mode', name: 'Pomodoro Mode' },
-	STOPWATCH_MODE: { id: 'stopwatch-mode', name: 'Stopwatch Mode' }
+	STOPWATCH_MODE: { id: 'stopwatch-mode', name: 'Stopwatch Mode' },
+	CROSSES_MIDNIGHT: { id: 'crosses-midnight', name: 'Crosses Midnight' }
 };
 
 const GeneralFocusRecordsFilters = () => {

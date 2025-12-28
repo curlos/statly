@@ -33,7 +33,6 @@ const AppliedFilterItemList = () => {
 
 	// Session (Focus Records Page)
 	const categoriesFromUrl = searchParams.get('categories') || '';
-	const crossesMidnightFromUrl = searchParams.get('crosses-midnight') || '';
 	const emotionsFromUrl = searchParams.get('emotions') || '';
 	const generalFromUrl = searchParams.get('general') || '';
 	const yearAgnosticFromUrl = searchParams.get('year-agnostic') || '';
@@ -206,14 +205,6 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
-	const crossesMidnightFilter = {
-		name: 'Crosses Midnight',
-		value: crossesMidnightFromUrl === 'true' ? 'True' : '',
-		handleRemove: () => {
-			updateQueryParams({ 'crosses-midnight': '', page: '' });
-		},
-	};
-
 	const emotionsFilter = {
 		name: 'Emotions',
 		value: emotionsFromUrl ? emotionsFromUrl.split(',').map(e => e.toUpperCase()).join(', ') : '',
@@ -226,7 +217,8 @@ const AppliedFilterItemList = () => {
 		'with-notes': 'With Notes',
 		'without-notes': 'Without Notes',
 		'pomodoro-mode': 'Pomodoro Mode',
-		'stopwatch-mode': 'Stopwatch Mode'
+		'stopwatch-mode': 'Stopwatch Mode',
+		'crosses-midnight': 'Crosses Midnight'
 	};
 
 	const generalFilter = {
@@ -258,7 +250,6 @@ const AppliedFilterItemList = () => {
 		focusAppFilter,
 		toDoListAppFilter,
 		projectsTodoistFilter,
-		crossesMidnightFilter,
 		emotionsFilter,
 		generalFilter,
 		yearAgnosticFilter,
