@@ -440,6 +440,7 @@ export interface UserSettings {
 		fontFamily: string;
 	};
 	pages: UserSettingsPages;
+	tickTickInboxProjectId?: string;
 	autoSyncEnabled: boolean;
 	createdAt: string;
 	updatedAt: string;

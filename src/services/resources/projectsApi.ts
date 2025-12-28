@@ -2,6 +2,7 @@ import { baseAPI, buildQueryString } from '../api';
 import { arrayToObjectByKey } from '../../utils/helpers.utils';
 import type { Project, ProjectGroup } from '../../types/models';
 import type { GetProjectsResponse, GetProjectGroupsResponse } from '../../types/api';
+import { userSettingsApi } from './userSettingsApi';
 
 /**
  * @description API for fetching projects data from the backend
@@ -9,30 +10,58 @@ import type { GetProjectsResponse, GetProjectGroupsResponse } from '../../types/
 export const projectsApi = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getProjects: builder.query<GetProjectsResponse, { fullData?: boolean } | void>({
-            query: (queryParams?: { fullData?: boolean }) => {
-                const queryString = buildQueryString(queryParams || {});
-                return queryString
-                    ? `/projects?${queryString}`
-                    : '/projects';
-            },
-            transformResponse: (response: Project[]) => {
-                const projects = response;
-                const projectsWithInbox: Project[] = [
-					...projects,
-					{
-						id: 'inbox116577688',
-						name: 'Inbox',
-						source: 'ProjectTickTick',
-					} as Project,
-				];
+            async queryFn(queryParams, { dispatch }, _extraOptions, fetchWithBQ) {
+                try {
+                    // First, fetch user settings to get the inbox ID
+                    const userSettingsResult = await dispatch(
+                        userSettingsApi.endpoints.getUserSettings.initiate(undefined, { forceRefetch: true })
+                    );
 
-                const projectsById = arrayToObjectByKey(projectsWithInbox, 'id');
-                const projectsTickTick = projectsWithInbox.filter((project) => project.source === 'ProjectTickTick' || project.id === 'inbox116577688');
-                const projectsTodoist = projects.filter((project) => project.source === 'ProjectTodoist');
-                const projectsSession = projects.filter((project) => project.source === 'ProjectSession');
-                const projectsSessionById = arrayToObjectByKey(projectsSession, 'id');
+                    const inboxId = userSettingsResult.data?.userSettings?.tickTickInboxProjectId || '';
 
-                return { projects, projectsById, projectsTickTick, projectsTodoist, projectsSession, projectsSessionById };
+                    // Then fetch projects
+                    const queryString = buildQueryString(queryParams || {});
+                    const url = queryString ? `/projects?${queryString}` : '/projects';
+
+                    const projectsResult = await fetchWithBQ(url);
+
+                    if (projectsResult.error) {
+                        return { error: projectsResult.error };
+                    }
+
+                    const projects = projectsResult.data as Project[];
+
+                    // Add inbox project if we have a valid inboxId
+                    const projectsWithInbox: Project[] = inboxId
+                        ? [
+                            ...projects,
+                            {
+                                id: inboxId,
+                                name: 'Inbox',
+                                source: 'ProjectTickTick',
+                            } as Project,
+                          ]
+                        : projects;
+
+                    const projectsById = arrayToObjectByKey(projectsWithInbox, 'id');
+                    const projectsTickTick = projectsWithInbox.filter((project) => project.source === 'ProjectTickTick' || (inboxId && project.id === inboxId));
+                    const projectsTodoist = projects.filter((project) => project.source === 'ProjectTodoist');
+                    const projectsSession = projects.filter((project) => project.source === 'ProjectSession');
+                    const projectsSessionById = arrayToObjectByKey(projectsSession, 'id');
+
+                    return {
+                        data: {
+                            projects: projectsWithInbox,
+                            projectsById,
+                            projectsTickTick,
+                            projectsTodoist,
+                            projectsSession,
+                            projectsSessionById
+                        }
+                    };
+                } catch (error) {
+                    return { error: { status: 'CUSTOM_ERROR', error: String(error) } };
+                }
             },
             providesTags: ['Project'],
         }),

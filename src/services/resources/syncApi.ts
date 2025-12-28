@@ -52,7 +52,7 @@ export const syncApi = baseAPI.injectEndpoints({
                 url: '/sync/ticktick/projects',
                 method: 'POST',
             }),
-            invalidatesTags: invalidateOnSuccess(['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+            invalidatesTags: invalidateOnSuccess(['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts', 'UserSettings'] as const),
         }),
         syncTickTickProjectGroups: builder.mutation({
             query: () => ({
