@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Icon from '../../components/Icon';
 import Modal from '../../components/Modal/Modal';
 import LazyImage from '../../components/LazyImage';
@@ -296,7 +297,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 			case 'AC7 (MEDALS)':
 			case 'MW2019 (WEAPON CAMOS)':
 			case 'BO2 (MEDALS)':
-				return 'grid-cols-3 md:grid-cols-4';
+				return 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4';
 			default:
 				return 'grid-cols-2 md:grid-cols-3';
 		}
@@ -310,13 +311,13 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 
 	const pageName = pageType[page];
 
-	return (
+	return createPortal(
 		<Modal
 			isOpen={showModal}
 			onClose={() => setShowModal(false)}
 			customClasses="md:w-[700px] lg:w-[750px]"
 		>
-			<div className="bg-color-gray-600 rounded-lg">
+			<div className="bg-color-gray-600 rounded-lg text-white">
 				<div className="flex items-center justify-between p-5">
 					<h3 className="font-bold text-[16px]">Change {pageName} Card Image</h3>
 					<Icon
@@ -327,7 +328,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 				</div>
 
 				<div className="px-5 pb-5">
-					<div className="flex gap-4 mb-4">
+					<div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4">
 						<GeneralSelectButtonAndDropdown
 							selected={selectedGame}
 							setSelected={setSelectedGame}
@@ -470,7 +471,8 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 					</div>
 				</div>
 			</div>
-		</Modal>
+		</Modal>,
+		document.body
 	);
 };
 
