@@ -102,7 +102,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const shouldFetchStreakHistory = isFocusGoalModalOpen || activeRings.some((ring: Ring) => ring.showStreakCount);
 
 	// Fetch streak history for all rings (current + longest streaks)
-	const { data: allRingsStreakData, isLoading: isStreakLoading } = useGetStreakHistoryQuery(queryParams, {
+	const { data: allRingsStreakData } = useGetStreakHistoryQuery(queryParams, {
 		skip: !shouldFetchStreakHistory,
 	}) as {
 		data: AllRingsStreakResponse | undefined;
@@ -228,9 +228,9 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 
 	return (
 		<div className="relative">
-			{(isTodayLoading || isStreakLoading) && (
+			{(isTodayLoading) && (
 				<div className="absolute top-4 right-4 z-10">
-					<Spinner size="xl" />
+					<Spinner size="md" />
 				</div>
 			)}
 
