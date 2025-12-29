@@ -11,7 +11,6 @@ const OtherSectionCompletedTasks = () => {
 	const {
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
-			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
 			maxDaysPerPage,
@@ -64,18 +63,6 @@ const OtherSectionCompletedTasks = () => {
 										handleCheckboxClick(
 											taskIdIncludeCompletedTasksFromSubtasks,
 											'taskIdIncludeCompletedTasksFromSubtasks'
-										),
-								}}
-							/>
-
-							<CheckboxOther
-								{...{
-									name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
-									showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
-									handleCheckboxClick: () =>
-										handleCheckboxClick(
-											filterOutUnrelatedTasksWhenTaskIdIsApplied,
-											'filterOutUnrelatedTasksWhenTaskIdIsApplied'
 										),
 								}}
 							/>

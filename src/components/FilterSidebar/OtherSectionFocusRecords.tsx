@@ -17,7 +17,6 @@ const OtherSectionFocusRecords = () => {
 			showTaskProjectName,
 			taskIdIncludeFocusRecordsFromSubtasks,
 			maxFocusRecordsPerPage,
-			filterOutUnrelatedTasksWhenTaskIdIsApplied,
 			showMedals,
 			showFocusRecordEmotions,
 			showEmotionCount,
@@ -132,18 +131,6 @@ const OtherSectionFocusRecords = () => {
 										handleCheckboxClick(
 											taskIdIncludeFocusRecordsFromSubtasks,
 											'taskIdIncludeFocusRecordsFromSubtasks'
-										),
-								}}
-							/>
-
-							<CheckboxOther
-								{...{
-									name: 'Filter Out Unrelated Tasks When Task ID Is Applied',
-									showValue: filterOutUnrelatedTasksWhenTaskIdIsApplied,
-									handleCheckboxClick: () =>
-										handleCheckboxClick(
-											filterOutUnrelatedTasksWhenTaskIdIsApplied,
-											'filterOutUnrelatedTasksWhenTaskIdIsApplied'
 										),
 								}}
 							/>

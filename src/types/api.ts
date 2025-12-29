@@ -372,7 +372,6 @@ export interface FocusRecordsPageSettings {
 	showTaskAncestors: boolean;
 	showTaskProjectName: boolean;
 	taskIdIncludeFocusRecordsFromSubtasks: boolean;
-	filterOutUnrelatedTasksWhenTaskIdIsApplied: boolean;
 	maxFocusRecordsPerPage: number;
 	onlyExportTasksWithNoParent: boolean;
 	showMedals: boolean;
@@ -396,7 +395,6 @@ export interface FocusRecordsPageSettings {
 
 export interface CompletedTasksPageSettings {
 	taskIdIncludeCompletedTasksFromSubtasks: boolean;
-	filterOutUnrelatedTasksWhenTaskIdIsApplied: boolean;
 	groupedTasksCollapsedByDefault: boolean;
 	showIndentedTasks: boolean;
 	onlyExportTasksWithNoParent: boolean;

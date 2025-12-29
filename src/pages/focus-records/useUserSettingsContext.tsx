@@ -49,7 +49,6 @@ const useUserSettings = () => {
 		showTaskAncestors = true,
 		showTaskProjectName = true,
 		taskIdIncludeFocusRecordsFromSubtasks = true,
-		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage = true,
 		maxFocusRecordsPerPage = 50,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage = true,
 		showMedals = false,
@@ -73,7 +72,6 @@ const useUserSettings = () => {
 
 	const {
 		taskIdIncludeCompletedTasksFromSubtasks = true,
-		filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage = true,
 		groupedTasksCollapsedByDefault = true,
 		showIndentedTasks = true,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage = true,
@@ -188,7 +186,6 @@ const useUserSettings = () => {
 			showTaskAncestors,
 			showTaskProjectName,
 			taskIdIncludeFocusRecordsFromSubtasks,
-			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedFocusRecordsPage,
 			maxFocusRecordsPerPage,
 			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentFocusRecordsPage,
 			showMedals,
@@ -203,7 +200,6 @@ const useUserSettings = () => {
 		},
 		completedTasksPageSettings: {
 			taskIdIncludeCompletedTasksFromSubtasks,
-			filterOutUnrelatedTasksWhenTaskIdIsApplied: filterOutUnrelatedTasksWhenTaskIdIsAppliedCompletedTasksPage,
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
 			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage,
