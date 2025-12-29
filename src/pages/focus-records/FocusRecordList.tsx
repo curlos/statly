@@ -58,7 +58,7 @@ const FocusRecordList: React.FC<FocusRecordListProps> = ({
 				<>
 					<div>
 						{focusRecords.length === 0 ? (
-							<div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+							<div className="container flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
 								<Icon name="timer" customClass="!text-[40px]" />
 								<p className="text-lg font-bold">No Focus Records</p>
 								<p className="mt-1">Sync or import focus records from TickTick to see them here</p>

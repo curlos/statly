@@ -66,12 +66,11 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 			// Check for auth errors that require logout
 			if (result.error) {
 				const errorData = result.error.data as { message?: string } | undefined;
-				const is401 = result.error.status === 401;
+				const is401InvalidToken = result.error.status === 401 && errorData?.message === "Invalid token";
 				const is404UserNotFound = result.error.status === 404 && errorData?.message === "User not found";
-				const isTickTickSignOut = errorData?.message === "user_not_sign_on";
 
-				// Logout for: 401 (except TickTick signout) OR 404 user not found
-				if ((is401 && !isTickTickSignOut) || is404UserNotFound) {
+				// Logout only for: 401 with "Invalid token" OR 404 with "User not found". The reason we need to kick them out is because the logout button doesn't show up when this happens and the user would have to either log back in or sign up with a new account anyways.
+				if (is401InvalidToken || is404UserNotFound) {
 					// Dispatch logout action to clear Redux state
 					api.dispatch(logoutUser());
 
