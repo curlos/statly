@@ -20,6 +20,7 @@ const FocusRecordsPage = () => {
 			showTotalFocusDuration,
 			showEmotionCount,
 			showNoteStats,
+			showTotalNumberOfFocusRecords,
 		},
 	} = useUserSettingsContext();
 
@@ -57,7 +58,7 @@ const FocusRecordsPage = () => {
 		return (
 			<div>
 				<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-					Focus Records {!isLoading && `(${total?.toLocaleString() || 0})`}
+					Focus Records {showTotalNumberOfFocusRecords && !isLoading && `(${total?.toLocaleString() || 0})`}
 					{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(onlyTasksTotalDuration ?? 0, false)}`}
 				</h2>
 

@@ -21,6 +21,7 @@ const OtherSectionFocusRecords = () => {
 			showFocusRecordEmotions,
 			showEmotionCount,
 			showNoteStats,
+			showTotalNumberOfFocusRecords,
 		},
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
@@ -139,9 +140,19 @@ const OtherSectionFocusRecords = () => {
 						{/* General Section */}
 						<div className="mb-4">
 							<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
+
 							<CheckboxOther
 								{...{
-									name: 'Show Total Focus Records Time',
+									name: 'Show Total Number of Focus Records',
+									showValue: showTotalNumberOfFocusRecords,
+									handleCheckboxClick: () =>
+										handleCheckboxClick(showTotalNumberOfFocusRecords, 'showTotalNumberOfFocusRecords'),
+								}}
+							/>
+
+							<CheckboxOther
+								{...{
+									name: 'Show Total Focus Time',
 									showValue: showTotalFocusDuration,
 									handleCheckboxClick: () =>
 										handleCheckboxClick(showTotalFocusDuration, 'showTotalFocusDuration'),

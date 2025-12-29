@@ -381,6 +381,7 @@ export interface FocusRecordsPageSettings {
 	showFocusRecordEmotions: boolean;
 	showEmotionCount: boolean;
 	showNoteStats: boolean;
+	showTotalNumberOfFocusRecords: boolean;
 	analyzeNoteEmotionsWhileSyncingFocusRecords: boolean;
 	customDisplay: {
 		useBackgroundImage: boolean;

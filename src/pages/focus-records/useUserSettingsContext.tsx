@@ -58,6 +58,7 @@ const useUserSettings = () => {
 		showFocusRecordEmotions = true,
 		showEmotionCount = false,
 		showNoteStats = false,
+		showTotalNumberOfFocusRecords = true,
 		analyzeNoteEmotionsWhileSyncingFocusRecords = false,
 		customDisplay = {
 			useBackgroundImage: false,
@@ -195,6 +196,7 @@ const useUserSettings = () => {
 			showFocusRecordEmotions,
 			showEmotionCount,
 			showNoteStats,
+			showTotalNumberOfFocusRecords,
 			analyzeNoteEmotionsWhileSyncingFocusRecords,
 			customDisplay,
 		},
