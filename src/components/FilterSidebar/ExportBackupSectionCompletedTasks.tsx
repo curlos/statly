@@ -42,9 +42,9 @@ const ExportBackupSectionCompletedTasks = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
-				{/* Copy Completed Tasks To Clipboard */}
+				{/* Copy Completed Tasks to Clipboard */}
 				<CompletedTasksExporter
-					text="Copy Completed Tasks To Clipboard"
+					text="Copy Completed Tasks to Clipboard"
 					icon="content_copy"
 					action="handleCopyToClipboard"
 				/>

@@ -42,9 +42,9 @@ const ExportBackupSectionFocusRecords = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
-				{/* Copy Focus Records To Clipboard */}
+				{/* Copy Focus Records to Clipboard */}
 				<FocusRecordsExporter
-					text="Copy Focus Records To Clipboard"
+					text="Copy Focus Records to Clipboard"
 					icon="content_copy"
 					action="handleCopyToClipboard"
 				/>
