@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import classNames from 'classnames';
 
@@ -23,12 +24,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 
 	const containerClasses = `z-50 relative p-3 max-w-full w-[500px] max-h-[90vh] overflow-y-auto gray-scrollbar`;
 
-	return (
+	return createPortal(
 		<AnimatePresence>
 			{isOpen && (
 				<div
 					className={classNames(
-						'fixed inset-0 z-50 overflow-auto bg-smoke-light flex justify-center items-center',
+						'text-white fixed inset-0 z-50 overflow-auto bg-smoke-light flex justify-center items-center',
 						positionClasses ? positionClasses : ''
 					)}
 				>
@@ -52,7 +53,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 					</motion.div>
 				</div>
 			)}
-		</AnimatePresence>
+		</AnimatePresence>,
+		document.body
 	);
 };
 
