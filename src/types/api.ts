@@ -418,8 +418,6 @@ export interface ChallengesPageSettings {
 
 export interface MedalsPageSettings {
 	selectedMedalCardImage: CardImageSettings;
-	defaultMedalInterval: string;
-	customMedalStartDate: string;
 }
 
 export interface UserSettingsPages {
@@ -441,6 +439,8 @@ export interface UserSettings {
 	pages: UserSettingsPages;
 	tickTickInboxProjectId?: string;
 	autoSyncEnabled: boolean;
+	defaultDateRangeInterval?: string;
+	defaultCustomStartDate?: string;
 	createdAt: string;
 	updatedAt: string;
 	__v: number;

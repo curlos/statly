@@ -9,7 +9,6 @@ import SyncUpdateSection from './SyncUpdateSection';
 import CardImage from '../../pages/challenges/CardImage';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
 import FocusHoursGoalPageSettingsSection from '../FilterSidebar/FocusHoursGoalPageSettingsSection';
-import DefaultDateRangeInterval from '../FilterSidebar/DefaultDateRangeInterval';
 
 interface SettingsSidebarProps {
 	setIsOpen: (isOpen: boolean) => void;
@@ -115,13 +114,6 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 							page={isForChallengesPage ? 'challenges' : 'medals'}
 						/>
 					</div>
-				</>
-			)}
-
-			{isForMedalsPage && (
-				<>
-					<hr className="border-color-gray-200 my-4" />
-					<DefaultDateRangeInterval />
 				</>
 			)}
 

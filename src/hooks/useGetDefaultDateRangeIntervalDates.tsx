@@ -5,7 +5,8 @@ import { useUserSettingsContext } from "../pages/focus-records/useUserSettingsCo
 const useGetDefaultDateRangeIntervalDates = () => {
 	// Get medal settings
 	const {
-		medalsPageSettings: { defaultMedalInterval, customMedalStartDate },
+		defaultDateRangeInterval,
+		defaultCustomStartDate,
 		isLoadingGetUserSettings,
 	} = useUserSettingsContext();
 
@@ -18,7 +19,7 @@ const useGetDefaultDateRangeIntervalDates = () => {
 		let startDate = '';
 		let endDate = '';
 
-		switch (defaultMedalInterval) {
+		switch (defaultDateRangeInterval) {
 			case 'Day':
 				startDate = getFormattedShortMonthDay(today);
 				endDate = getFormattedShortMonthDay(today);
@@ -50,8 +51,8 @@ const useGetDefaultDateRangeIntervalDates = () => {
 				break;
 			}
 			case 'Custom':
-				if (customMedalStartDate && customMedalStartDate !== '') {
-					startDate = getFormattedShortMonthDay(new Date(customMedalStartDate));
+				if (defaultCustomStartDate && defaultCustomStartDate !== '') {
+					startDate = getFormattedShortMonthDay(new Date(defaultCustomStartDate));
 				}
 				endDate = getFormattedShortMonthDay(today);
 				break;
@@ -62,8 +63,8 @@ const useGetDefaultDateRangeIntervalDates = () => {
 				break;
 		}
 
-		return { startDate, endDate, dateInterval: defaultMedalInterval };
-	}, [isLoadingGetUserSettings, defaultMedalInterval, customMedalStartDate]);
+		return { startDate, endDate, dateInterval: defaultDateRangeInterval };
+	}, [isLoadingGetUserSettings, defaultDateRangeInterval, defaultCustomStartDate]);
 
 	return defaultMedalDates;
 }

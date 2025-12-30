@@ -4,25 +4,35 @@ import { useUserSettingsContext } from '../../pages/focus-records/useUserSetting
 import { useState } from 'react';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
 import FormPickDateRange from '../FormPickDateRange';
+import { useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
 
 const DefaultDateRangeInterval = () => {
 	const {
-		medalsPageSettings: { defaultMedalInterval, customMedalStartDate },
-		handleUpdateUserSettingForPage,
+		defaultDateRangeInterval,
+		defaultCustomStartDate,
 	} = useUserSettingsContext();
+
+	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
-	const [startDate, setStartDate] = useState(customMedalStartDate && customMedalStartDate !== '' ? new Date(customMedalStartDate) : new Date());
+	const [startDate, setStartDate] = useState(defaultCustomStartDate && defaultCustomStartDate !== '' ? new Date(defaultCustomStartDate) : new Date());
 
 	const handleIntervalChange = (newInterval: string) => {
-		handleUpdateUserSettingForPage('medals', 'defaultMedalInterval', newInterval);
+		const payload = {
+			defaultDateRangeInterval: newInterval,
+		};
+		editUserSettings(payload).unwrap();
 	};
 
 	const handleCustomStartDateChange = (newStartDate: Date | null) => {
 		if (newStartDate) {
 			setStartDate(newStartDate);
-			handleUpdateUserSettingForPage('medals', 'customMedalStartDate', newStartDate.toISOString());
+
+			const payload = {
+				defaultCustomStartDate: newStartDate.toISOString(),
+			};
+			editUserSettings(payload).unwrap();
 		}
 	};
 
@@ -45,7 +55,7 @@ const DefaultDateRangeInterval = () => {
 				<div className="flex">
 					<div>
 						<GeneralSelectButtonAndDropdown
-							selected={defaultMedalInterval}
+							selected={defaultDateRangeInterval}
 							setSelected={handleIntervalChange}
 							selectedOptions={selectedIntervalOptions}
 							isDropdownOpenForParent={isDropdownOpenForParent}
@@ -54,7 +64,7 @@ const DefaultDateRangeInterval = () => {
 					</div>
 				</div>
 
-				{defaultMedalInterval === 'Custom' && (
+				{defaultDateRangeInterval === 'Custom' && (
 					<div className="mt-3">
 						<h4 className="text-[14px] font-bold">Custom Start Date</h4>
 						<p className="text-[14px] text-color-gray-50 mt-1 mb-2">Medals from this date to today</p>

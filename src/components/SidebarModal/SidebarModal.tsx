@@ -7,6 +7,7 @@ import UserProfileSection from './UserProfileSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import DefaultDateRangeInterval from '../FilterSidebar/DefaultDateRangeInterval';
 
 const SidebarModal = () => {
 	const dispatch = useDispatch();
@@ -86,6 +87,9 @@ const SidebarModal = () => {
 						{/* Sync */}
 						<hr className="border-color-gray-200 my-4" />
 						<SyncSection />
+
+						<hr className="border-color-gray-200 my-4" />
+						<DefaultDateRangeInterval />
 
 						{/* User Profile */}
 						<hr className="border-color-gray-200 my-4" />

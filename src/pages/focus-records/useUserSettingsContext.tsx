@@ -82,7 +82,7 @@ const useUserSettings = () => {
 	const { showMultiRingViewForOneActiveRing = false } = focusHoursGoalPageSettings || {};
 
 	const { selectedChallengeCardImage } = challengesPageSettings || {};
-	const { selectedMedalCardImage, defaultMedalInterval = 'All', customMedalStartDate = '' } = medalsPageSettings || {};
+	const { selectedMedalCardImage } = medalsPageSettings || {};
 
 	// Sync rings array to localStorage after API fetch completes
 	useEffect(() => {
@@ -174,12 +174,17 @@ const useUserSettings = () => {
 		}
 	};
 
+	const defaultDateRangeInterval = userSettings?.defaultDateRangeInterval || 'All'
+	const defaultCustomStartDate = userSettings?.defaultCustomStartDate || ''
+
 	return {
 		userSettings,
 		editUserSettings,
 		handleUpdateUserSettingForPage,
 		handleUpdateRingSetting,
 		handleSetSelectedRing,
+		defaultDateRangeInterval,
+		defaultCustomStartDate,
 		focusRecordsPageSettings: {
 			showFocusNotes,
 			showTotalFocusDuration,
@@ -219,8 +224,6 @@ const useUserSettings = () => {
 		},
 		medalsPageSettings: {
 			selectedMedalCardImage,
-			defaultMedalInterval,
-			customMedalStartDate,
 		},
 		isLoadingGetUserSettings
 	};
