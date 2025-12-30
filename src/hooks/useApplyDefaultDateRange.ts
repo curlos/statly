@@ -70,7 +70,7 @@ export const useApplyDefaultDateRange = ({
 	// After first successful query, allow querying without params (user clearing filters)
 	const shouldSkipQuery =
 		isLoadingGetUserSettings ||
-		(!hasDateQueryParams && !!startDate && !!endDate && !hasSuccessfullyQueriedRef.current);
+		(!hasDateQueryParams && !!startDate && !!endDate && !hasSuccessfullyQueriedRef.current && dateInterval !== 'All');
 
 	return {
 		shouldSkipQuery

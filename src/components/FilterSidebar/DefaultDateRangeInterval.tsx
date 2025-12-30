@@ -5,7 +5,7 @@ import { useState } from 'react';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
 import FormPickDateRange from '../FormPickDateRange';
 
-const OtherSectionMedals = () => {
+const DefaultDateRangeInterval = () => {
 	const {
 		medalsPageSettings: { defaultMedalInterval, customMedalStartDate },
 		handleUpdateUserSettingForPage,
@@ -76,4 +76,4 @@ const OtherSectionMedals = () => {
 	);
 };
 
-export default OtherSectionMedals;
+export default DefaultDateRangeInterval;
