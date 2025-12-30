@@ -4,8 +4,6 @@ import type { RootState } from '../../store/store';
 import Icon from '../Icon';
 import SyncSection from './SyncSection';
 import UserProfileSection from './UserProfileSection';
-import useGetDefaultMedalDates from '../../pages/medals/useGetDefaultMedalDates';
-import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import { useThemeContext } from '../../contexts/useThemeContext';
@@ -51,20 +49,6 @@ const SidebarModal = () => {
 		);
 	};
 
-	const { startDate, endDate, dateInterval } = useGetDefaultMedalDates();
-	const { buildUrlWithQueryParams } = useSearchParamsContext();
-
-	const getMedalsLinkUrl = () => {
-		if (dateInterval !== 'All' && startDate && endDate) {
-			return buildUrlWithQueryParams(
-				{ 'start-date': startDate, 'end-date': endDate, 'date-interval': dateInterval || '' },
-				'/medals/focus/daily',
-				false // Don't preserve existing params from current page
-			);
-		}
-		return '/medals/focus/daily';
-	};
-
 	return (
 		<AnimatePresence>
 			{isSidebarModalOpen && (
@@ -95,7 +79,7 @@ const SidebarModal = () => {
 							<LinkLi name="Focus Hours Goal" linkUrl="/focus-hours-goal" iconName="flag" />
 							<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timer" />
 							<LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" />
-							<LinkLi name="Medals" linkUrl={getMedalsLinkUrl()} iconName="workspace_premium" />
+							<LinkLi name="Medals" linkUrl={"/medals/focus/daily"} iconName="workspace_premium" />
 							<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />
 						</div>
 

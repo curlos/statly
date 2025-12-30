@@ -9,14 +9,12 @@ import ChosenMedalSkeleton from './ChosenMedalSkeleton';
 import Modal from '../../components/Modal/Modal';
 import Icon from '../../components/Icon';
 import { usePageContext } from 'vike-react/usePageContext';
-import { useGetFocusMedalsQuery } from '../../services/resources/focusRecordsApi';
-import { useGetTasksMedalsQuery } from '../../services/resources/tasksApi';
-import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import type { MedalWithName } from '../../types/api';
+import { useMedalsQuery } from './useMedalsQuery';
 
 const Page = () => {
 	const pageContext = usePageContext();
@@ -35,25 +33,8 @@ const Page = () => {
 	useResizeObserver(topHeaderRef, setHeaderHeight as (value: number | Record<string, number>) => void, 'height');
 	const maxHeight = useMaxHeight(headerHeight + 20);
 
-	const { queryParams } = useSharedQueryParams();
-
-	// Add interval from route params to query params for medals API
-	const medalsQueryParams = {
-		...queryParams,
-		interval: interval || 'daily'
-	};
-
-	// Fetch medals data from backend based on type
-	const { data: focusMedalsData, isLoading: isLoadingFocusMedals } = useGetFocusMedalsQuery(medalsQueryParams, {
-		skip: type !== 'focus'
-	});
-
-	const { data: tasksMedalsData, isLoading: isLoadingTasksMedals } = useGetTasksMedalsQuery(medalsQueryParams, {
-		skip: type !== 'tasks'
-	});
-
-	const isLoading = type === 'focus' ? isLoadingFocusMedals : isLoadingTasksMedals;
-	const medalsData = type === 'focus' ? focusMedalsData : tasksMedalsData;
+	// Use the medals query hook which handles defaults and prevents duplicate API calls
+	const { medalsData, isLoading } = useMedalsQuery({ type, interval });
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
 		{

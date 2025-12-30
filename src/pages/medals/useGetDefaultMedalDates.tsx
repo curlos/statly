@@ -11,7 +11,7 @@ const useGetDefaultMedalDates = () => {
 
 	const defaultMedalDates = useMemo(() => {
 		if (isLoadingGetUserSettings) {
-			return { startDate: '', endDate: '' };
+			return { startDate: '', endDate: '', dateInterval: '' };
 		}
 
 		const today = new Date();
