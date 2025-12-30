@@ -2,9 +2,6 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useEffect, useRef } from 'react';
 import ChallengeCard from './ChallengeCard';
 import ChallengeListSkeleton from './ChallengeListSkeleton';
-import { useGetFocusChallengesQuery } from '../../../services/resources/focusRecordsApi';
-import { useGetTasksChallengesQuery } from '../../../services/resources/tasksApi';
-import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 import type { Challenge } from '../../../types/api';
 
 interface ChallengeListProps {
@@ -12,31 +9,25 @@ interface ChallengeListProps {
 	chosenChallenge: Challenge | null;
 	setChosenChallenge: React.Dispatch<React.SetStateAction<Challenge | null>>;
 	setShowChosenChallengeModal: (show: boolean) => void;
+	challengesData: Challenge[] | undefined;
+	isLoading: boolean;
 }
 
-const ChallengeList: React.FC<ChallengeListProps> = ({ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }) => {
+const ChallengeList: React.FC<ChallengeListProps> = ({
+	maxHeight,
+	chosenChallenge,
+	setChosenChallenge,
+	setShowChosenChallengeModal,
+	challengesData,
+	isLoading
+}) => {
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const pageContext = usePageContext();
 	const { type } = pageContext.routeParams;
 
-	// Build query params using shared hook
-	const { queryParams } = useSharedQueryParams();
-
-	// Fetch challenges data from backend based on type
-	const { data: focusChallengesData, isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {
-		skip: type !== 'focus'
-	});
-
-	const { data: tasksChallengesData, isLoading: isLoadingTasksChallenges } = useGetTasksChallengesQuery(queryParams, {
-		skip: type !== 'tasks'
-	});
-
-	const isLoadingFocusOrTasksData = type === 'focus' ? isLoadingFocusChallenges : isLoadingTasksChallenges;
-	const challengesData = type === 'focus' ? focusChallengesData : tasksChallengesData;
-
 	// Set default chosen challenge - always update when type/filters change
 	useEffect(() => {
-		if (!challengesData || isLoadingFocusOrTasksData) {
+		if (!challengesData || isLoading) {
 			return;
 		}
 
@@ -51,7 +42,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({ maxHeight, chosenChalleng
 			setChosenChallenge(firstCompletedChallenge);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [challengesData, isLoadingFocusOrTasksData, type]);
+	}, [challengesData, isLoading, type]);
 
 	const getChallengesToUse = () => {
 		const { type } = pageContext.routeParams;
@@ -70,7 +61,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({ maxHeight, chosenChalleng
 	const completedChallenges = challengesToUse.filter((challenge: Challenge) => challenge.completedDate);
 	const incompleteChallenges = challengesToUse.filter((challenge: Challenge) => !challenge.completedDate);
 
-	if (isLoadingFocusOrTasksData) {
+	if (isLoading) {
 		return <ChallengeListSkeleton maxHeight={maxHeight} />;
 	}
 
@@ -86,7 +77,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({ maxHeight, chosenChalleng
 								isChosenChallenge: challenge.name === chosenChallenge?.name,
 								setChosenChallenge,
 								isIncomplete: false,
-								isLoadingFocusOrTasksData,
+								isLoading,
 								setShowChosenChallengeModal,
 								completedChallenges,
 							}}
@@ -103,7 +94,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({ maxHeight, chosenChalleng
 								isChosenChallenge: challenge.name === chosenChallenge?.name,
 								setChosenChallenge,
 								isIncomplete: true,
-								isLoadingFocusOrTasksData,
+								isLoading,
 								setShowChosenChallengeModal,
 								completedChallenges,
 							}}

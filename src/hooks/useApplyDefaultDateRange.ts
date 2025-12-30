@@ -1,19 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSearchParamsContext } from '../contexts/useSearchParamsContext';
-
-interface UseApplyDefaultDateRangeParams {
-	defaultDateIntervalObj: { 
-		startDate: string;
-		endDate: string;
-		dateInterval: string;
-	};
-	isLoadingGetUserSettings: boolean;
-	shouldApplyDefaults?: boolean;
-}
-
-interface UseApplyDefaultDateRangeReturn {
-	shouldSkipQuery: boolean;
-}
+import { useUserSettingsContext } from '../pages/focus-records/useUserSettingsContext';
+import useGetDefaultDateRangeIntervalDates from './useGetDefaultDateRangeIntervalDates';
 
 /**
  * Reusable hook for applying default date ranges to URL query params.
@@ -22,12 +10,11 @@ interface UseApplyDefaultDateRangeReturn {
  * date query params. Uses a two-ref pattern to prevent duplicate API calls during the
  * async updateQueryParams operation.
  */
-export const useApplyDefaultDateRange = ({
-	defaultDateIntervalObj,
-	isLoadingGetUserSettings,
-}: UseApplyDefaultDateRangeParams): UseApplyDefaultDateRangeReturn => {
+export const useApplyDefaultDateRange = (): { shouldSkipQuery: boolean; } => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const { startDate, endDate, dateInterval } = defaultDateIntervalObj
+	const { isLoadingGetUserSettings } = useUserSettingsContext();
+	const defaultDateIntervalObj = useGetDefaultDateRangeIntervalDates();
+	const { startDate, endDate, dateInterval } = defaultDateIntervalObj;
 
 	// This first ref is needed so that we only make the "updateQueryParams" with the default date interval ONCE. After that one time, it won't do it again.
 	const sentUpdateQueryParamsForDefaultsRef = useRef(false);

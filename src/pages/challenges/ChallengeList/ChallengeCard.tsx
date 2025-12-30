@@ -10,7 +10,7 @@ interface ChallengeCardProps {
 	isChosenChallenge: boolean;
 	setChosenChallenge: (challenge: Challenge) => void;
 	isIncomplete?: boolean;
-	isLoadingFocusOrTasksData: boolean;
+	isLoading: boolean;
 	setShowChosenChallengeModal: (show: boolean) => void;
 	completedChallenges: Challenge[];
 }
@@ -20,7 +20,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 	isChosenChallenge,
 	setChosenChallenge,
 	isIncomplete = false,
-	isLoadingFocusOrTasksData,
+	isLoading,
 	setShowChosenChallengeModal,
 	completedChallenges,
 }) => {
@@ -56,7 +56,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 			className={classNames(
 				'cursor-pointer flex flex-col',
 				isChosenChallenge ? `border-2 ${chosenColorObj.borderColor}` : 'border-2 border-color-gray-200',
-				isLoadingFocusOrTasksData ? 'animate-pulse' : isIncomplete && 'opacity-50'
+				isLoading ? 'animate-pulse' : isIncomplete && 'opacity-50'
 			)}
 			onClick={() => {
 				setChosenChallenge(challenge);

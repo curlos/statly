@@ -12,6 +12,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useGetFocusChallengesQuery } from '../../services/resources/focusRecordsApi';
 import { useGetTasksChallengesQuery } from '../../services/resources/tasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
+import { useApplyDefaultDateRange } from '../../hooks/useApplyDefaultDateRange';
 import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import { useThemeContext } from '../../contexts/useThemeContext';
@@ -37,16 +38,18 @@ const Page = () => {
 
 	// Build query params using shared hook
 	const { queryParams } = useSharedQueryParams();
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
 
 	// Fetch challenges data from backend based on type
-	const { isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {
-		skip: type !== 'focus'
+	const { data: focusChallengesData, isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {
+		skip: type !== 'focus' || shouldSkipQuery
 	});
 
-	const { isLoading: isLoadingTasksChallenges } = useGetTasksChallengesQuery(queryParams, {
-		skip: type !== 'tasks'
+	const { data: tasksChallengesData, isLoading: isLoadingTasksChallenges } = useGetTasksChallengesQuery(queryParams, {
+		skip: type !== 'tasks' || shouldSkipQuery
 	});
 
+	const challengesData = type === 'focus' ? focusChallengesData : tasksChallengesData;
 	const isLoading = type === 'focus' ? isLoadingFocusChallenges : isLoadingTasksChallenges;
 
 	const BUTTONS_MEDALS_TYPE_OBJ = [
@@ -100,7 +103,7 @@ const Page = () => {
 			<div className="container grid grid-cols-12 gap-2">
 				<div className="col-span-12 md:col-span-7 lg:col-span-8 mr-2">
 					<ChallengeList
-						{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal }}
+						{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal, challengesData, isLoading }}
 					/>
 				</div>
 
