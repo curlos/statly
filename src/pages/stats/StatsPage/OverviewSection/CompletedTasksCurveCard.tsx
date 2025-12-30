@@ -99,7 +99,7 @@ const CompletedTasksCurveCard = () => {
 						top: 10,
 						right: 30,
 						left: 0,
-						bottom: selectedInterval === 'Week' ? 10 : 5,
+						bottom: (selectedInterval === 'Week' || selectedInterval === 'Custom') ? 10 : 5,
 					}}
 				>
 					<defs>
