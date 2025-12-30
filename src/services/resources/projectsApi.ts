@@ -31,27 +31,15 @@ export const projectsApi = baseAPI.injectEndpoints({
 
                     const projects = projectsResult.data as Project[];
 
-                    // Add inbox project if we have a valid inboxId
-                    const projectsWithInbox: Project[] = inboxId
-                        ? [
-                            ...projects,
-                            {
-                                id: inboxId,
-                                name: 'Inbox',
-                                source: 'ProjectTickTick',
-                            } as Project,
-                          ]
-                        : projects;
-
-                    const projectsById = arrayToObjectByKey(projectsWithInbox, 'id');
-                    const projectsTickTick = projectsWithInbox.filter((project) => project.source === 'ProjectTickTick' || (inboxId && project.id === inboxId));
+                    const projectsById = arrayToObjectByKey(projects, 'id');
+                    const projectsTickTick = projects.filter((project) => project.source === 'ProjectTickTick' || (inboxId && project.id === inboxId));
                     const projectsTodoist = projects.filter((project) => project.source === 'ProjectTodoist');
                     const projectsSession = projects.filter((project) => project.source === 'ProjectSession');
                     const projectsSessionById = arrayToObjectByKey(projectsSession, 'id');
 
                     return {
                         data: {
-                            projects: projectsWithInbox,
+                            projects: projects,
                             projectsById,
                             projectsTickTick,
                             projectsTodoist,
