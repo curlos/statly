@@ -14,7 +14,7 @@ export default function Page() {
 		<div className="min-h-screen bg-color-gray-700">
 			<div className="flex flex-col justify-center items-center min-h-screen overflow-auto gray-scrollbar">
 				<div ref={topHeaderRef} className="w-full mb-4 sm:mb-0">
-					<Navbar page="focus-hours-goal-page" showFilterSidebarIcon={true} />
+					<Navbar page="focus-time-goal-page" showFilterSidebarIcon={true} />
 
 					<div className="container mt-2 hidden lg:block">
 						<AppliedFilterItemList />

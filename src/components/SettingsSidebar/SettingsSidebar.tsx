@@ -117,7 +117,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 				</>
 			)}
 
-			{page === 'focus-hours-goal-page' && (
+			{page === 'focus-time-goal-page' && (
 				<div>
 					<hr className="border-color-gray-200 my-4" />
 					<FocusHoursGoalPageSettingsSection />

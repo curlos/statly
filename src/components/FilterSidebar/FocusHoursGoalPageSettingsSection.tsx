@@ -456,7 +456,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 						minNum={1}
 						maxNum={36524}
 						name="Goal Days"
-						page="focus-hours-goal-page"
+						page="focus-time-goal-page"
 						inputMaxWidth="w-[70px]"
 						ringId={selectedRingId}
 						handleUpdateRingSetting={handleUpdateRingSetting}
@@ -503,7 +503,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 					<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
 						Select projects to count towards your focus hours for this ring. Only time tracked in selected projects will contribute to your daily goal.
 					</p>
-					<ProjectsTickTickSection page="focus-hours-goal" />
+					<ProjectsTickTickSection page="focus-time-goal" />
 				</div>
 
 				<ModalRestDays
@@ -575,7 +575,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 						minNum={1}
 						maxNum={36524}
 						name="Goal Days"
-						page="focus-hours-goal-page"
+						page="focus-time-goal-page"
 						inputMaxWidth="w-[70px]"
 						pageLevel={true}
 						pageProperty="combinedRingsSettings"

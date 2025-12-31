@@ -19,7 +19,7 @@ const getBasePath = (pathname: string) => {
 // Routes that should have defaults applied
 const ROUTES_WITH_DEFAULTS = new Set([
 	'/stats',
-	'/focus-hours-goal',
+	'/focus-time-goal',
 	'/focus-records',
 	'/completed-tasks',
 	'/medals',

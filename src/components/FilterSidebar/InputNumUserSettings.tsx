@@ -95,9 +95,9 @@ const InputNumUserSettings = ({
 					},
 				},
 			};
-		} else if (page === 'focus-hours-goal-page') {
+		} else if (page === 'focus-time-goal-page') {
 			// This case is now handled by ring-specific updates via handleUpdateRingSetting
-			// No need to update user settings directly for focus-hours-goal-page
+			// No need to update user settings directly for focus-time-goal-page
 			return;
 		}
 
@@ -121,7 +121,7 @@ const InputNumUserSettings = ({
 		setErrorMessage('');
 
 		// If page-level update for combined settings
-		if (pageLevel && page === 'focus-hours-goal-page' && pageProperty && handleUpdateUserSettingForPage && currentPageValue) {
+		if (pageLevel && page === 'focus-time-goal-page' && pageProperty && handleUpdateUserSettingForPage && currentPageValue) {
 			setApiRequestLoading(true);
 			await handleUpdateUserSettingForPage(
 				'focusHoursGoal',
@@ -135,15 +135,15 @@ const InputNumUserSettings = ({
 			return;
 		}
 
-		// If ring-specific update is provided for focus-hours-goal-page
-		if (page === 'focus-hours-goal-page' && ringId && handleUpdateRingSetting) {
+		// If ring-specific update is provided for focus-time-goal-page
+		if (page === 'focus-time-goal-page' && ringId && handleUpdateRingSetting) {
 			setApiRequestLoading(true);
 			await handleUpdateRingSetting(ringId, 'goalDays', localValue);
 			setApiRequestLoading(false);
 			return;
 		}
 
-		if (page === 'focus-records-page' || page === 'completed-tasks-page' || page === 'focus-hours-goal-page') {
+		if (page === 'focus-records-page' || page === 'completed-tasks-page' || page === 'focus-time-goal-page') {
 			const payload = getPayload();
 
 			if (!payload) {

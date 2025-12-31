@@ -77,7 +77,7 @@ const SidebarModal = () => {
 					>
 						<div className="font-bold text-[24px]">
 							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="query_stats" />
-							<LinkLi name="Focus Hours Goal" linkUrl="/focus-hours-goal" iconName="flag" />
+							<LinkLi name="Focus Time Goal" linkUrl="/focus-time-goal" iconName="flag" />
 							<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timer" />
 							<LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" />
 							<LinkLi name="Medals" linkUrl={"/medals/focus/daily"} iconName="workspace_premium" />

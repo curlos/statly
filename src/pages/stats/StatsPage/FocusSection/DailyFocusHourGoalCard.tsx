@@ -1,4 +1,4 @@
-import DailyHoursFocusGoal from "../../../focus-hours-goal/DailyHoursFocusGoal";
+import DailyHoursFocusGoal from "../../../focus-time-goal/DailyHoursFocusGoal";
 
 const DailyHoursFocusGoalCard = () => {
 	return (

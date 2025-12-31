@@ -22,7 +22,7 @@ export const useStatsDateRange = (options: UseStatsDateRangeOptions) => {
 
 	// Custom date modal state
 	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
-	const [startDate, setStartDate] = useState(new Date('January 1, 2024'));
+	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(new Date());
 
 	// Get API-formatted date range

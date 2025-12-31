@@ -178,8 +178,8 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 
 	return (
 		<div>
-			{/* Selected Projects Display - Only for focus-hours-goal page */}
-			{page === 'focus-hours-goal' && getSelectedProjectIds().length > 0 && (
+			{/* Selected Projects Display - Only for focus-time-goal page */}
+			{page === 'focus-time-goal' && getSelectedProjectIds().length > 0 && (
 				<div className="mb-3">
 					<AppliedFilterItem
 						name="Projects (TickTick)"
@@ -234,7 +234,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 
 							const project = projectOrProjectGroup as ProjectTickTick;
 
-							if (page == 'focus-hours-goal') {
+							if (page == 'focus-time-goal') {
 								const showValue = filteredProjects?.[project.id] ?? false;
 
 								return (
@@ -351,7 +351,7 @@ const ProjectGroupWithProjects: React.FC<ProjectGroupWithProjectsProps> = ({
 			>
 				<div className="pl-4">
 					{groupedProjects?.map((project) => {
-						if (page == 'focus-hours-goal') {
+						if (page == 'focus-time-goal') {
 							const showValue = filteredProjects?.[project.id] ?? false;
 
 							return (
