@@ -9,6 +9,7 @@ import TimelineChart from './TimelineChart';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
+import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
 
 const TimelineCard = () => {
 	// Initialize with Week range to match selectedInterval='Week'
@@ -24,8 +25,12 @@ const TimelineCard = () => {
 		'interval-end-date': apiEndDate ?? undefined,
 	});
 
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
+
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams, {
+		skip: shouldSkipQuery
+	});
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] sm:h-[350px]">

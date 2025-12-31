@@ -6,6 +6,7 @@ import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
+import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
 import type { StatsByHourItem } from '../../../../types/api';
@@ -37,8 +38,12 @@ const MostFocusedTimeCard = () => {
 		'interval-end-date': apiEndDate ?? undefined,
 	});
 
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
+
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams, {
+		skip: shouldSkipQuery
+	});
 
 	// Transform API data to chart format
 	const data = (statsData?.byHour || []).map((hourData: StatsByHourItem) => ({

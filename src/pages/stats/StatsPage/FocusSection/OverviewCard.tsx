@@ -5,6 +5,7 @@ import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
+import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
 import Spinner from '../../../../components/Loaders/Spinner';
 
 const OverviewCard = () => {
@@ -36,14 +37,22 @@ const OverviewCard = () => {
 		'interval-end-date': todayDateKey,
 	});
 
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
+
 	// Fetch today's stats
-	const { data: todayStats, isLoading: isTodayLoading, isFetching: isTodayFetching } = useGetFocusStatsQuery(todayQueryParams);
+	const { data: todayStats, isLoading: isTodayLoading, isFetching: isTodayFetching } = useGetFocusStatsQuery(todayQueryParams, {
+		skip: shouldSkipQuery
+	});
 
 	// Fetch yesterday's stats
-	const { data: yesterdayStats, isLoading: isYesterdayLoading, isFetching: isYesterdayFetching } = useGetFocusStatsQuery(yesterdayQueryParams);
+	const { data: yesterdayStats, isLoading: isYesterdayLoading, isFetching: isYesterdayFetching } = useGetFocusStatsQuery(yesterdayQueryParams, {
+		skip: shouldSkipQuery
+	});
 
 	// Fetch all-time stats
-	const { data: allTimeStats, isLoading: isAllTimeLoading, isFetching: isAllTimeFetching } = useGetFocusStatsQuery(allTimeQueryParams);
+	const { data: allTimeStats, isLoading: isAllTimeLoading, isFetching: isAllTimeFetching } = useGetFocusStatsQuery(allTimeQueryParams, {
+		skip: shouldSkipQuery
+	});
 
 	// Check if any query is loading or fetching
 	const isLoading = isTodayLoading || isYesterdayLoading || isAllTimeLoading || isTodayFetching || isYesterdayFetching || isAllTimeFetching;
