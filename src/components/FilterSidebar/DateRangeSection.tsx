@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Accordion from '../Accordion/Accordion';
 import FormPickDateRange from '../FormPickDateRange';
 import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
-import { getFormattedShortMonthDay } from '../../utils/date.utils';
+import { getFormattedShortMonthDay, getAllDaysInRange } from '../../utils/date.utils';
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangePicker';
 import { useThemeContext } from '../../contexts/useThemeContext';
@@ -26,8 +26,26 @@ const DateRangeSection = () => {
 	const [selectedInterval, setSelectedInterval] = useState<string>(intervalFromUrl);
 	const [selectedDates, setSelectedDates] = useState<Date[]>([startDate]);
 	const [isInitialMount, setIsInitialMount] = useState<boolean>(true);
+	const prevIntervalRef = useRef<string>(intervalFromUrl);
 
 	useEffect(() => {
+		// When switching TO Custom, populate start/end dates from selectedDates
+		const previousInterval = prevIntervalRef.current;
+		const switchingToCustom = previousInterval !== 'Custom' && selectedInterval === 'Custom';
+
+		if (switchingToCustom && selectedDates.length > 0) {
+			const newStartDate = selectedDates[0];
+			const newEndDate = selectedDates[selectedDates.length - 1];
+			// Update start/end dates immediately for Custom interval
+			setStartDate(newStartDate);
+			setEndDate(newEndDate);
+			// Directly update selectedDates to the full range to avoid timing issues
+			setSelectedDates(getAllDaysInRange(newStartDate, newEndDate));
+		}
+
+		prevIntervalRef.current = selectedInterval;
+
+		// Update URL params
 		if (isInitialMount) {
 			setIsInitialMount(false);
 			return;
@@ -62,6 +80,15 @@ const DateRangeSection = () => {
 		updateQueryParams(params);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedDates, selectedInterval]);
+
+	// Compute the correct dates to display in FormPickDateRange
+	// If we're in Custom mode, use selectedDates to ensure immediate updates
+	const displayStartDate = selectedInterval === 'Custom' && selectedDates.length > 0
+		? selectedDates[0]
+		: startDate;
+	const displayEndDate = selectedInterval === 'Custom' && selectedDates.length > 0
+		? selectedDates[selectedDates.length - 1]
+		: endDate;
 
 	return (
 		<div>
@@ -106,9 +133,9 @@ const DateRangeSection = () => {
 				{selectedInterval === 'Custom' && (
 					<FormPickDateRange
 						{...{
-							startDate: startDate,
+							startDate: displayStartDate,
 							setStartDate,
-							endDate: endDate,
+							endDate: displayEndDate,
 							setEndDate,
 							confirmBeforeUpdating: false,
 							onUpdateStartOrEndDate: (newStartDate, newEndDate) => {

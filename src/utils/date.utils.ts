@@ -353,3 +353,175 @@ export const parseDateRange = (rangeType: string, rangeValue: string) => {
       throw new Error("Unsupported range type: " + rangeType);
   }
 }
+
+/**
+ * Checks if a given date falls within the current year
+ * @param date - The date to check
+ * @returns boolean - true if the date is in the current year
+ */
+export const isCurrentYear = (date: Date): boolean => {
+	const now = new Date();
+	return date.getFullYear() === now.getFullYear();
+};
+
+/**
+ * Checks if a given date falls within the current month and year
+ * @param date - The date to check
+ * @returns boolean - true if the date is in the current month
+ */
+export const isCurrentMonth = (date: Date): boolean => {
+	const now = new Date();
+	return (
+		date.getFullYear() === now.getFullYear() &&
+		date.getMonth() === now.getMonth()
+	);
+};
+
+/**
+ * Checks if a given date falls within the current week (Monday-Sunday)
+ * Uses the same week calculation logic as getAllDaysInWeekFromDate
+ * @param date - The date to check
+ * @returns boolean - true if the date is in the current week
+ */
+export const isCurrentWeek = (date: Date): boolean => {
+	const now = new Date();
+	const currentWeekDays = getAllDaysInWeekFromDate(now);
+
+	// Normalize dates to midnight for comparison
+	const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+	return currentWeekDays.some(weekDay => {
+		const normalizedWeekDay = new Date(
+			weekDay.getFullYear(),
+			weekDay.getMonth(),
+			weekDay.getDate()
+		);
+		return normalizedWeekDay.getTime() === normalizedDate.getTime();
+	});
+};
+
+/**
+ * Checks if a given date is today
+ * @param date - The date to check
+ * @returns boolean - true if the date is today
+ */
+export const isCurrentDay = (date: Date): boolean => {
+	const now = new Date();
+	return (
+		date.getFullYear() === now.getFullYear() &&
+		date.getMonth() === now.getMonth() &&
+		date.getDate() === now.getDate()
+	);
+};
+
+/**
+ * Gets the first day of the month for a given date
+ * @param date - The date to get the first day for
+ * @returns Date - First day of the month at noon
+ */
+export const getFirstDayOfMonth = (date: Date): Date => {
+	return new Date(date.getFullYear(), date.getMonth(), 1, 12, 0, 0);
+};
+
+/**
+ * Gets the first day of the year for a given date
+ * @param date - The date to get the first day for
+ * @returns Date - First day of the year (January 1st) at noon
+ */
+export const getFirstDayOfYear = (date: Date): Date => {
+	return new Date(date.getFullYear(), 0, 1, 12, 0, 0);
+};
+
+/**
+ * Gets the first day (Monday) of the week for a given date
+ * @param date - The date to get the first day for
+ * @returns Date - Monday of the week containing the date
+ */
+export const getFirstDayOfWeek = (date: Date): Date => {
+	const dayOfWeek = date.getDay();
+	const start = new Date(date);
+	// Adjust to Monday (same logic as getAllDaysInWeekFromDate)
+	start.setDate(start.getDate() - ((dayOfWeek + 6) % 7));
+	return start;
+};
+
+/**
+ * Determines the smart date to use when changing intervals
+ * If the current period represents "now" (current year/month/week/day),
+ * navigate to the current date at the new granularity.
+ * Otherwise, navigate to the start of the selected period.
+ *
+ * @param currentDate - The currently selected date
+ * @param fromInterval - The interval we're switching from
+ * @param toInterval - The interval we're switching to
+ * @returns Date - The date to use for the new interval
+ */
+export const getSmartDateForIntervalChange = (
+	currentDate: Date,
+	fromInterval: string,
+	toInterval: string
+): Date => {
+	const now = new Date();
+
+	// Helper to check if we should use "current" date
+	const shouldUseCurrentDate = (): boolean => {
+		switch (fromInterval) {
+			case 'Year':
+				return isCurrentYear(currentDate);
+			case 'Month':
+				return isCurrentMonth(currentDate);
+			case 'Week':
+				return isCurrentWeek(currentDate);
+			case 'Day':
+				return isCurrentDay(currentDate);
+			case 'All':
+			case 'Custom':
+				return true; // Always use current when coming from All/Custom
+			default:
+				return false;
+		}
+	};
+
+	// If current period is "now", return today's date
+	if (shouldUseCurrentDate()) {
+		return now;
+	}
+
+	// Otherwise, return the start of the period at the new granularity
+	switch (toInterval) {
+		case 'Day':
+			// When going to Day, use the first day of the previous period
+			if (fromInterval === 'Week') {
+				return getFirstDayOfWeek(currentDate);
+			} else if (fromInterval === 'Month') {
+				return getFirstDayOfMonth(currentDate);
+			} else if (fromInterval === 'Year') {
+				return getFirstDayOfYear(currentDate);
+			}
+			return currentDate;
+
+		case 'Week':
+			// When going to Week, use the first week of the previous period
+			if (fromInterval === 'Month') {
+				return getFirstDayOfMonth(currentDate);
+			} else if (fromInterval === 'Year') {
+				return getFirstDayOfYear(currentDate);
+			}
+			return currentDate;
+
+		case 'Month':
+			// When going to Month, use the first month of the previous period
+			if (fromInterval === 'Year') {
+				return getFirstDayOfYear(currentDate);
+			}
+			return currentDate;
+
+		case 'Year':
+		case 'All':
+		case 'Custom':
+			return currentDate;
+
+		default:
+			return currentDate;
+	}
+};

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Icon from '../../../../components/Icon';
 import {
 	getAllDaysInWeekFromDate,
@@ -7,6 +7,7 @@ import {
 	getAllDaysInRange,
 	formatCheckedInDayDate,
 	getFormattedShortMonthDay,
+	getSmartDateForIntervalChange,
 } from '../../../../utils/date.utils';
 
 interface DateRangePickerProps {
@@ -18,21 +19,50 @@ interface DateRangePickerProps {
 }
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSelectedDates, selectedInterval, startDate, endDate }) => {
+	// Track previous interval to detect changes
+	const prevIntervalRef = useRef<string>(selectedInterval);
+
 	useEffect(() => {
 		const firstDay = selectedDates[0] || new Date();
+		const previousInterval = prevIntervalRef.current;
 
+		// Check if interval actually changed
+		const intervalChanged = previousInterval !== selectedInterval;
+
+		// When switching TO Custom, let DateRangeSection handle the state updates
+		const switchingToCustom = intervalChanged && selectedInterval === 'Custom';
+		if (switchingToCustom) {
+			prevIntervalRef.current = selectedInterval;
+			return;
+		}
+
+		// Determine the date to use
+		let dateToUse: Date;
+		if (intervalChanged && selectedInterval !== 'Custom') {
+			// Use smart navigation when interval changes
+			dateToUse = getSmartDateForIntervalChange(
+				firstDay,
+				previousInterval,
+				selectedInterval
+			);
+		} else {
+			// Preserve current date when not changing intervals
+			dateToUse = firstDay;
+		}
+
+		// Apply the interval-specific date range
 		switch (selectedInterval) {
 			case 'Day':
-				setSelectedDates([firstDay]);
+				setSelectedDates([dateToUse]);
 				break;
 			case 'Week':
-				setSelectedDates(getAllDaysInWeekFromDate(firstDay));
+				setSelectedDates(getAllDaysInWeekFromDate(dateToUse));
 				break;
 			case 'Month':
-				setSelectedDates(getAllDaysInMonthFromDate(firstDay));
+				setSelectedDates(getAllDaysInMonthFromDate(dateToUse));
 				break;
 			case 'Year':
-				setSelectedDates(getAllDaysInYearFromDate(firstDay));
+				setSelectedDates(getAllDaysInYearFromDate(dateToUse));
 				break;
 			case 'Custom':
 				if (startDate && endDate) {
@@ -40,6 +70,10 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 				}
 				break;
 		}
+
+		// Update the ref for next comparison
+		prevIntervalRef.current = selectedInterval;
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedInterval, startDate, endDate]);
 
