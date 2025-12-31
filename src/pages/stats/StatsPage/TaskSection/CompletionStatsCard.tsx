@@ -15,6 +15,7 @@ import Spinner from '../../../../components/Loaders/Spinner';
 import { groupTasksByParent, type GroupedDataItem } from '../../../../utils/taskGrouping.utils';
 import { aggregateNestedTasksByParent } from '../../../../utils/nestedTaskAggregation.utils';
 import { getPieChartPaddingAngle } from '../../../../utils/pieChart.utils';
+import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
 import type { AggregationResults } from '../../../../types/stats';
 
 const noData = [
@@ -65,12 +66,16 @@ const CompletionStatsCard = () => {
 		'nested': showNestedProgressBars,
 	});
 
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
+
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetTasksStatsQuery(queryParams);
+	const { data: statsData, isLoading, isFetching } = useGetTasksStatsQuery(queryParams, {
+		skip: shouldSkipQuery
+	});
 	const { ancestorTasksById } = statsData || {};
 
 	const totalCompletedTasks = statsData?.summary?.totalCount || 0;

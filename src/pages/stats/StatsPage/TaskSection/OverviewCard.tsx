@@ -8,6 +8,7 @@ import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import GeneralSelectButtonAndDropdown from '../../StatsPage/GeneralSelectButtonAndDropdown';
 import Spinner from '../../../../components/Loaders/Spinner';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
+import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
 
 const OverviewCard = () => {
 	const themeContext = useThemeContext();
@@ -92,13 +93,17 @@ const OverviewCard = () => {
 		'interval-end-date': prevIntervalDateRange.endDate,
 	});
 
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
+
 	// Fetch current interval stats
-	const { data: currentStats, isLoading, isFetching } = useGetTasksStatsQuery(currentQueryParams);
+	const { data: currentStats, isLoading, isFetching } = useGetTasksStatsQuery(currentQueryParams, {
+		skip: shouldSkipQuery
+	});
 
 	// Fetch previous interval stats (skip if All or Custom interval)
 	const shouldFetchPrevInterval = selectedInterval !== 'All' && selectedInterval !== 'Custom';
 	const { data: prevStats } = useGetTasksStatsQuery(prevQueryParams, {
-		skip: !shouldFetchPrevInterval,
+		skip: !shouldFetchPrevInterval || shouldSkipQuery,
 	});
 
 	// Calculate counts
