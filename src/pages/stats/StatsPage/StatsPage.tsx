@@ -15,7 +15,7 @@ const StatsPage = () => {
 				<div className="container">
 					<TopBar />
 
-					<div className="mt-3 hidden lg:block">
+					<div className="mt-3 hidden md:block">
 						<AppliedFilterItemList />
 					</div>
 

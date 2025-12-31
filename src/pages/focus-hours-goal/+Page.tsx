@@ -16,7 +16,7 @@ export default function Page() {
 				<div ref={topHeaderRef} className="w-full mb-4 sm:mb-0">
 					<Navbar page="focus-hours-goal-page" showFilterSidebarIcon={true} />
 
-					<div className="container mt-2">
+					<div className="container mt-2 hidden lg:block">
 						<AppliedFilterItemList />
 					</div>
 				</div>
