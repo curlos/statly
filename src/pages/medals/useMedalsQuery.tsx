@@ -1,7 +1,7 @@
 import { useGetFocusMedalsQuery } from '../../services/resources/focusRecordsApi';
 import { useGetTasksMedalsQuery } from '../../services/resources/tasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
-import { useApplyDefaultDateRange } from '../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../contexts/useApplyDefaultDateRangeContext';
 
 interface UseMedalsQueryProps {
 	type: string;
@@ -10,7 +10,7 @@ interface UseMedalsQueryProps {
 
 export const useMedalsQuery = ({ type, interval }: UseMedalsQueryProps) => {
 	const { queryParams } = useSharedQueryParams();
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	const medalsQueryParams = {
 		...queryParams,

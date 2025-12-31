@@ -9,6 +9,7 @@ import GlobalModalList from '../components/Modal/GlobalModalList';
 import { ThemeProvider, useThemeContext } from '../contexts/useThemeContext';
 import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
 import { UserSettingsProvider } from './focus-records/useUserSettingsContext';
+import { ApplyDefaultDateRangeProvider } from '../contexts/ApplyDefaultDateRangeContext';
 import { usePageContext } from 'vike-react/usePageContext';
 import { selectUserToken, loginUserSuccess } from '../slices/userSlice';
 import { navigate } from 'vike/client/router';
@@ -80,7 +81,9 @@ const ProviderList: React.FC<ProviderListProps> = ({ children }) => {
 		<SearchParamsProvider>
 			<ThemeProvider>
 				<UserSettingsProvider>
-					<LoggedInBase children={children} />
+					<ApplyDefaultDateRangeProvider>
+						<LoggedInBase children={children} />
+					</ApplyDefaultDateRangeProvider>
 				</UserSettingsProvider>
 			</ThemeProvider>
 		</SearchParamsProvider>

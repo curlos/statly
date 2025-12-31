@@ -12,7 +12,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useGetFocusChallengesQuery } from '../../services/resources/focusRecordsApi';
 import { useGetTasksChallengesQuery } from '../../services/resources/tasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
-import { useApplyDefaultDateRange } from '../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../contexts/useApplyDefaultDateRangeContext';
 import AppliedFilterItemList from '../focus-records/AppliedFilterItemList';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import { useThemeContext } from '../../contexts/useThemeContext';
@@ -38,7 +38,7 @@ const Page = () => {
 
 	// Build query params using shared hook
 	const { queryParams } = useSharedQueryParams();
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch challenges data from backend based on type
 	const { data: focusChallengesData, isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {

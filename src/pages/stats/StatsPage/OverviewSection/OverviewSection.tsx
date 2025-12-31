@@ -5,12 +5,12 @@ import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import Spinner from '../../../../components/Loaders/Spinner';
 import Tooltip from '../../../../components/Tooltip';
 import Icon from '../../../../components/Icon';
-import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../../../contexts/useApplyDefaultDateRangeContext';
 
 const OverviewSection = () => {
 	// Build query params for overview stats (respects FilterSidebar selections)
 	const overviewQueryParams = useStatsQueryParams();
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	const { data: overviewStats, isLoading, isFetching } = useGetOverviewStatsQuery(overviewQueryParams, {
 		skip: shouldSkipQuery

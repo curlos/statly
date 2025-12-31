@@ -5,7 +5,7 @@ import Spinner from '../../../../components/Loaders/Spinner';
 import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
-import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../../../contexts/useApplyDefaultDateRangeContext';
 
 const YearGridsCard = () => {
 	const [selectedDates, setSelectedDates] = useState([new Date()]);
@@ -24,7 +24,7 @@ const YearGridsCard = () => {
 		'interval-end-date': yearEndDate,
 	});
 
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch stats from API
 	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams, {

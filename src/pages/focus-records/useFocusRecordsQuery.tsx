@@ -1,11 +1,11 @@
 import { useGetFocusRecordsQuery } from '../../services/resources/focusRecordsApi';
 import { useUserSettingsContext } from './useUserSettingsContext';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
-import { useApplyDefaultDateRange } from '../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../contexts/useApplyDefaultDateRangeContext';
 
 export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) => {
 	const { urlValues, queryParams } = useSharedQueryParams();
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	const {
 		focusRecordsPageSettings: {

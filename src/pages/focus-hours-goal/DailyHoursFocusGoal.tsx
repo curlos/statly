@@ -12,7 +12,7 @@ import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import ModalFocusGoalProgress from '../../components/Modal/ModalFocusGoalProgress';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import useWindowSize from '../../hooks/useWindowSize';
-import { useApplyDefaultDateRange } from '../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../contexts/useApplyDefaultDateRangeContext';
 import type { Ring } from '../../types/api';
 
 // Inferred types from API responses
@@ -78,7 +78,7 @@ interface RingWithCustomGoal extends Ring {
 const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	// Fetch today's focus data for all rings
 	const { queryParams } = useSharedQueryParams();
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 	const { data: allRingsTodayData, isLoading: isTodayLoading } = useGetStreaksTodayQuery(queryParams, {
 		skip: shouldSkipQuery
 	}) as {

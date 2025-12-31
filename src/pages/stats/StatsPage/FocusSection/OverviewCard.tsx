@@ -5,7 +5,7 @@ import { getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
-import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../../../contexts/useApplyDefaultDateRangeContext';
 import Spinner from '../../../../components/Loaders/Spinner';
 
 const OverviewCard = () => {
@@ -37,7 +37,7 @@ const OverviewCard = () => {
 		'interval-end-date': todayDateKey,
 	});
 
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch today's stats
 	const { data: todayStats, isLoading: isTodayLoading, isFetching: isTodayFetching } = useGetFocusStatsQuery(todayQueryParams, {

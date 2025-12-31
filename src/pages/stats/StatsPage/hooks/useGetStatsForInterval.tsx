@@ -3,7 +3,7 @@ import { useGetFocusStatsQuery, useGetTasksStatsQuery } from '../../../../servic
 import { useStatsQueryParams } from '../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../hooks/useStatsDateRange';
 import { getFormattedShortMonthDay } from '../../../../utils/date.utils';
-import { useApplyDefaultDateRange } from '../../../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../../../contexts/useApplyDefaultDateRangeContext';
 import type {
 	TaskStatsByDayItem,
 	FocusStatsByDayItem,
@@ -105,7 +105,7 @@ export const useGetStatsForInterval = (options: UseGetStatsForIntervalOptions) =
 		'interval-end-date': apiEndDate ?? undefined,
 	});
 
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch stats from API - use different query based on dataType
 	const isFocusData = dataType === 'duration' || dataType === 'count';

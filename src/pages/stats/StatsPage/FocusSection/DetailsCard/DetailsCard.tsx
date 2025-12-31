@@ -8,7 +8,7 @@ import { getFormattedDuration } from '../../../../../utils/helpers.utils';
 import { useGetFocusStatsQuery } from '../../../../../services/resources/statsApi';
 import { useStatsQueryParams } from '../../../../../hooks/useStatsQueryParams';
 import { useStatsDateRange } from '../../../../../hooks/useStatsDateRange';
-import { useApplyDefaultDateRange } from '../../../../../hooks/useApplyDefaultDateRange';
+import { useApplyDefaultDateRangeContext } from '../../../../../contexts/useApplyDefaultDateRangeContext';
 import GeneralSelectButtonAndDropdown from '../../GeneralSelectButtonAndDropdown';
 import CustomPieChartTooltip from './CustomPieChartTooltip';
 import ProgressBarList from './ProgressBarList';
@@ -75,7 +75,7 @@ const DetailsCard = () => {
 		'nested': showNestedProgressBars,
 	});
 
-	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
