@@ -7,6 +7,7 @@ import Accordion from '../Accordion/Accordion';
 import CookieInstructions from './CookieInstructions';
 import CookieSection from './CookieSection';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import Tooltip from '../Tooltip';
 
 interface SyncMetadata {
 	lastSyncTime: string;
@@ -65,6 +66,17 @@ const SyncSection = () => {
 			<div className="flex items-center gap-2 mb-3">
 				<h3 className="text-[20px] font-bold">Sync TickTick Data</h3>
 				<Icon name="sync" fill={1} customClass={`${chosenColorObj.textColor} !text-[20px]`} />
+				<Tooltip
+					content="Uses your TickTick cookie to sync your Focus Records, Tasks, Projects, and Project Groups to Statly."
+					position="top"
+					className="!w-[200px]"
+				>
+					<Icon
+						name="help_outline"
+						fill={0}
+						customClass="!text-[18px] ml-[-2px] mt-[7px] text-color-gray-100 hover:text-white cursor-help"
+					/>
+				</Tooltip>
 			</div>
 
 			<div className="space-y-2">
