@@ -12,6 +12,7 @@ import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import ModalFocusGoalProgress from '../../components/Modal/ModalFocusGoalProgress';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import useWindowSize from '../../hooks/useWindowSize';
+import { useApplyDefaultDateRange } from '../../hooks/useApplyDefaultDateRange';
 import type { Ring } from '../../types/api';
 
 // Inferred types from API responses
@@ -77,7 +78,10 @@ interface RingWithCustomGoal extends Ring {
 const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	// Fetch today's focus data for all rings
 	const { queryParams } = useSharedQueryParams();
-	const { data: allRingsTodayData, isLoading: isTodayLoading } = useGetStreaksTodayQuery(queryParams) as {
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
+	const { data: allRingsTodayData, isLoading: isTodayLoading } = useGetStreaksTodayQuery(queryParams, {
+		skip: shouldSkipQuery
+	}) as {
 		data: AllRingsTodayResponse | undefined;
 		isLoading: boolean;
 	};
@@ -103,7 +107,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 
 	// Fetch streak history for all rings (current + longest streaks)
 	const { data: allRingsStreakData } = useGetStreakHistoryQuery(queryParams, {
-		skip: !shouldFetchStreakHistory,
+		skip: !shouldFetchStreakHistory || shouldSkipQuery,
 	}) as {
 		data: AllRingsStreakResponse | undefined;
 		isLoading: boolean;
@@ -112,7 +116,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	// Fetch combined streak history when there are 2+ active rings
 	const shouldFetchCombinedStreaks = activeRings.length >= 2
 	const { data: combinedStreakData } = useGetCombinedStreakHistoryQuery(queryParams, {
-		skip: !shouldFetchCombinedStreaks,
+		skip: !shouldFetchCombinedStreaks || shouldSkipQuery,
 	}) as {
 		data: CombinedStreakResponse | undefined;
 	};
