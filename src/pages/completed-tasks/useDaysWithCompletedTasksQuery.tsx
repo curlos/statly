@@ -1,9 +1,11 @@
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { useGetDaysWithCompletedTasksQuery } from '../../services/resources/tasksApi';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
+import { useApplyDefaultDateRange } from '../../hooks/useApplyDefaultDateRange';
 
 export const useDaysWithCompletedTasksQuery = ({ skip = false }: { skip?: boolean } = {}) => {
 	const { urlValues, queryParams } = useSharedQueryParams();
+	const { shouldSkipQuery } = useApplyDefaultDateRange();
 
 	const {
 		completedTasksPageSettings: { maxDaysPerPage, taskIdIncludeCompletedTasksFromSubtasks },
@@ -15,7 +17,7 @@ export const useDaysWithCompletedTasksQuery = ({ skip = false }: { skip?: boolea
 		page: Number(urlValues.currentPageFromUrl) - 1,
 		'max-days-per-page': maxDaysPerPage,
 		'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
-	}, { skip: skip || isLoadingGetUserSettings });
+	}, { skip: skip || isLoadingGetUserSettings || shouldSkipQuery });
 
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {};
 
