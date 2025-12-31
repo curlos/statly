@@ -43,18 +43,16 @@ export const ApplyDefaultDateRangeProvider = ({ children }: { children: ReactNod
 	// If we already have date query params, then that should override default date ranges.
 	const hasDateQueryParams = searchParams.has('start-date') || searchParams.has('end-date');
 
-	// Reset refs only when BASE path changes
-	useEffect(() => {
-		const currentBasePath = getBasePath(pageContext.urlPathname);
-		const previousBasePath = getBasePath(previousPathnameRef.current);
+	// Reset refs SYNCHRONOUSLY when BASE path changes (before render completes)
+	// This ensures shouldSkipQuery uses correct ref values on route change
+	const currentBasePath = getBasePath(pageContext.urlPathname);
+	const previousBasePath = getBasePath(previousPathnameRef.current);
 
-		if (currentBasePath !== previousBasePath) {
-			sentUpdateQueryParamsForDefaultsRef.current = false;
-			hasSuccessfullyQueriedRef.current = false;
-		}
-
+	if (currentBasePath !== previousBasePath) {
+		sentUpdateQueryParamsForDefaultsRef.current = false;
+		hasSuccessfullyQueriedRef.current = false;
 		previousPathnameRef.current = pageContext.urlPathname;
-	}, [pageContext.urlPathname]);
+	}
 
 	useEffect(() => {
 		// If we've already loaded the user settings and sent the updateQueryParams call with the default date interval, then we need to keep waiting here until either the date query params in the URL show up. If the default date interval is "All" though, then there'd be no query params in the URL and thus we are finished so we can mark it as successfully queried.
