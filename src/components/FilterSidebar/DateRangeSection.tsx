@@ -8,6 +8,7 @@ import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralS
 import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangePicker';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
+import { usePageContext } from 'vike-react/usePageContext';
 
 type IntervalOption = 'Day' | 'Week' | 'Month' | 'Year' | 'All' | 'Custom';
 
@@ -82,13 +83,18 @@ const DateRangeSection = () => {
 	}, [selectedDates, selectedInterval]);
 
 	// Compute the correct dates to display in FormPickDateRange
-	// If we're in Custom mode, use selectedDates to ensure immediate updates
-	const displayStartDate = selectedInterval === 'Custom' && selectedDates.length > 0
-		? selectedDates[0]
-		: startDate;
-	const displayEndDate = selectedInterval === 'Custom' && selectedDates.length > 0
-		? selectedDates[selectedDates.length - 1]
-		: endDate;
+	// For Custom mode, read from URL to get the actual current values (handles form edits)
+	// For other modes switching TO Custom, use selectedDates for immediate population
+	const pageContext = usePageContext();
+	const urlSearchParams = pageContext.urlParsed.search || {};
+
+	const displayStartDate = selectedInterval === 'Custom' && urlSearchParams['start-date']
+		? new Date(urlSearchParams['start-date'])
+		: (selectedInterval === 'Custom' && selectedDates.length > 0 ? selectedDates[0] : startDate);
+
+	const displayEndDate = selectedInterval === 'Custom' && urlSearchParams['end-date']
+		? new Date(urlSearchParams['end-date'])
+		: (selectedInterval === 'Custom' && selectedDates.length > 0 ? selectedDates[selectedDates.length - 1] : endDate);
 
 	return (
 		<div>
