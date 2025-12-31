@@ -1,5 +1,6 @@
 import { useSearchParamsContext } from '../contexts/useSearchParamsContext';
 import { getFormattedShortMonthDay } from '../utils/date.utils';
+import { usePageContext } from 'vike-react/usePageContext';
 
 /**
  * Shared hook to build common query parameters used across multiple pages
@@ -7,12 +8,16 @@ import { getFormattedShortMonthDay } from '../utils/date.utils';
  */
 export const useSharedQueryParams = () => {
 	const { searchParams } = useSearchParamsContext();
+	const pageContext = usePageContext();
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-	// Extract raw values from URL
+	// Read date params from URL directly to avoid async state sync issues during navigation
+	const urlSearchParams = pageContext.urlParsed.search || {};
+	const startDateFromUrl = urlSearchParams['start-date'] || 'Jan 1, 1900';
+	const endDateFromUrl = urlSearchParams['end-date'] || getFormattedShortMonthDay(new Date());
+
+	// Extract other values from searchParams (no timing issues with these)
 	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
-	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const intervalStartDateFromUrl = searchParams.get('interval-start-date') || '';
 	const intervalEndDateFromUrl = searchParams.get('interval-end-date') || '';
 	const projectsFromUrl = searchParams.get('projects') || '';

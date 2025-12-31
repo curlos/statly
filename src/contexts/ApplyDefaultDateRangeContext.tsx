@@ -40,8 +40,13 @@ export const ApplyDefaultDateRangeProvider = ({ children }: { children: ReactNod
 	const hasSuccessfullyQueriedRef = useRef(false);
 	const previousPathnameRef = useRef(pageContext.urlPathname);
 
-	// If we already have date query params, then that should override default date ranges.
-	const hasDateQueryParams = searchParams.has('start-date') || searchParams.has('end-date');
+	// If we already have ANY query params in EITHER searchParams or URL, don't apply defaults
+	const urlSearchParams = pageContext.urlParsed.search || {};
+
+	const hasAnyQueryParamsInSearchParams = searchParams.size > 0;
+	const hasAnyQueryParamsInUrl = Object.keys(urlSearchParams).length > 0;
+
+	const hasQueryParams = hasAnyQueryParamsInSearchParams || hasAnyQueryParamsInUrl;
 
 	// Reset refs SYNCHRONOUSLY when BASE path changes (before render completes)
 	// This ensures shouldSkipQuery uses correct ref values on route change
@@ -56,20 +61,22 @@ export const ApplyDefaultDateRangeProvider = ({ children }: { children: ReactNod
 
 	useEffect(() => {
 		// If we've already loaded the user settings and sent the updateQueryParams call with the default date interval, then we need to keep waiting here until either the date query params in the URL show up. If the default date interval is "All" though, then there'd be no query params in the URL and thus we are finished so we can mark it as successfully queried.
-		if (!isLoadingGetUserSettings && sentUpdateQueryParamsForDefaultsRef.current && (hasDateQueryParams || dateInterval === 'All')) {
+		if (!isLoadingGetUserSettings && sentUpdateQueryParamsForDefaultsRef.current && (hasQueryParams || dateInterval === 'All')) {
 			hasSuccessfullyQueriedRef.current = true;
 		}
-	}, [hasDateQueryParams, isLoadingGetUserSettings, dateInterval]);
+	}, [hasQueryParams, isLoadingGetUserSettings, dateInterval]);
 
 	// Apply default date ranges only on allowed routes
 	useEffect(() => {
 		const currentBasePath = getBasePath(pageContext.urlPathname);
 		const isAllowedRoute = ROUTES_WITH_DEFAULTS.has(currentBasePath);
 
-		// Only update the query params if there's no existing date query params, we haven't set out "updateQueryParams" yet, the dateInterval is available in the user settings (isLoadingGetUserSettings === false), we have a default start and end date, and the default date interval isn't all (if it's all, there's no need for query params to clog up the URL).
+		// Only update the query params if there are NO existing date query params,
+		// we haven't set defaults yet, the dateInterval is available in the user settings,
+		// we have a default start and end date, and the default date interval isn't "All"
 		if (
 			isAllowedRoute &&
-			!hasDateQueryParams &&
+			!hasQueryParams &&
 			!sentUpdateQueryParamsForDefaultsRef.current &&
 			!isLoadingGetUserSettings &&
 			startDate &&
@@ -84,15 +91,15 @@ export const ApplyDefaultDateRangeProvider = ({ children }: { children: ReactNod
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [hasDateQueryParams, isLoadingGetUserSettings, startDate, endDate, dateInterval, pageContext.urlPathname]);
+	}, [hasQueryParams, isLoadingGetUserSettings, startDate, endDate, dateInterval, pageContext.urlPathname]);
 
 	// Skip query if:
 	// 1. Still loading settings, OR
-	// 2. No params AND defaults available AND haven't successfully queried yet (initial load - waiting for defaults to be applied and URL to update)
+	// 2. No date params AND defaults available AND haven't successfully queried yet (initial load - waiting for defaults to be applied and URL to update)
 	// After first successful query, allow querying without params (user clearing filters)
 	const shouldSkipQuery =
 		isLoadingGetUserSettings ||
-		(!hasDateQueryParams && !!startDate && !!endDate && !hasSuccessfullyQueriedRef.current && dateInterval !== 'All');
+		(!hasQueryParams && !!startDate && !!endDate && !hasSuccessfullyQueriedRef.current && dateInterval !== 'All');
 
 	return (
 		<ApplyDefaultDateRangeContext.Provider value={{ shouldSkipQuery }}>
