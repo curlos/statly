@@ -58,7 +58,7 @@ const DetailsCard = () => {
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showNestedProgressBars, setShowNestedProgressBars] = useState(false);
-	const [sortBy, setSortBy] = useState('Focus Hours: Most-Least');
+	const [sortBy, setSortBy] = useState('Focus Time: Most-Least');
 
 	// Build query params for API using custom hook
 	const getGroupBy = () => {
@@ -237,9 +237,9 @@ const DetailsCard = () => {
 									)}
 									onClick={() =>
 										setSortBy(
-											sortBy === 'Focus Hours: Most-Least'
-												? 'Focus Hours: Least-Most'
-												: 'Focus Hours: Most-Least'
+											sortBy === 'Focus Time: Most-Least'
+												? 'Focus Time: Least-Most'
+												: 'Focus Time: Most-Least'
 										)
 									}
 								/>

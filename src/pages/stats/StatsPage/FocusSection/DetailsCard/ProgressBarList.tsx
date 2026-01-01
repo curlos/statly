@@ -63,7 +63,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 		// Primary sort: by metric value
 		const valueA = (a[metricKey] as number) || 0;
 		const valueB = (b[metricKey] as number) || 0;
-		const metricDiff = sortBy === 'Focus Hours: Most-Least' || sortBy === 'Tasks: Most-Least'
+		const metricDiff = sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least'
 			? valueB - valueA
 			: valueA - valueB;
 

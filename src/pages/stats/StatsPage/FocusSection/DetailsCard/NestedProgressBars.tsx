@@ -353,7 +353,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
         const valueOne = totalMetricOnParentTask[taskIdOne].value;
         const valueTwo = totalMetricOnParentTask[taskIdTwo].value;
 
-        if (sortBy === 'Focus Hours: Most-Least' || sortBy === 'Tasks: Most-Least') {
+        if (sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least') {
             return valueTwo - valueOne;
         }
 
@@ -395,7 +395,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
             const valueOne = projectOne[metricKey] as number || 0;
             const valueTwo = projectTwo[metricKey] as number || 0;
 
-            if (sortBy === 'Focus Hours: Most-Least' || sortBy === 'Tasks: Most-Least') {
+            if (sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least') {
                 return valueTwo - valueOne;
             }
 
