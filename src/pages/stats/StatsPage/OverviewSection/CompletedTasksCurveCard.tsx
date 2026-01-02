@@ -67,12 +67,14 @@ const CompletedTasksCurveCard = () => {
 						selected={selectedGroupedInterval}
 						setSelected={setSelectedGroupedInterval}
 						selectedOptions={selectedGroupedIntervalOptions}
+						align="right"
 					/>
 
 					<GeneralSelectButtonAndDropdown
 						selected={selectedInterval}
 						setSelected={setSelectedInterval}
 						selectedOptions={selectedIntervalOptions}
+						align="right"
 						onClick={(name) => {
 							if (name?.toLowerCase() !== 'custom') {
 								return;

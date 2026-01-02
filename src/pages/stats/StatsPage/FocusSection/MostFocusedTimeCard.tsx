@@ -64,6 +64,7 @@ const MostFocusedTimeCard = () => {
 						selected={selectedInterval}
 						setSelected={setSelectedInterval}
 						selectedOptions={selectedIntervalOptions}
+						align="right"
 						onClick={(name) => {
 							if (name?.toLowerCase() !== 'custom') {
 								return;
