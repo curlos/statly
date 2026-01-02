@@ -4,22 +4,27 @@ export const FOCUS_APPS = {
 	TickTick: {
 		id: 'TickTick',
 		name: 'TickTick',
+		source: 'FocusRecordTickTick'
 	},
 	'session-app': {
 		id: 'session-app',
 		name: 'Session',
+		source: 'FocusRecordSession'
 	},
 	'be-focused-app': {
 		id: 'be-focused-app',
 		name: 'BeFocused',
+		source: 'FocusRecordBeFocused'
 	},
 	'forest-app': {
 		id: 'forest-app',
 		name: 'Forest',
+		source: 'FocusRecordForest'
 	},
 	'tide-ios-app': {
 		id: 'tide-ios-app',
 		name: 'Tide',
+		source: 'FocusRecordTide'
 	},
 };
 
@@ -27,10 +32,12 @@ export const TO_DO_LIST_APPS = {
 	TickTick: {
 		id: 'TickTick',
 		name: 'TickTick',
+		source: 'TaskTickTick'
 	},
 	Todoist: {
 		id: 'Todoist',
 		name: 'Todoist',
+		source: 'TaskTodoist'
 	},
 };
 

@@ -141,14 +141,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 
 			{page !== 'completed-tasks-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
 					<ShowRecordsFromFocusAppSection />
 				</>
 			)}
 
 			{page !== 'focus-records-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
 					<ShowDaysFromToDoListAppSection />
 				</>
 			)}
@@ -157,7 +155,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 
 			{page !== 'focus-records-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
 					<ProjectsTodoistSection />
 				</>
 			)}

@@ -5,15 +5,29 @@ import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 import { FOCUS_APPS } from '../../utils/constants/constants.utils';
+import { useGetSourceCountsQuery } from '../../services/resources/statsApi';
 
 const ShowRecordsFromFocusAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const focusAppsFromUrl = searchParams.get('focus-apps');
 	const focusAppsByName = getCommaSeparatedObj(focusAppsFromUrl ?? undefined);
+	const { data: sourceCounts } = useGetSourceCountsQuery();
+
+	// Filter to only show apps with data
+	const focusAppsWithData = Object.values(FOCUS_APPS).filter(
+		(focusApp) => (sourceCounts?.[focusApp.source] ?? 0) > 0
+	);
+
+	// Don't render section if no apps have data
+	if (focusAppsWithData.length === 0) {
+		return null;
+	}
 
 	return (
 		<div>
+			<hr className="border-color-gray-200 my-4" />
+
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">
@@ -27,7 +41,7 @@ const ShowRecordsFromFocusAppSection = () => {
 				}
 				openByDefault={true}
 			>
-				{Object.values(FOCUS_APPS).map((focusApp) => {
+				{focusAppsWithData.map((focusApp) => {
 					return (
 						<CheckboxMultiSelectForUrl
 							key={focusApp.id}

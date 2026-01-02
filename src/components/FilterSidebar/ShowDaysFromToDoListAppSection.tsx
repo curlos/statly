@@ -5,15 +5,28 @@ import CheckboxMultiSelectForUrl from './CheckboxMultiSelectForUrl';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 import { TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
+import { useGetSourceCountsQuery } from '../../services/resources/statsApi';
 
 const ShowDaysFromToDoListAppSection = () => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const toDoListAppsFromUrl = searchParams.get('to-do-list-apps');
 	const toDoListAppsByName = getCommaSeparatedObj(toDoListAppsFromUrl ?? undefined);
+	const { data: sourceCounts } = useGetSourceCountsQuery();
+
+	// Filter to only show apps with data
+	const toDoListAppsWithData = Object.values(TO_DO_LIST_APPS).filter(
+		(toDoListApp) => (sourceCounts?.[toDoListApp.source] ?? 0) > 0
+	);
+
+	// Don't render section if no apps have data
+	if (toDoListAppsWithData.length === 0) {
+		return null;
+	}
 
 	return (
 		<div>
+			<hr className="border-color-gray-200 my-4" />
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">
@@ -27,7 +40,7 @@ const ShowDaysFromToDoListAppSection = () => {
 				}
 				openByDefault={true}
 			>
-				{Object.values(TO_DO_LIST_APPS).map((toDoListApp) => {
+				{toDoListAppsWithData.map((toDoListApp) => {
 					return (
 						<CheckboxMultiSelectForUrl
 							key={toDoListApp.id}

@@ -62,8 +62,13 @@ const ProjectsTodoistSection = () => {
 		);
 	};
 
+	if (!isLoading && (!projectsTodoist || projectsTodoist.length === 0)) {
+		return null
+	}
+
 	return (
 		<div>
+			<hr className="border-color-gray-200 my-4" />
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">

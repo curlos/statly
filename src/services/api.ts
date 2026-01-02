@@ -39,6 +39,7 @@ export const baseAPI = createApi({
 		'OverviewStats',
 		'FocusStats',
 		'TasksStats',
+		'SourceCounts',
 		'SyncMetadata',
 		'DocumentCounts',
 		'TodayFocus',

@@ -1,5 +1,5 @@
 import { baseAPI, buildQueryString } from '../api';
-import type { OverviewStatsResponse, TaskStatsResponse, FocusStatsResponse } from '../../types/api';
+import type { OverviewStatsResponse, TaskStatsResponse, FocusStatsResponse, SourceCountsResponse } from '../../types/api';
 
 /**
  * @description API for fetching stats data from the backend
@@ -41,9 +41,14 @@ export const statsApi = baseAPI.injectEndpoints({
                 return response;
             },
             providesTags: ['TasksStats'],
+        }),
+        getSourceCounts: builder.query<SourceCountsResponse, void>({
+            query: () => '/stats/source-counts',
+            transformResponse: (response: SourceCountsResponse) => response,
+            providesTags: ['SourceCounts'],
         })
     }),
     overrideExisting: false,
 });
 
-export const { useGetOverviewStatsQuery, useGetFocusStatsQuery, useGetTasksStatsQuery } = statsApi;
+export const { useGetOverviewStatsQuery, useGetFocusStatsQuery, useGetTasksStatsQuery, useGetSourceCountsQuery } = statsApi;

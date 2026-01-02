@@ -112,6 +112,10 @@ export interface OverviewStatsResponse {
 	firstFocusRecordDate?: string;
 }
 
+export interface SourceCountsResponse {
+	[source: string]: number;
+}
+
 export interface TaskStatsResponse {
 	summary?: {
 		totalCount: number;

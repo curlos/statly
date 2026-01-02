@@ -25,7 +25,7 @@ export const syncApi = baseAPI.injectEndpoints({
             },
             invalidatesTags: invalidateOnSuccess([
                 // General tags that need mostly every group
-                'OverviewStats', 'SyncMetadata', 'DocumentCounts',
+                'OverviewStats', 'SyncMetadata', 'DocumentCounts', 'SourceCounts',
                 // Projects
                 'Project', 'ProjectGroup',
                 // Tasks
@@ -66,7 +66,7 @@ export const syncApi = baseAPI.injectEndpoints({
                 url: '/sync/ticktick/tasks',
                 method: 'POST',
             }),
-            invalidatesTags: invalidateOnSuccess(['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+            invalidatesTags: invalidateOnSuccess(['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts', 'SourceCounts'] as const),
         }),
         syncTickTickFocusRecords: builder.mutation({
             query: () => {
@@ -77,7 +77,7 @@ export const syncApi = baseAPI.injectEndpoints({
                     body: { timezone },
                 };
             },
-            invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'TodayFocus', 'StreakHistory', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+            invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'TodayFocus', 'StreakHistory', 'OverviewStats', 'SyncMetadata', 'DocumentCounts', 'SourceCounts'] as const),
         }),
     }),
     overrideExisting: false,
