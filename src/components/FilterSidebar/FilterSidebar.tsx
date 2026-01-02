@@ -164,7 +164,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 
 			{page !== 'completed-tasks-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
 					<CategoriesSection />
 				</>
 			)}
