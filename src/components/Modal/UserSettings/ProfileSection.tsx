@@ -59,8 +59,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 					{getInitials(user.name || '')}
 				</div>
 			)}
-			<h2 className="text-2xl font-bold mb-1">{user.name}</h2>
-			<p className="text-color-gray-50 mt-0 mb-0">{user.email}</p>
+			<h2 className="text-2xl font-bold mb-1 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.name}</h2>
+			<p className="text-color-gray-50 mt-0 mb-0 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.email}</p>
 
 			{/* Join Date */}
 			{user.createdAt && (

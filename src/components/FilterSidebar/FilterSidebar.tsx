@@ -145,7 +145,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 				</>
 			)}
 
-			{page !== 'focus-records-page' && (
+			{page !== 'focus-records-page' && page !== 'focus-time-goal-page' && (
 				<>
 					<ShowDaysFromToDoListAppSection />
 				</>
