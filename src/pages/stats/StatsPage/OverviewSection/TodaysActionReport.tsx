@@ -1,3 +1,21 @@
+interface MedalItemProps {
+	name: string;
+	imgSrc: string;
+	isEarned: boolean;
+}
+
+const MedalItem = ({ name, imgSrc, isEarned }: MedalItemProps) => {
+	return (
+		<div key={name} className={`text-center ${!isEarned && 'opacity-30'}`}>
+			<div className="flex justify-center">
+				<img src={imgSrc} className="w-[125px]" />
+			</div>
+			<div className="text-center font-semibold text-[18px]">x1</div>
+			<div className="text-center">{name}</div>
+		</div>
+	);
+};
+
 interface TodaysActionReportProps {
 	todayFocusDuration: number;
 }
@@ -37,40 +55,24 @@ const TodaysActionReport = ({ todayFocusDuration }: TodaysActionReportProps) => 
 		},
 	];
 
-	// Check if any medals have been earned
+	// Separate medals into earned and unearned
 	const earnedMedals = medals.filter((medal) => todayFocusDuration >= medal.requiredDuration);
-	const hasEarnedMedals = earnedMedals.length > 0;
+	const unearnedMedals = medals.filter((medal) => todayFocusDuration < medal.requiredDuration);
 
 	return (
 		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px]">
 			<h3 className="font-bold text-[16px]">Today's Action Report</h3>
 
 			<div className="flex-1 flex flex-col justify-center gap-7 overflow-auto gray-scrollbar">
-				{!hasEarnedMedals ? (
-					<div className="flex items-center justify-center h-full text-center text-color-gray-100">
-						<p>No medals earned yet today. Keep focusing to unlock your first medal!</p>
-					</div>
-				) : (
-					<div className="grid grid-cols-3 text-[14px] sm:text-[16px] gap-2 mt-2">
-						{medals.map((medal) => {
-							const { name, requiredDuration, imgSrc } = medal;
+				<div className="grid grid-cols-3 text-[14px] sm:text-[16px] gap-2 mt-2">
+					{earnedMedals.map((medal) => (
+						<MedalItem key={medal.name} name={medal.name} imgSrc={medal.imgSrc} isEarned={true} />
+					))}
 
-							if (todayFocusDuration < requiredDuration) {
-								return null;
-							}
-
-							return (
-								<div key={name} className="text-center">
-									<div className="flex justify-center">
-										<img src={imgSrc} className="w-[125px]" />
-									</div>
-									<div className="text-center font-semibold text-[18px]">x1</div>
-									<div className="text-center">{name}</div>
-								</div>
-							);
-						})}
-					</div>
-				)}
+					{unearnedMedals.map((medal) => (
+						<MedalItem key={medal.name} name={medal.name} imgSrc={medal.imgSrc} isEarned={false} />
+					))}
+				</div>
 			</div>
 		</div>
 	);
