@@ -9,6 +9,7 @@ import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangeP
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
 import { usePageContext } from 'vike-react/usePageContext';
+import Tooltip from '../Tooltip';
 
 type IntervalOption = 'Day' | 'Week' | 'Month' | 'Year' | 'All' | 'Custom';
 
@@ -110,7 +111,7 @@ const DateRangeSection = () => {
 					</div>
 				}
 				openByDefault={true}
-				isChildDropdownOpen={isDropdownOpenForParent}
+				isChildDropdownOpen={true}
 			>
 				<div className="flex items-center gap-4 mb-3">
 					<div>
@@ -174,7 +175,22 @@ const DateRangeSection = () => {
 								nextLightestColorObj?.hover.textColor
 							)}
 						/>
-						<div className="flex-1">Year-Agnostic</div>
+						<div className="flex-1 flex items-center gap-2">
+						<span>Year-Agnostic</span>
+						<Tooltip
+							content="When unchecked, filters by exact dates (e.g., only Dec 25, 2025). When checked, filters by month and day across all years (e.g., every Dec 25 regardless of year)."
+							position="bottom"
+							className="!w-[280px]"
+						>
+							<div className="mt-1">
+								<Icon
+									name="help_outline"
+									fill={0}
+									customClass="!text-[18px] text-color-gray-100 hover:text-white cursor-help"
+								/>
+							</div>
+						</Tooltip>
+					</div>
 					</div>
 				)}
 			</Accordion>
