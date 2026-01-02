@@ -1,4 +1,3 @@
-import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
 import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
@@ -18,8 +17,8 @@ const AppliedFilterItemList = () => {
 	// For All
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const searchTextFromUrl = searchParams.get('search') || '';
-	const startDateFromUrl = searchParams.get('start-date') || 'Jan 1, 1900';
-	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
+	const startDateFromUrl = searchParams.get('start-date') || '';
+	const endDateFromUrl = searchParams.get('end-date') || '';
 	const intervalStartDateFromUrl = searchParams.get('interval-start-date') || '';
 	const intervalEndDateFromUrl = searchParams.get('interval-end-date') || '';
 	const taskIdToFilterBy = searchParams.get('task-id');
@@ -151,9 +150,9 @@ const AppliedFilterItemList = () => {
 
 	const dateRangeFilter = {
 		name: `Date Range`,
-		value: `${startDateFromUrl} - ${endDateFromUrl}`,
+		value: startDateFromUrl && endDateFromUrl ? `${startDateFromUrl} - ${endDateFromUrl}` : '',
 		handleRemove: () => {
-			updateQueryParams({ 'start-date': '', 'end-date': '', 'date-interval': '', page: '' });
+			updateQueryParams({ 'start-date': '', 'end-date': '', 'date-interval': '', page: '', 'year-agnostic': '' });
 		},
 	};
 
@@ -254,12 +253,11 @@ const AppliedFilterItemList = () => {
 		generalFilter,
 		yearAgnosticFilter,
 	];
-	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	const nonDefaultFilterList = allFilters.filter((focusRecordsFilter) => {
 		const { value } = focusRecordsFilter;
 
-		const isDefaultFilter = !value || value === 'Newest' || firstDayToTodayString === value;
+		const isDefaultFilter = !value || value === 'Newest';
 		return !isDefaultFilter;
 	});
 

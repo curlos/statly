@@ -1,4 +1,3 @@
-import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import type { Project } from '../../../types/models';
 import type { AncestorTask } from '../../../types/api';
 
@@ -44,7 +43,6 @@ export const getAppliedFiltersMarkdown = (params: AppliedFiltersParams): string 
 	} = params;
 
 	const filters: string[] = [];
-	const firstDayToTodayString = `${getFormattedShortMonthDay(new Date('Jan 1, 1900'))} - ${getFormattedShortMonthDay(new Date())}`;
 
 	// Sort By
 	if (sortBy && sortBy !== 'Newest') {
@@ -65,9 +63,7 @@ export const getAppliedFiltersMarkdown = (params: AppliedFiltersParams): string 
 	// Date Range
 	if (startDateFromUrl && endDateFromUrl) {
 		const dateRangeString = `${startDateFromUrl} - ${endDateFromUrl}`;
-		if (dateRangeString !== firstDayToTodayString) {
-			filters.push(`**Date Range:** ${dateRangeString}`);
-		}
+		filters.push(`**Date Range:** ${dateRangeString}`);
 	}
 
 	// Interval Date Range

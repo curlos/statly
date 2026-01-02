@@ -1,5 +1,4 @@
 import { useSearchParamsContext } from '../contexts/useSearchParamsContext';
-import { getFormattedShortMonthDay } from '../utils/date.utils';
 import { usePageContext } from 'vike-react/usePageContext';
 
 /**
@@ -13,8 +12,8 @@ export const useSharedQueryParams = () => {
 
 	// Read date params from URL directly to avoid async state sync issues during navigation
 	const urlSearchParams = pageContext.urlParsed.search || {};
-	const startDateFromUrl = urlSearchParams['start-date'] || 'Jan 1, 1900';
-	const endDateFromUrl = urlSearchParams['end-date'] || getFormattedShortMonthDay(new Date());
+	const startDateFromUrl = urlSearchParams['start-date'] || '';
+	const endDateFromUrl = urlSearchParams['end-date'] || '';
 
 	// Extract other values from searchParams (no timing issues with these)
 	const searchTextFromUrl = searchParams.get('search') || '';
@@ -30,7 +29,7 @@ export const useSharedQueryParams = () => {
 	const sortBy = searchParams.get('sort-by') || 'Newest';
 	const currentPageFromUrl = searchParams.get('page') || 1;
 	const generalFromUrl = searchParams.get('general') || '';
-	const yearAgnostic = searchParams.get('year-agnostic') === 'true';
+	const yearAgnostic = searchParams.get('year-agnostic') ? searchParams.get('year-agnostic') === 'true' : '';
 
 	return {
 		// Raw values for display/state

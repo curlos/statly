@@ -58,8 +58,8 @@ const useGetDefaultDateRangeIntervalDates = () => {
 				break;
 			case 'All':
 			default:
-				startDate = 'Jan 1, 1900';
-				endDate = getFormattedShortMonthDay(today);
+				startDate = '';
+				endDate = '';
 				break;
 		}
 

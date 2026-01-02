@@ -3,6 +3,7 @@ import { useUserSettingsContext } from '../focus-records/useUserSettingsContext'
 import { getFormattedShortMonthDay } from '../../utils/date.utils';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { Challenge } from '../../types/api';
+import { useGetOverviewStatsQuery } from '../../services/resources/statsApi';
 
 interface ChosenChallengeProps {
 	chosenChallenge: Challenge | null;
@@ -11,6 +12,11 @@ interface ChosenChallengeProps {
 }
 
 const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => {
+	const { data: overviewStats } = useGetOverviewStatsQuery({
+		skipTodayStats: true,
+		includeFirstData: true
+	});
+
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
 	} = useUserSettingsContext();
@@ -33,7 +39,12 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 
 	const handleGoToCompletedDate = (completedDate: Challenge['completedDate']) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
-		const startDate = pageContext.urlParsed.search['start-date'] || 'Jan 1, 1900'
+		let startDate = pageContext.urlParsed.search['start-date']
+
+		if (!startDate) {
+			startDate = chosenChallenge.type === 'focus' ? (overviewStats?.firstFocusRecordDate || 'Jan 1, 100') : (overviewStats?.firstCompletedTaskDate || 'Jan 1, 100')
+		}
+
 
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
