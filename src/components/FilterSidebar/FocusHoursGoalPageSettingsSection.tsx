@@ -499,10 +499,6 @@ const FocusHoursGoalPageSettingsSection = () => {
 				</div>
 
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-1">Filtered Projects</h4>
-					<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
-						Select projects to count towards your focus hours for this ring. Only time tracked in selected projects will contribute to your daily goal.
-					</p>
 					<ProjectsTickTickSection page="focus-time-goal" />
 				</div>
 

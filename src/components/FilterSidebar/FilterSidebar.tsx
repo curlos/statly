@@ -153,7 +153,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 				</>
 			)}
 
-			<hr className="border-color-gray-200 my-4" />
 			<ProjectsTickTickSection page={page} />
 
 			{page !== 'focus-records-page' && (

@@ -176,8 +176,25 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 		await handleCheckboxClick('projects', clearedProjects);
 	};
 
+	const isLoading = isLoadingGetProjects || isLoadingGetProjectGroups
+
+	if (!isLoading && sortedProjectsAndGroups.length === 0 && sortedArchivedProjects.length === 0) {
+		return null
+	}
+
 	return (
 		<div>
+			{page === 'focus-time-goal' ? (
+				<div>
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-1">Filtered Projects</h4>
+					<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
+						Select projects to count towards your focus hours for this ring. Only time tracked in selected projects will contribute to your daily goal.
+					</p>
+				</div>
+			) : (
+				<hr className="border-color-gray-200 my-4" />
+			)}
+
 			{/* Selected Projects Display - Only for focus-time-goal page */}
 			{page === 'focus-time-goal' && getSelectedProjectIds().length > 0 && (
 				<div className="mb-3">
@@ -199,7 +216,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 							customClass={`${chosenColorObj.textColor} !text-[20px] hover:text-white cursor-pointer`}
 						/>
 						{/* Assume the user always has at least one project. I suppose it'd be possible for there to be 0 projects but this works better for me personally. */}
-						{(!sortedProjectsAndGroups || sortedProjectsAndGroups.length === 0) && <Spinner />}
+						{isLoading && <Spinner />}
 					</div>
 				}
 				openByDefault={true}
