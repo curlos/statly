@@ -1,6 +1,7 @@
 <div align="center">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://statly-pi.vercel.app/signup">
-    <img src="./public/checklist-icon.svg" alt="Statly Logo" width="120" height="120" style="margin-left: 20px;">
+    <img src="./public/checklist-icon.svg" alt="Statly Logo" width="120" height="120">
   </a>
 
   <h1>Statly</h1>
