@@ -5,9 +5,10 @@
 
   <h1>Statly</h1>
 
-> Transform your TickTick productivity data into meaningful insights
+Transform your TickTick productivity data into meaningful insights
 
-[Live Demo](#) | [Features](#features) | [Tech Stack](#tech-stack)
+[Live Demo](https://statly-pi.vercel.app/signup) | [Features](#features) | [Tech Stack](#tech-stack)
+</div>
 
 ---
 
