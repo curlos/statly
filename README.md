@@ -1,4 +1,9 @@
-# Statly
+<div align="center">
+  <a href="https://statly-pi.vercel.app/signup">
+    <img src="./public/checklist-icon.svg" alt="Statly Logo" width="120" height="120" style="margin-left: 20px;">
+  </a>
+
+  <h1>Statly</h1>
 
 > Transform your TickTick productivity data into meaningful insights
 
