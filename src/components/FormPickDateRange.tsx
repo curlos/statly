@@ -169,6 +169,7 @@ const DateInput: React.FC<DateInputProps> = ({
 					}}
 					date={date}
 					setDate={setDate as React.Dispatch<React.SetStateAction<Date | null>>}
+					outerCurrentDate={date}
 				/>
 			</div>
 		</div>
