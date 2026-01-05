@@ -238,4 +238,10 @@ Built by [Your Name]
 
 ---
 
+## Credits
+
+Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](https://www.flaticon.com/free-icon/timer_2921136)
+
+---
+
 Built with dedication to productivity and data visualization.
