@@ -25,7 +25,7 @@ const ModalPickDateRange: React.FC<ModalPickDateRangeProps> = ({
 	};
 
 	return (
-		<Modal isOpen={isModalOpen} onClose={closeModal}  customClasses="!w-[350px]">
+		<Modal isOpen={isModalOpen} onClose={closeModal}  customClasses="!w-[350px] !max-h-[700px] !overflow-visible">
 			<div className="rounded-xl shadow-lg bg-color-gray-650">
 				<div className={classNames('p-5')}>
 					<div className="flex items-center justify-between mb-4">
