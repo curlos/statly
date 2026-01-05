@@ -208,6 +208,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 							content="Changing your email requires your current password for security."
 							position="bottom"
 							className="w-64"
+							align="right"
 						>
 							<Icon
 								name="help"

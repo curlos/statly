@@ -5,9 +5,10 @@ interface TooltipProps {
 	children: React.ReactNode;
 	className?: string;
 	position?: 'top' | 'bottom';
+	align?: 'left' | 'right' | 'center';
 }
 
-const Tooltip = ({ content, children, className = '', position = 'top' }: TooltipProps) => {
+const Tooltip = ({ content, children, className = '', position = 'top', align: manualAlign }: TooltipProps) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +58,7 @@ const Tooltip = ({ content, children, className = '', position = 'top' }: Toolti
 		return 'center';
 	};
 
-	const align = getAlignment();
+	const align = manualAlign || getAlignment();
 
 	const positionClasses = position === 'top'
 		? 'bottom-full mb-2'
