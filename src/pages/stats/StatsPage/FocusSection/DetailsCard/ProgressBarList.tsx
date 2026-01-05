@@ -108,7 +108,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 				ref={scrollableContainerRef}
 				className={classNames(
 					'space-y-4 w-full overflow-auto gray-scrollbar pr-3',
-					fromModal ? 'max-h-[300px] md:max-h-[500px]' : 'md:max-h-[230px]'
+					fromModal ? 'max-h-[300px] md:max-h-[500px]' : 'max-h-[230px]'
 				)}
 			>
 				{/* Special handling for Emotion dataType with nested view */}

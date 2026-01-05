@@ -214,6 +214,18 @@ const DetailsCard = () => {
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
 							<h3 className="font-bold text-[16px]">Details</h3>
 							{(isLoading || isFetching) && <Spinner size="md" />}
+
+							{fromModal && (
+								<Icon
+									name="close"
+									fill={0}
+									customClass={classNames(
+										'text-color-gray-50 !text-[22px] cursor-pointer rounded-2xl p-[6px] ml-auto sm:invisible',
+										`${hover.textColor}`
+									)}
+									onClick={() => setIsModalOpen(false)}
+								/>
+							)}
 						</div>
 
 						<div className={classNames('flex items-center gap-2', selectedInterval === 'All' && 'py-2')}>

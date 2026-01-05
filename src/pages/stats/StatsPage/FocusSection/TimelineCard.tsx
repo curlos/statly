@@ -33,7 +33,7 @@ const TimelineCard = () => {
 	});
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] sm:h-[350px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col sm:h-[350px] lg:h-[380px]">
 			<div className="flex flex-col sm:flex-row justify-between sm:items-center">
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Timeline</h3>
