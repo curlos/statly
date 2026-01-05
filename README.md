@@ -38,7 +38,7 @@ View all your focus sessions in one comprehensive timeline. Filter and sort by d
 
 Perfect for analyzing your work patterns and identifying peak productivity hours.
 
-**[Screenshot placeholder: Focus Records page showing filtered focus sessions with timeline view]**
+<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max)" src="https://github.com/user-attachments/assets/972c12b7-3bfc-4c94-ac93-2781a44a6f1d" />
 
 ---
 
@@ -53,7 +53,7 @@ View all tasks you've completed, organized by day. See your daily accomplishment
 
 Perfect for reviewing your task completion history and understanding your daily productivity patterns.
 
-**[Screenshot placeholder: Completed Tasks page showing tasks grouped by day with nested/breadcrumb views]**
+<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/341cda9a-ed82-4609-aa25-1817a02b1c22" />
 
 ---
 
@@ -81,7 +81,8 @@ Beautiful, interactive visualizations that reveal your productivity trends over 
 
 Powered by ApexCharts and Recharts for smooth, responsive data visualization.
 
-**[Screenshot placeholder: Stats page showing charts, graphs, and analytics dashboard with heatmaps]**
+<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (2)" src="https://github.com/user-attachments/assets/7bf1e2d2-91c0-46da-921c-f2232bbd19e5" />
+
 
 ---
 
@@ -107,9 +108,9 @@ Features include:
 
 Build a visual collection of your productivity journey and celebrate each milestone you achieve.
 
----
+<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (3)" src="https://github.com/user-attachments/assets/75cd37a4-e289-4482-af25-9dd3765a3658" />
 
-**[Screenshot placeholder: Medals page showing achievement gallery with earned and locked medals]**
+---
 
 ### Challenges
 Work toward lifetime productivity milestones with predefined challenges that track your cumulative achievements. Unlike medals which reset by time interval, challenges are one-time accomplishments based on your total productivity across all time.
@@ -127,7 +128,8 @@ Features include:
 
 These lifetime achievements provide long-term goals to work toward throughout your productivity journey.
 
-**[Screenshot placeholder: Challenges page showing challenge cards with completion dates and progress]**
+
+<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (4)" src="https://github.com/user-attachments/assets/67cd26da-4cbe-4388-9853-01f5f5c92d69" />
 
 ---
 
@@ -153,7 +155,9 @@ Track your daily focus time goals with an Apple Watch-inspired rings interface. 
 
 Stay accountable with clear, visual progress tracking that motivates consistent productivity.
 
-**[Screenshot placeholder: Focus Time Goal page showing goal progress interface with circular progress indicator]**
+<img width="2560" height="1600" alt="localhost_5173_stats_focus(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/387602cb-3019-4a20-879f-625264c085ce" />
+
+
 
 ---
 
