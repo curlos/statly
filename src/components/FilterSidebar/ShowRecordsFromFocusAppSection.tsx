@@ -19,8 +19,8 @@ const ShowRecordsFromFocusAppSection = () => {
 		(focusApp) => (sourceCounts?.[focusApp.source] ?? 0) > 0
 	);
 
-	// Don't render section if no apps have data
-	if (focusAppsWithData.length === 0) {
+	// Don't render section if there's less than two apps.
+	if (focusAppsWithData.length < 2) {
 		return null;
 	}
 

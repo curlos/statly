@@ -1,14 +1,16 @@
 import classNames from 'classnames';
 import Icon from '../Icon';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import { Project } from '../../types/models';
 
 interface CheckboxOtherProps {
 	name: string;
 	showValue: boolean;
 	handleCheckboxClick: () => void;
+	project?: Project;
 }
 
-const CheckboxOther: React.FC<CheckboxOtherProps> = ({ name, showValue, handleCheckboxClick }) => {
+const CheckboxOther: React.FC<CheckboxOtherProps> = ({ name, showValue, handleCheckboxClick, project }) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	return (
@@ -18,7 +20,14 @@ const CheckboxOther: React.FC<CheckboxOtherProps> = ({ name, showValue, handleCh
 				fill={1}
 				customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
 			/>
-			<div>{name}</div>
+			<div className="flex-1 flex justify-between">
+				<div>{name}</div>
+				{project?.color && (
+					<div>
+						<div className="w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: project?.color }} />
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

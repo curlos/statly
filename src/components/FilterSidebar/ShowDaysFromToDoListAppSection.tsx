@@ -20,7 +20,7 @@ const ShowDaysFromToDoListAppSection = () => {
 	);
 
 	// Don't render section if no apps have data
-	if (toDoListAppsWithData.length === 0) {
+	if (toDoListAppsWithData.length < 2) {
 		return null;
 	}
 

@@ -265,6 +265,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 												[project.id]: !showValue,
 											})
 										}
+										project={project}
 									/>
 								);
 							}
@@ -382,6 +383,7 @@ const ProjectGroupWithProjects: React.FC<ProjectGroupWithProjectsProps> = ({
 											[project.id]: !showValue,
 										})
 									}
+									project={project}
 								/>
 							);
 						}

@@ -128,7 +128,7 @@ const CompletedTasksCurveCard = () => {
 								return (
 									<div className={classNames(textColor, 'bg-black p-2 rounded-md')}>
 										<div>{nameToUse}</div>
-										<div className="font-bold">{score} {unit}</div>
+										<div className="font-bold">{score?.toLocaleString()} {unit}</div>
 									</div>
 								);
 							}
