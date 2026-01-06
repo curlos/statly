@@ -105,7 +105,7 @@ const FocusDurationCurveCard = () => {
 					margin={{
 						top: 10,
 						right: 30,
-						left: 10,
+						left: (selectedInterval === 'All' || selectedInterval === 'Custom') ? 30 : 15,
 						bottom: (selectedInterval === 'Week' || selectedInterval === 'Custom') ? 20 : 5,
 					}}
 				>

@@ -154,7 +154,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                 preventOpen={!fromModal}
             >
 
-                <ul className="space-y-4 pl-6 mb-6">
+                <ul className="space-y-4 pl-2 md:pl-4 lg:pl-6 mb-6">
                     {renderProgressBar()}
                 </ul>
             </Accordion>
@@ -215,7 +215,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                         }}
                         preventOpen={!fromModal}
                     >
-                        <ul className="space-y-4 pl-6 mb-6">
+                        <ul className="space-y-4 pl-2 md:pl-4 lg:pl-6 mb-6">
                             <li className="flex items-start gap-1">
                                 <ProgressBar
                                     item={groupedItem}
@@ -316,7 +316,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                     }}
                     preventOpen={!fromModal}
                 >
-                    <ul className="pl-6">
+                    <ul className="pl-2 md:pl-4 lg:pl-6">
                         {tasksToRender
                                 ?.sort((taskIdOne: string, taskIdTwo: string) => {
                                     // If it's the direct task of the parent displayed, then we need to grab the data from "progressBarDataById" because this'll tell us the actual value of the parent task itself, not the value of the children combined and passed up to the parent. Otherwise, for everyone else, you either use that combined child value (duration/count) or the pure progressBarDataById value on itself.
@@ -449,7 +449,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                                 }}
                                 preventOpen={!fromModal}
                             >
-                                <div className="pl-6">
+                                <div className="pl-2 md:pl-4 lg:pl-6">
                                     {groupedProjectsAndTasks[project.id]?.map((taskId: string) => {
                                         return <div key={taskId}>{renderNestedTasks(taskId)}</div>;
                                     })}

@@ -379,7 +379,7 @@ const DetailsCard = () => {
 				onClose={() => setIsModalOpen(false)}
 				customClasses="!w-[1000px]"
 			>
-				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
+				<div className="rounded-xl shadow-lg bg-color-gray-600">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>
 		</div>
 	);

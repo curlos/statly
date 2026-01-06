@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 import { useState } from 'react';
 import FormInput from './FormInput';
+import Spinner from './Loaders/Spinner';
 
 // Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -184,9 +185,10 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 			<button
 				type="submit"
 				disabled={isLoading}
-				className={classNames(chosenColorObj.bgColor, 'w-full rounded-xl p-2 mt-4')}
+				className={classNames(chosenColorObj.bgColor, 'w-full rounded-xl p-2 mt-4 flex items-center justify-center gap-2')}
 			>
-				{mode === 'login' ? 'Login' : 'Sign Up'}
+				<span>{mode === 'login' ? 'Login' : 'Sign Up'}</span>
+				{isLoading && <Spinner size="sm" customClass="!text-white" />}
 			</button>
 
 			<div className="text-center">

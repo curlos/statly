@@ -134,6 +134,7 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 				)}
 				onMouseEnter={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}
+				onClick={() => setIsHovering(!isHovering)}
 			></div>
 
 			<Dropdown
