@@ -32,7 +32,7 @@ const YearGridsCard = () => {
 	});
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col sm:h-[350px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-auto sm:h-[350px]">
 			<div className="flex justify-between items-center mb-2">
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Year Grids</h3>

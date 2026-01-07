@@ -79,7 +79,7 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 						{monthsShort.map((month, index) => index % 2 === 0 && <div key={month}>{month}</div>)}
 					</div>
 
-					<div className="flex flex-col flex-wrap max-h-[340px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px]">
+					<div className="grid grid-flow-col grid-rows-[repeat(auto-fill,_15px)] max-h-[360px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px] gap-[1px]">
 						{allDatesInYear.map((date) => (
 							<CalendarDay
 								key={date.toLocaleDateString()}
@@ -128,7 +128,7 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 			<div
 				key={date.toLocaleDateString()}
 				className={classNames(
-					`h-[15px] w-[15px] cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px]`,
+					`h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px]`,
 					rangeClass,
 					chosenColorObj.hover.borderColor
 				)}
