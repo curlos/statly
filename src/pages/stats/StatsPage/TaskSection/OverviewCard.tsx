@@ -44,10 +44,16 @@ const OverviewCard = () => {
 				start.setDate(start.getDate() - 7);
 				end.setDate(end.getDate() - 7);
 				break;
-			case 'Month':
+			case 'Month': {
 				start.setMonth(start.getMonth() - 1);
-				end.setMonth(end.getMonth() - 1);
+				// Set end to last day of previous month
+				// Day 0 of current month = last day of previous month
+				const endYear = end.getFullYear();
+				const endMonth = end.getMonth();
+				const lastDayOfPrevMonth = new Date(endYear, endMonth, 0);
+				end.setTime(lastDayOfPrevMonth.getTime());
 				break;
+			}
 			case 'Year':
 				start.setFullYear(start.getFullYear() - 1);
 				end.setFullYear(end.getFullYear() - 1);
