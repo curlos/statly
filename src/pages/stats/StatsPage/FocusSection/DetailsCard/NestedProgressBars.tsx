@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, RefObject } from "react";
 import Accordion from "../../../../../components/Accordion/Accordion";
 import Pagination from "../../../../../components/Pagination";
 import { getFormattedDuration } from "../../../../../utils/helpers.utils";
@@ -27,6 +27,7 @@ interface NestedProgressBarsProps {
     intervalEndDate: string;
     emotionId?: string;
     showPagination?: boolean;
+    innerScrollableContainerRef?: RefObject<HTMLDivElement>;
 }
 
 const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
@@ -45,11 +46,11 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
     intervalStartDate,
     intervalEndDate,
     emotionId,
-    showPagination = true
+    showPagination = true,
+    innerScrollableContainerRef
 }) => {
     // Pagination state for modal view
     const [currentPage, setCurrentPage] = useState(1);
-    const scrollableContainerRef = useRef<HTMLDivElement>(null);
 
     const groupedTasksCollapsedByDefault = useState(false);
 
@@ -63,7 +64,11 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 
     // Scroll to top when page changes
     useEffect(() => {
-        scrollableContainerRef?.current?.scrollTo(0, 0);
+        if (innerScrollableContainerRef?.current) {
+            innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
     if (!data || !ancestorTasksById || (dataType === 'Project' && !dataByTasks)) {
@@ -411,7 +416,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 
         return (
             <>
-                <div ref={scrollableContainerRef}>
+                <div>
                     {sortedProjects.slice(fromModal ? projectStartIndex : 0, fromModal ? projectEndIndex : maxProjects)?.map((project: ProgressBarItemData) => {
                     const projectMetricValue = project[metricKey] as number || 0;
                     const projectFormattedMetric = isFocusDuration
@@ -477,7 +482,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 
     return (
         <>
-            <div className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')} ref={scrollableContainerRef}>
+            <div className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')}>
                 {sortedTasksWithNoParent.slice(fromModal ? taskStartIndex : 0, fromModal ? taskEndIndex : maxTasksWithNoParent)?.map((taskId: string) => {
                     return <div key={taskId} className="w-full">{renderNestedTasks(taskId)}</div>;
                 })}

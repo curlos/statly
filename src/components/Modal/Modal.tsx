@@ -9,9 +9,10 @@ interface ModalProps {
 	positionClasses?: string;
 	customClasses?: string;
 	children: React.ReactNode;
+	contentRef?: React.RefObject<HTMLDivElement>;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children, contentRef }) => {
 	const containerVariants = {
 		hidden: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } },
 		visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
@@ -43,6 +44,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 						style={{ zIndex: 49 }}
 					/>
 					<motion.div
+						ref={contentRef}
 						initial="hidden"
 						animate="visible"
 						exit="hidden"

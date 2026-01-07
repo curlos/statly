@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, RefObject, useRef } from 'react';
 import classNames from 'classnames';
 import ProgressBar from '../ProgressBar';
 import { useGetProjectsQuery } from '../../../../../services/resources/projectsApi';
@@ -25,6 +25,7 @@ interface ProgressBarListProps {
 	intervalStartDate: string;
 	intervalEndDate: string;
 	byEmotionWithTasks?: Record<string, EmotionProgressBarData>;
+	scrollableContainerRef?: RefObject<HTMLDivElement>;
 }
 
 const ProgressBarList: React.FC<ProgressBarListProps> = ({
@@ -41,11 +42,12 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	aggregationResults,
 	intervalStartDate,
 	intervalEndDate,
-	byEmotionWithTasks
+	byEmotionWithTasks,
+	scrollableContainerRef
 }) => {
 	// Pagination state for modal view
 	const [currentPage, setCurrentPage] = useState(1);
-	const scrollableContainerRef = useRef<HTMLDivElement>(null);
+	const innerScrollableContainerRef = useRef<HTMLDivElement>(null);
 
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -84,7 +86,14 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 
 	// Scroll to top when page changes
 	useEffect(() => {
-		scrollableContainerRef?.current?.scrollTo(0, 0);
+		if (scrollableContainerRef?.current) {
+			scrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+
+		if (innerScrollableContainerRef?.current) {
+			innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentPage]);
 
 	const maxDataLen = fromModal ? sortedData.length : 5;
@@ -105,10 +114,10 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	return (
 		<div className="space-y-4 w-full p-2">
 			<div
-				ref={scrollableContainerRef}
+				ref={innerScrollableContainerRef}
 				className={classNames(
-					'space-y-4 w-full overflow-auto gray-scrollbar pr-3',
-					fromModal ? 'max-h-[300px] md:max-h-[500px]' : 'max-h-[230px]'
+					'space-y-4 w-full pr-3 overflow-auto gray-scrollbar',
+					fromModal ? 'md:max-h-[500px]' : 'max-h-[230px]'
 				)}
 			>
 				{/* Special handling for Emotion dataType with nested view */}
@@ -182,6 +191,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 										intervalStartDate={intervalStartDate}
 										intervalEndDate={intervalEndDate}
 										showPagination={false}
+										innerScrollableContainerRef={innerScrollableContainerRef}
 									/>
 								</div>
 							</Accordion>
@@ -204,6 +214,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 						intervalStartDate={intervalStartDate}
 						intervalEndDate={intervalEndDate}
 						showPagination={true}
+						innerScrollableContainerRef={innerScrollableContainerRef}
 					/>
 				) : (
 					sortedData

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import Icon from '../../../../components/Icon';
 import Modal from '../../../../components/Modal/Modal';
@@ -34,6 +34,8 @@ const CompletionStatsCard = () => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { hover } = chosenColorObj;
+
+	const scrollableContainerRef = useRef<HTMLDivElement>(null);
 
 	const selectedOptions = ['Project', 'Task'];
 	const [selected, setSelected] = useState(selectedOptions[0]);
@@ -313,6 +315,7 @@ const CompletionStatsCard = () => {
 							aggregationResults={aggregationResults ?? undefined}
 							intervalStartDate={apiStartDate ?? ''}
 							intervalEndDate={apiEndDate ?? ''}
+							scrollableContainerRef={scrollableContainerRef}
 						/>
 					</div>
 				</div>
@@ -331,6 +334,7 @@ const CompletionStatsCard = () => {
 				onClose={() => setIsModalOpen(false)}
 				positionClasses="top-center"
 				customClasses="!w-[1000px]"
+				contentRef={scrollableContainerRef}
 			>
 				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>

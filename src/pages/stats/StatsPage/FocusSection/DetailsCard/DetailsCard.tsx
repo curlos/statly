@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import Icon from '../../../../../components/Icon';
 import Modal from '../../../../../components/Modal/Modal';
@@ -59,6 +59,8 @@ const DetailsCard = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showNestedProgressBars, setShowNestedProgressBars] = useState(false);
 	const [sortBy, setSortBy] = useState('Focus Time: Most-Least');
+
+	const scrollableContainerRef = useRef<HTMLDivElement>(null);
 
 	// Build query params for API using custom hook
 	const getGroupBy = () => {
@@ -361,6 +363,7 @@ const DetailsCard = () => {
 							intervalStartDate={apiStartDate ?? ''}
 							intervalEndDate={apiEndDate ?? ''}
 							byEmotionWithTasks={statsData?.byEmotionWithTasks}
+							scrollableContainerRef={scrollableContainerRef}
 						/>
 					</div>
 				</div>
@@ -378,6 +381,7 @@ const DetailsCard = () => {
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 				customClasses="!w-[1000px]"
+				contentRef={scrollableContainerRef}
 			>
 				<div className="rounded-xl shadow-lg bg-color-gray-600">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>
