@@ -35,22 +35,24 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 			const adjustments: Record<string, string> = {};
 
 			// Check if dropdown exceeds the bottom of the viewport or if forced to open upward
+			// Use visualViewport for Safari/mobile to account for dynamic UI bars
+			const viewportHeight = window.visualViewport?.height || window.innerHeight;
 			const margin = 8; // Small buffer
-			if (openUpward || dropdownRect.bottom > window.innerHeight - margin) {
+			if (openUpward || dropdownRect.bottom > viewportHeight - margin) {
 				// Position above the toggle button instead
 				const dropdownHeight = dropdownRect.height;
 				const toggleTop = toggleRect?.top || 0;
 				const spaceAbove = toggleTop;
 
-				if (spaceAbove >= dropdownHeight || openUpward) {
-					// Enough space above - position it there (or forced to open upward)
-					adjustments.top = 'auto';
-					adjustments.bottom = '100%';
-					adjustments.marginBottom = '4px';
-					adjustments.marginTop = '0';
-				} else {
-					// Not enough space above - constrain height and add scroll
-					adjustments.maxHeight = `${Math.max(spaceAbove, window.innerHeight - dropdownRect.bottom) - margin * 2}px`;
+				// Always position above when there's no space below
+				adjustments.top = 'auto';
+				adjustments.bottom = '100%';
+				adjustments.marginBottom = '4px';
+				adjustments.marginTop = '0';
+
+				// If dropdown is taller than space above, constrain it and make it scrollable
+				if (dropdownHeight > spaceAbove - margin) {
+					adjustments.maxHeight = `${spaceAbove - margin * 2}px`;
 					adjustments.overflowY = 'auto';
 				}
 			}
@@ -58,7 +60,8 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 			// Only do auto-detection for horizontal positioning if align prop is not provided
 			if (!align) {
 				// Check if dropdown exceeds the right side of the viewport
-				if (dropdownRect.right > window.innerWidth - margin) {
+				const viewportWidth = window.visualViewport?.width || window.innerWidth;
+				if (dropdownRect.right > viewportWidth - margin) {
 					adjustments.right = '0';
 					adjustments.left = 'auto';
 				}
