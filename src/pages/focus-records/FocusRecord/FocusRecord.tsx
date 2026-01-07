@@ -204,7 +204,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                         </div>
                     </div>
 
-                    <div className="sm:hidden text-gray-200">
+                    <div className="sm:hidden relative" style={{ color: cardTextColor }}>
                         <div className="flex items-center justify-between">
                             <div>
                                 <div
