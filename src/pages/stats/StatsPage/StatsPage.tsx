@@ -10,8 +10,8 @@ const StatsPage = () => {
 	const location = pageContext.urlParsed;
 
 	return (
-		<div className="flex max-w-screen max-h-[100vh] overflow-x-hidden">
-			<div className="flex-1 bg-color-gray-700 py-8 h-[100vh] overflow-scroll gray-scrollbar">
+		<div className="flex max-w-screen max-h-[100dvh] overflow-x-hidden">
+			<div className="flex-1 bg-color-gray-700 py-8 h-[100dvh] overflow-scroll gray-scrollbar">
 				<div className="container">
 					<TopBar />
 
