@@ -25,14 +25,10 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 
 		if (compactView) {
 			// Compact view: max 7 on desktop, 5 on <992px, 3 on <768px, 2 on 576-620px
-			if (width >= 576 && width < 620) {
+			if (width < 768) {
 				setNumPagesToShow(1);
-			} else if (width < 768) {
-				setNumPagesToShow(3);
-			} else if (width < 992) {
-				setNumPagesToShow(5);
 			} else {
-				setNumPagesToShow(7);
+				setNumPagesToShow(3);
 			}
 		} else {
 			// Default view: max 9 on desktop
