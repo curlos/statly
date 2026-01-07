@@ -52,8 +52,8 @@ const MostFocusedTimeCard = () => {
 	}));
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px]">
-			<div className="flex justify-between items-center mb-6">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px]">
+			<div className={classNames("flex justify-between items-center", selectedInterval === 'All' && 'mb-6')}>
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Most Focused Time</h3>
 					{(isLoading || isFetching) && <Spinner size="md" />}
@@ -80,54 +80,53 @@ const MostFocusedTimeCard = () => {
 
 			<div className="sm:hidden">{renderDateRangePicker()}</div>
 
-			<div className="w-full h-full text-[12px] sm:text-[14px] md:text-[16px]">
+			<div className="flex-1 min-h-0">
 				<ResponsiveContainer width="100%" height="100%">
-					<BarChart
-						width={500}
-						height={300}
-						data={data}
-						margin={{
-							top: 5,
-							right: 30,
-							left: 20,
-							bottom: 5,
-						}}
-						barSize={10}
-					>
-						<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} />
-						<YAxis
-							dataKey="seconds"
-							type="number"
-							domain={['dataMin', 'dataMax']}
-							tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
-						/>
-						<Tooltip
-							content={({ payload }) => {
-								// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
-								if (payload && payload[0]) {
-									const { name, seconds } = payload[0].payload;
-									return (
-										<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
-											<div>{name}</div>
-											<div className="font-bold">{getFormattedDuration(seconds, false)}</div>
-										</div>
-									);
-								}
+				<BarChart
+					width={500}
+					data={data}
+					margin={{
+						top: 5,
+						right: 30,
+						left: 20,
+						bottom: 5,
+					}}
+					barSize={10}
+				>
+					<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} minTickGap={20} />
+					<YAxis
+						dataKey="seconds"
+						type="number"
+						domain={['dataMin', 'dataMax']}
+						tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
+					/>
+					<Tooltip
+						content={({ payload }) => {
+							// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
+							if (payload && payload[0]) {
+								const { name, seconds } = payload[0].payload;
+								return (
+									<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
+										<div>{name}</div>
+										<div className="font-bold">{getFormattedDuration(seconds, false)}</div>
+									</div>
+								);
+							}
 
-								return null;
-							}}
-						/>
-						<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-						<Bar
-							dataKey="seconds"
-							fill={chosenColorObj.hexColor}
-							background={{ fill: '#3a3a3a' }}
-							// TODO: Write function to get a slightly lighter color to show on hover/active.
-							activeBar={{ fill: nextLightestColorObj?.hexColor || chosenColorObj.hexColor, cursor: 'pointer' }}
-						/>
-					</BarChart>
-				</ResponsiveContainer>
-			</div>
+							return null;
+						}}
+					/>
+					<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+					<Bar
+						dataKey="seconds"
+						fill={chosenColorObj.hexColor}
+						background={{ fill: '#3a3a3a' }}
+						// TODO: Write function to get a slightly lighter color to show on hover/active.
+						activeBar={{ fill: nextLightestColorObj?.hexColor || chosenColorObj.hexColor, cursor: 'pointer' }}
+					/>
+				</BarChart>
+			</ResponsiveContainer>
+		</div>
 
 			{renderCustomDateModal()}
 		</div>
