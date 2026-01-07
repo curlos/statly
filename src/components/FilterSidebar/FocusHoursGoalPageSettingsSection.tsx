@@ -209,7 +209,10 @@ const FocusHoursGoalPageSettingsSection = () => {
 			if (inactivePeriods.length > 0) {
 				const lastPeriod = inactivePeriods[inactivePeriods.length - 1];
 				if (lastPeriod.endDate === null) {
-					lastPeriod.endDate = today;
+					inactivePeriods[inactivePeriods.length - 1] = {
+						...lastPeriod,
+						endDate: today
+					};
 				}
 			}
 		}
@@ -316,29 +319,29 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Ring Status Toggle */}
 				<div className="mb-4">
-						<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Ring Status</h4>
-						<div className="flex items-center gap-3">
-							<button
-								onClick={handleToggleRingActive}
-								disabled={isOnlyActiveRing() || isTogglingRingStatus}
-								className={classNames(
-									'px-4 py-2 rounded-full text-[14px] font-medium transition-colors flex items-center gap-2',
-									currentRing.isActive
-										? 'bg-green-600 hover:bg-green-700 text-white'
-										: 'bg-color-gray-600 hover:bg-color-gray-200 text-white',
-									(isOnlyActiveRing() || isTogglingRingStatus) && 'opacity-50 cursor-not-allowed'
-								)}
-							>
-								<span>{currentRing.isActive ? 'Active' : 'Paused'}</span>
-							</button>
-							{isTogglingRingStatus && <Spinner size="sm" />}
-							{isOnlyActiveRing() && (
-								<p className="text-[12px] text-orange-400">
-									At least one ring must remain active
-								</p>
+					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Ring Status</h4>
+					<div className="flex items-center gap-3">
+						<button
+							onClick={handleToggleRingActive}
+							disabled={isOnlyActiveRing() || isTogglingRingStatus}
+							className={classNames(
+								'px-4 py-2 rounded-full text-[14px] font-medium transition-colors flex items-center gap-2',
+								currentRing.isActive
+									? 'bg-green-600 hover:bg-green-700 text-white'
+									: 'bg-color-gray-600 hover:bg-color-gray-200 text-white',
+								(isOnlyActiveRing() || isTogglingRingStatus) && 'opacity-50 cursor-not-allowed'
 							)}
-						</div>
+						>
+							<span>{currentRing.isActive ? 'Active' : 'Paused'}</span>
+						</button>
+						{isTogglingRingStatus && <Spinner size="sm" />}
+						{isOnlyActiveRing() && (
+							<p className="text-[12px] text-orange-400">
+								At least one ring must remain active
+							</p>
+						)}
 					</div>
+				</div>
 
 				{/* Ring Name Input */}
 				<div className="mb-4 px-1">
