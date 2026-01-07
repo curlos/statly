@@ -43,11 +43,13 @@ const TimelineCard = () => {
 				<div className="flex gap-2 items-center">
 					<CustomWeekPicker {...{ selectedDates, setSelectedDates }} />
 
-					<DateRangePicker
-						selectedDates={selectedDates}
-						setSelectedDates={setSelectedDates}
-						selectedInterval={'Week'}
-					/>
+					<div className="flex-1">
+						<DateRangePicker
+							selectedDates={selectedDates}
+							setSelectedDates={setSelectedDates}
+							selectedInterval={'Week'}
+						/>
+					</div>
 				</div>
 			</div>
 
