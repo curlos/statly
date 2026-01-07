@@ -51,7 +51,7 @@ const BackupData = () => {
 	const [status, setStatus] = useState('none');
 
 	// Helper function to fetch all pages in parallel
-	const fetchAllPages = async <T,>(
+	const fetchAllPages = async <T extends { id: string }>(
 		triggerQuery: (args: { page: number; limit: number }) => Promise<QueryResponse<PaginatedResponse<T>>>,
 		limit = 5000
 	): Promise<T[]> => {
@@ -88,7 +88,13 @@ const BackupData = () => {
 			...remainingPagesResponses.map((response) => response.data?.data || []),
 		].flat();
 
-		return allData;
+		// Deduplicate by id to prevent duplicate entries in backup
+		// This handles edge cases where pagination might return duplicate items
+		const uniqueData = Array.from(
+			new Map(allData.map(item => [item.id, item])).values()
+		);
+
+		return uniqueData;
 	};
 
 	const zip = new JSZip();
