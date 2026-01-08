@@ -230,14 +230,6 @@ Export and backup all your Statly data at any time:
 
 ---
 
-## Author
-
-Built by [Your Name]
-
-**Links**: [GitHub](your-github-url) • [Portfolio](your-portfolio-url) • [LinkedIn](your-linkedin-url)
-
----
-
 ## Credits
 
 Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](https://www.flaticon.com/free-icon/timer_2921136)
