@@ -121,6 +121,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 		// Validate file count
 		if (selectedFiles.length + files.length > 10) {
 			setError('You can only upload up to 10 images at a time');
+			e.target.value = '';
 			return;
 		}
 
@@ -128,6 +129,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 		const invalidFiles = files.filter(file => file.size > 5 * 1024 * 1024);
 		if (invalidFiles.length > 0) {
 			setError(`${invalidFiles.length} file(s) exceed 5MB limit`);
+			e.target.value = '';
 			return;
 		}
 
