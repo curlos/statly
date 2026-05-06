@@ -177,7 +177,6 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 							name="more_horiz"
 							customClass="text-color-gray-50 !text-[20px] cursor-pointer hover:text-white transition-colors"
 							onClick={(e) => {
-								console.log('Icon clicked!');
 								e.stopPropagation();
 								setContextMenuVisible(false);
 								setDropdownOpen(!dropdownOpen);

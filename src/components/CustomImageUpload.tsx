@@ -5,6 +5,7 @@ import Icon from './Icon';
 import Spinner from './Loaders/Spinner';
 import classNames from 'classnames';
 import { useThemeContext } from '../contexts/useThemeContext';
+import CheckboxOther from './FilterSidebar/CheckboxOther';
 import {
 	DndContext,
 	closestCenter,
@@ -95,6 +96,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 	const [cropIndex, setCropIndex] = useState<number | null>(null);
 	const [imageToCrop, setImageToCrop] = useState<string | null>(null);
 	const [showCropModal, setShowCropModal] = useState(false);
+	const [compress, setCompress] = useState(true);
 	const [uploadCustomImages, { isLoading }] = useUploadCustomImagesMutation();
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState<string | null>(null);
@@ -229,7 +231,8 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 			selectedFiles.forEach((file) => {
 				formData.append('images', file);
 			});
-			formData.append('folder', currentFolder); // Add current folder
+			formData.append('folder', currentFolder);
+			formData.append('compress', String(compress));
 
 			await uploadCustomImages(formData).unwrap();
 
@@ -320,6 +323,15 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 							</div>
 						</SortableContext>
 					</DndContext>
+
+					{/* Compress checkbox */}
+					<div className="mb-4">
+						<CheckboxOther
+							name="Compress Image Quality"
+							showValue={compress}
+							handleCheckboxClick={() => setCompress(prev => !prev)}
+						/>
+					</div>
 
 					{/* Upload Button */}
 					<button
