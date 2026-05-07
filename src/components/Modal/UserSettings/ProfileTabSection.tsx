@@ -161,7 +161,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					)}
 					{/* Gray overlay - always visible */}
 					<div className="absolute inset-0 bg-black bg-opacity-60 rounded-full flex items-center justify-center hover:bg-opacity-50 transition">
-						<Icon name="camera_alt" fill={0} customClass="!text-[24px] text-white" />
+						<Icon name="camera_alt" fill={0} customClass="!text-[24px] text-[#ffffff]" />
 					</div>
 				</div>
 				<input
@@ -191,19 +191,17 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 				/>
 
 				{/* Email input with tooltip */}
-				<div>
-					<div className="flex items-center gap-2 bg-color-gray-200 rounded-xl p-2">
-						<Icon name="email" customClass="!text-[20px]" />
-						<input
-							id="email"
-							type="email"
-							placeholder="Email"
-							{...register('email', {
-								required: 'Email is required',
-								pattern: { value: EMAIL_REGEX, message: 'Please enter a valid email address' }
-							})}
-							className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-100 mb-0 resize-none outline-none rounded"
-						/>
+				<FormInput
+					id="email"
+					type="email"
+					placeholder="Email"
+					iconName="email"
+					register={register('email', {
+						required: 'Email is required',
+						pattern: { value: EMAIL_REGEX, message: 'Please enter a valid email address' }
+					})}
+					error={errors.email}
+					rightElement={
 						<Tooltip
 							content="Changing your email requires your current password for security."
 							position="bottom"
@@ -212,12 +210,11 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 						>
 							<Icon
 								name="help"
-								customClass="!text-[20px] text-color-gray-100 cursor-pointer"
+								customClass="!text-[20px] text-color-gray-50 cursor-pointer"
 							/>
 						</Tooltip>
-					</div>
-					{errors.email && <p className="text-red-500 mt-1">{errors.email?.message as string}</p>}
-				</div>
+					}
+				/>
 
 				{/* Indented current password field */}
 				<div className="ml-6">

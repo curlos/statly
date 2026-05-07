@@ -9,9 +9,10 @@ interface FormInputProps {
 	iconName: string;
 	register: UseFormRegisterReturn;
 	error?: FieldError;
+	rightElement?: React.ReactNode;
 }
 
-const FormInput = ({ id, type, placeholder, iconName, register, error }: FormInputProps) => {
+const FormInput = ({ id, type, placeholder, iconName, register, error, rightElement }: FormInputProps) => {
 	const { colorMode } = useThemeContext();
 	return (
 		<div>
@@ -24,6 +25,7 @@ const FormInput = ({ id, type, placeholder, iconName, register, error }: FormInp
 					{...register}
 					className="w-full text-[16px] p-1 bg-transparent placeholder:text-color-gray-50 mb-0 w-full resize-none outline-none rounded"
 				/>
+				{rightElement}
 			</div>
 			{error && <p className="text-red-500 mt-1">{error.message}</p>}
 		</div>

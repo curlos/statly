@@ -60,11 +60,11 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 				</div>
 			)}
 			<h2 className="text-2xl font-bold mb-1 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.name}</h2>
-			<p className="text-color-gray-50 mt-0 mb-0 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.email}</p>
+			<p className="text-color-gray-25 mt-0 mb-0 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.email}</p>
 
 			{/* Join Date */}
 			{user.createdAt && (
-				<p className="text-color-gray-50 mb-0 mt-0">
+				<p className="text-color-gray-25 mb-0 mt-0">
 					Joined {new Date(user.createdAt).toLocaleDateString('en-US', {
 						month: 'long',
 						day: 'numeric',
@@ -79,31 +79,31 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
 						{(overviewStats?.totalFocusRecordCount ?? 0).toLocaleString()}
 					</div>
-					<div className="text-color-gray-50">Focus Records</div>
+					<div className="text-color-gray-25">Focus Records</div>
 				</div>
 				<div className="text-center">
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
 						{(getFormattedDuration(overviewStats?.totalFocusDuration || 0, false))}
 					</div>
-					<div className="text-color-gray-50">Focus Time</div>
+					<div className="text-color-gray-25">Focus Time</div>
 				</div>
 				<div className="text-center">
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
 						{(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()}
 					</div>
-					<div className="text-color-gray-50">Completed Tasks</div>
+					<div className="text-color-gray-25">Completed Tasks</div>
 				</div>
 				<div className="text-center">
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
 						{(overviewStats?.totalProjectsCount ?? 0).toLocaleString()}
 					</div>
-					<div className="text-color-gray-50">Projects</div>
+					<div className="text-color-gray-25">Projects</div>
 				</div>
 			</div>
 
 			{/* First Data Section */}
 			{(overviewStats?.firstCompletedTaskDate || overviewStats?.firstFocusRecordDate) && (
-				<div className="mb-10 text-color-gray-50 text-center">
+				<div className="mb-10 text-color-gray-25 text-center">
 					{overviewStats.firstFocusRecordDate && (
 						<p className="mt-0">
 							<span className="font-bold">1st Focus Record: </span>{' '}
