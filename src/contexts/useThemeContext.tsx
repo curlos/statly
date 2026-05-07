@@ -48,6 +48,10 @@ const useTheme = () => {
 		localStorage.setItem('font-family', userSettings?.theme?.fontFamily);
 	}
 
+	useEffect(() => {
+		document.documentElement.style.fontFamily = selectedFontFamilyKey !== 'Default' ? selectedFontFamilyKey : '';
+	}, [selectedFontFamilyKey]);
+
 	const getNextLightestAndDarkestColor = () => {
 		const colorVariantNameList = Object.keys(chosenColorVariantsObj);
 		let nextLightestColorObj = null;
