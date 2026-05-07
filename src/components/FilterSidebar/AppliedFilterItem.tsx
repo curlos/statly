@@ -10,12 +10,12 @@ interface AppliedFilterItemProps {
 
 const AppliedFilterItem = ({ name, value, onRemove }: AppliedFilterItemProps) => {
 	const themeContext = useThemeContext();
-	const { chosenColorObj } = themeContext;
-	const { bgColorHalfOpacity } = chosenColorObj;
+	const { chosenColorObj, colorMode } = themeContext;
+	const { bgColor, bgColorHalfOpacity } = chosenColorObj;
 
 	return (
 		<div className="flex">
-			<div className={classNames('px-2 py-1 text-[14px] text-white rounded-xl', bgColorHalfOpacity)}>
+			<div className={classNames('px-2 py-1 text-[14px] text-white rounded-xl', colorMode === 'dark' ? bgColorHalfOpacity : bgColor)}>
 				<div className="overflow-hidden">
 					{name && <span className="font-bold">{name}: </span>}
 					<span className="text-wrap break-all">{value}</span>
@@ -26,7 +26,7 @@ const AppliedFilterItem = ({ name, value, onRemove }: AppliedFilterItemProps) =>
 				<Icon
 					name="close"
 					fill={0}
-					customClass={'text-black rounded-full !text-[14px] bg-white cursor-pointer p-[2px]'}
+					customClass={classNames('rounded-full !text-[14px] cursor-pointer p-[2px]', colorMode === 'light' ? 'text-[#ffffff] bg-black' : 'text-black bg-white')}
 				/>
 			</div>
 		</div>

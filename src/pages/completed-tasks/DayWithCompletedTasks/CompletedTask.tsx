@@ -35,7 +35,7 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateT
 			<div className="flex items-start gap-1">
 				<Icon
 					name={statusIsWillNotDo ? 'disabled_by_default' : 'check_box'}
-					customClass={classNames('!text-[20px] text-white')}
+					customClass={classNames('!text-[20px]')}
 					customStyle={{ color: cardTextColor }}
 				/>
 				<div

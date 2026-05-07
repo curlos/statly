@@ -29,7 +29,7 @@ const MostFocusedTimeCard = () => {
 	});
 
 	const themeContext = useThemeContext();
-	const { chosenColorObj, nextLightestColorObj } = themeContext;
+	const { chosenColorObj, nextLightestColorObj, colorMode } = themeContext;
 
 	// Build query params for API using custom hook
 	const queryParams = useStatsQueryParams({
@@ -93,12 +93,13 @@ const MostFocusedTimeCard = () => {
 					}}
 					barSize={10}
 				>
-					<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} minTickGap={20} />
+					<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} minTickGap={20} tick={{ fill: 'var(--color-gray-50)' }} />
 					<YAxis
 						dataKey="seconds"
 						type="number"
 						domain={['dataMin', 'dataMax']}
 						tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
+						tick={{ fill: 'var(--color-gray-50)' }}
 					/>
 					<Tooltip
 						content={({ payload }) => {
@@ -120,7 +121,7 @@ const MostFocusedTimeCard = () => {
 					<Bar
 						dataKey="seconds"
 						fill={chosenColorObj.hexColor}
-						background={{ fill: '#3a3a3a' }}
+						background={{ fill: colorMode === 'dark' ? '#3a3a3a' : '#c9c9c9' }}
 						// TODO: Write function to get a slightly lighter color to show on hover/active.
 						activeBar={{ fill: nextLightestColorObj?.hexColor || chosenColorObj.hexColor, cursor: 'pointer' }}
 					/>

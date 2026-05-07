@@ -21,7 +21,7 @@ const TopBar = () => {
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
-	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
+	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	const isSidebarModalOpen = useSelector((state: RootState) => state.modals.modals.ModalSidebar?.isOpen);
 	const [isFilterSidebarModalOpen, setIsFilterSidebarModalOpen] = useState(false);

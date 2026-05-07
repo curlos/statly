@@ -22,7 +22,7 @@ const EditProfileSection = () => {
 	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 	const sharedButtonStyle = 'text-[14px] py-1 px-3 rounded-3xl cursor-pointer';
 	const selectedButtonStyle = `${sharedButtonStyle} font-bold`;
-	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
+	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	return (
 		<div>

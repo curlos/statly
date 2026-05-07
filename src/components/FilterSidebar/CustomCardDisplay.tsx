@@ -113,7 +113,7 @@ const CustomCardDisplay = () => {
 
 			{useBackgroundColor && (
 				<div className="pl-10 mt-2 flex items-center gap-2">
-					<span className="text-[14px] text-color-gray-100">Choose color:</span>
+					<span className="text-[14px] text-color-gray-25">Choose color:</span>
 					<SimpleColorPicker
 						color={backgroundColor}
 						onColorChange={(newColor) =>
@@ -140,7 +140,7 @@ const CustomCardDisplay = () => {
 
 			{useTextColor && (
 				<div className="pl-10 mt-2 flex items-center gap-2">
-					<span className="text-[14px] text-color-gray-100">Choose color:</span>
+					<span className="text-[14px] text-color-gray-25">Choose color:</span>
 					<SimpleColorPicker
 						color={textColor}
 						onColorChange={(newColor) =>

@@ -439,6 +439,7 @@ export interface UserSettings {
 	theme: {
 		color: string;
 		fontFamily: string;
+		colorMode?: 'dark' | 'light';
 	};
 	pages: UserSettingsPages;
 	tickTickInboxProjectId?: string;

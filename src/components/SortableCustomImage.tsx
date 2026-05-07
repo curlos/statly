@@ -97,7 +97,7 @@ const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
 						className="bg-black/70 hover:bg-black p-1 rounded"
 						title="Crop image"
 					>
-						<Icon name="crop" customClass="!text-[16px] text-white" />
+						<Icon name="crop" customClass="!text-[16px] text-[#ffffff]" />
 					</button>
 					{availableFolders.length > 1 && (
 						<button
@@ -108,7 +108,7 @@ const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
 							className="bg-black/70 hover:bg-black p-1 rounded"
 							title="Move to folder"
 						>
-							<Icon name="drive_file_move" customClass="!text-[16px] text-white" />
+							<Icon name="drive_file_move" customClass="!text-[16px] text-[#ffffff]" />
 						</button>
 					)}
 					<button
@@ -119,7 +119,7 @@ const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
 						className="bg-black/70 hover:bg-black p-1 rounded"
 						title="Delete image"
 					>
-						<Icon name="delete" customClass="!text-[16px] text-white" />
+						<Icon name="delete" customClass="!text-[16px] text-[#ffffff]" />
 					</button>
 				</div>
 			)}

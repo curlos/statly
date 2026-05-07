@@ -79,7 +79,7 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 			{/* Streaks List */}
 			<div className="max-h-[400px] overflow-y-auto space-y-3 pr-2 scrollbar-thin gray-scrollbar">
 				{sortedStreaks.length === 0 ? (
-					<div className="text-center text-color-gray-100 py-8">
+					<div className="text-center text-color-gray-25 py-8">
 						No streaks found
 					</div>
 				) : (
@@ -95,7 +95,7 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 								}`}
 							>
 								<div className="flex items-center gap-2">
-									<span className="text-color-gray-100 font-medium">
+									<span className="text-color-gray-25 font-medium">
 										{index + 1}.
 									</span>
 									<span className="font-semibold">
@@ -112,7 +112,7 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 									)}
 								</div>
 								{streak.from && streak.to && (
-									<div className="text-sm text-color-gray-100 mt-1 ml-8">
+									<div className="text-sm text-color-gray-25 mt-1 ml-8">
 										{formatDateWithoutTimezone(streak.from)} -{' '}
 										{formatDateWithoutTimezone(streak.to)}
 									</div>

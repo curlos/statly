@@ -39,7 +39,7 @@ const SyncItem = ({ label, syncKey, metadata }: SyncItemProps) => {
 	return (
 		<div className="flex items-center justify-between gap-2">
 			<div className="font-semibold">{label}</div>
-			<div className="flex items-center gap-2 text-color-gray-100">
+			<div className="flex items-center gap-2 text-color-gray-50">
 				<span>{formatLastSyncTime(metadata?.lastSyncTime)}</span>
 				{statusIcon && (
 					<div style={{ color: statusIcon.color }}>
@@ -74,7 +74,7 @@ const SyncSection = () => {
 					<Icon
 						name="help_outline"
 						fill={0}
-						customClass="!text-[18px] ml-[-2px] mt-[7px] text-color-gray-100 hover:text-white cursor-help"
+						customClass="!text-[18px] ml-[-2px] mt-[7px] text-color-gray-50 hover:text-white cursor-help"
 					/>
 				</Tooltip>
 			</div>

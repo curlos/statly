@@ -28,7 +28,7 @@ const EmotionTag = ({ emotionObj, onClick, showScore = false, count }: EmotionTa
 			<div
 				onClick={onClick}
 				className={classNames(
-					'px-3 py-1 text-[14px] text-white rounded-full transition-opacity border border-color-gray-25',
+					'px-3 py-1 text-[14px] text-[#ffffff] rounded-full transition-opacity border border-color-gray-25',
 					emotionData.bg,
 					onClick && 'cursor-pointer hover:opacity-80',
 				)}

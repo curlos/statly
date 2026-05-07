@@ -10,7 +10,7 @@ interface ModalSettingsSidebarProps {
 const ModalSettingsSidebar: React.FC<ModalSettingsSidebarProps> = ({ isOpen, setIsOpen, page }) => {
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
-		visible: { opacity: 0.3, transition: { duration: 0.3 } },
+		visible: { opacity: 0.5, transition: { duration: 0.3 } },
 	};
 
 	return (

@@ -85,13 +85,13 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 					</h3>
 					<button
 						onClick={onClose}
-						className="text-color-gray-100 hover:text-white transition -mt-1 -mr-1"
+						className="text-color-gray-50 hover:text-white transition -mt-1 -mr-1"
 						title="Close"
 					>
 						<Icon name="close" customClass="!text-[24px]" />
 					</button>
 				</div>
-				<p className="text-color-gray-100 mb-4">
+				<p className="text-color-gray-50 mb-4">
 					{filteredCustomImages.length > 0 ? (
 						<>
 							This folder contains <span className="font-semibold text-white">{filteredCustomImages.length} image(s)</span>.
@@ -114,13 +114,13 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 						>
 							<div className="flex items-start gap-2">
 								{isDeletingImages || isDeletingFolder ? (
-									<Spinner size="sm" customClass="mt-0.5 !text-white" />
+									<Spinner size="sm" customClass="mt-0.5 !text-[#ffffff]" />
 								) : (
-									<Icon name="delete_sweep" customClass="!text-[20px] mt-0.5" />
+									<Icon name="delete_sweep" customClass="!text-[20px] text-[#ffffff] mt-0.5" />
 								)}
-								<div>
+								<div className="text-[#ffffff]">
 									<div className="font-semibold">Delete All Images in Folder</div>
-									<div className="text-sm text-red-100 mt-0.5">
+									<div className="text-sm mt-0.5">
 										Permanently delete all {filteredCustomImages.length} image(s) in this folder
 									</div>
 								</div>
@@ -136,7 +136,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 								<button
 									onClick={handleDeleteFolderMoveToGeneral}
 									disabled={isDeletingFolder}
-									className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-left disabled:opacity-50 disabled:cursor-not-allowed"
+									className="w-full px-4 py-3 bg-red-700 hover:bg-red-800 text-[#ffffff] rounded font-medium text-left disabled:opacity-50 disabled:cursor-not-allowed"
 								>
 									<div className="flex items-start gap-2">
 										{isDeletingFolder ? (
@@ -159,16 +159,16 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 								<button
 									onClick={handleDeleteFolderAndImages}
 									disabled={isDeletingFolder}
-									className="w-full px-4 py-3 bg-red-700 hover:bg-red-800 text-white rounded font-medium text-left disabled:opacity-50 disabled:cursor-not-allowed"
+									className="w-full px-4 py-3 bg-red-800 hover:bg-red-900 text-white rounded font-medium text-left disabled:opacity-50 disabled:cursor-not-allowed"
 								>
 									<div className="flex items-start gap-2">
 										{isDeletingFolder ? (
-											<Spinner size="sm" customClass="mt-0.5 !text-white" />
+											<Spinner size="sm" customClass="mt-0.5 !text-[#ffffff]" />
 										) : (
-											<Icon name="delete_forever" customClass="!text-[20px] mt-0.5" />
+											<Icon name="delete_forever" customClass="!text-[20px] text-[#ffffff] mt-0.5" />
 										)}
 										<div>
-											<div className="font-semibold">Delete Folder & All Images</div>
+											<div className="font-semibold text-[#ffffff]">Delete Folder & All Images</div>
 											<div className="text-sm text-red-100 mt-0.5">
 												Permanently delete this folder and all {filteredCustomImages.length} image(s)
 											</div>
@@ -194,7 +194,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 					{/* Cancel button */}
 					<button
 						onClick={onClose}
-						className="w-full px-4 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded font-medium"
+						className="w-full px-4 py-2 bg-color-gray-200 hover:bg-color-gray-100 rounded font-medium"
 					>
 						Cancel
 					</button>

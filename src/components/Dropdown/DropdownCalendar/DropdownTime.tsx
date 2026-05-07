@@ -45,7 +45,7 @@ const DropdownTime: React.FC<DropdownTimeProps> = ({ toggleRef, isVisible, setIs
 			toggleRef={toggleRef}
 			isVisible={isVisible}
 			setIsVisible={setIsVisible}
-			customClasses={classNames('ml-[-5px] shadow-2xl border border-color-gray-200 rounded-[4px]', customClasses)}
+			customClasses={classNames('ml-[-5px] shadow-2xl border border-color-gray-100 rounded-[4px]', customClasses)}
 		>
 			<div className="w-[260px] p-1">
 				<div className="grid grid-cols-3">

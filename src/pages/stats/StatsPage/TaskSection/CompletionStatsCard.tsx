@@ -21,7 +21,7 @@ import type { AggregationResults } from '../../../../types/stats';
 const noData = [
 	{
 		name: 'No Data',
-		color: 'gray',
+		color: 'var(--color-gray-100)',
 		count: 0,
 		percentage: 100,
 		id: 'No Data',
@@ -188,7 +188,7 @@ const CompletionStatsCard = () => {
 									name={showNestedProgressBars ? 'unknown_med' : 'network_node'}
 									fill={0}
 									customClass={classNames(
-										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',
 										`${hover.textColor} ${hover.borderColor}`
 									)}
 									onClick={() => setShowNestedProgressBars(!showNestedProgressBars)}
@@ -198,7 +198,7 @@ const CompletionStatsCard = () => {
 									name="swap_vert"
 									fill={0}
 									customClass={classNames(
-										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',
 										`${hover.textColor} ${hover.borderColor}`
 									)}
 									onClick={() =>
@@ -273,7 +273,7 @@ const CompletionStatsCard = () => {
 												<text
 													x={cx}
 													y={cy - 10}
-													fill="white"
+													fill="var(--color-primary-text)"
 													textAnchor="middle"
 													dominantBaseline="central"
 													className="text-[24px] font-bold"
@@ -283,7 +283,7 @@ const CompletionStatsCard = () => {
 												<text
 													x={cx}
 													y={cy + 15}
-													fill="#aaa"
+													fill="var(--color-gray-25)"
 													textAnchor="middle"
 													dominantBaseline="central"
 													className="text-[14px]"

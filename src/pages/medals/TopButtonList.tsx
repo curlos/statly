@@ -15,7 +15,7 @@ const TopButtonList: React.FC<TopButtonListProps> = ({ BUTTONS_OBJ, isForInterva
 
 	const sharedButtonStyle = `text-[13.5px] sm:text-[16px] py-1 px-3 cursor-pointer`;
 	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
-	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-100 bg-color-gray-300`;
+	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	return (
 		<div className="flex items-center gap-2 my-2">

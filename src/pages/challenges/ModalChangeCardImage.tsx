@@ -452,7 +452,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 
 					<div className="flex justify-end gap-2 mt-4">
 						<button
-							className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
+							className="border border-color-gray-100 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
 							onClick={() => setShowModal(false)}
 						>
 							Close

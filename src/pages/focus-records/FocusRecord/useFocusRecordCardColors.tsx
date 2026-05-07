@@ -1,3 +1,5 @@
+import { useThemeContext } from '../../../contexts/useThemeContext';
+
 interface CustomDisplay {
     useBackgroundColor: boolean;
     backgroundColor: string;
@@ -18,6 +20,7 @@ interface UseFocusRecordCardColorsParams {
 }
 
 export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj }: UseFocusRecordCardColorsParams) => {
+    const { colorMode } = useThemeContext();
     const getCardBackgroundStyle = () => {
         if (customDisplay.useBackgroundColor) {
             return { backgroundColor: customDisplay.backgroundColor };
@@ -52,7 +55,7 @@ export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj }: UseF
         if (customDisplay.useTextColor) {
             return customDisplay.textColor
         }
-        return 'white'
+        return colorMode === 'dark' ? 'white' : 'black'
     };
 
     const cardBackgroundStyle = getCardBackgroundStyle()

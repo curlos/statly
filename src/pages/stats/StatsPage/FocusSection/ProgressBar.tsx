@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { navigate } from 'vike/client/router';
+import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import { usePageContext } from 'vike-react/usePageContext';
 import { shouldBreakAllText } from '../../../../utils/text.utils';
@@ -20,6 +21,7 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate, emotionId }) => {
+	const { colorMode } = useThemeContext();
 	const pageContext = usePageContext();
 	const searchParams = new URLSearchParams(pageContext.urlParsed.search);
 
@@ -118,7 +120,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 						{item.name}
 					</div>
 
-					<div className="text-color-gray-100">
+					<div className="text-color-gray-25">
 						{topMostAncestorTaskName && topMostAncestorTaskId && (
 							<span
 								className="cursor-pointer hover:underline"
@@ -141,11 +143,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 					</div>
 				</div>
 
-				<div className="text-[14px] md:text-[16px] text-[#8C8C8C] text-nowrap">
+				<div className="text-[14px] md:text-[16px] text-color-gray-25 text-nowrap">
 					{formattedMetric} • {item.percentage}%
 				</div>
 			</div>
-			<div key={item.id} className="rounded-full dark:bg-[#232323]">
+			<div key={item.id} className={classNames('rounded-full', colorMode === 'dark' ? 'bg-[#232323]' : 'bg-[rgb(187,187,187)]')}>
 				<div
 					className={`text-xs font-medium text-blue-100 text-center p-[3px] leading-none rounded-full`}
 					style={{ width: `${item.percentage}%`, backgroundColor: color }}

@@ -84,7 +84,7 @@ const FormPickDateRange: React.FC<FormPickDateRangeProps> = ({
 			{confirmBeforeUpdating && (
 				<div className="flex justify-end gap-2 mt-5">
 					<button
-						className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
+						className="border border-color-gray-100 rounded py-1 cursor-pointer hover:bg-color-gray-200 min-w-[114px]"
 						onClick={() => {
 							if (onCancel) {
 								onCancel();

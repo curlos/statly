@@ -20,7 +20,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 
 	const backdropVariants = {
 		hidden: { opacity: 0 },
-		visible: { opacity: 0.5 },
+		visible: { opacity: 0.7 },
 	};
 
 	const containerClasses = `z-50 relative p-3 max-w-full w-[500px] max-h-[90vh] overflow-y-auto gray-scrollbar`;
@@ -30,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 			{isOpen && (
 				<div
 					className={classNames(
-						'text-white fixed inset-0 z-50 overflow-auto bg-smoke-light flex justify-center items-center',
+						'text-white fixed inset-0 z-50 overflow-auto flex justify-center items-center',
 						positionClasses ? positionClasses : ''
 					)}
 				>

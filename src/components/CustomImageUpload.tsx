@@ -28,6 +28,8 @@ interface CustomImageUploadProps {
 	currentFolder: string;
 	fileInputRef?: React.RefObject<HTMLInputElement>;
 	showSelectButton?: boolean;
+	previewUrls: string[];
+	setPreviewUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 interface SortablePreviewItemProps {
@@ -70,14 +72,14 @@ const SortablePreviewItem: React.FC<SortablePreviewItemProps> = ({ id, url, inde
 					className="bg-black/70 hover:bg-black p-1 rounded"
 					title="Crop image"
 				>
-					<Icon name="crop" customClass="!text-[16px] text-white" />
+					<Icon name="crop" customClass="!text-[16px] text-[#ffffff]" />
 				</button>
 				<button
 					onClick={() => onDelete(index)}
 					className="bg-black/70 hover:bg-black p-1 rounded"
 					title="Delete image"
 				>
-					<Icon name="delete" customClass="!text-[16px] text-white" />
+					<Icon name="delete" customClass="!text-[16px] text-[#ffffff]" />
 				</button>
 			</div>
 		</div>
@@ -87,11 +89,12 @@ const SortablePreviewItem: React.FC<SortablePreviewItemProps> = ({ id, url, inde
 const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 	currentFolder,
 	fileInputRef: externalFileInputRef,
-	showSelectButton = true
+	showSelectButton = true,
+	previewUrls,
+	setPreviewUrls,
 }) => {
-	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
+	const { chosenColorObj, nextDarkestColorObj, colorMode } = useThemeContext();
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-	const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 	const [fileIds, setFileIds] = useState<string[]>([]); // Unique IDs for drag-and-drop
 	const [cropIndex, setCropIndex] = useState<number | null>(null);
 	const [imageToCrop, setImageToCrop] = useState<string | null>(null);
@@ -289,17 +292,23 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 
 			{/* Error/Success Messages */}
 			{error && (
-				<div className="mb-4 p-3 bg-red-900/30 border border-red-500 rounded text-red-200 text-sm">
+				<div className={`mb-4 p-3 bg-red-900/30 border border-red-700 rounded text-sm ${colorMode === 'dark' ? 'text-red-200' : 'text-red-700'}`}>
 					{error}
 				</div>
 			)}
 			{success && (
-				<div className="mb-4 p-3 bg-green-900/30 border border-green-500 rounded text-green-200 text-sm">
+				<div className={`mb-4 p-3 bg-green-900/30 border border-green-900 rounded text-sm ${colorMode === 'dark' ? 'text-green-200' : 'text-green-900'}`}>
 					{success}
 				</div>
 			)}
 
 			{/* Preview Grid with Drag and Drop */}
+			{previewUrls.length === 0 && (
+				<div className="flex flex-col items-center justify-center gap-2 py-6 rounded-lg border-2 border-dashed border-color-gray-150 text-color-gray-50">
+					<Icon name="add_photo_alternate" customClass="!text-[36px] opacity-50" />
+					<p className="text-[13px]">Select images above to preview them here</p>
+				</div>
+			)}
 			{previewUrls.length > 0 && (
 				<div>
 					<DndContext

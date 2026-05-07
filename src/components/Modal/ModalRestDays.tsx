@@ -38,7 +38,7 @@ const ModalRestDays: React.FC<ModalRestDaysProps> = ({
           <h3 className="text-xl font-semibold">Rest Days</h3>
           <button
             onClick={onClose}
-            className="text-color-gray-100 hover:text-white transition-colors"
+            className="text-color-gray-25 hover:text-white transition-colors"
           >
             <Icon name="close" fill={1} customClass="!text-[24px]" />
           </button>
@@ -46,7 +46,7 @@ const ModalRestDays: React.FC<ModalRestDaysProps> = ({
 
         {/* List or Empty State */}
         {activeRestDays.length === 0 ? (
-          <div className="text-center py-8 text-color-gray-100">
+          <div className="text-center py-8 text-color-gray-25">
             <Icon name="event_busy" fill={1} customClass="!text-[48px] mb-2 opacity-50" />
             <p className="text-[14px]">No rest days recorded</p>
           </div>

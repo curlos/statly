@@ -1,11 +1,37 @@
-import { createContext, useContext } from 'react';
-import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../services/resources/userSettingsApi';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
+
+const getInitialColorMode = (): 'dark' | 'light' => {
+	const stored = localStorage.getItem('color-mode');
+	if (stored === 'dark' || stored === 'light') return stored;
+	return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+};
 
 const useTheme = () => {
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
+	const [editUserSettings] = useEditUserSettingsMutation();
+
+	const [colorMode, setColorMode] = useState<'dark' | 'light'>(getInitialColorMode);
+
+	useEffect(() => {
+		document.documentElement.classList.toggle('light-mode', colorMode === 'light');
+		localStorage.setItem('color-mode', colorMode);
+	}, [colorMode]);
+
+	useEffect(() => {
+		if (userSettings?.theme?.colorMode && userSettings.theme.colorMode !== colorMode) {
+			setColorMode(userSettings.theme.colorMode);
+		}
+	}, [userSettings?.theme?.colorMode, colorMode]);
+
+	const toggleColorMode = async () => {
+		const next: 'dark' | 'light' = colorMode === 'dark' ? 'light' : 'dark';
+		setColorMode(next);
+		await editUserSettings({ theme: { ...userSettings?.theme, colorMode: next } });
+	};
 
 	const themeColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
@@ -90,6 +116,8 @@ const useTheme = () => {
 		nextLightestColorObj: getNextLightestOrDarkestColorObj('next-lightest'),
 		nextDarkestColorObj: getNextLightestOrDarkestColorObj('next-darkest'),
 		selectedFontFamilyKey,
+		colorMode,
+		toggleColorMode,
 	};
 };
 

@@ -59,7 +59,7 @@ const RingColorPicker = ({
 		<div>
 			{/* Color Picker */}
 			<div className="flex items-center gap-2 mb-3">
-				<span className="text-[14px] text-color-gray-100">Choose color:</span>
+				<span className="text-[14px] text-color-gray-25">Choose color:</span>
 				<label className="cursor-pointer">
 					<input
 						type="color"

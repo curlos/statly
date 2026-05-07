@@ -84,7 +84,7 @@ const Tooltip = ({ content, children, className = '', position = 'top', align: m
 			{children}
 			{isVisible && (
 				<div
-					className={`absolute ${positionClasses} ${horizontalAlign} px-3 py-2 bg-color-gray-300 border border-color-gray-200 text-white text-sm rounded z-50 ${className}`}
+					className={`absolute ${positionClasses} ${horizontalAlign} px-3 py-2 bg-color-gray-300 border border-color-gray-50 text-white text-sm rounded z-50 ${className}`}
 				>
 					{content}
 					<div className={arrowClasses}>

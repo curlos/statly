@@ -26,7 +26,7 @@ const ShowRecordsFromFocusAppSection = () => {
 
 	return (
 		<div>
-			<hr className="border-color-gray-200 my-4" />
+			<hr className="border-color-gray-100 my-4" />
 
 			<Accordion
 				title={

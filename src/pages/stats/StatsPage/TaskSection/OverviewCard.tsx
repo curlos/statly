@@ -162,11 +162,11 @@ const OverviewCard = () => {
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{numOfCompletedTasks.toLocaleString()}
 						</div>
-						<div className="text-color-gray-100 font-medium">
+						<div className="text-color-gray-50 font-medium">
 							{numOfCompletedTasks > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>
 						{shouldFetchPrevInterval && (
-							<div className="text-color-gray-100 flex items-center gap-1">
+							<div className="text-color-gray-50 flex items-center gap-1 ml-4">
 								<div>
 									{diffOfCompletedTasksFromPrevInterval.numDiff} from {getPrevIntervalName()}
 								</div>

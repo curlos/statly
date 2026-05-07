@@ -4,6 +4,7 @@ import Dropdown from '../../../../components/Dropdown/Dropdown';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDatesInYear, getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
+import { getHeatmapColors } from '../../../../utils/color.utils';
 import type { FocusStatsResponse, FocusStatsByDayItem } from '../../../../types/api';
 
 interface DayDurationData {
@@ -26,41 +27,20 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 	});
 
 	const allDatesInYear = getAllDatesInYear(selectedDates[0].getFullYear());
-	const { chosenColorName, chosenColorVariantsObj } = useThemeContext();
+	const { chosenColorObj } = useThemeContext();
+	const { hexColor } = chosenColorObj;
 
+	const heatmapColors = getHeatmapColors(hexColor);
+	const zeroColor = 'var(--color-gray-200)';
 	const durations = [
-		{
-			value: '0m',
-			bgColor: 'bg-color-gray-600',
-		},
-		{
-			value: '0-59m',
-			bgColor: chosenColorVariantsObj[`${chosenColorName}-200`].bgColor,
-		},
-		{
-			value: '1h+',
-			bgColor: chosenColorVariantsObj[`${chosenColorName}-300`].bgColor,
-		},
-		{
-			value: '2h+',
-			bgColor: chosenColorVariantsObj[`${chosenColorName}-400`].bgColor,
-		},
-		{
-			value: '3h+',
-			bgColor: chosenColorVariantsObj[`${chosenColorName}-500`].bgColor,
-		},
-		{
-			value: '4h+',
-			bgColor: chosenColorVariantsObj[`${chosenColorName}-600`].bgColor,
-		},
-		{
-			value: '5h+',
-			bgColor: chosenColorVariantsObj[`${chosenColorName}-800`].bgColor,
-		},
-		{
-			value: '6h+',
-			bgColor: chosenColorVariantsObj[`${chosenColorName}-900`].bgColor,
-		},
+		{ value: '0m',    bgStyle: { backgroundColor: zeroColor } },
+		{ value: '0-59m', bgStyle: { backgroundColor: heatmapColors[6] } },
+		{ value: '1h+',   bgStyle: { backgroundColor: heatmapColors[5] } },
+		{ value: '2h+',   bgStyle: { backgroundColor: heatmapColors[4] } },
+		{ value: '3h+',   bgStyle: { backgroundColor: heatmapColors[3] } },
+		{ value: '4h+',   bgStyle: { backgroundColor: heatmapColors[2] } },
+		{ value: '5h+',   bgStyle: { backgroundColor: heatmapColors[1] } },
+		{ value: '6h+',   bgStyle: { backgroundColor: heatmapColors[0] } },
 	];
 
 	const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -69,7 +49,7 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 		<div className="flex flex-col sm:flex-row gap-2 justify-between items-center">
 			<div className="flex justify-center w-full sm:w-auto">
 				<div>
-					<div className="hidden sm:flex lg:hidden xl:flex justify-between text-color-gray-100">
+					<div className="hidden sm:flex lg:hidden xl:flex justify-between text-color-gray-50">
 						{monthsShort.map((month) => (
 							<div key={month}>{month}</div>
 						))}
@@ -93,9 +73,10 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 
 			<div className="flex flex-row sm:flex-col flex-wrap gap-2 mt-2">
 				{durations.map((duration) => (
-					<div key={duration.value} className="flex items-center text-color-gray-100 gap-1">
+					<div key={duration.value} className="flex items-center text-color-gray-50 gap-1">
 						<div
-							className={classNames(`h-[13px] w-[13px] border border-color-gray-100`, duration.bgColor)}
+							style={duration.bgStyle}
+							className="h-[13px] w-[13px] border border-color-gray-50 rounded"
 						></div>
 						{duration.value}
 					</div>
@@ -119,7 +100,7 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 	const dateKey = getFormattedLongDay(date);
 	const focusDataForDate = focusRecordsGroupedByDate?.[dateKey];
 	const focusDurationForDay = focusDataForDate?.duration || 0;
-	const rangeClass = getRangeClass(focusDurationForDay, themeContext);
+	const rangeStyle = getRangeStyle(focusDurationForDay, chosenColorObj.hexColor);
 
 	const formattedDurationForTheDay = getFormattedDuration(focusDurationForDay, false);
 
@@ -127,9 +108,9 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 		<div className="relative">
 			<div
 				key={date.toLocaleDateString()}
+				style={rangeStyle}
 				className={classNames(
-					`h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px]`,
-					rangeClass,
+					`h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] rounded`,
 					chosenColorObj.hover.borderColor
 				)}
 				onMouseEnter={() => setIsHovering(true)}
@@ -152,46 +133,32 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 	);
 };
 
-const getRangeClass = (seconds: number, themeContext: ReturnType<typeof useThemeContext>): string => {
-	const { chosenColorName, chosenColorVariantsObj } = themeContext;
+const getRangeStyle = (seconds: number, hexColor: string): React.CSSProperties => {
+	const colors = getHeatmapColors(hexColor);
 
 	// 6 hours - 5m offset = 21300 seconds
-	if (seconds >= 21300) {
-		return chosenColorVariantsObj[`${chosenColorName}-900`].bgColor;
-	}
+	if (seconds >= 21300) return { backgroundColor: colors[0] };
 
 	// 5 hours - 5m offset = 17700 seconds
-	if (seconds >= 17700) {
-		return chosenColorVariantsObj[`${chosenColorName}-700`].bgColor;
-	}
+	if (seconds >= 17700) return { backgroundColor: colors[1] };
 
 	// 4 hours - 5m offset = 14100 seconds
-	if (seconds >= 14100) {
-		return chosenColorVariantsObj[`${chosenColorName}-600`].bgColor;
-	}
+	if (seconds >= 14100) return { backgroundColor: colors[2] };
 
 	// 3 hours - 5m offset = 10500 seconds
-	if (seconds >= 10500) {
-		return chosenColorVariantsObj[`${chosenColorName}-500`].bgColor;
-	}
+	if (seconds >= 10500) return { backgroundColor: colors[3] };
 
 	// 2 hours - 5m offset = 6900 seconds
-	if (seconds >= 6900) {
-		return chosenColorVariantsObj[`${chosenColorName}-400`].bgColor;
-	}
+	if (seconds >=  6900) return { backgroundColor: colors[4] };
 
 	// 1 hour - 5m offset = 3300 seconds
-	if (seconds >= 3300) {
-		return chosenColorVariantsObj[`${chosenColorName}-300`].bgColor;
-	}
+	if (seconds >=  3300) return { backgroundColor: colors[5] };
 
 	// Any time > 0
-	if (seconds > 0) {
-		return chosenColorVariantsObj[`${chosenColorName}-100`].bgColor;
-	}
+	if (seconds >      0) return { backgroundColor: colors[6] };
 
 	// 0 seconds
-	return 'bg-color-gray-700';
+	return { backgroundColor: 'var(--color-gray-200)' };
 };
 
 export default CalendarHeatmap;

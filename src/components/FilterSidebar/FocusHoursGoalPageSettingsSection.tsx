@@ -309,7 +309,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 										</div>
 									)}
 									<span>{truncateText(ring.name, truncateLength)} {!ring.isActive && (
-										<span className="text-color-gray-100">(Paused)</span>
+										<span className="text-color-gray-50">(Paused)</span>
 									)}</span>
 								</button>
 							);
@@ -319,7 +319,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Ring Status Toggle */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Ring Status</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">Ring Status</h4>
 					<div className="flex items-center gap-3">
 						<button
 							onClick={handleToggleRingActive}
@@ -345,13 +345,14 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Ring Name Input */}
 				<div className="mb-4 px-1">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Ring Name</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">Ring Name</h4>
 					<div className="relative">
 						<input
 							type="text"
 							value={ringName}
 							onChange={handleRingNameChange}
-							className="w-full px-3 py-2 bg-color-gray-600 rounded-lg text-white text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="w-full px-3 py-2 bg-color-gray-600 rounded-lg text-white text-[14px] focus:outline-none focus:ring-2"
+							style={{ '--tw-ring-color': chosenColorObj.hexColor } as React.CSSProperties}
 							placeholder="Enter ring name..."
 						/>
 						{isUpdatingRingName && (
@@ -365,7 +366,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Ring Appearance Section */}
 				<div className="mb-4 px-1">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">
 						Ring Color
 					</h4>
 					<RingColorPicker
@@ -382,7 +383,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Today Section */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Today</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">Today</h4>
 					<CheckboxOther
 						{...{
 							name: 'Mark Today as Rest Day',
@@ -417,7 +418,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* General Section */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">General</h4>
 					<CheckboxOther
 						{...{
 							name: 'Show Streak Count',
@@ -434,14 +435,14 @@ const FocusHoursGoalPageSettingsSection = () => {
 					/>
 					<button
 						onClick={() => setIsRestDaysModalOpen(true)}
-						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
+						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-lg transition-colors text-[14px]"
 					>
 						<Icon name="calendar_month" fill={1} customClass="!text-[18px]" />
 						<span>View All Rest Days</span>
 					</button>
 					<button
 						onClick={() => setIsCustomGoalsModalOpen(true)}
-						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition-colors text-[14px]"
+						className="mt-3 flex items-center justify-center gap-2 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-lg transition-colors text-[14px]"
 					>
 						<Icon name="tune" fill={1} customClass="!text-[18px]" />
 						<span>View All Custom Focus Goal Days</span>
@@ -450,7 +451,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Streak Goal Section */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Streak Goal</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">Streak Goal</h4>
 					<InputNumUserSettings
 						key={`goal-days-${selectedRingId}`}
 						defaultValue={goalDays}
@@ -468,7 +469,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Daily Focus Goal Section */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Daily Focus Goal</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">Daily Focus Goal</h4>
 					<GoalSecondsInput
 						key={`goal-seconds-${selectedRingId}`}
 						defaultValue={goalSeconds}
@@ -479,7 +480,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Streak Days Section */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-1">Streak Days</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-1">Streak Days</h4>
 					<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
 						Select days that can break your streak. Unselected days are "freebie" days.
 					</p>
@@ -517,7 +518,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				/>
 			</Accordion>
 
-			<hr className="border-color-gray-200 mb-4" />
+			<hr className="border-color-gray-100 mb-4" />
 
 			{/* Combined Rings Settings Accordion */}
 			<Accordion
@@ -546,7 +547,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 			>
 				{/* General Section */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">General</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">General</h4>
 					<CheckboxOther
 						{...{
 							name: 'Show Streak Count',
@@ -565,7 +566,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 				{/* Streak Goal Section */}
 				<div className="mb-4">
-					<h4 className="text-[14px] font-semibold text-color-gray-100 mb-2">Streak Goal</h4>
+					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">Streak Goal</h4>
 					<InputNumUserSettings
 						key="combined-goal-days"
 						defaultValue={combinedRingsSettings.goalDays}
@@ -584,7 +585,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				</div>
 			</Accordion>
 
-			<hr className="border-color-gray-200 mt-2 mb-4" />
+			<hr className="border-color-gray-100 mt-2 mb-4" />
 
 			<Accordion
 				title={

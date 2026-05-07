@@ -85,14 +85,14 @@ const SidebarModal = () => {
 						</div>
 
 						{/* Sync */}
-						<hr className="border-color-gray-200 my-4" />
+						<hr className="border-color-gray-100 my-4" />
 						<SyncSection />
 
-						<hr className="border-color-gray-200 my-4" />
+						<hr className="border-color-gray-100 my-4" />
 						<DefaultDateRangeInterval />
 
 						{/* User Profile */}
-						<hr className="border-color-gray-200 my-4" />
+						<hr className="border-color-gray-100 my-4" />
 						<UserProfileSection />
 					</motion.div>
 				</motion.div>

@@ -94,6 +94,7 @@ interface FormError {
 
 const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 	const [submitError, setSubmitError] = useState<string | null>(null);
+	const colorMode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 
 	const {
 		register,
@@ -116,10 +117,10 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 			if (mode === 'login') {
 				await loginUser(data as LoginFormData).unwrap();
 			} else {
-				await registerUser(data as SignupFormData).unwrap();
+				await registerUser({ ...(data as SignupFormData), colorMode }).unwrap();
 			}
 
-			navigate('/focus-records');
+			navigate('/stats/overview');
 		} catch (error) {
 			const err = error as FormError;
 			setSubmitError(err?.data?.message || err?.message || 'An error occurred. Please try again.');
@@ -185,7 +186,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 			<button
 				type="submit"
 				disabled={isLoading}
-				className={classNames(chosenColorObj.bgColor, 'w-full rounded-xl p-2 mt-4 flex items-center justify-center gap-2')}
+				className={classNames(chosenColorObj.bgColor, 'w-full rounded-xl p-2 mt-4 flex items-center justify-center gap-2 text-[#ffffff]')}
 			>
 				<span>{mode === 'login' ? 'Login' : 'Sign Up'}</span>
 				{isLoading && <Spinner size="sm" customClass="!text-white" />}

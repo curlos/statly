@@ -164,7 +164,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					</h2>
 					<Icon
 						name="close"
-						customClass="cursor-pointer hover:text-color-gray-100"
+						customClass="cursor-pointer hover:text-color-gray-25"
 						onClick={onClose}
 					/>
 				</div>
@@ -228,7 +228,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 						onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
 						className={classNames(
 							"text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border text-color-gray-50 transition-colors flex items-center gap-1",
-							"border-color-gray-100",
+							"border-color-gray-50",
 							chosenColorObj.hover.textColor,
 							chosenColorObj.hover.borderColor
 						)}
@@ -313,13 +313,13 @@ const StreakDisplay = ({
 	iconColor: string;
 }) => (
 	<div className="bg-color-gray-600 rounded-lg p-4">
-		<div className="flex items-center gap-2 text-color-gray-100">
+		<div className="flex items-center gap-2 text-color-gray-25">
 			<span>{title}</span>
 			<Icon name={iconName} customClass={classNames(iconColor, '!text-[24px]')} />
 		</div>
 		<div className="text-2xl font-bold mb-1">{streak?.days || 0} Days</div>
 		{streak?.from && streak?.to && (
-			<div className="text-color-gray-100 text-xs">
+			<div className="text-color-gray-25 text-xs">
 				{formatDateWithoutTimezone(streak.from)}{' '}
 				-{' '}
 				{formatDateWithoutTimezone(streak.to)}
@@ -358,30 +358,30 @@ const CalendarNavigation = ({
 			<Icon
 				name="keyboard_double_arrow_left"
 				fill={0}
-				customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
+				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
 				onClick={goToPreviousYear}
 			/>
 			<Icon
 				name="chevron_left"
 				fill={0}
-				customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
+				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
 				onClick={goToPreviousMonth}
 			/>
 			<Icon
 				name="fiber_manual_record"
-				fill={0}
-				customClass={'text-color-gray-50 !text-[6px] mx-1'}
+				fill={1}
+				customClass={'text-color-gray-25 !text-[10px] mx-1'}
 			/>
 			<Icon
 				name="chevron_right"
 				fill={0}
-				customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
+				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
 				onClick={goToNextMonth}
 			/>
 			<Icon
 				name="keyboard_double_arrow_right"
 				fill={0}
-				customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
+				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
 				onClick={goToNextYear}
 			/>
 		</div>
@@ -457,7 +457,7 @@ const CalendarGrid = ({
 	return (
 		<div>
 			{/* Day headers */}
-			<div className="grid grid-cols-7 gap-2 text-center text-sm text-color-gray-100 mb-2">
+			<div className="grid grid-cols-7 gap-2 text-center text-sm text-color-gray-25 mb-2">
 				{dayHeaders.map(({ label, key }) => {
 					const isDaySelected = selectedDaysOfWeek?.[key] ?? true;
 					const isFreebieDay = !isDaySelected;

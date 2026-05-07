@@ -1,4 +1,5 @@
 import { useCreateCustomImageFolderMutation } from '../../services/resources/customImageFoldersApi';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
 interface CreateFolderModalProps {
 	isOpen: boolean;
@@ -16,6 +17,7 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
 	setSelectedMedalType,
 }) => {
 	const [createFolder] = useCreateCustomImageFolderMutation();
+	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
 	const handleClose = () => {
 		onClose();
@@ -65,7 +67,7 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
 						<button
 							type="submit"
 							disabled={!newFolderName.trim()}
-							className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded disabled:opacity-50"
+							className={`px-4 py-2 ${chosenColorObj.bgColor} ${nextDarkestColorObj?.hover.bgColor || chosenColorObj.hover.bgColor} text-white rounded disabled:opacity-50`}
 						>
 							Create
 						</button>

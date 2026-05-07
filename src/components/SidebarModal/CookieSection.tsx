@@ -44,7 +44,7 @@ const CookieSection = () => {
 
 	return (
 		<div className="mt-4 space-y-2">
-			<label className="text-sm font-semibold text-color-gray-100">TickTick Cookie</label>
+			<label className="text-sm font-semibold text-color-gray-25">TickTick Cookie</label>
 
 			{!isEditingCookie ? (
 				<div

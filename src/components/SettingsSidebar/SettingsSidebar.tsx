@@ -59,19 +59,19 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			{/* Focus Records Page */}
 			{page === 'focus-records-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
+					<hr className="border-color-gray-100 my-4" />
 					<OtherSectionFocusRecords />
 				</>
 			)}
 			{page === 'focus-records-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
+					<hr className="border-color-gray-100 my-4" />
 					<SyncUpdateSection />
 				</>
 			)}
 			{page === 'focus-records-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
+					<hr className="border-color-gray-100 my-4" />
 					<ExportBackupSectionFocusRecords />
 				</>
 			)}
@@ -79,13 +79,13 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			{/* Completed Tasks Page */}
 			{page === 'completed-tasks-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
+					<hr className="border-color-gray-100 my-4" />
 					<OtherSectionCompletedTasks />
 				</>
 			)}
 			{page === 'completed-tasks-page' && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
+					<hr className="border-color-gray-100 my-4" />
 					<ExportBackupSectionCompletedTasks />
 				</>
 			)}
@@ -93,7 +93,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			{/* Challenges & Medals Pages - Images Section */}
 			{showImagesSection && (
 				<>
-					<hr className="border-color-gray-200 my-4" />
+					<hr className="border-color-gray-100 my-4" />
 					<div className="space-y-4">
 						<CardImage
 							cardType="Focus"
@@ -119,7 +119,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 
 			{page === 'focus-time-goal-page' && (
 				<div>
-					<hr className="border-color-gray-200 my-4" />
+					<hr className="border-color-gray-100 my-4" />
 					<FocusHoursGoalPageSettingsSection />
 				</div>
 			)}

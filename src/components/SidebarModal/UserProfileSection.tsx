@@ -65,7 +65,7 @@ const UserProfileSection = () => {
 				<Icon name="more_horiz" customClass="text-color-gray-50 !text-[24px]" />
 			</div>
 
-			<Dropdown isVisible={isDropdownOpen} setIsVisible={setIsDropdownOpen} toggleRef={toggleRef} customClasses="w-full max-w-[250px] !text-[16px]">
+			<Dropdown isVisible={isDropdownOpen} setIsVisible={setIsDropdownOpen} toggleRef={toggleRef} customClasses="w-full max-w-[250px] !text-[16px] border border-color-gray-25">
 				<div className="p-2">
 					<div
 						className="flex items-center gap-3 p-2 hover:bg-color-gray-200 cursor-pointer rounded"

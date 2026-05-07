@@ -228,7 +228,7 @@ const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 			toggleRef={toggleRef}
 			isVisible={isVisible}
 			setIsVisible={setIsVisible}
-			customClasses={classNames('shadow-2xl border border-color-gray-200 rounded-lg', customClasses)}
+			customClasses={classNames('shadow-2xl border border-color-gray-100 rounded-lg', customClasses)}
 			openUpward={true}
 		>
 			<form onSubmit={handleSubmit} className="p-2 w-[80px]">

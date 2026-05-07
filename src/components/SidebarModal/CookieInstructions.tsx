@@ -8,7 +8,7 @@ const CookieInstructions = () => {
 				<h4 className="font-bold text-[16px]">How to Get Your TickTick Cookie</h4>
 			</div>
 
-			<div className="space-y-3 text-[14px] text-color-gray-100">
+			<div className="space-y-3 text-[14px] text-color-gray-25">
 				<div className="flex gap-2">
 					<span className="font-bold text-white">1.</span>
 					<div>
@@ -65,7 +65,7 @@ const CookieInstructions = () => {
 			</div>
 
 			<div className="pt-2 border-t border-color-gray-500">
-				<div className="flex items-start gap-2 text-xs text-color-gray-100">
+				<div className="flex items-start gap-2 text-xs text-color-gray-25">
 					<Icon name="lock" fill={1} customClass="!text-[14px] mt-0.5" />
 					<div>
 						Your cookie is sensitive data that grants access to your TickTick account. It's stored securely

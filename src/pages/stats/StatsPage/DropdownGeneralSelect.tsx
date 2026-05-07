@@ -33,7 +33,7 @@ const DropdownGeneralSelect: React.FC<DropdownGeneralSelectProps> = ({
 	const SelectOption = ({ name }: { name: string }) => {
 		return (
 			<div
-				className="flex items-center justify-between hover:bg-color-gray-300 p-2 rounded-md cursor-pointer"
+				className={classNames('flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-color-gray-200')}
 				onClick={(e) => {
 					e.stopPropagation();
 					setSelected(name);
@@ -61,7 +61,7 @@ const DropdownGeneralSelect: React.FC<DropdownGeneralSelectProps> = ({
 			toggleRef={toggleRef}
 			isVisible={isVisible}
 			setIsVisible={setIsVisible}
-			customClasses={classNames('shadow-2xl border border-color-gray-200 rounded-lg w-[150px]', customClasses)}
+			customClasses={classNames('shadow-2xl border border-color-gray-100 rounded-lg w-[150px]', customClasses)}
 			align={align}
 		>
 			<div className="p-1 max-h-[250px] overflow-y-auto gray-scrollbar">

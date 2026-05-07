@@ -9,6 +9,7 @@ import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import ReactApexChart from 'react-apexcharts';
 import apexchart from 'apexcharts';
 import type { FocusStatsResponse, FocusRecordDetail } from '../../../../types/api';
+import { getHeatmapColors } from '../../../../utils/color.utils';
 
 interface ApexChartTooltipParams {
 	seriesIndex: number;
@@ -45,18 +46,19 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 	const [series, setSeries] = useState(DEFAULT_SERIES);
 
 	const chartId = 'timeline';
-	const { chosenColorName, chosenColorVariantsObj, chosenColorObj } = useThemeContext();
+	const { chosenColorObj, colorMode } = useThemeContext();
 
 	const options = useMemo(() => {
 		const getColorScaleRanges = () => {
+			const colors = getHeatmapColors(chosenColorObj.hexColor, 6);
 			return [
-				{ from: 0, to: 0, color: '#2f2f2f', name: '0m' },
-				{ from: 1, to: 600, color: chosenColorVariantsObj[`${chosenColorName}-100`].hexColor, name: '0m-10m' }, // 100
-				{ from: 601, to: 1200, color: chosenColorVariantsObj[`${chosenColorName}-300`].hexColor, name: '10m-20m' }, // 300
-				{ from: 1201, to: 1800, color: chosenColorVariantsObj[`${chosenColorName}-400`].hexColor, name: '20m-30m' }, // 400
-				{ from: 1801, to: 2400, color: chosenColorVariantsObj[`${chosenColorName}-500`].hexColor, name: '30m-40m' }, // 500
-				{ from: 2401, to: 3000, color: chosenColorVariantsObj[`${chosenColorName}-600`].hexColor, name: '40m-50m' }, // 600
-				{ from: 3001, to: 3600, color: chosenColorVariantsObj[`${chosenColorName}-700`].hexColor, name: '50m-60m' }, // 700
+				{ from: 0, to: 0, color: colorMode === 'dark' ? '#2f2f2f' : '#E9E9E9', name: '0m' },
+				{ from: 1, to: 600, color: colors[5], name: '0m-10m' },
+				{ from: 601, to: 1200, color: colors[4], name: '10m-20m' },
+				{ from: 1201, to: 1800, color: colors[3], name: '20m-30m' },
+				{ from: 1801, to: 2400, color: colors[2], name: '30m-40m' },
+				{ from: 2401, to: 3000, color: colors[1], name: '40m-50m' },
+				{ from: 3001, to: 3600, color: colors[0], name: '50m-60m' },
 			];
 		};
 
@@ -87,7 +89,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 				categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 				labels: {
 					style: {
-						colors: '#FFFFFF', // White labels for dark mode
+						colors: colorMode === 'dark' ? '#FFFFFF' : '#1E1E1E',
 					},
 				},
 				tooltip: {
@@ -100,7 +102,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 			yaxis: {
 				labels: {
 					style: {
-						colors: '#FFFFFF', // White labels for dark mode
+						colors: colorMode === 'dark' ? '#FFFFFF' : '#1E1E1E',
 					},
 				},
 			},
@@ -160,7 +162,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 				show: false,
 			},
 		};
-	}, [selectedDates, chosenColorObj.hexColor, chosenColorName, chosenColorVariantsObj]);
+	}, [selectedDates, chosenColorObj.hexColor, colorMode]);
 
 	useEffect(() => {
 		if (focusRecords.length === 0) {

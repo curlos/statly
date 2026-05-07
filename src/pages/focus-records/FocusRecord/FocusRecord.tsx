@@ -31,8 +31,8 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
     const endTimeObj = formatDateTime(endTime);
 
     const themeContext = useThemeContext();
-    const { chosenColorObj } = themeContext;
-    const { bgColorHalfOpacity } = chosenColorObj;
+    const { chosenColorObj, colorMode } = themeContext;
+    const { bgColorHalfOpacity, bgColor } = chosenColorObj;
 
     const {
         focusRecordsPageSettings: {
@@ -130,7 +130,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                 )}
 
                 <div
-                    className={classNames("p-2 rounded-lg w-[95%] sm:w-full relative", customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && bgColorHalfOpacity )}
+                    className={classNames("p-2 rounded-lg w-[95%] sm:w-full relative", customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && (colorMode === 'dark' ? bgColorHalfOpacity : bgColor) )}
                     style={cardBackgroundStyle}
                     onContextMenu={handleContextMenu}
                 >

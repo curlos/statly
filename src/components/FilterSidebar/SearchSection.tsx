@@ -37,7 +37,7 @@ const SearchSection = () => {
 	}, [searchTextFromUrl]);
 
 	return (
-		<div className="flex items-center gap-1 p-1 px-2 bg-color-gray-600 rounded-3xl mt-4">
+		<div className="flex items-center gap-1 p-1 px-2 bg-color-gray-300 rounded-3xl mt-4">
 			<Icon
 				name="search"
 				fill={0}

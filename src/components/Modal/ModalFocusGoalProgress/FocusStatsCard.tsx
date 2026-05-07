@@ -234,7 +234,7 @@ const FocusStatsCard = ({
 								customClass="cursor-pointer hover:text-color-gray-100"
 								onClick={goToPrevious}
 							/>
-							<div className="text-sm text-color-gray-100 font-medium">
+							<div className="text-sm text-color-gray-25 font-medium">
 								{displayLabel}
 							</div>
 							<Icon
@@ -269,7 +269,7 @@ const FocusStatsCard = ({
 			</div>
 
 			{/* Helper text */}
-			<div className="text-color-gray-100">
+			<div className="text-color-gray-50">
 				Days goal met
 			</div>
 		</div>

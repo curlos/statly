@@ -35,7 +35,7 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 			<div
 				ref={dropdownRef}
 				className={classNames(
-					'flex gap-[2px] items-center justify-between px-2 py-[2px] pl-3 border border-color-gray-100 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer',
+					'flex gap-[2px] items-center justify-between px-2 py-[2px] pl-3 border border-color-gray-50 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer',
 					`${hover.textColor} ${hover.borderColor}`
 				)}
 				onClick={() => {

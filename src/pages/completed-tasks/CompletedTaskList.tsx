@@ -53,7 +53,7 @@ const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 				<>
 					<div>
 						{daysWithCompletedTasks.length === 0 ? (
-							<div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+							<div className="flex flex-col items-center justify-center py-12 text-color-gray-25">
 								<Icon name="task_alt" customClass="!text-[40px]" />
 								<p className="text-lg font-bold">No Completed Tasks</p>
 								<p className="mt-1">Sync or import completed tasks from TickTick to see them here</p>

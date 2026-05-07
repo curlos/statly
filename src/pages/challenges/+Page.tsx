@@ -78,7 +78,7 @@ const Page = () => {
 
 					<div
 						className={classNames(
-							'flex items-center gap-2 rounded-3xl border border-color-gray-200 px-4 py-1 transition-colors',
+							'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors',
 							chosenColorObj.hover.borderColor,
 							chosenColorObj.hover.textColor
 						)}

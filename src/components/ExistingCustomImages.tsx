@@ -24,6 +24,7 @@ import {
 	rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import SortableCustomImage from './SortableCustomImage';
+import { useThemeContext } from '../contexts/useThemeContext';
 import type { CustomImage } from '../types/models';
 
 interface ExistingCustomImagesProps {
@@ -47,6 +48,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 	const [deleteCustomImage, { isLoading: isDeletingImage }] = useDeleteCustomImageMutation();
 	const [reorderCustomImages] = useReorderCustomImagesMutation();
 	const [moveCustomImage] = useMoveCustomImageMutation();
+	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
 	const [localImages, setLocalImages] = useState<CustomImage[]>([]);
 	const [editingImageId, setEditingImageId] = useState<string | null>(null);
@@ -151,7 +153,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 
 	if (!localImages || localImages.length === 0) {
 		return (
-			<div className="text-center py-8 text-color-gray-100">
+			<div className="text-center py-8 text-color-gray-25">
 				<Icon name="image" customClass="!text-[48px] mb-2 opacity-50" />
 				<p>No custom images yet. {isEditMode ? 'Upload some below!' : 'Enable edit mode to upload!'}</p>
 			</div>
@@ -212,7 +214,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 					<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm mx-4">
 						<h3 className="text-lg font-bold mb-3">Delete Image?</h3>
-						<p className="text-color-gray-100 mb-6">
+						<p className="text-color-gray-25 mb-6">
 							This action cannot be undone. The image will be permanently deleted.
 						</p>
 						<div className="flex gap-3 justify-end">
@@ -226,7 +228,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 							<button
 								onClick={() => handleDeleteImage(showDeleteConfirm)}
 								disabled={isDeletingImage}
-								className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+								className="px-4 py-2 bg-red-600 hover:bg-red-700 text-[#ffffff] rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
 							>
 								{isDeletingImage && <Spinner size="sm" />}
 								Delete
@@ -271,7 +273,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 							<button
 								onClick={() => showMoveModal && handleMoveImage(showMoveModal, moveDestinationFolder)}
 								disabled={!moveDestinationFolder}
-								className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded disabled:opacity-50"
+								className={`px-4 py-2 ${chosenColorObj.bgColor} ${nextDarkestColorObj?.hover.bgColor || chosenColorObj.hover.bgColor}  rounded disabled:opacity-50`}
 							>
 								Move
 							</button>

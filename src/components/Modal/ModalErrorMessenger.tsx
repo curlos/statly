@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import Icon from '../Icon';
 import type { RootState } from '../../types/redux';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
 /**
  * Returns helpful context for known TickTick error messages
@@ -19,6 +20,7 @@ const getErrorContext = (errorMessage: string) => {
 const ModalErrorMessenger: React.FC = () => {
 	const modal = useSelector((state: RootState) => state.modals.modals['ModalErrorMessenger']);
 	const dispatch = useDispatch();
+	const { colorMode } = useThemeContext();
 
 	if (!modal) {
 		return null;
@@ -65,7 +67,7 @@ const ModalErrorMessenger: React.FC = () => {
 				{/* Additional context for known error types */}
 				{contextMessage && (
 					<div className="mt-3 p-3 bg-yellow-500/20 rounded border border-yellow-500/40">
-						<p className="text-sm text-yellow-200 mt-0">{contextMessage}</p>
+						<p className={`text-sm mt-0 ${colorMode === 'dark' ? 'text-yellow-200' : 'text-yellow-700'}`}>{contextMessage}</p>
 					</div>
 				)}
 			</div>

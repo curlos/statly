@@ -45,7 +45,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 			toggleRef={toggleRef}
 			isVisible={isVisible}
 			setIsVisible={setIsVisible}
-			customClasses={'w-[250px] p-1 shadow-2xl border border-color-gray-200 rounded-lg select-none'}
+			customClasses={'w-[250px] p-1 shadow-2xl border border-color-gray-100 rounded-lg select-none'}
 		>
 			<div className="pt-2">
 				<SelectCalendar
@@ -92,7 +92,7 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 
 			<div className="grid grid-cols-2 gap-2 p-2">
 				<button
-					className="border border-color-gray-200 rounded py-1 cursor-pointer hover:bg-color-gray-200"
+					className="border border-color-gray-100 rounded py-1 cursor-pointer hover:bg-color-gray-200"
 					onClick={() => {
 						setIsVisible(false);
 					}}
@@ -187,7 +187,7 @@ const SearchDateInput: React.FC<SearchDateInputProps> = ({ setConnectedCurrentDa
 					onChange={(e) => {
 						setLocalSearchText(e.target.value);
 					}}
-					className="text-[14px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none"
+					className="text-[14px] bg-transparent placeholder:text-color-gray-50 mb-0 w-full outline-none resize-none"
 				/>
 			</div>
 			{isInvalidDate && <div className="text-red-500 mt-1">Date is invalid</div>}

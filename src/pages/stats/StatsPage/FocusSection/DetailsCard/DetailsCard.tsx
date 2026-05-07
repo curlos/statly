@@ -23,7 +23,7 @@ import { sourceToAppName } from '../../../../../utils/focusRecords.utils';
 const noData = [
 	{
 		name: 'No Data',
-		color: 'gray',
+		color: 'var(--color-gray-100)',
 		duration: 0,
 		percentage: 100,
 		id: 'No Data',
@@ -321,7 +321,7 @@ const DetailsCard = () => {
 												<text
 													x={cx}
 													y={cy - 10}
-													fill="white"
+													fill="var(--color-primary-text)"
 													textAnchor="middle"
 													dominantBaseline="central"
 													className="text-[24px] font-bold"
@@ -331,7 +331,7 @@ const DetailsCard = () => {
 												<text
 													x={cx}
 													y={cy + 15}
-													fill="#aaa"
+													fill="var(--color-gray-25)"
 													textAnchor="middle"
 													dominantBaseline="central"
 													className="text-[14px]"

@@ -47,6 +47,14 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 	const [showDeleteFolderModal, setShowDeleteFolderModal] = useState(false);
 	const [newFolderName, setNewFolderName] = useState('');
 	const [renameFolderName, setRenameFolderName] = useState('');
+	const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+	const uploadSectionRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (previewUrls.length > 0) {
+			uploadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		}
+	}, [previewUrls.length]);
 
 	// Ref for file input
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -149,15 +157,19 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 					availableFolders={customFolderNames}
 				/>
 
-				{/* Upload section - only show in edit mode */}
+				{/* Upload section - only show in edit mode when images are staged */}
 				{isCustomEditMode && (
 					<>
-						<div className="my-4 border-t border-color-gray-200" />
-						<CustomImageUpload
-							currentFolder={selectedMedalType}
-							fileInputRef={fileInputRef}
-							showSelectButton={false}
-						/>
+						<div className="my-4 border-t border-color-gray-100" />
+						<div ref={uploadSectionRef}>
+							<CustomImageUpload
+								currentFolder={selectedMedalType}
+								fileInputRef={fileInputRef}
+								showSelectButton={false}
+								previewUrls={previewUrls}
+								setPreviewUrls={setPreviewUrls}
+							/>
+						</div>
 					</>
 				)}
 			</div>

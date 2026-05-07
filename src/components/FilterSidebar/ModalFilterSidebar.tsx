@@ -11,7 +11,7 @@ interface ModalFilterSidebarProps {
 const ModalFilterSidebar: React.FC<ModalFilterSidebarProps> = ({ isOpen, setIsOpen, sortByOptions, page }) => {
 	const backdropVariants = {
 		hidden: { opacity: 0, transition: { duration: 0.3 } },
-		visible: { opacity: 0.3, transition: { duration: 0.3 } },
+		visible: { opacity: 0.5, transition: { duration: 0.3 } },
 	};
 
 	return (

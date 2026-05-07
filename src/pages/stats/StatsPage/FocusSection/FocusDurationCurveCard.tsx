@@ -95,7 +95,7 @@ const FocusDurationCurveCard = () => {
 
 			<div className="sm:hidden">{renderDateRangePicker()}</div>
 
-			<div className="text-color-gray-100 mb-2">{getAverage()}</div>
+			<div className="text-color-gray-50 mb-2">{getAverage()}</div>
 
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart
@@ -115,15 +115,16 @@ const FocusDurationCurveCard = () => {
 							<stop offset="95%" stopColor="black" stopOpacity={0} />
 						</linearGradient>
 					</defs>
-					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} />
+					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} stroke="var(--color-gray-25)" />
 
-					<XAxis dataKey="name" dy={7} />
+					<XAxis dataKey="name" dy={7} tick={{ fill: 'var(--color-gray-50)' }} />
 
 					<YAxis
 						dataKey="seconds"
 						type="number"
 						domain={['dataMin', 'dataMax']}
 						tickFormatter={(seconds: number) => getFormattedDuration(seconds, false, true)}
+						tick={{ fill: 'var(--color-gray-50)' }}
 					/>
 					<Tooltip
 						offset={10}

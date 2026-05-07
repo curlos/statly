@@ -90,7 +90,7 @@ const CompletedTasksCurveCard = () => {
 
 			<div className="sm:hidden mb-2">{renderDateRangePicker()}</div>
 
-			<div className="text-color-gray-100 mb-2">{getAverage()}</div>
+			<div className="text-color-gray-50 mb-2">{getAverage()}</div>
 
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart
@@ -111,8 +111,8 @@ const CompletedTasksCurveCard = () => {
 						</linearGradient>
 					</defs>
 					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} />
-					<XAxis dataKey="name" dy={7} />
-					<YAxis tickFormatter={(value) => value.toLocaleString()} />
+					<XAxis dataKey="name" dy={7} tick={{ fill: 'var(--color-gray-50)' }} />
+					<YAxis tickFormatter={(value) => value.toLocaleString()} tick={{ fill: 'var(--color-gray-50)' }} />
 					<Tooltip
 						offset={10}
 						contentStyle={{

@@ -34,7 +34,7 @@ const ModalCustomFocusGoals: React.FC<ModalCustomFocusGoalsProps> = ({ isOpen, o
 					<h3 className="text-xl font-semibold">Custom Focus Goal Days</h3>
 					<button
 						onClick={onClose}
-						className="text-color-gray-100 hover:text-white transition-colors"
+						className="text-color-gray-25 hover:text-white transition-colors"
 					>
 						<Icon name="close" fill={1} customClass="!text-[24px]" />
 					</button>
@@ -42,7 +42,7 @@ const ModalCustomFocusGoals: React.FC<ModalCustomFocusGoalsProps> = ({ isOpen, o
 
 				{/* List or Empty State */}
 				{customGoalDates.length === 0 ? (
-					<div className="text-center py-8 text-color-gray-100">
+					<div className="text-center py-8 text-color-gray-25">
 						<Icon name="tune" fill={1} customClass="!text-[48px] mb-2 opacity-50" />
 						<p className="text-[14px]">No custom focus goal days set</p>
 					</div>
@@ -54,7 +54,7 @@ const ModalCustomFocusGoals: React.FC<ModalCustomFocusGoalsProps> = ({ isOpen, o
 								className="p-3 bg-color-gray-600 rounded-lg mb-2 flex items-center justify-between"
 							>
 								<span className="text-[16px] text-white">{formatDate(dateKey)}</span>
-								<span className="text-[16px] text-color-gray-100 font-medium">
+								<span className="text-[16px] text-color-gray-25 font-medium">
 									{getFormattedDuration(goalSeconds, false)}
 								</span>
 							</div>

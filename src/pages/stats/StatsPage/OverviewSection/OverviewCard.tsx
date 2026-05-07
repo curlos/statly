@@ -37,42 +37,42 @@ const OverviewCard = ({ overviewStats, isLoading }: OverviewCardProps) => {
 						<div className={classNames(textColor, 'font-bold text-[24px]')}>
 							{todayCompletedTasksCount.toLocaleString()}
 						</div>
-						<div className="text-color-gray-100 font-medium">Today's Completion</div>
+						<div className="text-color-gray-25 font-medium">Today's Completion</div>
 					</div>
 
 					<div className="text-center p-2 sm:border-l sm:border-r border-color-gray-150 order-3 sm:order-none">
 						<div className={classNames(textColor, 'font-bold text-[24px]')}>
 							{todayFocusRecordCount.toLocaleString()}
 						</div>
-						<div className="text-color-gray-100 font-medium text-[13.5px]">Today's Focus Records</div>
+						<div className="text-color-gray-25 font-medium text-[13.5px]">Today's Focus Records</div>
 					</div>
 
 					<div className="text-center p-2 order-5 sm:order-none">
 						<div className={classNames(textColor, 'font-bold text-[24px]')}>
 							{getFormattedDuration(todayFocusDuration, false)}
 						</div>
-						<div className="text-color-gray-100 font-medium">Today's Focus</div>
+						<div className="text-color-gray-25 font-medium">Today's Focus</div>
 					</div>
 
 					<div className="text-center p-2 order-2 sm:order-none">
 						<div className={classNames(textColor, 'font-bold text-[24px]')}>
 							{totalCompletedTasksCount.toLocaleString()}
 						</div>
-						<div className="text-color-gray-100 font-medium">Total Completion</div>
+						<div className="text-color-gray-25 font-medium">Total Completion</div>
 					</div>
 
 					<div className="text-center p-2 sm:border-l sm:border-r border-color-gray-150 order-4 sm:order-none">
 						<div className={classNames(textColor, 'font-bold text-[24px]')}>
 							{totalFocusRecordCount.toLocaleString()}
 						</div>
-						<div className="text-color-gray-100 font-medium">Total Focus Records</div>
+						<div className="text-color-gray-25 font-medium">Total Focus Records</div>
 					</div>
 
 					<div className="text-center p-2 order-6 sm:order-none">
 						<div className={classNames(textColor, 'font-bold text-[24px]')}>
 							{getFormattedDuration(totalFocusDuration, false)}
 						</div>
-						<div className="text-color-gray-100 font-medium">Total Focus Time</div>
+						<div className="text-color-gray-25 font-medium">Total Focus Time</div>
 					</div>
 				</div>
 			</div>

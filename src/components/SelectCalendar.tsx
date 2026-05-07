@@ -121,7 +121,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 					<Icon
 						name="fiber_manual_record"
 						fill={0}
-						customClass={'text-color-gray-50 !text-[14px] hover:text-white cursor-pointer'}
+						customClass={'text-color-gray-50 !text-[14px] cursor-pointer'}
 					/>
 					<Icon
 						name="chevron_right"
@@ -227,7 +227,7 @@ const MonthView: React.FC<MonthViewProps> = ({
 											`bg-color-gray-200 hover:bg-color-gray-200 ${chosenColorObj.textColor}`
 										);
 									} else {
-										appliedStyles.push('text-white bg-transparent hover:bg-color-gray-300');
+										appliedStyles.push('text-white bg-transparent hover:bg-color-gray-200');
 									}
 								} else {
 									appliedStyles.push('text-color-gray-100 bg-transparent hover:bg-color-gray-20');

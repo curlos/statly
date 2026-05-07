@@ -35,7 +35,7 @@ const ModalUserSettings: React.FC<ModalUserSettingsProps> = ({ isOpen, onClose }
 		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!max-w-[900px] !w-[95vw] md:!w-[90vw]">
 			<div className="bg-color-gray-700 rounded-lg flex flex-col md:flex-row h-[80vh] max-h-[80vh] overflow-hidden">
 				{/* Sidebar */}
-				<div className="w-full md:w-[240px] border-b md:border-b-0 md:border-r border-color-gray-200 flex flex-col">
+				<div className="w-full md:w-[240px] border-b md:border-b-0 md:border-r border-color-gray-100 flex flex-col">
 					<div className="flex md:flex-col md:flex-1">
 						{/* Scrollable menu items */}
 						<div className="flex flex-1 md:flex-col overflow-x-auto md:overflow-x-visible md:overflow-y-auto gray-scrollbar p-2 md:pt-4">
@@ -65,7 +65,7 @@ const ModalUserSettings: React.FC<ModalUserSettingsProps> = ({ isOpen, onClose }
 
 				{/* Main Content */}
 				<div className="flex-1 flex flex-col min-h-0">
-					<div className="hidden md:flex items-center justify-between p-4 border-b border-color-gray-200">
+					<div className="hidden md:flex items-center justify-between p-4 border-b border-color-gray-100">
 						<div className="flex items-center gap-3">
 							{activeSection === 'profile' && showEditProfile && (
 								<Icon

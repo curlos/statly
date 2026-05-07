@@ -33,12 +33,12 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 
 				{showCounts && (
 					<div className="mb-6">
-						<p className="text-color-gray-100 mb-3">
+						<p className="text-color-gray-25 mb-3">
 							{hasMultipleCategories ? 'Deleting:' : `Deleting ${Object.values(counts)[0]?.toLocaleString()} documents`}
 						</p>
 
 						{hasMultipleCategories && (
-							<ul className="space-y-2 text-color-gray-100">
+							<ul className="space-y-2 text-color-gray-25">
 								{counts.focusRecords !== undefined && (
 									<li>- {counts.focusRecords.toLocaleString()} focus records</li>
 								)}
@@ -71,7 +71,7 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 					<button
 						onClick={onConfirm}
 						disabled={isDeleting}
-						className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+						className="px-4 py-2 bg-red-600 hover:bg-red-700 text-[#ffffff] rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						{isDeleting ? 'Deleting...' : 'Confirm Delete'}
 					</button>
