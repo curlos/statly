@@ -17,11 +17,11 @@ const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
 		<header className="container pt-8 pb-3 flex items-center justify-between">
 			<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]"/>
 
-			<nav aria-label="Site controls" className="flex items-center gap-3 mr-[15px]">
+			<div className="flex items-center gap-3 mr-[15px]">
 				{showFilterSidebarIcon && (
 					<button
 						type="button"
-						aria-label="Open filter panel"
+						aria-label="Open filter sidebar"
 						aria-expanded={isFilterSidebarModalOpen}
 						className="bg-transparent border-0 p-0 cursor-pointer"
 						onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
@@ -47,7 +47,7 @@ const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
 				>
 					<Icon name="menu" customClass={'!text-[30px] text-white'} />
 				</button>
-			</nav>
+			</div>
 
 			{isSettingsSidebarModalOpen && (
 				<ModalSettingsSidebar

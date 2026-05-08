@@ -32,44 +32,58 @@ const TopBar = () => {
 
 	const getTabButtons = () => {
 		return (
-			<div className="flex justify-center gap-2">
-				<div
+			<nav aria-label="Stats sections" className="flex justify-center gap-2">
+				<a
+					href={'/stats/overview' + queryParamsStr}
+					aria-current={location.pathname.includes('overview') ? 'page' : undefined}
 					className={location.pathname.includes('overview') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={() => navigate('/stats/overview' + queryParamsStr)}
+					onClick={(e) => { e.preventDefault(); navigate('/stats/overview' + queryParamsStr); }}
 				>
 					Overview
-				</div>
+				</a>
 
-				<div
+				<a
+					href={'/stats/task' + queryParamsStr}
+					aria-current={location.pathname.includes('task') ? 'page' : undefined}
 					className={location.pathname.includes('task') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={() => navigate('/stats/task' + queryParamsStr)}
+					onClick={(e) => { e.preventDefault(); navigate('/stats/task' + queryParamsStr); }}
 				>
 					Task
-				</div>
+				</a>
 
-				<div
+				<a
+					href={'/stats/focus' + queryParamsStr}
+					aria-current={location.pathname.includes('focus') ? 'page' : undefined}
 					className={location.pathname.includes('focus') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={() => navigate('/stats/focus' + queryParamsStr)}
+					onClick={(e) => { e.preventDefault(); navigate('/stats/focus' + queryParamsStr); }}
 				>
 					Focus
-				</div>
-			</div>
+				</a>
+			</nav>
 		);
 	};
 
 	const getModalButtons = () => {
 		return (
 			<div className="flex items-center gap-2">
-				<Icon
-					name="page_info"
-					customClass={'!text-[30px] text-color-gray-100 cursor-pointer'}
+				<button
+					type="button"
+					aria-label="Open filter sidebar"
+					aria-expanded={isFilterSidebarModalOpen}
+					className="bg-transparent border-0 p-0 cursor-pointer"
 					onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
-				/>
-				<Icon
-					name="menu"
-					customClass={'!text-[30px] text-white mr-[15px] cursor-pointer'}
+				>
+					<Icon name="page_info" customClass={'!text-[30px] text-color-gray-100'} />
+				</button>
+				<button
+					type="button"
+					aria-label="Open main menu"
+					aria-expanded={isSidebarModalOpen ?? false}
+					className="bg-transparent border-0 p-0 cursor-pointer"
 					onClick={() => dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: !isSidebarModalOpen }))}
-				/>
+				>
+					<Icon name="menu" customClass={'!text-[30px] text-white mr-[15px]'} />
+				</button>
 			</div>
 		);
 	};
