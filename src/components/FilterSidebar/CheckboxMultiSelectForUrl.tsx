@@ -51,33 +51,33 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 	}
 
 	return (
-		<div
-			className="flex items-center gap-1 cursor-pointer"
-			onClick={() => {
-				if (isChecked) {
-					commaSeparatedObj[id] = false;
-				} else {
-					commaSeparatedObj[id] = true;
-				}
-
-				const commaSeparatedSelectedValues = getCommaSeparatedSelectedValues(commaSeparatedObj);
-				updateQueryParams({ [urlQueryParamName]: commaSeparatedSelectedValues, page: '' });
-			}}
-		>
-			<Icon
-				name={isChecked ? 'check_box' : 'check_box_outline_blank'}
-				fill={1}
-				customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj?.hover.textColor)}
+		<label className="relative flex items-center gap-1 cursor-pointer rounded has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-inset">
+			<input
+				type="checkbox"
+				className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+				checked={!!isChecked}
+				onChange={() => {
+					commaSeparatedObj[id] = !isChecked;
+					const commaSeparatedSelectedValues = getCommaSeparatedSelectedValues(commaSeparatedObj);
+					updateQueryParams({ [urlQueryParamName]: commaSeparatedSelectedValues, page: '' });
+				}}
 			/>
-			<div className="flex-1 flex justify-between items-center gap-1">
-				<div>{name}</div>
+			<span aria-hidden="true" className="leading-[0]">
+				<Icon
+					name={isChecked ? 'check_box' : 'check_box_outline_blank'}
+					fill={1}
+					customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj?.hover.textColor)}
+				/>
+			</span>
+			<span className="flex-1 flex justify-between items-center gap-1">
+				<span>{name}</span>
 				{color && (
-					<div>
-						<div className="w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: color }} />
-					</div>
+					<span>
+						<span className="block w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: color }} />
+					</span>
 				)}
-			</div>
-		</div>
+			</span>
+		</label>
 	);
 };
 

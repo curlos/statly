@@ -42,6 +42,12 @@
   border-color: #000000 !important;
 }
 
+.light-mode .ring-white,
+.light-mode .focus-visible\:ring-white:focus-visible,
+.light-mode .has-\[\:focus-visible\]\:ring-white:has(:focus-visible) {
+  --tw-ring-color: #000000 !important;
+}
+
 p {
     margin-top: 1em;
 }

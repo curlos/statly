@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 import Icon from '../Icon';
 import classNames from 'classnames';
 import OtherSectionFocusRecords from '../FilterSidebar/OtherSectionFocusRecords';
@@ -17,6 +18,7 @@ interface SettingsSidebarProps {
 }
 
 const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useSlidingMotion = true }) => {
+	const panelRef = useDialogFocus<HTMLDialogElement>(true, () => setIsOpen(false));
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -32,15 +34,19 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 	const showImagesSection = isForChallengesPage || isForMedalsPage;
 
 	return (
-		<motion.div
+		<motion.dialog
+			ref={panelRef}
+			open
+			tabIndex={-1}
+			aria-label="Settings"
 			initial="hidden"
 			animate="visible"
 			exit="hidden"
 			variants={useSlidingMotion ? sidebarVariants : undefined}
 			className={classNames(
-				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 w-[85%] max-w-[400px]',
+				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 left-auto w-[85%] max-w-[400px] h-full border-0 m-0 focus:outline-none',
 			)}
-			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
+			onClick={(e) => e.stopPropagation()}
 		>
 			<div className="flex justify-between items-center">
 				<h2 className="font-bold text-[18px]">Settings</h2>
@@ -123,7 +129,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 					<FocusHoursGoalPageSettingsSection />
 				</div>
 			)}
-		</motion.div>
+		</motion.dialog>
 	);
 };
 

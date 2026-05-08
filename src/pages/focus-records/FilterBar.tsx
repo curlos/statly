@@ -27,23 +27,27 @@ const FilterBar: React.FC<FilterBarProps> = ({ showFilterSidebar, setShowFilterS
 						</div>
 					</div>
 
-					<div className="text-nowrap text-[16px] cursor-pointer flex items-center gap-2">
-						<div
+					<div className="text-nowrap text-[16px] flex items-center gap-2">
+						<button
+							type="button"
+							aria-label="Open filter and sort panel"
+							aria-expanded={showFilterSidebar}
+							disabled={isFetching}
 							className={classNames(
-								'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors',
+								'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors bg-transparent',
 								chosenColorObj.hover.borderColor,
-								chosenColorObj.hover.textColor
+								chosenColorObj.hover.textColor,
+								isFetching ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
 							)}
-							onClick={() => !isFetching && setShowFilterSidebar(!showFilterSidebar)}
-							style={{ opacity: isFetching ? 0.5 : 1, cursor: isFetching ? 'not-allowed' : 'pointer' }}
+							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
 						>
-							<div className="hidden sm:block">Filter & Sort</div>
+							<span className="hidden sm:block">Filter & Sort</span>
 							<Icon
 								name="page_info"
 								fill={0}
-								customClass={'!text-[20px] cursor-pointer'}
+								customClass={'!text-[20px]'}
 							/>
-						</div>
+						</button>
 
 						<SyncButton showText={false} showTooltip={true} customClass="hover:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed h-[20px] mt-[3px]" />
 					</div>

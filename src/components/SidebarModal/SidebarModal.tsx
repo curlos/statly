@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setModalState } from '../../slices/modalSlice';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import DefaultDateRangeInterval from '../FilterSidebar/DefaultDateRangeInterval';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 
 const SidebarModal = () => {
 	const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const SidebarModal = () => {
 	const handleClose = () => {
 		dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: false }));
 	};
+
+	const panelRef = useDialogFocus<HTMLDialogElement>(isSidebarModalOpen ?? false, handleClose);
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -36,17 +39,23 @@ const SidebarModal = () => {
 
 	const LinkLi: React.FC<LinkLiProps> = ({ name, linkUrl, iconName }) => {
 		return (
-			<div
-				className="group flex items-center gap-2 cursor-pointer"
-				onClick={() => {
+			<a
+				href={linkUrl}
+				className="group flex items-center gap-2 rounded focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset"
+				onClick={(e) => {
+					e.preventDefault();
 					navigate(linkUrl);
 					handleClose();
 				}}
 			>
-				<div className="group-hover:underline">{name}</div>
+				<span className="group-hover:underline">{name}</span>
 
-				{iconName && <Icon name={iconName} fill={1} customClass={`${chosenColorObj.textColor} !text-[24px]`} />}
-			</div>
+				{iconName && (
+					<span aria-hidden="true">
+						<Icon name={iconName} fill={1} customClass={`${chosenColorObj.textColor} !text-[24px]`} />
+					</span>
+				)}
+			</a>
 		);
 	};
 
@@ -67,13 +76,17 @@ const SidebarModal = () => {
 						className="overlay absolute bg-black inset-0"
 						onClick={handleClose}
 					/>
-					<motion.div
+					<motion.dialog
+						ref={panelRef}
+						open
+						tabIndex={-1}
+						aria-label="Main menu"
 						initial="hidden"
 						animate="visible"
 						exit="hidden"
 						variants={sidebarVariants}
-						className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col"
-						onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
+						className="fixed inset-y-0 right-0 left-auto w-[85%] max-w-[400px] h-full bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col border-0 m-0 focus:outline-none"
+						onClick={(e) => e.stopPropagation()}
 					>
 						<div className="font-bold text-[24px]">
 							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="query_stats" />
@@ -94,7 +107,7 @@ const SidebarModal = () => {
 						{/* User Profile */}
 						<hr className="border-color-gray-100 my-4" />
 						<UserProfileSection />
-					</motion.div>
+					</motion.dialog>
 				</motion.div>
 			)}
 		</AnimatePresence>

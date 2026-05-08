@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 import Icon from '../Icon';
 import DateRangeSection from './DateRangeSection';
 import SearchSection from './SearchSection';
@@ -23,6 +24,7 @@ interface FilterSidebarProps {
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingMotion = true }) => {
+	const panelRef = useDialogFocus(isForModal, () => setIsOpen(false));
 	const sidebarVariants = {
 		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
@@ -82,37 +84,45 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 
 	const isFocusRecordsOrCompletedTasksPage = page === 'focus-records-page' || page === 'completed-tasks-page';
 
-	return (
-		<motion.div
-			initial="hidden"
-			animate="visible"
-			exit="hidden"
-			variants={useSlidingMotion ? sidebarVariants : undefined}
-			className={classNames(
-				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4',
-				isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : ''
-			)}
-			onClick={(e) => e.stopPropagation()} // Prevents click from closing the modal
-		>
+	const sharedMotionProps = {
+		initial: 'hidden' as const,
+		animate: 'visible' as const,
+		exit: 'hidden' as const,
+		variants: useSlidingMotion ? sidebarVariants : undefined,
+		onClick: (e: React.MouseEvent) => e.stopPropagation(),
+	};
+
+	const baseClassName = classNames(
+		'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4',
+		isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : ''
+	);
+
+	const innerContent = (
+		<>
 			<div className="flex justify-between items-center">
-				<h2 className="font-bold text-[18px]">{isFocusRecordsOrCompletedTasksPage ? 'Filter & Sort' : 'Filter'}</h2>
+				<h2 id="filter-dialog-title" className="font-bold text-[18px]">{isFocusRecordsOrCompletedTasksPage ? 'Filter & Sort' : 'Filter'}</h2>
 				<div className="flex items-center gap-3">
 					{isAtLeastOneFilterApplied && (
-						<div
-							className="text-color-gray-25 hover:text-color-gray-25 underline cursor-pointer"
+						<button
+							type="button"
+							className="text-color-gray-25 hover:text-color-gray-25 underline cursor-pointer bg-transparent border-0 p-0"
 							onClick={clearAllFilters}
 						>
 							Clear All
-						</div>
+						</button>
 					)}
-					<Icon
-						name="close"
-						fill={0}
-						customClass={
-							'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1'
-						}
+					<button
+						type="button"
+						aria-label="Close filter panel"
+						className="bg-transparent border-0 p-0 cursor-pointer"
 						onClick={() => setIsOpen(false)}
-					/>
+					>
+						<Icon
+							name="close"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[22px] hover:text-white bg-color-gray-600 rounded-2xl p-1'}
+						/>
+					</button>
 				</div>
 			</div>
 
@@ -178,6 +188,27 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 					<GeneralFocusRecordsFilters />
 				</>
 			)}
+		</>
+	);
+
+	if (isForModal) {
+		return (
+			<motion.dialog
+				ref={panelRef as unknown as React.RefObject<HTMLDialogElement>}
+				open
+				tabIndex={-1}
+				aria-labelledby="filter-dialog-title"
+				{...sharedMotionProps}
+				className={baseClassName + ' border-0 m-0 left-auto h-full focus:outline-none'}
+			>
+				{innerContent}
+			</motion.dialog>
+		);
+	}
+
+	return (
+		<motion.div ref={panelRef} {...sharedMotionProps} className={baseClassName}>
+			{innerContent}
 		</motion.div>
 	);
 };

@@ -17,25 +17,37 @@ const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
 		<header className="container pt-8 pb-3 flex items-center justify-between">
 			<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]"/>
 
-			<div className="flex items-center gap-3 mr-[15px]">
+			<nav aria-label="Site controls" className="flex items-center gap-3 mr-[15px]">
 				{showFilterSidebarIcon && (
-					<Icon
-						name="page_info"
-						customClass={'!text-[30px] text-color-gray-100 cursor-pointer'}
+					<button
+						type="button"
+						aria-label="Open filter panel"
+						aria-expanded={isFilterSidebarModalOpen}
+						className="bg-transparent border-0 p-0 cursor-pointer"
 						onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
-					/>
+					>
+						<Icon name="page_info" customClass={'!text-[30px] text-color-gray-100'} />
+					</button>
 				)}
-				<Icon
-					name="settings"
-					customClass={'!text-[30px] text-color-gray-100 cursor-pointer'}
+				<button
+					type="button"
+					aria-label="Open page settings"
+					aria-expanded={isSettingsSidebarModalOpen}
+					className="bg-transparent border-0 p-0 cursor-pointer"
 					onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
-				/>
-				<Icon
-					name="menu"
-					customClass={'!text-[30px] text-white cursor-pointer'}
+				>
+					<Icon name="settings" customClass={'!text-[30px] text-color-gray-100'} />
+				</button>
+				<button
+					type="button"
+					aria-label="Open main menu"
+					aria-expanded={isSidebarModalOpen ?? false}
+					className="bg-transparent border-0 p-0 cursor-pointer"
 					onClick={() => dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: !isSidebarModalOpen }))}
-				/>
-			</div>
+				>
+					<Icon name="menu" customClass={'!text-[30px] text-white'} />
+				</button>
+			</nav>
 
 			{isSettingsSidebarModalOpen && (
 				<ModalSettingsSidebar
