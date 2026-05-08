@@ -76,6 +76,7 @@ const FocusRecordsPage = () => {
 			<div className="max-w-screen min-h-screen bg-color-gray-700 pb-10">
 				<Navbar page="focus-records-page" />
 
+				<main id="main-content" tabIndex={-1} className="outline-none">
 				<FilterBar
 					{...{
 						isFetching,
@@ -118,6 +119,7 @@ const FocusRecordsPage = () => {
 						</div>
 					) : null}
 				</div>
+				</main>
 			</div>
 		</div>
 	);

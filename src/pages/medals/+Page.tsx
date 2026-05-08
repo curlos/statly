@@ -111,7 +111,7 @@ const Page = () => {
 					</div>
 				</div>
 
-				<div className="container grid grid-cols-12 gap-3">
+				<main id="main-content" tabIndex={-1} className="container grid grid-cols-12 gap-3 outline-none">
 					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal, medalsData, isLoading, type, interval }} />
 
 					<div className="hidden sm:block col-span-4">
@@ -136,7 +136,7 @@ const Page = () => {
 							</div>
 						</Modal>
 					</div>
-				</div>
+				</main>
 			</div>
 
 			{isFilterSidebarModalOpen && (

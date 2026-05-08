@@ -46,6 +46,7 @@ const Page = () => {
 		<div className="max-w-screen min-h-screen bg-color-gray-700 pb-10">
 			<Navbar page="completed-tasks-page" />
 
+			<main id="main-content" tabIndex={-1} className="outline-none">
 			<FilterBar
 				{...{
 					isFetching,
@@ -84,6 +85,7 @@ const Page = () => {
 					</div>
 				) : null}
 			</div>
+			</main>
 		</div>
 	);
 };

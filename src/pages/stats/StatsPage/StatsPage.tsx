@@ -13,17 +13,19 @@ const StatsPage = () => {
 		<div className="flex max-w-screen max-h-[100dvh] overflow-x-hidden">
 			<div className="flex-1 bg-color-gray-700 py-8 h-[100dvh] overflow-scroll gray-scrollbar">
 				<div className="container">
-					<TopBar />
+					<header><TopBar /></header>
 
-					<div className="mt-3 hidden md:block">
-						<AppliedFilterItemList />
-					</div>
+					<main id="main-content" tabIndex={-1} className="outline-none">
+						<div className="mt-3 hidden md:block">
+							<AppliedFilterItemList />
+						</div>
 
-					<div className="mt-5">
-						{location.pathname.includes('/overview') && <OverviewSection />}
-						{location.pathname.includes('/task') && <TaskSection />}
-						{location.pathname.includes('/focus') && <FocusSection />}
-					</div>
+						<div className="mt-5">
+							{location.pathname.includes('/overview') && <OverviewSection />}
+							{location.pathname.includes('/task') && <TaskSection />}
+							{location.pathname.includes('/focus') && <FocusSection />}
+						</div>
+					</main>
 				</div>
 			</div>
 		</div>

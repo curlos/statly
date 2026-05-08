@@ -100,7 +100,7 @@ const Page = () => {
 				</div>
 			</div>
 
-			<div className="container grid grid-cols-12 gap-2">
+			<main id="main-content" tabIndex={-1} className="container grid grid-cols-12 gap-2 outline-none">
 				<div className="col-span-12 md:col-span-7 lg:col-span-8 mr-2">
 					<ChallengeList
 						{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal, challengesData, isLoading }}
@@ -129,7 +129,7 @@ const Page = () => {
 						</div>
 					</Modal>
 				</div>
-			</div>
+			</main>
 
 			{isFilterSidebarModalOpen && (
 				<ModalFilterSidebar

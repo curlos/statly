@@ -21,11 +21,11 @@ const LoginAndSignupPage = () => {
 	const mode = isSignupRoute ? 'register' : 'login';
 
 	return (
-		<div className="flex justify-center items-center min-h-screen bg-color-gray-700">
+		<main id="main-content" tabIndex={-1} className="flex justify-center items-center min-h-screen bg-color-gray-700 outline-none">
 			<div className="container flex flex-col items-center">
 				<UserForm mode={mode} />
 			</div>
-		</div>
+		</main>
 	);
 };
 
