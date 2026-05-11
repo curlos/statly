@@ -11,7 +11,7 @@ interface ChosenMedalProps {
 }
 
 const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
-	const { updateQueryParams } = useSearchParamsContext();
+	const { buildUrlWithQueryParams } = useSearchParamsContext();
 
 	const {
 		medalsPageSettings: { selectedMedalCardImage },
@@ -59,17 +59,16 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 
 	const imgSrc = selectedMedalCardImage?.[chosenMedal.type]
 
-	const handleGoToSelectedDateRange = (dateRange: string) => {
+	const getDateRangeHref = (dateRange: string) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
 
 		const isForFocusMedals = pageContext.routeParams.type === 'focus';
 
-		const parseDateRangeObj = parseDateRange(getIntervalText(), dateRange);
-		const { startDate, endDate } = parseDateRangeObj;
+		const { startDate, endDate } = parseDateRange(getIntervalText(), dateRange);
 
-		updateQueryParams(
+		return buildUrlWithQueryParams(
 			{
 				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(startDate),
@@ -88,7 +87,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 		>
 			<div>
 				<div className="flex justify-center mb-2">
-					<img src={imgSrc} alt={`${chosenMedal.name} medal image`} className="max-h-[300px] max-w-full" />
+					<img src={imgSrc} alt={`${chosenMedal.name} Medal`} className="max-h-[300px] max-w-full" />
 				</div>
 				<div>
 					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-2 sticky">
@@ -106,7 +105,13 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 						{intervalsEarned && intervalsEarned.length > 0 && (
 							<div className="text-[18px]">
 								<span className="font-bold underline">{getIntervalsEarnedText()} Earned: </span>
-								<ul className="pb-3">
+								<a
+									href="#after-intervals-list"
+									className="sr-only focus:not-sr-only focus:absolute focus:z-10 focus:px-2 focus:py-1 focus:bg-white focus:text-black focus:rounded"
+								>
+									Skip list of {timesEarned} {getIntervalsEarnedText().toLowerCase()}
+								</a>
+								<ul role="list" className="pb-3">
 									{intervalsEarned
 										.toSorted((a: string, b: string) => {
 											if (chosenMedal.interval !== 'weekly') {
@@ -121,17 +126,18 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 										?.map((dateRange: string) => {
 											return (
 												<li key={dateRange} className="list-disc ml-5">
-													<button
-														type="button"
-														className="hover:underline cursor-pointer bg-transparent border-0 p-0 text-left"
-														onClick={() => handleGoToSelectedDateRange(dateRange)}
+													<a
+														href={getDateRangeHref(dateRange)}
+														className="hover:underline"
+														aria-label={`View ${chosenMedal.type === 'tasks' ? 'completed tasks' : 'focus records'} for ${dateRange}`}
 													>
 														{dateRange}
-													</button>
+													</a>
 												</li>
 											);
 										})}
 								</ul>
+								<div id="after-intervals-list" />
 							</div>
 						)}
 					</div>
