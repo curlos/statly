@@ -38,20 +38,21 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateT
 					customClass={classNames('!text-[20px]')}
 					customStyle={{ color: cardTextColor }}
 				/>
-				<div
-					className={classNames('mt-[-2px] flex-1', isFullTask && 'hover:underline cursor-pointer')}
-					onClick={() => {
-						// "Full Tasks" would include all of the tasks from Todoist and all of the "non-item" tasks from TickTick. So, the only one tasks that would NOT be full tasks are the "items" which are only from TickTick and they are tasks that CANNOT have children.
-						if (!isFullTask) {
-							return;
-						}
-
-						updateTaskIdQueryParam(task.id);
-					}}
-					style={{ color: cardTextColor }}
-				>
-					{task.title}
-				</div>
+				{/* "Full Tasks" would include all of the tasks from Todoist and all of the "non-item" tasks from TickTick. So, the only one tasks that would NOT be full tasks are the "items" which are only from TickTick and they are tasks that CANNOT have children. */}
+				{isFullTask ? (
+					<button
+						type="button"
+						className="mt-[-2px] flex-1 hover:underline cursor-pointer bg-transparent border-0 p-0 text-left"
+						onClick={() => updateTaskIdQueryParam(task.id)}
+						style={{ color: cardTextColor }}
+					>
+						{task.title}
+					</button>
+				) : (
+					<div className="mt-[-2px] flex-1" style={{ color: cardTextColor }}>
+						{task.title}
+					</div>
+				)}
 			</div>
 
 			{/* Context Menu (right-click) */}

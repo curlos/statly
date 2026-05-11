@@ -236,12 +236,13 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			)}
 
 			{!fromModal && (
-				<div
-					className="text-color-gray-25 hover:text-color-gray-100 cursor-pointer text-[16px] lg:text-[14px] xl:text-[16px]"
+				<button
+					type="button"
+					className="text-color-gray-25 hover:text-color-gray-100 cursor-pointer text-[16px] lg:text-[14px] xl:text-[16px] bg-transparent border-0 p-0"
 					onClick={() => setIsModalOpen(true)}
 				>
 					View More
-				</div>
+				</button>
 			)}
 		</div>
 	);

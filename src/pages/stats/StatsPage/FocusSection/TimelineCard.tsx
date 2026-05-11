@@ -76,21 +76,23 @@ const CustomWeekPicker: React.FC<CustomWeekPickerProps> = ({ selectedDates, setS
 	return (
 		<div className="flex items-center gap-2">
 			<div className="relative">
-				<div
+				<button
 					ref={dropdownTimeCalenderRef}
-					onClick={() => {
-						setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible);
-					}}
+					type="button"
+					aria-label="Open calendar picker"
+					aria-expanded={isDropdownTimeCalendarVisible}
+					className="bg-transparent border-0 p-0 cursor-pointer"
+					onClick={() => setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible)}
 				>
 					<Icon
 						name="calendar_month"
 						fill={0}
 						customClass={classNames(
-							'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+							'text-color-gray-50 !text-[20px] border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
 							`${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
 						)}
 					/>
-				</div>
+				</button>
 
 				<DropdownTimeCalendar
 					toggleRef={dropdownTimeCalenderRef}

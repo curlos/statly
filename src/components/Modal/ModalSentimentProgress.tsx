@@ -159,9 +159,9 @@ const ModalSentimentProgress: React.FC = () => {
 									title={
 										<div className="w-full pr-2 flex items-center justify-between">
 											<div>
-												<h3 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
+												<h2 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
 													Records {chunk.startRecord.toLocaleString()} to {chunk.endRecord.toLocaleString()}
-												</h3>
+												</h2>
 												{/* Summary results - only show after chunk completes */}
 												{chunk.result && chunk.status === 'success' && (
 													<div className="text-color-gray-100 mt-1">

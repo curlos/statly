@@ -205,12 +205,14 @@ const ImportData = () => {
 		<>
 			<div className="space-y-2">
 				{/* Main Import Button */}
-				<div
+				<button
+					type="button"
+					disabled={isImporting}
 					className={classNames(
-						'flex items-center gap-2 my-2',
-						isImporting ? 'cursor-not-allowed opacity-50' : `cursor-pointer ${chosenColorObj.hover.textColor}`
+						'flex items-center gap-2 my-2 w-full text-left disabled:opacity-50 disabled:cursor-not-allowed',
+						chosenColorObj.hover.textColor
 					)}
-					onClick={isImporting ? undefined : handleImportClick}
+					onClick={handleImportClick}
 				>
 					{isImporting ? (
 						<div className="rounded-lg bg-color-gray-300 p-[6px]">
@@ -221,30 +223,31 @@ const ImportData = () => {
 							name="upload"
 							fill={0}
 							customClass={classNames(
-								'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+								'!text-[20px] rounded-lg bg-color-gray-300 p-[6px]',
 								`'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
 							)}
 						/>
 					)}
-					<div>Import All Data (Tasks, Focus Records, Projects, Project Groups, etc.)</div>
-				</div>
+					<span>Import All Data (Tasks, Focus Records, Projects, Project Groups, etc.)</span>
+				</button>
 
 				{/* View Progress button - only show while importing */}
 				{isImporting && batches.length > 0 && (
-					<div
-						className={classNames('flex items-center gap-2 ml-9 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+					<button
+						type="button"
+						className={classNames('flex items-center gap-2 ml-9 my-2 w-full text-left', chosenColorObj.hover.textColor)}
 						onClick={() => dispatch(setModalOpen(true))}
 					>
 						<Icon
 							name="visibility"
 							fill={0}
 							customClass={classNames(
-								'!text-[20px] cursor-pointer rounded-lg bg-color-gray-600 p-[6px]',
+								'!text-[20px] rounded-lg bg-color-gray-600 p-[6px]',
 								`'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
 							)}
 						/>
-						<div>View Import Progress</div>
-					</div>
+						<span>View Import Progress</span>
+					</button>
 				)}
 
 				{/* Radio Button Options */}

@@ -147,20 +147,24 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 
                     <div className="hidden sm:flex items-center justify-between relative" style={{ color: cardTextColor }}>
                         <div>
-                            <span
-                                className="font-bold hover:underline cursor-pointer"
+                            <button
+                                type="button"
+                                className="font-bold hover:underline cursor-pointer bg-transparent border-0 p-0"
+                                style={{ color: cardTextColor }}
                                 onClick={() => {
                                     const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
                                     updateQueryParams({ "start-date": newDayUrl, "end-date": newDayUrl, page: "" });
                                 }}
                             >
                                 {getFormattedLongDay(new Date(startTime))}
-                            </span>
+                            </button>
                             {crossesMidnight && (
                                 <>
                                     {" - "}
-                                    <span
-                                        className="font-bold hover:underline cursor-pointer"
+                                    <button
+                                        type="button"
+                                        className="font-bold hover:underline cursor-pointer bg-transparent border-0 p-0"
+                                        style={{ color: cardTextColor }}
                                         onClick={() => {
                                             const newDayUrl = getFormattedShortMonthDay(new Date(endTime));
                                             updateQueryParams({
@@ -171,7 +175,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                         }}
                                     >
                                         {getFormattedLongDay(new Date(endTime))}
-                                    </span>
+                                    </button>
                                 </>
                             )}
                             {" - "}
@@ -179,16 +183,24 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                         </div>
 
                         <div className="relative ml-2" ref={dropdownToggleRef}>
-                            <Icon
-                                name="more_horiz"
-                                customClass="text-color-gray-50 !text-[20px] cursor-pointer hover:text-white transition-colors"
+                            <button
+                                type="button"
+                                aria-label="Open record options"
+                                aria-expanded={dropdownOpen}
+                                aria-haspopup="menu"
+                                className="bg-transparent border-0 p-0 cursor-pointer"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setContextMenuVisible(false);
                                     setDropdownOpen(!dropdownOpen);
                                 }}
-                                customStyle={{ color: cardTextColor }}
-                            />
+                            >
+                                <Icon
+                                    name="more_horiz"
+                                    customClass="text-color-gray-50 !text-[20px] hover:text-white transition-colors"
+                                    customStyle={{ color: cardTextColor }}
+                                />
+                            </button>
 
                             <Dropdown
                                 isVisible={dropdownOpen}
@@ -207,8 +219,10 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                     <div className="sm:hidden relative" style={{ color: cardTextColor }}>
                         <div className="flex items-center justify-between">
                             <div>
-                                <div
-                                    className="font-bold hover:underline cursor-pointer"
+                                <button
+                                    type="button"
+                                    className="font-bold hover:underline cursor-pointer bg-transparent border-0 p-0 text-left"
+                                    style={{ color: cardTextColor }}
                                     onClick={() => {
                                         const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
                                         updateQueryParams({ "start-date": newDayUrl, "end-date": newDayUrl, page: "" });
@@ -234,22 +248,30 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                             </span>
                                         </>
                                     )}
-                                </div>
+                                </button>
                                 <div>
                                     {startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
                                 </div>
                             </div>
 
                             <div className="relative ml-2" ref={dropdownToggleRefMobile}>
-                                <Icon
-                                    name="more_horiz"
-                                    customClass="text-color-gray-50 !text-[20px] cursor-pointer hover:text-white transition-colors"
+                                <button
+                                    type="button"
+                                    aria-label="Open record options"
+                                    aria-expanded={dropdownOpenMobile}
+                                    aria-haspopup="menu"
+                                    className="bg-transparent border-0 p-0 cursor-pointer"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setContextMenuVisible(false);
                                         setDropdownOpenMobile(!dropdownOpenMobile);
                                     }}
-                                />
+                                >
+                                    <Icon
+                                        name="more_horiz"
+                                        customClass="text-color-gray-50 !text-[20px] hover:text-white transition-colors"
+                                    />
+                                </button>
 
                                 <Dropdown
                                     isVisible={dropdownOpenMobile}

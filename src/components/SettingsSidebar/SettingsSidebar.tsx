@@ -43,22 +43,27 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			animate="visible"
 			exit="hidden"
 			variants={useSlidingMotion ? sidebarVariants : undefined}
+			aria-modal="true"
 			className={classNames(
-				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 left-auto w-[85%] max-w-[400px] h-full border-0 m-0 focus:outline-none',
+				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 left-auto w-[85%] max-w-[400px] h-full border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50',
 			)}
 			onClick={(e) => e.stopPropagation()}
 		>
 			<div className="flex justify-between items-center">
 				<h2 className="font-bold text-[18px]">Settings</h2>
 				<div className="flex items-center gap-3">
-					<Icon
-						name="close"
-						fill={0}
-						customClass={
-							'text-color-gray-50 !text-[22px] hover:text-white cursor-pointer bg-color-gray-600 rounded-2xl p-1'
-						}
+					<button
+						type="button"
+						aria-label="Close settings"
+						className="cursor-pointer bg-transparent border-0 p-0"
 						onClick={() => setIsOpen(false)}
-					/>
+					>
+						<Icon
+							name="close"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[22px] hover:text-white bg-color-gray-600 rounded-2xl p-1'}
+						/>
+					</button>
 				</div>
 			</div>
 

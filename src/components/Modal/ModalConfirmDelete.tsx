@@ -1,4 +1,8 @@
+import { useEffect, useRef } from 'react';
 import Modal from './Modal';
+
+const TITLE_ID = 'confirm-delete-title';
+const DESC_ID = 'confirm-delete-desc';
 
 interface ModalConfirmDeleteProps {
 	isOpen: boolean;
@@ -25,40 +29,47 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 	showCounts = true
 }) => {
 	const hasMultipleCategories = Object.keys(counts).length > 1;
+	const headingRef = useRef<HTMLHeadingElement>(null);
+
+	useEffect(() => {
+		if (isOpen) headingRef.current?.focus();
+	}, [isOpen]);
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[500px]">
+		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[500px]" ariaDescribedBy={DESC_ID} role="alertdialog">
 			<div className="bg-color-gray-700 rounded-lg p-6">
-				<h3 className="text-xl font-semibold mb-4">{title}</h3>
+				<h3 ref={headingRef} id={TITLE_ID} tabIndex={-1} className="text-xl font-semibold mb-4 focus:outline-none">{title}</h3>
 
-				{showCounts && (
-					<div className="mb-6">
-						<p className="text-color-gray-25 mb-3">
-							{hasMultipleCategories ? 'Deleting:' : `Deleting ${Object.values(counts)[0]?.toLocaleString()} documents`}
-						</p>
+				<div id={DESC_ID}>
+					{showCounts && (
+						<div className="mb-6">
+							<p className="text-color-gray-25 mb-3">
+								{hasMultipleCategories ? 'Deleting:' : `Deleting ${Object.values(counts)[0]?.toLocaleString()} documents`}
+							</p>
 
-						{hasMultipleCategories && (
-							<ul className="space-y-2 text-color-gray-25">
-								{counts.focusRecords !== undefined && (
-									<li>- {counts.focusRecords.toLocaleString()} focus records</li>
-								)}
-								{counts.tasks !== undefined && (
-									<li>- {counts.tasks.toLocaleString()} tasks</li>
-								)}
-								{counts.projects !== undefined && (
-									<li>- {counts.projects.toLocaleString()} projects</li>
-								)}
-								{counts.projectGroups !== undefined && (
-									<li>- {counts.projectGroups.toLocaleString()} project groups</li>
-								)}
-							</ul>
-						)}
-					</div>
-				)}
+							{hasMultipleCategories && (
+								<ul className="space-y-2 text-color-gray-25">
+									{counts.focusRecords !== undefined && (
+										<li>- {counts.focusRecords.toLocaleString()} focus records</li>
+									)}
+									{counts.tasks !== undefined && (
+										<li>- {counts.tasks.toLocaleString()} tasks</li>
+									)}
+									{counts.projects !== undefined && (
+										<li>- {counts.projects.toLocaleString()} projects</li>
+									)}
+									{counts.projectGroups !== undefined && (
+										<li>- {counts.projectGroups.toLocaleString()} project groups</li>
+									)}
+								</ul>
+							)}
+						</div>
+					)}
 
-				<p className="text-red-500 mb-6 font-medium">
-					This action cannot be undone!
-				</p>
+					<p className="text-red-500 mb-6 font-medium">
+						This action cannot be undone!
+					</p>
+				</div>
 
 				<div className="flex gap-3 justify-end">
 					<button

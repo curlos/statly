@@ -23,20 +23,31 @@ const EmotionTag = ({ emotionObj, onClick, showScore = false, count }: EmotionTa
 
 	const formattedScore = (emotionObj.score * 100).toFixed(0);
 
+	const sharedClasses = classNames(
+		'px-3 py-1 text-[14px] text-[#ffffff] rounded-full transition-opacity border border-color-gray-25',
+		emotionData.bg,
+		onClick && 'cursor-pointer hover:opacity-80',
+	);
+
 	return (
 		<div className="bg-gray-800 rounded-full">
-			<div
-				onClick={onClick}
-				className={classNames(
-					'px-3 py-1 text-[14px] text-[#ffffff] rounded-full transition-opacity border border-color-gray-25',
-					emotionData.bg,
-					onClick && 'cursor-pointer hover:opacity-80',
-				)}
-			>
-				{emotionData.name}
-				{showScore && ` - ${formattedScore}%`}
-				{count !== undefined && ` - ${count.toLocaleString()}x`}
-			</div>
+			{onClick ? (
+				<button
+					type="button"
+					onClick={onClick}
+					className={sharedClasses}
+				>
+					{emotionData.name}
+					{showScore && ` - ${formattedScore}%`}
+					{count !== undefined && ` - ${count.toLocaleString()}x`}
+				</button>
+			) : (
+				<div className={sharedClasses}>
+					{emotionData.name}
+					{showScore && ` - ${formattedScore}%`}
+					{count !== undefined && ` - ${count.toLocaleString()}x`}
+				</div>
+			)}
 		</div>
 	);
 };

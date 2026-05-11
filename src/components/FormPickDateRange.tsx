@@ -131,7 +131,7 @@ const DateInput: React.FC<DateInputProps> = ({
 	setDate,
 	setIsDropdownCalendarOpenForParent
 }) => {
-	const dropdownTimeCalenderRef = useRef(null);
+	const dropdownTimeCalenderRef = useRef<HTMLButtonElement>(null);
 	const [isDropdownTimeCalendarVisible, setIsDropdownTimeCalendarVisible] = useState(false);
 
 	const { chosenColorObj } = useThemeContext();
@@ -140,8 +140,12 @@ const DateInput: React.FC<DateInputProps> = ({
 		<div className="flex items-center gap-2">
 			<div className="w-[40px]">{labelName}</div>
 			<div className="w-full relative">
-				<div
+				<button
+					type="button"
 					ref={dropdownTimeCalenderRef}
+					aria-expanded={isDropdownTimeCalendarVisible}
+					aria-haspopup="dialog"
+					aria-label={`${labelName} date: ${formatCheckedInDayDate(date)}`}
 					onClick={() => {
 						setIsDropdownTimeCalendarVisible(!isDropdownTimeCalendarVisible);
 
@@ -150,12 +154,12 @@ const DateInput: React.FC<DateInputProps> = ({
 						}
 					}}
 					className={classNames(
-						'border border-color-gray-300 cursor-pointer px-3 py-1 rounded w-full bg-color-gray-200',
+						'border border-color-gray-300 cursor-pointer px-3 py-1 rounded w-full bg-color-gray-200 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white',
 						chosenColorObj.hover.borderColor
 					)}
 				>
 					{formatCheckedInDayDate(date)}
-				</div>
+				</button>
 
 				<DropdownTimeCalendar
 					toggleRef={dropdownTimeCalenderRef}

@@ -76,22 +76,21 @@ const Page = () => {
 						</div>
 					</div>
 
-					<div
+					<button
+						type="button"
+						aria-label="Open filters"
+						aria-expanded={isFilterSidebarModalOpen}
+						disabled={isLoading}
 						className={classNames(
-							'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors',
+							'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors bg-transparent cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
 							chosenColorObj.hover.borderColor,
 							chosenColorObj.hover.textColor
 						)}
-						onClick={() => !isLoading && setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
-						style={{ opacity: isLoading ? 0.5 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
+						onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
 					>
-						<div className="hidden sm:block">Filter</div>
-						<Icon
-							name="page_info"
-							fill={0}
-							customClass={'!text-[20px] cursor-pointer'}
-						/>
-					</div>
+						<span className="hidden sm:block">Filter</span>
+						<Icon name="page_info" fill={0} customClass={'!text-[20px]'} />
+					</button>
 				</div>
 				<div className="container grid grid-cols-12">
 					<div className="col-span-8">

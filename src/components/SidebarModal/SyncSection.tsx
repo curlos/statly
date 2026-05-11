@@ -42,13 +42,14 @@ const SyncItem = ({ label, syncKey, metadata }: SyncItemProps) => {
 			<div className="flex items-center gap-2 text-color-gray-50">
 				<span>{formatLastSyncTime(metadata?.lastSyncTime)}</span>
 				{statusIcon && (
-					<div style={{ color: statusIcon.color }}>
+					<span role="img" aria-label={statusIcon.text} style={{ color: statusIcon.color }}>
 						<Icon
 							name={statusIcon.name}
 							fill={1}
 							customClass={`!text-[20px] mt-[5px] mb-[-5px] ${statusIcon.spin ? 'animate-spin' : ''}`}
+							aria-hidden={true}
 						/>
-					</div>
+					</span>
 				)}
 			</div>
 		</div>
@@ -64,7 +65,7 @@ const SyncSection = () => {
 	return (
 		<div>
 			<div className="flex items-center gap-2 mb-3">
-				<h3 className="text-[20px] font-bold">Sync TickTick Data</h3>
+				<h2 className="text-[20px] font-bold">Sync TickTick Data</h2>
 				<Icon name="sync" fill={1} customClass={`${chosenColorObj.textColor} !text-[20px]`} />
 				<Tooltip
 					content="Uses your TickTick cookie to sync your Focus Records, Tasks, Projects, and Project Groups to Statly."
@@ -75,6 +76,7 @@ const SyncSection = () => {
 						name="help_outline"
 						fill={0}
 						customClass="!text-[18px] ml-[-2px] mt-[7px] text-color-gray-50 hover:text-white cursor-help"
+						aria-hidden={true}
 					/>
 				</Tooltip>
 			</div>
@@ -99,7 +101,7 @@ const SyncSection = () => {
 					title={
 						<div className="flex items-center gap-2">
 							<Icon name="help" fill={1} customClass="!text-[18px] text-color-gray-100" />
-							<span className="text-[14px] font-semibold">How to Get Your TickTick Cookie</span>
+							<h3 className="text-[14px] font-semibold">How to Get Your TickTick Cookie</h3>
 						</div>
 					}
 					openByDefault={false}

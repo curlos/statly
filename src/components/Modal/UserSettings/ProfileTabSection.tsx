@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../slices/userSlice';
@@ -23,6 +23,8 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 	const user = useSelector(selectUser);
 	const { chosenColorObj } = useThemeContext();
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const errorRef = useRef<HTMLDivElement>(null);
+	const successRef = useRef<HTMLDivElement>(null);
 	const [previewImage, setPreviewImage] = useState<string | null>(null);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [showCropModal, setShowCropModal] = useState(false);
@@ -42,6 +44,18 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 	});
 
 	const [updateProfile, { isLoading }] = useUpdateUserProfileMutation();
+
+	useEffect(() => {
+		if (submitError) {
+			errorRef.current?.focus();
+		}
+	}, [submitError]);
+
+	useEffect(() => {
+		if (submitSuccess) {
+			successRef.current?.focus();
+		}
+	}, [submitSuccess]);
 
 	const handleProfilePicClick = () => {
 		fileInputRef.current?.click();
@@ -144,7 +158,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 		<form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto">
 			{/* Profile Picture */}
 			<div className="flex flex-col items-center mb-6">
-				<div className="relative mb-2 cursor-pointer" onClick={handleProfilePicClick}>
+				<button type="button" aria-label="Change profile picture" className="relative mb-2 cursor-pointer" onClick={handleProfilePicClick}>
 					{displayImage ? (
 						<img
 							src={displayImage}
@@ -163,7 +177,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					<div className="absolute inset-0 bg-black bg-opacity-60 rounded-full flex items-center justify-center hover:bg-opacity-50 transition">
 						<Icon name="camera_alt" fill={0} customClass="!text-[24px] text-[#ffffff]" />
 					</div>
-				</div>
+				</button>
 				<input
 					ref={fileInputRef}
 					type="file"
@@ -239,17 +253,27 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 				</button>
 
 				{/* Error/Success Messages */}
-				{submitError && (
-					<div className="bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm">
-						{submitError}
-					</div>
-				)}
+				<div
+					ref={errorRef}
+					role="alert"
+					aria-live="assertive"
+					aria-atomic="true"
+					tabIndex={-1}
+					className={submitError ? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm outline-none' : 'sr-only'}
+				>
+					{submitError ?? ''}
+				</div>
 
-				{submitSuccess && (
-					<div className="bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm">
-						{submitSuccess}
-					</div>
-				)}
+				<div
+					ref={successRef}
+					role="status"
+					aria-live="polite"
+					aria-atomic="true"
+					tabIndex={-1}
+					className={submitSuccess ? 'bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm outline-none' : 'sr-only'}
+				>
+					{submitSuccess ?? ''}
+				</div>
 			</div>
 
 			<ImageCropModal

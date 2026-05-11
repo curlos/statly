@@ -1,10 +1,10 @@
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoginUserMutation, useRegisterUserMutation } from '../services/resources/usersApi';
 import { navigate } from 'vike/client/router';
 import Link from './Link';
 import classNames from 'classnames';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
-import { useState } from 'react';
 import FormInput from './FormInput';
 import Spinner from './Loaders/Spinner';
 
@@ -95,6 +95,7 @@ interface FormError {
 const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 	const [submitError, setSubmitError] = useState<string | null>(null);
 	const colorMode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+	const serverErrorRef = useRef<HTMLDivElement>(null);
 
 	const {
 		register,
@@ -124,6 +125,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 		} catch (error) {
 			const err = error as FormError;
 			setSubmitError(err?.data?.message || err?.message || 'An error occurred. Please try again.');
+			setTimeout(() => serverErrorRef.current?.focus(), 0);
 		}
 	};
 
@@ -135,8 +137,9 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 			className="flex flex-col gap-4 w-full sm:max-w-[400px] bg-color-gray-300 p-10 rounded-xl"
 		>
 			<div className="flex justify-center">
-				<img src="/checklist-icon.svg" className="w-[80px] h-[80px]" />
+				<img src="/checklist-icon.svg" alt="Statly logo" className="w-[80px] h-[80px]" />
 			</div>
+
 			{mode === 'register' && (
 				<FormInput
 					id="name"
@@ -177,11 +180,16 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 				/>
 			)}
 
-			{submitError && (
-				<div className="bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm">
-					{submitError}
-				</div>
-			)}
+			{/* Server error */}
+			<div
+				ref={serverErrorRef}
+				tabIndex={-1}
+				role="alert"
+				aria-atomic="true"
+				className={submitError ? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm outline-none' : 'sr-only'}
+			>
+				{submitError ?? ''}
+			</div>
 
 			<button
 				type="submit"

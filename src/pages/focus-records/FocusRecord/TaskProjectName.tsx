@@ -75,18 +75,17 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task, cardTex
         <span className={customDisplay.useTextColor ? "" : "text-color-gray-25"} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
             {' '}
             -{' '}
-            <span
-                className="hover:underline hover:text-blue-500"
+            <button
+                type="button"
+                className="hover:underline hover:text-blue-500 bg-transparent border-0 p-0"
                 onClick={() => {
                     if (isMappedFocusApp && fullTask?.projectId) {
-                        // Filter by focus app source using the mapped focus app ID
                         const focusAppId = sourceToFocusAppId[fullTask.projectId];
                         updateQueryParams({
                             'focus-apps': focusAppId,
                             ...resetQueryParams,
                         });
                     } else {
-                        // Filter by project/category
                         updateQueryParams({
                             [projectQueryParam]: taskProject?.id || task?.projectId,
                             ...resetQueryParams,
@@ -95,7 +94,7 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task, cardTex
                 }}
             >
                 ({taskProjectName})
-            </span>
+            </button>
         </span>
     );
 };

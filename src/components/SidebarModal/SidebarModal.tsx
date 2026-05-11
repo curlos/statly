@@ -85,7 +85,8 @@ const SidebarModal = () => {
 						animate="visible"
 						exit="hidden"
 						variants={sidebarVariants}
-						className="fixed inset-y-0 right-0 left-auto w-[85%] max-w-[400px] h-full bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col border-0 m-0 focus:outline-none"
+						aria-modal="true"
+						className="fixed inset-y-0 right-0 left-auto w-[85%] max-w-[400px] h-full bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
 						onClick={(e) => e.stopPropagation()}
 					>
 						<div className="font-bold text-[24px]">

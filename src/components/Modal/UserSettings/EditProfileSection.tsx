@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import ProfileTabSection from './ProfileTabSection';
 import PasswordTabSection from './PasswordTabSection';
@@ -6,6 +6,11 @@ import PasswordTabSection from './PasswordTabSection';
 const EditProfileSection = () => {
 	const { chosenColorObj } = useThemeContext();
 	const [activeTab, setActiveTab] = useState<'profile' | 'password'>('profile');
+	const profileTabRef = useRef<HTMLButtonElement>(null);
+
+	useEffect(() => {
+		profileTabRef.current?.focus();
+	}, []);
 	const [submitError, setSubmitError] = useState<string | null>(null);
 	const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
 
@@ -27,41 +32,56 @@ const EditProfileSection = () => {
 	return (
 		<div>
 			{/* Tabs */}
-			<div className="flex justify-center gap-2 mb-6">
-				<div
+			<div role="tablist" aria-label="Edit profile sections" className="flex justify-center gap-2 mb-6">
+				<button
+					ref={profileTabRef}
+					role="tab"
+					id="edit-profile-tab"
+					aria-selected={activeTab === 'profile'}
+					aria-controls="edit-tab-panel"
 					className={activeTab === 'profile' ? selectedButtonStyle : unselectedButtonStyle}
 					style={activeTab === 'profile' ? { backgroundColor: `${themeColor}33`, color: themeColor } : {}}
 					onClick={() => { setActiveTab('profile'); setSubmitError(null); setSubmitSuccess(null); }}
 				>
 					Profile
-				</div>
-				<div
+				</button>
+				<button
+					role="tab"
+					id="edit-password-tab"
+					aria-selected={activeTab === 'password'}
+					aria-controls="edit-tab-panel"
 					className={activeTab === 'password' ? selectedButtonStyle : unselectedButtonStyle}
 					style={activeTab === 'password' ? { backgroundColor: `${themeColor}33`, color: themeColor } : {}}
 					onClick={() => { setActiveTab('password'); setSubmitError(null); setSubmitSuccess(null); }}
 				>
 					Password
-				</div>
+				</button>
 			</div>
 
 			{/* Tab Content */}
-			{activeTab === 'profile' && (
-				<ProfileTabSection
-					onSuccess={handleSuccess}
-					onError={handleError}
-					submitError={submitError}
-					submitSuccess={submitSuccess}
-				/>
-			)}
+			<div
+				id="edit-tab-panel"
+				role="tabpanel"
+				aria-labelledby={activeTab === 'profile' ? 'edit-profile-tab' : 'edit-password-tab'}
+			>
+				{activeTab === 'profile' && (
+					<ProfileTabSection
+						onSuccess={handleSuccess}
+						onError={handleError}
+						submitError={submitError}
+						submitSuccess={submitSuccess}
+					/>
+				)}
 
-			{activeTab === 'password' && (
-				<PasswordTabSection
-					onSuccess={handleSuccess}
-					onError={handleError}
-					submitError={submitError}
-					submitSuccess={submitSuccess}
-				/>
-			)}
+				{activeTab === 'password' && (
+					<PasswordTabSection
+						onSuccess={handleSuccess}
+						onError={handleError}
+						submitError={submitError}
+						submitSuccess={submitSuccess}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

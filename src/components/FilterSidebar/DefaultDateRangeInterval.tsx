@@ -42,7 +42,7 @@ const DefaultDateRangeInterval = () => {
 	return (
 		<div>
 			<div className="flex items-center gap-1 mb-3">
-				<h3 className="text-[20px] font-bold">Default Date Range Interval</h3>
+				<h2 className="text-[20px] font-bold">Default Date Range Interval</h2>
 				<Icon
 					name="date_range"
 					fill={0}
@@ -74,8 +74,8 @@ const DefaultDateRangeInterval = () => {
 
 			{defaultDateRangeInterval === 'Custom' && (
 				<div className="mt-3">
-					<h4 className="text-[14px] font-bold">Custom Start Date</h4>
-					<p className="text-[14px] text-color-gray-50 mt-1 mb-2">Medals from this date to today</p>
+					<h3 className="text-[14px] font-bold">Custom Start Date</h3>
+					<p className="text-[14px] text-color-gray-50 mt-1 mb-2">Data from this date to today</p>
 					<FormPickDateRange
 						startDate={startDate}
 						setStartDate={setStartDate}

@@ -258,6 +258,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 
 	return (
 		<div className="relative">
+			<p className="sr-only">Heatmap chart showing focus session activity by time of day across the selected date range.</p>
 			<ReactApexChart options={options as ApexCharts.ApexOptions} series={series} type="heatmap" height={310} />
 		</div>
 	);

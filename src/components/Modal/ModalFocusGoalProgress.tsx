@@ -162,11 +162,14 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					<h2 className="text-2xl font-semibold">
 						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${truncateText(ringName, truncateLength)} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
 					</h2>
-					<Icon
-						name="close"
-						customClass="cursor-pointer hover:text-color-gray-25"
+					<button
+						type="button"
+						aria-label="Close"
+						className="bg-transparent border-0 p-0 cursor-pointer hover:text-color-gray-25"
 						onClick={onClose}
-					/>
+					>
+						<Icon name="close" customClass="!text-[24px]" />
+					</button>
 				</div>
 
 				{/* Streaks Section */}
@@ -350,40 +353,30 @@ const CalendarNavigation = ({
 }) => (
 	<div className="flex items-center justify-between px-4 mb-4">
 		<div className="flex-1 font-semibold text-lg">
-			<span className="cursor-pointer" onClick={() => setShowYearView(!showYearView)}>
+			<button
+				type="button"
+				className="cursor-pointer bg-transparent border-0 p-0 font-semibold text-lg"
+				onClick={() => setShowYearView(!showYearView)}
+				aria-pressed={showYearView}
+				aria-label={showYearView ? 'Switch to month view' : 'Switch to year view'}
+			>
 				{showYearView ? `${currentDate.getFullYear()}` : `${monthName} ${currentDate.getFullYear()}`}
-			</span>
+			</button>
 		</div>
 		<div className="flex items-center">
-			<Icon
-				name="keyboard_double_arrow_left"
-				fill={0}
-				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
-				onClick={goToPreviousYear}
-			/>
-			<Icon
-				name="chevron_left"
-				fill={0}
-				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
-				onClick={goToPreviousMonth}
-			/>
-			<Icon
-				name="fiber_manual_record"
-				fill={1}
-				customClass={'text-color-gray-25 !text-[10px] mx-1'}
-			/>
-			<Icon
-				name="chevron_right"
-				fill={0}
-				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
-				onClick={goToNextMonth}
-			/>
-			<Icon
-				name="keyboard_double_arrow_right"
-				fill={0}
-				customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100 cursor-pointer'}
-				onClick={goToNextYear}
-			/>
+			<button type="button" aria-label="Previous year" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToPreviousYear}>
+				<Icon name="keyboard_double_arrow_left" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
+			</button>
+			<button type="button" aria-label="Previous month" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToPreviousMonth}>
+				<Icon name="chevron_left" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
+			</button>
+			<Icon name="fiber_manual_record" fill={1} customClass={'text-color-gray-25 mt-[-7px] !text-[10px] mx-1'} />
+			<button type="button" aria-label="Next month" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToNextMonth}>
+				<Icon name="chevron_right" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
+			</button>
+			<button type="button" aria-label="Next year" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToNextYear}>
+				<Icon name="keyboard_double_arrow_right" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
+			</button>
 		</div>
 	</div>
 );

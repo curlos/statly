@@ -35,7 +35,7 @@ const UpdateArchivedProjects = () => {
 
 				setTimeout(() => {
 					setUpdateStatus('none');
-				}, 1000);
+				}, 3000);
 			}, 0);
 		} catch (error) {
 			// Error already shown by middleware, just reset loading state
@@ -45,8 +45,12 @@ const UpdateArchivedProjects = () => {
 
 	return (
 		<div>
-			<div
-				className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+			<span role="status" aria-live="polite" className="sr-only">{updateStatus === 'done' ? 'Update complete' : ''}</span>
+			<button
+				type="button"
+				disabled={updateStatus === 'loading'}
+				aria-busy={updateStatus === 'loading'}
+				className={classNames('flex items-center gap-2 my-2 w-full text-left disabled:opacity-50 disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
 				onClick={handleClick}
 			>
 				{updateStatus === 'loading' ? (
@@ -56,7 +60,7 @@ const UpdateArchivedProjects = () => {
 						name={updateStatus === 'none' ? 'update' : 'check'}
 						fill={0}
 						customClass={classNames(
-							'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+							'!text-[20px] rounded-lg bg-color-gray-300 p-[6px]',
 							updateStatus === 'none'
 								? `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
 								: 'text-emerald-500'
@@ -64,8 +68,8 @@ const UpdateArchivedProjects = () => {
 					/>
 				)}
 
-				<div>Update Active and Completed Tasks from Archived Projects (TickTick)</div>
-			</div>
+				<span>Update Active and Completed Tasks from Archived Projects (TickTick)</span>
+			</button>
 
 			<div className="mt-4 pl-14">
 				<ArchivedProjectsCheckboxList {...{ checkedArchivedProjects, setCheckedArchivedProjects }} />
@@ -132,38 +136,27 @@ const ArchivedProjectsCheckboxList: React.FC<ArchivedProjectsCheckboxListProps> 
 			openByDefault={false}
 		>
 			<div>
-				<div
+				<label
 					className={classNames(
-						'flex items-center gap-1 mb-2 cursor-pointer',
+						'inline-flex items-center gap-1 mb-2 cursor-pointer rounded has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-inset',
 						(nextLightestColorObj || chosenColorObj).hover.textColor
 					)}
-					onClick={toggleSelectAllArchivedProjects}
 				>
-					<label
-						className="inline-flex items-center cursor-pointer"
-						onChange={(e) => {
-							e.stopPropagation();
-						}}
+					<input
+						type="checkbox"
+						checked={selectedAll}
+						onChange={toggleSelectAllArchivedProjects}
+						className="sr-only"
+					/>
+					<span aria-hidden="true"
+						className={`relative w-11 h-6 rounded-full transition-colors ${selectedAll ? chosenColorObj.bgColor : 'bg-color-gray-300'}`}
 					>
-						<input
-							type="checkbox"
-							checked={selectedAll}
-							onClick={(e) => e.stopPropagation()}
-							onChange={() => {}}
-							className="sr-only"
+						<span
+							className={`absolute top-[2px] left-[2px] h-5 w-5 bg-white border border-gray-300 rounded-full transition-transform ${selectedAll ? 'translate-x-full' : ''}`}
 						/>
-						<div
-							className={`relative w-11 h-6 rounded-full transition-colors
-                            ${selectedAll ? chosenColorObj.bgColor : 'bg-color-gray-300'}`}
-						>
-							<div
-								className={`absolute top-[2px] left-[2px] h-5 w-5 bg-white border border-gray-300 rounded-full transition-transform
-                            ${selectedAll ? 'translate-x-full' : ''}`}
-							></div>
-						</div>
-						<span className="ml-2">Select All</span>
-					</label>
-				</div>
+					</span>
+					<span className="ml-2">Select All</span>
+				</label>
 
 				{sortedArchivedProjects.map((project) => (
 					<CheckboxArchivedProject
@@ -187,32 +180,29 @@ const CheckboxArchivedProject: React.FC<CheckboxArchivedProjectProps> = ({ proje
 	const isChecked = checkedArchivedProjects[project.id];
 
 	return (
-		<div
-			className="flex items-center gap-1 cursor-pointer"
-			onClick={() => {
-				setCheckedArchivedProjects({
-					...checkedArchivedProjects,
-					[project.id]: !isChecked,
-				});
-			}}
-		>
-			<Icon
-				name={isChecked ? 'check_box' : 'check_box_outline_blank'}
-				fill={1}
-				customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
+		<label className="relative flex items-center gap-1 cursor-pointer rounded has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-inset">
+			<input
+				type="checkbox"
+				className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+				checked={!!isChecked}
+				onChange={() => setCheckedArchivedProjects({ ...checkedArchivedProjects, [project.id]: !isChecked })}
 			/>
-			<div className="flex-1 flex justify-between items-center gap-1">
-				<div>{project.name}</div>
+			<span aria-hidden="true" className="leading-[0]">
+				<Icon
+					name={isChecked ? 'check_box' : 'check_box_outline_blank'}
+					fill={1}
+					customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
+				/>
+			</span>
+			<span className="flex-1 flex justify-between items-center gap-1">
+				<span>{project.name}</span>
 				{project?.color && (
-					<div>
-						<div
-							className="w-[10px] h-[10px] rounded-full mr-[4px]"
-							style={{ backgroundColor: project?.color }}
-						/>
-					</div>
+					<span aria-hidden="true">
+						<span className="block w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: project.color }} />
+					</span>
 				)}
-			</div>
-		</div>
+			</span>
+		</label>
 	);
 };
 

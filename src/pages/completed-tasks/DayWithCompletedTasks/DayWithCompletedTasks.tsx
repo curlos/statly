@@ -173,16 +173,24 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 
 					{/* Three-dot dropdown menu (positioned outside Accordion button to avoid nested buttons) */}
 					<div className="absolute top-[14px] right-[30px] z-[11] flex-shrink-0" ref={dropdownToggleRef}>
-						<Icon
-							name="more_horiz"
-							customClass="text-color-gray-50 !text-[20px] cursor-pointer hover:text-white transition-colors"
+						<button
+							type="button"
+							aria-label="Open day options"
+							aria-expanded={dropdownOpen}
+							aria-haspopup="menu"
+							className="bg-transparent border-0 p-0 cursor-pointer"
 							onClick={(e) => {
 								e.stopPropagation();
 								setContextMenuVisible(false);
 								setDropdownOpen(!dropdownOpen);
 							}}
-							customStyle={customDisplay.useTextColor ? { color: cardTextColor } : {}}
-						/>
+						>
+							<Icon
+								name="more_horiz"
+								customClass="text-color-gray-50 !text-[20px] hover:text-white transition-colors"
+								customStyle={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+							/>
+						</button>
 
 						<Dropdown
 							isVisible={dropdownOpen}
@@ -206,8 +214,10 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 										onClick={handleClickDay}
 										style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 									>
-										<span>{dateStr.replace(/\b0(\d),/, '$1,')}</span>
-										<span> ({completedTasksForDay.length})</span>
+										<h2 className="inline">
+											<span>{dateStr.replace(/\b0(\d),/, '$1,')}</span>
+											<span> ({completedTasksForDay.length})</span>
+										</h2>
 									</div>
 								</div>
 							}

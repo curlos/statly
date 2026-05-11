@@ -199,7 +199,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 				tabIndex={-1}
 				aria-labelledby="filter-dialog-title"
 				{...sharedMotionProps}
-				className={baseClassName + ' border-0 m-0 left-auto h-full focus:outline-none'}
+				aria-modal="true"
+				className={baseClassName + ' border-0 m-0 left-auto h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50'}
 			>
 				{innerContent}
 			</motion.dialog>

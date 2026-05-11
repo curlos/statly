@@ -147,9 +147,11 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 
 		return (
 			<div key={ring.id} className={classNames(ringSize, 'relative')}>
-				<div
+				<button
+					type="button"
+					aria-label={`View streak details for ${ring.name}`}
 					className={classNames(
-						'flex justify-end items-center text-orange-500 cursor-pointer',
+						'flex justify-end items-center text-orange-500 cursor-pointer bg-transparent border-0 p-0 w-full',
 						!showStreakCount && 'mr-4'
 					)}
 					onClick={() => {
@@ -182,7 +184,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 							)}
 						</span>
 					)}
-				</div>
+				</button>
 				<CircularProgressbarWithChildren
 					value={percentageOfFocusedGoalHours}
 					strokeWidth={6}
@@ -259,9 +261,11 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 							const goalSeconds = getGoalSecondsForRing(ring);
 
 							return (
-								<div
+								<button
 									key={ring.id}
-									className="flex items-center cursor-pointer rounded-lg transition-colors"
+									type="button"
+									aria-label={`View details for ${ring.name}`}
+									className="flex items-center cursor-pointer rounded-lg transition-colors bg-transparent border-0 p-0 w-full text-left"
 									onClick={() => {
 										setSelectedModalRingId(ring.id);
 										setIsFocusGoalModalOpen(true);
@@ -330,7 +334,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 											</span>
 										</p>
 									</div>
-								</div>
+								</button>
 							);
 						})}
 					</div>
@@ -345,8 +349,10 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 
 								return (
 								<div className={classNames("absolute top-[-20px] z-10", shouldOffsetRight ? "right-[-10px]" : "right-[0px]")}>
-									<div
-										className="flex items-center text-orange-500 cursor-pointer ml-2"
+									<button
+										type="button"
+										aria-label="View combined streak details"
+										className="flex items-center text-orange-500 cursor-pointer ml-2 bg-transparent border-0 p-0"
 										onClick={() => {
 											setSelectedModalRingId('combined');
 											setIsFocusGoalModalOpen(true);
@@ -369,7 +375,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 												)}
 											</span>
 										)}
-									</div>
+									</button>
 								</div>
 								);
 							})()}

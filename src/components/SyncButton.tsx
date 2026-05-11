@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Icon from './Icon';
 import { useGetSyncMetadataQuery } from '../services/resources/syncApi';
@@ -35,6 +35,17 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 	const { getStatusIcon } = useSyncStatusHelpers();
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
 	const { userSettings } = fetchedUserSettings || {};
+
+	const [syncMessage, setSyncMessage] = useState('');
+	const prevIsSyncing = useRef(false);
+
+	useEffect(() => {
+		if (prevIsSyncing.current && !isSyncing) {
+			setSyncMessage('Sync complete');
+			setTimeout(() => setSyncMessage(''), 3000);
+		}
+		prevIsSyncing.current = isSyncing;
+	}, [isSyncing]);
 
 	const handleSync = useCallback(async () => {
 		if (isSyncing || isLoadingMetadata) return;
@@ -103,25 +114,34 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 
 	const buttonContent = (
 		<button
+			type="button"
 			onClick={handleSync}
 			disabled={isSyncing || !syncMetadata}
+			aria-label={showText ? undefined : (isSyncing ? 'Syncing in progress' : 'Sync Now')}
+			aria-busy={isSyncing}
 			className={customClass || 'flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed'}
 		>
 			<Icon
 				name="sync"
 				fill={1}
 				customClass={`!text-[20px] ${isSyncing ? 'animate-spin' : ''}`}
+				aria-hidden={true}
 			/>
 			{showText && <span>{isSyncing ? 'Syncing...' : 'Sync Now'}</span>}
 		</button>
 	);
 
-	return showTooltip ? (
-		<Tooltip content={getTooltipContent()} position="bottom">
-			{buttonContent}
-		</Tooltip>
-	) : (
-		buttonContent
+	return (
+		<>
+			<span role="status" className="sr-only">{syncMessage}</span>
+			{showTooltip ? (
+				<Tooltip content={getTooltipContent()} position="bottom" tabIndex={-1}>
+					{buttonContent}
+				</Tooltip>
+			) : (
+				buttonContent
+			)}
+		</>
 	);
 };
 

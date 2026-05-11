@@ -69,7 +69,7 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 		>
 			<div>
 				<div className="flex justify-center mb-2">
-					<img src={imgSrc} className="max-h-[300px]" />
+					<img src={imgSrc} alt={`${name} challenge image`} className="max-h-[300px]" />
 				</div>
 				<div>
 					<div className="text-[20px] md:text-[24px] font-bold bg-color-gray-200 px-2 sticky">{name}</div>
@@ -82,12 +82,13 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 						</div>
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Completion Date: </span>
-							<span
-								className="text-color-gray-50 cursor-pointer hover:underline"
+							<button
+								type="button"
+								className="text-color-gray-50 cursor-pointer hover:underline bg-transparent border-0 p-0"
 								onClick={() => handleGoToCompletedDate(completedDate)}
 							>
 								{completedDate ? completedDate : 'N/A'}
-							</span>
+							</button>
 						</div>
 					</div>
 				</div>

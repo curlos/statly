@@ -8,9 +8,10 @@ import { getFormattedDuration } from '../../../utils/helpers.utils';
 interface ProfileSectionProps {
 	onClose: () => void;
 	onEditProfile: () => void;
+	editProfileButtonRef?: React.RefObject<HTMLButtonElement>;
 }
 
-const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile }) => {
+const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile, editProfileButtonRef }) => {
 	const user = useSelector(selectUser);
 	const dispatch = useDispatch();
 	const { chosenColorObj } = useThemeContext();
@@ -48,18 +49,20 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 			{profilePicUrl ? (
 				<img
 					src={profilePicUrl}
-					alt={user.name}
+					alt={`${user.name}'s profile picture`}
 					className="w-24 h-24 rounded-full object-cover mb-4"
 				/>
 			) : (
 				<div
+					role="img"
+					aria-label={`${user.name}'s profile picture`}
 					className="w-24 h-24 rounded-full flex items-center justify-center text-white font-bold text-3xl mb-4"
 					style={{ backgroundColor: themeColor }}
 				>
 					{getInitials(user.name || '')}
 				</div>
 			)}
-			<h2 className="text-2xl font-bold mb-1 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.name}</h2>
+			<h3 className="text-2xl font-bold mb-1 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.name}</h3>
 			<p className="text-color-gray-25 mt-0 mb-0 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.email}</p>
 
 			{/* Join Date */}
@@ -130,6 +133,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile 
 			{/* Action Buttons */}
 			<div className="flex justify-center items-center gap-3 w-full">
 				<button
+					ref={editProfileButtonRef}
 					className="flex-1 px-4 py-2 bg-color-gray-600 hover:bg-color-gray-200 rounded-full max-w-[200px]"
 					onClick={onEditProfile}
 				>

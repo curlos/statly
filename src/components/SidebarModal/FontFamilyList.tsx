@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import CustomRadioButton from '../CustomRadioButton';
@@ -30,27 +31,29 @@ const FontFamilyList = () => {
 		'Jost',
 	];
 
-	const handleChangeFontFamily = async (fontFamilyKey: string) => {
-		const restOfThemeKeysAndVals = userSettings?.theme;
+	const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-		const payload = {
-			theme: {
-				...restOfThemeKeysAndVals,
-				fontFamily: fontFamilyKey,
-			},
-		};
+	const handleChangeFontFamily = (fontFamilyKey: string) => {
+		if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
-		await editUserSettings(payload).unwrap();
+		debounceTimer.current = setTimeout(async () => {
+			const payload = {
+				theme: {
+					...userSettings?.theme,
+					fontFamily: fontFamilyKey,
+				},
+			};
 
-		// Once the theme has been successfully set on the backend, update it in localStorage.
-		localStorage.setItem('font-family', fontFamilyKey);
+			await editUserSettings(payload).unwrap();
+			localStorage.setItem('font-family', fontFamilyKey);
+		}, 500);
 	};
 
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey } = themeContext;
 
 	return (
-		<div>
+		<div role="radiogroup" aria-label="Font Family">
 			{fontFamilies.map((fontFamilyName) => {
 				const fontFamilyKey = fontFamilyName ? fontFamilyName : 'Default';
 
@@ -59,7 +62,8 @@ const FontFamilyList = () => {
 						<CustomRadioButton
 							key={fontFamilyKey + 'radio'}
 							label={fontFamilyKey}
-							name={fontFamilyKey}
+							name="fontFamily"
+							value={fontFamilyKey}
 							checked={selectedFontFamilyKey === fontFamilyKey}
 							onChange={() => handleChangeFontFamily(fontFamilyKey)}
 							customOuterCircleClasses="!w-[20px] !h-[20px]"

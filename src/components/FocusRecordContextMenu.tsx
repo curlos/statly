@@ -72,6 +72,8 @@ const FocusRecordContextMenu: React.FC<FocusRecordContextMenuProps> = ({
 				exit="hidden"
 				variants={variants}
 				transition={{ duration: 0.15 }}
+				role="menu"
+				aria-label="Record options"
 				className="fixed z-[999] bg-color-gray-600 rounded-lg shadow-xl border border-color-gray-150 min-w-[200px]"
 				style={{ left: `${position.x}px`, top: `${position.y}px` }}
 			>

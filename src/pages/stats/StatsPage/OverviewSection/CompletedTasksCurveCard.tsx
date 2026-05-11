@@ -55,7 +55,7 @@ const CompletedTasksCurveCard = () => {
 	};
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px] relative">
 			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Completed Tasks Curve</h3>
@@ -92,6 +92,7 @@ const CompletedTasksCurveCard = () => {
 
 			<div className="text-color-gray-50 mb-2">{getAverage()}</div>
 
+			<p className="sr-only">Area chart showing completed tasks over the selected time period.</p>
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart
 					width={500}

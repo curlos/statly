@@ -63,10 +63,12 @@ const DropdownTime: React.FC<DropdownTimeProps> = ({ toggleRef, isVisible, setIs
 					/>
 					<div className="flex flex-col">
 						{periods.map((period) => (
-							<div
+							<button
 								key={period}
+								type="button"
+								aria-pressed={selectedPeriod === period}
 								className={classNames(
-									'text-center py-2 rounded cursor-pointer',
+									'text-center py-2 rounded cursor-pointer w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white',
 									selectedPeriod === period
 										? chosenColorObj.bgColor
 										: `bg-transparent ${chosenColorObj.hover.bgColorHalfOpacity}`
@@ -74,7 +76,7 @@ const DropdownTime: React.FC<DropdownTimeProps> = ({ toggleRef, isVisible, setIs
 								onClick={() => setSelectedPeriod(period)}
 							>
 								{period}
-							</div>
+							</button>
 						))}
 					</div>
 				</div>

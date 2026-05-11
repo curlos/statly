@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Icon from './Icon';
 import {
 	areDatesEqual,
@@ -19,7 +19,10 @@ interface CalendarProps {
 	setConnectedCurrentDate?: React.Dispatch<React.SetStateAction<Date>>;
 	selectedInterval?: string;
 	outerCurrentDate?: Date;
+	onConfirm?: () => void;
 }
+
+const NAV_BTN_CLASS = 'inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded';
 
 const SelectCalendar: React.FC<CalendarProps> = ({
 	dueDate,
@@ -29,6 +32,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 	setConnectedCurrentDate,
 	selectedInterval,
 	outerCurrentDate,
+	onConfirm,
 }) => {
 	const { chosenColorObj } = useThemeContext();
 
@@ -79,6 +83,7 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 
 	const calendarMonth = getCalendarMonth(localCurrentDate.getFullYear(), localCurrentDate.getMonth());
 	const monthName = localCurrentDate.toLocaleString('default', { month: 'long' });
+	const currentYear = localCurrentDate.getFullYear();
 
 	useEffect(() => {
 		if (selectedInterval === 'Week') {
@@ -96,50 +101,49 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 	}, [selectedInterval, outerCurrentDate]);
 
 	const [showYearView, setShowYearView] = useState(false);
+	const shouldFocusMonthGrid = useRef(false);
 
 	return (
 		<div>
+			<div aria-live="polite" aria-atomic="true" className="sr-only">
+				{`${monthName} ${currentYear}`}
+			</div>
 			<div className="flex items-center justify-between px-4">
-				<div className="flex-1 cursor-pointer" onClick={() => setShowYearView(!showYearView)}>
-					{showYearView
-						? `${localCurrentDate.getFullYear()}`
-						: `${monthName} ${localCurrentDate.getFullYear()}`}
-				</div>
+				<button
+					type="button"
+					aria-label={showYearView ? `${currentYear}, switch to month view` : `${monthName} ${currentYear}, switch to year view`}
+					className="flex-1 text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+					onClick={() => setShowYearView(!showYearView)}
+				>
+					{showYearView ? `${currentYear}` : `${monthName} ${currentYear}`}
+				</button>
 				<div className="flex items-center">
-					<Icon
-						name="keyboard_double_arrow_left"
-						fill={0}
-						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
-						onClick={goToPreviousYear}
-					/>
-					<Icon
-						name="chevron_left"
-						fill={0}
-						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
-						onClick={goToPreviousMonth}
-					/>
-					<Icon
-						name="fiber_manual_record"
-						fill={0}
-						customClass={'text-color-gray-50 !text-[14px] cursor-pointer'}
-					/>
-					<Icon
-						name="chevron_right"
-						fill={0}
-						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
-						onClick={goToNextMonth}
-					/>
-					<Icon
-						name="keyboard_double_arrow_right"
-						fill={0}
-						customClass={'text-color-gray-50 !text-[18px] hover:text-white cursor-pointer'}
-						onClick={goToNextYear}
-					/>
+					<button type="button" aria-label="Previous year" onClick={goToPreviousYear} className={NAV_BTN_CLASS}>
+						<Icon name="keyboard_double_arrow_left" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+					</button>
+					<button type="button" aria-label="Previous month" onClick={goToPreviousMonth} className={NAV_BTN_CLASS}>
+						<Icon name="chevron_left" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+					</button>
+					<Icon name="fiber_manual_record" fill={0} customClass={'text-color-gray-50 !text-[14px] leading-none'} />
+					<button type="button" aria-label="Next month" onClick={goToNextMonth} className={NAV_BTN_CLASS}>
+						<Icon name="chevron_right" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+					</button>
+					<button type="button" aria-label="Next year" onClick={goToNextYear} className={NAV_BTN_CLASS}>
+						<Icon name="keyboard_double_arrow_right" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+					</button>
 				</div>
 			</div>
 
 			{showYearView ? (
-				<YearView {...{ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYearView }} />
+				<YearView {...{
+					localCurrentDate,
+					setLocalCurrentDate,
+					setDueDate,
+					setShowYearView: () => {
+						shouldFocusMonthGrid.current = true;
+						setShowYearView(false);
+					},
+				}} />
 			) : (
 				<MonthView
 					{...{
@@ -153,6 +157,8 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 						dueDate,
 						setDueDate,
 						time,
+						onConfirm,
+						focusGridRef: shouldFocusMonthGrid,
 					}}
 				/>
 			)}
@@ -171,6 +177,8 @@ interface MonthViewProps {
 	dueDate: Date | null;
 	setDueDate: (date: Date | null) => void;
 	time?: string;
+	onConfirm?: () => void;
+	focusGridRef?: React.MutableRefObject<boolean>;
 }
 
 const MonthView: React.FC<MonthViewProps> = ({
@@ -184,7 +192,37 @@ const MonthView: React.FC<MonthViewProps> = ({
 	dueDate,
 	setDueDate,
 	time,
+	onConfirm,
+	focusGridRef,
 }) => {
+	const [focusedDate, setFocusedDate] = useState<Date>(dueDate ?? new Date());
+	const gridRef = useRef<HTMLDivElement>(null);
+	const pendingFocusKey = useRef<string | null>(null);
+
+	// When transitioning from YearView, focus the active day button on mount
+	useEffect(() => {
+		if (!focusGridRef?.current || !gridRef.current) return;
+		focusGridRef.current = false;
+		const d = dueDate ?? new Date();
+		const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+		gridRef.current.querySelector<HTMLButtonElement>(`[data-date="${key}"]`)?.focus();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	// Keep focusedDate (the roving tabindex position) in sync with the selected date
+	useEffect(() => {
+		if (dueDate) setFocusedDate(dueDate);
+	}, [dueDate]);
+
+	// After a cross-month arrow-key navigation, the new month renders and we focus the pending button
+	useEffect(() => {
+		if (!pendingFocusKey.current || !gridRef.current) return;
+		const btn = gridRef.current.querySelector<HTMLButtonElement>(`[data-date="${pendingFocusKey.current}"]`);
+		if (btn) {
+			pendingFocusKey.current = null;
+			btn.focus();
+		}
+	}, [localCurrentDate]);
+
 	return (
 		<div className="w-full text-[12px] p-3">
 			<div>
@@ -196,7 +234,7 @@ const MonthView: React.FC<MonthViewProps> = ({
 					))}
 				</div>
 			</div>
-			<div className="text-center">
+			<div ref={gridRef} className="text-center">
 				{calendarMonth.map((week, index) => {
 					let isSelectedWeek = false;
 
@@ -217,6 +255,8 @@ const MonthView: React.FC<MonthViewProps> = ({
 								const isCurrentMonth = day.getMonth() === localCurrentDate.getMonth();
 								const isDayToday = areDatesEqual(new Date(), day);
 								const isChosenDay = areDatesEqual(dueDate, day);
+								const isInSelectedWeek = !!allDaysInWeekFromDate && formatCheckedInDayDate(day) in allDaysInWeekFromDate;
+								const isFocused = areDatesEqual(day, focusedDate);
 								const appliedStyles = [];
 
 								if (isCurrentMonth) {
@@ -255,14 +295,54 @@ const MonthView: React.FC<MonthViewProps> = ({
 									}
 								};
 
+								const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+									let newDate: Date | null = null;
+									const y = day.getFullYear();
+									const m = day.getMonth();
+									const d = day.getDate();
+
+									switch (e.key) {
+										case 'ArrowRight': e.preventDefault(); newDate = new Date(y, m, d + 1); break;
+										case 'ArrowLeft':  e.preventDefault(); newDate = new Date(y, m, d - 1); break;
+										case 'ArrowDown':  e.preventDefault(); newDate = new Date(y, m, d + 7); break;
+										case 'ArrowUp':    e.preventDefault(); newDate = new Date(y, m, d - 7); break;
+										case 'Home':       e.preventDefault(); newDate = new Date(y, m, d - (day.getDay() + 6) % 7); break;
+										case 'End':        e.preventDefault(); newDate = new Date(y, m, d + (7 - day.getDay()) % 7); break;
+										case 'PageUp':     e.preventDefault(); newDate = new Date(y, m - 1, d); break;
+										case 'PageDown':   e.preventDefault(); newDate = new Date(y, m + 1, d); break;
+										case 'Enter':
+											if ((isChosenDay || isInSelectedWeek) && onConfirm) { e.preventDefault(); onConfirm(); }
+											break;
+									}
+
+									if (newDate) {
+										const key = `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}`;
+										const isSameMonthYear = newDate.getMonth() === localCurrentDate.getMonth() && newDate.getFullYear() === localCurrentDate.getFullYear();
+										setFocusedDate(newDate);
+										if (isSameMonthYear) {
+											gridRef.current?.querySelector<HTMLButtonElement>(`[data-date="${key}"]`)?.focus();
+										} else {
+											pendingFocusKey.current = key;
+											setLocalCurrentDate(new Date(newDate.getFullYear(), newDate.getMonth(), 1));
+										}
+									}
+								};
+
 								return (
-									<div
+									<button
 										key={`day-${index}`}
-										className={`py-1 cursor-pointer rounded-full ${appliedStyles}`}
+										type="button"
+										data-date={`${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`}
+										tabIndex={isFocused ? 0 : -1}
+										aria-label={day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+										aria-pressed={(isChosenDay || isInSelectedWeek) || undefined}
+										className={`py-1 cursor-pointer rounded-full w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${appliedStyles}`}
 										onClick={handleClick}
+										onFocus={() => setFocusedDate(day)}
+										onKeyDown={handleKeyDown}
 									>
 										{day.getDate()}
-									</div>
+									</button>
 								);
 							})}
 						</div>
@@ -283,21 +363,59 @@ interface YearViewProps {
 const YearView: React.FC<YearViewProps> = ({ localCurrentDate, setLocalCurrentDate, setDueDate, setShowYearView }) => {
 	const { chosenColorObj } = useThemeContext();
 	const monthsOfYear = getAllMonths(localCurrentDate);
+	const [focusedIndex, setFocusedIndex] = useState(localCurrentDate.getMonth());
+	const gridRef = useRef<HTMLDivElement>(null);
+	const pendingFocusIndex = useRef<number | null>(null);
+
+	// After a year change, focus the pending month button
+	useEffect(() => {
+		if (pendingFocusIndex.current === null || !gridRef.current) return;
+		const idx = pendingFocusIndex.current;
+		pendingFocusIndex.current = null;
+		setFocusedIndex(idx);
+		gridRef.current.querySelectorAll<HTMLButtonElement>('button')[idx]?.focus();
+	}, [localCurrentDate]);
+
+	const focusMonth = (index: number) => {
+		if (index < 0) {
+			pendingFocusIndex.current = 11;
+			setLocalCurrentDate(new Date(localCurrentDate.getFullYear() - 1, 11, 1));
+		} else if (index > 11) {
+			pendingFocusIndex.current = 0;
+			setLocalCurrentDate(new Date(localCurrentDate.getFullYear() + 1, 0, 1));
+		} else {
+			setFocusedIndex(index);
+			gridRef.current?.querySelectorAll<HTMLButtonElement>('button')[index]?.focus();
+		}
+	};
 
 	return (
-		<div className="grid grid-cols-3 gap-2 my-3">
-			{monthsOfYear.map((monthDate) => {
+		<div ref={gridRef} className="grid grid-cols-3 gap-2 my-3">
+			{monthsOfYear.map((monthDate, i) => {
 				const monthName = monthDate.toLocaleString('default', { month: 'short' });
-
-				// Check if the current monthDate has the same month and year as localCurrentDate
 				const isSelected =
 					monthDate.getFullYear() === localCurrentDate.getFullYear() &&
 					monthDate.getMonth() === localCurrentDate.getMonth();
 
 				return (
-					<div
+					<button
 						key={`${monthName} - ${monthDate.getFullYear()}`}
-						className="flex justify-center"
+						type="button"
+						tabIndex={i === focusedIndex ? 0 : -1}
+						aria-pressed={isSelected}
+						aria-label={monthDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+						className="flex justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-full"
+						onFocus={() => setFocusedIndex(i)}
+						onKeyDown={(e) => {
+							switch (e.key) {
+								case 'ArrowRight': e.preventDefault(); focusMonth(i + 1); break;
+								case 'ArrowLeft':  e.preventDefault(); focusMonth(i - 1); break;
+								case 'ArrowDown':  e.preventDefault(); focusMonth(i + 3); break;
+								case 'ArrowUp':    e.preventDefault(); focusMonth(i - 3); break;
+								case 'Home':       e.preventDefault(); focusMonth(0); break;
+								case 'End':        e.preventDefault(); focusMonth(11); break;
+							}
+						}}
 						onClick={() => {
 							setLocalCurrentDate(monthDate);
 							setDueDate(monthDate);
@@ -312,7 +430,7 @@ const YearView: React.FC<YearViewProps> = ({ localCurrentDate, setLocalCurrentDa
 						>
 							{monthName}
 						</div>
-					</div>
+					</button>
 				);
 			})}
 		</div>

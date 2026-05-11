@@ -34,9 +34,12 @@ const MedalCard: React.FC<MedalCardProps> = ({
 	const { width } = useWindowSize();
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-label={`${name}, earned ${timesEarned} times`}
+			aria-pressed={chosenMedal?.name === name}
 			className={classNames(
-				'bg-color-gray-600 border-2 cursor-pointer',
+				'bg-color-gray-600 border-2 cursor-pointer text-left w-full',
 				chosenColorObj.hover.borderColor,
 				chosenMedal?.name === name ? chosenColorObj.borderColor : 'border-[transparent]',
 				isLoadingFocusOrTasksData ? 'animate-pulse' : timesEarned === 0 && 'opacity-50'
@@ -58,7 +61,7 @@ const MedalCard: React.FC<MedalCardProps> = ({
 			<div className="flex justify-end px-2 text-[16px] sm:text-[20px] font-bold">
 				x{timesEarned.toLocaleString()}
 			</div>
-		</div>
+		</button>
 	);
 };
 

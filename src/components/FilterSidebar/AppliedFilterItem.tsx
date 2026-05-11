@@ -22,13 +22,18 @@ const AppliedFilterItem = ({ name, value, onRemove }: AppliedFilterItemProps) =>
 				</div>
 			</div>
 
-			<div onClick={onRemove} className={classNames('mt-[-9px] ml-[-10px]')}>
+			<button
+				type="button"
+				aria-label={`Remove filter for ${name ? name + ': ' : ''}${value}`}
+				onClick={onRemove}
+				className={classNames('mt-[-20px] ml-[-10px] bg-transparent border-0 p-0 cursor-pointer')}
+			>
 				<Icon
 					name="close"
 					fill={0}
-					customClass={classNames('rounded-full !text-[14px] cursor-pointer p-[2px]', colorMode === 'light' ? 'text-[#ffffff] bg-black' : 'text-black bg-white')}
+					customClass={classNames('rounded-full !text-[14px] p-[2px]', colorMode === 'light' ? 'text-[#ffffff] bg-black' : 'text-black bg-white')}
 				/>
-			</div>
+			</button>
 		</div>
 	);
 };

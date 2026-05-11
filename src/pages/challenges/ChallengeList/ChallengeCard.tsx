@@ -52,9 +52,12 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 	}, [isChosenChallenge, challenge, completedChallenges]);
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-label={`${name}${challenge.completedDate ? ', completed on ' + challenge.completedDate : ', not yet completed'}`}
+			aria-pressed={isChosenChallenge}
 			className={classNames(
-				'cursor-pointer flex flex-col',
+				'cursor-pointer flex flex-col text-left w-full',
 				isChosenChallenge ? `border-2 ${chosenColorObj.borderColor}` : 'border-2 border-color-gray-200',
 				isLoading ? 'animate-pulse' : isIncomplete && 'opacity-50'
 			)}
@@ -67,7 +70,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 			}}
 		>
 			<div className="flex justify-center">
-				<img src={imgSrc} className="max-h-[250px]" />
+				<img src={imgSrc} alt={`${name} challenge image`} className="max-h-[250px]" />
 			</div>
 
 			<div
@@ -78,7 +81,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 			>
 				{name}
 			</div>
-		</div>
+		</button>
 	);
 };
 

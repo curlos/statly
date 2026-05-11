@@ -4,6 +4,7 @@ import React from 'react';
 interface CustomRadioButtonProps {
 	label: string;
 	name: string;
+	value?: string;
 	checked: boolean;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	customLabelClass?: string;
@@ -16,6 +17,7 @@ interface CustomRadioButtonProps {
 const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 	label,
 	name,
+	value,
 	checked,
 	onChange,
 	customLabelClass,
@@ -25,14 +27,14 @@ const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 	customInnerCircleBgColorClasses,
 }) => {
 	return (
-		<label className={classNames('flex items-center cursor-pointer', customLabelClass)}>
+		<label className={classNames('relative flex items-center cursor-pointer rounded has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-inset', customLabelClass)}>
 			<input
 				type="radio"
 				name={name}
-				value={name}
+				value={value ?? name}
 				checked={checked}
 				onChange={onChange}
-				className="hidden" // hides the default radio button
+				className="sr-only"
 			/>
 			<div
 				className={classNames(

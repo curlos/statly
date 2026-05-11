@@ -111,19 +111,20 @@ const CookieSection = () => {
 				</button>
 			)}
 
-			{successMessage && (
-				<div className="flex items-center gap-2 p-2 bg-green-500/20 border border-green-500 rounded text-green-400 text-sm">
-					<Icon name="check_circle" fill={1} customClass="!text-[16px]" />
-					{successMessage}
-				</div>
-			)}
-
-			{errorMessage && (
-				<div className="flex items-center gap-2 p-2 bg-red-500/20 border border-red-500 rounded text-red-400 text-sm">
-					<Icon name="error" fill={1} customClass="!text-[16px]" />
-					{errorMessage}
-				</div>
-			)}
+			<div aria-live="polite" aria-atomic="true">
+				{successMessage && (
+					<div className="flex items-center gap-2 p-2 bg-green-500/20 border border-green-500 rounded text-green-400 text-sm">
+						<Icon name="check_circle" fill={1} customClass="!text-[16px]" />
+						{successMessage}
+					</div>
+				)}
+				{errorMessage && (
+					<div className="flex items-center gap-2 p-2 bg-red-500/20 border border-red-500 rounded text-red-400 text-sm">
+						<Icon name="error" fill={1} customClass="!text-[16px]" />
+						{errorMessage}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

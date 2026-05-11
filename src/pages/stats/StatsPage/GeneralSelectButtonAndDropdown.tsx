@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import Icon from '../../../components/Icon';
 import DropdownGeneralSelect from './DropdownGeneralSelect';
 import { useThemeContext } from '../../../contexts/useThemeContext';
@@ -25,6 +25,7 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 }) => {
 	const dropdownRef = useRef(null);
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+	const listboxId = useId();
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -32,8 +33,13 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 
 	return (
 		<div className="relative">
-			<div
+			<button
 				ref={dropdownRef}
+				type="button"
+				aria-haspopup="listbox"
+				aria-expanded={isDropdownVisible}
+				aria-controls={listboxId}
+				aria-label={`Select option, currently: ${selected}`}
 				className={classNames(
 					'flex gap-[2px] items-center justify-between px-2 py-[2px] pl-3 border border-color-gray-50 rounded-full bg-color-gray-300 text-color-gray-50 cursor-pointer',
 					`${hover.textColor} ${hover.borderColor}`
@@ -45,10 +51,21 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 						setIsDropdownOpenForParent?.(!isDropdownOpenForParent);
 					}
 				}}
+				onKeyDown={(e) => {
+					if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+						e.preventDefault();
+						if (!isDropdownVisible) {
+							setIsDropdownVisible(true);
+							if (isDropdownOpenForParent !== undefined) {
+								setIsDropdownOpenForParent?.(true);
+							}
+						}
+					}
+				}}
 			>
-				<div>{selected}</div>
+				<span>{selected}</span>
 				<Icon name="keyboard_arrow_down" customClass="!text-[18px] mt-[2px]" />
-			</div>
+			</button>
 
 			<DropdownGeneralSelect
 				toggleRef={dropdownRef}
@@ -65,6 +82,7 @@ const GeneralSelectButtonAndDropdown: React.FC<GeneralSelectButtonAndDropdownPro
 				selectedOptions={selectedOptions}
 				onClick={onClick}
 				align={align}
+				listboxId={listboxId}
 			/>
 		</div>
 	);

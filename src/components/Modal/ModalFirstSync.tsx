@@ -33,7 +33,7 @@ const ModalFirstSync = () => {
 	];
 
 	return (
-		<Modal isOpen={isOpen} onClose={handleClose}>
+		<Modal isOpen={isOpen} onClose={handleClose} ariaLabelledBy="first-sync-title">
 			<div className="bg-color-gray-650 rounded-lg p-6 shadow-xl relative">
 				{/* Close button - only show when sync is complete */}
 				{!isSyncing && (
@@ -56,7 +56,7 @@ const ModalFirstSync = () => {
 					</div>
 
 					{/* Title */}
-					<h2 className="text-2xl font-bold text-white">
+					<h2 id="first-sync-title" className="text-2xl font-bold text-white">
 						{isSyncing ? 'First Time Sync in Progress' : (hasError ? 'Sync Failed' : 'Sync Complete!')}
 					</h2>
 

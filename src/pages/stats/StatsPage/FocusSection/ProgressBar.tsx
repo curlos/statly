@@ -23,53 +23,52 @@ interface ProgressBarProps {
 const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate, emotionId }) => {
 	const { colorMode } = useThemeContext();
 	const pageContext = usePageContext();
-	const searchParams = new URLSearchParams(pageContext.urlParsed.search);
 
 	const isFocusDuration = metricType === 'duration';
 	const isCompletedTasks = metricType === 'count';
 
-	const handleGoToPage = (customItem?: { id: string; type: 'task' | 'project' | 'emotion' }) => {
+	const getHref = (customItem?: { id: string; type: 'task' | 'project' | 'emotion' }) => {
+		const params = new URLSearchParams(pageContext.urlParsed.search);
 		const targetItem = customItem || item;
 		const { id, type } = targetItem;
 
 		switch (type) {
 			case 'task':
-				searchParams.set('task-id', id);
+				params.set('task-id', id);
 				break;
 			case 'project':
 				if (sessionCategoriesById[id]) {
-					searchParams.set('categories', id);
+					params.set('categories', id);
 					// If the project is one of the focus apps that don't have separate projects (Forest, Tide, and BeFocused).
 				} else if (id === 'forest-app' || id === 'tide-ios-app' || id === 'be-focused-app') {
-					searchParams.set('focus-apps', id);
+					params.set('focus-apps', id);
 				} else {
 					// If the project is from TickTick. This is used as a default for now but in the future, session's "categories" should also be categorized under this.
-					searchParams.set('projects', id);
+					params.set('projects', id);
 				}
-
 				break;
 			case 'emotion':
 				// Set the emotion filter (handles both regular emotions and no-emotions)
-				searchParams.set('emotions', id);
+				params.set('emotions', id);
 				break;
 		}
 
 		// Add emotion filter if viewing within an emotion group (nested view)
 		if (emotionId) {
-			searchParams.set('emotions', emotionId);
+			params.set('emotions', emotionId);
 		}
 
 		// Add interval date params if they exist (for two-tier filtering)
 		if (intervalStartDate) {
-			searchParams.set('interval-start-date', intervalStartDate);
+			params.set('interval-start-date', intervalStartDate);
 		}
 		if (intervalEndDate) {
-			searchParams.set('interval-end-date', intervalEndDate);
+			params.set('interval-end-date', intervalEndDate);
 		}
 
-		const queryString = searchParams.toString();
+		const queryString = params.toString();
 		const targetPage = isCompletedTasks ? '/completed-tasks' : '/focus-records';
-		navigate(targetPage + (queryString ? `?${queryString}` : ''));
+		return targetPage + (queryString ? `?${queryString}` : '');
 	};
 
 	const formattedMetric = isFocusDuration
@@ -109,35 +108,38 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 		<div className="w-full">
 			<div className="flex justify-between items-center mb-1 w-full">
 				<div>
-					<div
+					<a
+						href={getHref()}
 						className={classNames(
 							'text-[14px] md:text-[16px]',
-							'cursor-pointer hover:underline',
+							'cursor-pointer hover:underline text-left',
 							{ 'break-all': shouldBreakAll }
 						)}
-						onClick={() => handleGoToPage()}
+						onClick={(e) => { e.preventDefault(); navigate(getHref()); }}
 					>
 						{item.name}
-					</div>
+					</a>
 
 					<div className="text-color-gray-25">
 						{topMostAncestorTaskName && topMostAncestorTaskId && (
-							<span
+							<a
+								href={getHref({ id: topMostAncestorTaskId, type: 'task' })}
 								className="cursor-pointer hover:underline"
-								onClick={() => handleGoToPage({ id: topMostAncestorTaskId, type: 'task' })}
+								onClick={(e) => { e.preventDefault(); navigate(getHref({ id: topMostAncestorTaskId, type: 'task' })); }}
 							>
 								{topMostAncestorTaskName}
-							</span>
+							</a>
 						)}
 						{topMostAncestorTaskName && <span>{" - "}</span>}
 						{projectName && topMostAncestorTaskName && <span>(</span>}
 						{projectName && projectId && (
-							<span
+							<a
+								href={getHref({ id: projectId, type: 'project' })}
 								className="cursor-pointer hover:underline"
-								onClick={() => handleGoToPage({ id: projectId, type: 'project' })}
+								onClick={(e) => { e.preventDefault(); navigate(getHref({ id: projectId, type: 'project' })); }}
 							>
 								{projectName}
-							</span>
+							</a>
 						)}
 						{projectName && topMostAncestorTaskName && <span>)</span>}
 					</div>

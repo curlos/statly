@@ -25,15 +25,17 @@ const CardImage: React.FC<CardImageProps> = ({ cardType, imageSrc, page, showGlo
 				<Icon name="image" fill={1} customClass={'text-color-gray-50 !text-[20px]'} />
 			</div>
 
-			<div
-				className="relative"
+			<button
+				type="button"
+				aria-label={`Change ${toTitleCase(cardType)} card image`}
+				className="relative bg-transparent border-0 p-0 cursor-pointer w-full"
 				onMouseOver={() => setHoverImage(true)}
 				onMouseLeave={() => setHoverImage(false)}
 				onClick={() => setShowModalChangeCardImage(!showModalChangeCardImage)}
 			>
 				{hoverImage && (
-					<div className="absolute inset-0 flex justify-center items-center">
-						<Icon name="edit" customClass="!text-[30px] text-color-gray-100 cursor-pointer" />
+					<div className="absolute inset-0 flex justify-center items-center" aria-hidden="true">
+						<Icon name="edit" customClass="!text-[30px] text-color-gray-100" />
 					</div>
 				)}
 				<LazyImage
@@ -45,7 +47,7 @@ const CardImage: React.FC<CardImageProps> = ({ cardType, imageSrc, page, showGlo
 					)}
 					showGlow={showGlow}
 				/>
-			</div>
+			</button>
 
 			<ModalChangeCardImage
 				{...{

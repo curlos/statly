@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useRef } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import { toTitleCase } from '../../utils/helpers.utils';
@@ -17,20 +18,21 @@ const ThemeColorList = () => {
 	const themeContext = useThemeContext();
 	const { themeColorKey, cssStyles, chosenColorObj } = themeContext;
 
-	const handleChangeThemeColor = async (colorKey: string) => {
-		const restOfThemeKeysAndVals = userSettings?.theme;
+	const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-		const payload = {
-			theme: {
-				...restOfThemeKeysAndVals,
-				color: colorKey,
-			},
-		};
+	const handleChangeThemeColor = (colorKey: string) => {
+		if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
-		await editUserSettings(payload).unwrap();
-
-		// Once the theme has been successfully set on the backend, update it in localStorage.
-		localStorage.setItem('theme-color', colorKey);
+		debounceTimer.current = setTimeout(async () => {
+			const payload = {
+				theme: {
+					...userSettings?.theme,
+					color: colorKey,
+				},
+			};
+			await editUserSettings(payload).unwrap();
+			localStorage.setItem('theme-color', colorKey);
+		}, 500);
 	};
 
 	return (
@@ -65,19 +67,22 @@ const ThemeColorList = () => {
 										</div>
 
 										{isColorFromGroupChosen && (
-											<Icon
-												name="star"
-												fill={1}
-												customClass={classNames(
-													color500VariantObj.textColor,
-													'!text-[20px] hover:text-white cursor-pointer'
-												)}
-											/>
+											<>
+												<Icon
+													name="star"
+													fill={1}
+													customClass={classNames(
+														color500VariantObj.textColor,
+														'!text-[20px] hover:text-white cursor-pointer'
+													)}
+												/>
+												<span className="sr-only">(current color)</span>
+											</>
 										)}
 									</div>
 								}
 							>
-								<div className="pl-3">
+								<div role="radiogroup" aria-label={toTitleCase(groupedColorName)} className="pl-3">
 									{Object.keys(colorsFromGroup).map((colorKey) => {
 										const { borderColor, bgColor, textColor } = colorsFromGroup[colorKey];
 
@@ -85,7 +90,8 @@ const ThemeColorList = () => {
 											<CustomRadioButton
 												key={colorKey + 'radio'}
 												label={colorKey}
-												name={colorKey}
+												name={groupedColorName}
+												value={colorKey}
 												checked={themeColorKey === colorKey}
 												onChange={() => handleChangeThemeColor(colorKey)}
 												customLabelClass={textColor}

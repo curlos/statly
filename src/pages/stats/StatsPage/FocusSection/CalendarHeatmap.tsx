@@ -48,7 +48,7 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 	return (
 		<div className="flex flex-col sm:flex-row gap-2 justify-between items-center">
 			<div className="flex justify-center w-full sm:w-auto">
-				<div>
+				<div className="relative">
 					<div className="hidden sm:flex lg:hidden xl:flex justify-between text-color-gray-50">
 						{monthsShort.map((month) => (
 							<div key={month}>{month}</div>
@@ -59,7 +59,8 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 						{monthsShort.map((month, index) => index % 2 === 0 && <div key={month}>{month}</div>)}
 					</div>
 
-					<div className="grid grid-flow-col grid-rows-[repeat(auto-fill,_15px)] max-h-[360px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px] gap-[1px]">
+					<p className="sr-only">Year-at-a-glance heatmap showing daily focus duration. Each cell represents one day; darker colors indicate more focus time.</p>
+					<div className="grid grid-flow-col grid-rows-[repeat(auto-fill,_15px)] max-h-[360px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px] gap-[1px]" role="grid" aria-label="Focus duration heatmap">
 						{allDatesInYear.map((date) => (
 							<CalendarDay
 								key={date.toLocaleDateString()}
@@ -106,17 +107,19 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 
 	return (
 		<div className="relative">
-			<div
+			<button
+				type="button"
 				key={date.toLocaleDateString()}
+				aria-label={`${dateKey}: ${formattedDurationForTheDay}`}
 				style={rangeStyle}
 				className={classNames(
-					`h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] rounded`,
+					`h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] rounded p-0`,
 					chosenColorObj.hover.borderColor
 				)}
 				onMouseEnter={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}
 				onClick={() => setIsHovering(!isHovering)}
-			></div>
+			></button>
 
 			<Dropdown
 				toggleRef={dropdownRef}

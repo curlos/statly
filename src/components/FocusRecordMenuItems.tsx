@@ -20,6 +20,7 @@ const FocusRecordMenuItems: React.FC<FocusRecordMenuItemsProps> = ({ menuItems, 
 			{menuItems.map((item, index) => (
 				<button
 					key={index}
+					role="menuitem"
 					onClick={() => {
 						if (!item.disabled) {
 							item.onClick();

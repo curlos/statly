@@ -53,12 +53,35 @@ const InfiniteScrollSelector = <T extends string | number>({ items, unit, select
 		};
 	}, [items, selectedValue]); // Depend on items and selectedValue to update scroll position when they change
 
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		const currentIndex = items.indexOf(selectedValue);
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			setSelectedValue(items[(currentIndex + 1) % items.length]);
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			setSelectedValue(items[(currentIndex - 1 + items.length) % items.length]);
+		}
+	};
+
 	return (
-		<div className="overflow-auto gray-scrollbar h-40" ref={scrollRef}>
+		<div
+			className="overflow-auto gray-scrollbar h-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+			ref={scrollRef}
+			role="spinbutton"
+			aria-label={unit}
+			aria-valuenow={items.indexOf(selectedValue) + 1}
+			aria-valuetext={String(selectedValue)}
+			aria-valuemin={1}
+			aria-valuemax={items.length}
+			tabIndex={0}
+			onKeyDown={handleKeyDown}
+		>
 			<div>
 				{[...items, ...items, ...items].map((item, index) => (
 					<div
 						key={`${unit}-${index}`}
+						aria-hidden="true"
 						className={classNames(
 							'text-center py-2 rounded cursor-pointer',
 							selectedValue === item

@@ -15,6 +15,7 @@ interface IconProps {
 	onMouseLeave?: React.MouseEventHandler<HTMLSpanElement> | undefined;
 	key?: string | number;
 	iconKey?: string;
+	'aria-hidden'?: boolean | 'true' | 'false';
 }
 
 const Icon: React.FC<IconProps> = ({
@@ -30,6 +31,7 @@ const Icon: React.FC<IconProps> = ({
 	onMouseOver,
 	onMouseLeave,
 	iconKey,
+	'aria-hidden': ariaHidden = true,
 }) => {
 	const { fontsLoaded } = useFontLoadingContext() as { fontsLoaded: boolean };
 
@@ -56,6 +58,7 @@ const Icon: React.FC<IconProps> = ({
 			onClick={onClick}
 			onMouseOver={onMouseOver}
 			onMouseLeave={onMouseLeave}
+			aria-hidden={ariaHidden}
 		>
 			{name}
 		</span>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '../Icon';
 import classNames from 'classnames';
@@ -27,6 +27,7 @@ const Accordion: React.FC<AccordionProps> = ({
 	preventOpen,
 }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
+	const panelId = useId();
 
 	const toggleOpen = () => {
 		if (customToggleOpen) {
@@ -48,8 +49,10 @@ const Accordion: React.FC<AccordionProps> = ({
 		<div className={customClasses ? customClasses : ''}>
 			<button
 				onClick={toggleOpen}
+				aria-expanded={isOpen}
+				aria-controls={panelId}
 				className={classNames(
-					'w-full text-left flex gap-2 items-center focus:outline-none rounded-xl mb-3',
+					'w-full text-left flex gap-2 items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded	 mb-3',
 					showArrowNextToText ? 'justify-start' : 'justify-between'
 				)}
 			>
@@ -63,6 +66,7 @@ const Accordion: React.FC<AccordionProps> = ({
 			<AnimatePresence>
 				{isOpen && (
 					<motion.div
+						id={panelId}
 						initial={{ opacity: 0, height: 0 }}
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}

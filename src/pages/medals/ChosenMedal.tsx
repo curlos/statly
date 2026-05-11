@@ -88,7 +88,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 		>
 			<div>
 				<div className="flex justify-center mb-2">
-					<img src={imgSrc} className="max-h-[300px] max-w-full" />
+					<img src={imgSrc} alt={`${chosenMedal.name} medal image`} className="max-h-[300px] max-w-full" />
 				</div>
 				<div>
 					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-2 sticky">
@@ -112,7 +112,6 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 											if (chosenMedal.interval !== 'weekly') {
 												return new Date(b).getTime() - new Date(a).getTime();
 											}
-
 											// If it's weekly, split the strings into two since weekly shows both the start and end period. Grab the start period date and sort it by that.
 											const startDateA = a.split(' - ')[0].trim();
 											const startDateB = b.split(' - ')[0].trim();
@@ -121,12 +120,14 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 										})
 										?.map((dateRange: string) => {
 											return (
-												<li
-													key={dateRange}
-													className="list-disc ml-5 cursor-pointer hover:underline"
-													onClick={() => handleGoToSelectedDateRange(dateRange)}
-												>
-													{dateRange}
+												<li key={dateRange} className="list-disc ml-5">
+													<button
+														type="button"
+														className="hover:underline cursor-pointer bg-transparent border-0 p-0 text-left"
+														onClick={() => handleGoToSelectedDateRange(dateRange)}
+													>
+														{dateRange}
+													</button>
 												</li>
 											);
 										})}

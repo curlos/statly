@@ -52,7 +52,7 @@ const MostFocusedTimeCard = () => {
 	}));
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px] relative">
 			<div className={classNames("flex justify-between items-center", selectedInterval === 'All' && 'mb-6')}>
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Most Focused Time</h3>
@@ -81,6 +81,7 @@ const MostFocusedTimeCard = () => {
 			<div className="sm:hidden">{renderDateRangePicker()}</div>
 
 			<div className="flex-1 min-h-0">
+				<p className="sr-only">Bar chart showing focus duration by hour of day, indicating the most productive times.</p>
 				<ResponsiveContainer width="100%" height="100%">
 				<BarChart
 					width={500}

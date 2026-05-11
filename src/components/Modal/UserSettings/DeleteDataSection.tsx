@@ -126,10 +126,11 @@ const DeleteDataSection = () => {
 
 			<div className="space-y-3">
 				{deleteButtons.map((button) => (
-					<div
+					<button
 						key={button.id}
+						type="button"
 						className={classNames(
-							'flex items-center gap-3 p-3 rounded cursor-pointer border border-color-gray-600',
+							'flex items-center gap-3 p-3 rounded cursor-pointer border border-color-gray-600 w-full text-left',
 							'hover:bg-red-600/20'
 						)}
 						onClick={() => handleDeleteClick(button.id)}
@@ -147,12 +148,13 @@ const DeleteDataSection = () => {
 								</div>
 							)}
 						</div>
-					</div>
+					</button>
 				))}
 
-				<div
+				<button
+					type="button"
 					className={classNames(
-						'flex items-center gap-3 p-3 rounded cursor-pointer border-2 border-red-600 bg-red-600/10',
+						'flex items-center gap-3 p-3 rounded cursor-pointer border-2 border-red-600 bg-red-600/10 w-full text-left',
 						'hover:bg-red-600/20'
 					)}
 					onClick={() => handleDeleteClick('all')}
@@ -168,7 +170,7 @@ const DeleteDataSection = () => {
 							Delete all focus records, tasks, projects, and project groups
 						</div>
 					</div>
-				</div>
+				</button>
 			</div>
 
 			<ModalConfirmDelete

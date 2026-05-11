@@ -62,7 +62,7 @@ const FocusDurationCurveCard = () => {
 	const { chosenColorObj } = themeContext;
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px]">
+		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px] relative">
 			<div className="flex justify-between items-center gap-1">
 				<div className="flex items-center gap-2">
 					<h3 className="font-bold text-[16px]">Focus Durations Curve</h3>
@@ -97,6 +97,7 @@ const FocusDurationCurveCard = () => {
 
 			<div className="text-color-gray-50 mb-2">{getAverage()}</div>
 
+			<p className="sr-only">Area chart showing daily focus duration over the selected time period.</p>
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart
 					width={500}

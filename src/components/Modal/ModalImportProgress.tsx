@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Modal from './Modal';
 import Icon from '../Icon';
@@ -24,6 +25,12 @@ const ModalImportProgress: React.FC = () => {
 		(batch) => batch.status === 'success' || batch.status === 'error'
 	).length;
 	const totalBatches = batches.length;
+
+	const headingRef = useRef<HTMLHeadingElement>(null);
+
+	useEffect(() => {
+		if (isOpen) headingRef.current?.focus();
+	}, [isOpen]);
 
 	const handleClose = () => {
 		dispatch(setModalOpen(false));
@@ -87,17 +94,18 @@ const ModalImportProgress: React.FC = () => {
 				{/* Close button */}
 				<button
 					onClick={handleClose}
+					aria-label="Close import progress"
 					className="absolute top-4 right-4 text-color-gray-100 hover:text-white transition-colors"
 				>
 					<Icon name="close" fill={1} customClass="!text-[24px]" />
 				</button>
 
 				{/* Title */}
-				<h2 className="text-xl font-bold mb-2 text-white">Import Files</h2>
+				<h2 ref={headingRef} tabIndex={-1} className="text-xl font-bold mb-2 text-white focus:outline-none">Import Files</h2>
 
 				{/* Progress counter */}
 				<div className="text-color-gray-100 mb-4 flex items-center gap-2">
-					<span>
+					<span aria-live="polite" aria-atomic="true">
 						Batches {completedBatches}/{totalBatches} Uploaded
 					</span>
 					{isImporting ? (
@@ -161,39 +169,29 @@ const ModalImportProgress: React.FC = () => {
 								>
 									{/* File list - always normal color */}
 									<div className="mb-3 mt-2">
-										<div className="text-color-gray-100 mb-1 font-bold">Files:</div>
-										<div className="pl-4 space-y-1">
+										<h3 className="text-color-gray-100 mb-1 font-bold">Files:</h3>
+										<ul className="pl-4 space-y-1 list-disc list-inside">
 											{batch.fileNames.map((fileName, idx) => (
-												<div key={idx} className="text-color-gray-100">
-													• {fileName}
-												</div>
+												<li key={idx} className="text-color-gray-100">
+													{fileName}
+												</li>
 											))}
-										</div>
+										</ul>
 									</div>
 
 									{/* Results - only show after batch completes */}
 									{batch.result && batch.status === 'success' && (
 										<div className="mt-3 pt-3 border-t border-color-gray-600">
-											<div className="text-color-gray-100 mb-2 font-bold">Results:</div>
-											<div className="pl-4 space-y-1 text-color-gray-100">
-												<div>
-													{formatCategoryResult('Focus Records', batch.result.details.focusRecords)}
-												</div>
-												<div>{formatCategoryResult('Tasks', batch.result.details.tasks)}</div>
-												<div>{formatCategoryResult('Projects', batch.result.details.projects)}</div>
-												<div>
-													{formatCategoryResult('Project Groups', batch.result.details.projectGroups)}
-												</div>
-												<div>
-													{formatCategoryResult('User Settings', batch.result.details.userSettings)}
-												</div>
-												<div>
-													{formatCategoryResult('Custom Images', batch.result.details.customImages)}
-												</div>
-												<div>
-													{formatCategoryResult('Custom Image Folders', batch.result.details.customImageFolders)}
-												</div>
-											</div>
+											<h3 className="text-color-gray-100 mb-2 font-bold">Results:</h3>
+											<ul className="pl-4 space-y-1 list-disc list-inside text-color-gray-100">
+												<li>{formatCategoryResult('Focus Records', batch.result.details.focusRecords)}</li>
+												<li>{formatCategoryResult('Tasks', batch.result.details.tasks)}</li>
+												<li>{formatCategoryResult('Projects', batch.result.details.projects)}</li>
+												<li>{formatCategoryResult('Project Groups', batch.result.details.projectGroups)}</li>
+												<li>{formatCategoryResult('User Settings', batch.result.details.userSettings)}</li>
+												<li>{formatCategoryResult('Custom Images', batch.result.details.customImages)}</li>
+												<li>{formatCategoryResult('Custom Image Folders', batch.result.details.customImageFolders)}</li>
+											</ul>
 										</div>
 									)}
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import classNames from 'classnames';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 
 interface ModalProps {
 	isOpen: boolean;
@@ -9,10 +10,22 @@ interface ModalProps {
 	positionClasses?: string;
 	customClasses?: string;
 	children: React.ReactNode;
-	contentRef?: React.RefObject<HTMLDivElement>;
+	contentRef?: React.RefObject<HTMLElement>;
+	ariaLabelledBy?: string;
+	ariaDescribedBy?: string;
+	role?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children, contentRef }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children, contentRef, ariaLabelledBy, ariaDescribedBy, role }) => {
+	const dialogRef = useDialogFocus<HTMLDialogElement>(isOpen, onClose);
+
+	const setRef = (node: HTMLDialogElement | null) => {
+		(dialogRef as React.MutableRefObject<HTMLDialogElement | null>).current = node;
+		if (contentRef) {
+			(contentRef as React.MutableRefObject<HTMLElement | null>).current = node;
+		}
+	};
+
 	const containerVariants = {
 		hidden: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } },
 		visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
@@ -23,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 		visible: { opacity: 0.7 },
 	};
 
-	const containerClasses = `z-50 relative p-3 max-w-full w-[500px] max-h-[90vh] overflow-y-auto gray-scrollbar`;
+	const containerClasses = `z-50 relative p-3 max-w-full w-[500px] max-h-[90vh] overflow-y-auto gray-scrollbar bg-transparent text-white`;
 
 	return createPortal(
 		<AnimatePresence>
@@ -43,16 +56,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 						onClick={onClose}
 						style={{ zIndex: 49 }}
 					/>
-					<motion.div
-						ref={contentRef}
+					<motion.dialog
+						ref={setRef}
+						open
+						aria-labelledby={ariaLabelledBy}
+						aria-describedby={ariaDescribedBy}
+						role={role ?? 'dialog'}
+						tabIndex={-1}
 						initial="hidden"
 						animate="visible"
 						exit="hidden"
 						variants={containerVariants}
-						className={classNames(containerClasses, customClasses)}
+						aria-modal="true"
+						className={classNames(containerClasses, customClasses, 'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 border-0 m-0')}
 					>
 						{children}
-					</motion.div>
+					</motion.dialog>
 				</div>
 			)}
 		</AnimatePresence>,

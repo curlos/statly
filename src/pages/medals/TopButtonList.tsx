@@ -61,9 +61,14 @@ const TopButton: React.FC<TopButtonProps> = ({ buttonObj, selectedButtonStyle, u
 	}
 
 	return (
-		<div className={isSelected ? selectedButtonStyle : unselectedButtonStyle} onClick={() => navigate(buttonUrl)}>
+		<button
+			type="button"
+			aria-pressed={isSelected}
+			className={isSelected ? selectedButtonStyle : unselectedButtonStyle}
+			onClick={() => navigate(buttonUrl)}
+		>
 			{name}
-		</div>
+		</button>
 	);
 };
 

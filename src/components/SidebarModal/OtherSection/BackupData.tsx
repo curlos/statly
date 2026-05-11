@@ -229,13 +229,11 @@ const BackupData = () => {
 
 	return (
 		<div>
-			<div
-				className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+			<button
+				type="button"
+				disabled={isLoadingAny || status === 'backing up'}
+				className={classNames('flex items-center gap-2 my-2 w-full text-left disabled:opacity-50 disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
 				onClick={async () => {
-					if (isLoadingAny) {
-						return;
-					}
-
 					setStatus('backing up');
 
 					try {
@@ -282,15 +280,15 @@ const BackupData = () => {
 						name={status === 'none' ? 'download' : 'check'}
 						fill={0}
 						customClass={classNames(
-							'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+							'!text-[20px] rounded-lg bg-color-gray-300 p-[6px]',
 							status === 'none'
 								? `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
 								: 'text-emerald-500'
 						)}
 					/>
 				)}
-				<div>Backup All Data (Tasks, Focus Records, Projects, Project Groups, etc.)</div>
-			</div>
+				<span>Backup All Data (Tasks, Focus Records, Projects, Project Groups, etc.)</span>
+			</button>
 		</div>
 	);
 };

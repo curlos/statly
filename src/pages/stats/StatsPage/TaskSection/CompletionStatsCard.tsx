@@ -170,37 +170,46 @@ const CompletionStatsCard = () => {
 							<h3 className="font-bold text-[16px]">Completion Stats</h3>
 							{(isLoading || isFetching) && <Spinner size="md" />}
 							{fromModal && (
-								<Icon
-									name="close"
-									fill={0}
-									customClass={classNames(
-										'text-color-gray-50 !text-[20px] cursor-pointer rounded-2xl p-[6px] ml-auto sm:invisible',
-										`${hover.textColor}`
-									)}
+								<button
+									type="button"
+									aria-label="Close"
+									className="bg-transparent border-0 p-0 cursor-pointer ml-auto sm:invisible"
 									onClick={() => setIsModalOpen(false)}
-								/>
+								>
+									<Icon
+										name="close"
+										fill={0}
+										customClass={classNames(
+											'text-color-gray-50 !text-[20px] rounded-2xl p-[6px]',
+											`${hover.textColor}`
+										)}
+									/>
+								</button>
 							)}
 						</div>
 
 						<div className={classNames('flex items-center gap-2', selectedInterval === 'All' && 'py-2')}>
 							<div className="flex items-center gap-2">
-								<Icon
-									name={showNestedProgressBars ? 'unknown_med' : 'network_node'}
-									fill={0}
-									customClass={classNames(
-										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',
-										`${hover.textColor} ${hover.borderColor}`
-									)}
+								<button
+									type="button"
+									aria-label={showNestedProgressBars ? 'Switch to flat view' : 'Switch to nested view'}
+									className="bg-transparent border-0 p-0 cursor-pointer"
 									onClick={() => setShowNestedProgressBars(!showNestedProgressBars)}
-								/>
+								>
+									<Icon
+										name={showNestedProgressBars ? 'unknown_med' : 'network_node'}
+										fill={0}
+										customClass={classNames(
+											'text-color-gray-50 !text-[20px] border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',
+											`${hover.textColor} ${hover.borderColor}`
+										)}
+									/>
+								</button>
 
-								<Icon
-									name="swap_vert"
-									fill={0}
-									customClass={classNames(
-										'text-color-gray-50 !text-[20px] cursor-pointer border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',
-										`${hover.textColor} ${hover.borderColor}`
-									)}
+								<button
+									type="button"
+									aria-label={sortBy === 'Tasks: Most-Least' ? 'Sort by least tasks' : 'Sort by most tasks'}
+									className="bg-transparent border-0 p-0 cursor-pointer"
 									onClick={() =>
 										setSortBy(
 											sortBy === 'Tasks: Most-Least'
@@ -208,7 +217,16 @@ const CompletionStatsCard = () => {
 												: 'Tasks: Most-Least'
 										)
 									}
-								/>
+								>
+									<Icon
+										name="swap_vert"
+										fill={0}
+										customClass={classNames(
+											'text-color-gray-50 !text-[20px] border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',
+											`${hover.textColor} ${hover.borderColor}`
+										)}
+									/>
+								</button>
 
 								<GeneralSelectButtonAndDropdown
 									selected={selected}
@@ -240,6 +258,7 @@ const CompletionStatsCard = () => {
 
 				<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 md:px-1">
 					<div>
+						<p className="sr-only">Pie chart showing task completion breakdown by project or category.</p>
 						<PieChart width={220} height={220}>
 							<Pie
 								data={progressBarData || []}

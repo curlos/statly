@@ -20,8 +20,14 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
 
     if (isLoading) {
         return (
-            <h3 onClick={() => updateTaskIdQueryParam(task.taskId)} className={headerStyling}>
-                {task?.title}
+            <h3 className={headerStyling.replace('cursor-pointer', '')}>
+                <button
+                    type="button"
+                    className="hover:text-blue-500 hover:underline font-bold bg-transparent border-0 p-0 cursor-pointer text-left"
+                    onClick={() => updateTaskIdQueryParam(task.taskId)}
+                >
+                    {task?.title}
+                </button>
             </h3>
         );
     }
@@ -35,16 +41,17 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
     const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick?.filter((ancestorId: string) => ancestorId !== task.taskId) || [];
 
     return (
-        <div className="text-[22px] cursor-pointer">
-            <span
-                className="hover:underline font-bold hover:text-blue-500"
+        <div className="text-[22px]">
+            <button
+                type="button"
+                className="hover:underline font-bold hover:text-blue-500 bg-transparent border-0 p-0 cursor-pointer text-left"
                 onClick={() => {
                     updateTaskIdQueryParam(parentTaskId);
                 }}
                 style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
             >
                 {parentTaskTitle}
-            </span>
+            </button>
 
             {parentTaskBreadcrumbs?.length > 0 && (
                 <span className={classNames("ml-1", customDisplay.useTextColor ? "" : "text-color-gray-25")} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
@@ -55,14 +62,15 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
 
                         return (
                             <span key={`breadcrumbs-${taskObj?.id || taskId}-${index}-${dateStr}`}>
-                                <span
-                                    className="hover:text-blue-500 hover:underline"
+                                <button
+                                    type="button"
+                                    className="hover:text-blue-500 hover:underline bg-transparent border-0 p-0 cursor-pointer"
                                     onClick={() => {
                                         updateTaskIdQueryParam(taskObj?.id || taskId);
                                     }}
                                 >
                                     {title}
-                                </span>
+                                </button>
                                 {index !== parentTaskBreadcrumbs.length - 1 && <span>{' > '}</span>}
                             </span>
                         );

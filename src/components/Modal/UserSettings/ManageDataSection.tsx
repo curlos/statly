@@ -32,23 +32,35 @@ const ManageDataSection = () => {
 	return (
 		<div>
 			{/* Tabs */}
-			<div className="flex justify-center gap-2 mb-6">
-				<div
+			<div role="tablist" aria-label="Manage data sections" className="flex justify-center gap-2 mb-6">
+				<button
+					role="tab"
+					id="manage-data-operations-tab"
+					aria-selected={activeTab === 'data-operations'}
+					aria-controls="manage-data-tab-panel"
 					className={activeTab === 'data-operations' ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => setActiveTab('data-operations')}
 				>
 					Data Operations
-				</div>
-				<div
+				</button>
+				<button
+					role="tab"
+					id="manage-delete-data-tab"
+					aria-selected={activeTab === 'delete-data'}
+					aria-controls="manage-data-tab-panel"
 					className={activeTab === 'delete-data' ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => setActiveTab('delete-data')}
 				>
 					Delete Data
-				</div>
+				</button>
 			</div>
 
 			{/* Tab Content */}
-			<div>
+			<div
+				id="manage-data-tab-panel"
+				role="tabpanel"
+				aria-labelledby={activeTab === 'data-operations' ? 'manage-data-operations-tab' : 'manage-delete-data-tab'}
+			>
 				{activeTab === 'data-operations' && (
 					<div>
 						<div className="mb-6">

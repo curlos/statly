@@ -120,23 +120,28 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 	};
 
 	return (
-		<div className="flex justify-between items-center gap-3 bg-color-gray-600 py-2 rounded-md">
-			<Icon
-				name="keyboard_arrow_left"
-				customClass="!text-[20px] mt-[2px] cursor-pointer text-color-gray-100"
-				onClick={() => {
-					handleArrowClick('left');
-				}}
-			/>
-			<div className="text-[14px] sm:text-[16px]">{getFormattedSelectedDates()}</div>
-			<Icon
-				name="keyboard_arrow_right"
-				customClass="!text-[20px] mt-[2px] cursor-pointer text-color-gray-100"
-				onClick={() => {
-					handleArrowClick('right');
-				}}
-			/>
-		</div>
+		<>
+			<div aria-live="polite" aria-atomic="true" className="sr-only">{getFormattedSelectedDates()}</div>
+			<div className="flex justify-between items-center gap-3 bg-color-gray-600 py-2 rounded-md">
+				<button
+					type="button"
+					aria-label={`Previous ${selectedInterval.toLowerCase()}`}
+					className="bg-transparent border-0 p-0 cursor-pointer"
+					onClick={() => handleArrowClick('left')}
+				>
+					<Icon name="keyboard_arrow_left" customClass="!text-[20px] mt-[2px] text-color-gray-100" />
+				</button>
+				<div className="text-[14px] sm:text-[16px]">{getFormattedSelectedDates()}</div>
+				<button
+					type="button"
+					aria-label={`Next ${selectedInterval.toLowerCase()}`}
+					className="bg-transparent border-0 p-0 cursor-pointer"
+					onClick={() => handleArrowClick('right')}
+				>
+					<Icon name="keyboard_arrow_right" customClass="!text-[20px] mt-[2px] text-color-gray-100" />
+				</button>
+			</div>
+		</>
 	);
 };
 

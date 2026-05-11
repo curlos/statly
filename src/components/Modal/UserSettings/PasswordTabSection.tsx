@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useUpdateUserPasswordMutation } from '../../../services/resources/usersApi';
 import FormInput from '../../FormInput';
@@ -30,6 +31,8 @@ interface PasswordTabSectionProps {
 
 const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onError, submitError, submitSuccess }) => {
 	const { chosenColorObj } = useThemeContext();
+	const serverErrorRef = useRef<HTMLDivElement>(null);
+	const successRef = useRef<HTMLDivElement>(null);
 
 	const {
 		register,
@@ -49,7 +52,6 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 				return;
 			}
 
-			// Check if new password is the same as current password
 			if (data.newPassword === data.currentPassword) {
 				onError('New password must be different from current password');
 				return;
@@ -113,18 +115,26 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 					{isLoading && <Spinner size="sm" customClass="!text-white" />}
 				</button>
 
-				{/* Error/Success Messages */}
-				{submitError && (
-					<div className="bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm">
-						{submitError}
-					</div>
-				)}
+				{/* Server error / success messages */}
+				<div
+					ref={serverErrorRef}
+					role="alert"
+					aria-live="assertive"
+					aria-atomic="true"
+					className={submitError ? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm' : 'sr-only'}
+				>
+					{submitError ?? ''}
+				</div>
 
-				{submitSuccess && (
-					<div className="bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm">
-						{submitSuccess}
-					</div>
-				)}
+				<div
+					ref={successRef}
+					role="status"
+					aria-live="polite"
+					aria-atomic="true"
+					className={submitSuccess ? 'bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm' : 'sr-only'}
+				>
+					{submitSuccess ?? ''}
+				</div>
 			</div>
 		</form>
 	);

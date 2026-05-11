@@ -24,6 +24,14 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
 	const [isApplying, setIsApplying] = useState(false);
 	const imgRef = useRef<HTMLImageElement>(null);
+	const applyButtonRef = useRef<HTMLButtonElement>(null);
+
+	useEffect(() => {
+		if (isOpen) {
+			const timer = setTimeout(() => applyButtonRef.current?.focus(), 50);
+			return () => clearTimeout(timer);
+		}
+	}, [isOpen]);
 
 	// Reset crop when image changes
 	useEffect(() => {
@@ -116,19 +124,23 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[90vw] lg:!max-w-[600px]">
+		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[90vw] lg:!max-w-[600px]" ariaLabelledBy="crop-modal-title">
 			<div className="bg-color-gray-700 rounded-lg overflow-hidden">
 				{/* Header */}
 				<div className="p-4 border-b border-color-gray-600 flex items-center justify-between">
 					<div className="flex items-center gap-3">
-						<Icon
-							name="close"
-							customClass="!text-[24px] cursor-pointer text-color-gray-100 hover:text-white transition"
+						<button
+							type="button"
+							aria-label="Close crop dialog"
 							onClick={onClose}
-						/>
-						<h3 className="text-xl font-bold">Crop Image</h3>
+							className="cursor-pointer text-color-gray-100 hover:text-white transition rounded-full p-1"
+						>
+							<Icon name="close" customClass="!text-[24px]" aria-hidden={true} />
+						</button>
+						<h3 id="crop-modal-title" className="text-xl font-bold">Crop Image</h3>
 					</div>
 					<button
+						ref={applyButtonRef}
 						type="button"
 						onClick={handleApplyCrop}
 						disabled={isApplying}

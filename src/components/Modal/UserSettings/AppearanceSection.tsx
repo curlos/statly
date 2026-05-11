@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import ThemeColorList from '../../SidebarModal/ThemeColorList';
 import FontFamilyList from '../../SidebarModal/FontFamilyList';
+import ColorModeList from '../../SidebarModal/ColorModeList';
 import classNames from 'classnames';
 
 const AppearanceSection = () => {
 	const [activeTab, setActiveTab] = useState<'theme-color' | 'font-family' | 'color-mode'>('theme-color');
-	const { chosenColorObj, colorMode, toggleColorMode } = useThemeContext();
+	const { chosenColorObj } = useThemeContext();
 	const { textColor, bgColorHalfOpacity } = chosenColorObj;
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
@@ -16,68 +17,48 @@ const AppearanceSection = () => {
 	return (
 		<div>
 			{/* Tabs */}
-			<div className="flex justify-center gap-2 mb-6">
-				<div
+			<div role="tablist" aria-label="Appearance settings" className="flex justify-center gap-2 mb-6">
+				<button
+					role="tab"
+					id="appearance-theme-color-tab"
+					aria-selected={activeTab === 'theme-color'}
+					aria-controls="appearance-tab-panel"
 					className={activeTab === 'theme-color' ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => setActiveTab('theme-color')}
 				>
 					Theme Color
-				</div>
-				<div
+				</button>
+				<button
+					role="tab"
+					id="appearance-font-family-tab"
+					aria-selected={activeTab === 'font-family'}
+					aria-controls="appearance-tab-panel"
 					className={activeTab === 'font-family' ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => setActiveTab('font-family')}
 				>
 					Font Family
-				</div>
-				<div
+				</button>
+				<button
+					role="tab"
+					id="appearance-color-mode-tab"
+					aria-selected={activeTab === 'color-mode'}
+					aria-controls="appearance-tab-panel"
 					className={activeTab === 'color-mode' ? selectedButtonStyle : unselectedButtonStyle}
 					onClick={() => setActiveTab('color-mode')}
 				>
 					Color Mode
-				</div>
+				</button>
 			</div>
 
 			{/* Tab Content */}
-			<div>
+			<div
+				id="appearance-tab-panel"
+				role="tabpanel"
+				aria-labelledby={`appearance-${activeTab}-tab`}
+			>
 				{activeTab === 'theme-color' && <ThemeColorList />}
 				{activeTab === 'font-family' && <FontFamilyList />}
-				{activeTab === 'color-mode' && (
-					<div className="flex flex-col items-center gap-4">
-						<p className="text-color-gray-25 text-[14px]">
-							Choose between dark and light mode. Defaults to your system preference.
-						</p>
-						<div className="flex gap-3">
-							<div
-								className={classNames(
-									'flex flex-col items-center gap-2 px-6 py-4 rounded-xl cursor-pointer border-2 transition-colors',
-									colorMode === 'dark'
-										? classNames('border-current', textColor, bgColorHalfOpacity)
-										: 'border-color-gray-300 bg-color-gray-300'
-								)}
-								onClick={() => colorMode !== 'dark' && toggleColorMode()}
-							>
-								<span className="text-2xl">🌙</span>
-								<span className={classNames('text-[14px] font-bold', colorMode === 'dark' ? textColor : 'text-color-gray-25')}>
-									Dark
-								</span>
-							</div>
-							<div
-								className={classNames(
-									'flex flex-col items-center gap-2 px-6 py-4 rounded-xl cursor-pointer border-2 transition-colors',
-									colorMode === 'light'
-										? classNames('border-current', textColor, bgColorHalfOpacity)
-										: 'border-color-gray-300 bg-color-gray-300'
-								)}
-								onClick={() => colorMode !== 'light' && toggleColorMode()}
-							>
-								<span className="text-2xl">☀️</span>
-								<span className={classNames('text-[14px] font-bold', colorMode === 'light' ? textColor : 'text-color-gray-25')}>
-									Light
-								</span>
-							</div>
-						</div>
-					</div>
-				)}
+				{activeTab === 'color-mode' && <ColorModeList />}
 			</div>
 		</div>
 	);
