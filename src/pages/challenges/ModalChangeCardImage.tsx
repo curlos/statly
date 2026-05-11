@@ -303,6 +303,37 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		}
 	};
 
+	const handleGridKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'];
+		if (!keys.includes(e.key)) return;
+		e.preventDefault();
+
+		const srcs = currentItems.map((obj: unknown) => {
+			const objRecord = obj as Record<string, unknown>;
+			return selectedGame !== 'POKEMON TCG CARDS'
+				? (obj as unknown as string)
+				: (objRecord.imgurImageUrl as string);
+		});
+
+		const currentIndex = srcs.indexOf(selectedImageSrc ?? '');
+		let nextIndex = currentIndex;
+
+		if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+			nextIndex = currentIndex < srcs.length - 1 ? currentIndex + 1 : 0;
+		} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+			nextIndex = currentIndex > 0 ? currentIndex - 1 : srcs.length - 1;
+		} else if (e.key === 'Home') {
+			nextIndex = 0;
+		} else if (e.key === 'End') {
+			nextIndex = srcs.length - 1;
+		}
+
+		setSelectedImageSrc(srcs[nextIndex]);
+		const grid = e.currentTarget;
+		const radios = grid.querySelectorAll<HTMLDivElement>('[role="radio"]');
+		radios[nextIndex]?.focus();
+	};
+
 	const pageType: Record<string, string> = {
 		challenges: 'Challenges',
 		medals: 'Medals',
@@ -316,15 +347,18 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 			isOpen={showModal}
 			onClose={() => setShowModal(false)}
 			customClasses="md:w-[700px] lg:w-[750px]"
+			ariaLabelledBy="change-card-image-title"
 		>
 			<div className="bg-color-gray-600 rounded-lg text-white">
 				<div className="flex items-center justify-between p-5">
-					<h3 className="font-bold text-[16px]">Change {pageName} Card Image</h3>
-					<Icon
-						name="close"
-						customClass={'!text-[20px] text-color-gray-100 hover:text-white cursor-pointer'}
+					<h3 id="change-card-image-title" className="font-bold text-[16px]">Change {pageName} Card Image</h3>
+					<button
+						aria-label="Close dialog"
+						className="text-color-gray-100 hover:text-white cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-white rounded p-0"
 						onClick={() => setShowModal(false)}
-					/>
+					>
+						<Icon name="close" customClass={'!text-[20px]'} aria-hidden />
+					</button>
 				</div>
 
 				<div className="px-5 pb-5">
@@ -376,7 +410,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 								customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 							/>
 							<input
-								placeholder={'Search Pokémon cards...'}
+								placeholder={'Search Pokémon cards'}
 								value={searchText}
 								onChange={(e) => setSearchText(e.target.value)}
 								className="text-[16px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
@@ -396,45 +430,67 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 						/>
 					) : (
 						<div ref={scrollContainerRef} className="overflow-auto h-[250px] md:h-[420px] gray-scrollbar">
-							<div className={classNames('grid gap-2', getGridClasses(selectedGame))}>
-								{currentItems.map((obj: unknown) => {
-									const objRecord = obj as Record<string, unknown>;
-									const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
-									const isSelected = imageSrc === selectedImageSrc;
-									const uniqueKey =
-										selectedGame === 'POKEMON TCG CARDS' ? `${objRecord.name}-${imageSrc}` : imageSrc;
+							<div
+								role="radiogroup"
+								aria-label="Select card image"
+								className={classNames('grid gap-2', getGridClasses(selectedGame))}
+								onKeyDown={handleGridKeyDown}
+							>
+								{(() => {
+									const hasSelectionInCurrentPage = currentItems.some((obj: unknown) => {
+										const objRecord = obj as Record<string, unknown>;
+										const src = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
+										return src === selectedImageSrc;
+									});
 
-									return (
-										<div
-											key={uniqueKey}
-											className="cursor-pointer relative"
-											onClick={() => setSelectedImageSrc(imageSrc)}
-										>
-											<LazyImage
-												src={imageSrc}
-												alt="Medal/Card image"
-											/>
+									return currentItems.map((obj: unknown, index: number) => {
+										const objRecord = obj as Record<string, unknown>;
+										const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
+										const isSelected = imageSrc === selectedImageSrc;
+										const uniqueKey =
+											selectedGame === 'POKEMON TCG CARDS' ? `${objRecord.name}-${imageSrc}` : imageSrc;
+										const pageSuffix = currentPage > 1 ? `, Page ${currentPage}` : '';
+										const itemLabel = selectedGame === 'POKEMON TCG CARDS'
+											? `${objRecord.name as string}${pageSuffix}`
+											: `Image ${index + 1}${pageSuffix}, ${selectedGame} ${selectedMedalType}`;
+										const tabIndex = isSelected ? 0 : (index === 0 && !hasSelectionInCurrentPage ? 0 : -1);
 
-											{isSelected && (
-												<div className="absolute bottom-[10px] right-[10px] z-10">
-													<div
-														className={classNames(
-															chosenColorObj.bgColor,
-															'rounded-full h-[20px] w-[20px] flex items-center justify-center'
-														)}
-													>
-														<Icon
-															name="check"
-															customClass={
-																'!text-[20px] text-white group-hover:text-white cursor-pointer'
-															}
-														/>
+										return (
+											<div
+												key={uniqueKey}
+												role="radio"
+												aria-checked={isSelected}
+												aria-label={itemLabel}
+												tabIndex={tabIndex}
+												className="cursor-pointer relative outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+												onClick={() => setSelectedImageSrc(imageSrc)}
+											>
+												<LazyImage
+													src={imageSrc}
+													alt={itemLabel}
+												/>
+
+												{isSelected && (
+													<div className="absolute bottom-[10px] right-[10px] z-10">
+														<div
+															className={classNames(
+																chosenColorObj.bgColor,
+																'rounded-full h-[20px] w-[20px] flex items-center justify-center'
+															)}
+														>
+															<Icon
+																name="check"
+																customClass={
+																	'!text-[20px] text-white group-hover:text-white cursor-pointer'
+																}
+															/>
+														</div>
 													</div>
-												</div>
-											)}
-										</div>
-									);
-								})}
+												)}
+											</div>
+										);
+									});
+								})()}
 							</div>
 						</div>
 					)}
