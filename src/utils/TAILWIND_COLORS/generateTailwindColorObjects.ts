@@ -16,6 +16,7 @@ interface TailwindColorVariant {
 	};
 	focus: {
 		outlineColor: string;
+		borderColor: string;
 	};
 }
 
@@ -59,6 +60,7 @@ export const generateTailwindColorObjects = () => {
 					},
 					focus: {
 						outlineColor: `focus:outline-${currentColorGroupName}-${colorNumVal}`,
+						borderColor: `focus:border-${currentColorGroupName}-${colorNumVal}`,
 					},
 				};
 

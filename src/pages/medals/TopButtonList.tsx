@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { navigate } from 'vike/client/router';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { usePageContext } from 'vike-react/usePageContext';
 
@@ -50,9 +49,10 @@ const TopButton: React.FC<TopButtonProps> = ({ buttonObj, selectedButtonStyle, u
 
 	const newType = isForInterval ? type : urlName;
 	const newInterval = isForInterval ? urlName : interval;
-	let buttonUrl = `/medals/${newType}/${newInterval}`;
 
-	if (pageContext.urlParsed.pathname.includes('/challenges')) {
+	const isChallengePage = pageContext.urlParsed.pathname.includes('/challenges');
+	let buttonUrl = `/medals/${newType}/${newInterval}`;
+	if (isChallengePage) {
 		buttonUrl = `/challenges/${newType}`;
 	}
 
@@ -60,15 +60,21 @@ const TopButton: React.FC<TopButtonProps> = ({ buttonObj, selectedButtonStyle, u
 		buttonUrl += `?${new URLSearchParams(queryParams).toString()}`;
 	}
 
+	const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+	const pageName = isChallengePage ? 'challenges' : 'medals';
+	const ariaLabel = isChallengePage
+		? `${capitalize(newType)} ${pageName}`
+		: `${capitalize(newType)} ${capitalize(newInterval)} ${pageName}`;
+
 	return (
-		<button
-			type="button"
-			aria-pressed={isSelected}
+		<a
+			href={buttonUrl}
+			aria-label={ariaLabel}
+			aria-current={isSelected ? 'page' : undefined}
 			className={isSelected ? selectedButtonStyle : unselectedButtonStyle}
-			onClick={() => navigate(buttonUrl)}
 		>
 			{name}
-		</button>
+		</a>
 	);
 };
 

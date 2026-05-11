@@ -46,6 +46,18 @@ const MedalList: React.FC<MedalListProps> = ({ maxHeight, chosenMedal, setChosen
 
 	const medalsThatHaveBeenEarned = medalsToUse.filter((medal) => medal.intervalsEarned.length > 0);
 	const medalsThatHaveNotBeenEarned = medalsToUse.filter((medal) => medal.intervalsEarned.length === 0);
+	const allMedals = [...medalsThatHaveBeenEarned, ...medalsThatHaveNotBeenEarned];
+
+	const handleMedalKeyDown = (medalName: string, e: React.KeyboardEvent) => {
+		if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'].includes(e.key)) return;
+		e.preventDefault();
+		const currentIndex = allMedals.findIndex((m) => m.name === medalName);
+		const direction = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1;
+		const nextIndex = (currentIndex + direction + allMedals.length) % allMedals.length;
+		setChosenMedal(allMedals[nextIndex]);
+		const radios = scrollContainerRef.current?.querySelectorAll<HTMLElement>('[role="radio"]');
+		radios?.[nextIndex]?.focus();
+	};
 
 	if (isLoading) {
 		return <MedalListSkeleton maxHeight={maxHeight} />;
@@ -55,6 +67,8 @@ const MedalList: React.FC<MedalListProps> = ({ maxHeight, chosenMedal, setChosen
 		<div className="col-span-12 sm:col-span-8">
 			<div
 				ref={scrollContainerRef}
+				role="radiogroup"
+				aria-label="Medals"
 				className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 overflow-auto gray-scrollbar"
 				style={{ maxHeight }}
 			>
@@ -68,6 +82,7 @@ const MedalList: React.FC<MedalListProps> = ({ maxHeight, chosenMedal, setChosen
 								setChosenMedal,
 								isLoadingFocusOrTasksData: isLoading,
 								setShowChosenMedalModal,
+								onKeyDown: handleMedalKeyDown,
 							}}
 						/>
 					);
@@ -83,6 +98,7 @@ const MedalList: React.FC<MedalListProps> = ({ maxHeight, chosenMedal, setChosen
 								setChosenMedal,
 								isLoadingFocusOrTasksData: isLoading,
 								setShowChosenMedalModal,
+								onKeyDown: handleMedalKeyDown,
 							}}
 						/>
 					);

@@ -11,6 +11,7 @@ interface MedalCardProps {
 	setChosenMedal: (medal: MedalWithName) => void;
 	isLoadingFocusOrTasksData: boolean;
 	setShowChosenMedalModal: (show: boolean) => void;
+	onKeyDown: (medalName: string, e: React.KeyboardEvent) => void;
 }
 
 const MedalCard: React.FC<MedalCardProps> = ({
@@ -19,6 +20,7 @@ const MedalCard: React.FC<MedalCardProps> = ({
 	setChosenMedal,
 	isLoadingFocusOrTasksData,
 	setShowChosenMedalModal,
+	onKeyDown,
 }) => {
 
 	const { chosenColorObj } = useThemeContext();
@@ -26,22 +28,29 @@ const MedalCard: React.FC<MedalCardProps> = ({
 		medalsPageSettings: { selectedMedalCardImage },
 	} = useUserSettingsContext();
 
-	const { name, intervalsEarned } = medal;
+	const { name, intervalsEarned, interval } = medal;
 
 	const timesEarned = !intervalsEarned ? 0 : intervalsEarned.length;
 
 	const imgSrc = selectedMedalCardImage?.[medal.type] || '';
 	const { width } = useWindowSize();
 
+	const isSelected = chosenMedal?.name === name;
+
+	console.log(medal)
+
 	return (
 		<button
 			type="button"
-			aria-label={`${name}, earned ${timesEarned} times`}
-			aria-pressed={chosenMedal?.name === name}
+			role="radio"
+			aria-label={`${name} ${interval}, ${timesEarned === 1 ? `earned 1 time` : `earned ${timesEarned} times`}`}
+			aria-checked={isSelected}
+			tabIndex={isSelected ? 0 : -1}
+			onKeyDown={(e) => onKeyDown(name, e)}
 			className={classNames(
-				'bg-color-gray-600 border-2 cursor-pointer text-left w-full',
+				'bg-color-gray-600 border-2 cursor-pointer text-left w-full focus:outline-none',
 				chosenColorObj.hover.borderColor,
-				chosenMedal?.name === name ? chosenColorObj.borderColor : 'border-[transparent]',
+				isSelected ? chosenColorObj.borderColor : 'border-[transparent]',
 				isLoadingFocusOrTasksData ? 'animate-pulse' : timesEarned === 0 && 'opacity-50'
 			)}
 			onClick={() => {
