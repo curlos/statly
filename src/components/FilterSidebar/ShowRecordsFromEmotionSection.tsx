@@ -40,20 +40,27 @@ const ShowRecordsFromEmotionSection = () => {
 					const isChecked = emotionsByName[emotion.id];
 
 					return (
-						<div
+						<label
 							key={emotion.id}
-							className="flex items-center gap-2 cursor-pointer mb-2"
-							onClick={() => handleEmotionTagClick(emotion.id, true)}
+							className="relative flex items-center gap-2 cursor-pointer mb-2 rounded has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-inset"
 						>
-							<Icon
-								name={isChecked ? 'check_box' : 'check_box_outline_blank'}
-								fill={1}
-								customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
+							<input
+								type="checkbox"
+								className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+								checked={!!isChecked}
+								onChange={() => handleEmotionTagClick(emotion.id, true)}
 							/>
+							<span aria-hidden="true" className="leading-[0]">
+								<Icon
+									name={isChecked ? 'check_box' : 'check_box_outline_blank'}
+									fill={1}
+									customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
+								/>
+							</span>
 							<EmotionTag
 								emotionObj={{ emotion: emotion.id, score: 0 }}
 							/>
-						</div>
+						</label>
 					);
 				})}
 			</Accordion>
