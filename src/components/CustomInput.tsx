@@ -12,6 +12,8 @@ interface CustomInputProps {
 	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 	required?: boolean;
 	ariaLabel?: string;
+	'aria-describedby'?: string;
+	'aria-invalid'?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -25,6 +27,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	customClasses,
 	required,
 	ariaLabel,
+	'aria-describedby': ariaDescribedBy,
+	'aria-invalid': ariaInvalid,
 }) => {
 	const { chosenColorObj } = useThemeContext();
 
@@ -49,6 +53,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
 			max={type === 'number' ? max : undefined}
 			required={required}
 			aria-label={ariaLabel}
+			aria-describedby={ariaDescribedBy}
+			aria-invalid={ariaInvalid}
 		/>
 	);
 };

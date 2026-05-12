@@ -171,6 +171,8 @@ const InputNumUserSettings = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [localValue]);
 
+	const errorId = `${name}-error`;
+
 	return (
 		<div>
 			<div className="flex gap-2 mt-1 mb-1 ml-1">
@@ -182,14 +184,19 @@ const InputNumUserSettings = ({
 						min={minNum}
 						max={maxNum}
 						customClasses={inputMaxWidth}
+						ariaLabel={name}
+						aria-describedby={errorMessage ? errorId : undefined}
+						aria-invalid={!!errorMessage}
 					/>
 				</div>
 				<div className="flex items-center gap-1">
-					<div>{name}</div>
+					<div aria-hidden="true">{name}</div>
 					{apiRequestLoading && <Spinner />}
 				</div>
 			</div>
-			{errorMessage && <div className="text-[14px] text-red-500">{errorMessage}</div>}
+			<div id={errorId} role="alert" aria-live="polite" className="text-[14px] text-red-500">
+				{errorMessage}
+			</div>
 		</div>
 	);
 };
