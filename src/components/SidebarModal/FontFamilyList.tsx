@@ -41,7 +41,7 @@ const FontFamilyList = () => {
 
 		await editUserSettings(payload).unwrap();
 		localStorage.setItem('font-family', fontFamilyKey);
-	}, 500);
+	}, 500, true);
 
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey } = themeContext;

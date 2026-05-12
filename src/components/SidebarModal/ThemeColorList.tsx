@@ -27,7 +27,7 @@ const ThemeColorList = () => {
 		};
 		await editUserSettings(payload).unwrap();
 		localStorage.setItem('theme-color', colorKey);
-	}, 500);
+	}, 500, true);
 
 	return (
 		<div>

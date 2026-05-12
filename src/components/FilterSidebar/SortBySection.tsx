@@ -30,7 +30,7 @@ const SortBySection: React.FC<SortBySectionProps> = ({ sortByOptions }) => {
 		} else {
 			updateQueryParams({ 'sort-by': sortByOption, page: '' });
 		}
-	}, 500);
+	}, 500, true);
 
 	return (
 		<div>
