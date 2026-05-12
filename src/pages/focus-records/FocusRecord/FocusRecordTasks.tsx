@@ -11,7 +11,7 @@ interface FocusRecordTasksProps {
 }
 
 const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTextColor }) => {
-	const { updateQueryParams } = useSearchParamsContext();
+	const { buildUrlWithQueryParams } = useSearchParamsContext();
 	const {
 		focusRecordsPageSettings: {
 			showTaskAncestors,
@@ -23,35 +23,25 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTe
 	const headerStyling =
 		'text-[18px] md:text-[22px] font-bold truncate md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px] cursor-pointer hover:text-blue-500 hover:underline';
 
-	const updateTaskIdQueryParam = (taskId?: string) => {
-		updateQueryParams({
-			'task-id': taskId || '',
-			'sort-by': '',
-			search: '',
-			'start-date': '',
-			'end-date': '',
-			projects: '',
-			page: '',
-		});
-	};
+	const buildTaskUrl = (taskId?: string) =>
+		buildUrlWithQueryParams({ 'task-id': taskId || '', 'sort-by': '', search: '', 'start-date': '', 'end-date': '', projects: '', page: '' });
 
 	const getTaskTitle = (task: FocusRecordTask, dateStr: string) => {
 		if (showTaskAncestors) {
-			return <TaskTitleWithBreadcrumbs {...{ task, updateTaskIdQueryParam, headerStyling, dateStr, cardTextColor }} />;
+			return <TaskTitleWithBreadcrumbs {...{ task, buildTaskUrl, headerStyling, dateStr, cardTextColor }} />;
 		}
 
 		const taskId = task.taskId;
 
 		return (
 			<h3 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px]">
-				<button
-					type="button"
-					className="hover:text-blue-500 hover:underline font-bold bg-transparent border-0 p-0 cursor-pointer text-left"
-					onClick={() => updateTaskIdQueryParam(taskId)}
+				<a
+					href={buildTaskUrl(taskId)}
+					className="hover:text-blue-500 hover:underline font-bold text-left"
 					style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 				>
 					{task?.title}
-				</button>
+				</a>
 				<TaskProjectName {...{ taskId: taskId, cardTextColor }} />
 			</h3>
 		);

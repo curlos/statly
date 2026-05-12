@@ -25,8 +25,13 @@ interface FocusRecordProps {
 }
 
 const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForTheDay = false }) => {
-    const { updateQueryParams } = useSearchParamsContext();
+    const { buildUrlWithQueryParams } = useSearchParamsContext();
     const { startTime, endTime, duration, note, crossesMidnight } = focusRecord;
+
+    const buildDayUrl = (date: Date) => {
+        const dayUrl = getFormattedShortMonthDay(date);
+        return buildUrlWithQueryParams({ "start-date": dayUrl, "end-date": dayUrl, page: "" });
+    };
     const startTimeObj = formatDateTime(startTime);
     const endTimeObj = formatDateTime(endTime);
 
@@ -147,35 +152,23 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 
                     <div className="hidden sm:flex items-center justify-between relative" style={{ color: cardTextColor }}>
                         <div>
-                            <button
-                                type="button"
-                                className="font-bold hover:underline cursor-pointer bg-transparent border-0 p-0"
+                            <a
+                                href={buildDayUrl(new Date(startTime))}
+                                className="font-bold hover:underline"
                                 style={{ color: cardTextColor }}
-                                onClick={() => {
-                                    const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
-                                    updateQueryParams({ "start-date": newDayUrl, "end-date": newDayUrl, page: "" });
-                                }}
                             >
                                 {getFormattedLongDay(new Date(startTime))}
-                            </button>
+                            </a>
                             {crossesMidnight && (
                                 <>
                                     {" - "}
-                                    <button
-                                        type="button"
-                                        className="font-bold hover:underline cursor-pointer bg-transparent border-0 p-0"
+                                    <a
+                                        href={buildDayUrl(new Date(endTime))}
+                                        className="font-bold hover:underline"
                                         style={{ color: cardTextColor }}
-                                        onClick={() => {
-                                            const newDayUrl = getFormattedShortMonthDay(new Date(endTime));
-                                            updateQueryParams({
-                                                "start-date": newDayUrl,
-                                                "end-date": newDayUrl,
-                                                page: "",
-                                            });
-                                        }}
                                     >
                                         {getFormattedLongDay(new Date(endTime))}
-                                    </button>
+                                    </a>
                                 </>
                             )}
                             {" - "}
@@ -219,36 +212,27 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                     <div className="sm:hidden relative" style={{ color: cardTextColor }}>
                         <div className="flex items-center justify-between">
                             <div>
-                                <button
-                                    type="button"
-                                    className="font-bold hover:underline cursor-pointer bg-transparent border-0 p-0 text-left"
-                                    style={{ color: cardTextColor }}
-                                    onClick={() => {
-                                        const newDayUrl = getFormattedShortMonthDay(new Date(startTime));
-                                        updateQueryParams({ "start-date": newDayUrl, "end-date": newDayUrl, page: "" });
-                                    }}
-                                >
-                                    {getFormattedShortMonthDay(new Date(startTime))}
+                                <span className="font-bold" style={{ color: cardTextColor }}>
+                                    <a
+                                        href={buildDayUrl(new Date(startTime))}
+                                        className="hover:underline"
+                                        style={{ color: cardTextColor }}
+                                    >
+                                        {getFormattedShortMonthDay(new Date(startTime))}
+                                    </a>
                                     {crossesMidnight && (
                                         <>
                                             {" - "}
-                                            <span
-                                                className="hover:underline cursor-pointer"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    const newDayUrl = getFormattedShortMonthDay(new Date(endTime));
-                                                    updateQueryParams({
-                                                        "start-date": newDayUrl,
-                                                        "end-date": newDayUrl,
-                                                        page: "",
-                                                    });
-                                                }}
+                                            <a
+                                                href={buildDayUrl(new Date(endTime))}
+                                                className="hover:underline"
+                                                style={{ color: cardTextColor }}
                                             >
                                                 {getFormattedShortMonthDay(new Date(endTime))}
-                                            </span>
+                                            </a>
                                         </>
                                     )}
-                                </button>
+                                </span>
                                 <div>
                                     {startTimeObj.time} - {endTimeObj.time} ({getFormattedDuration(duration, false)})
                                 </div>

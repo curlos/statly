@@ -6,13 +6,13 @@ import { useUserSettingsContext } from "../useUserSettingsContext";
 
 interface TaskTitleWithBreadcrumbsProps {
     task: FocusRecordTask;
-    updateTaskIdQueryParam: (taskId?: string) => void;
+    buildTaskUrl: (taskId?: string) => string;
     headerStyling: string;
     dateStr: string;
     cardTextColor?: string;
 }
 
-const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ task, updateTaskIdQueryParam, headerStyling, dateStr, cardTextColor }) => {
+const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ task, buildTaskUrl, headerStyling, dateStr, cardTextColor }) => {
     const {
             focusRecordsPageSettings: { customDisplay },
         } = useUserSettingsContext();
@@ -21,13 +21,12 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
     if (isLoading) {
         return (
             <h3 className={headerStyling.replace('cursor-pointer', '')}>
-                <button
-                    type="button"
-                    className="hover:text-blue-500 hover:underline font-bold bg-transparent border-0 p-0 cursor-pointer text-left"
-                    onClick={() => updateTaskIdQueryParam(task.taskId)}
+                <a
+                    href={buildTaskUrl(task.taskId)}
+                    className="hover:text-blue-500 hover:underline font-bold text-left"
                 >
                     {task?.title}
-                </button>
+                </a>
             </h3>
         );
     }
@@ -42,16 +41,13 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
 
     return (
         <div className="text-[22px]">
-            <button
-                type="button"
-                className="hover:underline font-bold hover:text-blue-500 bg-transparent border-0 p-0 cursor-pointer text-left"
-                onClick={() => {
-                    updateTaskIdQueryParam(parentTaskId);
-                }}
+            <a
+                href={buildTaskUrl(parentTaskId)}
+                className="hover:underline font-bold hover:text-blue-500 text-left"
                 style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
             >
                 {parentTaskTitle}
-            </button>
+            </a>
 
             {parentTaskBreadcrumbs?.length > 0 && (
                 <span className={classNames("ml-1", customDisplay.useTextColor ? "" : "text-color-gray-25")} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
@@ -62,15 +58,12 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
 
                         return (
                             <span key={`breadcrumbs-${taskObj?.id || taskId}-${index}-${dateStr}`}>
-                                <button
-                                    type="button"
-                                    className="hover:text-blue-500 hover:underline bg-transparent border-0 p-0 cursor-pointer"
-                                    onClick={() => {
-                                        updateTaskIdQueryParam(taskObj?.id || taskId);
-                                    }}
+                                <a
+                                    href={buildTaskUrl(taskObj?.id || taskId)}
+                                    className="hover:text-blue-500 hover:underline"
                                 >
                                     {title}
-                                </button>
+                                </a>
                                 {index !== parentTaskBreadcrumbs.length - 1 && <span>{' > '}</span>}
                             </span>
                         );
