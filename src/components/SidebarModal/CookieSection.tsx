@@ -47,8 +47,10 @@ const CookieSection = () => {
 			<label className="text-sm font-semibold text-color-gray-25">TickTick Cookie</label>
 
 			{!isEditingCookie ? (
-				<div
-					className="flex items-center justify-between gap-2 px-3 py-2 bg-color-gray-600 rounded cursor-pointer"
+				<button
+					type="button"
+					aria-label={hasCookie ? 'Edit TickTick cookie' : 'Configure TickTick cookie'}
+					className="w-full flex items-center justify-between gap-2 px-3 py-2 bg-color-gray-600 rounded"
 					onClick={() => setIsEditingCookie(true)}
 				>
 					<div className="flex items-center gap-2">
@@ -67,9 +69,9 @@ const CookieSection = () => {
 					<Icon
 						name={hasCookie ? 'edit' : 'add'}
 						fill={1}
-						customClass="!text-[18px] p-2 bg-color-gray-500 hover:bg-color-gray-200 rounded transition-colors cursor-pointer"
+						customClass="!text-[18px] p-2 bg-color-gray-500 hover:bg-color-gray-200 rounded transition-colors"
 					/>
-				</div>
+				</button>
 			) : (
 				<div className="flex gap-2">
 					<input
