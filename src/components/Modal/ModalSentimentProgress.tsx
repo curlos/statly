@@ -69,59 +69,40 @@ const ModalSentimentProgress: React.FC = () => {
 	const getChunkStatusDisplay = (status: string) => {
 		switch (status) {
 			case 'idle':
-				return {
-					icon: 'schedule',
-					color: '#9ca3af',
-					showSpinner: false,
-				};
+				return { icon: 'schedule', color: '#9ca3af', showSpinner: false, label: 'Idle' };
 			case 'analyzing':
-				return {
-					icon: 'favorite',
-					color: chosenColorObj.hexColor,
-					showSpinner: true,
-				};
+				return { icon: 'favorite', color: chosenColorObj.hexColor, showSpinner: true, label: 'Analyzing' };
 			case 'success':
-				return {
-					icon: 'check_circle',
-					color: '#4ade80',
-					showSpinner: false,
-				};
+				return { icon: 'check_circle', color: '#4ade80', showSpinner: false, label: 'Complete' };
 			case 'error':
-				return {
-					icon: 'error',
-					color: '#ef4444',
-					showSpinner: false,
-				};
+				return { icon: 'error', color: '#ef4444', showSpinner: false, label: 'Error' };
 			default:
-				return {
-					icon: 'schedule',
-					color: '#9ca3af',
-					showSpinner: false,
-				};
+				return { icon: 'schedule', color: '#9ca3af', showSpinner: false, label: 'Idle' };
 		}
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!w-[700px]">
+		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!w-[700px]" ariaLabelledBy="sentiment-modal-title">
 			<div className="bg-color-gray-650 rounded-lg p-6 shadow-xl relative">
 				{/* Close button */}
 				<button
 					onClick={handleClose}
-					className="absolute top-4 right-4 text-color-gray-100 hover:text-white transition-colors"
+					aria-label="Close"
+					className="absolute top-4 right-4 text-color-gray-50 hover:text-white transition-colors"
 				>
 					<Icon name="close" fill={1} customClass="!text-[24px]" />
 				</button>
 
 				{/* Title */}
-				<h2 className="text-xl font-bold mb-2 text-white">Analyze Focus Record Note Emotions</h2>
+				<h3 id="sentiment-modal-title" className="text-xl font-bold mb-2 text-white">Analyze Focus Record Note Emotions</h3>
 
 				{/* Description */}
-				<p className="text-color-gray-100 mt-0 mb-4">
+				<p className="text-color-gray-50 mt-0 mb-4">
 					This process uses AI to accurately analyze the emotions in each focus record's note. Please be patient as this may take a few minutes.
 				</p>
 
 				{/* Progress counter */}
-				<div className="text-color-gray-100 mb-4 flex items-center gap-2">
+				<div aria-live="polite" className="text-color-gray-50 mb-4 flex items-center gap-2">
 					<span>
 						{processedRecords.toLocaleString()}/{totalRecords.toLocaleString()} focus records updated
 					</span>
@@ -159,12 +140,12 @@ const ModalSentimentProgress: React.FC = () => {
 									title={
 										<div className="w-full pr-2 flex items-center justify-between">
 											<div>
-												<h2 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
+												<h4 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
 													Records {chunk.startRecord.toLocaleString()} to {chunk.endRecord.toLocaleString()}
-												</h2>
+												</h4>
 												{/* Summary results - only show after chunk completes */}
 												{chunk.result && chunk.status === 'success' && (
-													<div className="text-color-gray-100 mt-1">
+													<div className="text-color-gray-50 mt-1">
 														{chunk.result.analyzed.toLocaleString()} focus records updated
 														{chunk.result.failed > 0 &&
 															`, ${chunk.result.failed.toLocaleString()} failed`}
@@ -176,7 +157,8 @@ const ModalSentimentProgress: React.FC = () => {
 													</div>
 												)}
 											</div>
-											<div className="flex items-center gap-2">
+											<div aria-live="polite" className="flex items-center gap-2">
+												<span className="sr-only">{statusDisplay.label}</span>
 												{statusDisplay.showSpinner ? (
 													<Spinner size="sm" />
 												) : (
@@ -197,7 +179,7 @@ const ModalSentimentProgress: React.FC = () => {
 								>
 									{/* Record count */}
 									<div className="mb-3 mt-2">
-										<div className="text-color-gray-100 mb-1">
+										<div className="text-color-gray-50 mb-1">
 											<span className="font-bold">Total Focus Records:</span> {chunk.recordCount.toLocaleString()}
 										</div>
 									</div>
@@ -205,17 +187,17 @@ const ModalSentimentProgress: React.FC = () => {
 									{/* Results - only show after chunk completes */}
 									{chunk.result && chunk.status === 'success' && (
 										<div className="mt-3 pt-3 border-t border-color-gray-600">
-											<div className="text-color-gray-100 mb-2 font-bold">Results:</div>
-											<div className="pl-4 space-y-1 text-color-gray-100">
-												<div>
+											<div className="text-color-gray-50 mb-2 font-bold">Results:</div>
+											<ul className="pl-2 space-y-1 text-color-gray-50 list-disc list-inside">
+												<li>
 													<span className="font-semibold">Updated:</span>{' '}
 													{chunk.result.analyzed.toLocaleString()} focus records
-												</div>
-												<div>
+												</li>
+												<li>
 													<span className="font-semibold">Failed:</span>{' '}
 													{chunk.result.failed.toLocaleString()} focus records
-												</div>
-											</div>
+												</li>
+											</ul>
 										</div>
 									)}
 

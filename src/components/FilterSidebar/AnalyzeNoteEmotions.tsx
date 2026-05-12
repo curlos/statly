@@ -135,6 +135,8 @@ const AnalyzeNoteEmotions = () => {
 					<button
 						onClick={handleAnalyzeSentiment}
 						disabled={isLoading}
+						aria-busy={isLoading}
+						aria-haspopup="dialog"
 						className="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed justify-center"
 					>
 						{isLoading ? (
