@@ -13,6 +13,7 @@ interface ChallengeCardProps {
 	isLoading: boolean;
 	setShowChosenChallengeModal: (show: boolean) => void;
 	completedChallenges: Challenge[];
+	onKeyDown: (challengeName: string, e: React.KeyboardEvent) => void;
 }
 
 const ChallengeCard: React.FC<ChallengeCardProps> = ({
@@ -23,6 +24,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 	isLoading,
 	setShowChosenChallengeModal,
 	completedChallenges,
+	onKeyDown,
 }) => {
 	const { name } = challenge;
 
@@ -54,10 +56,13 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 	return (
 		<button
 			type="button"
+			role="radio"
 			aria-label={`${name}${challenge.completedDate ? ', completed on ' + challenge.completedDate : ', not yet completed'}`}
-			aria-pressed={isChosenChallenge}
+			aria-checked={isChosenChallenge}
+			tabIndex={isChosenChallenge ? 0 : -1}
+			onKeyDown={(e) => onKeyDown(name, e)}
 			className={classNames(
-				'cursor-pointer flex flex-col text-left w-full',
+				'cursor-pointer flex flex-col text-left w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:[outline-offset:-2px]',
 				isChosenChallenge ? `border-2 ${chosenColorObj.borderColor}` : 'border-2 border-color-gray-200',
 				isLoading ? 'animate-pulse' : isIncomplete && 'opacity-50'
 			)}

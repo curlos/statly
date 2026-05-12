@@ -484,7 +484,10 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 												aria-checked={isSelected}
 												aria-label={itemLabel}
 												tabIndex={tabIndex}
-												className="cursor-pointer relative outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+												className={classNames(
+														"cursor-pointer relative rounded focus-visible:outline-none focus-visible:after:content-[''] focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:border-2 focus-visible:after:border-white focus-visible:after:pointer-events-none",
+														isSelected && "after:content-[''] after:absolute after:inset-0 after:border-2 after:border-white after:pointer-events-none"
+													)}
 												onClick={() => setSelectedImageSrc(imageSrc)}
 											>
 												<LazyImage

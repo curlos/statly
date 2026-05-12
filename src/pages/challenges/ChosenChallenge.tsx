@@ -21,7 +21,7 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 		challengesPageSettings: { selectedChallengeCardImage },
 	} = useUserSettingsContext();
 
-	const { updateQueryParams } = useSearchParamsContext();
+	const { buildUrlWithQueryParams } = useSearchParamsContext();
 	const pageContext = usePageContext();
 
 	if (!chosenChallenge || Object.keys(chosenChallenge).length === 0) {
@@ -35,27 +35,28 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 			? selectedChallengeCardImage?.focus
 			: selectedChallengeCardImage?.tasks;
 
+	const getCompletedDateHref = () => {
+		if (!completedDate) return undefined;
 
-
-	const handleGoToCompletedDate = (completedDate: Challenge['completedDate']) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
-		let startDate = pageContext.urlParsed.search['start-date']
+		let startDate = pageContext.urlParsed.search['start-date'];
 
 		if (!startDate) {
-			startDate = chosenChallenge.type === 'focus' ? (overviewStats?.firstFocusRecordDate || 'Jan 1, 100') : (overviewStats?.firstCompletedTaskDate || 'Jan 1, 100')
+			startDate = chosenChallenge.type === 'focus'
+				? (overviewStats?.firstFocusRecordDate || 'Jan 1, 100')
+				: (overviewStats?.firstCompletedTaskDate || 'Jan 1, 100');
 		}
-
 
 		delete nonDateQueryParams['start-date'];
 		delete nonDateQueryParams['end-date'];
 
 		const isForFocusChallenges = pageContext.routeParams.type === 'focus';
 
-		updateQueryParams(
+		return buildUrlWithQueryParams(
 			{
 				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(new Date(startDate)),
-				'end-date': getFormattedShortMonthDay(new Date(completedDate || startDate))
+				'end-date': getFormattedShortMonthDay(new Date(completedDate))
 			},
 			`/${isForFocusChallenges ? 'focus-records' : 'completed-tasks'}`
 		);
@@ -80,15 +81,19 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 								{name} in total
 							</span>
 						</div>
-						<div className="text-[16px] md:text-[18px]">
+						<div className="text-[16px] md:text-[18px] pb-2">
 							<span className="font-bold">Completion Date: </span>
-							<button
-								type="button"
-								className="text-color-gray-50 cursor-pointer hover:underline bg-transparent border-0 p-0"
-								onClick={() => handleGoToCompletedDate(completedDate)}
-							>
-								{completedDate ? completedDate : 'N/A'}
-							</button>
+							{completedDate ? (
+								<a
+									href={getCompletedDateHref()}
+									className="text-color-gray-50 hover:underline"
+									aria-label={`View ${chosenChallenge.type === 'focus' ? 'focus records' : 'completed tasks'} for ${completedDate}`}
+								>
+									{completedDate}
+								</a>
+							) : (
+								<span className="text-color-gray-50">N/A</span>
+							)}
 						</div>
 					</div>
 				</div>

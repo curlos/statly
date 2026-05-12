@@ -48,7 +48,7 @@ const MedalCard: React.FC<MedalCardProps> = ({
 			tabIndex={isSelected ? 0 : -1}
 			onKeyDown={(e) => onKeyDown(name, e)}
 			className={classNames(
-				'bg-color-gray-600 border-2 cursor-pointer text-left w-full focus:outline-none',
+				'bg-color-gray-600 border-2 cursor-pointer text-left w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:[outline-offset:-2px]',
 				chosenColorObj.hover.borderColor,
 				isSelected ? chosenColorObj.borderColor : 'border-[transparent]',
 				isLoadingFocusOrTasksData ? 'animate-pulse' : timesEarned === 0 && 'opacity-50'

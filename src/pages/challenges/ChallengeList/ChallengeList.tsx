@@ -60,14 +60,26 @@ const ChallengeList: React.FC<ChallengeListProps> = ({
 
 	const completedChallenges = challengesToUse.filter((challenge: Challenge) => challenge.completedDate);
 	const incompleteChallenges = challengesToUse.filter((challenge: Challenge) => !challenge.completedDate);
+	const allChallenges = [...completedChallenges, ...incompleteChallenges];
+
+	const handleChallengeKeyDown = (challengeName: string, e: React.KeyboardEvent) => {
+		if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'].includes(e.key)) return;
+		e.preventDefault();
+		const currentIndex = allChallenges.findIndex((c) => c.name === challengeName);
+		const direction = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1;
+		const nextIndex = (currentIndex + direction + allChallenges.length) % allChallenges.length;
+		setChosenChallenge(allChallenges[nextIndex]);
+		const radios = scrollContainerRef.current?.querySelectorAll<HTMLElement>('[role="radio"]');
+		radios?.[nextIndex]?.focus();
+	};
 
 	if (isLoading) {
 		return <ChallengeListSkeleton maxHeight={maxHeight} />;
 	}
 
 	return (
-		<div ref={scrollContainerRef} className="overflow-auto gray-scrollbar">
-			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2 " style={{ maxHeight }}>
+		<div ref={scrollContainerRef} role="radiogroup" aria-label="Challenges" className="overflow-auto gray-scrollbar">
+			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2 p-[2px]" style={{ maxHeight }}>
 				{completedChallenges.map((challenge: Challenge) => {
 					return (
 						<ChallengeCard
@@ -80,6 +92,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({
 								isLoading,
 								setShowChosenChallengeModal,
 								completedChallenges,
+								onKeyDown: handleChallengeKeyDown,
 							}}
 						/>
 					);
@@ -97,6 +110,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({
 								isLoading,
 								setShowChosenChallengeModal,
 								completedChallenges,
+								onKeyDown: handleChallengeKeyDown,
 							}}
 						/>
 					);

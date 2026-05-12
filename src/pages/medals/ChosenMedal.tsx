@@ -109,7 +109,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 									href="#after-intervals-list"
 									className="sr-only focus:not-sr-only focus:absolute focus:z-10 focus:px-2 focus:py-1 focus:bg-white focus:text-black focus:rounded"
 								>
-									Skip list of {timesEarned} {getIntervalsEarnedText().toLowerCase()}
+									Skip list of {timesEarned.toLocaleString()} {(timesEarned === 1 ? getIntervalsEarnedText().slice(0, -1) : getIntervalsEarnedText()).toLowerCase()}
 								</a>
 								<ul role="list" className="pb-3">
 									{intervalsEarned
