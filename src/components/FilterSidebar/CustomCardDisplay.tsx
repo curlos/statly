@@ -65,15 +65,17 @@ const CustomCardDisplay = () => {
 					{/* Opacity Slider */}
 					<div className="space-y-1">
 						<div className="flex items-center justify-between">
-							<span className="text-[14px] text-color-gray-100">Opacity:</span>
+							<label htmlFor="opacity-slider" className="text-[14px] text-color-gray-100">Opacity:</label>
 							<span className="text-[14px] text-color-gray-100">{Math.round(localOpacity * 100)}%</span>
 						</div>
 						<input
+							id="opacity-slider"
 							type="range"
 							min="0"
 							max="1"
 							step="0.1"
 							value={localOpacity}
+							aria-valuetext={`${Math.round(localOpacity * 100)}%`}
 							onChange={(e) => {
 								const newOpacity = parseFloat(e.target.value);
 
@@ -116,6 +118,7 @@ const CustomCardDisplay = () => {
 					<span className="text-[14px] text-color-gray-25">Choose color:</span>
 					<SimpleColorPicker
 						color={backgroundColor}
+						ariaLabel="Background color"
 						onColorChange={(newColor) =>
 							handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 								...customDisplay,
@@ -143,6 +146,7 @@ const CustomCardDisplay = () => {
 					<span className="text-[14px] text-color-gray-25">Choose color:</span>
 					<SimpleColorPicker
 						color={textColor}
+						ariaLabel="Text color"
 						onColorChange={(newColor) =>
 							handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 								...customDisplay,

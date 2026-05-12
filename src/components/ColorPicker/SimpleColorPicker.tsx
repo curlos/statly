@@ -3,9 +3,10 @@ import { useState, useEffect, useRef } from 'react';
 interface SimpleColorPickerProps {
 	color: string;
 	onColorChange: (color: string) => void;
+	ariaLabel?: string;
 }
 
-const SimpleColorPicker = ({ color, onColorChange }: SimpleColorPickerProps) => {
+const SimpleColorPicker = ({ color, onColorChange, ariaLabel }: SimpleColorPickerProps) => {
 	const [localColor, setLocalColor] = useState(color);
 	const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -46,6 +47,7 @@ const SimpleColorPicker = ({ color, onColorChange }: SimpleColorPickerProps) => 
 				type="color"
 				value={localColor}
 				onChange={handleColorPickerChange}
+				aria-label={ariaLabel}
 				className="w-10 h-10 rounded-lg cursor-pointer border-2 border-color-gray-500"
 			/>
 		</label>
