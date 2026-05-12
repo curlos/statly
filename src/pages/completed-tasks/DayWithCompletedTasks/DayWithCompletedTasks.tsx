@@ -109,7 +109,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 	const { cardBackgroundStyle, backgroundImageStyle, cardTextColor, cardBgColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj });
 
 	return (
-		<div
+		<article
 			className={classNames(
 				'm-0 list-none last:mb-[4px] w-full',
 				showMedals ? 'flex' : 'relative',
@@ -275,7 +275,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 				isDeleting={isDeleting}
 				showCounts={true}
 			/>
-		</div>
+		</article>
 	);
 };
 

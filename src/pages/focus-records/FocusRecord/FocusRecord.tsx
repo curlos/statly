@@ -89,7 +89,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
     const { cardBackgroundStyle, backgroundImageStyle, cardBgColor, cardTextColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj });
 
     return (
-        <div
+        <article
             className={classNames(
                 "m-0 list-none last:mb-[4px] w-full",
                 showMedals ? "flex" : "relative",
@@ -364,7 +364,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                 isDeleting={isDeleting}
                 showCounts={false}
             />
-        </div>
+        </article>
     );
 };
 
