@@ -105,9 +105,14 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 		downloadZipFolderOfGroupedCompletedTasks: downloadZipFolderOfGroupedCompletedTasks,
 	} as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>;
 
+	const statusLabel = copiedToClipboardStatus === 'copying' ? 'Loading' : copiedToClipboardStatus === 'done' ? 'Done' : copiedToClipboardStatus === 'error' ? 'Error' : '';
+
 	return (
-		<div
-			className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+		<button
+			type="button"
+			disabled={copiedToClipboardStatus === 'copying'}
+			aria-busy={copiedToClipboardStatus === 'copying'}
+			className={classNames('flex items-center gap-2 my-2 cursor-pointer disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
 			onClick={() => {
 				setCopiedToClipboardStatus('copying');
 
@@ -137,7 +142,7 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 					name={copiedToClipboardStatus === 'none' ? icon : copiedToClipboardStatus === 'error' ? 'error' : 'check'}
 					fill={0}
 					customClass={classNames(
-						'!text-[20px] cursor-pointer rounded-lg bg-color-gray-300 p-[6px]',
+						'!text-[20px] rounded-lg bg-color-gray-300 p-[6px]',
 						copiedToClipboardStatus === 'none'
 							? `'text-color-gray-50' ${chosenColorObj.hover.textColor} ${chosenColorObj.hover.borderColor}`
 							: copiedToClipboardStatus === 'error'
@@ -146,8 +151,9 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 					)}
 				/>
 			)}
-			<div>{text}</div>
-		</div>
+			<span>{text}</span>
+			{statusLabel && <span className="sr-only" aria-live="polite">{statusLabel}</span>}
+		</button>
 	);
 };
 
