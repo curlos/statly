@@ -113,9 +113,14 @@ const FocusRecordsExporter: React.FC<FocusRecordsExporterProps> = ({ text, icon,
 		downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedFocusRecords,
 	} as Record<string, (...args: unknown[]) => Promise<void>>;
 
+	const statusLabel = copiedToClipboardStatus === 'copying' ? 'Loading' : copiedToClipboardStatus === 'done' ? 'Done' : '';
+
 	return (
-		<div
-			className={classNames('flex items-center gap-2 my-2 cursor-pointer', chosenColorObj.hover.textColor)}
+		<button
+			type="button"
+			disabled={copiedToClipboardStatus === 'copying'}
+			aria-busy={copiedToClipboardStatus === 'copying'}
+			className={classNames('flex items-center gap-2 my-2 cursor-pointer disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
 			onClick={() => {
 				setCopiedToClipboardStatus('copying');
 
@@ -146,8 +151,9 @@ const FocusRecordsExporter: React.FC<FocusRecordsExporterProps> = ({ text, icon,
 					)}
 				/>
 			)}
-			<div>{text}</div>
-		</div>
+			<span>{text}</span>
+			{statusLabel && <span className="sr-only" aria-live="polite">{statusLabel}</span>}
+		</button>
 	);
 };
 
