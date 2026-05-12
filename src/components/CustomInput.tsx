@@ -11,6 +11,7 @@ interface CustomInputProps {
 	customClasses?: string;
 	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 	required?: boolean;
+	ariaLabel?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -23,6 +24,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	onChange,
 	customClasses,
 	required,
+	ariaLabel,
 }) => {
 	const { chosenColorObj } = useThemeContext();
 
@@ -46,6 +48,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 			min={type === 'number' ? min : undefined}
 			max={type === 'number' ? max : undefined}
 			required={required}
+			aria-label={ariaLabel}
 		/>
 	);
 };

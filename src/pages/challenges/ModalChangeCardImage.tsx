@@ -213,6 +213,8 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 	const [searchText, setSearchText] = useState('');
 	const [filteredCardImageSrcs, setFilteredCardImageSrcs] = useState<unknown[]>([]);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const gridRef = useRef<HTMLDivElement>(null);
+	const pendingFocusRef = useRef(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 24;
 
@@ -290,6 +292,25 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 	useEffect(() => {
 		setCurrentPage(1);
 	}, [searchText]);
+
+	const handlePageChange = (page: number) => {
+		pendingFocusRef.current = true;
+		setCurrentPage(page);
+	};
+
+	useEffect(() => {
+		if (!pendingFocusRef.current) return;
+		pendingFocusRef.current = false;
+		const radios = gridRef.current?.querySelectorAll<HTMLElement>('[role="radio"]');
+		if (!radios?.length) return;
+		const selectedIndex = currentItems.findIndex((obj: unknown) => {
+			const src = selectedGame !== 'POKEMON TCG CARDS'
+				? (obj as string)
+				: ((obj as Record<string, unknown>).imgurImageUrl as string);
+			return src === selectedImageSrc;
+		});
+		radios[selectedIndex !== -1 ? selectedIndex : 0]?.focus();
+	}, [currentPage, currentItems, selectedGame, selectedImageSrc]);
 
 	const getGridClasses = (selectedGame: string) => {
 		switch (selectedGame) {
@@ -431,6 +452,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 					) : (
 						<div ref={scrollContainerRef} className="overflow-auto h-[250px] md:h-[420px] gray-scrollbar">
 							<div
+								ref={gridRef}
 								role="radiogroup"
 								aria-label="Select card image"
 								className={classNames('grid gap-2', getGridClasses(selectedGame))}
@@ -500,7 +522,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 							<Pagination
 								total={displayTotalPages}
 								currentPage={currentPage}
-								setCurrentPage={setCurrentPage}
+								setCurrentPage={handlePageChange}
 								totalPages={displayTotalPages}
 							/>
 						</div>

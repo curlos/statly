@@ -73,8 +73,9 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 	const pages = getPages();
 
 	return (
-		<div className="flex items-center space-x-1 sm:space-x-2">
+		<nav aria-label="Pagination" className="flex items-center space-x-1 sm:space-x-2">
 			<button
+				aria-label="First page"
 				className={classNames(
 					'p-2 rounded',
 					currentPage === 1 ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
@@ -85,6 +86,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				{'<<'}
 			</button>
 			<button
+				aria-label="Previous page"
 				className={classNames(
 					'p-1 sm:p-2 rounded',
 					currentPage === 1 ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
@@ -108,6 +110,8 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				page === currentPage ? (
 					<button
 						key={page}
+						aria-label={`Page ${page}`}
+						aria-current="page"
 						className={classNames('px-2 py-1 rounded text-white', chosenColorObj.bgColor)}
 						onClick={() => setCurrentPage(page)}
 					>
@@ -116,6 +120,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				) : (
 					<button
 						key={page}
+						aria-label={`Page ${page}`}
 						className={classNames('px-2 py-1 rounded', chosenColorObj.hover.bgColorHalfOpacity)}
 						onClick={() => setCurrentPage(page)}
 					>
@@ -134,6 +139,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				</>
 			)}
 			<button
+				aria-label="Next page"
 				className={classNames(
 					'p-2 rounded',
 					currentPage === total ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
@@ -144,6 +150,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 				{'>'}
 			</button>
 			<button
+				aria-label="Last page"
 				className={classNames(
 					`p-2 rounded`,
 					currentPage === total ? 'cursor-not-allowed opacity-50' : chosenColorObj.hover.bgColorHalfOpacity
@@ -153,7 +160,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 			>
 				{'>>'}
 			</button>
-		</div>
+		</nav>
 	);
 };
 
@@ -169,13 +176,16 @@ const InBetweenPages: React.FC<InBetweenPagesProps> = ({ currentPage, setCurrent
 
 	return (
 		<div className="relative">
-			<span
+			<button
 				ref={drodpownCustomPageNumberRef}
 				onClick={() => setIsDropdownVisible(!isDropdownVisible)}
-				className="px-2 py-1 cursor-pointer"
+				aria-label="Jump to page"
+				aria-haspopup="true"
+				aria-expanded={isDropdownVisible}
+				className="px-2 py-1 cursor-pointer bg-transparent border-0"
 			>
 				...
-			</span>
+			</button>
 
 			<DropdownCustomPageNumber
 				toggleRef={drodpownCustomPageNumberRef}
@@ -203,10 +213,17 @@ const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 	totalPages,
 }) => {
 	const [localCurrentPage, setLocalCurrentPage] = useState(currentPage);
+	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		setLocalCurrentPage(currentPage);
 	}, [currentPage]);
+
+	useEffect(() => {
+		if (isVisible) {
+			formRef.current?.querySelector('input')?.focus();
+		}
+	}, [isVisible]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -231,7 +248,7 @@ const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 			customClasses={classNames('shadow-2xl border border-color-gray-100 rounded-lg', customClasses)}
 			openUpward={true}
 		>
-			<form onSubmit={handleSubmit} className="p-2 w-[80px]">
+			<form ref={formRef} onSubmit={handleSubmit} className="p-2 w-[80px]">
 				<CustomInput
 					value={localCurrentPage}
 					setValue={setLocalCurrentPage as React.Dispatch<React.SetStateAction<string | number>>}
@@ -239,6 +256,7 @@ const DropdownCustomPageNumber: React.FC<DropdownCustomPageNumberProps> = ({
 					min={1}
 					max={totalPages}
 					required={true}
+					ariaLabel="Go to page"
 				/>
 				<button
 					type="submit"

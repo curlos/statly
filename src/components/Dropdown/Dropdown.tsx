@@ -29,6 +29,36 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	});
 
 	useEffect(() => {
+		if (!isVisible) return;
+		const el = dropdownRef.current;
+		if (!el) return;
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				e.stopPropagation();
+				setIsVisible(false);
+				(toggleRef?.current as HTMLElement | null)?.focus();
+				return;
+			}
+			if (e.key === 'Tab') {
+				const focusable = Array.from(el.querySelectorAll<HTMLElement>(
+					'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+				));
+				if (e.shiftKey && document.activeElement === focusable[0]) {
+					e.preventDefault();
+					setIsVisible(false);
+					(toggleRef?.current as HTMLElement | null)?.focus();
+				} else if (!e.shiftKey && document.activeElement === focusable[focusable.length - 1]) {
+					setIsVisible(false);
+				}
+			}
+		};
+
+		el.addEventListener('keydown', handleKeyDown);
+		return () => el.removeEventListener('keydown', handleKeyDown);
+	}, [isVisible, setIsVisible, toggleRef]);
+
+	useEffect(() => {
 		if (isVisible && dropdownRef.current) {
 			const dropdownRect = dropdownRef.current.getBoundingClientRect();
 			const toggleRect = (toggleRef?.current as HTMLElement | null)?.getBoundingClientRect();
