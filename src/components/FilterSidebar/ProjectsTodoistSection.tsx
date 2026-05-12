@@ -68,7 +68,7 @@ const ProjectsTodoistSection = () => {
 
 	return (
 		<div>
-			<hr className="border-color-gray-100 my-4" />
+			<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 			<Accordion
 				title={
 					<div className="flex items-center gap-1">

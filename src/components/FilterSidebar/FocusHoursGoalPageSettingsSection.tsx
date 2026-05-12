@@ -518,7 +518,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				/>
 			</Accordion>
 
-			<hr className="border-color-gray-100 mb-4" />
+			<hr aria-hidden="true" className="border-color-gray-100 mb-4" />
 
 			{/* Combined Rings Settings Accordion */}
 			<Accordion
@@ -585,7 +585,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				</div>
 			</Accordion>
 
-			<hr className="border-color-gray-100 mt-2 mb-4" />
+			<hr aria-hidden="true" className="border-color-gray-100 mt-2 mb-4" />
 
 			<Accordion
 				title={

@@ -192,7 +192,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 					</p>
 				</div>
 			) : (
-				<hr className="border-color-gray-100 my-4" />
+				<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 			)}
 
 			{/* Selected Projects Display - Only for focus-time-goal page */}

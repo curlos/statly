@@ -128,7 +128,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 
 			{isAtLeastOneFilterApplied && (
 				<>
-					<hr className="border-color-gray-100 my-4" />
+					<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 					<div>
 						<h3 className="text-[16px] font-bold mb-2">APPLIED FILTERS</h3>
 						<AppliedFilterItemList />
@@ -136,17 +136,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 				</>
 			)}
 
-			<hr className="border-color-gray-100 my-4" />
+			<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 			<SearchSection />
 
 			{isFocusRecordsOrCompletedTasksPage && sortByOptions && (
 				<>
-					<hr className="border-color-gray-100 my-4" />
+					<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 					<SortBySection sortByOptions={sortByOptions} />
 				</>
 			)}
 
-			<hr className="border-color-gray-100 my-4" />
+			<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 			<DateRangeSection />
 
 			{page !== 'completed-tasks-page' && (
@@ -177,14 +177,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 
 			{page !== 'completed-tasks-page' && (
 				<>
-					<hr className="border-color-gray-100 my-4" />
+					<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 					<ShowRecordsFromEmotionSection />
 				</>
 			)}
 
 			{page !== 'completed-tasks-page' && (
 				<>
-					<hr className="border-color-gray-100 my-4" />
+					<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 					<GeneralFocusRecordsFilters />
 				</>
 			)}
