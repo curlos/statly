@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import { DropdownProps } from '../../interfaces/interfaces';
 import classNames from 'classnames';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 interface BaseDropdownProps extends DropdownProps {
 	children: React.ReactNode;
@@ -111,10 +111,11 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	}, [isVisible, toggleRef, parentElemRef, align, openUpward]);
 
 	// Animation variants
+	const shouldReduceMotion = useReducedMotion();
 	const variants = {
 		hidden: {
 			opacity: 0,
-			scale: 0.95,
+			scale: shouldReduceMotion ? 1 : 0.95,
 			transition: {
 				duration: 0.2,
 			},

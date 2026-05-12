@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import useOutsideClick from '../hooks/useOutsideClick';
 import FocusRecordMenuItems from './FocusRecordMenuItems';
 
@@ -56,8 +56,9 @@ const FocusRecordContextMenu: React.FC<FocusRecordContextMenuProps> = ({
 		}
 	}, [isVisible, position]);
 
+	const shouldReduceMotion = useReducedMotion();
 	const variants = {
-		hidden: { opacity: 0, scale: 0.95 },
+		hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.95 },
 		visible: { opacity: 1, scale: 1 },
 	};
 

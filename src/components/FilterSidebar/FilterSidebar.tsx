@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useDialogFocus } from '../../hooks/useDialogFocus';
 import Icon from '../Icon';
 import DateRangeSection from './DateRangeSection';
@@ -25,8 +25,9 @@ interface FilterSidebarProps {
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingMotion = true }) => {
 	const panelRef = useDialogFocus(isForModal, () => setIsOpen(false));
+	const shouldReduceMotion = useReducedMotion();
 	const sidebarVariants = {
-		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
+		hidden: { x: shouldReduceMotion ? 0 : 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
 	};
 

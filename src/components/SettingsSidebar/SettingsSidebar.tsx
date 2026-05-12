@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useDialogFocus } from '../../hooks/useDialogFocus';
 import Icon from '../Icon';
 import classNames from 'classnames';
@@ -19,8 +19,9 @@ interface SettingsSidebarProps {
 
 const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useSlidingMotion = true }) => {
 	const panelRef = useDialogFocus<HTMLDialogElement>(true, () => setIsOpen(false));
+	const shouldReduceMotion = useReducedMotion();
 	const sidebarVariants = {
-		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
+		hidden: { x: shouldReduceMotion ? 0 : 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
 	};
 
