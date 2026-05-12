@@ -52,7 +52,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
     const thereAreCompletedTasks = completedTasksDuringFocusSession && completedTasksDuringFocusSession.length > 0;
 
     // Handle emotion tag click
-    const { handleEmotionTagClick } = useHandleEmotionTagClick();
+    const { buildEmotionUrl } = useHandleEmotionTagClick();
     const isBattlefieldOneOrThreeMedal = !!(
         BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage]
     );
@@ -345,14 +345,14 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                         <EmotionTag
                                             key={`${emotionObj.emotion}-${index}`}
                                             emotionObj={emotionObj}
-                                            onClick={() => handleEmotionTagClick(emotionObj.emotion)}
+                                            href={buildEmotionUrl(emotionObj.emotion)}
                                             showScore={true}
                                         />
                                     ))
                                 ) : (
                                     <EmotionTag
                                         emotionObj={{ emotion: "none", score: 0 }}
-                                        onClick={() => handleEmotionTagClick("none")}
+                                        href={buildEmotionUrl("none")}
                                         showScore={false}
                                     />
                                 )}

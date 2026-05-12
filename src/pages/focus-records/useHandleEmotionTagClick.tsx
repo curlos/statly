@@ -2,9 +2,12 @@ import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { getCommaSeparatedObj } from '../../utils/helpers.utils';
 
 export const useHandleEmotionTagClick = () => {
-	const { searchParams, updateQueryParams } = useSearchParamsContext();
+	const { searchParams, updateQueryParams, buildUrlWithQueryParams } = useSearchParamsContext();
 	const emotionsFromUrl = searchParams.get('emotions');
 	const emotionsByName = getCommaSeparatedObj(emotionsFromUrl ?? undefined);
+
+	const buildEmotionUrl = (emotionId: string) =>
+		buildUrlWithQueryParams({ emotions: emotionId, page: '' });
 
 	const handleEmotionTagClick = (emotionId: string, multiSelect: boolean = false) => {
 		if (!multiSelect) {
@@ -26,5 +29,5 @@ export const useHandleEmotionTagClick = () => {
 		updateQueryParams({ emotions: selectedEmotions.join(','), page: '' });
 	};
 
-	return { handleEmotionTagClick };
+	return { handleEmotionTagClick, buildEmotionUrl };
 };

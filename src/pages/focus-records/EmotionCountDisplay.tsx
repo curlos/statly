@@ -6,7 +6,7 @@ interface EmotionCountDisplayProps {
 }
 
 const EmotionCountDisplay = ({ emotionCounts }: EmotionCountDisplayProps) => {
-	const { handleEmotionTagClick } = useHandleEmotionTagClick();
+	const { buildEmotionUrl } = useHandleEmotionTagClick();
 
 	if (!emotionCounts || Object.keys(emotionCounts).length === 0) {
 		return null;
@@ -28,7 +28,7 @@ const EmotionCountDisplay = ({ emotionCounts }: EmotionCountDisplayProps) => {
 						key={emotion}
 						emotionObj={{ emotion, score: 0 }}
 						count={count}
-						onClick={() => handleEmotionTagClick(emotion)}
+						href={buildEmotionUrl(emotion)}
 					/>
 				))}
 			</div>

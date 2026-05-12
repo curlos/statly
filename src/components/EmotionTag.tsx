@@ -8,13 +8,13 @@ interface EmotionObject {
 
 interface EmotionTagProps {
 	emotionObj: EmotionObject;
-	onClick?: () => void;
+	href?: string;
 	showBorder?: boolean;
 	showScore?: boolean;
 	count?: number;
 }
 
-const EmotionTag = ({ emotionObj, onClick, showScore = false, count }: EmotionTagProps) => {
+const EmotionTag = ({ emotionObj, href, showScore = false, count }: EmotionTagProps) => {
 	const emotionData = EMOTIONS[emotionObj.emotion as keyof typeof EMOTIONS];
 
 	if (!emotionData) {
@@ -26,26 +26,26 @@ const EmotionTag = ({ emotionObj, onClick, showScore = false, count }: EmotionTa
 	const sharedClasses = classNames(
 		'px-3 py-1 text-[14px] text-[#ffffff] rounded-full transition-opacity border border-color-gray-25',
 		emotionData.bg,
-		onClick && 'cursor-pointer hover:opacity-80',
+		href && 'cursor-pointer hover:opacity-80',
+	);
+
+	const content = (
+		<>
+			{emotionData.name}
+			{showScore && ` - ${formattedScore}%`}
+			{count !== undefined && ` - ${count.toLocaleString()}x`}
+		</>
 	);
 
 	return (
 		<div className="bg-gray-800 rounded-full">
-			{onClick ? (
-				<button
-					type="button"
-					onClick={onClick}
-					className={sharedClasses}
-				>
-					{emotionData.name}
-					{showScore && ` - ${formattedScore}%`}
-					{count !== undefined && ` - ${count.toLocaleString()}x`}
-				</button>
+			{href ? (
+				<a href={href} className={sharedClasses}>
+					{content}
+				</a>
 			) : (
 				<div className={sharedClasses}>
-					{emotionData.name}
-					{showScore && ` - ${formattedScore}%`}
-					{count !== undefined && ` - ${count.toLocaleString()}x`}
+					{content}
 				</div>
 			)}
 		</div>
