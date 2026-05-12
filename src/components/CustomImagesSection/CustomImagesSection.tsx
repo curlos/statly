@@ -101,8 +101,9 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 				{isCustomEditMode && (
 					<>
 						{/* Select Images Button */}
-						<label
-							htmlFor="custom-image-upload"
+						<button
+							type="button"
+							onClick={() => fileInputRef.current?.click()}
 							className={classNames(
 								chosenColorObj.bgColor,
 								nextDarkestColorObj?.hover.bgColor,
@@ -111,7 +112,7 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 						>
 							<Icon name="add_photo_alternate" customClass="!text-[18px]" />
 							Select Images (Max 10)
-						</label>
+						</button>
 
 						<button
 							onClick={() => setShowCreateFolderModal(true)}

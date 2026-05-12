@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useUploadCustomImagesMutation } from '../services/resources/customImagesApi';
 import ImageCropModal from './Modal/ImageCropModal';
 import Icon from './Icon';
@@ -104,9 +104,16 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState<string | null>(null);
 	const internalFileInputRef = useRef<HTMLInputElement>(null);
+	const errorRef = useRef<HTMLDivElement>(null);
 
 	// Use external ref if provided, otherwise use internal ref
 	const fileInputRef = externalFileInputRef || internalFileInputRef;
+
+	useEffect(() => {
+		if (error) {
+			errorRef.current?.focus();
+		}
+	}, [error]);
 
 	// Drag and drop sensors
 	const sensors = useSensors(
@@ -291,16 +298,12 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 			)}
 
 			{/* Error/Success Messages */}
-			{error && (
-				<div className={`mb-4 p-3 bg-red-900/30 border border-red-700 rounded text-sm ${colorMode === 'dark' ? 'text-red-200' : 'text-red-700'}`}>
-					{error}
-				</div>
-			)}
-			{success && (
-				<div className={`mb-4 p-3 bg-green-900/30 border border-green-900 rounded text-sm ${colorMode === 'dark' ? 'text-green-200' : 'text-green-900'}`}>
-					{success}
-				</div>
-			)}
+			<div ref={errorRef} role="alert" tabIndex={-1} className={error ? `mb-4 p-3 bg-red-900/30 border border-red-700 rounded text-sm focus:outline-none ${colorMode === 'dark' ? 'text-red-200' : 'text-red-700'}` : 'sr-only'}>
+				{error}
+			</div>
+			<div role="status" className={success ? `mb-4 p-3 bg-green-900/30 border border-green-900 rounded text-sm ${colorMode === 'dark' ? 'text-green-200' : 'text-green-900'}` : 'sr-only'}>
+				{success}
+			</div>
 
 			{/* Preview Grid with Drag and Drop */}
 			{previewUrls.length === 0 && (

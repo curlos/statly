@@ -1,3 +1,4 @@
+import Modal from '../Modal/Modal';
 import { useRenameCustomImageFolderMutation, type CustomImageFolder } from '../../services/resources/customImageFoldersApi';
 
 interface RenameFolderModalProps {
@@ -43,16 +44,16 @@ const RenameFolderModal: React.FC<RenameFolderModalProps> = ({
 		}
 	};
 
-	if (!isOpen) return null;
-
 	const maxLength = 30;
 	const charCount = renameFolderName.length;
 	const isAtMax = charCount >= maxLength;
 
 	return (
-		<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+		<Modal isOpen={isOpen} onClose={handleClose} ariaLabelledBy="rename-folder-heading">
 			<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm w-full mx-4">
-				<h3 className="text-lg font-bold mb-3">Rename Folder</h3>
+				<h3 id="rename-folder-heading" tabIndex={-1} autoFocus className="text-lg font-bold mb-3">
+					Rename Folder
+				</h3>
 				<form onSubmit={handleSubmit}>
 					<input
 						type="text"
@@ -83,7 +84,7 @@ const RenameFolderModal: React.FC<RenameFolderModalProps> = ({
 					</div>
 				</form>
 			</div>
-		</div>
+		</Modal>
 	);
 };
 

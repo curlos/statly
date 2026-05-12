@@ -15,6 +15,7 @@ interface SortableCustomImageProps {
 	onDelete: () => void;
 	onMove: () => void;
 	availableFolders: string[];
+	tabIndex?: number;
 }
 
 const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
@@ -26,6 +27,7 @@ const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
 	onDelete,
 	onMove,
 	availableFolders,
+	tabIndex = -1,
 }) => {
 	const { chosenColorObj } = useThemeContext();
 	const {
@@ -47,8 +49,14 @@ const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
 		<div
 			ref={setNodeRef}
 			style={style}
+			role="radio"
+			aria-checked={isSelected}
+			aria-label="Custom image"
+			tabIndex={tabIndex}
 			className={classNames(
-				'relative overflow-hidden',
+				'relative overflow-hidden focus-visible:outline-none',
+				"focus-visible:after:content-[''] focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:border-2 focus-visible:after:border-white focus-visible:after:pointer-events-none",
+				isSelected && !isEditMode && "after:content-[''] after:absolute after:inset-0 after:border-2 after:border-white after:pointer-events-none",
 				!isEditMode && 'cursor-pointer hover:opacity-80 transition',
 				isDragging && 'z-50'
 			)}

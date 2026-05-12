@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Modal from './Modal/Modal';
 import {
 	useUpdateCustomImageMutation,
 	useDeleteCustomImageMutation,
@@ -50,6 +51,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 	const [moveCustomImage] = useMoveCustomImageMutation();
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
+	const gridRef = useRef<HTMLDivElement>(null);
 	const [localImages, setLocalImages] = useState<CustomImage[]>([]);
 	const [editingImageId, setEditingImageId] = useState<string | null>(null);
 	const [imageToCrop, setImageToCrop] = useState<string | null>(null);
@@ -123,6 +125,33 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 		}
 	};
 
+	const hasSelectionInCurrentPage = localImages.some(img => img.imageUrl === selectedImageSrc);
+
+	const handleGridKeyDown = (e: React.KeyboardEvent) => {
+		if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+		e.preventDefault();
+
+		const radios = gridRef.current?.querySelectorAll<HTMLElement>('[role="radio"]');
+		if (!radios || radios.length === 0) return;
+
+		const currentIndex = Array.from(radios).findIndex(r => r === document.activeElement);
+
+		let nextIndex: number;
+		if (e.key === 'Home') {
+			nextIndex = 0;
+		} else if (e.key === 'End') {
+			nextIndex = radios.length - 1;
+		} else {
+			const direction = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1;
+			nextIndex = (Math.max(0, currentIndex) + direction + radios.length) % radios.length;
+		}
+
+		if (setSelectedImageSrc) {
+			setSelectedImageSrc(localImages[nextIndex].imageUrl);
+		}
+		radios[nextIndex]?.focus();
+	};
+
 	const handleSelectImage = (imageUrl: string) => {
 		if (!isEditMode && setSelectedImageSrc) {
 			setSelectedImageSrc(imageUrl);
@@ -173,9 +202,16 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 					strategy={rectSortingStrategy}
 					disabled={!isEditMode}
 				>
-					<div className="grid grid-cols-3 md:grid-cols-4 gap-2">
-						{localImages.map((image) => {
+					<div
+						ref={gridRef}
+						role="radiogroup"
+						aria-label="Select custom image"
+						className="grid grid-cols-3 md:grid-cols-4 gap-2"
+						onKeyDown={!isEditMode ? handleGridKeyDown : undefined}
+					>
+						{localImages.map((image, index) => {
 							const isSelected = selectedImageSrc === image.imageUrl;
+							const tabIndex = isSelected ? 0 : (index === 0 && !hasSelectionInCurrentPage ? 0 : -1);
 
 							return (
 								<SortableCustomImage
@@ -183,6 +219,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 									image={image}
 									isEditMode={isEditMode}
 									isSelected={isSelected}
+									tabIndex={tabIndex}
 									onSelect={() => handleSelectImage(image.imageUrl)}
 									onCrop={() => handleCropImage(image._id, image.imageUrl)}
 									onDelete={() => setShowDeleteConfirm(image._id)}
@@ -210,77 +247,81 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 			)}
 
 			{/* Delete Confirmation Modal */}
-			{showDeleteConfirm && (
-				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-					<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm mx-4">
-						<h3 className="text-lg font-bold mb-3">Delete Image?</h3>
-						<p className="text-color-gray-25 mb-6">
-							This action cannot be undone. The image will be permanently deleted.
-						</p>
-						<div className="flex gap-3 justify-end">
-							<button
-								onClick={() => setShowDeleteConfirm(null)}
-								disabled={isDeletingImage}
-								className="px-4 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={() => handleDeleteImage(showDeleteConfirm)}
-								disabled={isDeletingImage}
-								className="px-4 py-2 bg-red-600 hover:bg-red-700 text-[#ffffff] rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-							>
-								{isDeletingImage && <Spinner size="sm" />}
-								Delete
-							</button>
-						</div>
+			<Modal
+				isOpen={!!showDeleteConfirm}
+				onClose={() => setShowDeleteConfirm(null)}
+				ariaLabelledBy="delete-image-heading"
+			>
+				<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm mx-4">
+					<h3 id="delete-image-heading" tabIndex={-1} autoFocus className="text-lg font-bold mb-3">Delete Image?</h3>
+					<p className="text-color-gray-25 mb-6">
+						This action cannot be undone. The image will be permanently deleted.
+					</p>
+					<div className="flex gap-3 justify-end">
+						<button
+							onClick={() => setShowDeleteConfirm(null)}
+							disabled={isDeletingImage}
+							className="px-4 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+						>
+							Cancel
+						</button>
+						<button
+							onClick={() => showDeleteConfirm && handleDeleteImage(showDeleteConfirm)}
+							disabled={isDeletingImage}
+							className="px-4 py-2 bg-red-600 hover:bg-red-700 text-[#ffffff] rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+						>
+							{isDeletingImage && <Spinner size="sm" />}
+							Delete
+						</button>
 					</div>
 				</div>
-			)}
+			</Modal>
 
 			{/* Move Modal */}
-			{showMoveModal && (
-				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-					<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm mx-4">
-						<h3 className="text-lg font-bold mb-3">Move to Folder</h3>
+			<Modal
+				isOpen={!!showMoveModal}
+				onClose={() => { setShowMoveModal(null); setMoveDestinationFolder(''); }}
+				ariaLabelledBy="move-folder-heading"
+			>
+				<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm mx-4">
+					<h3 id="move-folder-heading" className="text-lg font-bold mb-3">Move to Folder</h3>
 
-						{/* Folder Dropdown */}
+					<div className="relative mb-4">
 						<select
 							value={moveDestinationFolder}
 							onChange={(e) => setMoveDestinationFolder(e.target.value)}
-							className="w-full px-3 py-2 bg-color-gray-300 rounded mb-4 text-white"
+							className="w-full pl-3 pr-8 py-2 bg-color-gray-300 rounded text-white appearance-none"
 						>
 							<option value="">Select folder...</option>
 							{availableFolders
-								.filter(f => f !== currentFolder) // Can't move to current folder
+								.filter(f => f !== currentFolder)
 								.map(folder => (
 									<option key={folder} value={folder}>{folder}</option>
 								))
 							}
 						</select>
-
-						{/* Buttons */}
-						<div className="flex gap-3 justify-end">
-							<button
-								onClick={() => {
-									setShowMoveModal(null);
-									setMoveDestinationFolder('');
-								}}
-								className="px-4 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={() => showMoveModal && handleMoveImage(showMoveModal, moveDestinationFolder)}
-								disabled={!moveDestinationFolder}
-								className={`px-4 py-2 ${chosenColorObj.bgColor} ${nextDarkestColorObj?.hover.bgColor || chosenColorObj.hover.bgColor}  rounded disabled:opacity-50`}
-							>
-								Move
-							</button>
+						<div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
+							<Icon name="expand_more" customClass="!text-[20px] text-white" />
 						</div>
 					</div>
+
+					<div className="flex gap-3 justify-end">
+						<button
+							onClick={() => { setShowMoveModal(null); setMoveDestinationFolder(''); }}
+							className="px-4 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded"
+						>
+							Cancel
+						</button>
+						<button
+							onClick={() => showMoveModal && handleMoveImage(showMoveModal, moveDestinationFolder)}
+							disabled={!moveDestinationFolder}
+							className={`px-4 py-2 ${chosenColorObj.bgColor} ${nextDarkestColorObj?.hover.bgColor || chosenColorObj.hover.bgColor} rounded disabled:opacity-50`}
+						>
+							Move
+						</button>
+					</div>
 				</div>
-			)}
+			</Modal>
 		</div>
 	);
 };

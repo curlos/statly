@@ -1,3 +1,4 @@
+import Modal from '../Modal/Modal';
 import { useCreateCustomImageFolderMutation } from '../../services/resources/customImageFoldersApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 
@@ -34,16 +35,16 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
 		}
 	};
 
-	if (!isOpen) return null;
-
 	const maxLength = 30;
 	const charCount = newFolderName.length;
 	const isAtMax = charCount >= maxLength;
 
 	return (
-		<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+		<Modal isOpen={isOpen} onClose={handleClose} ariaLabelledBy="create-folder-heading">
 			<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm w-full mx-4">
-				<h3 className="text-lg font-bold mb-3">Create New Folder</h3>
+				<h3 id="create-folder-heading" tabIndex={-1} autoFocus className="text-lg font-bold mb-3">
+					Create New Folder
+				</h3>
 				<form onSubmit={handleSubmit}>
 					<input
 						type="text"
@@ -74,7 +75,7 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
 					</div>
 				</form>
 			</div>
-		</div>
+		</Modal>
 	);
 };
 

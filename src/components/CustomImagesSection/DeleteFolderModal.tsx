@@ -1,3 +1,4 @@
+import Modal from '../Modal/Modal';
 import Icon from '../Icon';
 import Spinner from '../Loaders/Spinner';
 import { useBulkDeleteCustomImagesMutation } from '../../services/resources/customImagesApi';
@@ -72,13 +73,11 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 		}
 	};
 
-	if (!isOpen) return null;
-
 	return (
-		<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+		<Modal isOpen={isOpen} onClose={onClose} ariaLabelledBy="delete-folder-heading">
 			<div className="bg-color-gray-700 rounded-lg p-6 max-w-md w-full mx-4">
 				<div className="flex items-start justify-between mb-3">
-					<h3 className="text-lg font-bold">
+					<h3 id="delete-folder-heading" tabIndex={-1} autoFocus className="text-lg font-bold">
 						{selectedMedalType === 'GENERAL'
 							? 'Delete Images in GENERAL Folder?'
 							: `Delete "${selectedMedalType}" Folder?`}
@@ -127,7 +126,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 							</div>
 						</button>
 					)}
-
+					
 					{/* Options for non-GENERAL folders only */}
 					{selectedMedalType !== 'GENERAL' && (
 						<>
@@ -200,7 +199,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 					</button>
 				</div>
 			</div>
-		</div>
+		</Modal>
 	);
 };
 
