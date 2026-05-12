@@ -31,7 +31,7 @@ const CheckboxOther: React.FC<CheckboxOtherProps> = ({ name, showValue, handleCh
 			<span className="flex-1 flex justify-between">
 				<span>{name}</span>
 				{project?.color && (
-					<span>
+					<span aria-hidden="true">
 						<span className="block w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: project.color }} />
 					</span>
 				)}

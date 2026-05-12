@@ -251,7 +251,8 @@ const ImportData = () => {
 				)}
 
 				{/* Radio Button Options */}
-				<div className="ml-9 space-y-2">
+				<fieldset className="ml-9 space-y-2 border-0 p-0 m-0">
+					<legend className="sr-only">Import selection mode</legend>
 					<CustomRadioButton
 						label="Select Files"
 						name="selectionMode"
@@ -274,7 +275,7 @@ const ImportData = () => {
 						customOuterCircleBorderColorClasses={chosenColorObj.borderColor}
 						customInnerCircleBgColorClasses={chosenColorObj.bgColor}
 					/>
-				</div>
+				</fieldset>
 
 				{/* Hidden file input for selecting individual files */}
 				<input

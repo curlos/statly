@@ -1,7 +1,7 @@
-import { useRef } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import CustomRadioButton from '../CustomRadioButton';
+import useDebouncedCallback from '../../hooks/useDebouncedCallback';
 
 const FontFamilyList = () => {
 
@@ -31,29 +31,24 @@ const FontFamilyList = () => {
 		'Jost',
 	];
 
-	const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const handleChangeFontFamily = useDebouncedCallback(async (fontFamilyKey: string) => {
+		const payload = {
+			theme: {
+				...userSettings?.theme,
+				fontFamily: fontFamilyKey,
+			},
+		};
 
-	const handleChangeFontFamily = (fontFamilyKey: string) => {
-		if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
-		debounceTimer.current = setTimeout(async () => {
-			const payload = {
-				theme: {
-					...userSettings?.theme,
-					fontFamily: fontFamilyKey,
-				},
-			};
-
-			await editUserSettings(payload).unwrap();
-			localStorage.setItem('font-family', fontFamilyKey);
-		}, 500);
-	};
+		await editUserSettings(payload).unwrap();
+		localStorage.setItem('font-family', fontFamilyKey);
+	}, 500);
 
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey } = themeContext;
 
 	return (
-		<div role="radiogroup" aria-label="Font Family">
+		<fieldset className="border-0 p-0 m-0">
+			<legend className="sr-only">Font Family</legend>
 			{fontFamilies.map((fontFamilyName) => {
 				const fontFamilyKey = fontFamilyName ? fontFamilyName : 'Default';
 
@@ -72,7 +67,7 @@ const FontFamilyList = () => {
 					</div>
 				);
 			})}
-		</div>
+		</fieldset>
 	);
 };
 

@@ -4,6 +4,7 @@ import Icon from '../Icon';
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Accordion from '../Accordion/Accordion';
+import useDebouncedCallback from '../../hooks/useDebouncedCallback';
 
 interface SortBySectionProps {
 	sortByOptions: string[];
@@ -23,6 +24,14 @@ const SortBySection: React.FC<SortBySectionProps> = ({ sortByOptions }) => {
 		return sortBy === sortByOption;
 	};
 
+	const handleSortByChange = useDebouncedCallback((sortByOption: string) => {
+		if (sortByOption === 'Newest') {
+			updateQueryParams({ 'sort-by': '', page: '' });
+		} else {
+			updateQueryParams({ 'sort-by': sortByOption, page: '' });
+		}
+	}, 500);
+
 	return (
 		<div>
 			<Accordion
@@ -38,21 +47,16 @@ const SortBySection: React.FC<SortBySectionProps> = ({ sortByOptions }) => {
 				}
 				openByDefault={true}
 			>
-				<div className="space-y-1">
+				<fieldset className="space-y-1 border-0 p-0 m-0">
+					<legend className="sr-only">Sort by</legend>
 					{sortByOptions.map((sortByOption) => {
 						return (
 							<CustomRadioButton
 								key={sortByOption + 'radio'}
 								label={sortByOption}
-								name={sortByOption}
+								name="sort-by"
 								checked={isSortByOptionChecked(sortByOption)}
-								onChange={() => {
-									if (sortByOption === 'Newest') {
-										updateQueryParams({ 'sort-by': '', page: '' });
-									} else {
-										updateQueryParams({ 'sort-by': sortByOption, page: '' });
-									}
-								}}
+								onChange={() => handleSortByChange(sortByOption)}
 								customOuterCircleClasses={classNames('!w-[20px] !h-[20px]')}
 								customInnerCircleClasses={classNames('!w-[10px] !h-[10px]')}
 								customOuterCircleBorderColorClasses={chosenColorObj.borderColor}
@@ -60,7 +64,7 @@ const SortBySection: React.FC<SortBySectionProps> = ({ sortByOptions }) => {
 							/>
 						);
 					})}
-				</div>
+				</fieldset>
 			</Accordion>
 		</div>
 	);

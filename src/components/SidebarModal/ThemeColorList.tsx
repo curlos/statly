@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import { useRef } from 'react';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import { toTitleCase } from '../../utils/helpers.utils';
 import CustomRadioButton from '../CustomRadioButton';
 import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
+import useDebouncedCallback from '../../hooks/useDebouncedCallback';
 
 const ThemeColorList = () => {
 	// RTK Query - User Settings
@@ -18,22 +18,16 @@ const ThemeColorList = () => {
 	const themeContext = useThemeContext();
 	const { themeColorKey, cssStyles, chosenColorObj } = themeContext;
 
-	const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-	const handleChangeThemeColor = (colorKey: string) => {
-		if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
-		debounceTimer.current = setTimeout(async () => {
-			const payload = {
-				theme: {
-					...userSettings?.theme,
-					color: colorKey,
-				},
-			};
-			await editUserSettings(payload).unwrap();
-			localStorage.setItem('theme-color', colorKey);
-		}, 500);
-	};
+	const handleChangeThemeColor = useDebouncedCallback(async (colorKey: string) => {
+		const payload = {
+			theme: {
+				...userSettings?.theme,
+				color: colorKey,
+			},
+		};
+		await editUserSettings(payload).unwrap();
+		localStorage.setItem('theme-color', colorKey);
+	}, 500);
 
 	return (
 		<div>
@@ -82,7 +76,8 @@ const ThemeColorList = () => {
 									</div>
 								}
 							>
-								<div role="radiogroup" aria-label={toTitleCase(groupedColorName)} className="pl-3">
+								<fieldset className="border-0 p-0 m-0 pl-3">
+									<legend className="sr-only">{toTitleCase(groupedColorName)}</legend>
 									{Object.keys(colorsFromGroup).map((colorKey) => {
 										const { borderColor, bgColor, textColor } = colorsFromGroup[colorKey];
 
@@ -103,7 +98,7 @@ const ThemeColorList = () => {
 											/>
 										);
 									})}
-								</div>
+								</fieldset>
 							</Accordion>
 						</div>
 					);

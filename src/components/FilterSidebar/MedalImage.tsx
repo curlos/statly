@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import CardImage from '../../pages/challenges/CardImage';
 import CustomRadioButton from '../CustomRadioButton';
+import CheckboxOther from './CheckboxOther';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
-import Icon from '../Icon';
+import useDebouncedCallback from '../../hooks/useDebouncedCallback';
 
 const MedalImage = () => {
 	const {
@@ -28,21 +29,24 @@ const MedalImage = () => {
 
 	const { chosenColorObj } = useThemeContext();
 
+	const handleMedalImageSizeChange = useDebouncedCallback((px: number) => {
+		handleUpdateUserSettingForPage('focusRecords', 'medalImageSizePx', String(px));
+	}, 500);
+
 	return (
 		<div>
 			<CardImage cardType="Medal Image" imageSrc={selectedMedalImage} page={'focus-records'} showGlow={showMedalGlow} />
 
-			<div className="space-y-1 mt-2">
+			<fieldset className="space-y-1 mt-2 border-0 p-0 m-0">
+				<legend className="sr-only">Medal image size</legend>
 				{medalImageSizeOptions.map((imageSizeOption) => {
 					return (
 						<CustomRadioButton
 							key={imageSizeOption.name + 'radio'}
 							label={imageSizeOption.name}
-							name={imageSizeOption.name}
+							name="medal-image-size"
 							checked={imageSizeOption.px === medalImageSizePx}
-							onChange={() => {
-								handleUpdateUserSettingForPage('focusRecords', 'medalImageSizePx', String(imageSizeOption.px));
-							}}
+							onChange={() => handleMedalImageSizeChange(imageSizeOption.px)}
 							customOuterCircleClasses={classNames('!w-[20px] !h-[20px]')}
 							customInnerCircleClasses={classNames('!w-[10px] !h-[10px]')}
 							customOuterCircleBorderColorClasses={chosenColorObj.borderColor}
@@ -50,20 +54,14 @@ const MedalImage = () => {
 						/>
 					);
 				})}
-			</div>
+			</fieldset>
 
-			<div
-				className="flex items-center gap-1 mt-2 cursor-pointer ml-6"
-				onClick={() => {
-					handleUpdateUserSettingForPage('focusRecords', 'showMedalGlow', !showMedalGlow);
-				}}
-			>
-				<Icon
-					name={showMedalGlow ? 'check_box' : 'check_box_outline_blank'}
-					fill={1}
-					customClass={classNames('!text-[22px]', chosenColorObj.textColor)}
+			<div className="ml-6 mt-2">
+				<CheckboxOther
+					name="Show Medal Glow"
+					showValue={showMedalGlow}
+					handleCheckboxClick={() => handleUpdateUserSettingForPage('focusRecords', 'showMedalGlow', !showMedalGlow)}
 				/>
-				<div>Show Medal Glow</div>
 			</div>
 		</div>
 	);

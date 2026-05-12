@@ -38,7 +38,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			ref={panelRef}
 			open
 			tabIndex={-1}
-			aria-label="Settings"
+			aria-labelledby="settings-sidebar-title"
 			initial="hidden"
 			animate="visible"
 			exit="hidden"
@@ -50,7 +50,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			onClick={(e) => e.stopPropagation()}
 		>
 			<div className="flex justify-between items-center">
-				<h2 className="font-bold text-[18px]">Settings</h2>
+				<h2 id="settings-sidebar-title" className="font-bold text-[18px]">Settings</h2>
 				<div className="flex items-center gap-3">
 					<button
 						type="button"
@@ -86,7 +86,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 					<ExportBackupSectionFocusRecords />
 				</>
 			)}
-			
+
 			{/* Completed Tasks Page */}
 			{page === 'completed-tasks-page' && (
 				<>
