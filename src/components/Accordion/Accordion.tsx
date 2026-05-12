@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Icon from '../Icon';
 import classNames from 'classnames';
 
@@ -28,6 +28,7 @@ const Accordion: React.FC<AccordionProps> = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 	const panelId = useId();
+	const shouldReduceMotion = useReducedMotion();
 
 	const toggleOpen = () => {
 		if (customToggleOpen) {
@@ -67,10 +68,10 @@ const Accordion: React.FC<AccordionProps> = ({
 				{isOpen && (
 					<motion.div
 						id={panelId}
-						initial={{ opacity: 0, height: 0 }}
+						initial={{ opacity: 0, height: shouldReduceMotion ? 'auto' : 0 }}
 						animate={{ opacity: 1, height: 'auto' }}
-						exit={{ opacity: 0, height: 0 }}
-						transition={{ duration: 0.3 }}
+						exit={{ opacity: 0, height: shouldReduceMotion ? 'auto' : 0 }}
+						transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
 						className={isOpen && isChildDropdownOpen ? 'overflow-visible' : 'overflow-hidden'}
 					>
 						{children}

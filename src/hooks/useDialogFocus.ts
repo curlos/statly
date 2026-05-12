@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 const FOCUSABLE_SELECTOR =
-	'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+	'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [role="button"]';
 
 // Track the last focused element globally so modals can restore focus correctly
 // even when the trigger lost focus before the modal appeared (e.g. a button

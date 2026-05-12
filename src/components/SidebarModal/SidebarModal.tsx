@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { navigate } from 'vike/client/router';
 import type { RootState } from '../../store/store';
 import Icon from '../Icon';
@@ -21,8 +21,9 @@ const SidebarModal = () => {
 	};
 
 	const panelRef = useDialogFocus<HTMLDialogElement>(isSidebarModalOpen ?? false, handleClose);
+	const shouldReduceMotion = useReducedMotion();
 	const sidebarVariants = {
-		hidden: { x: 300, opacity: 0, transition: { duration: 0.3 } },
+		hidden: { x: shouldReduceMotion ? 0 : 300, opacity: 0, transition: { duration: 0.3 } },
 		visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
 	};
 
@@ -89,24 +90,26 @@ const SidebarModal = () => {
 						className="fixed inset-y-0 right-0 left-auto w-[85%] max-w-[400px] h-full bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
 						onClick={(e) => e.stopPropagation()}
 					>
-						<div className="font-bold text-[24px]">
-							<LinkLi name="Stats" linkUrl="/stats/overview" iconName="query_stats" />
-							<LinkLi name="Focus Time Goal" linkUrl="/focus-time-goal" iconName="flag" />
-							<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timer" />
-							<LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" />
-							<LinkLi name="Medals" linkUrl={"/medals/focus/daily"} iconName="workspace_premium" />
-							<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />
-						</div>
+						<nav aria-label="Main navigation">
+							<ul className="font-bold text-[24px] list-none p-0 m-0">
+								<li><LinkLi name="Stats" linkUrl="/stats/overview" iconName="query_stats" /></li>
+								<li><LinkLi name="Focus Time Goal" linkUrl="/focus-time-goal" iconName="flag" /></li>
+								<li><LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timer" /></li>
+								<li><LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" /></li>
+								<li><LinkLi name="Medals" linkUrl={"/medals/focus/daily"} iconName="workspace_premium" /></li>
+								<li><LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" /></li>
+							</ul>
+						</nav>
 
 						{/* Sync */}
-						<hr className="border-color-gray-100 my-4" />
+						<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 						<SyncSection />
 
-						<hr className="border-color-gray-100 my-4" />
+						<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 						<DefaultDateRangeInterval />
 
 						{/* User Profile */}
-						<hr className="border-color-gray-100 my-4" />
+						<hr aria-hidden="true" className="border-color-gray-100 my-4" />
 						<UserProfileSection />
 					</motion.dialog>
 				</motion.div>

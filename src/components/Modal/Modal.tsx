@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import classNames from 'classnames';
 import { useDialogFocus } from '../../hooks/useDialogFocus';
 
@@ -18,6 +18,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children, contentRef, ariaLabelledBy, ariaDescribedBy, role }) => {
 	const dialogRef = useDialogFocus<HTMLDialogElement>(isOpen, onClose);
+	const shouldReduceMotion = useReducedMotion();
 
 	const setRef = (node: HTMLDialogElement | null) => {
 		(dialogRef as React.MutableRefObject<HTMLDialogElement | null>).current = node;
@@ -27,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 	};
 
 	const containerVariants = {
-		hidden: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } },
+		hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.95, transition: { duration: 0.3 } },
 		visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
 	};
 
