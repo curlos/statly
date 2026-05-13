@@ -55,10 +55,10 @@ const CompletedTasksCurveCard = () => {
 	};
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px] relative">
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px] relative" aria-labelledby="completed-tasks-curve-heading">
 			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-2">
-					<h3 className="font-bold text-[16px]">Completed Tasks Curve</h3>
+					<h2 id="completed-tasks-curve-heading" className="font-bold text-[16px]">Completed Tasks Curve</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -98,6 +98,7 @@ const CompletedTasksCurveCard = () => {
 					width={500}
 					height={400}
 					data={data}
+					accessibilityLayer={true}
 					margin={{
 						top: 10,
 						right: 30,
@@ -142,7 +143,7 @@ const CompletedTasksCurveCard = () => {
 			</ResponsiveContainer>
 
 			{renderCustomDateModal()}
-		</div>
+		</section>
 	);
 };
 

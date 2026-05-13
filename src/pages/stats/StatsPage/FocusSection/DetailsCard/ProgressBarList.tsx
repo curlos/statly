@@ -47,7 +47,8 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 }) => {
 	// Pagination state for modal view
 	const [currentPage, setCurrentPage] = useState(1);
-	const innerScrollableContainerRef = useRef<HTMLDivElement>(null);
+	const innerScrollableContainerRef = useRef<HTMLElement>(null);
+	const hasMountedRef = useRef(false);
 
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -84,7 +85,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 		setCurrentPage(1);
 	}, [sortBy, data]);
 
-	// Scroll to top when page changes
+	// Scroll to top and focus first item when page changes
 	useEffect(() => {
 		if (scrollableContainerRef?.current) {
 			scrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
@@ -92,6 +93,13 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 
 		if (innerScrollableContainerRef?.current) {
 			innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+
+		if (hasMountedRef.current) {
+			const firstFocusable = innerScrollableContainerRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
+			firstFocusable?.focus({ preventScroll: true });
+		} else {
+			hasMountedRef.current = true;
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentPage]);
@@ -113,10 +121,10 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 
 	return (
 		<div className="space-y-4 w-full p-2">
-			<div
-				ref={innerScrollableContainerRef}
+			<ul
+				ref={innerScrollableContainerRef as React.RefObject<HTMLUListElement>}
 				className={classNames(
-					'space-y-4 w-full pr-3 overflow-auto gray-scrollbar',
+					'space-y-4 w-full pl-1 pt-1 pr-3 overflow-auto gray-scrollbar',
 					fromModal ? 'md:max-h-[500px]' : 'max-h-[230px]'
 				)}
 			>
@@ -155,7 +163,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 							<Accordion
 								key={emotionId}
 								title={
-									<li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+									<span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
 										<span
 											className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
 											style={{ backgroundColor: emotion.color }}
@@ -168,7 +176,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 												({isFocusDuration ? getFormattedDuration(emotion[metricKey] ?? 0, false) : `${emotion[metricKey]} tasks`}, {emotion.percentage}%)
 											</span>
 										</span>
-									</li>
+									</span>
 								}
 								openByDefault={false}
 								showArrowNextToText={true}
@@ -219,9 +227,13 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 				) : (
 					sortedData
 						.slice(fromModal ? startIndex : 0, fromModal ? endIndex : maxDataLen)
-						.map((item: ProgressBarItemData) => <ProgressBar key={item.id} item={item} projectsById={projectsById || {}} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById || {}} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />)
+						.map((item: ProgressBarItemData) => (
+							<li key={item.id}>
+								<ProgressBar item={item} projectsById={projectsById || {}} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById || {}} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
+							</li>
+						))
 				)}
-			</div>
+			</ul>
 
 			{fromModal && !shouldShowNestedView && totalPages > 1 && (
 				<div className="flex justify-center pt-4">
@@ -238,6 +250,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			{!fromModal && (
 				<button
 					type="button"
+					aria-haspopup="dialog"
 					className="text-color-gray-25 hover:text-color-gray-100 cursor-pointer text-[16px] lg:text-[14px] xl:text-[16px] bg-transparent border-0 p-0"
 					onClick={() => setIsModalOpen(true)}
 				>

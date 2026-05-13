@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState, useEffect, RefObject } from "react";
+import { useState, useEffect, useRef, RefObject } from "react";
 import Accordion from "../../../../../components/Accordion/Accordion";
 import Pagination from "../../../../../components/Pagination";
 import { getFormattedDuration } from "../../../../../utils/helpers.utils";
@@ -27,7 +27,7 @@ interface NestedProgressBarsProps {
     intervalEndDate: string;
     emotionId?: string;
     showPagination?: boolean;
-    innerScrollableContainerRef?: RefObject<HTMLDivElement>;
+    innerScrollableContainerRef?: RefObject<HTMLElement>;
 }
 
 const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
@@ -51,6 +51,8 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 }) => {
     // Pagination state for modal view
     const [currentPage, setCurrentPage] = useState(1);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const hasMountedRef = useRef(false);
 
     const groupedTasksCollapsedByDefault = useState(false);
 
@@ -62,10 +64,17 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
         setCurrentPage(1);
     }, [sortBy, data]);
 
-    // Scroll to top when page changes
+    // Scroll to top and focus first item when page changes
     useEffect(() => {
         if (innerScrollableContainerRef?.current) {
             innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        if (hasMountedRef.current) {
+            const firstFocusable = containerRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
+            firstFocusable?.focus({ preventScroll: true });
+        } else {
+            hasMountedRef.current = true;
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,7 +141,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                 <Accordion
                 key={taskId}
                 title={
-                    <li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+                    <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
                         <span
                             className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
                             style={{ backgroundColor: projectColor }}
@@ -147,7 +156,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                             </span>
                         </span>
 
-                    </li>
+                    </span>
                 }
                 openByDefault={!groupedTasksCollapsedByDefault}
                 showArrowNextToText={true}
@@ -194,7 +203,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                 <ul key={parentTaskId} className="text-[16px] w-full">
                     <Accordion
                         title={
-                            <li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+                            <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
                                 <span
                                     className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
                                     style={{ backgroundColor: projectColor }}
@@ -209,7 +218,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                                     </span>
                                 </span>
 
-                            </li>
+                            </span>
                         }
                         openByDefault={!groupedTasksCollapsedByDefault}
                         showArrowNextToText={true}
@@ -296,7 +305,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
             <ul key={parentTaskId} className="text-[16px] w-full">
                 <Accordion
                     title={
-                        <li className="text-[18px] cursor-pointer font-normal break-words w-full">
+                        <span className="text-[18px] cursor-pointer font-normal break-words w-full">
                             <span
                                 className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
                                 style={{ backgroundColor: projectColor }}
@@ -310,7 +319,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                                     {totalMetricOnParentTask[parentTaskId].percentage}%)
                                 </span>
                             </span>
-                        </li>
+                        </span>
                     }
                     openByDefault={!groupedTasksCollapsedByDefault}
                     showArrowNextToText={true}
@@ -416,7 +425,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 
         return (
             <>
-                <div>
+                <div ref={containerRef}>
                     {sortedProjects.slice(fromModal ? projectStartIndex : 0, fromModal ? projectEndIndex : maxProjects)?.map((project: ProgressBarItemData) => {
                     const projectMetricValue = project[metricKey] as number || 0;
                     const projectFormattedMetric = isFocusDuration
@@ -429,7 +438,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                         <ul key={project.id} className="w-full">
                             <Accordion
                                 title={
-                                    <li className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+                                    <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
 
                                         <span
                                             className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
@@ -443,7 +452,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                                                 ({projectFormattedMetric}, {project.percentage}%)
                                             </span>
                                         </span>
-                                    </li>
+                                    </span>
                                 }
                                 openByDefault={!groupedTasksCollapsedByDefault}
                                 showArrowNextToText={true}
@@ -482,7 +491,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
 
     return (
         <>
-            <div className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')}>
+            <div ref={containerRef} className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')}>
                 {sortedTasksWithNoParent.slice(fromModal ? taskStartIndex : 0, fromModal ? taskEndIndex : maxTasksWithNoParent)?.map((taskId: string) => {
                     return <div key={taskId} className="w-full">{renderNestedTasks(taskId)}</div>;
                 })}

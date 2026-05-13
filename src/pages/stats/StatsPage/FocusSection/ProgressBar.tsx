@@ -149,7 +149,15 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 					{formattedMetric} • {item.percentage}%
 				</div>
 			</div>
-			<div key={item.id} className={classNames('rounded-full', colorMode === 'dark' ? 'bg-[#232323]' : 'bg-[rgb(187,187,187)]')}>
+			<div
+				key={item.id}
+				className={classNames('rounded-full', colorMode === 'dark' ? 'bg-[#232323]' : 'bg-[rgb(187,187,187)]')}
+				role="progressbar"
+				aria-valuenow={item.percentage}
+				aria-valuemin={0}
+				aria-valuemax={100}
+				aria-label={`${item.name}: ${item.percentage}%`}
+			>
 				<div
 					className={`text-xs font-medium text-blue-100 text-center p-[3px] leading-none rounded-full`}
 					style={{ width: `${item.percentage}%`, backgroundColor: color }}

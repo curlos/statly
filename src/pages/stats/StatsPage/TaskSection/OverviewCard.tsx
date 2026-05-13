@@ -129,10 +129,10 @@ const OverviewCard = () => {
 	}, [numOfCompletedTasks, prevIntervalCount, shouldFetchPrevInterval]);
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col">
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col" aria-labelledby="task-overview-heading">
 			<div className="flex justify-between items-center mb-4">
 				<div className="flex items-center gap-2">
-					<h3 className="font-bold text-[16px]">Overview</h3>
+					<h2 id="task-overview-heading" className="font-bold text-[16px]">Overview</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -156,7 +156,7 @@ const OverviewCard = () => {
 
 			<div className="sm:hidden mb-2">{renderDateRangePicker()}</div>
 
-			<div className="flex-1 flex flex-col justify-center gap-7">
+			<div className="flex-1 flex flex-col justify-center gap-7" aria-live="polite" aria-atomic="true">
 				<div className="grid grid-cols-1 w-full">
 					<div className="flex flex-col items-center p-2">
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
@@ -166,8 +166,11 @@ const OverviewCard = () => {
 							{numOfCompletedTasks > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>
 						{shouldFetchPrevInterval && (
-							<div className="text-color-gray-50 flex items-center gap-1 ml-4">
-								<div>
+							<div
+								className="text-color-gray-50 flex items-center gap-1 ml-4"
+								aria-label={`${diffOfCompletedTasksFromPrevInterval.numDiff} ${diffOfCompletedTasksFromPrevInterval.lessThanPrev ? 'fewer' : 'more'} than ${getPrevIntervalName()}`}
+							>
+								<div aria-hidden="true">
 									{diffOfCompletedTasksFromPrevInterval.numDiff} from {getPrevIntervalName()}
 								</div>
 								<Icon
@@ -191,7 +194,7 @@ const OverviewCard = () => {
 			</div>
 
 			{renderCustomDateModal()}
-		</div>
+		</section>
 	);
 };
 

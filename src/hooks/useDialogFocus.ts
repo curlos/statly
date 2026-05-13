@@ -76,8 +76,13 @@ export function useDialogFocus<T extends HTMLElement = HTMLDivElement>(active = 
 			}
 			const focusable = allFocusable.filter(elem => {
 				if (elem instanceof HTMLInputElement && elem.type === 'radio' && elem.name) {
-					return seenRadioGroups.get(elem.name) === elem;
+					if (seenRadioGroups.get(elem.name) !== elem) return false;
 				}
+				// Skip elements that are hidden from the browser's tab order via
+				// visibility:hidden or display:none — querySelectorAll finds them by
+				// attribute but browsers skip them, which creates a gap in the trap.
+				const style = window.getComputedStyle(elem);
+				if (style.visibility === 'hidden' || style.display === 'none') return false;
 				return true;
 			});
 			if (focusable.length === 0) return;
