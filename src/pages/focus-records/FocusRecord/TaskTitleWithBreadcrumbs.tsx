@@ -20,14 +20,14 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
 
     if (isLoading) {
         return (
-            <h3 className={headerStyling.replace('cursor-pointer', '')}>
+            <h2 className={headerStyling.replace('cursor-pointer', '')}>
                 <a
                     href={buildTaskUrl(task.taskId)}
                     className="hover:text-blue-500 hover:underline font-bold text-left"
                 >
                     {task?.title}
                 </a>
-            </h3>
+            </h2>
         );
     }
 
@@ -40,7 +40,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
     const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick?.filter((ancestorId: string) => ancestorId !== task.taskId) || [];
 
     return (
-        <div className="text-[22px]">
+        <h2 className="text-[22px]">
             <a
                 href={buildTaskUrl(parentTaskId)}
                 className="hover:underline font-bold hover:text-blue-500 text-left"
@@ -72,7 +72,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
             )}
 
             <TaskProjectName {...{ taskId: parentTaskId, task, cardTextColor }} />
-        </div>
+        </h2>
     );
 };
 

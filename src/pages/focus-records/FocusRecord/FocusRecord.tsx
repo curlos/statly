@@ -296,7 +296,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 
                     {showCompletedTasks && thereAreCompletedTasks && (
                         <div className="relative z-10">
-                            <h4 className="text-[16px] font-bold underline mt-4" style={{ color: cardTextColor }}>Completed Tasks</h4>
+                            <h3 className="text-[16px] font-bold underline mt-4" style={{ color: cardTextColor }}>Completed Tasks</h3>
 
                             <ul>
                                 {completedTasksDuringFocusSession.map((completedTask: Task, index: number) => {

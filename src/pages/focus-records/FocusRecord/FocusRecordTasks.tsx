@@ -34,7 +34,7 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTe
 		const taskId = task.taskId;
 
 		return (
-			<h3 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px]">
+			<h2 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px]">
 				<a
 					href={buildTaskUrl(taskId)}
 					className="hover:text-blue-500 hover:underline font-bold text-left"
@@ -43,7 +43,7 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTe
 					{task?.title}
 				</a>
 				<TaskProjectName {...{ taskId: taskId, cardTextColor }} />
-			</h3>
+			</h2>
 		);
 	};
 

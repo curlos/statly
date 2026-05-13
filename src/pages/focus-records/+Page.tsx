@@ -52,15 +52,16 @@ const FocusRecordsPage = () => {
 
 	useEffect(() => {
 		focusRecordListRef?.current?.scrollTo(0, 0);
+		document.getElementById('main-content')?.focus({ preventScroll: true });
 	}, [currentPageFromUrl]);
 
 	const getFilterBarHeaderContent = () => {
 		return (
 			<div>
-				<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
+				<h1 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
 					Focus Records {showTotalNumberOfFocusRecords && !isLoading && `(${total?.toLocaleString() || 0})`}
 					{showTotalFocusDuration && !isLoading && ` - ${getFormattedDuration(onlyTasksTotalDuration ?? 0, false)}`}
-				</h2>
+				</h1>
 
 				{showNoteStats && !isLoading && noteStats &&
 					<div className="text-color-gray-25">

@@ -21,7 +21,7 @@ const EmotionCountDisplay = ({ emotionCounts }: EmotionCountDisplayProps) => {
 	});
 
 	return (
-		<div className="container mb-4">
+		<div className="container mb-4 pt-1">
 			<div className="flex flex-wrap gap-2">
 				{sortedEmotions.map(([emotion, count]) => (
 					<EmotionTag

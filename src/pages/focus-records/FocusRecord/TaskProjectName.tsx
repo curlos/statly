@@ -17,7 +17,7 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task, cardTex
     const { data: fetchedProjects } = useGetProjectsQuery();
     const { projectsById, projectsSessionById } = fetchedProjects || {};
 
-    const { updateQueryParams } = useSearchParamsContext();
+    const { buildUrlWithQueryParams } = useSearchParamsContext();
 
     const {
         focusRecordsPageSettings: { showTaskProjectName, customDisplay },
@@ -71,30 +71,17 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task, cardTex
         page: '',
     };
 
+    const projectUrl = (isMappedFocusApp && fullTask?.projectId)
+        ? buildUrlWithQueryParams({ 'focus-apps': sourceToFocusAppId[fullTask.projectId], ...resetQueryParams })
+        : buildUrlWithQueryParams({ [projectQueryParam]: taskProject?.id || task?.projectId, ...resetQueryParams });
+
     return (
         <span className={customDisplay.useTextColor ? "" : "text-color-gray-25"} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
             {' '}
             -{' '}
-            <button
-                type="button"
-                className="hover:underline hover:text-blue-500 bg-transparent border-0 p-0"
-                onClick={() => {
-                    if (isMappedFocusApp && fullTask?.projectId) {
-                        const focusAppId = sourceToFocusAppId[fullTask.projectId];
-                        updateQueryParams({
-                            'focus-apps': focusAppId,
-                            ...resetQueryParams,
-                        });
-                    } else {
-                        updateQueryParams({
-                            [projectQueryParam]: taskProject?.id || task?.projectId,
-                            ...resetQueryParams,
-                        });
-                    }
-                }}
-            >
+            <a href={projectUrl} className="hover:underline hover:text-blue-500">
                 ({taskProjectName})
-            </button>
+            </a>
         </span>
     );
 };
