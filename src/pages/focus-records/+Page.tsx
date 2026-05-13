@@ -88,6 +88,7 @@ const FocusRecordsPage = () => {
 				/>
 
 				<div className="w-full flex flex-col">
+					<a href="#pagination" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-black focus:px-3 focus:py-1 focus:rounded focus:text-sm">Skip to pagination</a>
 					<div className="flex-1 flex justify-center bg-color-gray-700">
 						<div className="container p-1">
 							<FocusRecordList
@@ -108,7 +109,7 @@ const FocusRecordsPage = () => {
 					</div>
 
 					{totalPages && totalPages > 0 ? (
-						<div className="flex justify-center pt-1 pb-2 bg-color-gray-700">
+						<div id="pagination" className="flex justify-center pt-1 pb-2 bg-color-gray-700">
 							<Pagination
 								total={totalPages}
 								currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
