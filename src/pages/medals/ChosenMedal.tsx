@@ -105,12 +105,18 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 						{intervalsEarned && intervalsEarned.length > 0 && (
 							<div className="text-[18px]">
 								<span className="font-bold underline">{getIntervalsEarnedText()} Earned: </span>
-								<a
-									href="#after-intervals-list"
-									className="sr-only focus:not-sr-only focus:absolute focus:z-10 focus:px-2 focus:py-1 focus:bg-white focus:text-black focus:rounded"
-								>
-									Skip list of {timesEarned.toLocaleString()} {(timesEarned === 1 ? getIntervalsEarnedText().slice(0, -1) : getIntervalsEarnedText()).toLowerCase()}
-								</a>
+								<span className="relative">
+									<a
+										href="#after-intervals-list"
+										className="sr-only focus:fixed focus:bottom-4 focus:right-4 focus:z-50 focus:w-auto focus:h-auto focus:overflow-visible focus:m-0 focus:whitespace-normal focus:[clip:auto] focus:px-2 focus:py-1 focus:bg-white focus:text-black focus:rounded"
+										onClick={(e) => {
+											e.preventDefault();
+											document.getElementById('after-intervals-list')?.focus({ preventScroll: true });
+										}}
+									>
+										Skip list of {timesEarned.toLocaleString()} {(timesEarned === 1 ? getIntervalsEarnedText().slice(0, -1) : getIntervalsEarnedText()).toLowerCase()}
+									</a>
+								</span>
 								<ul role="list" className="pb-3">
 									{intervalsEarned
 										.toSorted((a: string, b: string) => {
@@ -137,7 +143,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 											);
 										})}
 								</ul>
-								<div id="after-intervals-list" />
+								<div id="after-intervals-list" tabIndex={-1} />
 							</div>
 						)}
 					</div>
