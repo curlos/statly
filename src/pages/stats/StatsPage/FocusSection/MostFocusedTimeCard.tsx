@@ -52,10 +52,10 @@ const MostFocusedTimeCard = () => {
 	}));
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px] relative">
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px] relative" aria-labelledby="most-focused-time-heading">
 			<div className={classNames("flex justify-between items-center", selectedInterval === 'All' && 'mb-6')}>
 				<div className="flex items-center gap-2">
-					<h3 className="font-bold text-[16px]">Most Focused Time</h3>
+					<h2 id="most-focused-time-heading" className="font-bold text-[16px]">Most Focused Time</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -86,6 +86,7 @@ const MostFocusedTimeCard = () => {
 				<BarChart
 					width={500}
 					data={data}
+					accessibilityLayer={true}
 					margin={{
 						top: 5,
 						right: 30,
@@ -131,7 +132,7 @@ const MostFocusedTimeCard = () => {
 		</div>
 
 			{renderCustomDateModal()}
-		</div>
+		</section>
 	);
 };
 

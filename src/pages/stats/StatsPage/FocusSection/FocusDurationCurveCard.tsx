@@ -62,10 +62,10 @@ const FocusDurationCurveCard = () => {
 	const { chosenColorObj } = themeContext;
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px] relative">
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px] relative" aria-labelledby="focus-duration-curve-heading">
 			<div className="flex justify-between items-center gap-1">
 				<div className="flex items-center gap-2">
-					<h3 className="font-bold text-[16px]">Focus Durations Curve</h3>
+					<h2 id="focus-duration-curve-heading" className="font-bold text-[16px]">Focus Durations Curve</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -103,6 +103,7 @@ const FocusDurationCurveCard = () => {
 					width={500}
 					height={400}
 					data={data}
+					accessibilityLayer={true}
 					margin={{
 						top: 10,
 						right: 30,
@@ -172,7 +173,7 @@ const FocusDurationCurveCard = () => {
 			</ResponsiveContainer>
 
 			{renderCustomDateModal()}
-		</div>
+		</section>
 	);
 };
 

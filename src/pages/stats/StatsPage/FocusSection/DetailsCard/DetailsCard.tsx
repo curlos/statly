@@ -210,18 +210,18 @@ const DetailsCard = () => {
 
 	const getCoreDetailsCard = (fromModal: boolean) => {
 		return (
-			<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative">
+			<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby="details-heading">
 				<div className="flex gap-4">
 					<div className="md:flex justify-between items-center gap-2 w-full">
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
-							<h3 className="font-bold text-[16px]">Details</h3>
+							<h2 id="details-heading" className="font-bold text-[16px]">Details</h2>
 							{(isLoading || isFetching) && <Spinner size="md" />}
 
 							{fromModal && (
 								<button
 									type="button"
 									aria-label="Close"
-									className={classNames('bg-transparent border-0 p-0 cursor-pointer ml-auto sm:invisible')}
+									className={classNames('bg-transparent border-0 p-0 cursor-pointer ml-auto sm:hidden')}
 									onClick={() => setIsModalOpen(false)}
 								>
 									<Icon
@@ -307,7 +307,7 @@ const DetailsCard = () => {
 				<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 md:px-4">
 					<div>
 						<p className="sr-only">Pie chart showing focus time breakdown by project, task, or emotion category.</p>
-						<PieChart width={220} height={220}>
+						<PieChart width={220} height={220} accessibilityLayer={true}>
 							<Pie
 								data={progressBarData}
 								cx={100}
@@ -388,7 +388,7 @@ const DetailsCard = () => {
 				</div>
 
 				{renderCustomDateModal()}
-			</div>
+			</section>
 		);
 	};
 
@@ -401,6 +401,7 @@ const DetailsCard = () => {
 				onClose={() => setIsModalOpen(false)}
 				customClasses="!w-[1000px]"
 				contentRef={scrollableContainerRef}
+				ariaLabelledBy="details-heading"
 			>
 				<div className="rounded-xl shadow-lg bg-color-gray-600">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>

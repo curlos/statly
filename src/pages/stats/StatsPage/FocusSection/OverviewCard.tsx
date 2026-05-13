@@ -84,22 +84,25 @@ const OverviewCard = () => {
 	const { chosenColorObj } = themeContext;
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[16px] relative">
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[16px] relative" aria-labelledby="focus-overview-heading">
 			<div className="flex items-center gap-2 mb-2">
-				<h3 className="font-bold text-[16px]">Overview</h3>
+				<h2 id="focus-overview-heading" className="font-bold text-[16px]">Overview</h2>
 				{isLoading && <Spinner size="md" />}
 			</div>
 
 			<div className="flex-1 flex flex-col justify-center gap-7">
-				<div className="grid grid-cols-2 lg:grid-cols-4 w-full text-center">
+				<div className="grid grid-cols-2 lg:grid-cols-4 w-full text-center" aria-live="polite" aria-atomic="true">
 					{/* Today's Focus Records */}
 					<div className="flex flex-col items-center p-2">
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{todayFocusRecords}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus Records</div>
-						<div className="text-color-gray-100 flex items-center gap-1">
-							<div className="text-[10px] sm:text-[16px]">
+						<div
+							className="text-color-gray-100 flex items-center gap-1"
+							aria-label={`${diffTodayFromYesterdayFocusRecords.numDiff} ${diffTodayFromYesterdayFocusRecords.lessThanYesterday ? 'fewer' : 'more'} focus records than yesterday`}
+						>
+							<div aria-hidden="true" className="text-[10px] sm:text-[16px]">
 								{diffTodayFromYesterdayFocusRecords.numDiff} from yesterday
 							</div>
 							<Icon
@@ -115,6 +118,7 @@ const OverviewCard = () => {
 										? 'text-red-500'
 										: 'text-emerald-500'
 								)}
+								aria-hidden={true}
 							/>
 						</div>
 					</div>
@@ -133,8 +137,11 @@ const OverviewCard = () => {
 							{getFormattedDuration(todayFocusDuration, false)}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus</div>
-						<div className="text-color-gray-100 flex items-center gap-1">
-							<div className="text-[8px] sm:text-[16px]">
+						<div
+							className="text-color-gray-100 flex items-center gap-1"
+							aria-label={`${getFormattedDuration(diffTodayFromYesterdayFocusDuration.numDiff, false)} ${diffTodayFromYesterdayFocusDuration.lessThanYesterday ? 'less' : 'more'} focus time than yesterday`}
+						>
+							<div aria-hidden="true" className="text-[8px] sm:text-[16px]">
 								{getFormattedDuration(diffTodayFromYesterdayFocusDuration.numDiff, false)} from
 								yesterday
 							</div>
@@ -151,6 +158,7 @@ const OverviewCard = () => {
 										? 'text-red-500'
 										: 'text-emerald-500'
 								)}
+								aria-hidden={true}
 							/>
 						</div>
 					</div>
@@ -164,7 +172,7 @@ const OverviewCard = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 

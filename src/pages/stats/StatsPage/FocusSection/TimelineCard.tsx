@@ -33,10 +33,10 @@ const TimelineCard = () => {
 	});
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col sm:h-[350px] lg:h-[380px]">
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col sm:h-[350px] lg:h-[380px]" aria-labelledby="timeline-heading">
 			<div className="flex flex-col sm:flex-row justify-between sm:items-center">
 				<div className="flex items-center gap-2">
-					<h3 className="font-bold text-[16px]">Timeline</h3>
+					<h2 id="timeline-heading" className="font-bold text-[16px]">Timeline</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -56,7 +56,7 @@ const TimelineCard = () => {
 			<div className="mt-[-10px]">
 				<TimelineChart selectedDates={selectedDates} statsData={statsData} />
 			</div>
-		</div>
+		</section>
 	);
 };
 

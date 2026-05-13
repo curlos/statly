@@ -32,10 +32,10 @@ const YearGridsCard = () => {
 	});
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-auto sm:h-[350px]">
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-auto sm:h-[350px]" aria-labelledby="year-grids-heading">
 			<div className="flex justify-between items-center mb-2">
 				<div className="flex items-center gap-2">
-					<h3 className="font-bold text-[16px]">Year Grids</h3>
+					<h2 id="year-grids-heading" className="font-bold text-[16px]">Year Grids</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -47,7 +47,7 @@ const YearGridsCard = () => {
 			</div>
 
 			<CalendarHeatmap selectedDates={selectedDates} statsData={statsData} />
-		</div>
+		</section>
 	);
 };
 
