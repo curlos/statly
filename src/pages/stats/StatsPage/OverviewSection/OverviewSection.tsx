@@ -20,35 +20,37 @@ const OverviewSection = () => {
 		<div>
 			<div className="bg-color-gray-600 p-4 rounded-md">
 				<div className="flex justify-between items-center">
-					<div className="grid grid-cols-2 sm:flex gap-6">
-						<div>
+					<div className="grid grid-cols-2 sm:flex gap-6" aria-live="polite" aria-atomic="true">
+						<div className="flex flex-col md:flex-row md:items-baseline md:gap-1" aria-label={`${(overviewStats?.totalTasksCount ?? 0).toLocaleString()} Total Tasks`}>
 							<span className="font-bold">{(overviewStats?.totalTasksCount ?? 0).toLocaleString()}</span> <span className="text-color-gray-25">Total Tasks</span>
 						</div>
 
-						<div>
+						<div className="flex flex-col md:flex-row md:items-baseline md:gap-1" aria-label={`${(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()} Completed Tasks`}>
 							<span className="font-bold">{(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()}</span> <span className="text-color-gray-25">Completed Tasks</span>
 						</div>
 
-						<div>
+						<div className="flex flex-col md:flex-row md:items-baseline md:gap-1" aria-label={`${(overviewStats?.totalProjectsCount ?? 0).toLocaleString()} Projects`}>
 							<span className="font-bold">{(overviewStats?.totalProjectsCount ?? 0).toLocaleString()}</span> <span className="text-color-gray-25">Projects</span>
 						</div>
 
-						<div className="flex items-center gap-1">
-							<span className="font-bold">{(overviewStats?.activeDays ?? 0).toLocaleString()}</span>{' '}
-							<span className="text-color-gray-25">Active Days</span>
-							<span className="mb-[-6px]">
-								<Tooltip
-									content="Active days are days where you either completed at least one task or focused for at least one session. It's a measure of your consistent productivity!"
-									position="bottom"
-									className="!w-[200px]"
-								>
-									<Icon
-										name="help_outline"
-										fill={0}
-										customClass="!text-[18px] text-color-gray-25 hover:text-white cursor-help"
-									/>
-								</Tooltip>
-							</span>
+						<div className="flex flex-col md:flex-row md:items-center md:gap-1">
+							<span className="font-bold">{(overviewStats?.activeDays ?? 0).toLocaleString()}</span>
+							<div className="flex items-center gap-1">
+								<span className="text-color-gray-25">Active Days</span>
+								<span className="mb-[-6px]">
+									<Tooltip
+										content="Active days are days where you either completed at least one task or focused for at least one session. It's a measure of your consistent productivity!"
+										position="bottom"
+										className="!w-[200px]"
+									>
+										<Icon
+											name="help_outline"
+											fill={0}
+											customClass="!text-[18px] text-color-gray-25 hover:text-white cursor-help"
+										/>
+									</Tooltip>
+								</span>
+							</div>
 						</div>
 					</div>
 

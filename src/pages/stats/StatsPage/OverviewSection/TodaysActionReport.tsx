@@ -6,9 +6,9 @@ interface MedalItemProps {
 
 const MedalItem = ({ name, imgSrc, isEarned }: MedalItemProps) => {
 	return (
-		<div key={name} className={`text-center ${!isEarned && 'opacity-30'}`}>
+		<div key={name} className={`text-center ${!isEarned && 'opacity-30'}`} aria-label={`${name} today badge${isEarned ? ' - earned' : ' - not yet earned'}`}>
 			<div className="flex justify-center">
-				<img src={imgSrc} className="w-[125px]" />
+				<img src={imgSrc} className="w-[125px]" alt={`${name} today badge${isEarned ? ' - earned' : ' - not yet earned'}`} />
 			</div>
 			<div className="text-center font-semibold text-[18px]">x1</div>
 			<div className="text-center">{name}</div>
@@ -60,8 +60,8 @@ const TodaysActionReport = ({ todayFocusDuration }: TodaysActionReportProps) => 
 	const unearnedMedals = medals.filter((medal) => todayFocusDuration < medal.requiredDuration);
 
 	return (
-		<div className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px]">
-			<h3 className="font-bold text-[16px]">Today's Action Report</h3>
+		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px]" aria-labelledby="todays-action-report-heading">
+			<h2 id="todays-action-report-heading" className="font-bold text-[16px]">Today's Action Report</h2>
 
 			<div className="flex-1 flex flex-col justify-center gap-7 overflow-auto gray-scrollbar">
 				<div className="grid grid-cols-3 text-[14px] sm:text-[16px] gap-2 mt-2">
@@ -74,7 +74,7 @@ const TodaysActionReport = ({ todayFocusDuration }: TodaysActionReportProps) => 
 					))}
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 
