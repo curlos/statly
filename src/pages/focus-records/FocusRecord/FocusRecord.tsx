@@ -22,9 +22,10 @@ import { useFocusRecordCardColors } from "./useFocusRecordCardColors";
 interface FocusRecordProps {
     focusRecord: FocusRecord;
     isLastItemForTheDay?: boolean;
+    pendingFocusIdRef?: React.MutableRefObject<string | null>;
 }
 
-const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForTheDay = false }) => {
+const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForTheDay = false, pendingFocusIdRef }) => {
     const { buildUrlWithQueryParams } = useSearchParamsContext();
     const { startTime, endTime, duration, note, crossesMidnight } = focusRecord;
 
@@ -65,6 +66,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 
     // Use custom hook for all menu-related logic
     const {
+        articleRef,
         contextMenuVisible,
         setContextMenuVisible,
         contextMenuPosition,
@@ -83,13 +85,16 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
     } = useFocusRecordMenu({
         focusRecord,
         completedTasksDuringFocusSession,
-        showFocusRecordEmotions
+        showFocusRecordEmotions,
+        pendingFocusIdRef,
     });
 
     const { cardBackgroundStyle, backgroundImageStyle, cardBgColor, cardTextColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj });
 
     return (
         <article
+            ref={articleRef}
+            data-focus-record-id={focusRecord.id}
             className={classNames(
                 "m-0 list-none last:mb-[4px] w-full",
                 showMedals ? "flex" : "relative",
@@ -200,6 +205,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                 setIsVisible={setDropdownOpen}
                                 toggleRef={dropdownToggleRef}
                                 customClasses="min-w-[200px] !text-[14px]"
+                                role="menu"
                             >
                                 <FocusRecordMenuItems
                                     menuItems={menuItems}
@@ -262,6 +268,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                                     setIsVisible={setDropdownOpenMobile}
                                     toggleRef={dropdownToggleRefMobile}
                                     customClasses="min-w-[200px] !text-[14px]"
+                                    role="menu"
                                 >
                                     <FocusRecordMenuItems
                                         menuItems={menuItems}

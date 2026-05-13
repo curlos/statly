@@ -6,4 +6,5 @@ export interface DropdownProps {
 	align?: 'left' | 'right';
 	innerClickElemRefs?: React.RefObject<HTMLElement>[];
 	parentElemRef?: React.RefObject<HTMLElement>;
+	role?: string;
 }

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import FocusRecord from './FocusRecord/FocusRecord';
 import FocusRecordSkeleton from './FocusRecordSkeleton';
@@ -30,6 +31,18 @@ const FocusRecordList: React.FC<FocusRecordListProps> = ({
 	setShowFilterSidebar,
 }) => {
 	const dispatch = useDispatch();
+	const pendingFocusIdRef = useRef<string | null>(null);
+
+	// When focusRecords changes (after a delete + refetch), focus the stored sibling
+	useEffect(() => {
+		if (!pendingFocusIdRef.current) return;
+		const id = pendingFocusIdRef.current;
+		pendingFocusIdRef.current = null;
+		document.querySelector<HTMLElement>(
+			`[data-focus-record-id="${id}"] button[aria-haspopup="menu"]`
+		)?.focus();
+	}, [focusRecords]);
+
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
 	const { userSettings } = fetchedUserSettings || {};
 	const hasCookie = userSettings?.tickTickCookieSet || false;
@@ -88,6 +101,7 @@ const FocusRecordList: React.FC<FocusRecordListProps> = ({
 											key={focusRecord.id}
 											focusRecord={focusRecord}
 											isLastItemForTheDay={isLastItem}
+											pendingFocusIdRef={pendingFocusIdRef}
 										/>
 									);
 								})}

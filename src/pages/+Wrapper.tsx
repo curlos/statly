@@ -16,6 +16,7 @@ import { navigate } from 'vike/client/router';
 import { useAutoSync } from '../hooks/useAutoSync';
 import { FontLoadingProvider } from '../contexts/useFontLoadingContext';
 import { useGetLoggedInUserQuery } from '../services/resources/usersApi';
+import Toast from '../components/Toast';
 import { useEffect } from 'react';
 
 const globalClasses = 'text-white select-none';
@@ -110,6 +111,9 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 
 			{/* Modals */}
 			<GlobalModalList />
+
+			{/* Toast notifications */}
+			<Toast />
 		</div>
 	);
 };

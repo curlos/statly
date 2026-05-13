@@ -21,6 +21,7 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 	parentElemRef,
 	align,
 	openUpward = false,
+	role,
 }) => {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +41,17 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 				(toggleRef?.current as HTMLElement | null)?.focus();
 				return;
 			}
+			if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+				e.preventDefault();
+				const items = Array.from(el.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])'));
+				if (!items.length) return;
+				const idx = items.indexOf(document.activeElement as HTMLElement);
+				const next = e.key === 'ArrowDown'
+					? items[(idx + 1) % items.length]
+					: items[(idx - 1 + items.length) % items.length];
+				next?.focus();
+				return;
+			}
 			if (e.key === 'Tab') {
 				const focusable = Array.from(el.querySelectorAll<HTMLElement>(
 					'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -57,6 +69,13 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 		el.addEventListener('keydown', handleKeyDown);
 		return () => el.removeEventListener('keydown', handleKeyDown);
 	}, [isVisible, setIsVisible, toggleRef]);
+
+	useEffect(() => {
+		if (isVisible && role === 'menu' && dropdownRef.current) {
+			const first = dropdownRef.current.querySelector<HTMLElement>('[role="menuitem"]:not([disabled])');
+			first?.focus();
+		}
+	}, [isVisible, role]);
 
 	useEffect(() => {
 		if (isVisible && dropdownRef.current) {
@@ -134,6 +153,7 @@ const Dropdown: React.FC<BaseDropdownProps> = ({
 			{isVisible && (
 				<motion.div
 					ref={dropdownRef}
+					role={role}
 					initial="hidden"
 					animate="visible"
 					exit="hidden"

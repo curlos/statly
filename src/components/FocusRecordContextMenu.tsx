@@ -30,6 +30,35 @@ const FocusRecordContextMenu: React.FC<FocusRecordContextMenuProps> = ({
 
 	useOutsideClick(menuRef, dummyToggleRef, [], onClose);
 
+	// Auto-focus first item and handle keyboard navigation
+	useEffect(() => {
+		if (!isVisible || !menuRef.current) return;
+		const el = menuRef.current;
+		const first = el.querySelector<HTMLElement>('[role="menuitem"]:not([disabled])');
+		first?.focus();
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				e.stopPropagation();
+				onClose();
+				return;
+			}
+			if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+				e.preventDefault();
+				const items = Array.from(el.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])'));
+				if (!items.length) return;
+				const idx = items.indexOf(document.activeElement as HTMLElement);
+				const next = e.key === 'ArrowDown'
+					? items[(idx + 1) % items.length]
+					: items[(idx - 1 + items.length) % items.length];
+				next?.focus();
+			}
+		};
+
+		el.addEventListener('keydown', handleKeyDown);
+		return () => el.removeEventListener('keydown', handleKeyDown);
+	}, [isVisible, onClose]);
+
 	// Close on scroll
 	useEffect(() => {
 		if (isVisible) {
