@@ -19,7 +19,7 @@ interface CompletedTasksWithBreadcrumbsProps {
 	ancestorTasksById: Record<string, AncestorTask>;
 	groupedSubtasksByParentTask: Record<string, (Task | AncestorTask)[]>;
 	dateStr: string;
-	updateTaskIdQueryParam: (taskId: string) => void;
+	buildUrlWithTaskIdQueryParam: (taskId: string) => string;
 	groupedTasksCollapsedByDefault: boolean;
 	cardTextColor?: string;
 	customDisplay: CustomDisplay;
@@ -29,7 +29,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 	ancestorTasksById,
 	groupedSubtasksByParentTask,
 	dateStr,
-	updateTaskIdQueryParam,
+	buildUrlWithTaskIdQueryParam,
 	groupedTasksCollapsedByDefault,
 	cardTextColor,
 	customDisplay
@@ -37,7 +37,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
-	const { updateQueryParams } = useSearchParamsContext();
+	const { buildUrlWithQueryParams } = useSearchParamsContext();
 
 	return (
 		ancestorTasksById &&
@@ -56,15 +56,14 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 					key={dateStr + parentTaskId + i}
 					title={
 						<div className="text-[18px]">
-							<span
-								className="underline font-bold hover:text-blue-500"
-								onClick={() => {
-									updateTaskIdQueryParam(parentTaskId);
-								}}
-								style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
-							>
-								{parentTaskTitle}
-							</span>
+							<h3 className="inline underline font-bold hover:text-blue-500 m-0">
+								<a
+									href={buildUrlWithTaskIdQueryParam(parentTaskId)}
+									style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+								>
+									{parentTaskTitle}
+								</a>
+							</h3>
 
 							{parentTaskBreadcrumbs?.length > 0 && (
 								<span className="ml-1 text-color-gray-25" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
@@ -75,14 +74,12 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 
 										return (
 											<span key={`breadcrumbs-${dateStr}-${taskId}-${index}`}>
-												<span
+												<a
+													href={buildUrlWithTaskIdQueryParam(taskId)}
 													className="hover:text-blue-500 hover:underline"
-													onClick={() => {
-														updateTaskIdQueryParam(taskId);
-													}}
 												>
 													{title}
-												</span>
+												</a>
 												{index !== parentTaskBreadcrumbs.length - 1 && <span>{' > '}</span>}
 											</span>
 										);
@@ -97,36 +94,31 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 							)}
 
 							{(taskProject || parentTask?.projectId) && (
-								<span className="text-color-gray-25 hover:underline hover:text-blue-500" onClick={() => {
-									updateQueryParams({
-										[projectQueryParam]: taskProject?.id || parentTask?.projectId,
-										'task-id': '',
-										'sort-by': '',
-										search: '',
-										'start-date': '',
-										'end-date': '',
-										page: '',
-									});
-								}} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
-									({taskProject?.name || parentTask?.projectId})
-								</span>
+								<a
+								href={buildUrlWithQueryParams({ [projectQueryParam]: taskProject?.id || parentTask?.projectId, 'task-id': '', 'sort-by': '', search: '', 'start-date': '', 'end-date': '', page: '' })}
+								className="text-color-gray-25 hover:underline hover:text-blue-500"
+								style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+							>
+								({taskProject?.name || parentTask?.projectId})
+							</a>
 							)}
 						</div>
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
 					showArrowNextToText={true}
 				>
-					<div className="space-y-1">
+					<ul className="space-y-1 list-none p-0 m-0">
 						{completedSubtasks.map((task, i) => (
-							<CompletedTask
-								key={dateStr + task.id + i}
-								task={task}
-								isFullTask={false}
-								updateTaskIdQueryParam={updateTaskIdQueryParam}
-								cardTextColor={cardTextColor}
-							/>
+							<li key={dateStr + task.id + i}>
+								<CompletedTask
+									task={task}
+									isFullTask={false}
+									buildUrlWithTaskIdQueryParam={buildUrlWithTaskIdQueryParam}
+									cardTextColor={cardTextColor}
+								/>
+							</li>
 						))}
-					</div>
+					</ul>
 				</Accordion>
 			);
 		})

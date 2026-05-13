@@ -40,14 +40,15 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
     const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick?.filter((ancestorId: string) => ancestorId !== task.taskId) || [];
 
     return (
-        <h2 className="text-[22px]">
-            <a
-                href={buildTaskUrl(parentTaskId)}
-                className="hover:underline font-bold hover:text-blue-500 text-left"
-                style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
-            >
-                {parentTaskTitle}
-            </a>
+        <div className="text-[22px]">
+            <h2 className="inline hover:underline font-bold hover:text-blue-500 m-0">
+                <a
+                    href={buildTaskUrl(parentTaskId)}
+                    style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+                >
+                    {parentTaskTitle}
+                </a>
+            </h2>
 
             {parentTaskBreadcrumbs?.length > 0 && (
                 <span className={classNames("ml-1", customDisplay.useTextColor ? "" : "text-color-gray-25")} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
@@ -72,7 +73,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
             )}
 
             <TaskProjectName {...{ taskId: parentTaskId, task, cardTextColor }} />
-        </h2>
+        </div>
     );
 };
 

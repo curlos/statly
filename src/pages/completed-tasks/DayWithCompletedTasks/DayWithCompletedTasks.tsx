@@ -37,7 +37,7 @@ interface DayWithCompletedTasksProps {
 const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithCompletedTasks, isLastItemForTheDay = false, ancestorTasksById, pendingFocusDateRef }) => {
 
 	// Context
-	const { updateQueryParams } = useSearchParamsContext();
+	const { updateQueryParams, buildUrlWithQueryParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
 		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow, customDisplay },
@@ -88,9 +88,8 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 		ancestorTasksById
 	});
 
-	const updateTaskIdQueryParam = (taskId: string) => {
-		// All the other query params must be cleared to show all of the tasks from the specific task id.
-		updateQueryParams({
+	const buildUrlWithTaskIdQueryParam = (taskId: string) =>
+		buildUrlWithQueryParams({
 			'task-id': taskId,
 			'sort-by': '',
 			search: '',
@@ -99,7 +98,6 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 			projects: '',
 			page: '',
 		});
-	};
 
 	const handleClickDay = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -240,7 +238,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 											groupedSubtasksByParentTask,
 											groupedTasksCollapsedByDefault,
 											dateStr,
-											updateTaskIdQueryParam,
+											buildUrlWithTaskIdQueryParam,
 											ancestorTasksById,
 											cardTextColor,
 											customDisplay
@@ -252,7 +250,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 											ancestorTasksById,
 											groupedSubtasksByParentTask,
 											dateStr,
-											updateTaskIdQueryParam,
+											buildUrlWithTaskIdQueryParam,
 											groupedTasksCollapsedByDefault,
 											cardTextColor,
 											customDisplay

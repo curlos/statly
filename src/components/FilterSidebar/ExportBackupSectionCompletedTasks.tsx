@@ -36,7 +36,6 @@ const ExportBackupSectionCompletedTasks = () => {
 				}
 				openByDefault={true}
 				setIsOpenForParent={undefined}
-				isChildDropdownOpen={false}
 				showArrowNextToText={undefined}
 				customClasses={undefined}
 				customToggleOpen={undefined}

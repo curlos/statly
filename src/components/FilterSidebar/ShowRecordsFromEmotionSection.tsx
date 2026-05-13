@@ -30,7 +30,6 @@ const ShowRecordsFromEmotionSection = () => {
 				}
 				openByDefault={true}
 				setIsOpenForParent={undefined}
-				isChildDropdownOpen={false}
 				showArrowNextToText={undefined}
 				customClasses={undefined}
 				customToggleOpen={undefined}

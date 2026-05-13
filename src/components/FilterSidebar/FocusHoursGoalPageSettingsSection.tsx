@@ -274,7 +274,6 @@ const FocusHoursGoalPageSettingsSection = () => {
 				}
 				openByDefault={true}
 				setIsOpenForParent={undefined}
-				isChildDropdownOpen={false}
 				showArrowNextToText={undefined}
 				customClasses={undefined}
 				customToggleOpen={undefined}
@@ -539,7 +538,6 @@ const FocusHoursGoalPageSettingsSection = () => {
 				}
 				openByDefault={true}
 				setIsOpenForParent={undefined}
-				isChildDropdownOpen={false}
 				showArrowNextToText={undefined}
 				customClasses={undefined}
 				customToggleOpen={undefined}
@@ -600,7 +598,6 @@ const FocusHoursGoalPageSettingsSection = () => {
 				}
 				openByDefault={true}
 				setIsOpenForParent={undefined}
-				isChildDropdownOpen={false}
 				showArrowNextToText={undefined}
 				customClasses={undefined}
 				customToggleOpen={undefined}

@@ -9,11 +9,11 @@ import type { AncestorTask } from '../../../types/api';
 interface CompletedTaskProps {
 	task: Task | AncestorTask;
 	isFullTask: boolean;
-	updateTaskIdQueryParam: (taskId: string) => void;
+	buildUrlWithTaskIdQueryParam: (taskId: string) => string;
 	cardTextColor?: string;
 }
 
-const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateTaskIdQueryParam, cardTextColor }) => {
+const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, buildUrlWithTaskIdQueryParam, cardTextColor }) => {
 	// Really just for TickTick tasks, don't see anything like this for Todoist tasks. They seem to only have two statuses: "Complete" and "Not Complete".
 	const statusIsWillNotDo = 'status' in task && task.status === -1;
 
@@ -40,14 +40,13 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, updateT
 				/>
 				{/* "Full Tasks" would include all of the tasks from Todoist and all of the "non-item" tasks from TickTick. So, the only one tasks that would NOT be full tasks are the "items" which are only from TickTick and they are tasks that CANNOT have children. */}
 				{isFullTask ? (
-					<button
-						type="button"
-						className="mt-[-2px] flex-1 hover:underline cursor-pointer bg-transparent border-0 p-0 text-left"
-						onClick={() => updateTaskIdQueryParam(task.id)}
+					<a
+						href={buildUrlWithTaskIdQueryParam(task.id)}
+						className="mt-[-2px] flex-1 hover:underline text-left"
 						style={{ color: cardTextColor }}
 					>
 						{task.title}
-					</button>
+					</a>
 				) : (
 					<div className="mt-[-2px] flex-1" style={{ color: cardTextColor }}>
 						{task.title}

@@ -8,7 +8,7 @@ interface AccordionProps {
 	children: React.ReactNode;
 	setIsOpenForParent?: (isOpen: boolean) => void;
 	openByDefault?: boolean;
-	isChildDropdownOpen?: boolean;
+
 	showArrowNextToText?: boolean;
 	customClasses?: string;
 	customToggleOpen?: () => void;
@@ -20,13 +20,14 @@ const Accordion: React.FC<AccordionProps> = ({
 	children,
 	setIsOpenForParent,
 	openByDefault,
-	isChildDropdownOpen,
+
 	showArrowNextToText,
 	customClasses,
 	customToggleOpen,
 	preventOpen,
 }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
+	const [overflowHidden, setOverflowHidden] = useState(!openByDefault);
 	const panelId = useId();
 	const shouldReduceMotion = useReducedMotion();
 
@@ -37,6 +38,10 @@ const Accordion: React.FC<AccordionProps> = ({
 
 		if (preventOpen) {
 			return;
+		}
+
+		if (isOpen) {
+			setOverflowHidden(true);
 		}
 
 		setIsOpen(!isOpen);
@@ -53,7 +58,7 @@ const Accordion: React.FC<AccordionProps> = ({
 				aria-expanded={isOpen}
 				aria-controls={panelId}
 				className={classNames(
-					'w-full text-left flex gap-2 items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded	 mb-3',
+					'w-full text-left flex gap-2 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 rounded mb-3',
 					showArrowNextToText ? 'justify-start' : 'justify-between'
 				)}
 			>
@@ -72,7 +77,8 @@ const Accordion: React.FC<AccordionProps> = ({
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: shouldReduceMotion ? 'auto' : 0 }}
 						transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
-						className={isOpen && isChildDropdownOpen ? 'overflow-visible' : 'overflow-hidden'}
+						className={overflowHidden ? 'overflow-hidden' : 'overflow-visible'}
+						onAnimationComplete={() => { if (isOpen) setOverflowHidden(false); }}
 					>
 						{children}
 					</motion.div>

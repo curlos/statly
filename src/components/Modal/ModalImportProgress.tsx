@@ -163,7 +163,6 @@ const ModalImportProgress: React.FC = () => {
 									showArrowNextToText={false}
 									customClasses="!mb-0"
 									setIsOpenForParent={undefined}
-									isChildDropdownOpen={false}
 									customToggleOpen={undefined}
 									preventOpen={false}
 								>

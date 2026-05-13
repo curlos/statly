@@ -33,7 +33,6 @@ const SyncUpdateSection = () => {
 				}
 				openByDefault={true}
 				setIsOpenForParent={undefined}
-				isChildDropdownOpen={true}
 				showArrowNextToText={undefined}
 				customClasses={undefined}
 				customToggleOpen={undefined}
