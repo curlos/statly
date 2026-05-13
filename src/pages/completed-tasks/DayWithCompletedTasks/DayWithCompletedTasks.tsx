@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import Icon from '../../../components/Icon';
 import LazyImage from '../../../components/LazyImage';
 import classNames from 'classnames';
@@ -27,12 +28,13 @@ interface DayWithCompletedTasksProps {
 	dateWithCompletedTasks: DayWithCompletedTasksType;
 	isLastItemForTheDay?: boolean;
 	ancestorTasksById: Record<string, AncestorTask>;
+	pendingFocusDateRef?: React.MutableRefObject<string | null>;
 }
 
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
  */
-const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithCompletedTasks, isLastItemForTheDay = false, ancestorTasksById }) => {
+const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithCompletedTasks, isLastItemForTheDay = false, ancestorTasksById, pendingFocusDateRef }) => {
 
 	// Context
 	const { updateQueryParams } = useSearchParamsContext();
@@ -47,6 +49,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 	const { bgColor, bgColorHalfOpacity } = chosenColorObj;
 
 	const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
+	const articleRef = useRef<HTMLElement>(null);
 
 	// Fetch projects for markdown serialization
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -70,7 +73,9 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 		dateStr,
 		completedTasksForDay,
 		showIndentedTasks,
-		projectsById
+		projectsById,
+		articleRef,
+		pendingFocusDateRef,
 	});
 
 	const { groupedSubtasksByParentTask } = getGroupedSubtasksAndParentTasks({
@@ -110,6 +115,8 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 
 	return (
 		<article
+			ref={articleRef}
+			data-day-card-date={dateStr}
 			className={classNames(
 				'm-0 list-none last:mb-[4px] w-full',
 				showMedals ? 'flex' : 'relative',
@@ -197,6 +204,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 							setIsVisible={setDropdownOpen}
 							toggleRef={dropdownToggleRef}
 							customClasses="min-w-[200px] !text-[14px]"
+							role="menu"
 						>
 							<FocusRecordMenuItems
 								menuItems={menuItems}

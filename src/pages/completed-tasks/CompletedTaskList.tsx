@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import ModalFilterSidebar from '../../components/FilterSidebar/ModalFilterSidebar';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import DayWithCompletedTasks from './DayWithCompletedTasks/DayWithCompletedTasks';
@@ -27,6 +28,16 @@ const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 	setShowFilterSidebar,
 }) => {
 	const dispatch = useDispatch();
+	const pendingFocusDateRef = useRef<string | null>(null);
+
+	useEffect(() => {
+		if (!pendingFocusDateRef.current) return;
+		const dateStr = pendingFocusDateRef.current;
+		pendingFocusDateRef.current = null;
+		document.querySelector<HTMLElement>(
+			`[data-day-card-date="${dateStr}"] button[aria-haspopup="menu"]`
+		)?.focus();
+	}, [daysWithCompletedTasks]);
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
 	const { userSettings } = fetchedUserSettings || {};
 	const hasCookie = userSettings?.tickTickCookieSet || false;
@@ -84,6 +95,7 @@ const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 											dateWithCompletedTasks={dateWithCompletedTasks}
 											isLastItemForTheDay={isLastItem}
 											ancestorTasksById={ancestorTasksById}
+											pendingFocusDateRef={pendingFocusDateRef}
 										/>
 									);
 								})}

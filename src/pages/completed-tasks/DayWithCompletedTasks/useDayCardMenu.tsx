@@ -5,6 +5,7 @@ import { serializeNestedDay, serializeDayWithCompletedTasks } from '../../../uti
 import { tasksApi } from '../../../services/resources/tasksApi';
 import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 import { getFormattedShortMonthDay } from '../../../utils/date.utils';
+import { showToast } from '../../../slices/toastSlice';
 import type { Task, Project } from '../../../types/models';
 import type { AncestorTask } from '../../../types/api';
 
@@ -40,13 +41,17 @@ interface UseDayCardMenuParams {
 	completedTasksForDay: Task[];
 	showIndentedTasks: boolean;
 	projectsById?: Record<string, Project>;
+	articleRef: React.RefObject<HTMLElement>;
+	pendingFocusDateRef?: React.MutableRefObject<string | null>;
 }
 
 export const useDayCardMenu = ({
 	dateStr,
 	completedTasksForDay,
 	showIndentedTasks,
-	projectsById
+	projectsById,
+	articleRef,
+	pendingFocusDateRef,
 }: UseDayCardMenuParams) => {
 	const dispatch = useDispatch();
 	const userSettings = useUserSettingsContext();
@@ -127,6 +132,7 @@ export const useDayCardMenu = ({
 				}
 
 				await navigator.clipboard.writeText(markdown);
+				dispatch(showToast('Day card copied to clipboard'));
 			}
 		} catch (error) {
 			console.error('Error copying day card:', error);
@@ -135,11 +141,20 @@ export const useDayCardMenu = ({
 
 	// Delete all tasks for this day using bulk endpoint
 	const handleDeleteAllTasks = async () => {
+		// Store sibling's dateStr so CompletedTaskList can focus it after refetch
+		const el = articleRef.current;
+		if (el?.parentElement && pendingFocusDateRef) {
+			const siblings = Array.from(el.parentElement.querySelectorAll<HTMLElement>('[data-day-card-date]'));
+			const idx = siblings.indexOf(el);
+			const sibling = siblings[idx + 1] ?? siblings[idx - 1] ?? null;
+			pendingFocusDateRef.current = sibling?.getAttribute('data-day-card-date') ?? null;
+		}
+
 		try {
-			// Collect all task IDs from the day
 			const taskIds = completedTasksForDay.map(task => task.id);
 			await bulkDeleteTasks(taskIds).unwrap();
 			setDeleteModalOpen(false);
+			dispatch(showToast('Tasks deleted'));
 		} catch (error) {
 			console.error('Error deleting tasks:', error);
 		}
