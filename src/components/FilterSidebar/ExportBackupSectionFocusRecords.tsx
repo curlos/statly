@@ -42,35 +42,37 @@ const ExportBackupSectionFocusRecords = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
-				{/* Copy Focus Records to Clipboard */}
-				<FocusRecordsExporter
-					text="Copy Focus Records to Clipboard"
-					icon="content_copy"
-					action="handleCopyToClipboard"
-				/>
+				<div className="px-1">
+					{/* Copy Focus Records to Clipboard */}
+					<FocusRecordsExporter
+						text="Copy Focus Records to Clipboard"
+						icon="content_copy"
+						action="handleCopyToClipboard"
+					/>
 
-				{/* Download Focus Records (Single File) */}
-				<FocusRecordsExporter
-					text="Export Focus Records"
-					icon="download"
-					action="downloadSingleMarkdownFile"
-				/>
+					{/* Download Focus Records (Single File) */}
+					<FocusRecordsExporter
+						text="Export Focus Records"
+						icon="download"
+						action="downloadSingleMarkdownFile"
+					/>
 
-				{/* Export Focus Records by Project */}
-				<FocusRecordsExporter
-					text="Export Focus Records by Project"
-					icon="download"
-					action="downloadZipFolderOfGroupedFocusRecords"
-					params={['project']}
-				/>
+					{/* Export Focus Records by Project */}
+					<FocusRecordsExporter
+						text="Export Focus Records by Project"
+						icon="download"
+						action="downloadZipFolderOfGroupedFocusRecords"
+						params={['project']}
+					/>
 
-				{/* Export Focus Records by Task */}
-				<FocusRecordsExporter
-					text="Export Focus Records by Task"
-					icon="download"
-					action="downloadZipFolderOfGroupedFocusRecords"
-					params={['task']}
-				/>
+					{/* Export Focus Records by Task */}
+					<FocusRecordsExporter
+						text="Export Focus Records by Task"
+						icon="download"
+						action="downloadZipFolderOfGroupedFocusRecords"
+						params={['task']}
+					/>
+				</div>
 
 				<div className="pl-9">
 					<CheckboxOther
@@ -82,13 +84,15 @@ const ExportBackupSectionFocusRecords = () => {
 					/>
 				</div>
 
-				{/* Export Focus Records by Emotion */}
-				<FocusRecordsExporter
-					text="Export Focus Records by Emotion"
-					icon="download"
-					action="downloadZipFolderOfGroupedFocusRecords"
-					params={['emotion']}
-				/>
+				<div className="px-1">
+					{/* Export Focus Records by Emotion */}
+					<FocusRecordsExporter
+						text="Export Focus Records by Emotion"
+						icon="download"
+						action="downloadZipFolderOfGroupedFocusRecords"
+						params={['emotion']}
+					/>
+				</div>
 			</Accordion>
 		</div>
 	);

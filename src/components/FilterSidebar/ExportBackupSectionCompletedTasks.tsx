@@ -42,35 +42,37 @@ const ExportBackupSectionCompletedTasks = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
-				{/* Copy Completed Tasks to Clipboard */}
-				<CompletedTasksExporter
-					text="Copy Completed Tasks to Clipboard"
-					icon="content_copy"
-					action="handleCopyToClipboard"
-				/>
+				<div className="px-1">
+					{/* Copy Completed Tasks to Clipboard */}
+					<CompletedTasksExporter
+						text="Copy Completed Tasks to Clipboard"
+						icon="content_copy"
+						action="handleCopyToClipboard"
+					/>
 
-				{/* Download Completed Tasks (Single File) */}
-				<CompletedTasksExporter
-					text="Export Completed Tasks"
-					icon="download"
-					action="downloadSingleMarkdownFile"
-				/>
+					{/* Download Completed Tasks (Single File) */}
+					<CompletedTasksExporter
+						text="Export Completed Tasks"
+						icon="download"
+						action="downloadSingleMarkdownFile"
+					/>
 
-				{/* Export Completed Tasks by Project */}
-				<CompletedTasksExporter
-					text="Export Completed Tasks by Project"
-					icon="download"
-					action="downloadZipFolderOfGroupedCompletedTasks"
-					params={['project']}
-				/>
+					{/* Export Completed Tasks by Project */}
+					<CompletedTasksExporter
+						text="Export Completed Tasks by Project"
+						icon="download"
+						action="downloadZipFolderOfGroupedCompletedTasks"
+						params={['project']}
+					/>
 
-				{/* Export Completed Tasks by Task */}
-				<CompletedTasksExporter
-					text="Export Completed Tasks by Task"
-					icon="download"
-					action="downloadZipFolderOfGroupedCompletedTasks"
-					params={['task']}
-				/>
+					{/* Export Completed Tasks by Task */}
+					<CompletedTasksExporter
+						text="Export Completed Tasks by Task"
+						icon="download"
+						action="downloadZipFolderOfGroupedCompletedTasks"
+						params={['task']}
+					/>
+				</div>
 
 				<div className="pl-9">
 					<CheckboxOther
