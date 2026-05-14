@@ -50,6 +50,7 @@ interface FocusGoalCalendarDayProps {
 	day: Date;
 	dateKey: string;
 	themeColor: string;
+	tabIndex?: number;
 	// Single mode props
 	dayData?: {
 		goalSeconds: number;
@@ -70,6 +71,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	day,
 	dateKey,
 	themeColor,
+	tabIndex,
 	dayData,
 	goalSeconds: defaultGoalSeconds,
 	restDays,
@@ -174,9 +176,13 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 		);
 
 		const containerSize = isMobile ? 40 : 50;
+		const dateLabel = day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+		const combinedAriaLabel = `${dateLabel} - ${ringsData.map(r =>
+			`${r.ringName}: ${getFormattedDuration(r.duration, false)} / ${getFormattedDuration(r.goal, false)} (${r.percentage.toFixed(2)}%)`
+		).join(', ')}`;
 
 		return (
-			<Tooltip content={multiRingTooltipContent} position="top">
+			<Tooltip content={multiRingTooltipContent} position="top" tabIndex={tabIndex ?? -1} ariaLabel={combinedAriaLabel}>
 				<div className="flex items-center justify-center relative" style={{ width: `${containerSize}px`, height: `${containerSize}px` }}>
 					{ringsData.map((ring, index) => {
 						const size = sizes[index];
@@ -238,6 +244,15 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 		| 'sunday';
 	const isFreebieDay = !(selectedDaysOfWeek?.[dayOfWeek] ?? true);
 
+	const singleDateLabel = day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+	const singleAriaLabel = [
+		`${singleDateLabel} - ${getFormattedDuration(totalFocused, false)} / ${getFormattedDuration(goalForDay, false)} - ${percentage.toFixed(2)}%`,
+		hasCustomGoal && 'Custom Goal',
+		isFreebieDay && 'Freebie Day',
+		isRestDay && 'Rest Day',
+		isInInactivePeriod && 'Inactive Period',
+	].filter(Boolean).join(', ');
+
 	// Tooltip content
 	const tooltipContent = (
 		<div className="text-base whitespace-nowrap">
@@ -275,7 +290,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	);
 
 	return (
-		<Tooltip content={tooltipContent} position="top">
+		<Tooltip content={tooltipContent} position="top" tabIndex={tabIndex ?? -1} ariaLabel={singleAriaLabel}>
 			<div className="flex items-center justify-center relative">
 				<div style={{ width: '40px', height: '40px' }}>
 					<CircularProgressbarWithChildren

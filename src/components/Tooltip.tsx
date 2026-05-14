@@ -7,9 +7,10 @@ interface TooltipProps {
 	position?: 'top' | 'bottom';
 	align?: 'left' | 'right' | 'center';
 	tabIndex?: number;
+	ariaLabel?: string;
 }
 
-const Tooltip = ({ content, children, className = '', position = 'top', align: manualAlign, tabIndex = 0 }: TooltipProps) => {
+const Tooltip = ({ content, children, className = '', position = 'top', align: manualAlign, tabIndex = 0, ariaLabel }: TooltipProps) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -80,7 +81,7 @@ const Tooltip = ({ content, children, className = '', position = 'top', align: m
 			ref={containerRef}
 			className="relative inline-block"
 			tabIndex={tabIndex}
-			aria-label={typeof content === 'string' ? content : undefined}
+			aria-label={ariaLabel ?? (typeof content === 'string' ? content : undefined)}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			onFocus={handleMouseEnter}

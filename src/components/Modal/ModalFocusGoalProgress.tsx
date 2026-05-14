@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Modal from './Modal';
 import Icon from '../Icon';
 import { getFormattedDuration } from '../../utils/helpers.utils';
-import { formatDateAsAPIKey, formatDateWithoutTimezone, getAllMonths } from '../../utils/date.utils';
+import { areDatesEqual, formatDateAsAPIKey, formatDateWithoutTimezone, getAllMonths } from '../../utils/date.utils';
 import { truncateText } from '../../utils/text.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import classNames from 'classnames';
@@ -88,6 +88,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	const goalSeconds = ring?.goalSeconds ?? 3600;
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [showYearView, setShowYearView] = useState(false);
+	const shouldFocusCalendarGrid = useRef(false);
 	const [viewMode, setViewMode] = useState<'calendar' | 'streaks'>('calendar');
 	const [sortBy, setSortBy] = useState<string>('Longest');
 
@@ -269,12 +270,17 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 							<YearView
 								currentDate={currentDate}
 								setCurrentDate={setCurrentDate}
-								setShowYearView={setShowYearView}
+								setShowYearView={(value) => {
+									if (!value) shouldFocusCalendarGrid.current = true;
+									setShowYearView(value);
+								}}
 							/>
 						) : (
 							<CalendarGrid
 								mode={mode}
 								currentDate={currentDate}
+								setCurrentDate={setCurrentDate}
+								focusGridOnMount={shouldFocusCalendarGrid}
 								dailyDurationsMap={streakData?.dailyDurationsMap}
 								themeColor={chosenColorObj.hexColor}
 								goalSeconds={goalSeconds}
@@ -351,40 +357,46 @@ const CalendarNavigation = ({
 	goToPreviousYear: () => void;
 	goToNextYear: () => void;
 }) => (
+	<>
+	<div aria-live="polite" aria-atomic="true" className="sr-only">
+		{showYearView ? `${currentDate.getFullYear()}` : `${monthName} ${currentDate.getFullYear()}`}
+	</div>
 	<div className="flex items-center justify-between px-4 mb-4">
 		<div className="flex-1 font-semibold text-lg">
 			<button
 				type="button"
-				className="cursor-pointer bg-transparent border-0 p-0 font-semibold text-lg"
+				className="cursor-pointer bg-transparent border-0 p-0 font-semibold text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
 				onClick={() => setShowYearView(!showYearView)}
 				aria-pressed={showYearView}
-				aria-label={showYearView ? 'Switch to month view' : 'Switch to year view'}
+				aria-label={showYearView ? `${currentDate.getFullYear()}, switch to month view` : `${monthName} ${currentDate.getFullYear()}, switch to year view`}
 			>
 				{showYearView ? `${currentDate.getFullYear()}` : `${monthName} ${currentDate.getFullYear()}`}
 			</button>
 		</div>
 		<div className="flex items-center">
-			<button type="button" aria-label="Previous year" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToPreviousYear}>
+			<button type="button" aria-label="Previous year" className="bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded" onClick={goToPreviousYear}>
 				<Icon name="keyboard_double_arrow_left" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
 			</button>
-			<button type="button" aria-label="Previous month" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToPreviousMonth}>
+			<button type="button" aria-label="Previous month" className="bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded" onClick={goToPreviousMonth}>
 				<Icon name="chevron_left" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
 			</button>
 			<Icon name="fiber_manual_record" fill={1} customClass={'text-color-gray-25 mt-[-7px] !text-[10px] mx-1'} />
-			<button type="button" aria-label="Next month" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToNextMonth}>
+			<button type="button" aria-label="Next month" className="bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded" onClick={goToNextMonth}>
 				<Icon name="chevron_right" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
 			</button>
-			<button type="button" aria-label="Next year" className="bg-transparent border-0 p-0 cursor-pointer" onClick={goToNextYear}>
+			<button type="button" aria-label="Next year" className="bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded" onClick={goToNextYear}>
 				<Icon name="keyboard_double_arrow_right" fill={0} customClass={'text-color-gray-25 !text-[22px] hover:text-color-gray-100'} />
 			</button>
 		</div>
 	</div>
+	</>
 );
 
 // Calendar Grid Component
 const CalendarGrid = ({
 	mode,
 	currentDate,
+	setCurrentDate,
 	dailyDurationsMap,
 	themeColor,
 	goalSeconds,
@@ -395,9 +407,11 @@ const CalendarGrid = ({
 	customDailyFocusGoal,
 	inactivePeriods,
 	rings,
+	focusGridOnMount,
 }: {
 	mode: 'single' | 'combined';
 	currentDate: Date;
+	setCurrentDate: (date: Date) => void;
 	dailyDurationsMap?: { [dateKey: string]: number };
 	themeColor: string;
 	goalSeconds: number;
@@ -408,7 +422,66 @@ const CalendarGrid = ({
 	customDailyFocusGoal: Record<string, number>;
 	inactivePeriods: Array<{ startDate: string; endDate: string | null }>;
 	rings?: CombinedRing[];
+	focusGridOnMount?: React.MutableRefObject<boolean>;
 }) => {
+	const getDefaultFocusDate = (date: Date) => {
+		const today = new Date();
+		if (today.getFullYear() === date.getFullYear() && today.getMonth() === date.getMonth()) {
+			return today;
+		}
+		return new Date(date.getFullYear(), date.getMonth(), 1);
+	};
+
+	const [focusedDate, setFocusedDate] = useState<Date>(() => getDefaultFocusDate(currentDate));
+	const gridRef = useRef<HTMLDivElement>(null);
+	const pendingFocusKey = useRef<string | null>(null);
+
+	// After returning from YearView, focus the default day button on mount
+	useEffect(() => {
+		if (!focusGridOnMount?.current || !gridRef.current) return;
+		focusGridOnMount.current = false;
+		const target = getDefaultFocusDate(currentDate);
+		const key = `${target.getFullYear()}-${target.getMonth()}-${target.getDate()}`;
+		gridRef.current.querySelector<HTMLButtonElement>(`[data-date="${key}"]`)?.focus();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	useEffect(() => {
+		if (!pendingFocusKey.current || !gridRef.current) return;
+		const btn = gridRef.current.querySelector<HTMLButtonElement>(`[data-date="${pendingFocusKey.current}"]`);
+		if (btn) { pendingFocusKey.current = null; btn.focus(); }
+	}, [currentDate]);
+
+	useEffect(() => {
+		if (pendingFocusKey.current !== null) return;
+		setFocusedDate(getDefaultFocusDate(currentDate));
+	}, [currentDate]);
+
+	const handleKeyDown = (day: Date) => (e: React.KeyboardEvent<HTMLButtonElement>) => {
+		const y = day.getFullYear(), m = day.getMonth(), d = day.getDate();
+		let newDate: Date | null = null;
+		switch (e.key) {
+			case 'ArrowRight': e.preventDefault(); newDate = new Date(y, m, d + 1); break;
+			case 'ArrowLeft':  e.preventDefault(); newDate = new Date(y, m, d - 1); break;
+			case 'ArrowDown':  e.preventDefault(); newDate = new Date(y, m, d + 7); break;
+			case 'ArrowUp':    e.preventDefault(); newDate = new Date(y, m, d - 7); break;
+			case 'Home':       e.preventDefault(); newDate = new Date(y, m, d - (day.getDay() + 6) % 7); break;
+			case 'End':        e.preventDefault(); newDate = new Date(y, m, d + (7 - day.getDay()) % 7); break;
+			case 'PageUp':     e.preventDefault(); newDate = new Date(y, m - 1, d); break;
+			case 'PageDown':   e.preventDefault(); newDate = new Date(y, m + 1, d); break;
+		}
+		if (newDate) {
+			const key = `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}`;
+			const isSameMonth = newDate.getMonth() === currentDate.getMonth() && newDate.getFullYear() === currentDate.getFullYear();
+			setFocusedDate(newDate);
+			if (isSameMonth) {
+				gridRef.current?.querySelector<HTMLButtonElement>(`[data-date="${key}"]`)?.focus();
+			} else {
+				pendingFocusKey.current = key;
+				setCurrentDate(new Date(newDate.getFullYear(), newDate.getMonth(), 1));
+			}
+		}
+	};
+
 	// Determine which color to use for the ring
 	const ringDisplayColor = useThemeColor ? themeColor : (ringColor || themeColor);
 
@@ -471,13 +544,16 @@ const CalendarGrid = ({
 			</div>
 
 			{/* Calendar grid */}
-			<div className="grid grid-cols-7 gap-2">
+			<div ref={gridRef} className="grid grid-cols-7 gap-2">
 				{days.map((day, index) => {
 					if (day === null) {
 						return <div key={`empty-${index}`} className={mode === 'combined' ? 'w-[50px] h-[50px]' : 'w-[40px] h-[40px]'}></div>;
 					}
 
 					const dateKey = formatDateAsAPIKey(day);
+					const isFocused = areDatesEqual(day, focusedDate);
+					const navKey = `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`;
+					const dateLabel = day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
 					if (mode === 'combined' && rings) {
 						// Multi-ring mode: prepare data for each ring
@@ -502,15 +578,36 @@ const CalendarGrid = ({
 							};
 						});
 
+						const ringsInfo = ringsData.map(r =>
+							`${r.ringName}: ${getFormattedDuration(r.duration, false)} / ${getFormattedDuration(r.goal, false)} (${r.percentage.toFixed(2)}%)`
+						).join(', ');
+						const ariaLabel = `${dateLabel} - ${ringsInfo}`;
+
 						return (
-							<FocusGoalCalendarDay
+							<button
 								key={index}
-								mode="combined"
-								day={day}
-								dateKey={dateKey}
-								themeColor={themeColor}
-								ringsData={ringsData}
-							/>
+								type="button"
+								data-date={navKey}
+								tabIndex={isFocused ? 0 : -1}
+								aria-label={ariaLabel}
+								className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+								onFocus={(e) => {
+									setFocusedDate(day);
+									if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+										(e.currentTarget.firstElementChild as HTMLElement | null)?.focus();
+									}
+								}}
+								onKeyDown={handleKeyDown(day)}
+							>
+								<FocusGoalCalendarDay
+									mode="combined"
+									day={day}
+									dateKey={dateKey}
+									themeColor={themeColor}
+									ringsData={ringsData}
+									tabIndex={-1}
+								/>
+							</button>
 						);
 					} else {
 						// Single ring mode: existing logic
@@ -518,6 +615,7 @@ const CalendarGrid = ({
 						const customGoalForDay = customDailyFocusGoal?.[dateKey];
 						const goalForDay = customGoalForDay !== undefined ? customGoalForDay : goalSeconds;
 						const percentageOfFocusedGoalHours = (totalFocusDurationForDay / goalForDay) * 100;
+						const ariaLabel = `${dateLabel} - ${getFormattedDuration(totalFocusDurationForDay, false)} / ${getFormattedDuration(goalForDay, false)} - ${percentageOfFocusedGoalHours.toFixed(2)}%`;
 
 						const dayData = {
 							goalSeconds: goalForDay,
@@ -526,19 +624,35 @@ const CalendarGrid = ({
 						};
 
 						return (
-							<FocusGoalCalendarDay
+							<button
 								key={index}
-								mode="single"
-								day={day}
-								dayData={dayData}
-								themeColor={ringDisplayColor}
-								goalSeconds={goalSeconds}
-								restDays={restDays}
-								dateKey={dateKey}
-								selectedDaysOfWeek={selectedDaysOfWeek as unknown as Record<string, boolean>}
-								customDailyFocusGoal={customDailyFocusGoal}
-								inactivePeriods={inactivePeriods}
-							/>
+								type="button"
+								data-date={navKey}
+								tabIndex={isFocused ? 0 : -1}
+								aria-label={ariaLabel}
+								className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+								onFocus={(e) => {
+									setFocusedDate(day);
+									if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+										(e.currentTarget.firstElementChild as HTMLElement | null)?.focus();
+									}
+								}}
+								onKeyDown={handleKeyDown(day)}
+							>
+								<FocusGoalCalendarDay
+									mode="single"
+									day={day}
+									dayData={dayData}
+									themeColor={ringDisplayColor}
+									goalSeconds={goalSeconds}
+									restDays={restDays}
+									dateKey={dateKey}
+									selectedDaysOfWeek={selectedDaysOfWeek as unknown as Record<string, boolean>}
+									customDailyFocusGoal={customDailyFocusGoal}
+									inactivePeriods={inactivePeriods}
+									tabIndex={-1}
+								/>
+							</button>
 						);
 					}
 				})}
@@ -559,23 +673,59 @@ const YearView = ({
 }) => {
 	const { chosenColorObj } = useThemeContext();
 	const monthsOfYear = getAllMonths(currentDate);
+	const [focusedIndex, setFocusedIndex] = useState(currentDate.getMonth());
+	const gridRef = useRef<HTMLDivElement>(null);
+	const pendingFocusIndex = useRef<number | null>(null);
+
+	useEffect(() => {
+		if (pendingFocusIndex.current === null || !gridRef.current) return;
+		const idx = pendingFocusIndex.current;
+		pendingFocusIndex.current = null;
+		setFocusedIndex(idx);
+		gridRef.current.querySelectorAll<HTMLButtonElement>('button')[idx]?.focus();
+	}, [currentDate]);
+
+	const focusMonth = (index: number) => {
+		if (index < 0) {
+			pendingFocusIndex.current = 11;
+			setCurrentDate(new Date(currentDate.getFullYear() - 1, 11, 1));
+		} else if (index > 11) {
+			pendingFocusIndex.current = 0;
+			setCurrentDate(new Date(currentDate.getFullYear() + 1, 0, 1));
+		} else {
+			setFocusedIndex(index);
+			gridRef.current?.querySelectorAll<HTMLButtonElement>('button')[index]?.focus();
+		}
+	};
 
 	return (
-		<div className="grid grid-cols-3 gap-2 my-3">
-			{monthsOfYear.map((monthDate) => {
+		<div ref={gridRef} className="grid grid-cols-3 gap-2 my-3">
+			{monthsOfYear.map((monthDate, i) => {
 				const monthName = monthDate.toLocaleString('default', { month: 'short' });
 				const isSelected =
 					monthDate.getFullYear() === currentDate.getFullYear() &&
 					monthDate.getMonth() === currentDate.getMonth();
 
 				return (
-					<div
+					<button
 						key={`${monthName}-${monthDate.getFullYear()}`}
-						className="flex justify-center"
-						onClick={() => {
-							setCurrentDate(monthDate);
-							setShowYearView(false);
+						type="button"
+						tabIndex={i === focusedIndex ? 0 : -1}
+						aria-pressed={isSelected}
+						aria-label={monthDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+						className="flex justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+						onFocus={() => setFocusedIndex(i)}
+						onKeyDown={(e) => {
+							switch (e.key) {
+								case 'ArrowRight': e.preventDefault(); focusMonth(i + 1); break;
+								case 'ArrowLeft':  e.preventDefault(); focusMonth(i - 1); break;
+								case 'ArrowDown':  e.preventDefault(); focusMonth(i + 3); break;
+								case 'ArrowUp':    e.preventDefault(); focusMonth(i - 3); break;
+								case 'Home':       e.preventDefault(); focusMonth(0); break;
+								case 'End':        e.preventDefault(); focusMonth(11); break;
+							}
 						}}
+						onClick={() => { setCurrentDate(monthDate); setShowYearView(false); }}
 					>
 						<div
 							className={classNames(
@@ -585,7 +735,7 @@ const YearView = ({
 						>
 							{monthName}
 						</div>
-					</div>
+					</button>
 				);
 			})}
 		</div>
