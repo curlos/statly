@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, forwardRef } from 'react';
 import Dropdown from '../../../../components/Dropdown/Dropdown';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDatesInYear, getFormattedLongDay } from '../../../../utils/date.utils';
@@ -16,6 +16,13 @@ interface CalendarHeatmapProps {
 	statsData?: FocusStatsResponse;
 }
 
+const getActiveIndexForYear = (dates: Date[]) => {
+	const today = new Date();
+	if (dates[0].getFullYear() !== today.getFullYear()) return dates.length - 1;
+	const jan1 = new Date(today.getFullYear(), 0, 1);
+	return Math.floor((today.getTime() - jan1.getTime()) / 86400000);
+};
+
 const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsData }) => {
 	// Convert API data to grouped by date format
 	const focusRecordsGroupedByDate: Record<string, DayDurationData> = {};
@@ -27,6 +34,7 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 	});
 
 	const allDatesInYear = getAllDatesInYear(selectedDates[0].getFullYear());
+	const year = selectedDates[0].getFullYear();
 	const { chosenColorObj } = useThemeContext();
 	const { hexColor } = chosenColorObj;
 
@@ -45,6 +53,52 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 
 	const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+	// Roving tabindex: one Tab stop for the whole grid
+	const [activeIndex, setActiveIndex] = useState(() => getActiveIndexForYear(allDatesInYear));
+	const dayNodesRef = useRef<Array<HTMLButtonElement | null>>([]);
+
+	// Live row count so ←/→ jumps by exactly one visual column at any breakpoint
+	const gridRef = useRef<HTMLDivElement>(null);
+	const [rowCount, setRowCount] = useState(14);
+
+	// Reset active cell to today when the selected year changes
+	useEffect(() => {
+		setActiveIndex(getActiveIndexForYear(allDatesInYear));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [year]);
+
+	// Track the grid's computed row count so column jumps stay accurate after resize
+	useEffect(() => {
+		const update = () => {
+			if (!gridRef.current) return;
+			const rows = window.getComputedStyle(gridRef.current).gridTemplateRows.split(' ').length;
+			setRowCount(rows);
+		};
+		const observer = new ResizeObserver(update);
+		if (gridRef.current) observer.observe(gridRef.current);
+		update();
+		return () => observer.disconnect();
+	}, []);
+
+	const handleGridKeyDown = (e: React.KeyboardEvent) => {
+		let next = activeIndex;
+		switch (e.key) {
+			case 'ArrowUp':    next = activeIndex - 1; break;
+			case 'ArrowDown':  next = activeIndex + 1; break;
+			case 'ArrowLeft':  next = activeIndex - rowCount; break;
+			case 'ArrowRight': next = activeIndex + rowCount; break;
+			case 'Home': next = 0; break;
+			case 'End':  next = allDatesInYear.length - 1; break;
+			default: return;
+		}
+		next = Math.max(0, Math.min(allDatesInYear.length - 1, next));
+		if (next !== activeIndex) {
+			e.preventDefault();
+			setActiveIndex(next);
+			dayNodesRef.current[next]?.focus();
+		}
+	};
+
 	return (
 		<div className="flex flex-col sm:flex-row gap-2 justify-between items-center">
 			<div className="flex justify-center w-full sm:w-auto">
@@ -59,13 +113,22 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 						{monthsShort.map((month, index) => index % 2 === 0 && <div key={month}>{month}</div>)}
 					</div>
 
-					<p className="sr-only">Year-at-a-glance heatmap showing daily focus duration. Each cell represents one day; darker colors indicate more focus time.</p>
-					<div className="grid grid-flow-col grid-rows-[repeat(auto-fill,_15px)] max-h-[360px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px] gap-[1px]" role="grid" aria-label="Focus duration heatmap">
-						{allDatesInYear.map((date) => (
+					<p className="sr-only">Year-at-a-glance heatmap showing daily focus duration. Each cell represents one day; darker colors indicate more focus time. Use arrow keys to navigate between days.</p>
+					<div
+						ref={gridRef}
+						className="grid grid-flow-col grid-rows-[repeat(auto-fill,_15px)] max-h-[360px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px] gap-[1px]"
+						role="grid"
+						aria-label="Focus duration heatmap"
+						onKeyDown={handleGridKeyDown}
+					>
+						{allDatesInYear.map((date, index) => (
 							<CalendarDay
 								key={date.toLocaleDateString()}
 								date={date}
 								focusRecordsGroupedByDate={focusRecordsGroupedByDate}
+								isActive={index === activeIndex}
+								ref={(el) => { dayNodesRef.current[index] = el; }}
+								onFocus={() => setActiveIndex(index)}
 							/>
 						))}
 					</div>
@@ -90,10 +153,12 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 interface CalendarDayProps {
 	date: Date;
 	focusRecordsGroupedByDate: Record<string, DayDurationData>;
+	isActive: boolean;
+	onFocus: () => void;
 }
 
-const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDate }) => {
-	const [isHovering, setIsHovering] = useState(false);
+const CalendarDay = forwardRef<HTMLButtonElement, CalendarDayProps>(({ date, focusRecordsGroupedByDate, isActive, onFocus }, ref) => {
+	const [isVisible, setIsVisible] = useState(false);
 	const dropdownRef = useRef(null);
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
@@ -108,23 +173,27 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 	return (
 		<div className="relative">
 			<button
+				ref={ref}
 				type="button"
-				key={date.toLocaleDateString()}
 				aria-label={`${dateKey}: ${formattedDurationForTheDay}`}
+				tabIndex={isActive ? 0 : -1}
 				style={rangeStyle}
 				className={classNames(
-					`h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] rounded p-0`,
+					'h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] rounded p-0 relative',
+					'focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-1 focus-visible:z-10',
 					chosenColorObj.hover.borderColor
 				)}
-				onMouseEnter={() => setIsHovering(true)}
-				onMouseLeave={() => setIsHovering(false)}
-				onClick={() => setIsHovering(!isHovering)}
-			></button>
+				onFocus={() => { setIsVisible(true); onFocus(); }}
+				onBlur={() => setIsVisible(false)}
+				onMouseEnter={() => setIsVisible(true)}
+				onMouseLeave={() => setIsVisible(false)}
+				onClick={() => setIsVisible(v => !v)}
+			/>
 
 			<Dropdown
 				toggleRef={dropdownRef}
-				isVisible={isHovering}
-				setIsVisible={setIsHovering}
+				isVisible={isVisible}
+				setIsVisible={setIsVisible}
 				customClasses={'!bg-black'}
 			>
 				<div className={classNames(chosenColorObj.textColor, 'p-2 text-[16px] bg-black text-nowrap rounded')}>
@@ -134,7 +203,9 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, focusRecordsGroupedByDa
 			</Dropdown>
 		</div>
 	);
-};
+});
+
+CalendarDay.displayName = 'CalendarDay';
 
 const getRangeStyle = (seconds: number, hexColor: string): React.CSSProperties => {
 	const colors = getHeatmapColors(hexColor);
