@@ -27,13 +27,14 @@ const ModalCustomFocusGoals: React.FC<ModalCustomFocusGoalsProps> = ({ isOpen, o
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[600px]">
+		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[600px]" ariaLabelledBy="custom-goals-modal-title">
 			<div className="bg-color-gray-700 rounded-lg p-6">
 				{/* Header */}
 				<div className="flex items-center justify-between mb-4">
-					<h3 className="text-xl font-semibold">Custom Focus Goal Days</h3>
+					<h3 id="custom-goals-modal-title" className="text-xl font-semibold">Custom Focus Goal Days</h3>
 					<button
 						onClick={onClose}
+						aria-label="Close"
 						className="text-color-gray-25 hover:text-white transition-colors"
 					>
 						<Icon name="close" fill={1} customClass="!text-[24px]" />

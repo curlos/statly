@@ -87,22 +87,24 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 
 	return (
 		<div>
-			<div className="flex gap-2 mt-1 mb-1 ml-1 items-center">
+			<div role="group" aria-label="Duration" className="flex gap-2 mt-1 mb-1 ml-1 items-center">
 				<div className="flex items-center gap-2">
 					<div className="max-w-[50px]">
-						<CustomInput value={hours} setValue={setHours} type="number" min={0} max={23} />
+						<CustomInput value={hours} setValue={setHours} type="number" min={0} max={23} ariaLabel="Hours" />
 					</div>
-					<div>hours</div>
+					<div aria-hidden="true">hours</div>
 				</div>
 				<div className="flex items-center gap-2">
 					<div className="max-w-[50px]">
-						<CustomInput value={minutes} setValue={setMinutes} type="number" min={0} max={59} />
+						<CustomInput value={minutes} setValue={setMinutes} type="number" min={0} max={59} ariaLabel="Minutes" />
 					</div>
-					<div>minutes</div>
+					<div aria-hidden="true">minutes</div>
 				</div>
 				{apiRequestLoading && <Spinner />}
 			</div>
-			{errorMessage && <div className="text-[14px] text-red-500">{errorMessage}</div>}
+			<div role="alert" aria-live="polite" className="text-[14px] text-red-500">
+				{errorMessage}
+			</div>
 		</div>
 	);
 };

@@ -60,9 +60,11 @@ const RingColorPicker = ({
 			{/* Color Picker */}
 			<div className="flex items-center gap-2 mb-3">
 				<span className="text-[14px] text-color-gray-25">Choose color:</span>
-				<label className="cursor-pointer">
+				<label htmlFor="ring-color-input" className="cursor-pointer">
 					<input
+						id="ring-color-input"
 						type="color"
+						aria-label="Ring color"
 						value={displayColor}
 						onChange={handleColorPickerChange}
 						disabled={useThemeColor}
