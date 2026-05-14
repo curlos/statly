@@ -222,26 +222,35 @@ const FocusStatsCard = ({
 	const showNavigation = selectedInterval !== 'All' && selectedInterval !== 'Custom';
 
 	return (
-		<div className="bg-color-gray-600 rounded-lg p-4">
+		<section aria-label="Focus goal progress stats" className="bg-color-gray-600 rounded-lg p-4">
+			<div aria-live="polite" aria-atomic="true" className="sr-only">
+				{displayLabel}: {stats.daysMetGoal} of {stats.totalDays} days goal met ({Math.round(stats.percentage)}%)
+			</div>
 			{/* Header row: Interval dropdown + Navigation/Date */}
 			<div className="flex items-center justify-between mb-1">
 				{/* Left: Navigation arrows + Date label */}
 				<div className="flex items-center gap-2 flex-1">
 					{showNavigation ? (
 						<>
-							<Icon
-								name="chevron_left"
-								customClass="cursor-pointer hover:text-color-gray-100"
+							<button
+								type="button"
+								aria-label={`Previous ${selectedInterval.toLowerCase()}`}
+								className="bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
 								onClick={goToPrevious}
-							/>
-							<div className="text-sm text-color-gray-25 font-medium">
+							>
+								<Icon name="chevron_left" customClass="hover:text-color-gray-100" />
+							</button>
+							<div className="text-sm text-color-gray-25 font-medium mt-[-6px]">
 								{displayLabel}
 							</div>
-							<Icon
-								name="chevron_right"
-								customClass="cursor-pointer hover:text-color-gray-100"
+							<button
+								type="button"
+								aria-label={`Next ${selectedInterval.toLowerCase()}`}
+								className="bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
 								onClick={goToNext}
-							/>
+							>
+								<Icon name="chevron_right" customClass="hover:text-color-gray-100" />
+							</button>
 						</>
 					) : (
 						<div className="text-sm text-color-gray-100 font-medium">
@@ -264,7 +273,10 @@ const FocusStatsCard = ({
 			</div>
 
 			{/* Main stats display */}
-			<div className="text-2xl font-bold mb-0">
+			<div
+				className="text-2xl font-bold mb-0"
+				aria-label={`${stats.daysMetGoal} out of ${stats.totalDays} days, ${Math.round(stats.percentage)} percent`}
+			>
 				{stats.daysMetGoal}/{stats.totalDays} <span className="text-color-gray-50">({Math.round(stats.percentage)}%)</span>
 			</div>
 
@@ -272,7 +284,7 @@ const FocusStatsCard = ({
 			<div className="text-color-gray-50">
 				Days goal met
 			</div>
-		</div>
+		</section>
 	);
 };
 
