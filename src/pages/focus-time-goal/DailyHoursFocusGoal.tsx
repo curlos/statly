@@ -9,7 +9,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 import { useGetStreaksTodayQuery, useGetStreakHistoryQuery, useGetCombinedStreakHistoryQuery } from '../../services/resources/streaksApi';
 import Spinner from '../../components/Loaders/Spinner';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
-import ModalFocusGoalProgress from '../../components/Modal/ModalFocusGoalProgress';
+import ModalFocusGoalProgress from '../../components/Modal/ModalFocusGoalProgress/ModalFocusGoalProgress';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import useWindowSize from '../../hooks/useWindowSize';
 import { useApplyDefaultDateRangeContext } from '../../contexts/useApplyDefaultDateRangeContext';
