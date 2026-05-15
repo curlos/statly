@@ -117,7 +117,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					<button
 						type="button"
 						aria-label="Close"
-						className="bg-transparent border-0 p-0 cursor-pointer hover:text-color-gray-25"
+						className="bg-transparent border-0 p-0 cursor-pointer hover:text-color-gray-25 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
 						onClick={onClose}
 					>
 						<Icon name="close" customClass="!text-[24px]" />
@@ -125,7 +125,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				</div>
 
 				{/* Streaks Section */}
-				<div className="grid grid-cols-2 gap-3 mb-3">
+				<div role="group" aria-label="Streaks" className="grid grid-cols-2 gap-3 mb-3">
 					<StreakDisplay
 						title="Current Streak"
 						streak={mode === 'combined' ? combinedStreakData?.combinedStreaks?.currentStreak : streakData?.currentStreak}
@@ -180,10 +180,12 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					{viewMode === 'calendar' && <div></div>}
 
 					<button
+						type="button"
+						aria-pressed={viewMode === 'streaks'}
 						onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
 						className={classNames(
 							"text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border text-color-gray-50 transition-colors flex items-center gap-1",
-							"border-color-gray-50",
+							"border-color-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white",
 							chosenColorObj.hover.textColor,
 							chosenColorObj.hover.borderColor
 						)}

@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import Icon from '../Icon';
+import Pagination from '../Pagination';
 
 interface Streak {
 	days: number;
@@ -14,6 +16,8 @@ interface StreaksListProps {
 
 export type SortOption = 'longest' | 'shortest' | 'recent' | 'oldest';
 
+const ITEMS_PER_PAGE = 10;
+
 // Helper function to format date string without timezone conversion
 const formatDateWithoutTimezone = (dateString: string): string => {
 	// Parse YYYY-MM-DD format directly without timezone conversion
@@ -27,6 +31,12 @@ const formatDateWithoutTimezone = (dateString: string): string => {
 };
 
 const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, sortBy }) => {
+	const [currentPage, setCurrentPage] = useState(1);
+
+	// Reset to page 1 when sort changes
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [sortBy]);
 
 	// Check if a streak is the current streak
 	const isCurrentStreak = (streak: Streak): boolean => {
@@ -73,21 +83,31 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 	};
 
 	const sortedStreaks = getSortedStreaks();
+	const totalPages = Math.ceil(sortedStreaks.length / ITEMS_PER_PAGE);
+	const pagedStreaks = sortedStreaks.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
+	);
 
 	return (
 		<div>
-			{/* Streaks List */}
-			<div className="max-h-[400px] overflow-y-auto space-y-3 pr-2 scrollbar-thin gray-scrollbar">
-				{sortedStreaks.length === 0 ? (
-					<div className="text-center text-color-gray-25 py-8">
+			<ul
+				tabIndex={0}
+				aria-label="All streaks"
+				className="space-y-3 pr-2 list-none p-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded mb-3"
+			>
+				{pagedStreaks.length === 0 ? (
+					<li className="text-center text-color-gray-25 py-8">
 						No streaks found
-					</div>
+					</li>
 				) : (
-					sortedStreaks.map((streak, index) => {
+					pagedStreaks.map((streak, pageIndex) => {
+						const absoluteIndex = (currentPage - 1) * ITEMS_PER_PAGE + pageIndex;
 						const isCurrent = isCurrentStreak(streak);
 						return (
-							<div
-								key={`${streak.from}-${streak.to}-${index}`}
+							<li
+								key={`${streak.from}-${streak.to}-${absoluteIndex}`}
+								aria-label={`Rank ${absoluteIndex + 1}: ${streak.days} ${streak.days === 1 ? 'day' : 'days'}${streak.from && streak.to ? `, ${formatDateWithoutTimezone(streak.from)} to ${formatDateWithoutTimezone(streak.to)}` : ''}${isCurrent ? ', current streak' : ''}`}
 								className={`p-4 rounded-lg ${
 									isCurrent
 										? 'bg-orange-500/20 border border-orange-500'
@@ -96,7 +116,7 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 							>
 								<div className="flex items-center gap-2">
 									<span className="text-color-gray-25 font-medium">
-										{index + 1}.
+										{absoluteIndex + 1}.
 									</span>
 									<span className="font-semibold">
 										{streak.days} {streak.days === 1 ? 'Day' : 'Days'}
@@ -112,16 +132,31 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 									)}
 								</div>
 								{streak.from && streak.to && (
-									<div className="text-sm text-color-gray-25 mt-1 ml-8">
+									<div
+										className="text-sm text-color-gray-25 mt-1 ml-8"
+										aria-label={`${formatDateWithoutTimezone(streak.from)} to ${formatDateWithoutTimezone(streak.to)}`}
+									>
 										{formatDateWithoutTimezone(streak.from)} -{' '}
 										{formatDateWithoutTimezone(streak.to)}
 									</div>
 								)}
-							</div>
+							</li>
 						);
 					})
 				)}
-			</div>
+			</ul>
+
+			{totalPages > 1 && (
+				<div className="flex justify-center">
+					<Pagination
+						total={totalPages}
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
+						totalPages={totalPages}
+						compactView={true}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
