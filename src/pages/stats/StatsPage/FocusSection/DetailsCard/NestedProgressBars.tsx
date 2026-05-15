@@ -52,7 +52,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
     // Pagination state for modal view
     const [currentPage, setCurrentPage] = useState(1);
     const containerRef = useRef<HTMLDivElement>(null);
-    const hasMountedRef = useRef(false);
+    const userInitiatedPageChangeRef = useRef(false);
 
     const groupedTasksCollapsedByDefault = useState(false);
 
@@ -70,11 +70,10 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
             innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        if (hasMountedRef.current) {
+        if (userInitiatedPageChangeRef.current) {
             const firstFocusable = containerRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
             firstFocusable?.focus({ preventScroll: true });
-        } else {
-            hasMountedRef.current = true;
+            userInitiatedPageChangeRef.current = false;
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -479,7 +478,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                         <Pagination
                             total={totalProjectPages}
                             currentPage={currentPage}
-                            setCurrentPage={setCurrentPage}
+                            setCurrentPage={(page) => { userInitiatedPageChangeRef.current = true; setCurrentPage(page); }}
                             totalPages={totalProjectPages}
                             compactView={true}
                         />
@@ -502,7 +501,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                     <Pagination
                         total={totalTaskPages}
                         currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
+                        setCurrentPage={(page) => { userInitiatedPageChangeRef.current = true; setCurrentPage(page); }}
                         totalPages={totalTaskPages}
                         compactView={true}
                     />

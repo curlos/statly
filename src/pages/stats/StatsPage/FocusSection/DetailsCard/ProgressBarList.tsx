@@ -48,7 +48,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	// Pagination state for modal view
 	const [currentPage, setCurrentPage] = useState(1);
 	const innerScrollableContainerRef = useRef<HTMLElement>(null);
-	const hasMountedRef = useRef(false);
+	const userInitiatedPageChangeRef = useRef(false);
 
 	// Fetch metadata needed for ProgressBar navigation
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -95,11 +95,10 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 
-		if (hasMountedRef.current) {
+		if (userInitiatedPageChangeRef.current) {
 			const firstFocusable = innerScrollableContainerRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
 			firstFocusable?.focus({ preventScroll: true });
-		} else {
-			hasMountedRef.current = true;
+			userInitiatedPageChangeRef.current = false;
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentPage]);
@@ -240,7 +239,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 					<Pagination
 						total={totalPages}
 						currentPage={currentPage}
-						setCurrentPage={setCurrentPage}
+						setCurrentPage={(page) => { userInitiatedPageChangeRef.current = true; setCurrentPage(page); }}
 						totalPages={totalPages}
 						compactView={true}
 					/>
