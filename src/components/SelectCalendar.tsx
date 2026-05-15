@@ -205,7 +205,14 @@ const MonthView: React.FC<MonthViewProps> = ({
 		focusGridRef.current = false;
 		const d = dueDate ?? new Date();
 		const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-		gridRef.current.querySelector<HTMLButtonElement>(`[data-date="${key}"]`)?.focus();
+		const btn = gridRef.current.querySelector<HTMLButtonElement>(`[data-date="${key}"]`);
+		if (btn) {
+			btn.focus();
+		} else {
+			const firstOfMonth = new Date(localCurrentDate.getFullYear(), localCurrentDate.getMonth(), 1);
+			const fallbackKey = `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth()}-${firstOfMonth.getDate()}`;
+			gridRef.current.querySelector<HTMLButtonElement>(`[data-date="${fallbackKey}"]`)?.focus();
+		}
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// Keep focusedDate (the roving tabindex position) in sync with the selected date
@@ -222,6 +229,15 @@ const MonthView: React.FC<MonthViewProps> = ({
 			btn.focus();
 		}
 	}, [localCurrentDate]);
+
+	// When the displayed month changes via prev/next buttons, ensure focusedDate stays within the visible grid
+	useEffect(() => {
+		if (pendingFocusKey.current) return; // arrow-key cross-month nav already set focusedDate correctly
+		const dueDateInCurrentMonth = dueDate &&
+			dueDate.getMonth() === localCurrentDate.getMonth() &&
+			dueDate.getFullYear() === localCurrentDate.getFullYear();
+		setFocusedDate(dueDateInCurrentMonth ? dueDate : new Date(localCurrentDate.getFullYear(), localCurrentDate.getMonth(), 1));
+	}, [localCurrentDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div className="w-full text-[12px] p-3">
