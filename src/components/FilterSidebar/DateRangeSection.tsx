@@ -7,15 +7,15 @@ import { getFormattedShortMonthDay, getAllDaysInRange } from '../../utils/date.u
 import GeneralSelectButtonAndDropdown from '../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
 import DateRangePicker from '../../pages/stats/StatsPage/FocusSection/DateRangePicker';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import classNames from 'classnames';
 import { usePageContext } from 'vike-react/usePageContext';
 import Tooltip from '../Tooltip';
+import CheckboxOther from './CheckboxOther';
 
 type IntervalOption = 'Day' | 'Week' | 'Month' | 'Year' | 'All' | 'Custom';
 
 const DateRangeSection = () => {
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
-	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
+	const { chosenColorObj } = useThemeContext();
 	const startDateFromUrl = searchParams.get('start-date');
 	const endDateFromUrl = searchParams.get('end-date') || getFormattedShortMonthDay(new Date());
 	const intervalFromUrl = searchParams.get('date-interval') || 'All';
@@ -159,23 +159,12 @@ const DateRangeSection = () => {
 				)}
 
 				{selectedInterval !== 'All' && selectedInterval !== 'Year' && (
-					<div
-						className="flex items-center gap-1 mt-3 cursor-pointer"
-						onClick={() => {
-							updateQueryParams({ 'year-agnostic': yearAgnosticFromUrl ? '' : 'true', page: '' });
-						}}
-					>
-						<Icon
-							name={yearAgnosticFromUrl ? 'check_box' : 'check_box_outline_blank'}
-							fill={1}
-							customClass={classNames(
-								'!text-[22px]',
-								chosenColorObj.textColor,
-								nextLightestColorObj?.hover.textColor
-							)}
+					<div className="flex items-center gap-2 mt-3">
+						<CheckboxOther
+							name="Year-Agnostic"
+							showValue={yearAgnosticFromUrl}
+							handleCheckboxClick={() => updateQueryParams({ 'year-agnostic': yearAgnosticFromUrl ? '' : 'true', page: '' })}
 						/>
-						<div className="flex-1 flex items-center gap-2">
-						<span>Year-Agnostic</span>
 						<Tooltip
 							content="When unchecked, filters by exact dates (e.g., only Dec 25, 2025). When checked, filters by month and day across all years (e.g., every Dec 25 regardless of year)."
 							position="bottom"
@@ -189,7 +178,6 @@ const DateRangeSection = () => {
 								/>
 							</div>
 						</Tooltip>
-					</div>
 					</div>
 				)}
 			</Accordion>
