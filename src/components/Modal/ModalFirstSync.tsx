@@ -19,10 +19,7 @@ const ModalFirstSync = () => {
 	const hasError = Object.values(syncStatus).some((status) => status === 'error');
 
 	const handleClose = () => {
-		// Only allow closing when sync is complete
-		if (!isSyncing) {
-			dispatch(setShowFirstSyncModal(false));
-		}
+		dispatch(setShowFirstSyncModal(false));
 	};
 
 	const syncCategories = [
@@ -35,15 +32,12 @@ const ModalFirstSync = () => {
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} ariaLabelledBy="first-sync-title">
 			<div className="bg-color-gray-650 rounded-lg p-6 shadow-xl relative">
-				{/* Close button - only show when sync is complete */}
-				{!isSyncing && (
-					<button
-						onClick={handleClose}
-						className="absolute top-4 right-4 text-color-gray-100 hover:text-white transition-colors"
-					>
-						<Icon name="close" fill={1} customClass="!text-[24px]" />
-					</button>
-				)}
+				<button
+					onClick={handleClose}
+					className="absolute top-4 right-4 text-color-gray-100 hover:text-white transition-colors"
+				>
+					<Icon name="close" fill={1} customClass="!text-[24px]" />
+				</button>
 
 				<div className="flex flex-col items-center text-center space-y-4">
 					{/* Icon */}

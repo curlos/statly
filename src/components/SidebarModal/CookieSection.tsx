@@ -73,44 +73,42 @@ const CookieSection = () => {
 					/>
 				</button>
 			) : (
-				<div className="flex gap-2">
-					<input
-						type="text"
-						value={cookieValue}
-						onChange={(e) => setCookieValue(e.target.value)}
-						className="flex-1 px-3 py-2 rounded bg-color-gray-600 text-white text-sm border border-blue-400"
-						placeholder="Paste your TickTick cookie here"
-						autoFocus
-					/>
+				<form onSubmit={(e) => { e.preventDefault(); handleUpdateCookie(); }} className="flex flex-col gap-2">
+					<div className="flex gap-2">
+						<input
+							type="text"
+							value={cookieValue}
+							onChange={(e) => setCookieValue(e.target.value)}
+							className="flex-1 px-3 py-2 rounded bg-color-gray-600 text-white text-sm border border-blue-400"
+							placeholder="Paste your TickTick cookie here"
+							autoFocus
+						/>
+						<button
+							type="button"
+							onClick={handleCancelEdit}
+							className="p-2 bg-color-gray-600 hover:bg-color-gray-500 rounded transition-colors flex items-center"
+							title="Cancel"
+						>
+							<Icon name="close" fill={1} customClass="!text-[18px]" />
+						</button>
+					</div>
 
 					<button
-						onClick={handleCancelEdit}
-						className="p-2 bg-color-gray-600 hover:bg-color-gray-500 rounded transition-colors"
-						title="Cancel"
+						type="submit"
+						disabled={isUpdatingCookie}
+						className="w-full px-4 py-2 rounded text-white font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+						style={{ backgroundColor: themeColor }}
 					>
-						<Icon name="close" fill={1} customClass="!text-[18px]" />
+						{isUpdatingCookie ? (
+							<>
+								<span>Updating...</span>
+								<Spinner size="sm" customClass="!text-white" />
+							</>
+						) : (
+							'Update TickTick Cookie'
+						)}
 					</button>
-				</div>
-			)}
-
-			{isEditingCookie && (
-				<button
-					onClick={handleUpdateCookie}
-					disabled={isUpdatingCookie}
-					className="w-full px-4 py-2 rounded text-white font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-					style={{
-						backgroundColor: themeColor,
-					}}
-				>
-					{isUpdatingCookie ? (
-						<>
-							<span>Updating...</span>
-							<Spinner size="sm" customClass="!text-white" />
-						</>
-					) : (
-						'Update TickTick Cookie'
-					)}
-				</button>
+				</form>
 			)}
 
 			<div aria-live="polite" aria-atomic="true">

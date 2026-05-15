@@ -48,7 +48,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 		'emotions',
 		'focus-apps',
 		'to-do-list-apps',
-		'general'
+		'general',
+		'year-agnostic'
 	];
 
 	switch (page) {
