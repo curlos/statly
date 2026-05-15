@@ -24,11 +24,14 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
 	const [isApplying, setIsApplying] = useState(false);
 	const imgRef = useRef<HTMLImageElement>(null);
-	const applyButtonRef = useRef<HTMLButtonElement>(null);
+	const cropContainerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (isOpen) {
-			const timer = setTimeout(() => applyButtonRef.current?.focus(), 50);
+			const timer = setTimeout(() => {
+				const focusable = cropContainerRef.current?.querySelector<HTMLElement>('[tabindex="0"]');
+				focusable?.focus();
+			}, 50);
 			return () => clearTimeout(timer);
 		}
 	}, [isOpen]);
@@ -140,7 +143,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 						<h3 id="crop-modal-title" className="text-xl font-bold">Crop Image</h3>
 					</div>
 					<button
-						ref={applyButtonRef}
 						type="button"
 						onClick={handleApplyCrop}
 						disabled={isApplying}
@@ -153,27 +155,29 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
 				{/* Crop Area */}
 				<div className="p-4 max-h-[60vh] overflow-auto flex items-center justify-center bg-color-gray-800">
-					<ReactCrop
-						crop={crop}
-						onChange={(c) => setCrop(c)}
-						onComplete={(c) => setCompletedCrop(c)}
-						aspect={aspect}
-					>
-						<img
-							ref={imgRef}
-							src={imageSrc}
-							alt="Crop preview"
-							onLoad={onImageLoad}
-							crossOrigin="anonymous"
-							style={{ maxHeight: '55vh', maxWidth: '100%' }}
-						/>
-					</ReactCrop>
+					<div ref={cropContainerRef}>
+						<ReactCrop
+							crop={crop}
+							onChange={(c) => setCrop(c)}
+							onComplete={(c) => setCompletedCrop(c)}
+							aspect={aspect}
+						>
+							<img
+								ref={imgRef}
+								src={imageSrc}
+								alt="Crop preview"
+								onLoad={onImageLoad}
+								crossOrigin="anonymous"
+								style={{ maxHeight: '55vh', maxWidth: '100%' }}
+							/>
+						</ReactCrop>
+					</div>
 				</div>
 
 				{/* Footer */}
 				<div className="p-3 bg-color-gray-700 border-t border-color-gray-600">
 					<p className="text-sm text-color-gray-100 text-center">
-						Drag the selection to reposition your image
+						Drag to reposition · Arrow keys to move · Shift+Arrow to resize handles
 					</p>
 				</div>
 			</div>
