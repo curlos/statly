@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useRef } from 'react';
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
@@ -58,6 +59,8 @@ const FocusDurationCurveCard = () => {
 		return `Average: ${getFormattedDuration(averageSeconds, false)}`;
 	};
 
+	const ariaLiveRef = useRef<HTMLDivElement>(null);
+
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 
@@ -98,6 +101,7 @@ const FocusDurationCurveCard = () => {
 			<div className="text-color-gray-50 mb-2">{getAverage()}</div>
 
 			<p className="sr-only">Area chart showing daily focus duration over the selected time period.</p>
+			<div ref={ariaLiveRef} role="status" aria-live="assertive" aria-atomic="true" className="sr-only" />
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart
 					width={500}
@@ -138,6 +142,10 @@ const FocusDurationCurveCard = () => {
 							if (payload && payload[0]) {
 								const { fullName, name, seconds } = payload[0].payload as DurationChartDataItem;
 
+								if (ariaLiveRef.current) {
+									ariaLiveRef.current.textContent = `${name}: ${getFormattedDuration(seconds, false)}`;
+								}
+
 								// For Records interval, show fullName (with time range) on separate lines
 								if (selectedGroupedInterval === 'Records') {
 									const lines = (fullName || name).split('\n');
@@ -159,6 +167,9 @@ const FocusDurationCurveCard = () => {
 								);
 							}
 
+							if (ariaLiveRef.current) {
+								ariaLiveRef.current.textContent = '';
+							}
 							return null;
 						}}
 					/>

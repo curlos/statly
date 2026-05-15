@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useRef } from 'react';
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Bar } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { convertTo12HourFormat, getAllDaysInMonthFromDate } from '../../../../utils/date.utils';
@@ -27,6 +28,8 @@ const MostFocusedTimeCard = () => {
 		initialInterval: 'Month',
 		initialDates: getAllDaysInMonthFromDate(new Date()),
 	});
+
+	const ariaLiveRef = useRef<HTMLDivElement>(null);
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj, nextLightestColorObj, colorMode } = themeContext;
@@ -82,6 +85,7 @@ const MostFocusedTimeCard = () => {
 
 			<div className="flex-1 min-h-0">
 				<p className="sr-only">Bar chart showing focus duration by hour of day, indicating the most productive times.</p>
+				<div ref={ariaLiveRef} role="status" aria-live="assertive" aria-atomic="true" className="sr-only" />
 				<ResponsiveContainer width="100%" height="100%">
 				<BarChart
 					width={500}
@@ -108,6 +112,11 @@ const MostFocusedTimeCard = () => {
 							// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
 							if (payload && payload[0]) {
 								const { name, seconds } = payload[0].payload;
+
+								if (ariaLiveRef.current) {
+									ariaLiveRef.current.textContent = `${name}: ${getFormattedDuration(seconds, false)}`;
+								}
+
 								return (
 									<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
 										<div>{name}</div>
@@ -116,6 +125,9 @@ const MostFocusedTimeCard = () => {
 								);
 							}
 
+							if (ariaLiveRef.current) {
+								ariaLiveRef.current.textContent = '';
+							}
 							return null;
 						}}
 					/>

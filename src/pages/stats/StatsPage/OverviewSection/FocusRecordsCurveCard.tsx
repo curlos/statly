@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useRef } from 'react';
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import GeneralSelectButtonAndDropdown from '../GeneralSelectButtonAndDropdown';
@@ -14,6 +15,8 @@ interface CountChartDataItem {
 }
 
 const FocusRecordsCurveCard = () => {
+	const ariaLiveRef = useRef<HTMLDivElement>(null);
+
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 	const { textColor, hexColor } = chosenColorObj;
@@ -98,6 +101,7 @@ const FocusRecordsCurveCard = () => {
 			<div className="text-color-gray-50 mb-2">{getAverage()}</div>
 
 			<p className="sr-only">Area chart showing focus records count over the selected time period.</p>
+			<div ref={ariaLiveRef} role="status" aria-live="assertive" aria-atomic="true" className="sr-only" />
 			<ResponsiveContainer width="100%" height="100%">
 				<AreaChart
 					width={500}
@@ -132,6 +136,10 @@ const FocusRecordsCurveCard = () => {
 								const nameToUse = fullName ? fullName : name;
 								const unit = score === 1 ? 'record' : 'records';
 
+								if (ariaLiveRef.current) {
+									ariaLiveRef.current.textContent = `${nameToUse}: ${score.toLocaleString()} ${unit}`;
+								}
+
 								return (
 									<div className={classNames(textColor, 'bg-black p-2 rounded-md')}>
 										<div>{nameToUse}</div>
@@ -140,6 +148,9 @@ const FocusRecordsCurveCard = () => {
 								);
 							}
 
+							if (ariaLiveRef.current) {
+								ariaLiveRef.current.textContent = '';
+							}
 							return null;
 						}}
 					/>
