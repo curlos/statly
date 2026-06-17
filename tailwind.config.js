@@ -4,7 +4,21 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
-  safelist: [/^bg-/, /^text-/],
+  safelist: [
+    /^bg-/, /^text-/,
+    'bg-[var(--theme-color)]',
+    'bg-[var(--theme-color-half)]',
+    'text-[var(--theme-color)]',
+    'border-[var(--theme-color)]',
+    'outline-[var(--theme-color)]',
+    'hover:bg-[var(--theme-color)]',
+    'hover:bg-[var(--theme-color-half)]',
+    'hover:text-[var(--theme-color)]',
+    'hover:border-[var(--theme-color)]',
+    'hover:outline-[var(--theme-color)]',
+    'focus:outline-[var(--theme-color)]',
+    'focus:border-[var(--theme-color)]',
+  ],
   theme: {
     extend: {
       colors: {

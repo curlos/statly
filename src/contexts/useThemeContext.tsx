@@ -1,6 +1,27 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../services/resources/userSettingsApi';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
+import { lightenHex, darkenHex, hexToRgba } from '../utils/color.utils';
+
+const buildCustomColorObj = (hex: string) => ({
+	textColor: 'text-[var(--theme-color)]',
+	bgColor: 'bg-[var(--theme-color)]',
+	bgColorHalfOpacity: 'bg-[var(--theme-color-half)]',
+	borderColor: 'border-[var(--theme-color)]',
+	outlineColor: 'outline-[var(--theme-color)]',
+	hexColor: hex,
+	hover: {
+		textColor: 'hover:text-[var(--theme-color)]',
+		bgColor: 'hover:bg-[var(--theme-color)]',
+		bgColorHalfOpacity: 'hover:bg-[var(--theme-color-half)]',
+		borderColor: 'hover:border-[var(--theme-color)]',
+		outlineColor: 'hover:outline-[var(--theme-color)]',
+	},
+	focus: {
+		outlineColor: 'focus:outline-[var(--theme-color)]',
+		borderColor: 'focus:border-[var(--theme-color)]',
+	},
+});
 
 const getInitialColorMode = (): 'dark' | 'light' => {
 	const stored = localStorage.getItem('color-mode');
@@ -33,13 +54,30 @@ const useTheme = () => {
 		await editUserSettings({ theme: { ...userSettings?.theme, colorMode: next } });
 	};
 
-	const themeColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
+	const tailwindColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
+	const customColorHex = userSettings?.theme?.customColor || localStorage.getItem('theme-custom-color') || '#3b82f6';
+	const useCustomColor = userSettings?.theme?.useCustomColor ?? false;
+	const themeColorKey = useCustomColor ? customColorHex : tailwindColorKey;
+	const isCustomHex = useCustomColor;
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
-	const chosenColorObj = TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
-	const chosenColorVariantsObj = TAILWIND_COLORS_OBJ[chosenColorName];
+	const chosenColorObj = isCustomHex
+		? buildCustomColorObj(themeColorKey)
+		: TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
+	const chosenColorVariantsObj = isCustomHex ? {} : TAILWIND_COLORS_OBJ[chosenColorName];
+
+	useEffect(() => {
+		if (isCustomHex) {
+			document.documentElement.style.setProperty('--theme-color', themeColorKey);
+			document.documentElement.style.setProperty('--theme-color-half', hexToRgba(themeColorKey, 0.5));
+		}
+	}, [isCustomHex, themeColorKey]);
 
 	if (userSettings?.theme?.color && localStorage.getItem('theme-color') !== userSettings?.theme?.color) {
 		localStorage.setItem('theme-color', userSettings?.theme?.color);
+	}
+
+	if (userSettings?.theme?.customColor && localStorage.getItem('theme-custom-color') !== userSettings?.theme?.customColor) {
+		localStorage.setItem('theme-custom-color', userSettings?.theme?.customColor);
 	}
 
 	const selectedFontFamilyKey = userSettings?.theme?.fontFamily || localStorage.getItem('font-family') || 'Default';
@@ -53,6 +91,13 @@ const useTheme = () => {
 	}, [selectedFontFamilyKey]);
 
 	const getNextLightestAndDarkestColor = () => {
+		if (isCustomHex) {
+			return {
+				nextLightestColorObj: buildCustomColorObj(lightenHex(themeColorKey, 0.25)),
+				nextDarkestColorObj: buildCustomColorObj(darkenHex(themeColorKey, 0.25)),
+			};
+		}
+
 		const colorVariantNameList = Object.keys(chosenColorVariantsObj);
 		let nextLightestColorObj = null;
 		let nextDarkestColorObj = null;
@@ -92,6 +137,10 @@ const useTheme = () => {
 	 */
 	const getNextLightestOrDarkestColorObj = (preferredNextColor = 'next-lightest') => {
 		const { nextLightestColorObj, nextDarkestColorObj } = getNextLightestAndDarkestColor();
+
+		if (isCustomHex) {
+			return preferredNextColor === 'next-lightest' ? nextLightestColorObj : nextDarkestColorObj;
+		}
 
 		if (preferredNextColor === 'next-lightest') {
 			// If they are the same, then, to actually see a difference, we have to get the next darkest color.

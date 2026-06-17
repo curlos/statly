@@ -440,6 +440,8 @@ export interface UserSettings {
 		color: string;
 		fontFamily: string;
 		colorMode?: 'dark' | 'light';
+		customColor?: string;
+		useCustomColor?: boolean;
 	};
 	pages: UserSettingsPages;
 	tickTickInboxProjectId?: string;
