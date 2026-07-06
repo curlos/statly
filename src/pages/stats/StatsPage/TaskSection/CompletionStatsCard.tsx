@@ -17,6 +17,7 @@ import { aggregateNestedTasksByParent } from '../../../../utils/nestedTaskAggreg
 import { getPieChartPaddingAngle } from '../../../../utils/pieChart.utils';
 import { useApplyDefaultDateRangeContext } from '../../../../contexts/useApplyDefaultDateRangeContext';
 import type { AggregationResults } from '../../../../types/stats';
+import { useCompletionMarkdown } from './useCompletionMarkdown';
 
 const noData = [
 	{
@@ -161,6 +162,18 @@ const CompletionStatsCard = () => {
 		return { progressBarData: data, aggregationResults };
 	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById, totalCompletedTasks]);
 
+	const { copied, handleCopyMarkdown } = useCompletionMarkdown({
+		selectedInterval,
+		apiStartDate: apiStartDate ?? null,
+		apiEndDate: apiEndDate ?? null,
+		showNestedProgressBars,
+		aggregationResults,
+		progressBarData,
+		selected,
+		ancestorTasksById,
+		projectsById,
+	});
+
 	const getCoreDetailsCard = (fromModal: boolean) => {
 		return (
 			<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby="completion-stats-heading">
@@ -220,6 +233,22 @@ const CompletionStatsCard = () => {
 								>
 									<Icon
 										name="swap_vert"
+										fill={0}
+										customClass={classNames(
+											'text-color-gray-50 !text-[20px] border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',
+											`${hover.textColor} ${hover.borderColor}`
+										)}
+									/>
+								</button>
+
+								<button
+									type="button"
+									aria-label="Copy data as Markdown"
+									className="bg-transparent border-0 p-0 cursor-pointer"
+									onClick={handleCopyMarkdown}
+								>
+									<Icon
+										name={copied ? 'check' : 'content_copy'}
 										fill={0}
 										customClass={classNames(
 											'text-color-gray-50 !text-[20px] border border-color-gray-50 rounded-2xl bg-color-gray-300 p-[6px]',

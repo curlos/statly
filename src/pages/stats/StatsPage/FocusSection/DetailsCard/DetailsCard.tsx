@@ -19,6 +19,7 @@ import { aggregateNestedTasksByParent } from '../../../../../utils/nestedTaskAgg
 import { EMOTIONS } from '../../../../../utils/constants/constants.utils';
 import type { AggregationResults, ProgressBarItemData } from '../../../../../types/stats';
 import { sourceToAppName } from '../../../../../utils/focusRecords.utils';
+import { useDetailsMarkdown } from './useDetailsMarkdown';
 
 const noData = [
 	{
@@ -208,6 +209,19 @@ const DetailsCard = () => {
 		return { progressBarData: data, aggregationResults };
 	}, [statsData, selected, showNestedProgressBars, ancestorTasksById, projectsById, focusDurationForInterval]);
 
+	const { copied, handleCopyMarkdown } = useDetailsMarkdown({
+		selectedInterval,
+		apiStartDate: apiStartDate ?? null,
+		apiEndDate: apiEndDate ?? null,
+		showNestedProgressBars,
+		aggregationResults,
+		progressBarData,
+		selected,
+		ancestorTasksById,
+		byEmotionWithTasks: statsData?.byEmotionWithTasks,
+		projectsById,
+	});
+
 	const getCoreDetailsCard = (fromModal: boolean) => {
 		return (
 			<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby="details-heading">
@@ -268,6 +282,22 @@ const DetailsCard = () => {
 								>
 									<Icon
 										name="swap_vert"
+										fill={0}
+										customClass={classNames(
+											'text-color-gray-50 !text-[20px] border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
+											`${hover.textColor} ${hover.borderColor}`
+										)}
+									/>
+								</button>
+
+								<button
+									type="button"
+									aria-label="Copy data as Markdown"
+									className="bg-transparent border-0 p-0 cursor-pointer"
+									onClick={handleCopyMarkdown}
+								>
+									<Icon
+										name={copied ? 'check' : 'content_copy'}
 										fill={0}
 										customClass={classNames(
 											'text-color-gray-50 !text-[20px] border border-color-gray-100 rounded-2xl bg-color-gray-300 p-[6px]',
