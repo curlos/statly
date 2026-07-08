@@ -36,7 +36,7 @@ Built for productivity enthusiasts who want more than just task tracking, Statly
 
 Statly offers six powerful ways to view and analyze your productivity data:
 
-### Stats (Analytics Dashboard)
+### Stats Page (Analytics Dashboard)
 Beautiful, interactive visualizations that reveal your productivity trends over time. The Stats page features three distinct views:
 
 **Overview View**
@@ -64,7 +64,7 @@ Powered by ApexCharts and Recharts for smooth, responsive data visualization.
 
 ---
 
-### Focus Records
+### Focus Records Page
 View all your focus sessions in one comprehensive timeline. Filter and sort by date, duration, project, and more to understand exactly how you're spending your time. Each record shows detailed information including:
 - Session duration and timestamps
 - Associated tasks and projects
@@ -77,7 +77,7 @@ Perfect for analyzing your work patterns and identifying peak productivity hours
 
 ---
 
-### Completed Tasks
+### Completed Tasks Page
 View all tasks you've completed, organized by day. See your daily accomplishments in either a nested hierarchy or flat breadcrumb view. Features include:
 - Daily grouping of completed tasks (e.g., "Tasks completed on January 3, 2026")
 - **Nested view**: Indented parent-child task relationships
@@ -92,7 +92,7 @@ Perfect for reviewing your task completion history and understanding your daily 
 
 ---
 
-### Medals
+### Medals Page
 Automatically earn medals for reaching productivity milestones based on your TickTick data. Medals are organized by type and time interval to track your achievements across different scales:
 
 **Medal Types**
@@ -118,7 +118,7 @@ Build a visual collection of your productivity journey and celebrate each milest
 
 ---
 
-### Challenges
+### Challenges Page
 Work toward lifetime productivity milestones with predefined challenges that track your cumulative achievements. Unlike medals which reset by time interval, challenges are one-time accomplishments based on your total productivity across all time.
 
 **Challenge Types**
@@ -139,7 +139,7 @@ These lifetime achievements provide long-term goals to work toward throughout yo
 
 ---
 
-### Focus Time Goal
+### Focus Time Goal Page
 Track your daily focus time goals with an Apple Watch-inspired rings interface. Create up to 3 customizable rings, each tracking progress toward a specific focus time target. Monitor your progress in real-time and build consistent productivity habits through visual feedback and streak tracking.
 
 **Ring System**
