@@ -64,6 +64,32 @@ Powered by ApexCharts and Recharts for smooth, responsive data visualization.
 
 ---
 
+### Focus Time Goal Page
+Track your daily focus time goals with an Apple Watch-inspired rings interface. Create up to 3 customizable rings, each tracking progress toward a specific focus time target. Monitor your progress in real-time and build consistent productivity habits through visual feedback and streak tracking.
+
+**Ring System**
+- **Visual Progress Rings**: Circular progress indicators showing today's focus time vs your goal
+- **Multiple Rings**: Create up to 3 rings simultaneously (Apple Watch-style concentric circles)
+- **Project Filtering**: Attach specific projects to each ring (e.g., a 30-minute "Exercise" ring that only counts time from your Exercise project)
+- **Customizable Goals**: Set different time targets for each ring
+
+**Streak Tracking**
+- Reaching your daily goal increments your streak by 1
+- Track current streak and longest streak
+- View detailed streak history in the progress modal
+- Calendar view showing goal achievement over time
+
+**Historical Analytics**
+- View focus time statistics across different intervals (Week, Month, Year, All, Custom)
+- Calendar heatmap showing daily goal completion
+- Detailed modal with streak history and performance data
+
+Stay accountable with clear, visual progress tracking that motivates consistent productivity.
+
+<img width="2560" height="1600" alt="localhost_5173_stats_focus(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/387602cb-3019-4a20-879f-625264c085ce" />
+
+---
+
 ### Focus Records Page
 View all your focus sessions in one comprehensive timeline. Filter and sort by date, duration, project, and more to understand exactly how you're spending your time. Each record shows detailed information including:
 - Session duration and timestamps
@@ -136,34 +162,6 @@ These lifetime achievements provide long-term goals to work toward throughout yo
 
 
 <img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (4)" src="https://github.com/user-attachments/assets/67cd26da-4cbe-4388-9853-01f5f5c92d69" />
-
----
-
-### Focus Time Goal Page
-Track your daily focus time goals with an Apple Watch-inspired rings interface. Create up to 3 customizable rings, each tracking progress toward a specific focus time target. Monitor your progress in real-time and build consistent productivity habits through visual feedback and streak tracking.
-
-**Ring System**
-- **Visual Progress Rings**: Circular progress indicators showing today's focus time vs your goal
-- **Multiple Rings**: Create up to 3 rings simultaneously (Apple Watch-style concentric circles)
-- **Project Filtering**: Attach specific projects to each ring (e.g., a 30-minute "Exercise" ring that only counts time from your Exercise project)
-- **Customizable Goals**: Set different time targets for each ring
-
-**Streak Tracking**
-- Reaching your daily goal increments your streak by 1
-- Track current streak and longest streak
-- View detailed streak history in the progress modal
-- Calendar view showing goal achievement over time
-
-**Historical Analytics**
-- View focus time statistics across different intervals (Week, Month, Year, All, Custom)
-- Calendar heatmap showing daily goal completion
-- Detailed modal with streak history and performance data
-
-Stay accountable with clear, visual progress tracking that motivates consistent productivity.
-
-<img width="2560" height="1600" alt="localhost_5173_stats_focus(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/387602cb-3019-4a20-879f-625264c085ce" />
-
-
 
 ---
 
