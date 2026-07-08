@@ -36,34 +36,6 @@ Built for productivity enthusiasts who want more than just task tracking, Statly
 
 Statly offers six powerful ways to view and analyze your productivity data:
 
-### Focus Records
-View all your focus sessions in one comprehensive timeline. Filter and sort by date, duration, project, and more to understand exactly how you're spending your time. Each record shows detailed information including:
-- Session duration and timestamps
-- Associated tasks and projects
-- Tasks completed during the record's session
-- Focus notes
-
-Perfect for analyzing your work patterns and identifying peak productivity hours.
-
-<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max)" src="https://github.com/user-attachments/assets/972c12b7-3bfc-4c94-ac93-2781a44a6f1d" />
-
----
-
-### Completed Tasks
-View all tasks you've completed, organized by day. See your daily accomplishments in either a nested hierarchy or flat breadcrumb view. Features include:
-- Daily grouping of completed tasks (e.g., "Tasks completed on January 3, 2026")
-- **Nested view**: Indented parent-child task relationships
-- **Breadcrumb view**: Flat view with ancestor task paths
-- Search by task name or content
-- Sort by newest, oldest, most completed tasks, or least completed tasks
-- Filter by date range and projects
-
-Perfect for reviewing your task completion history and understanding your daily productivity patterns.
-
-<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/341cda9a-ed82-4609-aa25-1817a02b1c22" />
-
----
-
 ### Stats (Analytics Dashboard)
 Beautiful, interactive visualizations that reveal your productivity trends over time. The Stats page features three distinct views:
 
@@ -90,6 +62,33 @@ Powered by ApexCharts and Recharts for smooth, responsive data visualization.
 
 <img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (2)" src="https://github.com/user-attachments/assets/7bf1e2d2-91c0-46da-921c-f2232bbd19e5" />
 
+---
+
+### Focus Records
+View all your focus sessions in one comprehensive timeline. Filter and sort by date, duration, project, and more to understand exactly how you're spending your time. Each record shows detailed information including:
+- Session duration and timestamps
+- Associated tasks and projects
+- Tasks completed during the record's session
+- Focus notes
+
+Perfect for analyzing your work patterns and identifying peak productivity hours.
+
+<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max)" src="https://github.com/user-attachments/assets/972c12b7-3bfc-4c94-ac93-2781a44a6f1d" />
+
+---
+
+### Completed Tasks
+View all tasks you've completed, organized by day. See your daily accomplishments in either a nested hierarchy or flat breadcrumb view. Features include:
+- Daily grouping of completed tasks (e.g., "Tasks completed on January 3, 2026")
+- **Nested view**: Indented parent-child task relationships
+- **Breadcrumb view**: Flat view with ancestor task paths
+- Search by task name or content
+- Sort by newest, oldest, most completed tasks, or least completed tasks
+- Filter by date range and projects
+
+Perfect for reviewing your task completion history and understanding your daily productivity patterns.
+
+<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/341cda9a-ed82-4609-aa25-1817a02b1c22" />
 
 ---
 
