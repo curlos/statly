@@ -29,6 +29,7 @@ const FontFamilyList = () => {
 		'BF Modernista',
 		'Kirsty',
 		'Jost',
+		'Bio Sans',
 	];
 
 	const handleChangeFontFamily = useDebouncedCallback(async (fontFamilyKey: string) => {

@@ -1,0 +1,84 @@
+/* === Bio Sans Font Styles === */
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-BioSans-ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-Bio-Sans-ExtraLight-Italic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-BioSans-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-Bio-Sans-Light-Italic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-BioSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-Bio-Sans-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-BioSans-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-Bio-Sans-SemiBold-Italic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-Bio-Sans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-Bio-Sans-Bold-Italic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-BioSans-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bio Sans';
+  src: url('../assets/fonts/Bio Sans/Flat-it-Bio-Sans-ExtraBold-Italic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+}
