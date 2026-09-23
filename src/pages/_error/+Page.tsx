@@ -11,7 +11,7 @@ const Page = () => {
 		}
 	}, [pageContext.is404]);
 
-	return <div>Something went wrong fool!</div>;
+	return <div>Something went wrong. Try refreshing the page.</div>;
 };
 
 export default Page;

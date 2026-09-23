@@ -192,7 +192,6 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					id="name"
 					type="text"
 					placeholder="Name"
-					iconName="person"
 					register={register('name', {
 						required: 'Name is required',
 						validate: (value: string) => {
@@ -209,7 +208,6 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					id="email"
 					type="email"
 					placeholder="Email"
-					iconName="email"
 					register={register('email', {
 						required: 'Email is required',
 						pattern: { value: EMAIL_REGEX, message: 'Please enter a valid email address' }
@@ -236,7 +234,6 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 						id="currentPasswordProfile"
 						type="password"
 						placeholder="Current Password (required for email change)"
-						iconName="lock"
 						register={register('currentPassword')}
 						error={errors.currentPassword}
 					/>

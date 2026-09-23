@@ -37,7 +37,7 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[500px]" ariaDescribedBy={DESC_ID} role="alertdialog">
-			<div className="bg-color-gray-700 rounded-lg p-6">
+			<div className="bg-color-gray-700 rounded-lg p-6 shadow-lg">
 				<h3 ref={headingRef} id={TITLE_ID} tabIndex={-1} className="text-xl font-semibold mb-4 focus:outline-none">{title}</h3>
 
 				<div id={DESC_ID}>
@@ -75,14 +75,14 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 					<button
 						onClick={onClose}
 						disabled={isDeleting}
-						className="px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+						className="px-4 py-2 bg-color-gray-600 hover:bg-color-gray-500 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						Cancel
 					</button>
 					<button
 						onClick={onConfirm}
 						disabled={isDeleting}
-						className="px-4 py-2 bg-red-600 hover:bg-red-700 text-[#ffffff] rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+						className="px-4 py-2 bg-red-600 hover:bg-red-700 text-[#ffffff] rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						{isDeleting ? 'Deleting...' : 'Confirm Delete'}
 					</button>

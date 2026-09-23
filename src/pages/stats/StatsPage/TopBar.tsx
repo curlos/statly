@@ -37,7 +37,10 @@ const TopBar = () => {
 					href={'/stats/overview' + queryParamsStr}
 					aria-current={location.pathname.includes('overview') ? 'page' : undefined}
 					className={location.pathname.includes('overview') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={(e) => { e.preventDefault(); navigate('/stats/overview' + queryParamsStr); }}
+					onClick={(e) => {
+						e.preventDefault();
+						navigate('/stats/overview' + queryParamsStr);
+					}}
 				>
 					Overview
 				</a>
@@ -46,7 +49,10 @@ const TopBar = () => {
 					href={'/stats/task' + queryParamsStr}
 					aria-current={location.pathname.includes('task') ? 'page' : undefined}
 					className={location.pathname.includes('task') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={(e) => { e.preventDefault(); navigate('/stats/task' + queryParamsStr); }}
+					onClick={(e) => {
+						e.preventDefault();
+						navigate('/stats/task' + queryParamsStr);
+					}}
 				>
 					Task
 				</a>
@@ -55,7 +61,10 @@ const TopBar = () => {
 					href={'/stats/focus' + queryParamsStr}
 					aria-current={location.pathname.includes('focus') ? 'page' : undefined}
 					className={location.pathname.includes('focus') ? selectedButtonStyle : unselectedButtonStyle}
-					onClick={(e) => { e.preventDefault(); navigate('/stats/focus' + queryParamsStr); }}
+					onClick={(e) => {
+						e.preventDefault();
+						navigate('/stats/focus' + queryParamsStr);
+					}}
 				>
 					Focus
 				</a>
@@ -91,8 +100,8 @@ const TopBar = () => {
 	return (
 		<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
 			<div className="flex items-center gap-3">
-				<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]"/>
-				<h1 className="text-[24px] font-medium">Statistics</h1>
+				<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]" />
+				<h1 className="text-[24px] font-bold">Statistics</h1>
 			</div>
 
 			<div className="hidden md:flex justify-center sm:mr-[110px]">{getTabButtons()}</div>

@@ -79,7 +79,6 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 					id="currentPasswordChange"
 					type="password"
 					placeholder="Current Password"
-					iconName="lock"
 					register={register('currentPassword', { required: 'Current password is required' })}
 					error={errors.currentPassword}
 				/>
@@ -88,7 +87,6 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 					id="newPassword"
 					type="password"
 					placeholder="New Password"
-					iconName="lock"
 					register={register('newPassword', {
 						required: 'New password is required',
 						...passwordValidation
@@ -100,7 +98,6 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 					id="confirmPassword"
 					type="password"
 					placeholder="Confirm New Password"
-					iconName="lock"
 					register={register('confirmPassword', { required: 'Please confirm your password' })}
 					error={errors.confirmPassword}
 				/>

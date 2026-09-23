@@ -129,7 +129,8 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 		}
 	};
 
-	const chosenColorObj = TAILWIND_COLORS_OBJ['blue']['blue-500'];
+	const chosenColorObj = TAILWIND_COLORS_OBJ['blue']['blue-600'];
+	const linkColorObj = TAILWIND_COLORS_OBJ['blue']['blue-400'];
 
 	return (
 		<form
@@ -140,12 +141,13 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 				<img src="/checklist-icon.svg" alt="Statly logo" className="w-[80px] h-[80px]" />
 			</div>
 
+			<h1 className="text-[20px] font-bold text-center">{mode === 'login' ? 'Log In' : 'Sign Up'}</h1>
+
 			{mode === 'register' && (
 				<FormInput
 					id="name"
 					type="text"
 					placeholder="Name"
-					iconName="person"
 					register={register('name', (validationRules as typeof signupValidationRules).name)}
 					error={errors.name}
 				/>
@@ -154,7 +156,6 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 				id="email"
 				type="email"
 				placeholder="Email"
-				iconName="email"
 				register={register('email', validationRules.email)}
 				error={errors.email}
 			/>
@@ -162,7 +163,6 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 				id="password"
 				type="password"
 				placeholder="Password"
-				iconName="lock"
 				register={register('password', validationRules.password)}
 				error={errors.password}
 			/>
@@ -171,7 +171,6 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 					id="confirmPassword"
 					type="password"
 					placeholder="Confirm Password"
-					iconName="lock"
 					register={register('confirmPassword', {
 						...(validationRules as typeof signupValidationRules).confirmPassword,
 						validate: (value, formValues) => value === formValues.password || 'Passwords do not match'
@@ -196,7 +195,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 				disabled={isLoading}
 				className={classNames(chosenColorObj.bgColor, 'w-full rounded-xl p-2 mt-4 flex items-center justify-center gap-2 text-[#ffffff]')}
 			>
-				<span>{mode === 'login' ? 'Login' : 'Sign Up'}</span>
+				<span>{mode === 'login' ? 'Log In' : 'Sign Up'}</span>
 				{isLoading && <Spinner size="sm" customClass="!text-white" />}
 			</button>
 
@@ -206,9 +205,9 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 						Have an account already?{' '}
 						<Link
 							href="/login"
-							className={classNames(chosenColorObj.textColor, chosenColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
+							className={classNames(linkColorObj.textColor, linkColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
 						>
-							Login
+							Log In
 						</Link>
 					</div>
 				) : (
@@ -216,7 +215,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 						Don't have an account?{' '}
 						<Link
 							href="/signup"
-							className={classNames(chosenColorObj.textColor, chosenColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
+							className={classNames(linkColorObj.textColor, linkColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
 						>
 							Sign Up
 						</Link>
