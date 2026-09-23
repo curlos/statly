@@ -56,7 +56,7 @@ const useTheme = () => {
 
 	const tailwindColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
 	const customColorHex = userSettings?.theme?.customColor || localStorage.getItem('theme-custom-color') || '#3b82f6';
-	const useCustomColor = userSettings?.theme?.useCustomColor ?? false;
+	const useCustomColor = userSettings?.theme?.useCustomColor ?? localStorage.getItem('theme-use-custom-color') === 'true';
 	const themeColorKey = useCustomColor ? customColorHex : tailwindColorKey;
 	const isCustomHex = useCustomColor;
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
@@ -72,7 +72,7 @@ const useTheme = () => {
 		}
 	}, [themeHexColor]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (isCustomHex) {
 			document.documentElement.style.setProperty('--theme-color', themeColorKey);
 			document.documentElement.style.setProperty('--theme-color-half', hexToRgba(themeColorKey, 0.5));
@@ -85,6 +85,10 @@ const useTheme = () => {
 
 	if (userSettings?.theme?.customColor && localStorage.getItem('theme-custom-color') !== userSettings?.theme?.customColor) {
 		localStorage.setItem('theme-custom-color', userSettings?.theme?.customColor);
+	}
+
+	if (userSettings?.theme?.useCustomColor !== undefined && localStorage.getItem('theme-use-custom-color') !== String(userSettings.theme.useCustomColor)) {
+		localStorage.setItem('theme-use-custom-color', String(userSettings.theme.useCustomColor));
 	}
 
 	const selectedFontFamilyKey = userSettings?.theme?.fontFamily || localStorage.getItem('font-family') || 'Default';

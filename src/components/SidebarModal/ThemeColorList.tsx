@@ -23,16 +23,19 @@ const ThemeColorList = () => {
 	const customColorHex = userSettings?.theme?.customColor || localStorage.getItem('theme-custom-color') || '#3b82f6';
 
 	const handleChangeTailwindColor = useDebouncedCallback(async (colorKey: string) => {
-		await editUserSettings({ theme: { ...userSettings?.theme, color: colorKey, useCustomColor: false } }).unwrap();
 		localStorage.setItem('theme-color', colorKey);
+		localStorage.setItem('theme-use-custom-color', 'false');
+		await editUserSettings({ theme: { ...userSettings?.theme, color: colorKey, useCustomColor: false } }).unwrap();
 	}, 500, true);
 
 	const handleChangeCustomColor = useDebouncedCallback(async (hex: string) => {
-		await editUserSettings({ theme: { ...userSettings?.theme, customColor: hex, useCustomColor: true } }).unwrap();
 		localStorage.setItem('theme-custom-color', hex);
+		localStorage.setItem('theme-use-custom-color', 'true');
+		await editUserSettings({ theme: { ...userSettings?.theme, customColor: hex, useCustomColor: true } }).unwrap();
 	}, 500, true);
 
 	const handleToggleColorMode = async (mode: 'tailwind' | 'custom') => {
+		localStorage.setItem('theme-use-custom-color', String(mode === 'custom'));
 		await editUserSettings({ theme: { ...userSettings?.theme, useCustomColor: mode === 'custom' } }).unwrap();
 	};
 
