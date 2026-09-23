@@ -285,7 +285,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 									)}
 									<div className="flex-1 min-w-0">
 										{/* Ring name with fire icon and streak */}
-										<h3 className={classNames(
+										<h2 className={classNames(
 											"text-color-gray-25 flex items-center gap-2",
 											type === 'small' ? "text-[18px]" : "text-[22px]"
 										)}>
@@ -312,7 +312,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 													</span>
 												)}
 											</div>
-										</h3>
+										</h2>
 
 										{/* Focus duration / goal */}
 										<p

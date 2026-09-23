@@ -1,7 +1,14 @@
-import { useEffect } from "react";
-import GeneralSelectButtonAndDropdown from "../../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown";
-import { formatDateAsAPIKey, getFormattedShortMonthDay, getAllDaysInWeekFromDate, getAllDaysInMonthFromDate, getAllDaysInYearFromDate, getAllDaysInRange } from "../../../utils/date.utils";
-import Icon from "../../Icon";
+import { useEffect } from 'react';
+import GeneralSelectButtonAndDropdown from '../../../pages/stats/StatsPage/GeneralSelectButtonAndDropdown';
+import {
+	formatDateAsAPIKey,
+	getFormattedShortMonthDay,
+	getAllDaysInWeekFromDate,
+	getAllDaysInMonthFromDate,
+	getAllDaysInYearFromDate,
+	getAllDaysInRange,
+} from '../../../utils/date.utils';
+import Icon from '../../Icon';
 
 const FocusStatsCard = ({
 	mode,
@@ -57,8 +64,10 @@ const FocusStatsCard = ({
 				if (startDate && endDate) {
 					newDates = getAllDaysInRange(startDate, endDate);
 					// Only update if dates have changed
-					if (selectedDates.length !== newDates.length ||
-							selectedDates[0]?.getTime() !== newDates[0]?.getTime()) {
+					if (
+						selectedDates.length !== newDates.length ||
+						selectedDates[0]?.getTime() !== newDates[0]?.getTime()
+					) {
 						setSelectedDates(newDates);
 					}
 				}
@@ -102,44 +111,37 @@ const FocusStatsCard = ({
 
 			// Calculate all days from first record to today
 			const allPossibleDates = getAllDaysInRange(firstDate, today);
-			totalPossibleDays = allPossibleDates.filter(date =>
-				formatDateAsAPIKey(date) <= todayKey
-			).length;
+			totalPossibleDays = allPossibleDates.filter((date) => formatDateAsAPIKey(date) <= todayKey).length;
 
 			daysWithRecords = allDateKeys;
 		} else {
 			// Use selectedDates for total possible days
-			totalPossibleDays = selectedDates.filter(date =>
-				formatDateAsAPIKey(date) <= todayKey
-			).length;
+			totalPossibleDays = selectedDates.filter((date) => formatDateAsAPIKey(date) <= todayKey).length;
 
 			// Filter to days with records (still needed for daysMetGoal)
 			const intervalDateKeys = new Set(
 				selectedDates
-					.filter(date => formatDateAsAPIKey(date) <= todayKey)
-					.map(date => formatDateAsAPIKey(date))
+					.filter((date) => formatDateAsAPIKey(date) <= todayKey)
+					.map((date) => formatDateAsAPIKey(date))
 			);
-			daysWithRecords = allDateKeys.filter(dateKey =>
-				intervalDateKeys.has(dateKey)
-			);
+			daysWithRecords = allDateKeys.filter((dateKey) => intervalDateKeys.has(dateKey));
 		}
 
 		// Mode-specific logic: Count days where goal was met
-		const daysMetGoal = mode === 'combined' && combinedGoalMetMap
-			? daysWithRecords.filter(dateKey => combinedGoalMetMap[dateKey] === true)
-			: daysWithRecords.filter(dateKey => {
-				const duration = dailyDurationsMap[dateKey];
-				const dailyGoalSeconds = customDailyFocusGoal?.[dateKey] ?? goalSeconds;
-				const offsetDailyGoal = dailyGoalSeconds - 300; // 5-minute offset
-				return duration >= offsetDailyGoal;
-			});
+		const daysMetGoal =
+			mode === 'combined' && combinedGoalMetMap
+				? daysWithRecords.filter((dateKey) => combinedGoalMetMap[dateKey] === true)
+				: daysWithRecords.filter((dateKey) => {
+						const duration = dailyDurationsMap[dateKey];
+						const dailyGoalSeconds = customDailyFocusGoal?.[dateKey] ?? goalSeconds;
+						const offsetDailyGoal = dailyGoalSeconds - 300; // 5-minute offset
+						return duration >= offsetDailyGoal;
+					});
 
 		return {
 			totalDays: totalPossibleDays,
 			daysMetGoal: daysMetGoal.length,
-			percentage: totalPossibleDays > 0
-				? (daysMetGoal.length / totalPossibleDays) * 100
-				: 0
+			percentage: totalPossibleDays > 0 ? (daysMetGoal.length / totalPossibleDays) * 100 : 0,
 		};
 	};
 
@@ -240,9 +242,7 @@ const FocusStatsCard = ({
 							>
 								<Icon name="chevron_left" customClass="hover:text-color-gray-100" />
 							</button>
-							<div className="text-sm text-color-gray-25 font-medium mt-[-6px]">
-								{displayLabel}
-							</div>
+							<div className="text-sm text-color-gray-25 font-medium mt-[-6px]">{displayLabel}</div>
 							<button
 								type="button"
 								aria-label={`Next ${selectedInterval.toLowerCase()}`}
@@ -253,9 +253,7 @@ const FocusStatsCard = ({
 							</button>
 						</>
 					) : (
-						<div className="text-sm text-color-gray-100 font-medium">
-							{displayLabel}
-						</div>
+						<div className="text-sm text-color-gray-25 font-medium">{displayLabel}</div>
 					)}
 				</div>
 
@@ -277,15 +275,14 @@ const FocusStatsCard = ({
 				className="text-2xl font-bold mb-0"
 				aria-label={`${stats.daysMetGoal} out of ${stats.totalDays} days, ${Math.round(stats.percentage)} percent`}
 			>
-				{stats.daysMetGoal}/{stats.totalDays} <span className="text-color-gray-50">({Math.round(stats.percentage)}%)</span>
+				{stats.daysMetGoal}/{stats.totalDays}{' '}
+				<span className="text-color-gray-50">({Math.round(stats.percentage)}%)</span>
 			</div>
 
 			{/* Helper text */}
-			<div className="text-color-gray-50">
-				Days goal met
-			</div>
+			<div className="text-color-gray-50">Days goal met</div>
 		</section>
 	);
 };
 
-export default FocusStatsCard
+export default FocusStatsCard;

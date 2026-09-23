@@ -120,6 +120,7 @@ const Page = () => {
 					<Modal
 						isOpen={showChosenChallengeModal}
 						onClose={() => setShowChosenChallengeModal(false)}
+						ariaLabel="Challenge details"
 					>
 						<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
 							{isLoading ? (

@@ -66,7 +66,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
-	const { bgColor } = chosenColorObj;
+	const { bgColor, bgColorHalfOpacity } = chosenColorObj;
 
 	const [isRestDaysModalOpen, setIsRestDaysModalOpen] = useState(false);
 	const [isCustomGoalsModalOpen, setIsCustomGoalsModalOpen] = useState(false);
@@ -299,7 +299,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 									className={classNames(
 										'px-3 py-2 rounded-full text-[14px] transition-colors flex items-center gap-2',
 										selectedRingId === ring.id
-											? `${bgColor} ${chosenColorObj.hover.bgColorHalfOpacity} text-white font-semibold`
+											? `${bgColorHalfOpacity} ${chosenColorObj.hover.bgColor} text-white font-semibold`
 											: 'bg-color-gray-600 text-color-gray-25 hover:bg-color-gray-200'
 									)}
 								>
@@ -335,7 +335,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 								className={classNames(
 									'px-4 py-2 rounded-full text-[14px] font-medium transition-colors flex items-center gap-2',
 									currentRing.isActive
-										? 'bg-green-600 hover:bg-green-700 text-white'
+										? 'bg-green-700 hover:bg-green-800 text-white'
 										: 'bg-color-gray-600 hover:bg-color-gray-200 text-white',
 									(isOnlyActiveRing() || isTogglingRingStatus) && 'opacity-50 cursor-not-allowed'
 								)}

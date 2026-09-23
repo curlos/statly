@@ -36,7 +36,7 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 	}, [isOpen]);
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[500px]" ariaDescribedBy={DESC_ID} role="alertdialog">
+		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[500px]" ariaLabelledBy={TITLE_ID} ariaDescribedBy={DESC_ID} role="alertdialog">
 			<div className="bg-color-gray-700 rounded-lg p-6 shadow-lg">
 				<h2 ref={headingRef} id={TITLE_ID} tabIndex={-1} className="text-xl font-semibold mb-4 focus:outline-none">{title}</h2>
 

@@ -89,7 +89,7 @@ const ModalImportProgress: React.FC = () => {
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!w-[700px]">
+		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!w-[700px]" ariaLabelledBy="import-progress-title">
 			<div className="bg-color-gray-650 rounded-lg p-6 shadow-xl relative">
 				{/* Close button */}
 				<button
@@ -101,7 +101,7 @@ const ModalImportProgress: React.FC = () => {
 				</button>
 
 				{/* Title */}
-				<h2 ref={headingRef} tabIndex={-1} className="text-xl font-bold mb-2 text-white focus:outline-none">Import Files</h2>
+				<h2 id="import-progress-title" ref={headingRef} tabIndex={-1} className="text-xl font-bold mb-2 text-white focus:outline-none">Import Files</h2>
 
 				{/* Progress counter */}
 				<div className="text-color-gray-100 mb-4 flex items-center gap-2">

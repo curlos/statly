@@ -127,6 +127,7 @@ const Page = () => {
 						<Modal
 							isOpen={showChosenMedalModal}
 							onClose={() => setShowChosenMedalModal(false)}
+							ariaLabel="Medal details"
 						>
 							<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">
 								{isLoading ? (

@@ -12,11 +12,12 @@ interface ModalProps {
 	children: React.ReactNode;
 	contentRef?: React.RefObject<HTMLElement>;
 	ariaLabelledBy?: string;
+	ariaLabel?: string;
 	ariaDescribedBy?: string;
 	role?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children, contentRef, ariaLabelledBy, ariaDescribedBy, role }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children, contentRef, ariaLabelledBy, ariaLabel, ariaDescribedBy, role }) => {
 	const dialogRef = useDialogFocus<HTMLDialogElement>(isOpen, onClose);
 	const shouldReduceMotion = useReducedMotion();
 
@@ -61,6 +62,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 						ref={setRef}
 						open
 						aria-labelledby={ariaLabelledBy}
+						aria-label={ariaLabel}
 						aria-describedby={ariaDescribedBy}
 						role={role ?? 'dialog'}
 						tabIndex={-1}

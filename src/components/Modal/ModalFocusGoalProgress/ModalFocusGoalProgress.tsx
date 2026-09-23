@@ -107,11 +107,11 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[650px]">
+		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[650px]" ariaLabelledBy="focus-goal-progress-title">
 			<div className="bg-color-gray-700 rounded-lg p-6">
 				{/* Header */}
 				<div className="flex justify-between items-center mb-6">
-					<h2 className="text-2xl font-semibold">
+					<h2 id="focus-goal-progress-title" className="text-2xl font-semibold">
 						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${truncateText(ringName, truncateLength)} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
 					</h2>
 					<button
