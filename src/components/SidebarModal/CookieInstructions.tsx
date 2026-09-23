@@ -8,7 +8,7 @@ const CookieInstructions = () => {
 				<h4 className="font-bold text-[16px]">How to Get Your TickTick Cookie</h4>
 			</div>
 
-			<div className="space-y-3 text-[14px] text-color-gray-25">
+			<div className="space-y-3 text-[16px] text-color-gray-25">
 				<div className="flex gap-2">
 					<span className="font-bold text-white">1.</span>
 					<div>
@@ -17,7 +17,7 @@ const CookieInstructions = () => {
 							href="https://ticktick.com"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-blue-400 hover:underline"
+							className="text-blue-400 underline hover:no-underline"
 						>
 							TickTick
 						</a>{' '}
@@ -29,13 +29,16 @@ const CookieInstructions = () => {
 					<span className="font-bold text-white">2.</span>
 					<div>
 						Press <kbd className="px-2 py-1 bg-color-gray-700 rounded text-xs">F12</kbd> (or{' '}
-						<kbd className="px-2 py-1 bg-color-gray-700 rounded text-xs">Cmd+Option+I</kbd> on Mac) to open DevTools
+						<kbd className="px-2 py-1 bg-color-gray-700 rounded text-xs">Cmd+Option+I</kbd> on Mac) to open
+						DevTools
 					</div>
 				</div>
 
 				<div className="flex gap-2">
 					<span className="font-bold text-white">3.</span>
-					<div>Click the <strong className="text-white">Network</strong> tab at the top</div>
+					<div>
+						Click the <strong className="text-white">Network</strong> tab at the top
+					</div>
 				</div>
 
 				<div className="flex gap-2">
@@ -45,17 +48,25 @@ const CookieInstructions = () => {
 
 				<div className="flex gap-2">
 					<span className="font-bold text-white">5.</span>
-					<div>Click on any request to <code className="px-1.5 py-0.5 bg-color-gray-700 rounded text-xs">api.ticktick.com</code></div>
+					<div>
+						Click on any request to{' '}
+						<code className="px-1.5 py-0.5 bg-color-gray-700 rounded text-xs">api.ticktick.com</code>
+					</div>
 				</div>
 
 				<div className="flex gap-2">
 					<span className="font-bold text-white">6.</span>
-					<div>In the right panel, find the <strong className="text-white">Request Headers</strong> section</div>
+					<div>
+						In the right panel, find the <strong className="text-white">Request Headers</strong> section
+					</div>
 				</div>
 
 				<div className="flex gap-2">
 					<span className="font-bold text-white">7.</span>
-					<div>Find the <code className="px-1.5 py-0.5 bg-color-gray-700 rounded text-xs">Cookie:</code> header and copy its entire value</div>
+					<div>
+						Find the <code className="px-1.5 py-0.5 bg-color-gray-700 rounded text-xs">Cookie:</code> header
+						and copy its entire value
+					</div>
 				</div>
 
 				<div className="flex gap-2">
@@ -65,11 +76,11 @@ const CookieInstructions = () => {
 			</div>
 
 			<div className="pt-2 border-t border-color-gray-500">
-				<div className="flex items-start gap-2 text-xs text-color-gray-25">
-					<Icon name="lock" fill={1} customClass="!text-[14px] mt-0.5" />
+				<div className="flex items-start gap-2 text-[14px] text-color-gray-25">
+					<Icon name="lock" fill={1} customClass="!text-[16px] mt-0.5" />
 					<div>
 						Your cookie is sensitive data that grants access to your TickTick account. It's stored securely
-						in your user settings and never share it publicly.
+						in your user settings. Never share it publicly.
 					</div>
 				</div>
 			</div>

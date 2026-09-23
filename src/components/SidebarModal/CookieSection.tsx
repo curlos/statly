@@ -28,9 +28,10 @@ const CookieSection = () => {
 			setSuccessMessage('Cookie updated successfully!');
 			setTimeout(() => setSuccessMessage(''), 1500);
 		} catch (error: unknown) {
-			const errorMessage = error && typeof error === 'object' && 'data' in error
-				? (error.data as { message?: string })?.message || 'Failed to update cookie'
-				: 'Failed to update cookie';
+			const errorMessage =
+				error && typeof error === 'object' && 'data' in error
+					? (error.data as { message?: string })?.message || 'Failed to update cookie'
+					: 'Failed to update cookie';
 			setErrorMessage(errorMessage);
 			setTimeout(() => setErrorMessage(''), 5000);
 		}
@@ -73,7 +74,13 @@ const CookieSection = () => {
 					/>
 				</button>
 			) : (
-				<form onSubmit={(e) => { e.preventDefault(); handleUpdateCookie(); }} className="flex flex-col gap-2">
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleUpdateCookie();
+					}}
+					className="flex flex-col gap-2"
+				>
 					<div className="flex gap-2">
 						<input
 							type="text"

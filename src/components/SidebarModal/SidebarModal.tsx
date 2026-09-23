@@ -52,7 +52,7 @@ const SidebarModal = () => {
 				<span className="group-hover:underline">{name}</span>
 
 				{iconName && (
-					<span aria-hidden="true">
+					<span aria-hidden="true" className="flex">
 						<Icon name={iconName} fill={1} customClass={`${chosenColorObj.textColor} !text-[24px]`} />
 					</span>
 				)}
@@ -92,12 +92,32 @@ const SidebarModal = () => {
 					>
 						<nav aria-label="Main navigation">
 							<ul className="font-bold text-[24px] list-none p-0 m-0">
-								<li><LinkLi name="Stats" linkUrl="/stats/overview" iconName="query_stats" /></li>
-								<li><LinkLi name="Focus Time Goal" linkUrl="/focus-time-goal" iconName="flag" /></li>
-								<li><LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timer" /></li>
-								<li><LinkLi name="Completed Tasks" linkUrl="/completed-tasks" iconName="select_check_box" /></li>
-								<li><LinkLi name="Medals" linkUrl={"/medals/focus/daily"} iconName="workspace_premium" /></li>
-								<li><LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" /></li>
+								<li>
+									<LinkLi name="Stats" linkUrl="/stats/overview" iconName="query_stats" />
+								</li>
+								<li>
+									<LinkLi name="Focus Time Goal" linkUrl="/focus-time-goal" iconName="flag" />
+								</li>
+								<li>
+									<LinkLi name="Focus Records" linkUrl="/focus-records" iconName="timer" />
+								</li>
+								<li>
+									<LinkLi
+										name="Completed Tasks"
+										linkUrl="/completed-tasks"
+										iconName="select_check_box"
+									/>
+								</li>
+								<li>
+									<LinkLi
+										name="Medals"
+										linkUrl={'/medals/focus/daily'}
+										iconName="workspace_premium"
+									/>
+								</li>
+								<li>
+									<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />
+								</li>
 							</ul>
 						</nav>
 
