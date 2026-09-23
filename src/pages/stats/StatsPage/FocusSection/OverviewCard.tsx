@@ -97,8 +97,8 @@ const OverviewCard = () => {
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{todayFocusRecords}
 						</div>
-						<div className="text-color-gray-100 font-medium">Today's Focus Records</div>
-						<div className="text-color-gray-100 flex items-center gap-1">
+						<div className="text-color-gray-50 font-medium">Today's Focus Records</div>
+						<div className="text-color-gray-50 flex items-center gap-1">
 							<span className="sr-only">
 								{`${diffTodayFromYesterdayFocusRecords.numDiff} ${diffTodayFromYesterdayFocusRecords.lessThanYesterday ? 'fewer' : 'more'} focus records than yesterday`}
 							</span>
@@ -128,7 +128,7 @@ const OverviewCard = () => {
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{totalFocusRecords.toLocaleString()}
 						</div>
-						<div className="text-color-gray-100 font-medium">Total Focus Records</div>
+						<div className="text-color-gray-50 font-medium">Total Focus Records</div>
 					</div>
 
 					{/* Today Focus Duration */}
@@ -136,8 +136,8 @@ const OverviewCard = () => {
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{getFormattedDuration(todayFocusDuration, false)}
 						</div>
-						<div className="text-color-gray-100 font-medium">Today's Focus</div>
-						<div className="text-color-gray-100 flex items-center gap-1">
+						<div className="text-color-gray-50 font-medium">Today's Focus</div>
+						<div className="text-color-gray-50 flex items-center gap-1">
 							<span className="sr-only">
 								{`${getFormattedDuration(diffTodayFromYesterdayFocusDuration.numDiff, false)} ${diffTodayFromYesterdayFocusDuration.lessThanYesterday ? 'less' : 'more'} focus time than yesterday`}
 							</span>
@@ -168,7 +168,7 @@ const OverviewCard = () => {
 						<div className={classNames(chosenColorObj.textColor, 'font-bold text-[24px]')}>
 							{getFormattedDuration(totalFocusDuration, false)}
 						</div>
-						<div className="text-color-gray-100 font-medium">Total Focus Time</div>
+						<div className="text-color-gray-50 font-medium">Total Focus Time</div>
 					</div>
 				</div>
 			</div>

@@ -109,7 +109,7 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 						))}
 					</div>
 
-					<div className="flex justify-between text-color-gray-100 sm:hidden lg:flex xl:hidden">
+					<div className="flex justify-between text-color-gray-50 sm:hidden lg:flex xl:hidden">
 						{monthsShort.map((month, index) => index % 2 === 0 && <div key={month}>{month}</div>)}
 					</div>
 
@@ -117,7 +117,7 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 					<div
 						ref={gridRef}
 						className="grid grid-flow-col grid-rows-[repeat(auto-fill,_15px)] max-h-[360px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px] gap-[1px]"
-						role="grid"
+						role="group"
 						aria-label="Focus duration heatmap"
 						onKeyDown={handleGridKeyDown}
 					>
