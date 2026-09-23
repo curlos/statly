@@ -8,10 +8,10 @@ import classNames from 'classnames';
 const AppearanceSection = () => {
 	const [activeTab, setActiveTab] = useState<'theme-color' | 'font-family' | 'color-mode'>('theme-color');
 	const { chosenColorObj } = useThemeContext();
-	const { textColor, bgColorHalfOpacity } = chosenColorObj;
+	const { bgColorHalfOpacity } = chosenColorObj;
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
-	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-bold`);
+	const selectedButtonStyle = classNames(bgColorHalfOpacity, 'text-white', `${sharedButtonStyle} font-bold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	return (

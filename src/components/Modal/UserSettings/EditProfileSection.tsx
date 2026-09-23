@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
+import classNames from 'classnames';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import ProfileTabSection from './ProfileTabSection';
 import PasswordTabSection from './PasswordTabSection';
 
 const EditProfileSection = () => {
 	const { chosenColorObj } = useThemeContext();
+	const { bgColorHalfOpacity } = chosenColorObj;
 	const [activeTab, setActiveTab] = useState<'profile' | 'password'>('profile');
 	const profileTabRef = useRef<HTMLButtonElement>(null);
 
@@ -24,9 +26,8 @@ const EditProfileSection = () => {
 		setSubmitSuccess(null);
 	};
 
-	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 	const sharedButtonStyle = 'text-[14px] py-1 px-3 rounded-3xl cursor-pointer';
-	const selectedButtonStyle = `${sharedButtonStyle} font-bold`;
+	const selectedButtonStyle = classNames(bgColorHalfOpacity, 'text-white', `${sharedButtonStyle} font-bold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	return (
@@ -40,8 +41,11 @@ const EditProfileSection = () => {
 					aria-selected={activeTab === 'profile'}
 					aria-controls="edit-tab-panel"
 					className={activeTab === 'profile' ? selectedButtonStyle : unselectedButtonStyle}
-					style={activeTab === 'profile' ? { backgroundColor: `${themeColor}33`, color: themeColor } : {}}
-					onClick={() => { setActiveTab('profile'); setSubmitError(null); setSubmitSuccess(null); }}
+					onClick={() => {
+						setActiveTab('profile');
+						setSubmitError(null);
+						setSubmitSuccess(null);
+					}}
 				>
 					Profile
 				</button>
@@ -51,8 +55,11 @@ const EditProfileSection = () => {
 					aria-selected={activeTab === 'password'}
 					aria-controls="edit-tab-panel"
 					className={activeTab === 'password' ? selectedButtonStyle : unselectedButtonStyle}
-					style={activeTab === 'password' ? { backgroundColor: `${themeColor}33`, color: themeColor } : {}}
-					onClick={() => { setActiveTab('password'); setSubmitError(null); setSubmitSuccess(null); }}
+					onClick={() => {
+						setActiveTab('password');
+						setSubmitError(null);
+						setSubmitSuccess(null);
+					}}
 				>
 					Password
 				</button>

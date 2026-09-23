@@ -17,10 +17,10 @@ const TopBar = () => {
 
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
-	const { textColor, bgColorHalfOpacity } = chosenColorObj;
+	const { bgColorHalfOpacity } = chosenColorObj;
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
-	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-semibold`);
+	const selectedButtonStyle = classNames(bgColorHalfOpacity, 'text-white', `${sharedButtonStyle} font-semibold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	const isSidebarModalOpen = useSelector((state: RootState) => state.modals.modals.ModalSidebar?.isOpen);

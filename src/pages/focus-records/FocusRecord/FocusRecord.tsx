@@ -286,7 +286,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
                     {showFocusNotes && (
                         <div
                             className={classNames(
-                                "text-color-gray-100 text-[15px] break-words react-markdown relative z-10",
+                                "text-color-gray-100 text-[16px] break-words react-markdown relative z-10",
                             )}
                             style={{ color: cardTextColor }}
                         >

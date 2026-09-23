@@ -50,7 +50,12 @@ const ModalUserSettings: React.FC<ModalUserSettingsProps> = ({ isOpen, onClose }
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!max-w-[900px] !w-[95vw] md:!w-[90vw]" ariaLabelledBy="user-settings-title">
+		<Modal
+			isOpen={isOpen}
+			onClose={handleClose}
+			customClasses="!max-w-[900px] !w-[95vw] md:!w-[90vw]"
+			ariaLabelledBy="user-settings-title"
+		>
 			<div className="bg-color-gray-700 rounded-lg flex flex-col md:flex-row h-[80vh] max-h-[80vh] overflow-hidden">
 				{/* Sidebar */}
 				<div className="w-full md:w-[240px] border-b md:border-b-0 md:border-r border-color-gray-100 flex flex-col">
@@ -104,10 +109,14 @@ const ModalUserSettings: React.FC<ModalUserSettingsProps> = ({ isOpen, onClose }
 									onClick={() => setShowEditProfile(false)}
 									className="cursor-pointer hover:bg-color-gray-200 rounded-full p-2 transition text-color-gray-50 hover:text-white flex items-center justify-center"
 								>
-									<Icon name="arrow_back" customClass="!text-[24px] leading-none" aria-hidden={true} />
+									<Icon
+										name="arrow_back"
+										customClass="!text-[24px] leading-none"
+										aria-hidden={true}
+									/>
 								</button>
 							)}
-							<h2 id="user-settings-title" className="text-lg font-semibold">
+							<h2 id="user-settings-title" className="text-lg font-bold">
 								{activeSection === 'profile' && showEditProfile
 									? 'Edit Profile'
 									: menuItems.find((item) => item.id === activeSection)?.label}

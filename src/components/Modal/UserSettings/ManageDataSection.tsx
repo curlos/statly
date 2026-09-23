@@ -11,7 +11,7 @@ import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../../s
 const ManageDataSection = () => {
 	const [activeTab, setActiveTab] = useState<'data-operations' | 'delete-data'>('data-operations');
 	const { chosenColorObj } = useThemeContext();
-	const { textColor, bgColorHalfOpacity } = chosenColorObj;
+	const { bgColorHalfOpacity } = chosenColorObj;
 
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
@@ -26,7 +26,7 @@ const ManageDataSection = () => {
 	};
 
 	const sharedButtonStyle = `text-[14px] py-1 px-3 rounded-3xl cursor-pointer`;
-	const selectedButtonStyle = classNames(bgColorHalfOpacity, textColor, `${sharedButtonStyle} font-bold`);
+	const selectedButtonStyle = classNames(bgColorHalfOpacity, 'text-white', `${sharedButtonStyle} font-bold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	return (

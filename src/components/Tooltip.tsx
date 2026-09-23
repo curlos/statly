@@ -80,6 +80,7 @@ const Tooltip = ({ content, children, className = '', position = 'top', align: m
 		<div
 			ref={containerRef}
 			className="relative inline-block"
+			role="group"
 			tabIndex={tabIndex}
 			aria-label={ariaLabel ?? (typeof content === 'string' ? content : undefined)}
 			onMouseEnter={handleMouseEnter}

@@ -15,7 +15,7 @@ const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
 
 	return (
 		<header className="container pt-8 pb-3 flex items-center justify-between">
-			<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]"/>
+			<ChecklistTimerIcon customClassName="!w-[35px] !h-[35px]" />
 
 			<div className="flex items-center gap-3 mr-[15px]">
 				{showFilterSidebarIcon && (
