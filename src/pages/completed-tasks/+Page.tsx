@@ -28,9 +28,9 @@ const Page = () => {
 
 	const getFilterBarHeaderContent = () => {
 		return (
-			<h2 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
+			<h1 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
 				Completed Tasks {!isLoading && `(${(fetchedDaysWithCompletedTasks?.totalTasks)?.toLocaleString() || 0})`}
-			</h2>
+			</h1>
 		);
 	};
 

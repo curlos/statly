@@ -13,6 +13,7 @@ interface AccordionProps {
 	customClasses?: string;
 	customToggleOpen?: () => void;
 	preventOpen?: boolean;
+	titleHasLinks?: boolean;
 }
 
 const Accordion: React.FC<AccordionProps> = ({
@@ -25,10 +26,13 @@ const Accordion: React.FC<AccordionProps> = ({
 	customClasses,
 	customToggleOpen,
 	preventOpen,
+	titleHasLinks,
 }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 	const [overflowHidden, setOverflowHidden] = useState(!openByDefault);
 	const panelId = useId();
+	const titleId = useId();
+	const toggleId = useId();
 	const shouldReduceMotion = useReducedMotion();
 
 	const toggleOpen = () => {
@@ -53,22 +57,49 @@ const Accordion: React.FC<AccordionProps> = ({
 
 	return (
 		<div className={customClasses ? customClasses : ''}>
-			<button
-				onClick={toggleOpen}
-				aria-expanded={isOpen}
-				aria-controls={panelId}
-				className={classNames(
-					'w-full text-left flex gap-2 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 rounded mb-3',
-					showArrowNextToText ? 'justify-start' : 'justify-between'
-				)}
-			>
-				{title}
-				<Icon
-					name={isOpen ? 'keyboard_arrow_down' : 'chevron_right'}
-					fill={1}
-					customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
-				/>
-			</button>
+			{titleHasLinks ? (
+				<div
+					className={classNames('w-full flex gap-2 items-center rounded mb-3', showArrowNextToText ? 'justify-start' : 'justify-between')}
+					onClick={(e) => {
+						if (!(e.target as HTMLElement).closest('a, button')) toggleOpen();
+					}}
+				>
+					<div id={titleId}>{title}</div>
+					<button
+						id={toggleId}
+						type="button"
+						onClick={toggleOpen}
+						aria-expanded={isOpen}
+						aria-controls={panelId}
+						aria-label="Toggle"
+						aria-labelledby={`${toggleId} ${titleId}`}
+						className="bg-transparent border-0 p-0 flex items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 rounded"
+					>
+						<Icon
+							name={isOpen ? 'keyboard_arrow_down' : 'chevron_right'}
+							fill={1}
+							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						/>
+					</button>
+				</div>
+			) : (
+				<button
+					onClick={toggleOpen}
+					aria-expanded={isOpen}
+					aria-controls={panelId}
+					className={classNames(
+						'w-full text-left flex gap-2 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 rounded mb-3',
+						showArrowNextToText ? 'justify-start' : 'justify-between'
+					)}
+				>
+					{title}
+					<Icon
+						name={isOpen ? 'keyboard_arrow_down' : 'chevron_right'}
+						fill={1}
+						customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+					/>
+				</button>
+			)}
 			<AnimatePresence>
 				{isOpen && (
 					<motion.div

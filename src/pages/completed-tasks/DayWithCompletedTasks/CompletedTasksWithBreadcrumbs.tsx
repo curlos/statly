@@ -54,6 +54,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 			return (
 				<Accordion
 					key={dateStr + parentTaskId + i}
+					titleHasLinks
 					title={
 						<div className="text-[18px]">
 							<h3 className="inline underline font-bold hover:text-blue-500 m-0">

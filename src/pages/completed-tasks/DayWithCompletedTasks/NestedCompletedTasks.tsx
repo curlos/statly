@@ -109,9 +109,9 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 		const projectUrl = buildUrlWithQueryParams({ [projectQueryParam]: parentTask?.projectId, 'task-id': '', 'sort-by': '', search: '', 'start-date': '', 'end-date': '', page: '' });
 
 		return (
-			<ul key={parentTaskId} className="text-[16px] list-none p-0 m-0">
-				<li>
+			<li key={parentTaskId} className="text-[16px]">
 					<Accordion
+						titleHasLinks
 						title={
 							<div className="flex items-center gap-2 text-[18px]">
 								<h3 className="underline hover:text-blue-500 font-bold m-0">
@@ -149,17 +149,16 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 								})}
 						</ul>
 					</Accordion>
-				</li>
-			</ul>
+			</li>
 		);
 	};
 
 	return (
 		<>
 			{/* Starting the tasks with NO parent, recursively render the nested tasks. It's important to start with the tasks with NO parent as they are the top-level task and for this to recursively render this without missing any tasks, it must start from the top. */}
-			{tasksWithNoParent.map((taskId: string, index: number) => {
-				return <div key={taskId + index}>{renderNestedTasks(taskId)}</div>;
-			})}
+			<ul className="space-y-5 list-none p-0 m-0">
+				{tasksWithNoParent.map((taskId: string) => renderNestedTasks(taskId))}
+			</ul>
 		</>
 	);
 };
