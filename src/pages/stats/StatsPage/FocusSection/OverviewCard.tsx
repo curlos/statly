@@ -98,10 +98,10 @@ const OverviewCard = () => {
 							{todayFocusRecords}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus Records</div>
-						<div
-							className="text-color-gray-100 flex items-center gap-1"
-							aria-label={`${diffTodayFromYesterdayFocusRecords.numDiff} ${diffTodayFromYesterdayFocusRecords.lessThanYesterday ? 'fewer' : 'more'} focus records than yesterday`}
-						>
+						<div className="text-color-gray-100 flex items-center gap-1">
+							<span className="sr-only">
+								{`${diffTodayFromYesterdayFocusRecords.numDiff} ${diffTodayFromYesterdayFocusRecords.lessThanYesterday ? 'fewer' : 'more'} focus records than yesterday`}
+							</span>
 							<div aria-hidden="true" className="text-[10px] sm:text-[16px]">
 								{diffTodayFromYesterdayFocusRecords.numDiff} from yesterday
 							</div>
@@ -137,10 +137,10 @@ const OverviewCard = () => {
 							{getFormattedDuration(todayFocusDuration, false)}
 						</div>
 						<div className="text-color-gray-100 font-medium">Today's Focus</div>
-						<div
-							className="text-color-gray-100 flex items-center gap-1"
-							aria-label={`${getFormattedDuration(diffTodayFromYesterdayFocusDuration.numDiff, false)} ${diffTodayFromYesterdayFocusDuration.lessThanYesterday ? 'less' : 'more'} focus time than yesterday`}
-						>
+						<div className="text-color-gray-100 flex items-center gap-1">
+							<span className="sr-only">
+								{`${getFormattedDuration(diffTodayFromYesterdayFocusDuration.numDiff, false)} ${diffTodayFromYesterdayFocusDuration.lessThanYesterday ? 'less' : 'more'} focus time than yesterday`}
+							</span>
 							<div aria-hidden="true" className="text-[8px] sm:text-[16px]">
 								{getFormattedDuration(diffTodayFromYesterdayFocusDuration.numDiff, false)} from
 								yesterday

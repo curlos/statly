@@ -223,12 +223,14 @@ const DetailsCard = () => {
 	});
 
 	const getCoreDetailsCard = (fromModal: boolean) => {
+		const CardTag = fromModal ? 'div' : 'section';
+
 		return (
-			<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby="details-heading">
+			<CardTag className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby={fromModal ? undefined : 'details-heading'}>
 				<div className="flex gap-4">
 					<div className="md:flex justify-between items-center gap-2 w-full">
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
-							<h2 id="details-heading" className="font-bold text-[16px]">Details</h2>
+							<h2 id={fromModal ? 'details-modal-heading' : 'details-heading'} className="font-bold text-[16px]">Details</h2>
 							{(isLoading || isFetching) && <Spinner size="md" />}
 
 							{fromModal && (
@@ -347,11 +349,12 @@ const DetailsCard = () => {
 								paddingAngle={getPieChartPaddingAngle(progressBarData.length)}
 								dataKey="percentage"
 							>
-								{progressBarData.map((entry: { id: string; color?: string }, index: number) => (
+								{progressBarData.map((entry: { id: string; name?: string; percentage?: number; color?: string }, index: number) => (
 									<Cell
 										key={entry.id ? `${entry.id}-index` : index}
 										fill={entry.color}
 										stroke="none"
+										aria-label={entry.id === 'No Data' ? 'No data' : `${entry.name}: ${entry.percentage}%`}
 									/>
 								))}
 
@@ -418,7 +421,7 @@ const DetailsCard = () => {
 				</div>
 
 				{renderCustomDateModal()}
-			</section>
+			</CardTag>
 		);
 	};
 
@@ -431,7 +434,7 @@ const DetailsCard = () => {
 				onClose={() => setIsModalOpen(false)}
 				customClasses="!w-[1000px]"
 				contentRef={scrollableContainerRef}
-				ariaLabelledBy="details-heading"
+				ariaLabelledBy="details-modal-heading"
 			>
 				<div className="rounded-xl shadow-lg bg-color-gray-600">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>

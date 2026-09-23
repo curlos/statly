@@ -166,10 +166,10 @@ const OverviewCard = () => {
 							{numOfCompletedTasks > 1 ? 'Completed Tasks' : 'Completed Task'}
 						</div>
 						{shouldFetchPrevInterval && (
-							<div
-								className="text-color-gray-50 flex items-center gap-1 ml-4"
-								aria-label={`${diffOfCompletedTasksFromPrevInterval.numDiff} ${diffOfCompletedTasksFromPrevInterval.lessThanPrev ? 'fewer' : 'more'} than ${getPrevIntervalName()}`}
-							>
+							<div className="text-color-gray-50 flex items-center gap-1 ml-4">
+								<span className="sr-only">
+									{`${diffOfCompletedTasksFromPrevInterval.numDiff} ${diffOfCompletedTasksFromPrevInterval.lessThanPrev ? 'fewer' : 'more'} than ${getPrevIntervalName()}`}
+								</span>
 								<div aria-hidden="true">
 									{diffOfCompletedTasksFromPrevInterval.numDiff} from {getPrevIntervalName()}
 								</div>

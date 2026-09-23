@@ -159,8 +159,8 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 						});
 
 						return (
+							<li key={emotionId}>
 							<Accordion
-								key={emotionId}
 								title={
 									<span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
 										<span
@@ -202,9 +202,11 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 									/>
 								</div>
 							</Accordion>
+							</li>
 						);
 					})
 				) : shouldShowNestedView ? (
+					<li>
 					<NestedProgressBars
 						data={data}
 						dataByTasks={dataByTasks}
@@ -223,6 +225,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 						showPagination={true}
 						innerScrollableContainerRef={innerScrollableContainerRef}
 					/>
+					</li>
 				) : (
 					sortedData
 						.slice(fromModal ? startIndex : 0, fromModal ? endIndex : maxDataLen)

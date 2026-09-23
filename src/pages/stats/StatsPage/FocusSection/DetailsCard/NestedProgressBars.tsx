@@ -126,19 +126,19 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
         : `${item?.[metricType]?.toLocaleString() || 0} task${totalMetricOnParentTask[parentTaskId].value !== 1 ? 's' : ''}`;
 
         const renderProgressBar = () => (
-            <li className="flex items-start gap-1 mb-6">
+            <li key={taskId} className="flex items-start gap-1 mb-6">
                 <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById || {}} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} emotionId={emotionId} />
             </li>
         )
 
         // If this is a direct task (such as YouTube Bookmark Extension's direct focus task with 46h59m), then it will just show one progress bar when the Accordion is oepned. This is rendered inside the Accordion where the "renderDirectTasks" function is called.
         if (parentTaskIdAndChildrenTaskIds.length === 1) {
-            return <div key={taskId}>{renderProgressBar()}</div>
+            return renderProgressBar()
         }
 
         return (
+            <li key={taskId}>
                 <Accordion
-                key={taskId}
                 title={
                     <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
                         <span
@@ -171,6 +171,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                     {renderProgressBar()}
                 </ul>
             </Accordion>
+            </li>
         );
     }
 
@@ -199,7 +200,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
             const shouldBreakAll = shouldBreakAllText(groupedItem?.name);
 
             return (
-                <ul key={parentTaskId} className="text-[16px] w-full">
+                <li key={parentTaskId} className="text-[16px] w-full">
                     <Accordion
                         title={
                             <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
@@ -243,7 +244,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                             </li>
                         </ul>
                     </Accordion>
-                </ul>
+                </li>
             );
         }
 
@@ -301,7 +302,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
         }
 
         return (
-            <ul key={parentTaskId} className="text-[16px] w-full">
+            <li key={parentTaskId} className="text-[16px] w-full">
                 <Accordion
                     title={
                         <span className="text-[18px] cursor-pointer font-normal break-words w-full">
@@ -350,7 +351,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                                         }
 
                                         // Otherwise, if it's a task with children that isn't the parent, we need to recursively render the nested tasks.
-                                        return <div key={taskId}>{renderNestedTasks(taskId)}</div>;
+                                        return renderNestedTasks(taskId);
                                     } else {
                                         // if the task doesn't have children, then we can just render it with an Accordion + one progress bar if it's in progressBarDataById. The reason we don't just render the progressBar directly and have an accordion wrapped around it first is because I need to match the rest of the nested accordions.
                                         return renderDirectTasks(taskId, parentTaskId, tasksToRender, projectColor)
@@ -358,7 +359,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                             })}
                     </ul>
                 </Accordion>
-            </ul>
+            </li>
         );
     };
 
@@ -425,6 +426,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
         return (
             <>
                 <div ref={containerRef}>
+                    <ul className="w-full">
                     {sortedProjects.slice(fromModal ? projectStartIndex : 0, fromModal ? projectEndIndex : maxProjects)?.map((project: ProgressBarItemData) => {
                     const projectMetricValue = project[metricKey] as number || 0;
                     const projectFormattedMetric = isFocusDuration
@@ -434,7 +436,7 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                     const shouldBreakAllProject = shouldBreakAllText(project.name);
 
                     return (
-                        <ul key={project.id} className="w-full">
+                        <li key={project.id}>
                             <Accordion
                                 title={
                                     <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
@@ -462,15 +464,14 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
                                 }}
                                 preventOpen={!fromModal}
                             >
-                                <div className="pl-2 md:pl-4 lg:pl-6">
-                                    {groupedProjectsAndTasks[project.id]?.map((taskId: string) => {
-                                        return <div key={taskId}>{renderNestedTasks(taskId)}</div>;
-                                    })}
-                                </div>
+                                <ul className="pl-2 md:pl-4 lg:pl-6">
+                                    {groupedProjectsAndTasks[project.id]?.map((taskId: string) => renderNestedTasks(taskId))}
+                                </ul>
                             </Accordion>
-                        </ul>
+                        </li>
                     );
                 })}
+                    </ul>
                 </div>
 
                 {fromModal && showPagination && totalProjectPages > 1 && (
@@ -491,9 +492,9 @@ const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
     return (
         <>
             <div ref={containerRef} className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')}>
-                {sortedTasksWithNoParent.slice(fromModal ? taskStartIndex : 0, fromModal ? taskEndIndex : maxTasksWithNoParent)?.map((taskId: string) => {
-                    return <div key={taskId} className="w-full">{renderNestedTasks(taskId)}</div>;
-                })}
+                <ul className="w-full">
+                    {sortedTasksWithNoParent.slice(fromModal ? taskStartIndex : 0, fromModal ? taskEndIndex : maxTasksWithNoParent)?.map((taskId: string) => renderNestedTasks(taskId))}
+                </ul>
             </div>
 
             {fromModal && showPagination && totalTaskPages > 1 && (

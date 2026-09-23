@@ -175,12 +175,14 @@ const CompletionStatsCard = () => {
 	});
 
 	const getCoreDetailsCard = (fromModal: boolean) => {
+		const CardTag = fromModal ? 'div' : 'section';
+
 		return (
-			<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby="completion-stats-heading">
+			<CardTag className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby={fromModal ? undefined : 'completion-stats-heading'}>
 				<div className="flex gap-4">
 					<div className="md:flex justify-between items-center w-full">
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
-							<h2 id="completion-stats-heading" className="font-bold text-[16px]">Completion Stats</h2>
+							<h2 id={fromModal ? 'completion-stats-modal-heading' : 'completion-stats-heading'} className="font-bold text-[16px]">Completion Stats</h2>
 							{(isLoading || isFetching) && <Spinner size="md" />}
 							{fromModal && (
 								<button
@@ -303,6 +305,7 @@ const CompletionStatsCard = () => {
 										key={entry.id ? `${entry.id}-index` : index}
 										fill={entry.color}
 										stroke="none"
+										aria-label={entry.id === 'No Data' ? 'No data' : `${entry.name}: ${entry.percentage}%`}
 									/>
 								))}
 
@@ -369,7 +372,7 @@ const CompletionStatsCard = () => {
 				</div>
 
 				{renderCustomDateModal()}
-			</section>
+			</CardTag>
 		);
 	};
 
@@ -383,7 +386,7 @@ const CompletionStatsCard = () => {
 				positionClasses="top-center"
 				customClasses="!w-[1000px]"
 				contentRef={scrollableContainerRef}
-				ariaLabelledBy="completion-stats-heading"
+				ariaLabelledBy="completion-stats-modal-heading"
 			>
 				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>
