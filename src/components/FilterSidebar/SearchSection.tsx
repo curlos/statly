@@ -44,12 +44,14 @@ const SearchSection = () => {
 				customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
 			/>
 			<input
+				type="search"
+				aria-label="Search"
 				placeholder="Search"
 				value={localSearchText}
 				onChange={(e) => {
 					setLocalSearchText(e.target.value);
 				}}
-				className="text-[16px] bg-transparent placeholder:text-[#7C7C7C] mb-0 w-full outline-none resize-none p-1"
+				className="text-[16px] bg-transparent placeholder:text-color-gray-50 mb-0 w-full outline-none resize-none p-1"
 			/>
 		</div>
 	);

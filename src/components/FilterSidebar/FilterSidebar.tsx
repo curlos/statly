@@ -23,7 +23,13 @@ interface FilterSidebarProps {
 	useSlidingMotion?: boolean;
 }
 
-const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions, isForModal, page, useSlidingMotion = true }) => {
+const FilterSidebar: React.FC<FilterSidebarProps> = ({
+	setIsOpen,
+	sortByOptions,
+	isForModal,
+	page,
+	useSlidingMotion = true,
+}) => {
 	const panelRef = useDialogFocus(isForModal, () => setIsOpen(false));
 	const shouldReduceMotion = useReducedMotion();
 	const sidebarVariants = {
@@ -49,7 +55,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 		'focus-apps',
 		'to-do-list-apps',
 		'general',
-		'year-agnostic'
+		'year-agnostic',
 	];
 
 	switch (page) {
@@ -62,7 +68,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 		case 'medals':
 		case 'challenges':
 		case 'stats':
-			allPossibleFilterStrings.push('categories', 'focus-apps', 'to-do-list-apps', 'projects-todoist', 'emotions');
+			allPossibleFilterStrings.push(
+				'categories',
+				'focus-apps',
+				'to-do-list-apps',
+				'projects-todoist',
+				'emotions'
+			);
 			break;
 	}
 
@@ -102,7 +114,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 	const innerContent = (
 		<>
 			<div className="flex justify-between items-center">
-				<h2 id="filter-dialog-title" className="font-bold text-[18px]">{isFocusRecordsOrCompletedTasksPage ? 'Filter & Sort' : 'Filter'}</h2>
+				<h2 id="filter-dialog-title" className="font-bold text-[18px]">
+					{isFocusRecordsOrCompletedTasksPage ? 'Filter & Sort' : 'Filter'}
+				</h2>
 				<div className="flex items-center gap-3">
 					{isAtLeastOneFilterApplied && (
 						<button
@@ -122,7 +136,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 						<Icon
 							name="close"
 							fill={0}
-							customClass={'text-color-gray-50 !text-[22px] hover:text-white bg-color-gray-600 rounded-2xl p-1'}
+							customClass={
+								'text-color-gray-50 !text-[22px] hover:text-white bg-color-gray-600 rounded-2xl p-1'
+							}
 						/>
 					</button>
 				</div>
@@ -202,7 +218,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setIsOpen, sortByOptions,
 				aria-labelledby="filter-dialog-title"
 				{...sharedMotionProps}
 				aria-modal="true"
-				className={baseClassName + ' border-0 m-0 left-auto h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50'}
+				className={
+					baseClassName +
+					' border-0 m-0 left-auto h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+				}
 			>
 				{innerContent}
 			</motion.dialog>
