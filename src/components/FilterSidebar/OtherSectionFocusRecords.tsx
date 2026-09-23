@@ -11,6 +11,7 @@ const OtherSectionFocusRecords = () => {
 	const {
 		focusRecordsPageSettings: {
 			showFocusNotes,
+			limitTextWidth,
 			showTotalFocusDuration,
 			showCompletedTasks,
 			showTaskAncestors,
@@ -66,6 +67,14 @@ const OtherSectionFocusRecords = () => {
 									name: 'Show Focus Notes',
 									showValue: showFocusNotes,
 									handleCheckboxClick: () => handleCheckboxClick(showFocusNotes, 'showFocusNotes'),
+								}}
+							/>
+
+							<CheckboxOther
+								{...{
+									name: 'Limit Text Width',
+									showValue: limitTextWidth,
+									handleCheckboxClick: () => handleCheckboxClick(limitTextWidth, 'limitTextWidth'),
 								}}
 							/>
 

@@ -14,6 +14,7 @@ const OtherSectionCompletedTasks = () => {
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
 			maxDaysPerPage,
+			limitTextWidth,
 		},
 		focusRecordsPageSettings: { showMedals },
 		handleUpdateUserSettingForPage,
@@ -83,6 +84,14 @@ const OtherSectionCompletedTasks = () => {
 									name: 'Show Indented Tasks',
 									showValue: showIndentedTasks,
 									handleCheckboxClick: () => handleCheckboxClick(showIndentedTasks, 'showIndentedTasks'),
+								}}
+							/>
+
+							<CheckboxOther
+								{...{
+									name: 'Limit Text Width',
+									showValue: limitTextWidth,
+									handleCheckboxClick: () => handleCheckboxClick(limitTextWidth, 'limitTextWidth'),
 								}}
 							/>
 

@@ -44,6 +44,7 @@ const useUserSettings = () => {
 
 	const {
 		showFocusNotes = true,
+		limitTextWidth = true,
 		showTotalFocusDuration = true,
 		showCompletedTasks = true,
 		showTaskAncestors = true,
@@ -77,6 +78,7 @@ const useUserSettings = () => {
 		showIndentedTasks = true,
 		onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage = true,
 		maxDaysPerPage = 7,
+		limitTextWidth: limitTextWidthCompletedTasksPage = true,
 	} = completedTasksPageSettings || {};
 
 	const { showMultiRingViewForOneActiveRing = false } = focusHoursGoalPageSettings || {};
@@ -187,6 +189,7 @@ const useUserSettings = () => {
 		defaultCustomStartDate,
 		focusRecordsPageSettings: {
 			showFocusNotes,
+			limitTextWidth,
 			showTotalFocusDuration,
 			showCompletedTasks,
 			showTaskAncestors,
@@ -211,6 +214,7 @@ const useUserSettings = () => {
 			showIndentedTasks,
 			onlyExportTasksWithNoParent: onlyExportTasksWithNoParentCompletedTasksPage,
 			maxDaysPerPage,
+			limitTextWidth: limitTextWidthCompletedTasksPage,
 		},
 		focusHoursGoalPageSettings: {
 			rings,

@@ -371,6 +371,7 @@ export interface Ring {
 
 export interface FocusRecordsPageSettings {
 	showFocusNotes: boolean;
+	limitTextWidth: boolean;
 	showTotalFocusDuration: boolean;
 	showCompletedTasks: boolean;
 	showTaskAncestors: boolean;
@@ -404,6 +405,7 @@ export interface CompletedTasksPageSettings {
 	showIndentedTasks: boolean;
 	onlyExportTasksWithNoParent: boolean;
 	maxDaysPerPage: number;
+	limitTextWidth: boolean;
 }
 
 export interface FocusHoursGoalPageSettings {

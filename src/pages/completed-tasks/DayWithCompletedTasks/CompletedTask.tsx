@@ -3,6 +3,7 @@ import Icon from '../../../components/Icon';
 import FocusRecordContextMenu from '../../../components/FocusRecordContextMenu';
 import ModalConfirmDelete from '../../../components/Modal/ModalConfirmDelete';
 import { useCompletedTaskMenu } from './useCompletedTaskMenu';
+import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 import type { Task } from '../../../types/models';
 import type { AncestorTask } from '../../../types/api';
 
@@ -16,6 +17,10 @@ interface CompletedTaskProps {
 const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, buildUrlWithTaskIdQueryParam, cardTextColor }) => {
 	// Really just for TickTick tasks, don't see anything like this for Todoist tasks. They seem to only have two statuses: "Complete" and "Not Complete".
 	const statusIsWillNotDo = 'status' in task && task.status === -1;
+
+	const {
+		completedTasksPageSettings: { limitTextWidth },
+	} = useUserSettingsContext();
 
 	// Custom hook for menu logic
 	const {
@@ -32,7 +37,7 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, buildUr
 
 	return (
 		<div onContextMenu={handleContextMenu}>
-			<div className="flex items-start gap-1">
+			<div className={classNames('flex items-start gap-1', limitTextWidth && 'max-w-[54ch]')}>
 				<Icon
 					name={statusIsWillNotDo ? 'disabled_by_default' : 'check_box'}
 					customClass={classNames('!text-[20px]')}

@@ -38,7 +38,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 	buildUrlWithTaskIdQueryParam,
 	ancestorTasksById,
 	cardTextColor,
-	customDisplay
+	customDisplay,
 }) => {
 	const {
 		focusRecordsPageSettings: { showMedals },
@@ -78,15 +78,18 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 	 */
 	const renderDirectCompletedSubtasks = (directCompletedSubtasks: (Task | AncestorTask)[]) => {
 		return (
-			<ul>
+			<ul className="space-y-2">
 				{directCompletedSubtasks?.map((subtask: Task | AncestorTask, index: number) => (
 					<li
 						key={subtask.id + index + dateStr}
-						className={classNames(
-							showMedals ? 'break-all sm:break-words sm:break-normal' : 'break-words'
-						)}
+						className={classNames(showMedals ? 'break-all sm:break-words sm:break-normal' : 'break-words')}
 					>
-						<CompletedTask task={subtask} buildUrlWithTaskIdQueryParam={buildUrlWithTaskIdQueryParam} isFullTask={false} cardTextColor={cardTextColor} />
+						<CompletedTask
+							task={subtask}
+							buildUrlWithTaskIdQueryParam={buildUrlWithTaskIdQueryParam}
+							isFullTask={false}
+							cardTextColor={cardTextColor}
+						/>
 					</li>
 				))}
 			</ul>
@@ -98,57 +101,68 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 	 * @param {String} parentTaskId
 	 */
 	const renderNestedTasks = (parentTaskId: string) => {
-		const parentTask = ancestorTasksById[parentTaskId]
+		const parentTask = ancestorTasksById[parentTaskId];
 
 		// These are the tasks who are direct children of the parent task. These will be rendered as completed checkboxes with the content.
 		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
-		const taskProject = (projectsById && parentTask?.projectId) ? projectsById[parentTask.projectId] : undefined;
+		const taskProject = projectsById && parentTask?.projectId ? projectsById[parentTask.projectId] : undefined;
 		const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
 
 		const taskUrl = buildUrlWithTaskIdQueryParam(parentTask.id);
-		const projectUrl = buildUrlWithQueryParams({ [projectQueryParam]: parentTask?.projectId, 'task-id': '', 'sort-by': '', search: '', 'start-date': '', 'end-date': '', page: '' });
+		const projectUrl = buildUrlWithQueryParams({
+			[projectQueryParam]: parentTask?.projectId,
+			'task-id': '',
+			'sort-by': '',
+			search: '',
+			'start-date': '',
+			'end-date': '',
+			page: '',
+		});
 
 		return (
 			<li key={parentTaskId} className="text-[16px]">
-					<Accordion
-						titleHasLinks
-						title={
-							<div className="flex items-center gap-2 text-[18px]">
-								<h3 className="underline hover:text-blue-500 font-bold m-0">
-									<a href={taskUrl} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
-										{parentTask.title}
-									</a>
-								</h3>
+				<Accordion
+					titleHasLinks
+					title={
+						<div className="flex items-center gap-2 text-[18px]">
+							<h3 className="underline hover:text-blue-500 font-bold m-0">
+								<a href={taskUrl} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
+									{parentTask.title}
+								</a>
+							</h3>
 
-								{(taskProject || parentTask?.projectId) && (
-									<span
-										className={classNames("text-color-gray-25 hover:underline hover:text-blue-500", parentTask.parentId && "hidden sm:block")}
-										style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}
-									>
-										<a href={projectUrl}>({taskProject?.name || parentTask?.projectId})</a>
-									</span>
-								)}
-							</div>
-						}
-						openByDefault={!groupedTasksCollapsedByDefault}
-						showArrowNextToText={true}
-					>
-						{directCompletedSubtasks?.length > 0 && renderDirectCompletedSubtasks(directCompletedSubtasks)}
+							{(taskProject || parentTask?.projectId) && (
+								<span
+									className={classNames(
+										'text-color-gray-25 hover:underline hover:text-blue-500',
+										parentTask.parentId && 'hidden sm:block'
+									)}
+									style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}
+								>
+									<a href={projectUrl}>({taskProject?.name || parentTask?.projectId})</a>
+								</span>
+							)}
+						</div>
+					}
+					openByDefault={!groupedTasksCollapsedByDefault}
+					showArrowNextToText={true}
+				>
+					{directCompletedSubtasks?.length > 0 && renderDirectCompletedSubtasks(directCompletedSubtasks)}
 
-						<ul className="pl-2 sm:pl-6">
-							{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
-								parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId: string) => {
-									if (
-										parentDirectChildrenTaskIdsByParentId[taskId] &&
-										parentDirectChildrenTaskIdsByParentId[taskId].length > 0
-									) {
-										return renderNestedTasks(taskId);
-									} else {
-										return null
-									}
-								})}
-						</ul>
-					</Accordion>
+					<ul className="pl-2 sm:pl-6">
+						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
+							parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId: string) => {
+								if (
+									parentDirectChildrenTaskIdsByParentId[taskId] &&
+									parentDirectChildrenTaskIdsByParentId[taskId].length > 0
+								) {
+									return renderNestedTasks(taskId);
+								} else {
+									return null;
+								}
+							})}
+					</ul>
+				</Accordion>
 			</li>
 		);
 	};
