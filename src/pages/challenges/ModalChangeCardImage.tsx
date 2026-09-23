@@ -372,7 +372,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		>
 			<div className="bg-color-gray-600 rounded-lg text-white">
 				<div className="flex items-center justify-between p-5">
-					<h3 id="change-card-image-title" className="font-bold text-[16px]">Change {pageName} Card Image</h3>
+					<h2 id="change-card-image-title" className="font-bold text-[16px]">Change {pageName} Card Image</h2>
 					<button
 						aria-label="Close dialog"
 						className="text-color-gray-100 hover:text-white cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-white rounded p-0"

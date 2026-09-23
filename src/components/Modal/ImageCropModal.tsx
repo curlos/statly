@@ -13,13 +13,7 @@ interface ImageCropModalProps {
 	aspect?: number; // Optional aspect ratio (e.g., 1 for square). Undefined = no restriction
 }
 
-const ImageCropModal: React.FC<ImageCropModalProps> = ({
-	isOpen,
-	onClose,
-	imageSrc,
-	onCropComplete,
-	aspect,
-}) => {
+const ImageCropModal: React.FC<ImageCropModalProps> = ({ isOpen, onClose, imageSrc, onCropComplete, aspect }) => {
 	const [crop, setCrop] = useState<Crop>();
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
 	const [isApplying, setIsApplying] = useState(false);
@@ -42,74 +36,74 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 		setCompletedCrop(null);
 	}, [imageSrc]);
 
-	const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-		const { width, height } = e.currentTarget;
+	const onImageLoad = useCallback(
+		(e: React.SyntheticEvent<HTMLImageElement>) => {
+			const { width, height } = e.currentTarget;
 
-		if (aspect === 1) {
-			// Square aspect ratio - calculate crop centered
-			const cropSize = Math.min(width, height) * 0.9;
-			setCrop({
-				unit: 'px',
-				width: cropSize,
-				height: cropSize,
-				x: (width - cropSize) / 2,
-				y: (height - cropSize) / 2,
-			});
-		} else {
-			// No aspect restriction - default to 90% of image dimensions, centered
-			const cropWidth = width * 0.9;
-			const cropHeight = height * 0.9;
-			setCrop({
-				unit: 'px',
-				width: cropWidth,
-				height: cropHeight,
-				x: (width - cropWidth) / 2,
-				y: (height - cropHeight) / 2,
-			});
-		}
-	}, [aspect]);
-
-	const getCroppedImg = useCallback(
-		(image: HTMLImageElement, crop: PixelCrop): Promise<string> => {
-			const canvas = document.createElement('canvas');
-			const scaleX = image.naturalWidth / image.width;
-			const scaleY = image.naturalHeight / image.height;
-
-			canvas.width = crop.width;
-			canvas.height = crop.height;
-			const ctx = canvas.getContext('2d');
-
-			if (!ctx) {
-				return Promise.reject(new Error('No 2d context'));
+			if (aspect === 1) {
+				// Square aspect ratio - calculate crop centered
+				const cropSize = Math.min(width, height) * 0.9;
+				setCrop({
+					unit: 'px',
+					width: cropSize,
+					height: cropSize,
+					x: (width - cropSize) / 2,
+					y: (height - cropSize) / 2,
+				});
+			} else {
+				// No aspect restriction - default to 90% of image dimensions, centered
+				const cropWidth = width * 0.9;
+				const cropHeight = height * 0.9;
+				setCrop({
+					unit: 'px',
+					width: cropWidth,
+					height: cropHeight,
+					x: (width - cropWidth) / 2,
+					y: (height - cropHeight) / 2,
+				});
 			}
-
-			ctx.drawImage(
-				image,
-				crop.x * scaleX,
-				crop.y * scaleY,
-				crop.width * scaleX,
-				crop.height * scaleY,
-				0,
-				0,
-				crop.width,
-				crop.height
-			);
-
-			return new Promise((resolve) => {
-				canvas.toBlob((blob) => {
-					if (!blob) {
-						return;
-					}
-					const reader = new FileReader();
-					reader.readAsDataURL(blob);
-					reader.onloadend = () => {
-						resolve(reader.result as string);
-					};
-				}, 'image/jpeg');
-			});
 		},
-		[]
+		[aspect]
 	);
+
+	const getCroppedImg = useCallback((image: HTMLImageElement, crop: PixelCrop): Promise<string> => {
+		const canvas = document.createElement('canvas');
+		const scaleX = image.naturalWidth / image.width;
+		const scaleY = image.naturalHeight / image.height;
+
+		canvas.width = crop.width;
+		canvas.height = crop.height;
+		const ctx = canvas.getContext('2d');
+
+		if (!ctx) {
+			return Promise.reject(new Error('No 2d context'));
+		}
+
+		ctx.drawImage(
+			image,
+			crop.x * scaleX,
+			crop.y * scaleY,
+			crop.width * scaleX,
+			crop.height * scaleY,
+			0,
+			0,
+			crop.width,
+			crop.height
+		);
+
+		return new Promise((resolve) => {
+			canvas.toBlob((blob) => {
+				if (!blob) {
+					return;
+				}
+				const reader = new FileReader();
+				reader.readAsDataURL(blob);
+				reader.onloadend = () => {
+					resolve(reader.result as string);
+				};
+			}, 'image/jpeg');
+		});
+	}, []);
 
 	const handleApplyCrop = async () => {
 		if (completedCrop && imgRef.current) {
@@ -127,7 +121,12 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[90vw] lg:!max-w-[600px]" ariaLabelledBy="crop-modal-title">
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			customClasses="!max-w-[90vw] lg:!max-w-[600px]"
+			ariaLabelledBy="crop-modal-title"
+		>
 			<div className="bg-color-gray-700 rounded-lg overflow-hidden">
 				{/* Header */}
 				<div className="p-4 border-b border-color-gray-600 flex items-center justify-between">
@@ -140,7 +139,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 						>
 							<Icon name="close" customClass="!text-[24px]" aria-hidden={true} />
 						</button>
-						<h3 id="crop-modal-title" className="text-xl font-bold">Crop Image</h3>
+						<h3 id="crop-modal-title" className="text-xl font-bold">
+							Crop Image
+						</h3>
 					</div>
 					<button
 						type="button"

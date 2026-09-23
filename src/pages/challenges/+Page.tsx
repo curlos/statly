@@ -67,9 +67,10 @@ const Page = () => {
 		<div className="max-w-screen min-h-screen bg-color-gray-700">
 			<div ref={topHeaderRef}>
 				<Navbar page="challenges-page" />
+				<section aria-labelledby="challenges-heading">
 				<div className="container flex justify-between items-center">
 					<div className="flex items-center gap-4">
-						<div className="text-[28px] font-bold">Challenges</div>
+						<h1 id="challenges-heading" className="text-[28px] font-bold">Challenges</h1>
 
 						<div className="hidden lg:block">
 							<AppliedFilterItemList />
@@ -97,6 +98,7 @@ const Page = () => {
 						<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
 					</div>
 				</div>
+				</section>
 			</div>
 
 			<main id="main-content" tabIndex={-1} className="container grid grid-cols-12 gap-2 outline-none">

@@ -75,9 +75,10 @@ const Page = () => {
 			<div className="max-w-screen min-h-screen bg-color-gray-700">
 				<div ref={topHeaderRef}>
 					<Navbar page="medals-page" />
+					<section aria-labelledby="medals-heading">
 					<div className="container flex justify-between items-center">
 						<div className="flex items-center gap-4">
-							<div className="text-[28px] font-bold">Medals</div>
+							<h1 id="medals-heading" className="text-[28px] font-bold">Medals</h1>
 
 							<div className="hidden md:block">
 								<AppliedFilterItemList />
@@ -108,6 +109,7 @@ const Page = () => {
 							</div>
 						</div>
 					</div>
+					</section>
 				</div>
 
 				<main id="main-content" tabIndex={-1} className="container grid grid-cols-12 gap-3 outline-none">

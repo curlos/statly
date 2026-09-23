@@ -29,7 +29,7 @@ const ModalPickDateRange: React.FC<ModalPickDateRangeProps> = ({
 			<div className="rounded-xl shadow-lg bg-color-gray-650">
 				<div className={classNames('p-5')}>
 					<div className="flex items-center justify-between mb-4">
-						<h3 className="font-bold text-[16px]">Custom</h3>
+						<h2 className="font-bold text-[16px]">Custom</h2>
 						<Icon
 							name="close"
 							customClass={'!text-[20px] text-color-gray-100 hover:text-white cursor-pointer'}

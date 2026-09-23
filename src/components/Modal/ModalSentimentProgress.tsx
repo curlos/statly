@@ -94,7 +94,7 @@ const ModalSentimentProgress: React.FC = () => {
 				</button>
 
 				{/* Title */}
-				<h3 id="sentiment-modal-title" className="text-xl font-bold mb-2 text-white">Analyze Focus Record Note Emotions</h3>
+				<h2 id="sentiment-modal-title" className="text-xl font-bold mb-2 text-white">Analyze Focus Record Note Emotions</h2>
 
 				{/* Description */}
 				<p className="text-color-gray-50 mt-0 mb-4">
@@ -140,9 +140,9 @@ const ModalSentimentProgress: React.FC = () => {
 									title={
 										<div className="w-full pr-2 flex items-center justify-between">
 											<div>
-												<h4 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
+												<h3 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
 													Records {chunk.startRecord.toLocaleString()} to {chunk.endRecord.toLocaleString()}
-												</h4>
+												</h3>
 												{/* Summary results - only show after chunk completes */}
 												{chunk.result && chunk.status === 'success' && (
 													<div className="text-color-gray-50 mt-1">

@@ -35,7 +35,7 @@ const ModalRestDays: React.FC<ModalRestDaysProps> = ({
       <div className="bg-color-gray-700 rounded-lg p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h3 id="rest-days-modal-title" className="text-xl font-semibold">Rest Days</h3>
+          <h2 id="rest-days-modal-title" className="text-xl font-semibold">Rest Days</h2>
           <button
             onClick={onClose}
             aria-label="Close"
