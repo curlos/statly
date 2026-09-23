@@ -51,7 +51,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
             </h2>
 
             {parentTaskBreadcrumbs?.length > 0 && (
-                <span className={classNames("ml-1", customDisplay.useTextColor ? "" : "text-color-gray-25")} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
+                <span className={classNames("ml-1", customDisplay.useTextColor ? "" : "text-muted-inherit")} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
                     -{' '}
                     {parentTaskBreadcrumbs.map((taskId: string, index: number) => {
                         const taskObj = ancestorTasksById?.[taskId];

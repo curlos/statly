@@ -146,7 +146,6 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 		}
 	};
 
-	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 
 	const getInitials = (name: string) => {
 		return name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2);
@@ -167,8 +166,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 						/>
 					) : (
 						<div
-							className="w-24 h-24 rounded-full flex items-center justify-center text-white font-bold text-3xl"
-							style={{ backgroundColor: themeColor }}
+							className={`w-24 h-24 rounded-full flex items-center justify-center font-bold text-3xl ${chosenColorObj.bgColor}`}
 						>
 							{getInitials(user?.name || 'U')}
 						</div>
@@ -242,8 +240,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 				<button
 					type="submit"
 					disabled={isLoading}
-					className="w-full rounded-xl p-2 mt-2 flex items-center justify-center gap-2"
-					style={{ backgroundColor: themeColor }}
+					className={`w-full rounded-xl p-2 mt-2 flex items-center justify-center gap-2 ${chosenColorObj.bgColor}`}
 				>
 					<span>Update Profile</span>
 					{isLoading && <Spinner size="sm" customClass="!text-white" />}

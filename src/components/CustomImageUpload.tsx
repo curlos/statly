@@ -353,7 +353,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 						disabled={isLoading}
 						className={classNames(
 							chosenColorObj.bgColor,
-							chosenColorObj.hover.bgColorHalfOpacity,
+							nextDarkestColorObj?.hover.bgColor,
 							'w-full py-2 rounded font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
 						)}
 					>

@@ -12,6 +12,7 @@ const OtherSectionFocusRecords = () => {
 		focusRecordsPageSettings: {
 			showFocusNotes,
 			limitTextWidth,
+			lowerCardOpacity,
 			showTotalFocusDuration,
 			showCompletedTasks,
 			showTaskAncestors,
@@ -180,6 +181,14 @@ const OtherSectionFocusRecords = () => {
 									<MedalImage />
 								</div>
 							)}
+
+							<CheckboxOther
+								{...{
+									name: 'Lower Card Opacity',
+									showValue: lowerCardOpacity,
+									handleCheckboxClick: () => handleCheckboxClick(lowerCardOpacity, 'lowerCardOpacity'),
+								}}
+							/>
 
 							{/* Input - Max Focus Records Per Page */}
 							<InputNumUserSettings

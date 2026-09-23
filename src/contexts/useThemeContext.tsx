@@ -1,11 +1,11 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../services/resources/userSettingsApi';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
-import { lightenHex, darkenHex, hexToRgba } from '../utils/color.utils';
+import { lightenHex, darkenHex, hexToRgba, getReadableTextColor } from '../utils/color.utils';
 
 const buildCustomColorObj = (hex: string) => ({
 	textColor: 'text-[var(--theme-color)]',
-	bgColor: 'bg-[var(--theme-color)]',
+	bgColor: 'bg-[var(--theme-color)] text-on-theme',
 	bgColorHalfOpacity: 'bg-[var(--theme-color-half)]',
 	borderColor: 'border-[var(--theme-color)]',
 	outlineColor: 'outline-[var(--theme-color)]',
@@ -64,6 +64,13 @@ const useTheme = () => {
 		? buildCustomColorObj(themeColorKey)
 		: TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
 	const chosenColorVariantsObj = isCustomHex ? {} : TAILWIND_COLORS_OBJ[chosenColorName];
+	const themeHexColor = chosenColorObj?.hexColor;
+
+	useLayoutEffect(() => {
+		if (themeHexColor) {
+			document.documentElement.style.setProperty('--theme-on-color', getReadableTextColor(themeHexColor));
+		}
+	}, [themeHexColor]);
 
 	useEffect(() => {
 		if (isCustomHex) {

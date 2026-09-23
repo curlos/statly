@@ -10,7 +10,6 @@ const CookieSection = () => {
 	const [editUserSettings, { isLoading: isUpdatingCookie }] = useEditUserSettingsMutation();
 	const themeContext = useThemeContext();
 	const chosenColorObj = themeContext?.chosenColorObj;
-	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 
 	const [isEditingCookie, setIsEditingCookie] = useState(false);
 	const [cookieValue, setCookieValue] = useState('');
@@ -103,8 +102,7 @@ const CookieSection = () => {
 					<button
 						type="submit"
 						disabled={isUpdatingCookie}
-						className="w-full px-4 py-2 rounded text-white font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-						style={{ backgroundColor: themeColor }}
+						className={`w-full px-4 py-2 rounded font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${chosenColorObj?.bgColor ?? ''}`}
 					>
 						{isUpdatingCookie ? (
 							<>

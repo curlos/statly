@@ -6,7 +6,7 @@ import PasswordTabSection from './PasswordTabSection';
 
 const EditProfileSection = () => {
 	const { chosenColorObj } = useThemeContext();
-	const { bgColorHalfOpacity } = chosenColorObj;
+	const { bgColor } = chosenColorObj;
 	const [activeTab, setActiveTab] = useState<'profile' | 'password'>('profile');
 	const profileTabRef = useRef<HTMLButtonElement>(null);
 
@@ -27,7 +27,7 @@ const EditProfileSection = () => {
 	};
 
 	const sharedButtonStyle = 'text-[14px] py-1 px-3 rounded-3xl cursor-pointer';
-	const selectedButtonStyle = classNames(bgColorHalfOpacity, 'text-white', `${sharedButtonStyle} font-bold`);
+	const selectedButtonStyle = classNames(bgColor, `${sharedButtonStyle} font-bold`);
 	const unselectedButtonStyle = `${sharedButtonStyle} text-color-gray-25 bg-color-gray-300`;
 
 	return (

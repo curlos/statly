@@ -46,7 +46,7 @@ export const generateTailwindColorObjects = () => {
 
 				colors[currentColorGroupName][`${currentColorGroupName}-${colorNumVal}`] = {
 					textColor: `text-${currentColorGroupName}-${colorNumVal}`,
-					bgColor: `bg-${currentColorGroupName}-${colorNumVal}`,
+					bgColor: `bg-${currentColorGroupName}-${colorNumVal} text-on-theme`,
 					bgColorHalfOpacity: `bg-${currentColorGroupName}-${colorNumVal}/50`,
 					borderColor: `border-${currentColorGroupName}-${colorNumVal}`,
 					outlineColor: `outline-${currentColorGroupName}-${colorNumVal}`,

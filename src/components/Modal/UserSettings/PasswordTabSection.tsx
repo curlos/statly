@@ -70,7 +70,6 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 		}
 	};
 
-	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto">
@@ -105,8 +104,7 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 				<button
 					type="submit"
 					disabled={isLoading}
-					className="w-full rounded-xl p-2 mt-2 flex items-center justify-center gap-2"
-					style={{ backgroundColor: themeColor }}
+					className={`w-full rounded-xl p-2 mt-2 flex items-center justify-center gap-2 ${chosenColorObj.bgColor}`}
 				>
 					<span>Update Password</span>
 					{isLoading && <Spinner size="sm" customClass="!text-white" />}

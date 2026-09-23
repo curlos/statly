@@ -1,5 +1,7 @@
 import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
+import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
+import { getReadableTextColor, getHalfOpacityFillColor } from '../../utils/color.utils';
 import Icon from '../Icon';
 
 interface AppliedFilterItemProps {
@@ -13,9 +15,16 @@ const AppliedFilterItem = ({ name, value, onRemove }: AppliedFilterItemProps) =>
 	const { chosenColorObj, colorMode } = themeContext;
 	const { bgColor, bgColorHalfOpacity } = chosenColorObj;
 
+	const {
+		focusRecordsPageSettings: { lowerCardOpacity },
+	} = useUserSettingsContext();
+
 	return (
 		<div className="flex">
-			<div className={classNames('px-2 py-1 text-[14px] text-white rounded-xl', colorMode === 'dark' ? bgColorHalfOpacity : bgColor)}>
+			<div
+				className={classNames('px-2 py-1 text-[14px] rounded-xl', lowerCardOpacity ? bgColorHalfOpacity : bgColor)}
+				style={lowerCardOpacity ? { color: getReadableTextColor(getHalfOpacityFillColor(chosenColorObj.hexColor, colorMode)) } : undefined}
+			>
 				<div className="overflow-hidden">
 					{name && <span className="font-bold">{name}: </span>}
 					<span className="text-wrap break-all">{value}</span>

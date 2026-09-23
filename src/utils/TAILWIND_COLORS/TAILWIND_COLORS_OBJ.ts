@@ -33,7 +33,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "slate": {
         "slate-50": {
             "textColor": "text-slate-50",
-            "bgColor": "bg-slate-50",
+            "bgColor": "bg-slate-50 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-50/50",
             "borderColor": "border-slate-50",
             "outlineColor": "outline-slate-50",
@@ -52,7 +52,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-100": {
             "textColor": "text-slate-100",
-            "bgColor": "bg-slate-100",
+            "bgColor": "bg-slate-100 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-100/50",
             "borderColor": "border-slate-100",
             "outlineColor": "outline-slate-100",
@@ -71,7 +71,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-200": {
             "textColor": "text-slate-200",
-            "bgColor": "bg-slate-200",
+            "bgColor": "bg-slate-200 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-200/50",
             "borderColor": "border-slate-200",
             "outlineColor": "outline-slate-200",
@@ -90,7 +90,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-300": {
             "textColor": "text-slate-300",
-            "bgColor": "bg-slate-300",
+            "bgColor": "bg-slate-300 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-300/50",
             "borderColor": "border-slate-300",
             "outlineColor": "outline-slate-300",
@@ -109,7 +109,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-400": {
             "textColor": "text-slate-400",
-            "bgColor": "bg-slate-400",
+            "bgColor": "bg-slate-400 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-400/50",
             "borderColor": "border-slate-400",
             "outlineColor": "outline-slate-400",
@@ -128,7 +128,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-500": {
             "textColor": "text-slate-500",
-            "bgColor": "bg-slate-500",
+            "bgColor": "bg-slate-500 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-500/50",
             "borderColor": "border-slate-500",
             "outlineColor": "outline-slate-500",
@@ -147,7 +147,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-600": {
             "textColor": "text-slate-600",
-            "bgColor": "bg-slate-600",
+            "bgColor": "bg-slate-600 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-600/50",
             "borderColor": "border-slate-600",
             "outlineColor": "outline-slate-600",
@@ -166,7 +166,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-700": {
             "textColor": "text-slate-700",
-            "bgColor": "bg-slate-700",
+            "bgColor": "bg-slate-700 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-700/50",
             "borderColor": "border-slate-700",
             "outlineColor": "outline-slate-700",
@@ -185,7 +185,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-800": {
             "textColor": "text-slate-800",
-            "bgColor": "bg-slate-800",
+            "bgColor": "bg-slate-800 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-800/50",
             "borderColor": "border-slate-800",
             "outlineColor": "outline-slate-800",
@@ -204,7 +204,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-900": {
             "textColor": "text-slate-900",
-            "bgColor": "bg-slate-900",
+            "bgColor": "bg-slate-900 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-900/50",
             "borderColor": "border-slate-900",
             "outlineColor": "outline-slate-900",
@@ -223,7 +223,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "slate-950": {
             "textColor": "text-slate-950",
-            "bgColor": "bg-slate-950",
+            "bgColor": "bg-slate-950 text-on-theme",
             "bgColorHalfOpacity": "bg-slate-950/50",
             "borderColor": "border-slate-950",
             "outlineColor": "outline-slate-950",
@@ -244,7 +244,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "gray": {
         "gray-50": {
             "textColor": "text-gray-50",
-            "bgColor": "bg-gray-50",
+            "bgColor": "bg-gray-50 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-50/50",
             "borderColor": "border-gray-50",
             "outlineColor": "outline-gray-50",
@@ -263,7 +263,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-100": {
             "textColor": "text-gray-100",
-            "bgColor": "bg-gray-100",
+            "bgColor": "bg-gray-100 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-100/50",
             "borderColor": "border-gray-100",
             "outlineColor": "outline-gray-100",
@@ -282,7 +282,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-200": {
             "textColor": "text-gray-200",
-            "bgColor": "bg-gray-200",
+            "bgColor": "bg-gray-200 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-200/50",
             "borderColor": "border-gray-200",
             "outlineColor": "outline-gray-200",
@@ -301,7 +301,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-300": {
             "textColor": "text-gray-300",
-            "bgColor": "bg-gray-300",
+            "bgColor": "bg-gray-300 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-300/50",
             "borderColor": "border-gray-300",
             "outlineColor": "outline-gray-300",
@@ -320,7 +320,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-400": {
             "textColor": "text-gray-400",
-            "bgColor": "bg-gray-400",
+            "bgColor": "bg-gray-400 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-400/50",
             "borderColor": "border-gray-400",
             "outlineColor": "outline-gray-400",
@@ -339,7 +339,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-500": {
             "textColor": "text-gray-500",
-            "bgColor": "bg-gray-500",
+            "bgColor": "bg-gray-500 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-500/50",
             "borderColor": "border-gray-500",
             "outlineColor": "outline-gray-500",
@@ -358,7 +358,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-600": {
             "textColor": "text-gray-600",
-            "bgColor": "bg-gray-600",
+            "bgColor": "bg-gray-600 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-600/50",
             "borderColor": "border-gray-600",
             "outlineColor": "outline-gray-600",
@@ -377,7 +377,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-700": {
             "textColor": "text-gray-700",
-            "bgColor": "bg-gray-700",
+            "bgColor": "bg-gray-700 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-700/50",
             "borderColor": "border-gray-700",
             "outlineColor": "outline-gray-700",
@@ -396,7 +396,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-800": {
             "textColor": "text-gray-800",
-            "bgColor": "bg-gray-800",
+            "bgColor": "bg-gray-800 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-800/50",
             "borderColor": "border-gray-800",
             "outlineColor": "outline-gray-800",
@@ -415,7 +415,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-900": {
             "textColor": "text-gray-900",
-            "bgColor": "bg-gray-900",
+            "bgColor": "bg-gray-900 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-900/50",
             "borderColor": "border-gray-900",
             "outlineColor": "outline-gray-900",
@@ -434,7 +434,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "gray-950": {
             "textColor": "text-gray-950",
-            "bgColor": "bg-gray-950",
+            "bgColor": "bg-gray-950 text-on-theme",
             "bgColorHalfOpacity": "bg-gray-950/50",
             "borderColor": "border-gray-950",
             "outlineColor": "outline-gray-950",
@@ -455,7 +455,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "zinc": {
         "zinc-50": {
             "textColor": "text-zinc-50",
-            "bgColor": "bg-zinc-50",
+            "bgColor": "bg-zinc-50 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-50/50",
             "borderColor": "border-zinc-50",
             "outlineColor": "outline-zinc-50",
@@ -474,7 +474,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-100": {
             "textColor": "text-zinc-100",
-            "bgColor": "bg-zinc-100",
+            "bgColor": "bg-zinc-100 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-100/50",
             "borderColor": "border-zinc-100",
             "outlineColor": "outline-zinc-100",
@@ -493,7 +493,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-200": {
             "textColor": "text-zinc-200",
-            "bgColor": "bg-zinc-200",
+            "bgColor": "bg-zinc-200 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-200/50",
             "borderColor": "border-zinc-200",
             "outlineColor": "outline-zinc-200",
@@ -512,7 +512,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-300": {
             "textColor": "text-zinc-300",
-            "bgColor": "bg-zinc-300",
+            "bgColor": "bg-zinc-300 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-300/50",
             "borderColor": "border-zinc-300",
             "outlineColor": "outline-zinc-300",
@@ -531,7 +531,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-400": {
             "textColor": "text-zinc-400",
-            "bgColor": "bg-zinc-400",
+            "bgColor": "bg-zinc-400 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-400/50",
             "borderColor": "border-zinc-400",
             "outlineColor": "outline-zinc-400",
@@ -550,7 +550,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-500": {
             "textColor": "text-zinc-500",
-            "bgColor": "bg-zinc-500",
+            "bgColor": "bg-zinc-500 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-500/50",
             "borderColor": "border-zinc-500",
             "outlineColor": "outline-zinc-500",
@@ -569,7 +569,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-600": {
             "textColor": "text-zinc-600",
-            "bgColor": "bg-zinc-600",
+            "bgColor": "bg-zinc-600 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-600/50",
             "borderColor": "border-zinc-600",
             "outlineColor": "outline-zinc-600",
@@ -588,7 +588,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-700": {
             "textColor": "text-zinc-700",
-            "bgColor": "bg-zinc-700",
+            "bgColor": "bg-zinc-700 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-700/50",
             "borderColor": "border-zinc-700",
             "outlineColor": "outline-zinc-700",
@@ -607,7 +607,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-800": {
             "textColor": "text-zinc-800",
-            "bgColor": "bg-zinc-800",
+            "bgColor": "bg-zinc-800 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-800/50",
             "borderColor": "border-zinc-800",
             "outlineColor": "outline-zinc-800",
@@ -626,7 +626,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-900": {
             "textColor": "text-zinc-900",
-            "bgColor": "bg-zinc-900",
+            "bgColor": "bg-zinc-900 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-900/50",
             "borderColor": "border-zinc-900",
             "outlineColor": "outline-zinc-900",
@@ -645,7 +645,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "zinc-950": {
             "textColor": "text-zinc-950",
-            "bgColor": "bg-zinc-950",
+            "bgColor": "bg-zinc-950 text-on-theme",
             "bgColorHalfOpacity": "bg-zinc-950/50",
             "borderColor": "border-zinc-950",
             "outlineColor": "outline-zinc-950",
@@ -666,7 +666,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "neutral": {
         "neutral-50": {
             "textColor": "text-neutral-50",
-            "bgColor": "bg-neutral-50",
+            "bgColor": "bg-neutral-50 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-50/50",
             "borderColor": "border-neutral-50",
             "outlineColor": "outline-neutral-50",
@@ -685,7 +685,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-100": {
             "textColor": "text-neutral-100",
-            "bgColor": "bg-neutral-100",
+            "bgColor": "bg-neutral-100 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-100/50",
             "borderColor": "border-neutral-100",
             "outlineColor": "outline-neutral-100",
@@ -704,7 +704,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-200": {
             "textColor": "text-neutral-200",
-            "bgColor": "bg-neutral-200",
+            "bgColor": "bg-neutral-200 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-200/50",
             "borderColor": "border-neutral-200",
             "outlineColor": "outline-neutral-200",
@@ -723,7 +723,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-300": {
             "textColor": "text-neutral-300",
-            "bgColor": "bg-neutral-300",
+            "bgColor": "bg-neutral-300 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-300/50",
             "borderColor": "border-neutral-300",
             "outlineColor": "outline-neutral-300",
@@ -742,7 +742,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-400": {
             "textColor": "text-neutral-400",
-            "bgColor": "bg-neutral-400",
+            "bgColor": "bg-neutral-400 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-400/50",
             "borderColor": "border-neutral-400",
             "outlineColor": "outline-neutral-400",
@@ -761,7 +761,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-500": {
             "textColor": "text-neutral-500",
-            "bgColor": "bg-neutral-500",
+            "bgColor": "bg-neutral-500 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-500/50",
             "borderColor": "border-neutral-500",
             "outlineColor": "outline-neutral-500",
@@ -780,7 +780,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-600": {
             "textColor": "text-neutral-600",
-            "bgColor": "bg-neutral-600",
+            "bgColor": "bg-neutral-600 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-600/50",
             "borderColor": "border-neutral-600",
             "outlineColor": "outline-neutral-600",
@@ -799,7 +799,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-700": {
             "textColor": "text-neutral-700",
-            "bgColor": "bg-neutral-700",
+            "bgColor": "bg-neutral-700 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-700/50",
             "borderColor": "border-neutral-700",
             "outlineColor": "outline-neutral-700",
@@ -818,7 +818,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-800": {
             "textColor": "text-neutral-800",
-            "bgColor": "bg-neutral-800",
+            "bgColor": "bg-neutral-800 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-800/50",
             "borderColor": "border-neutral-800",
             "outlineColor": "outline-neutral-800",
@@ -837,7 +837,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-900": {
             "textColor": "text-neutral-900",
-            "bgColor": "bg-neutral-900",
+            "bgColor": "bg-neutral-900 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-900/50",
             "borderColor": "border-neutral-900",
             "outlineColor": "outline-neutral-900",
@@ -856,7 +856,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "neutral-950": {
             "textColor": "text-neutral-950",
-            "bgColor": "bg-neutral-950",
+            "bgColor": "bg-neutral-950 text-on-theme",
             "bgColorHalfOpacity": "bg-neutral-950/50",
             "borderColor": "border-neutral-950",
             "outlineColor": "outline-neutral-950",
@@ -877,7 +877,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "stone": {
         "stone-50": {
             "textColor": "text-stone-50",
-            "bgColor": "bg-stone-50",
+            "bgColor": "bg-stone-50 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-50/50",
             "borderColor": "border-stone-50",
             "outlineColor": "outline-stone-50",
@@ -896,7 +896,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-100": {
             "textColor": "text-stone-100",
-            "bgColor": "bg-stone-100",
+            "bgColor": "bg-stone-100 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-100/50",
             "borderColor": "border-stone-100",
             "outlineColor": "outline-stone-100",
@@ -915,7 +915,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-200": {
             "textColor": "text-stone-200",
-            "bgColor": "bg-stone-200",
+            "bgColor": "bg-stone-200 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-200/50",
             "borderColor": "border-stone-200",
             "outlineColor": "outline-stone-200",
@@ -934,7 +934,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-300": {
             "textColor": "text-stone-300",
-            "bgColor": "bg-stone-300",
+            "bgColor": "bg-stone-300 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-300/50",
             "borderColor": "border-stone-300",
             "outlineColor": "outline-stone-300",
@@ -953,7 +953,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-400": {
             "textColor": "text-stone-400",
-            "bgColor": "bg-stone-400",
+            "bgColor": "bg-stone-400 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-400/50",
             "borderColor": "border-stone-400",
             "outlineColor": "outline-stone-400",
@@ -972,7 +972,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-500": {
             "textColor": "text-stone-500",
-            "bgColor": "bg-stone-500",
+            "bgColor": "bg-stone-500 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-500/50",
             "borderColor": "border-stone-500",
             "outlineColor": "outline-stone-500",
@@ -991,7 +991,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-600": {
             "textColor": "text-stone-600",
-            "bgColor": "bg-stone-600",
+            "bgColor": "bg-stone-600 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-600/50",
             "borderColor": "border-stone-600",
             "outlineColor": "outline-stone-600",
@@ -1010,7 +1010,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-700": {
             "textColor": "text-stone-700",
-            "bgColor": "bg-stone-700",
+            "bgColor": "bg-stone-700 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-700/50",
             "borderColor": "border-stone-700",
             "outlineColor": "outline-stone-700",
@@ -1029,7 +1029,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-800": {
             "textColor": "text-stone-800",
-            "bgColor": "bg-stone-800",
+            "bgColor": "bg-stone-800 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-800/50",
             "borderColor": "border-stone-800",
             "outlineColor": "outline-stone-800",
@@ -1048,7 +1048,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-900": {
             "textColor": "text-stone-900",
-            "bgColor": "bg-stone-900",
+            "bgColor": "bg-stone-900 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-900/50",
             "borderColor": "border-stone-900",
             "outlineColor": "outline-stone-900",
@@ -1067,7 +1067,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "stone-950": {
             "textColor": "text-stone-950",
-            "bgColor": "bg-stone-950",
+            "bgColor": "bg-stone-950 text-on-theme",
             "bgColorHalfOpacity": "bg-stone-950/50",
             "borderColor": "border-stone-950",
             "outlineColor": "outline-stone-950",
@@ -1088,7 +1088,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "red": {
         "red-50": {
             "textColor": "text-red-50",
-            "bgColor": "bg-red-50",
+            "bgColor": "bg-red-50 text-on-theme",
             "bgColorHalfOpacity": "bg-red-50/50",
             "borderColor": "border-red-50",
             "outlineColor": "outline-red-50",
@@ -1107,7 +1107,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-100": {
             "textColor": "text-red-100",
-            "bgColor": "bg-red-100",
+            "bgColor": "bg-red-100 text-on-theme",
             "bgColorHalfOpacity": "bg-red-100/50",
             "borderColor": "border-red-100",
             "outlineColor": "outline-red-100",
@@ -1126,7 +1126,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-200": {
             "textColor": "text-red-200",
-            "bgColor": "bg-red-200",
+            "bgColor": "bg-red-200 text-on-theme",
             "bgColorHalfOpacity": "bg-red-200/50",
             "borderColor": "border-red-200",
             "outlineColor": "outline-red-200",
@@ -1145,7 +1145,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-300": {
             "textColor": "text-red-300",
-            "bgColor": "bg-red-300",
+            "bgColor": "bg-red-300 text-on-theme",
             "bgColorHalfOpacity": "bg-red-300/50",
             "borderColor": "border-red-300",
             "outlineColor": "outline-red-300",
@@ -1164,7 +1164,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-400": {
             "textColor": "text-red-400",
-            "bgColor": "bg-red-400",
+            "bgColor": "bg-red-400 text-on-theme",
             "bgColorHalfOpacity": "bg-red-400/50",
             "borderColor": "border-red-400",
             "outlineColor": "outline-red-400",
@@ -1183,7 +1183,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-500": {
             "textColor": "text-red-500",
-            "bgColor": "bg-red-500",
+            "bgColor": "bg-red-500 text-on-theme",
             "bgColorHalfOpacity": "bg-red-500/50",
             "borderColor": "border-red-500",
             "outlineColor": "outline-red-500",
@@ -1202,7 +1202,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-600": {
             "textColor": "text-red-600",
-            "bgColor": "bg-red-600",
+            "bgColor": "bg-red-600 text-on-theme",
             "bgColorHalfOpacity": "bg-red-600/50",
             "borderColor": "border-red-600",
             "outlineColor": "outline-red-600",
@@ -1221,7 +1221,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-700": {
             "textColor": "text-red-700",
-            "bgColor": "bg-red-700",
+            "bgColor": "bg-red-700 text-on-theme",
             "bgColorHalfOpacity": "bg-red-700/50",
             "borderColor": "border-red-700",
             "outlineColor": "outline-red-700",
@@ -1240,7 +1240,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-800": {
             "textColor": "text-red-800",
-            "bgColor": "bg-red-800",
+            "bgColor": "bg-red-800 text-on-theme",
             "bgColorHalfOpacity": "bg-red-800/50",
             "borderColor": "border-red-800",
             "outlineColor": "outline-red-800",
@@ -1259,7 +1259,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-900": {
             "textColor": "text-red-900",
-            "bgColor": "bg-red-900",
+            "bgColor": "bg-red-900 text-on-theme",
             "bgColorHalfOpacity": "bg-red-900/50",
             "borderColor": "border-red-900",
             "outlineColor": "outline-red-900",
@@ -1278,7 +1278,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "red-950": {
             "textColor": "text-red-950",
-            "bgColor": "bg-red-950",
+            "bgColor": "bg-red-950 text-on-theme",
             "bgColorHalfOpacity": "bg-red-950/50",
             "borderColor": "border-red-950",
             "outlineColor": "outline-red-950",
@@ -1299,7 +1299,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "orange": {
         "orange-50": {
             "textColor": "text-orange-50",
-            "bgColor": "bg-orange-50",
+            "bgColor": "bg-orange-50 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-50/50",
             "borderColor": "border-orange-50",
             "outlineColor": "outline-orange-50",
@@ -1318,7 +1318,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-100": {
             "textColor": "text-orange-100",
-            "bgColor": "bg-orange-100",
+            "bgColor": "bg-orange-100 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-100/50",
             "borderColor": "border-orange-100",
             "outlineColor": "outline-orange-100",
@@ -1337,7 +1337,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-200": {
             "textColor": "text-orange-200",
-            "bgColor": "bg-orange-200",
+            "bgColor": "bg-orange-200 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-200/50",
             "borderColor": "border-orange-200",
             "outlineColor": "outline-orange-200",
@@ -1356,7 +1356,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-300": {
             "textColor": "text-orange-300",
-            "bgColor": "bg-orange-300",
+            "bgColor": "bg-orange-300 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-300/50",
             "borderColor": "border-orange-300",
             "outlineColor": "outline-orange-300",
@@ -1375,7 +1375,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-400": {
             "textColor": "text-orange-400",
-            "bgColor": "bg-orange-400",
+            "bgColor": "bg-orange-400 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-400/50",
             "borderColor": "border-orange-400",
             "outlineColor": "outline-orange-400",
@@ -1394,7 +1394,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-500": {
             "textColor": "text-orange-500",
-            "bgColor": "bg-orange-500",
+            "bgColor": "bg-orange-500 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-500/50",
             "borderColor": "border-orange-500",
             "outlineColor": "outline-orange-500",
@@ -1413,7 +1413,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-600": {
             "textColor": "text-orange-600",
-            "bgColor": "bg-orange-600",
+            "bgColor": "bg-orange-600 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-600/50",
             "borderColor": "border-orange-600",
             "outlineColor": "outline-orange-600",
@@ -1432,7 +1432,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-700": {
             "textColor": "text-orange-700",
-            "bgColor": "bg-orange-700",
+            "bgColor": "bg-orange-700 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-700/50",
             "borderColor": "border-orange-700",
             "outlineColor": "outline-orange-700",
@@ -1451,7 +1451,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-800": {
             "textColor": "text-orange-800",
-            "bgColor": "bg-orange-800",
+            "bgColor": "bg-orange-800 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-800/50",
             "borderColor": "border-orange-800",
             "outlineColor": "outline-orange-800",
@@ -1470,7 +1470,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-900": {
             "textColor": "text-orange-900",
-            "bgColor": "bg-orange-900",
+            "bgColor": "bg-orange-900 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-900/50",
             "borderColor": "border-orange-900",
             "outlineColor": "outline-orange-900",
@@ -1489,7 +1489,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "orange-950": {
             "textColor": "text-orange-950",
-            "bgColor": "bg-orange-950",
+            "bgColor": "bg-orange-950 text-on-theme",
             "bgColorHalfOpacity": "bg-orange-950/50",
             "borderColor": "border-orange-950",
             "outlineColor": "outline-orange-950",
@@ -1510,7 +1510,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "amber": {
         "amber-50": {
             "textColor": "text-amber-50",
-            "bgColor": "bg-amber-50",
+            "bgColor": "bg-amber-50 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-50/50",
             "borderColor": "border-amber-50",
             "outlineColor": "outline-amber-50",
@@ -1529,7 +1529,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-100": {
             "textColor": "text-amber-100",
-            "bgColor": "bg-amber-100",
+            "bgColor": "bg-amber-100 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-100/50",
             "borderColor": "border-amber-100",
             "outlineColor": "outline-amber-100",
@@ -1548,7 +1548,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-200": {
             "textColor": "text-amber-200",
-            "bgColor": "bg-amber-200",
+            "bgColor": "bg-amber-200 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-200/50",
             "borderColor": "border-amber-200",
             "outlineColor": "outline-amber-200",
@@ -1567,7 +1567,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-300": {
             "textColor": "text-amber-300",
-            "bgColor": "bg-amber-300",
+            "bgColor": "bg-amber-300 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-300/50",
             "borderColor": "border-amber-300",
             "outlineColor": "outline-amber-300",
@@ -1586,7 +1586,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-400": {
             "textColor": "text-amber-400",
-            "bgColor": "bg-amber-400",
+            "bgColor": "bg-amber-400 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-400/50",
             "borderColor": "border-amber-400",
             "outlineColor": "outline-amber-400",
@@ -1605,7 +1605,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-500": {
             "textColor": "text-amber-500",
-            "bgColor": "bg-amber-500",
+            "bgColor": "bg-amber-500 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-500/50",
             "borderColor": "border-amber-500",
             "outlineColor": "outline-amber-500",
@@ -1624,7 +1624,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-600": {
             "textColor": "text-amber-600",
-            "bgColor": "bg-amber-600",
+            "bgColor": "bg-amber-600 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-600/50",
             "borderColor": "border-amber-600",
             "outlineColor": "outline-amber-600",
@@ -1643,7 +1643,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-700": {
             "textColor": "text-amber-700",
-            "bgColor": "bg-amber-700",
+            "bgColor": "bg-amber-700 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-700/50",
             "borderColor": "border-amber-700",
             "outlineColor": "outline-amber-700",
@@ -1662,7 +1662,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-800": {
             "textColor": "text-amber-800",
-            "bgColor": "bg-amber-800",
+            "bgColor": "bg-amber-800 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-800/50",
             "borderColor": "border-amber-800",
             "outlineColor": "outline-amber-800",
@@ -1681,7 +1681,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-900": {
             "textColor": "text-amber-900",
-            "bgColor": "bg-amber-900",
+            "bgColor": "bg-amber-900 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-900/50",
             "borderColor": "border-amber-900",
             "outlineColor": "outline-amber-900",
@@ -1700,7 +1700,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "amber-950": {
             "textColor": "text-amber-950",
-            "bgColor": "bg-amber-950",
+            "bgColor": "bg-amber-950 text-on-theme",
             "bgColorHalfOpacity": "bg-amber-950/50",
             "borderColor": "border-amber-950",
             "outlineColor": "outline-amber-950",
@@ -1721,7 +1721,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "yellow": {
         "yellow-50": {
             "textColor": "text-yellow-50",
-            "bgColor": "bg-yellow-50",
+            "bgColor": "bg-yellow-50 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-50/50",
             "borderColor": "border-yellow-50",
             "outlineColor": "outline-yellow-50",
@@ -1740,7 +1740,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-100": {
             "textColor": "text-yellow-100",
-            "bgColor": "bg-yellow-100",
+            "bgColor": "bg-yellow-100 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-100/50",
             "borderColor": "border-yellow-100",
             "outlineColor": "outline-yellow-100",
@@ -1759,7 +1759,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-200": {
             "textColor": "text-yellow-200",
-            "bgColor": "bg-yellow-200",
+            "bgColor": "bg-yellow-200 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-200/50",
             "borderColor": "border-yellow-200",
             "outlineColor": "outline-yellow-200",
@@ -1778,7 +1778,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-300": {
             "textColor": "text-yellow-300",
-            "bgColor": "bg-yellow-300",
+            "bgColor": "bg-yellow-300 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-300/50",
             "borderColor": "border-yellow-300",
             "outlineColor": "outline-yellow-300",
@@ -1797,7 +1797,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-400": {
             "textColor": "text-yellow-400",
-            "bgColor": "bg-yellow-400",
+            "bgColor": "bg-yellow-400 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-400/50",
             "borderColor": "border-yellow-400",
             "outlineColor": "outline-yellow-400",
@@ -1816,7 +1816,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-500": {
             "textColor": "text-yellow-500",
-            "bgColor": "bg-yellow-500",
+            "bgColor": "bg-yellow-500 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-500/50",
             "borderColor": "border-yellow-500",
             "outlineColor": "outline-yellow-500",
@@ -1835,7 +1835,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-600": {
             "textColor": "text-yellow-600",
-            "bgColor": "bg-yellow-600",
+            "bgColor": "bg-yellow-600 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-600/50",
             "borderColor": "border-yellow-600",
             "outlineColor": "outline-yellow-600",
@@ -1854,7 +1854,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-700": {
             "textColor": "text-yellow-700",
-            "bgColor": "bg-yellow-700",
+            "bgColor": "bg-yellow-700 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-700/50",
             "borderColor": "border-yellow-700",
             "outlineColor": "outline-yellow-700",
@@ -1873,7 +1873,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-800": {
             "textColor": "text-yellow-800",
-            "bgColor": "bg-yellow-800",
+            "bgColor": "bg-yellow-800 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-800/50",
             "borderColor": "border-yellow-800",
             "outlineColor": "outline-yellow-800",
@@ -1892,7 +1892,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-900": {
             "textColor": "text-yellow-900",
-            "bgColor": "bg-yellow-900",
+            "bgColor": "bg-yellow-900 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-900/50",
             "borderColor": "border-yellow-900",
             "outlineColor": "outline-yellow-900",
@@ -1911,7 +1911,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "yellow-950": {
             "textColor": "text-yellow-950",
-            "bgColor": "bg-yellow-950",
+            "bgColor": "bg-yellow-950 text-on-theme",
             "bgColorHalfOpacity": "bg-yellow-950/50",
             "borderColor": "border-yellow-950",
             "outlineColor": "outline-yellow-950",
@@ -1932,7 +1932,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "lime": {
         "lime-50": {
             "textColor": "text-lime-50",
-            "bgColor": "bg-lime-50",
+            "bgColor": "bg-lime-50 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-50/50",
             "borderColor": "border-lime-50",
             "outlineColor": "outline-lime-50",
@@ -1951,7 +1951,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-100": {
             "textColor": "text-lime-100",
-            "bgColor": "bg-lime-100",
+            "bgColor": "bg-lime-100 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-100/50",
             "borderColor": "border-lime-100",
             "outlineColor": "outline-lime-100",
@@ -1970,7 +1970,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-200": {
             "textColor": "text-lime-200",
-            "bgColor": "bg-lime-200",
+            "bgColor": "bg-lime-200 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-200/50",
             "borderColor": "border-lime-200",
             "outlineColor": "outline-lime-200",
@@ -1989,7 +1989,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-300": {
             "textColor": "text-lime-300",
-            "bgColor": "bg-lime-300",
+            "bgColor": "bg-lime-300 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-300/50",
             "borderColor": "border-lime-300",
             "outlineColor": "outline-lime-300",
@@ -2008,7 +2008,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-400": {
             "textColor": "text-lime-400",
-            "bgColor": "bg-lime-400",
+            "bgColor": "bg-lime-400 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-400/50",
             "borderColor": "border-lime-400",
             "outlineColor": "outline-lime-400",
@@ -2027,7 +2027,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-500": {
             "textColor": "text-lime-500",
-            "bgColor": "bg-lime-500",
+            "bgColor": "bg-lime-500 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-500/50",
             "borderColor": "border-lime-500",
             "outlineColor": "outline-lime-500",
@@ -2046,7 +2046,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-600": {
             "textColor": "text-lime-600",
-            "bgColor": "bg-lime-600",
+            "bgColor": "bg-lime-600 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-600/50",
             "borderColor": "border-lime-600",
             "outlineColor": "outline-lime-600",
@@ -2065,7 +2065,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-700": {
             "textColor": "text-lime-700",
-            "bgColor": "bg-lime-700",
+            "bgColor": "bg-lime-700 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-700/50",
             "borderColor": "border-lime-700",
             "outlineColor": "outline-lime-700",
@@ -2084,7 +2084,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-800": {
             "textColor": "text-lime-800",
-            "bgColor": "bg-lime-800",
+            "bgColor": "bg-lime-800 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-800/50",
             "borderColor": "border-lime-800",
             "outlineColor": "outline-lime-800",
@@ -2103,7 +2103,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-900": {
             "textColor": "text-lime-900",
-            "bgColor": "bg-lime-900",
+            "bgColor": "bg-lime-900 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-900/50",
             "borderColor": "border-lime-900",
             "outlineColor": "outline-lime-900",
@@ -2122,7 +2122,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "lime-950": {
             "textColor": "text-lime-950",
-            "bgColor": "bg-lime-950",
+            "bgColor": "bg-lime-950 text-on-theme",
             "bgColorHalfOpacity": "bg-lime-950/50",
             "borderColor": "border-lime-950",
             "outlineColor": "outline-lime-950",
@@ -2143,7 +2143,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "green": {
         "green-50": {
             "textColor": "text-green-50",
-            "bgColor": "bg-green-50",
+            "bgColor": "bg-green-50 text-on-theme",
             "bgColorHalfOpacity": "bg-green-50/50",
             "borderColor": "border-green-50",
             "outlineColor": "outline-green-50",
@@ -2162,7 +2162,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-100": {
             "textColor": "text-green-100",
-            "bgColor": "bg-green-100",
+            "bgColor": "bg-green-100 text-on-theme",
             "bgColorHalfOpacity": "bg-green-100/50",
             "borderColor": "border-green-100",
             "outlineColor": "outline-green-100",
@@ -2181,7 +2181,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-200": {
             "textColor": "text-green-200",
-            "bgColor": "bg-green-200",
+            "bgColor": "bg-green-200 text-on-theme",
             "bgColorHalfOpacity": "bg-green-200/50",
             "borderColor": "border-green-200",
             "outlineColor": "outline-green-200",
@@ -2200,7 +2200,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-300": {
             "textColor": "text-green-300",
-            "bgColor": "bg-green-300",
+            "bgColor": "bg-green-300 text-on-theme",
             "bgColorHalfOpacity": "bg-green-300/50",
             "borderColor": "border-green-300",
             "outlineColor": "outline-green-300",
@@ -2219,7 +2219,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-400": {
             "textColor": "text-green-400",
-            "bgColor": "bg-green-400",
+            "bgColor": "bg-green-400 text-on-theme",
             "bgColorHalfOpacity": "bg-green-400/50",
             "borderColor": "border-green-400",
             "outlineColor": "outline-green-400",
@@ -2238,7 +2238,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-500": {
             "textColor": "text-green-500",
-            "bgColor": "bg-green-500",
+            "bgColor": "bg-green-500 text-on-theme",
             "bgColorHalfOpacity": "bg-green-500/50",
             "borderColor": "border-green-500",
             "outlineColor": "outline-green-500",
@@ -2257,7 +2257,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-600": {
             "textColor": "text-green-600",
-            "bgColor": "bg-green-600",
+            "bgColor": "bg-green-600 text-on-theme",
             "bgColorHalfOpacity": "bg-green-600/50",
             "borderColor": "border-green-600",
             "outlineColor": "outline-green-600",
@@ -2276,7 +2276,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-700": {
             "textColor": "text-green-700",
-            "bgColor": "bg-green-700",
+            "bgColor": "bg-green-700 text-on-theme",
             "bgColorHalfOpacity": "bg-green-700/50",
             "borderColor": "border-green-700",
             "outlineColor": "outline-green-700",
@@ -2295,7 +2295,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-800": {
             "textColor": "text-green-800",
-            "bgColor": "bg-green-800",
+            "bgColor": "bg-green-800 text-on-theme",
             "bgColorHalfOpacity": "bg-green-800/50",
             "borderColor": "border-green-800",
             "outlineColor": "outline-green-800",
@@ -2314,7 +2314,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-900": {
             "textColor": "text-green-900",
-            "bgColor": "bg-green-900",
+            "bgColor": "bg-green-900 text-on-theme",
             "bgColorHalfOpacity": "bg-green-900/50",
             "borderColor": "border-green-900",
             "outlineColor": "outline-green-900",
@@ -2333,7 +2333,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "green-950": {
             "textColor": "text-green-950",
-            "bgColor": "bg-green-950",
+            "bgColor": "bg-green-950 text-on-theme",
             "bgColorHalfOpacity": "bg-green-950/50",
             "borderColor": "border-green-950",
             "outlineColor": "outline-green-950",
@@ -2354,7 +2354,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "emerald": {
         "emerald-50": {
             "textColor": "text-emerald-50",
-            "bgColor": "bg-emerald-50",
+            "bgColor": "bg-emerald-50 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-50/50",
             "borderColor": "border-emerald-50",
             "outlineColor": "outline-emerald-50",
@@ -2373,7 +2373,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-100": {
             "textColor": "text-emerald-100",
-            "bgColor": "bg-emerald-100",
+            "bgColor": "bg-emerald-100 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-100/50",
             "borderColor": "border-emerald-100",
             "outlineColor": "outline-emerald-100",
@@ -2392,7 +2392,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-200": {
             "textColor": "text-emerald-200",
-            "bgColor": "bg-emerald-200",
+            "bgColor": "bg-emerald-200 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-200/50",
             "borderColor": "border-emerald-200",
             "outlineColor": "outline-emerald-200",
@@ -2411,7 +2411,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-300": {
             "textColor": "text-emerald-300",
-            "bgColor": "bg-emerald-300",
+            "bgColor": "bg-emerald-300 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-300/50",
             "borderColor": "border-emerald-300",
             "outlineColor": "outline-emerald-300",
@@ -2430,7 +2430,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-400": {
             "textColor": "text-emerald-400",
-            "bgColor": "bg-emerald-400",
+            "bgColor": "bg-emerald-400 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-400/50",
             "borderColor": "border-emerald-400",
             "outlineColor": "outline-emerald-400",
@@ -2449,7 +2449,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-500": {
             "textColor": "text-emerald-500",
-            "bgColor": "bg-emerald-500",
+            "bgColor": "bg-emerald-500 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-500/50",
             "borderColor": "border-emerald-500",
             "outlineColor": "outline-emerald-500",
@@ -2468,7 +2468,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-600": {
             "textColor": "text-emerald-600",
-            "bgColor": "bg-emerald-600",
+            "bgColor": "bg-emerald-600 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-600/50",
             "borderColor": "border-emerald-600",
             "outlineColor": "outline-emerald-600",
@@ -2487,7 +2487,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-700": {
             "textColor": "text-emerald-700",
-            "bgColor": "bg-emerald-700",
+            "bgColor": "bg-emerald-700 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-700/50",
             "borderColor": "border-emerald-700",
             "outlineColor": "outline-emerald-700",
@@ -2506,7 +2506,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-800": {
             "textColor": "text-emerald-800",
-            "bgColor": "bg-emerald-800",
+            "bgColor": "bg-emerald-800 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-800/50",
             "borderColor": "border-emerald-800",
             "outlineColor": "outline-emerald-800",
@@ -2525,7 +2525,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-900": {
             "textColor": "text-emerald-900",
-            "bgColor": "bg-emerald-900",
+            "bgColor": "bg-emerald-900 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-900/50",
             "borderColor": "border-emerald-900",
             "outlineColor": "outline-emerald-900",
@@ -2544,7 +2544,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "emerald-950": {
             "textColor": "text-emerald-950",
-            "bgColor": "bg-emerald-950",
+            "bgColor": "bg-emerald-950 text-on-theme",
             "bgColorHalfOpacity": "bg-emerald-950/50",
             "borderColor": "border-emerald-950",
             "outlineColor": "outline-emerald-950",
@@ -2565,7 +2565,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "teal": {
         "teal-50": {
             "textColor": "text-teal-50",
-            "bgColor": "bg-teal-50",
+            "bgColor": "bg-teal-50 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-50/50",
             "borderColor": "border-teal-50",
             "outlineColor": "outline-teal-50",
@@ -2584,7 +2584,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-100": {
             "textColor": "text-teal-100",
-            "bgColor": "bg-teal-100",
+            "bgColor": "bg-teal-100 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-100/50",
             "borderColor": "border-teal-100",
             "outlineColor": "outline-teal-100",
@@ -2603,7 +2603,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-200": {
             "textColor": "text-teal-200",
-            "bgColor": "bg-teal-200",
+            "bgColor": "bg-teal-200 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-200/50",
             "borderColor": "border-teal-200",
             "outlineColor": "outline-teal-200",
@@ -2622,7 +2622,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-300": {
             "textColor": "text-teal-300",
-            "bgColor": "bg-teal-300",
+            "bgColor": "bg-teal-300 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-300/50",
             "borderColor": "border-teal-300",
             "outlineColor": "outline-teal-300",
@@ -2641,7 +2641,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-400": {
             "textColor": "text-teal-400",
-            "bgColor": "bg-teal-400",
+            "bgColor": "bg-teal-400 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-400/50",
             "borderColor": "border-teal-400",
             "outlineColor": "outline-teal-400",
@@ -2660,7 +2660,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-500": {
             "textColor": "text-teal-500",
-            "bgColor": "bg-teal-500",
+            "bgColor": "bg-teal-500 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-500/50",
             "borderColor": "border-teal-500",
             "outlineColor": "outline-teal-500",
@@ -2679,7 +2679,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-600": {
             "textColor": "text-teal-600",
-            "bgColor": "bg-teal-600",
+            "bgColor": "bg-teal-600 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-600/50",
             "borderColor": "border-teal-600",
             "outlineColor": "outline-teal-600",
@@ -2698,7 +2698,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-700": {
             "textColor": "text-teal-700",
-            "bgColor": "bg-teal-700",
+            "bgColor": "bg-teal-700 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-700/50",
             "borderColor": "border-teal-700",
             "outlineColor": "outline-teal-700",
@@ -2717,7 +2717,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-800": {
             "textColor": "text-teal-800",
-            "bgColor": "bg-teal-800",
+            "bgColor": "bg-teal-800 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-800/50",
             "borderColor": "border-teal-800",
             "outlineColor": "outline-teal-800",
@@ -2736,7 +2736,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-900": {
             "textColor": "text-teal-900",
-            "bgColor": "bg-teal-900",
+            "bgColor": "bg-teal-900 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-900/50",
             "borderColor": "border-teal-900",
             "outlineColor": "outline-teal-900",
@@ -2755,7 +2755,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "teal-950": {
             "textColor": "text-teal-950",
-            "bgColor": "bg-teal-950",
+            "bgColor": "bg-teal-950 text-on-theme",
             "bgColorHalfOpacity": "bg-teal-950/50",
             "borderColor": "border-teal-950",
             "outlineColor": "outline-teal-950",
@@ -2776,7 +2776,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "cyan": {
         "cyan-50": {
             "textColor": "text-cyan-50",
-            "bgColor": "bg-cyan-50",
+            "bgColor": "bg-cyan-50 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-50/50",
             "borderColor": "border-cyan-50",
             "outlineColor": "outline-cyan-50",
@@ -2795,7 +2795,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-100": {
             "textColor": "text-cyan-100",
-            "bgColor": "bg-cyan-100",
+            "bgColor": "bg-cyan-100 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-100/50",
             "borderColor": "border-cyan-100",
             "outlineColor": "outline-cyan-100",
@@ -2814,7 +2814,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-200": {
             "textColor": "text-cyan-200",
-            "bgColor": "bg-cyan-200",
+            "bgColor": "bg-cyan-200 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-200/50",
             "borderColor": "border-cyan-200",
             "outlineColor": "outline-cyan-200",
@@ -2833,7 +2833,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-300": {
             "textColor": "text-cyan-300",
-            "bgColor": "bg-cyan-300",
+            "bgColor": "bg-cyan-300 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-300/50",
             "borderColor": "border-cyan-300",
             "outlineColor": "outline-cyan-300",
@@ -2852,7 +2852,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-400": {
             "textColor": "text-cyan-400",
-            "bgColor": "bg-cyan-400",
+            "bgColor": "bg-cyan-400 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-400/50",
             "borderColor": "border-cyan-400",
             "outlineColor": "outline-cyan-400",
@@ -2871,7 +2871,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-500": {
             "textColor": "text-cyan-500",
-            "bgColor": "bg-cyan-500",
+            "bgColor": "bg-cyan-500 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-500/50",
             "borderColor": "border-cyan-500",
             "outlineColor": "outline-cyan-500",
@@ -2890,7 +2890,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-600": {
             "textColor": "text-cyan-600",
-            "bgColor": "bg-cyan-600",
+            "bgColor": "bg-cyan-600 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-600/50",
             "borderColor": "border-cyan-600",
             "outlineColor": "outline-cyan-600",
@@ -2909,7 +2909,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-700": {
             "textColor": "text-cyan-700",
-            "bgColor": "bg-cyan-700",
+            "bgColor": "bg-cyan-700 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-700/50",
             "borderColor": "border-cyan-700",
             "outlineColor": "outline-cyan-700",
@@ -2928,7 +2928,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-800": {
             "textColor": "text-cyan-800",
-            "bgColor": "bg-cyan-800",
+            "bgColor": "bg-cyan-800 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-800/50",
             "borderColor": "border-cyan-800",
             "outlineColor": "outline-cyan-800",
@@ -2947,7 +2947,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-900": {
             "textColor": "text-cyan-900",
-            "bgColor": "bg-cyan-900",
+            "bgColor": "bg-cyan-900 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-900/50",
             "borderColor": "border-cyan-900",
             "outlineColor": "outline-cyan-900",
@@ -2966,7 +2966,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "cyan-950": {
             "textColor": "text-cyan-950",
-            "bgColor": "bg-cyan-950",
+            "bgColor": "bg-cyan-950 text-on-theme",
             "bgColorHalfOpacity": "bg-cyan-950/50",
             "borderColor": "border-cyan-950",
             "outlineColor": "outline-cyan-950",
@@ -2987,7 +2987,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "sky": {
         "sky-50": {
             "textColor": "text-sky-50",
-            "bgColor": "bg-sky-50",
+            "bgColor": "bg-sky-50 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-50/50",
             "borderColor": "border-sky-50",
             "outlineColor": "outline-sky-50",
@@ -3006,7 +3006,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-100": {
             "textColor": "text-sky-100",
-            "bgColor": "bg-sky-100",
+            "bgColor": "bg-sky-100 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-100/50",
             "borderColor": "border-sky-100",
             "outlineColor": "outline-sky-100",
@@ -3025,7 +3025,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-200": {
             "textColor": "text-sky-200",
-            "bgColor": "bg-sky-200",
+            "bgColor": "bg-sky-200 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-200/50",
             "borderColor": "border-sky-200",
             "outlineColor": "outline-sky-200",
@@ -3044,7 +3044,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-300": {
             "textColor": "text-sky-300",
-            "bgColor": "bg-sky-300",
+            "bgColor": "bg-sky-300 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-300/50",
             "borderColor": "border-sky-300",
             "outlineColor": "outline-sky-300",
@@ -3063,7 +3063,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-400": {
             "textColor": "text-sky-400",
-            "bgColor": "bg-sky-400",
+            "bgColor": "bg-sky-400 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-400/50",
             "borderColor": "border-sky-400",
             "outlineColor": "outline-sky-400",
@@ -3082,7 +3082,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-500": {
             "textColor": "text-sky-500",
-            "bgColor": "bg-sky-500",
+            "bgColor": "bg-sky-500 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-500/50",
             "borderColor": "border-sky-500",
             "outlineColor": "outline-sky-500",
@@ -3101,7 +3101,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-600": {
             "textColor": "text-sky-600",
-            "bgColor": "bg-sky-600",
+            "bgColor": "bg-sky-600 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-600/50",
             "borderColor": "border-sky-600",
             "outlineColor": "outline-sky-600",
@@ -3120,7 +3120,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-700": {
             "textColor": "text-sky-700",
-            "bgColor": "bg-sky-700",
+            "bgColor": "bg-sky-700 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-700/50",
             "borderColor": "border-sky-700",
             "outlineColor": "outline-sky-700",
@@ -3139,7 +3139,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-800": {
             "textColor": "text-sky-800",
-            "bgColor": "bg-sky-800",
+            "bgColor": "bg-sky-800 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-800/50",
             "borderColor": "border-sky-800",
             "outlineColor": "outline-sky-800",
@@ -3158,7 +3158,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-900": {
             "textColor": "text-sky-900",
-            "bgColor": "bg-sky-900",
+            "bgColor": "bg-sky-900 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-900/50",
             "borderColor": "border-sky-900",
             "outlineColor": "outline-sky-900",
@@ -3177,7 +3177,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "sky-950": {
             "textColor": "text-sky-950",
-            "bgColor": "bg-sky-950",
+            "bgColor": "bg-sky-950 text-on-theme",
             "bgColorHalfOpacity": "bg-sky-950/50",
             "borderColor": "border-sky-950",
             "outlineColor": "outline-sky-950",
@@ -3198,7 +3198,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "blue": {
         "blue-50": {
             "textColor": "text-blue-50",
-            "bgColor": "bg-blue-50",
+            "bgColor": "bg-blue-50 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-50/50",
             "borderColor": "border-blue-50",
             "outlineColor": "outline-blue-50",
@@ -3217,7 +3217,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-100": {
             "textColor": "text-blue-100",
-            "bgColor": "bg-blue-100",
+            "bgColor": "bg-blue-100 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-100/50",
             "borderColor": "border-blue-100",
             "outlineColor": "outline-blue-100",
@@ -3236,7 +3236,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-200": {
             "textColor": "text-blue-200",
-            "bgColor": "bg-blue-200",
+            "bgColor": "bg-blue-200 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-200/50",
             "borderColor": "border-blue-200",
             "outlineColor": "outline-blue-200",
@@ -3255,7 +3255,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-300": {
             "textColor": "text-blue-300",
-            "bgColor": "bg-blue-300",
+            "bgColor": "bg-blue-300 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-300/50",
             "borderColor": "border-blue-300",
             "outlineColor": "outline-blue-300",
@@ -3274,7 +3274,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-400": {
             "textColor": "text-blue-400",
-            "bgColor": "bg-blue-400",
+            "bgColor": "bg-blue-400 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-400/50",
             "borderColor": "border-blue-400",
             "outlineColor": "outline-blue-400",
@@ -3293,7 +3293,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-500": {
             "textColor": "text-blue-500",
-            "bgColor": "bg-blue-500",
+            "bgColor": "bg-blue-500 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-500/50",
             "borderColor": "border-blue-500",
             "outlineColor": "outline-blue-500",
@@ -3312,7 +3312,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-600": {
             "textColor": "text-blue-600",
-            "bgColor": "bg-blue-600",
+            "bgColor": "bg-blue-600 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-600/50",
             "borderColor": "border-blue-600",
             "outlineColor": "outline-blue-600",
@@ -3331,7 +3331,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-700": {
             "textColor": "text-blue-700",
-            "bgColor": "bg-blue-700",
+            "bgColor": "bg-blue-700 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-700/50",
             "borderColor": "border-blue-700",
             "outlineColor": "outline-blue-700",
@@ -3350,7 +3350,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-800": {
             "textColor": "text-blue-800",
-            "bgColor": "bg-blue-800",
+            "bgColor": "bg-blue-800 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-800/50",
             "borderColor": "border-blue-800",
             "outlineColor": "outline-blue-800",
@@ -3369,7 +3369,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-900": {
             "textColor": "text-blue-900",
-            "bgColor": "bg-blue-900",
+            "bgColor": "bg-blue-900 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-900/50",
             "borderColor": "border-blue-900",
             "outlineColor": "outline-blue-900",
@@ -3388,7 +3388,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "blue-950": {
             "textColor": "text-blue-950",
-            "bgColor": "bg-blue-950",
+            "bgColor": "bg-blue-950 text-on-theme",
             "bgColorHalfOpacity": "bg-blue-950/50",
             "borderColor": "border-blue-950",
             "outlineColor": "outline-blue-950",
@@ -3409,7 +3409,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "indigo": {
         "indigo-50": {
             "textColor": "text-indigo-50",
-            "bgColor": "bg-indigo-50",
+            "bgColor": "bg-indigo-50 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-50/50",
             "borderColor": "border-indigo-50",
             "outlineColor": "outline-indigo-50",
@@ -3428,7 +3428,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-100": {
             "textColor": "text-indigo-100",
-            "bgColor": "bg-indigo-100",
+            "bgColor": "bg-indigo-100 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-100/50",
             "borderColor": "border-indigo-100",
             "outlineColor": "outline-indigo-100",
@@ -3447,7 +3447,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-200": {
             "textColor": "text-indigo-200",
-            "bgColor": "bg-indigo-200",
+            "bgColor": "bg-indigo-200 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-200/50",
             "borderColor": "border-indigo-200",
             "outlineColor": "outline-indigo-200",
@@ -3466,7 +3466,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-300": {
             "textColor": "text-indigo-300",
-            "bgColor": "bg-indigo-300",
+            "bgColor": "bg-indigo-300 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-300/50",
             "borderColor": "border-indigo-300",
             "outlineColor": "outline-indigo-300",
@@ -3485,7 +3485,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-400": {
             "textColor": "text-indigo-400",
-            "bgColor": "bg-indigo-400",
+            "bgColor": "bg-indigo-400 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-400/50",
             "borderColor": "border-indigo-400",
             "outlineColor": "outline-indigo-400",
@@ -3504,7 +3504,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-500": {
             "textColor": "text-indigo-500",
-            "bgColor": "bg-indigo-500",
+            "bgColor": "bg-indigo-500 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-500/50",
             "borderColor": "border-indigo-500",
             "outlineColor": "outline-indigo-500",
@@ -3523,7 +3523,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-600": {
             "textColor": "text-indigo-600",
-            "bgColor": "bg-indigo-600",
+            "bgColor": "bg-indigo-600 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-600/50",
             "borderColor": "border-indigo-600",
             "outlineColor": "outline-indigo-600",
@@ -3542,7 +3542,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-700": {
             "textColor": "text-indigo-700",
-            "bgColor": "bg-indigo-700",
+            "bgColor": "bg-indigo-700 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-700/50",
             "borderColor": "border-indigo-700",
             "outlineColor": "outline-indigo-700",
@@ -3561,7 +3561,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-800": {
             "textColor": "text-indigo-800",
-            "bgColor": "bg-indigo-800",
+            "bgColor": "bg-indigo-800 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-800/50",
             "borderColor": "border-indigo-800",
             "outlineColor": "outline-indigo-800",
@@ -3580,7 +3580,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-900": {
             "textColor": "text-indigo-900",
-            "bgColor": "bg-indigo-900",
+            "bgColor": "bg-indigo-900 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-900/50",
             "borderColor": "border-indigo-900",
             "outlineColor": "outline-indigo-900",
@@ -3599,7 +3599,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "indigo-950": {
             "textColor": "text-indigo-950",
-            "bgColor": "bg-indigo-950",
+            "bgColor": "bg-indigo-950 text-on-theme",
             "bgColorHalfOpacity": "bg-indigo-950/50",
             "borderColor": "border-indigo-950",
             "outlineColor": "outline-indigo-950",
@@ -3620,7 +3620,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "violet": {
         "violet-50": {
             "textColor": "text-violet-50",
-            "bgColor": "bg-violet-50",
+            "bgColor": "bg-violet-50 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-50/50",
             "borderColor": "border-violet-50",
             "outlineColor": "outline-violet-50",
@@ -3639,7 +3639,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-100": {
             "textColor": "text-violet-100",
-            "bgColor": "bg-violet-100",
+            "bgColor": "bg-violet-100 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-100/50",
             "borderColor": "border-violet-100",
             "outlineColor": "outline-violet-100",
@@ -3658,7 +3658,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-200": {
             "textColor": "text-violet-200",
-            "bgColor": "bg-violet-200",
+            "bgColor": "bg-violet-200 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-200/50",
             "borderColor": "border-violet-200",
             "outlineColor": "outline-violet-200",
@@ -3677,7 +3677,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-300": {
             "textColor": "text-violet-300",
-            "bgColor": "bg-violet-300",
+            "bgColor": "bg-violet-300 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-300/50",
             "borderColor": "border-violet-300",
             "outlineColor": "outline-violet-300",
@@ -3696,7 +3696,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-400": {
             "textColor": "text-violet-400",
-            "bgColor": "bg-violet-400",
+            "bgColor": "bg-violet-400 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-400/50",
             "borderColor": "border-violet-400",
             "outlineColor": "outline-violet-400",
@@ -3715,7 +3715,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-500": {
             "textColor": "text-violet-500",
-            "bgColor": "bg-violet-500",
+            "bgColor": "bg-violet-500 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-500/50",
             "borderColor": "border-violet-500",
             "outlineColor": "outline-violet-500",
@@ -3734,7 +3734,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-600": {
             "textColor": "text-violet-600",
-            "bgColor": "bg-violet-600",
+            "bgColor": "bg-violet-600 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-600/50",
             "borderColor": "border-violet-600",
             "outlineColor": "outline-violet-600",
@@ -3753,7 +3753,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-700": {
             "textColor": "text-violet-700",
-            "bgColor": "bg-violet-700",
+            "bgColor": "bg-violet-700 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-700/50",
             "borderColor": "border-violet-700",
             "outlineColor": "outline-violet-700",
@@ -3772,7 +3772,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-800": {
             "textColor": "text-violet-800",
-            "bgColor": "bg-violet-800",
+            "bgColor": "bg-violet-800 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-800/50",
             "borderColor": "border-violet-800",
             "outlineColor": "outline-violet-800",
@@ -3791,7 +3791,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-900": {
             "textColor": "text-violet-900",
-            "bgColor": "bg-violet-900",
+            "bgColor": "bg-violet-900 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-900/50",
             "borderColor": "border-violet-900",
             "outlineColor": "outline-violet-900",
@@ -3810,7 +3810,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "violet-950": {
             "textColor": "text-violet-950",
-            "bgColor": "bg-violet-950",
+            "bgColor": "bg-violet-950 text-on-theme",
             "bgColorHalfOpacity": "bg-violet-950/50",
             "borderColor": "border-violet-950",
             "outlineColor": "outline-violet-950",
@@ -3831,7 +3831,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "purple": {
         "purple-50": {
             "textColor": "text-purple-50",
-            "bgColor": "bg-purple-50",
+            "bgColor": "bg-purple-50 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-50/50",
             "borderColor": "border-purple-50",
             "outlineColor": "outline-purple-50",
@@ -3850,7 +3850,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-100": {
             "textColor": "text-purple-100",
-            "bgColor": "bg-purple-100",
+            "bgColor": "bg-purple-100 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-100/50",
             "borderColor": "border-purple-100",
             "outlineColor": "outline-purple-100",
@@ -3869,7 +3869,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-200": {
             "textColor": "text-purple-200",
-            "bgColor": "bg-purple-200",
+            "bgColor": "bg-purple-200 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-200/50",
             "borderColor": "border-purple-200",
             "outlineColor": "outline-purple-200",
@@ -3888,7 +3888,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-300": {
             "textColor": "text-purple-300",
-            "bgColor": "bg-purple-300",
+            "bgColor": "bg-purple-300 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-300/50",
             "borderColor": "border-purple-300",
             "outlineColor": "outline-purple-300",
@@ -3907,7 +3907,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-400": {
             "textColor": "text-purple-400",
-            "bgColor": "bg-purple-400",
+            "bgColor": "bg-purple-400 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-400/50",
             "borderColor": "border-purple-400",
             "outlineColor": "outline-purple-400",
@@ -3926,7 +3926,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-500": {
             "textColor": "text-purple-500",
-            "bgColor": "bg-purple-500",
+            "bgColor": "bg-purple-500 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-500/50",
             "borderColor": "border-purple-500",
             "outlineColor": "outline-purple-500",
@@ -3945,7 +3945,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-600": {
             "textColor": "text-purple-600",
-            "bgColor": "bg-purple-600",
+            "bgColor": "bg-purple-600 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-600/50",
             "borderColor": "border-purple-600",
             "outlineColor": "outline-purple-600",
@@ -3964,7 +3964,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-700": {
             "textColor": "text-purple-700",
-            "bgColor": "bg-purple-700",
+            "bgColor": "bg-purple-700 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-700/50",
             "borderColor": "border-purple-700",
             "outlineColor": "outline-purple-700",
@@ -3983,7 +3983,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-800": {
             "textColor": "text-purple-800",
-            "bgColor": "bg-purple-800",
+            "bgColor": "bg-purple-800 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-800/50",
             "borderColor": "border-purple-800",
             "outlineColor": "outline-purple-800",
@@ -4002,7 +4002,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-900": {
             "textColor": "text-purple-900",
-            "bgColor": "bg-purple-900",
+            "bgColor": "bg-purple-900 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-900/50",
             "borderColor": "border-purple-900",
             "outlineColor": "outline-purple-900",
@@ -4021,7 +4021,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "purple-950": {
             "textColor": "text-purple-950",
-            "bgColor": "bg-purple-950",
+            "bgColor": "bg-purple-950 text-on-theme",
             "bgColorHalfOpacity": "bg-purple-950/50",
             "borderColor": "border-purple-950",
             "outlineColor": "outline-purple-950",
@@ -4042,7 +4042,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "fuchsia": {
         "fuchsia-50": {
             "textColor": "text-fuchsia-50",
-            "bgColor": "bg-fuchsia-50",
+            "bgColor": "bg-fuchsia-50 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-50/50",
             "borderColor": "border-fuchsia-50",
             "outlineColor": "outline-fuchsia-50",
@@ -4061,7 +4061,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-100": {
             "textColor": "text-fuchsia-100",
-            "bgColor": "bg-fuchsia-100",
+            "bgColor": "bg-fuchsia-100 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-100/50",
             "borderColor": "border-fuchsia-100",
             "outlineColor": "outline-fuchsia-100",
@@ -4080,7 +4080,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-200": {
             "textColor": "text-fuchsia-200",
-            "bgColor": "bg-fuchsia-200",
+            "bgColor": "bg-fuchsia-200 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-200/50",
             "borderColor": "border-fuchsia-200",
             "outlineColor": "outline-fuchsia-200",
@@ -4099,7 +4099,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-300": {
             "textColor": "text-fuchsia-300",
-            "bgColor": "bg-fuchsia-300",
+            "bgColor": "bg-fuchsia-300 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-300/50",
             "borderColor": "border-fuchsia-300",
             "outlineColor": "outline-fuchsia-300",
@@ -4118,7 +4118,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-400": {
             "textColor": "text-fuchsia-400",
-            "bgColor": "bg-fuchsia-400",
+            "bgColor": "bg-fuchsia-400 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-400/50",
             "borderColor": "border-fuchsia-400",
             "outlineColor": "outline-fuchsia-400",
@@ -4137,7 +4137,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-500": {
             "textColor": "text-fuchsia-500",
-            "bgColor": "bg-fuchsia-500",
+            "bgColor": "bg-fuchsia-500 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-500/50",
             "borderColor": "border-fuchsia-500",
             "outlineColor": "outline-fuchsia-500",
@@ -4156,7 +4156,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-600": {
             "textColor": "text-fuchsia-600",
-            "bgColor": "bg-fuchsia-600",
+            "bgColor": "bg-fuchsia-600 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-600/50",
             "borderColor": "border-fuchsia-600",
             "outlineColor": "outline-fuchsia-600",
@@ -4175,7 +4175,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-700": {
             "textColor": "text-fuchsia-700",
-            "bgColor": "bg-fuchsia-700",
+            "bgColor": "bg-fuchsia-700 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-700/50",
             "borderColor": "border-fuchsia-700",
             "outlineColor": "outline-fuchsia-700",
@@ -4194,7 +4194,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-800": {
             "textColor": "text-fuchsia-800",
-            "bgColor": "bg-fuchsia-800",
+            "bgColor": "bg-fuchsia-800 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-800/50",
             "borderColor": "border-fuchsia-800",
             "outlineColor": "outline-fuchsia-800",
@@ -4213,7 +4213,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-900": {
             "textColor": "text-fuchsia-900",
-            "bgColor": "bg-fuchsia-900",
+            "bgColor": "bg-fuchsia-900 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-900/50",
             "borderColor": "border-fuchsia-900",
             "outlineColor": "outline-fuchsia-900",
@@ -4232,7 +4232,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "fuchsia-950": {
             "textColor": "text-fuchsia-950",
-            "bgColor": "bg-fuchsia-950",
+            "bgColor": "bg-fuchsia-950 text-on-theme",
             "bgColorHalfOpacity": "bg-fuchsia-950/50",
             "borderColor": "border-fuchsia-950",
             "outlineColor": "outline-fuchsia-950",
@@ -4253,7 +4253,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "pink": {
         "pink-50": {
             "textColor": "text-pink-50",
-            "bgColor": "bg-pink-50",
+            "bgColor": "bg-pink-50 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-50/50",
             "borderColor": "border-pink-50",
             "outlineColor": "outline-pink-50",
@@ -4272,7 +4272,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-100": {
             "textColor": "text-pink-100",
-            "bgColor": "bg-pink-100",
+            "bgColor": "bg-pink-100 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-100/50",
             "borderColor": "border-pink-100",
             "outlineColor": "outline-pink-100",
@@ -4291,7 +4291,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-200": {
             "textColor": "text-pink-200",
-            "bgColor": "bg-pink-200",
+            "bgColor": "bg-pink-200 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-200/50",
             "borderColor": "border-pink-200",
             "outlineColor": "outline-pink-200",
@@ -4310,7 +4310,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-300": {
             "textColor": "text-pink-300",
-            "bgColor": "bg-pink-300",
+            "bgColor": "bg-pink-300 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-300/50",
             "borderColor": "border-pink-300",
             "outlineColor": "outline-pink-300",
@@ -4329,7 +4329,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-400": {
             "textColor": "text-pink-400",
-            "bgColor": "bg-pink-400",
+            "bgColor": "bg-pink-400 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-400/50",
             "borderColor": "border-pink-400",
             "outlineColor": "outline-pink-400",
@@ -4348,7 +4348,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-500": {
             "textColor": "text-pink-500",
-            "bgColor": "bg-pink-500",
+            "bgColor": "bg-pink-500 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-500/50",
             "borderColor": "border-pink-500",
             "outlineColor": "outline-pink-500",
@@ -4367,7 +4367,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-600": {
             "textColor": "text-pink-600",
-            "bgColor": "bg-pink-600",
+            "bgColor": "bg-pink-600 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-600/50",
             "borderColor": "border-pink-600",
             "outlineColor": "outline-pink-600",
@@ -4386,7 +4386,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-700": {
             "textColor": "text-pink-700",
-            "bgColor": "bg-pink-700",
+            "bgColor": "bg-pink-700 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-700/50",
             "borderColor": "border-pink-700",
             "outlineColor": "outline-pink-700",
@@ -4405,7 +4405,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-800": {
             "textColor": "text-pink-800",
-            "bgColor": "bg-pink-800",
+            "bgColor": "bg-pink-800 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-800/50",
             "borderColor": "border-pink-800",
             "outlineColor": "outline-pink-800",
@@ -4424,7 +4424,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-900": {
             "textColor": "text-pink-900",
-            "bgColor": "bg-pink-900",
+            "bgColor": "bg-pink-900 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-900/50",
             "borderColor": "border-pink-900",
             "outlineColor": "outline-pink-900",
@@ -4443,7 +4443,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "pink-950": {
             "textColor": "text-pink-950",
-            "bgColor": "bg-pink-950",
+            "bgColor": "bg-pink-950 text-on-theme",
             "bgColorHalfOpacity": "bg-pink-950/50",
             "borderColor": "border-pink-950",
             "outlineColor": "outline-pink-950",
@@ -4464,7 +4464,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
     "rose": {
         "rose-50": {
             "textColor": "text-rose-50",
-            "bgColor": "bg-rose-50",
+            "bgColor": "bg-rose-50 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-50/50",
             "borderColor": "border-rose-50",
             "outlineColor": "outline-rose-50",
@@ -4483,7 +4483,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-100": {
             "textColor": "text-rose-100",
-            "bgColor": "bg-rose-100",
+            "bgColor": "bg-rose-100 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-100/50",
             "borderColor": "border-rose-100",
             "outlineColor": "outline-rose-100",
@@ -4502,7 +4502,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-200": {
             "textColor": "text-rose-200",
-            "bgColor": "bg-rose-200",
+            "bgColor": "bg-rose-200 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-200/50",
             "borderColor": "border-rose-200",
             "outlineColor": "outline-rose-200",
@@ -4521,7 +4521,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-300": {
             "textColor": "text-rose-300",
-            "bgColor": "bg-rose-300",
+            "bgColor": "bg-rose-300 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-300/50",
             "borderColor": "border-rose-300",
             "outlineColor": "outline-rose-300",
@@ -4540,7 +4540,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-400": {
             "textColor": "text-rose-400",
-            "bgColor": "bg-rose-400",
+            "bgColor": "bg-rose-400 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-400/50",
             "borderColor": "border-rose-400",
             "outlineColor": "outline-rose-400",
@@ -4559,7 +4559,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-500": {
             "textColor": "text-rose-500",
-            "bgColor": "bg-rose-500",
+            "bgColor": "bg-rose-500 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-500/50",
             "borderColor": "border-rose-500",
             "outlineColor": "outline-rose-500",
@@ -4578,7 +4578,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-600": {
             "textColor": "text-rose-600",
-            "bgColor": "bg-rose-600",
+            "bgColor": "bg-rose-600 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-600/50",
             "borderColor": "border-rose-600",
             "outlineColor": "outline-rose-600",
@@ -4597,7 +4597,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-700": {
             "textColor": "text-rose-700",
-            "bgColor": "bg-rose-700",
+            "bgColor": "bg-rose-700 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-700/50",
             "borderColor": "border-rose-700",
             "outlineColor": "outline-rose-700",
@@ -4616,7 +4616,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-800": {
             "textColor": "text-rose-800",
-            "bgColor": "bg-rose-800",
+            "bgColor": "bg-rose-800 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-800/50",
             "borderColor": "border-rose-800",
             "outlineColor": "outline-rose-800",
@@ -4635,7 +4635,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-900": {
             "textColor": "text-rose-900",
-            "bgColor": "bg-rose-900",
+            "bgColor": "bg-rose-900 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-900/50",
             "borderColor": "border-rose-900",
             "outlineColor": "outline-rose-900",
@@ -4654,7 +4654,7 @@ export const TAILWIND_COLORS_OBJ: TailwindColorsObj = {
         },
         "rose-950": {
             "textColor": "text-rose-950",
-            "bgColor": "bg-rose-950",
+            "bgColor": "bg-rose-950 text-on-theme",
             "bgColorHalfOpacity": "bg-rose-950/50",
             "borderColor": "border-rose-950",
             "outlineColor": "outline-rose-950",

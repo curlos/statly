@@ -3,7 +3,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 
 const ColorModeList = () => {
 	const { chosenColorObj, colorMode, toggleColorMode } = useThemeContext();
-	const { borderColor, bgColorHalfOpacity } = chosenColorObj;
+	const { borderColor, bgColor } = chosenColorObj;
 
 	return (
 		<div className="flex flex-col items-center gap-4">
@@ -18,13 +18,13 @@ const ColorModeList = () => {
 					className={classNames(
 						'flex flex-col items-center gap-2 px-6 py-4 rounded-xl cursor-pointer border-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
 						colorMode === 'dark'
-							? classNames(borderColor, 'text-white', bgColorHalfOpacity)
+							? classNames(borderColor, bgColor)
 							: 'border-color-gray-300 bg-color-gray-300'
 					)}
 					onClick={() => colorMode !== 'dark' && toggleColorMode()}
 				>
 					<span className="text-2xl" aria-hidden="true">🌙</span>
-					<span className={classNames('text-[14px] font-bold', colorMode === 'dark' ? 'text-white' : 'text-color-gray-25')}>
+					<span className={classNames('text-[14px] font-bold', colorMode === 'dark' ? '' : 'text-color-gray-25')}>
 						Dark
 					</span>
 				</button>
@@ -35,13 +35,13 @@ const ColorModeList = () => {
 					className={classNames(
 						'flex flex-col items-center gap-2 px-6 py-4 rounded-xl cursor-pointer border-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
 						colorMode === 'light'
-							? classNames(borderColor, 'text-white', bgColorHalfOpacity)
+							? classNames(borderColor, bgColor)
 							: 'border-color-gray-300 bg-color-gray-300'
 					)}
 					onClick={() => colorMode !== 'light' && toggleColorMode()}
 				>
 					<span className="text-2xl" aria-hidden="true">☀️</span>
-					<span className={classNames('text-[14px] font-bold', colorMode === 'light' ? 'text-white' : 'text-color-gray-25')}>
+					<span className={classNames('text-[14px] font-bold', colorMode === 'light' ? '' : 'text-color-gray-25')}>
 						Light
 					</span>
 				</button>

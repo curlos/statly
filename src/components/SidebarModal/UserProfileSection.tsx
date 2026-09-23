@@ -54,7 +54,6 @@ const UserProfileSection = () => {
 	};
 
 	const profilePicUrl = user.profilePic || null;
-	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === 'Escape') {
@@ -79,8 +78,7 @@ const UserProfileSection = () => {
 				) : (
 					<div
 						aria-hidden="true"
-						className="w-[60px] h-[60px] rounded-full flex items-center justify-center text-white font-bold text-[20px]"
-						style={{ backgroundColor: themeColor }}
+						className={`w-[60px] h-[60px] rounded-full flex items-center justify-center font-bold text-[20px] ${chosenColorObj.bgColor}`}
 					>
 						{getInitials(user.name || '')}
 					</div>

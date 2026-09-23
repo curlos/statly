@@ -68,7 +68,7 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
 						<button
 							type="submit"
 							disabled={!newFolderName.trim()}
-							className={`px-4 py-2 ${chosenColorObj.bgColor} ${nextDarkestColorObj?.hover.bgColor || chosenColorObj.hover.bgColor} text-white rounded disabled:opacity-50`}
+							className={`px-4 py-2 ${chosenColorObj.bgColor} ${nextDarkestColorObj?.hover.bgColor || chosenColorObj.hover.bgColor} rounded disabled:opacity-50`}
 						>
 							Create
 						</button>

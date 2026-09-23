@@ -76,7 +76,7 @@ const TaskProjectName: React.FC<TaskProjectNameProps> = ({ taskId, task, cardTex
         : buildUrlWithQueryParams({ [projectQueryParam]: taskProject?.id || task?.projectId, ...resetQueryParams });
 
     return (
-        <span className={customDisplay.useTextColor ? "" : "text-color-gray-25"} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
+        <span className={customDisplay.useTextColor ? "" : "text-muted-inherit"} style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}>
             {' '}
             -{' '}
             <a href={projectUrl} className="hover:underline hover:text-blue-500">

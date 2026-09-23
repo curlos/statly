@@ -1,4 +1,6 @@
+import type { CSSProperties } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
+import { getReadableTextColor, getHalfOpacityFillColor, getMutedTextPercent } from '../../../utils/color.utils';
 
 interface CustomDisplay {
     useBackgroundColor: boolean;
@@ -17,9 +19,10 @@ interface ChosenColorObj {
 interface UseFocusRecordCardColorsParams {
     customDisplay: CustomDisplay;
     chosenColorObj: ChosenColorObj;
+    lowerOpacity?: boolean;
 }
 
-export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj }: UseFocusRecordCardColorsParams) => {
+export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj, lowerOpacity = false }: UseFocusRecordCardColorsParams) => {
     const { colorMode } = useThemeContext();
     const getCardBackgroundStyle = () => {
         if (customDisplay.useBackgroundColor) {
@@ -50,18 +53,36 @@ export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj }: UseF
         return chosenColorObj.hexColor
     };
 
+    // The color the card actually shows behind its text
+    const getCardFillColor = () => {
+        if (customDisplay.useBackgroundImage) {
+            return '#000000'
+        }
+        if (customDisplay.useBackgroundColor) {
+            return customDisplay.backgroundColor
+        }
+        return lowerOpacity ? getHalfOpacityFillColor(chosenColorObj.hexColor, colorMode) : chosenColorObj.hexColor
+    };
+
     const getCardTextColor = () => {
-        // Use theme only if no custom background
         if (customDisplay.useTextColor) {
             return customDisplay.textColor
         }
-        return colorMode === 'dark' ? 'white' : 'black'
+        if (customDisplay.useBackgroundImage) {
+            return colorMode === 'dark' ? 'white' : 'black'
+        }
+        return getReadableTextColor(getCardFillColor())
     };
 
-    const cardBackgroundStyle = getCardBackgroundStyle()
+    const cardTextColor = getCardTextColor()
+    const mutedTextPercent = getMutedTextPercent(cardTextColor, getCardFillColor())
+    const cardBackgroundStyle: CSSProperties & Record<`--${string}`, string> = {
+        ...getCardBackgroundStyle(),
+        color: cardTextColor,
+        '--muted-text-percent': `${mutedTextPercent}%`,
+    }
     const backgroundImageStyle = getBackgroundImageStyle()
     const cardBgColor = getCardBgColor()
-    const cardTextColor = getCardTextColor()
 
     return {
         cardBackgroundStyle,

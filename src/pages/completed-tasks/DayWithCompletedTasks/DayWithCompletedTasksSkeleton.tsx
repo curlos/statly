@@ -1,9 +1,15 @@
 import TimelineItemSkeleton from '../../../components/Skeletons/TimelineItemSkeleton';
+import { useUserSettingsContext } from '../../focus-records/useUserSettingsContext';
 
 const DayWithCompletedTasksSkeleton = ({ isLastItem = false }) => {
+	const {
+		focusRecordsPageSettings: { lowerCardOpacity },
+	} = useUserSettingsContext();
+
 	return (
 		<TimelineItemSkeleton
 			isLastItem={isLastItem}
+			lowerOpacity={lowerCardOpacity}
 			iconName="check_box"
 			headerHeight="h-[28px]"
 			headerWidth="w-[200px]"

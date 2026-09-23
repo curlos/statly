@@ -14,9 +14,8 @@ const OtherSectionCompletedTasks = () => {
 			groupedTasksCollapsedByDefault,
 			showIndentedTasks,
 			maxDaysPerPage,
-			limitTextWidth,
 		},
-		focusRecordsPageSettings: { showMedals },
+		focusRecordsPageSettings: { showMedals, limitTextWidth, lowerCardOpacity },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -91,7 +90,7 @@ const OtherSectionCompletedTasks = () => {
 								{...{
 									name: 'Limit Text Width',
 									showValue: limitTextWidth,
-									handleCheckboxClick: () => handleCheckboxClick(limitTextWidth, 'limitTextWidth'),
+									handleCheckboxClick: () => handleUpdateUserSettingForPage('focusRecords', 'limitTextWidth', !limitTextWidth),
 								}}
 							/>
 
@@ -110,6 +109,14 @@ const OtherSectionCompletedTasks = () => {
 									<MedalImage />
 								</div>
 							)}
+
+							<CheckboxOther
+								{...{
+									name: 'Lower Card Opacity',
+									showValue: lowerCardOpacity,
+									handleCheckboxClick: () => handleUpdateUserSettingForPage('focusRecords', 'lowerCardOpacity', !lowerCardOpacity),
+								}}
+							/>
 
 							{/* Input - Max Days Per Page */}
 							<InputNumUserSettings

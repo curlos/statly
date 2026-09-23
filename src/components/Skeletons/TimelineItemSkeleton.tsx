@@ -4,6 +4,7 @@ import { useThemeContext } from '../../contexts/useThemeContext';
 
 interface TimelineItemSkeletonProps {
 	isLastItem?: boolean;
+	lowerOpacity?: boolean;
 	iconName?: string;
 	headerHeight?: string;
 	headerWidth?: string;
@@ -12,6 +13,7 @@ interface TimelineItemSkeletonProps {
 
 const TimelineItemSkeleton = ({
 	isLastItem = false,
+	lowerOpacity = false,
 	iconName = 'timer',
 	headerHeight = 'h-[24px]',
 	headerWidth = 'w-[300px]',
@@ -23,7 +25,7 @@ const TimelineItemSkeleton = ({
 	],
 }: TimelineItemSkeletonProps) => {
 	const themeContext = useThemeContext();
-	const { chosenColorObj, nextDarkestColorObj, colorMode } = themeContext;
+	const { chosenColorObj, nextDarkestColorObj } = themeContext;
 	const { textColor, bgColor, bgColorHalfOpacity, borderColor } = chosenColorObj;
 
 	return (
@@ -53,7 +55,7 @@ const TimelineItemSkeleton = ({
 					></div>
 				)}
 
-				<div className={classNames(colorMode === 'dark' ? bgColorHalfOpacity : bgColor, 'p-2 rounded-lg w-[95%] sm:w-full')}>
+				<div className={classNames(lowerOpacity ? bgColorHalfOpacity : bgColor, 'p-2 rounded-lg w-[95%] sm:w-full')}>
 					<div className="space-y-2">
 						{/* Header skeleton */}
 						<div

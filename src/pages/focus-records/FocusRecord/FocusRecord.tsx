@@ -37,14 +37,15 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 	const endTimeObj = formatDateTime(endTime);
 
 	const themeContext = useThemeContext();
-	const { chosenColorObj, colorMode } = themeContext;
-	const { bgColorHalfOpacity, bgColor } = chosenColorObj;
+	const { chosenColorObj } = themeContext;
+	const { bgColor, bgColorHalfOpacity } = chosenColorObj;
 
 	const {
 		focusRecordsPageSettings: {
 			showCompletedTasks,
 			showFocusNotes,
 			limitTextWidth,
+			lowerCardOpacity,
 			showMedals,
 			selectedMedalImage,
 			medalImageSizePx,
@@ -93,6 +94,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 	const { cardBackgroundStyle, backgroundImageStyle, cardBgColor, cardTextColor } = useFocusRecordCardColors({
 		customDisplay,
 		chosenColorObj,
+		lowerOpacity: lowerCardOpacity,
 	});
 
 	return (
@@ -146,7 +148,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 						'p-2 rounded-lg w-[95%] sm:w-full relative',
 						customDisplay.useBackgroundImage
 							? 'bg-black'
-							: !customDisplay.useBackgroundColor && (colorMode === 'dark' ? bgColorHalfOpacity : bgColor)
+							: !customDisplay.useBackgroundColor && (lowerCardOpacity ? bgColorHalfOpacity : bgColor)
 					)}
 					style={cardBackgroundStyle}
 					onContextMenu={handleContextMenu}
@@ -205,7 +207,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 							>
 								<Icon
 									name="more_horiz"
-									customClass="text-color-gray-50 !text-[20px] hover:text-white transition-colors"
+									customClass="text-muted-inherit !text-[20px] hover:text-inherit transition-colors"
 									customStyle={{ color: cardTextColor }}
 								/>
 							</button>
@@ -269,7 +271,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 								>
 									<Icon
 										name="more_horiz"
-										customClass="text-color-gray-50 !text-[20px] hover:text-white transition-colors"
+										customClass="text-muted-inherit !text-[20px] hover:text-inherit transition-colors"
 									/>
 								</button>
 

@@ -14,6 +14,7 @@ interface AccordionProps {
 	customToggleOpen?: () => void;
 	preventOpen?: boolean;
 	titleHasLinks?: boolean;
+	mutedArrow?: boolean;
 }
 
 const Accordion: React.FC<AccordionProps> = ({
@@ -27,6 +28,7 @@ const Accordion: React.FC<AccordionProps> = ({
 	customToggleOpen,
 	preventOpen,
 	titleHasLinks,
+	mutedArrow,
 }) => {
 	const [isOpen, setIsOpen] = useState(openByDefault ? true : false);
 	const [overflowHidden, setOverflowHidden] = useState(!openByDefault);
@@ -78,7 +80,7 @@ const Accordion: React.FC<AccordionProps> = ({
 						<Icon
 							name={isOpen ? 'keyboard_arrow_down' : 'chevron_right'}
 							fill={1}
-							customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+							customClass={classNames(mutedArrow ? 'text-muted-inherit hover:text-inherit' : 'text-color-gray-50 hover:text-white', '!text-[20px] cursor-pointer')}
 						/>
 					</button>
 				</div>
@@ -96,7 +98,7 @@ const Accordion: React.FC<AccordionProps> = ({
 					<Icon
 						name={isOpen ? 'keyboard_arrow_down' : 'chevron_right'}
 						fill={1}
-						customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+						customClass={classNames(mutedArrow ? 'text-muted-inherit hover:text-inherit' : 'text-color-gray-50 hover:text-white', '!text-[20px] cursor-pointer')}
 					/>
 				</button>
 			)}

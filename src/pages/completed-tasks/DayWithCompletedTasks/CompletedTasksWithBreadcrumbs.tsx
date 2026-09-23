@@ -55,6 +55,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 				<Accordion
 					key={dateStr + parentTaskId + i}
 					titleHasLinks
+					mutedArrow
 					title={
 						<div className="text-[18px]">
 							<h3 className="inline underline font-bold hover:text-blue-500 m-0">
@@ -67,7 +68,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 							</h3>
 
 							{parentTaskBreadcrumbs?.length > 0 && (
-								<span className="ml-1 text-color-gray-25" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
+								<span className="ml-1 text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
 									-{' '}
 									{parentTaskBreadcrumbs.map((taskId: string, index: number) => {
 										const taskObj = ancestorTasksById[taskId];
@@ -89,7 +90,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 							)}
 
 							{(taskProject || parentTask?.projectId) && (
-								<span className="text-color-gray-25" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
+								<span className="text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
 									{' - '}
 								</span>
 							)}
@@ -97,7 +98,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 							{(taskProject || parentTask?.projectId) && (
 								<a
 								href={buildUrlWithQueryParams({ [projectQueryParam]: taskProject?.id || parentTask?.projectId, 'task-id': '', 'sort-by': '', search: '', 'start-date': '', 'end-date': '', page: '' })}
-								className="text-color-gray-25 hover:underline hover:text-blue-500"
+								className="text-muted-inherit hover:underline hover:text-blue-500"
 								style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 							>
 								({taskProject?.name || parentTask?.projectId})

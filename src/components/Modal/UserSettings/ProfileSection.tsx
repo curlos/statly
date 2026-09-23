@@ -56,8 +56,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 				<div
 					role="img"
 					aria-label={`${user.name}'s profile picture`}
-					className="w-24 h-24 rounded-full flex items-center justify-center text-white font-bold text-3xl mb-4"
-					style={{ backgroundColor: themeColor }}
+					className={`w-24 h-24 rounded-full flex items-center justify-center font-bold text-3xl mb-4 ${chosenColorObj.bgColor}`}
 				>
 					{getInitials(user.name || '')}
 				</div>

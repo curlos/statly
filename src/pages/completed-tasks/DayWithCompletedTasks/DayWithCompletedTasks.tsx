@@ -40,12 +40,12 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 	const { updateQueryParams, buildUrlWithQueryParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
-		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow, customDisplay },
+		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow, customDisplay, lowerCardOpacity },
 	} = useUserSettingsContext();
 
 	// Theme Context
 	const themeContext = useThemeContext();
-	const { chosenColorObj, colorMode } = themeContext;
+	const { chosenColorObj } = themeContext;
 	const { bgColor, bgColorHalfOpacity } = chosenColorObj;
 
 	const { dateStr, completedTasksForDay } = dateWithCompletedTasks;
@@ -109,7 +109,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage]
 	);
 
-	const { cardBackgroundStyle, backgroundImageStyle, cardTextColor, cardBgColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj });
+	const { cardBackgroundStyle, backgroundImageStyle, cardTextColor, cardBgColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj, lowerOpacity: lowerCardOpacity });
 
 	return (
 		<article
@@ -160,7 +160,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 				)}
 
 				<div
-					className={classNames('p-2 rounded-lg w-[95%] sm:w-full relative', customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && (colorMode === 'dark' ? bgColorHalfOpacity : bgColor))}
+					className={classNames('p-2 rounded-lg w-[95%] sm:w-full relative', customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && (lowerCardOpacity ? bgColorHalfOpacity : bgColor))}
 					style={cardBackgroundStyle}
 					onContextMenu={handleContextMenu}
 				>
@@ -192,7 +192,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 						>
 							<Icon
 								name="more_horiz"
-								customClass="text-color-gray-50 !text-[20px] hover:text-white transition-colors"
+								customClass="text-muted-inherit !text-[20px] hover:text-inherit transition-colors"
 								customStyle={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 							/>
 						</button>
@@ -228,6 +228,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 								</div>
 							}
 							openByDefault={true}
+							mutedArrow
 						>
 							<div className="space-y-5">
 								{showIndentedTasks ? (

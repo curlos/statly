@@ -1,9 +1,15 @@
 import TimelineItemSkeleton from '../../components/Skeletons/TimelineItemSkeleton';
+import { useUserSettingsContext } from './useUserSettingsContext';
 
 const FocusRecordSkeleton = ({ isLastItem = false }) => {
+	const {
+		focusRecordsPageSettings: { lowerCardOpacity },
+	} = useUserSettingsContext();
+
 	return (
 		<TimelineItemSkeleton
 			isLastItem={isLastItem}
+			lowerOpacity={lowerCardOpacity}
 			iconName="timer"
 			headerHeight="h-[24px]"
 			headerWidth="w-[250px]"

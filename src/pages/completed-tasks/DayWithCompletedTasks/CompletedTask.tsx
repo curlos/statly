@@ -19,7 +19,7 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, buildUr
 	const statusIsWillNotDo = 'status' in task && task.status === -1;
 
 	const {
-		completedTasksPageSettings: { limitTextWidth },
+		focusRecordsPageSettings: { limitTextWidth },
 	} = useUserSettingsContext();
 
 	// Custom hook for menu logic

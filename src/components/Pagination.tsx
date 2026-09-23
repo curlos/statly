@@ -112,7 +112,7 @@ const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentP
 						key={page}
 						aria-label={`Page ${page}`}
 						aria-current="page"
-						className={classNames('px-2 py-1 rounded text-white', chosenColorObj.bgColor)}
+						className={classNames('px-2 py-1 rounded', chosenColorObj.bgColor)}
 						onClick={() => setCurrentPage(page)}
 					>
 						{page}

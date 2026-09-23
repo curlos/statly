@@ -277,7 +277,7 @@ const MonthView: React.FC<MonthViewProps> = ({
 
 								if (isCurrentMonth) {
 									if (isChosenDay && selectedInterval !== 'Week') {
-										appliedStyles.push(`${chosenColorObj.bgColor} text-white`);
+										appliedStyles.push(chosenColorObj.bgColor);
 									} else if (isDayToday) {
 										appliedStyles.push(
 											`bg-color-gray-200 hover:bg-color-gray-200 ${chosenColorObj.textColor}`

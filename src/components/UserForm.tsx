@@ -129,7 +129,6 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 		}
 	};
 
-	const chosenColorObj = TAILWIND_COLORS_OBJ['blue']['blue-600'];
 	const linkColorObj = TAILWIND_COLORS_OBJ['blue']['blue-400'];
 
 	return (
@@ -193,7 +192,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 			<button
 				type="submit"
 				disabled={isLoading}
-				className={classNames(chosenColorObj.bgColor, 'w-full rounded-xl p-2 mt-4 flex items-center justify-center gap-2 text-[#ffffff]')}
+				className="bg-blue-600 w-full rounded-xl p-2 mt-4 flex items-center justify-center gap-2 text-[#ffffff]"
 			>
 				<span>{mode === 'login' ? 'Log In' : 'Sign Up'}</span>
 				{isLoading && <Spinner size="sm" customClass="!text-white" />}

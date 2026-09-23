@@ -123,6 +123,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 			<li key={parentTaskId} className="text-[16px]">
 				<Accordion
 					titleHasLinks
+						mutedArrow
 					title={
 						<div className="flex items-center gap-2 text-[18px]">
 							<h3 className="underline hover:text-blue-500 font-bold m-0">
@@ -134,7 +135,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 							{(taskProject || parentTask?.projectId) && (
 								<span
 									className={classNames(
-										'text-color-gray-25 hover:underline hover:text-blue-500',
+										'text-muted-inherit hover:underline hover:text-blue-500',
 										parentTask.parentId && 'hidden sm:block'
 									)}
 									style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}

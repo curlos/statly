@@ -28,7 +28,7 @@ interface ModalChangeCardImageProps {
 }
 
 const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
-	const { chosenColorObj } = useThemeContext();
+	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
 	// RTK Query - User Settings
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery();
@@ -542,7 +542,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 						<button
 							className={classNames(
 								chosenColorObj.bgColor,
-								chosenColorObj.hover.bgColorHalfOpacity,
+								nextDarkestColorObj?.hover.bgColor,
 								'rounded py-1 cursor-pointer min-w-[114px] disabled:opacity-50 disabled:cursor-not-allowed'
 							)}
 							onClick={handleChangeImageUserSetting}
