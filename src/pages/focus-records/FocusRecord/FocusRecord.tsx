@@ -327,6 +327,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 											/>
 											<span
 												className={classNames(
+													'min-w-0',
 													containsUrl
 														? 'break-all md:break-normal md:break-words'
 														: 'break-words'

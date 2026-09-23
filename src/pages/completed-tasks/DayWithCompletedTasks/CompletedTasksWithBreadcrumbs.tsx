@@ -57,7 +57,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 					titleHasLinks
 					mutedArrow
 					title={
-						<div className="text-[18px]">
+						<div className="text-[18px] break-words">
 							<h3 className="inline underline font-bold hover:text-blue-500 m-0">
 								<a
 									href={buildUrlWithTaskIdQueryParam(parentTaskId)}

@@ -66,7 +66,7 @@ const Accordion: React.FC<AccordionProps> = ({
 						if (!(e.target as HTMLElement).closest('a, button')) toggleOpen();
 					}}
 				>
-					<div id={titleId}>{title}</div>
+					<div id={titleId} className="min-w-0 break-words">{title}</div>
 					<button
 						id={toggleId}
 						type="button"

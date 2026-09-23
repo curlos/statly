@@ -34,7 +34,7 @@ const FocusRecordTasks: React.FC<FocusRecordTasksProps> = ({ focusRecord, cardTe
 		const taskId = task.taskId;
 
 		return (
-			<h2 className="text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px]">
+			<h2 className="min-w-0 break-words text-[18px] md:text-[22px] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[900px]">
 				<a
 					href={buildTaskUrl(taskId)}
 					className="hover:text-blue-500 hover:underline font-bold text-left"

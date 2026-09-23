@@ -40,7 +40,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
     const parentTaskBreadcrumbs = parentTaskBreadcrumbsTickTick?.filter((ancestorId: string) => ancestorId !== task.taskId) || [];
 
     return (
-        <div className="text-[22px]">
+        <div className="min-w-0 break-words text-[22px]">
             <h2 className="inline hover:underline font-bold hover:text-blue-500 m-0">
                 <a
                     href={buildTaskUrl(parentTaskId)}

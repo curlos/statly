@@ -47,13 +47,13 @@ const CompletedTask: React.FC<CompletedTaskProps> = ({ task, isFullTask, buildUr
 				{isFullTask ? (
 					<a
 						href={buildUrlWithTaskIdQueryParam(task.id)}
-						className="mt-[-2px] flex-1 hover:underline text-left"
+						className="mt-[-2px] flex-1 min-w-0 break-words hover:underline text-left"
 						style={{ color: cardTextColor }}
 					>
 						{task.title}
 					</a>
 				) : (
-					<div className="mt-[-2px] flex-1" style={{ color: cardTextColor }}>
+					<div className="mt-[-2px] flex-1 min-w-0 break-words" style={{ color: cardTextColor }}>
 						{task.title}
 					</div>
 				)}

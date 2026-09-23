@@ -30,6 +30,12 @@
   --color-gray-700: #FAFAFA;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
 .text-on-theme {
   color: var(--theme-on-color, #ffffff);
 }

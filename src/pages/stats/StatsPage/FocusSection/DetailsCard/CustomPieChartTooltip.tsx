@@ -34,11 +34,11 @@ const CustomPieChartTooltip: React.FC<CustomPieChartTooltipProps> = ({ active, p
 		}
 
 		return (
-			<div className="bg-color-gray-600 border border-color-gray-50 rounded p-2 flex items-center gap-2">
+			<div className="bg-color-gray-600 border border-color-gray-50 rounded p-2 flex items-center gap-2 max-w-[280px]">
 				<div>
 					<div style={{ backgroundColor: color }} className="w-[10px] h-[10px] rounded-full" />
 				</div>
-				<div>
+				<div className="min-w-0 break-words">
 					{name}, {displayValue} ({percentage}%)
 				</div>
 			</div>

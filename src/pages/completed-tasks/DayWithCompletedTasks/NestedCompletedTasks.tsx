@@ -126,7 +126,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 						mutedArrow
 					title={
 						<div className="flex items-center gap-2 text-[18px]">
-							<h3 className="underline hover:text-blue-500 font-bold m-0">
+							<h3 className="min-w-0 break-words underline hover:text-blue-500 font-bold m-0">
 								<a href={taskUrl} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
 									{parentTask.title}
 								</a>

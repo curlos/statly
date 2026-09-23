@@ -107,7 +107,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 	return (
 		<div className="w-full">
 			<div className="flex justify-between items-center mb-1 w-full">
-				<div>
+				<div className="min-w-0 break-words">
 					<a
 						href={getHref()}
 						className={classNames(
