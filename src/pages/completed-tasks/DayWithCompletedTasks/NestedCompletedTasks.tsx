@@ -105,19 +105,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 
 		// These are the tasks who are direct children of the parent task. These will be rendered as completed checkboxes with the content.
 		const directCompletedSubtasks = groupedSubtasksByParentTask[parentTask.id];
-		const taskProject = projectsById && parentTask?.projectId ? projectsById[parentTask.projectId] : undefined;
-		const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
-
 		const taskUrl = buildUrlWithTaskIdQueryParam(parentTask.id);
-		const projectUrl = buildUrlWithQueryParams({
-			[projectQueryParam]: parentTask?.projectId,
-			'task-id': '',
-			'sort-by': '',
-			search: '',
-			'start-date': '',
-			'end-date': '',
-			page: '',
-		});
 
 		return (
 			<li key={parentTaskId} className="text-[16px]">
@@ -131,18 +119,6 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 									{parentTask.title}
 								</a>
 							</h3>
-
-							{(taskProject || parentTask?.projectId) && (
-								<span
-									className={classNames(
-										'text-muted-inherit hover:underline hover:text-blue-500',
-										parentTask.parentId && 'hidden sm:block'
-									)}
-									style={{ color: customDisplay.useTextColor ? cardTextColor : '' }}
-								>
-									<a href={projectUrl}>({taskProject?.name || parentTask?.projectId})</a>
-								</span>
-							)}
 						</div>
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
@@ -150,7 +126,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 				>
 					{directCompletedSubtasks?.length > 0 && renderDirectCompletedSubtasks(directCompletedSubtasks)}
 
-					<ul className="pl-2 sm:pl-6">
+					<ul className="pl-2 sm:pl-6 [&>li]:mt-2">
 						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
 							parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId: string) => {
 								if (
@@ -168,11 +144,56 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 		);
 	};
 
+	// Group the top-level tasks by their project so the project becomes the outermost level.
+	const topLevelTaskIdsByProjectId: Record<string, string[]> = {};
+	tasksWithNoParent.forEach((taskId: string) => {
+		const projectId = ancestorTasksById[taskId]?.projectId || '';
+		if (!topLevelTaskIdsByProjectId[projectId]) {
+			topLevelTaskIdsByProjectId[projectId] = [];
+		}
+		topLevelTaskIdsByProjectId[projectId].push(taskId);
+	});
+
+	const getProjectUrl = (projectId: string) => {
+		const project = projectsById?.[projectId];
+		const projectQueryParam = project?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
+
+		return buildUrlWithQueryParams({
+			[projectQueryParam]: projectId,
+			'task-id': '',
+			'sort-by': '',
+			search: '',
+			'start-date': '',
+			'end-date': '',
+			page: '',
+		});
+	};
+
 	return (
 		<>
 			{/* Starting the tasks with NO parent, recursively render the nested tasks. It's important to start with the tasks with NO parent as they are the top-level task and for this to recursively render this without missing any tasks, it must start from the top. */}
 			<ul className="space-y-5 list-none p-0 m-0">
-				{tasksWithNoParent.map((taskId: string) => renderNestedTasks(taskId))}
+				{Object.entries(topLevelTaskIdsByProjectId).map(([projectId, taskIds]) => (
+					<li key={projectId}>
+						<Accordion
+							titleHasLinks
+							mutedArrow
+							title={
+								<h3 className="min-w-0 break-words underline hover:text-blue-500 font-bold m-0 text-[18px]">
+									<a href={getProjectUrl(projectId)} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
+										{projectsById?.[projectId]?.name || projectId || 'No Project'}
+									</a>
+								</h3>
+							}
+							openByDefault={!groupedTasksCollapsedByDefault}
+							showArrowNextToText={true}
+						>
+							<ul className="space-y-5 list-none pl-2 sm:pl-6 m-0">
+								{taskIds.map((taskId: string) => renderNestedTasks(taskId))}
+							</ul>
+						</Accordion>
+					</li>
+				))}
 			</ul>
 		</>
 	);

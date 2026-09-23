@@ -61,12 +61,17 @@ const Accordion: React.FC<AccordionProps> = ({
 		<div className={customClasses ? customClasses : ''}>
 			{titleHasLinks ? (
 				<div
-					className={classNames('w-full flex gap-2 items-center rounded mb-3', showArrowNextToText ? 'justify-start' : 'justify-between')}
+					className={classNames(
+						'cursor-pointer w-full flex gap-2 items-center rounded mb-3',
+						showArrowNextToText ? 'justify-start' : 'justify-between'
+					)}
 					onClick={(e) => {
 						if (!(e.target as HTMLElement).closest('a, button')) toggleOpen();
 					}}
 				>
-					<div id={titleId} className="min-w-0 break-words">{title}</div>
+					<div id={titleId} className="min-w-0 break-words">
+						{title}
+					</div>
 					<button
 						id={toggleId}
 						type="button"
@@ -80,7 +85,12 @@ const Accordion: React.FC<AccordionProps> = ({
 						<Icon
 							name={isOpen ? 'keyboard_arrow_down' : 'chevron_right'}
 							fill={1}
-							customClass={classNames(mutedArrow ? 'text-muted-inherit hover:text-inherit' : 'text-color-gray-50 hover:text-white', '!text-[20px] cursor-pointer')}
+							customClass={classNames(
+								mutedArrow
+									? 'text-muted-inherit hover:text-inherit'
+									: 'text-color-gray-50 hover:text-white',
+								'!text-[20px] cursor-pointer'
+							)}
 						/>
 					</button>
 				</div>
@@ -98,7 +108,12 @@ const Accordion: React.FC<AccordionProps> = ({
 					<Icon
 						name={isOpen ? 'keyboard_arrow_down' : 'chevron_right'}
 						fill={1}
-						customClass={classNames(mutedArrow ? 'text-muted-inherit hover:text-inherit' : 'text-color-gray-50 hover:text-white', '!text-[20px] cursor-pointer')}
+						customClass={classNames(
+							mutedArrow
+								? 'text-muted-inherit hover:text-inherit'
+								: 'text-color-gray-50 hover:text-white',
+							'!text-[20px] cursor-pointer'
+						)}
 					/>
 				</button>
 			)}
@@ -111,7 +126,9 @@ const Accordion: React.FC<AccordionProps> = ({
 						exit={{ opacity: 0, height: shouldReduceMotion ? 'auto' : 0 }}
 						transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
 						className={overflowHidden ? 'overflow-hidden' : 'overflow-visible'}
-						onAnimationComplete={() => { if (isOpen) setOverflowHidden(false); }}
+						onAnimationComplete={() => {
+							if (isOpen) setOverflowHidden(false);
+						}}
 					>
 						{children}
 					</motion.div>
