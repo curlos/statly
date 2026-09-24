@@ -41,7 +41,9 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 
 	return (
 		ancestorTasksById &&
-		Object.keys(groupedSubtasksByParentTask).map((parentTaskId, i) => {
+		Object.keys(groupedSubtasksByParentTask)
+			.sort((a, b) => groupedSubtasksByParentTask[b].length - groupedSubtasksByParentTask[a].length)
+			.map((parentTaskId, i) => {
 			const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
 			const parentTask =
 				ancestorTasksById && ancestorTasksById[parentTaskId];
@@ -66,6 +68,10 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 									{parentTaskTitle}
 								</a>
 							</h3>
+
+							<span className="ml-1 text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
+								({completedSubtasks.length})
+							</span>
 
 							{parentTaskBreadcrumbs?.length > 0 && (
 								<span className="ml-1 text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>

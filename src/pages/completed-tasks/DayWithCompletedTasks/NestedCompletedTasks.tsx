@@ -72,6 +72,22 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 
 	const parentDirectChildrenTaskIdsByParentId = getParentDirectChildrenTaskIdsByParentId();
 
+	// Total completed tasks in a group, including all of its nested groups.
+	const getCompletedCount = (taskId: string): number => {
+		const directCount = groupedSubtasksByParentTask[taskId]?.length || 0;
+		const childIds = parentDirectChildrenTaskIdsByParentId[taskId] || [];
+		return childIds.reduce((sum, childId) => sum + getCompletedCount(childId), directCount);
+	};
+
+	const sortByCompletedCount = (taskIds: string[]) =>
+		[...taskIds].sort((a, b) => getCompletedCount(b) - getCompletedCount(a));
+
+	const renderCount = (count: number) => (
+		<span className="text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
+			({count})
+		</span>
+	);
+
 	/**
 	 * @description
 	 * @param directCompletedSubtasks
@@ -119,6 +135,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 									{parentTask.title}
 								</a>
 							</h3>
+							{renderCount(getCompletedCount(parentTaskId))}
 						</div>
 					}
 					openByDefault={!groupedTasksCollapsedByDefault}
@@ -128,7 +145,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 
 					<ul className="pl-2 sm:pl-6 [&>li]:mt-2">
 						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
-							parentDirectChildrenTaskIdsByParentId[parentTaskId].map((taskId: string) => {
+							sortByCompletedCount(parentDirectChildrenTaskIdsByParentId[parentTaskId]).map((taskId: string) => {
 								if (
 									parentDirectChildrenTaskIdsByParentId[taskId] &&
 									parentDirectChildrenTaskIdsByParentId[taskId].length > 0
@@ -173,17 +190,27 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 		<>
 			{/* Starting the tasks with NO parent, recursively render the nested tasks. It's important to start with the tasks with NO parent as they are the top-level task and for this to recursively render this without missing any tasks, it must start from the top. */}
 			<ul className="space-y-5 list-none p-0 m-0">
-				{Object.entries(topLevelTaskIdsByProjectId).map(([projectId, taskIds]) => (
+				{Object.entries(topLevelTaskIdsByProjectId)
+					.map(([projectId, taskIds]) => ({
+						projectId,
+						taskIds: sortByCompletedCount(taskIds),
+						count: taskIds.reduce((sum, taskId) => sum + getCompletedCount(taskId), 0),
+					}))
+					.sort((a, b) => b.count - a.count)
+					.map(({ projectId, taskIds, count }) => (
 					<li key={projectId}>
 						<Accordion
 							titleHasLinks
 							mutedArrow
 							title={
-								<h3 className="min-w-0 break-words underline hover:text-blue-500 font-bold m-0 text-[18px]">
-									<a href={getProjectUrl(projectId)} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
-										{projectsById?.[projectId]?.name || projectId || 'No Project'}
-									</a>
-								</h3>
+								<div className="flex items-center gap-2 text-[18px]">
+									<h3 className="min-w-0 break-words underline hover:text-blue-500 font-bold m-0">
+										<a href={getProjectUrl(projectId)} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
+											{projectsById?.[projectId]?.name || projectId || 'No Project'}
+										</a>
+									</h3>
+									{renderCount(count)}
+								</div>
 							}
 							openByDefault={!groupedTasksCollapsedByDefault}
 							showArrowNextToText={true}
