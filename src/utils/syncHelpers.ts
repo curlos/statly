@@ -17,7 +17,8 @@ export interface SyncMetadata {
  * are missing or haven't been synced yet.
  */
 export const isFirstTimeTickTickSync = (syncMetadata: SyncMetadata | undefined): boolean => {
-	if (!syncMetadata) return true;
+	// No metadata means the fetch failed or hasn't loaded (a real first-time user gets `{}`), so don't assume first sync.
+	if (!syncMetadata) return false;
 
 	const requiredSyncTypes = [
 		'tickTickTasks',
