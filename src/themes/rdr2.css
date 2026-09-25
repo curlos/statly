@@ -14,7 +14,7 @@
 	--rdr-bone: #e8e2d6;
 	--rdr-line: rgba(232, 226, 214, 0.16);
 	--rdr-panel: rgba(18, 17, 15, 0.9);
-	--rdr-bg: #0b0b0b;
+	--rdr-bg: #26231f;
 
 	/* Re-skin the whole site by overriding the shared gray palette. */
 	--color-primary-text: var(--rdr-bone);
@@ -38,8 +38,8 @@
 /* ---------- Background: near-black with a heavy vignette ---------- */
 [data-ui-theme='rdr2'] body {
 	background:
-		radial-gradient(ellipse at 50% 40%, rgba(60, 54, 46, 0.35), transparent 65%),
-		radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.8) 100%),
+		radial-gradient(ellipse at 50% 40%, rgba(90, 80, 66, 0.35), transparent 65%),
+		radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
 		var(--rdr-bg) fixed;
 	overflow-x: clip;
 }
@@ -51,7 +51,7 @@
 }
 
 [data-ui-theme='rdr2'] .sticky.bg-color-gray-700 {
-	background-color: rgba(11, 11, 11, 0.94);
+	background-color: transparent;
 }
 
 /* Film grain over the screen (behind content) */
