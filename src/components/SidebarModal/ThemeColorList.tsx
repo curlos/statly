@@ -34,6 +34,19 @@ const ThemeColorList = () => {
 		await editUserSettings({ theme: { ...userSettings?.theme, customColor: hex, useCustomColor: true } }).unwrap();
 	}, 500, true);
 
+	// Favorites are stored newest first
+	const favoriteCustomColors = userSettings?.theme?.favoriteCustomColors ?? [];
+	const isCurrentColorFavorited = favoriteCustomColors.some((hex) => hex.toLowerCase() === customColorHex.toLowerCase());
+
+	const handleAddFavoriteColor = async () => {
+		if (isCurrentColorFavorited) return;
+		await editUserSettings({ theme: { ...userSettings?.theme, favoriteCustomColors: [customColorHex, ...favoriteCustomColors] } }).unwrap();
+	};
+
+	const handleRemoveFavoriteColor = async (hexToRemove: string) => {
+		await editUserSettings({ theme: { ...userSettings?.theme, favoriteCustomColors: favoriteCustomColors.filter((hex) => hex !== hexToRemove) } }).unwrap();
+	};
+
 	const handleToggleColorMode = async (mode: 'tailwind' | 'custom') => {
 		localStorage.setItem('theme-use-custom-color', String(mode === 'custom'));
 		await editUserSettings({ theme: { ...userSettings?.theme, useCustomColor: mode === 'custom' } }).unwrap();
@@ -79,6 +92,62 @@ const ThemeColorList = () => {
 						ariaLabel="Custom theme color"
 						onColorChange={(hex) => handleChangeCustomColor(hex)}
 					/>
+
+					{/* Favorite custom colors */}
+					<button
+						type="button"
+						onClick={handleAddFavoriteColor}
+						disabled={isCurrentColorFavorited}
+						className={classNames(
+							'mt-3 flex items-center gap-1 px-3 py-1 rounded border border-color-gray-100',
+							isCurrentColorFavorited ? 'opacity-60 cursor-default' : 'cursor-pointer hover:bg-color-gray-600'
+						)}
+					>
+						<Icon name="favorite" fill={isCurrentColorFavorited ? 1 : 0} customClass="!text-[18px]" aria-hidden={true} />
+						{isCurrentColorFavorited ? 'In Favorites' : 'Add to Favorites'}
+					</button>
+
+					<div className="mt-3">
+						<Accordion
+							title={
+								<div className="flex items-center gap-2">
+									<div className="font-semibold">Favorites ({favoriteCustomColors.length})</div>
+									<div className="flex items-center gap-1" aria-hidden="true">
+										{favoriteCustomColors.slice(0, 5).map((hex) => (
+											<div key={hex} className="w-[15px] h-[15px] rounded-full" style={{ backgroundColor: hex }} />
+										))}
+									</div>
+								</div>
+							}
+						>
+							<div className="pl-3 space-y-1">
+								{favoriteCustomColors.length === 0 && (
+									<div className="text-color-gray-100">No favorite colors yet.</div>
+								)}
+								{favoriteCustomColors.map((hex) => (
+									<div key={hex} className="flex items-center gap-2">
+										<button
+											type="button"
+											onClick={() => handleChangeCustomColor(hex)}
+											className="flex items-center gap-2 cursor-pointer rounded px-1 hover:bg-color-gray-600"
+											aria-label={`Use color ${hex}`}
+										>
+											<div className="w-[15px] h-[15px] rounded-full" style={{ backgroundColor: hex }} />
+											<span>{hex}</span>
+										</button>
+										<button
+											type="button"
+											onClick={() => handleRemoveFavoriteColor(hex)}
+											className="cursor-pointer text-color-gray-100 hover:text-white flex items-center"
+											aria-label={`Remove ${hex} from favorites`}
+										>
+											<Icon name="close" customClass="!text-[16px]" aria-hidden={true} />
+										</button>
+									</div>
+								))}
+							</div>
+						</Accordion>
+					</div>
 				</div>
 			</div>
 

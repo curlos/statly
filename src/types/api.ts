@@ -444,6 +444,7 @@ export interface UserSettings {
 		colorMode?: 'dark' | 'light';
 		customColor?: string;
 		useCustomColor?: boolean;
+		favoriteCustomColors?: string[];
 		uiTheme?: string;
 	};
 	pages: UserSettingsPages;
