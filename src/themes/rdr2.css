@@ -51,7 +51,7 @@
 }
 
 [data-ui-theme='rdr2'] .sticky.bg-color-gray-700 {
-	background-color: transparent;
+	background-color: var(--rdr-panel);
 }
 
 /* Film grain over the screen (behind content) */
