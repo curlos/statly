@@ -496,3 +496,14 @@ html[data-ui-theme='p4'] {
 	border-color: var(--p4-ink) !important;
 	background-color: rgba(17, 17, 17, 0.08);
 }
+
+/* Medals & Challenges loading skeletons: the pale yellow grays vanish on the yellow page and cream
+   panels, so tint the placeholder blocks soft black (like the card skeletons). Real tiles that pulse
+   while loading keep their own look. */
+[data-ui-theme='p4'] .animate-pulse:not(.ui-theme-tile) [class*='bg-color-gray-'] {
+	background: rgba(17, 17, 17, 0.2) !important;
+}
+
+[data-ui-theme='p4'] .animate-pulse.border-color-gray-200 {
+	border-color: rgba(17, 17, 17, 0.3) !important;
+}
