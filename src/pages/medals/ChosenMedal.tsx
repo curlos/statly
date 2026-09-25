@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useUserSettingsContext } from '../focus-records/useUserSettingsContext';
 import { getFormattedShortMonthDay, parseDateRange } from '../../utils/date.utils';
@@ -10,6 +11,12 @@ interface ChosenMedalProps {
 	chosenMedalRef: React.RefObject<HTMLDivElement>;
 }
 
+// Fixed height (px) of each date row so the virtualized list can calculate which rows are visible.
+const ROW_HEIGHT = 28;
+// Number of extra rows rendered above and below the visible window so fast scrolling doesn't show blank space.
+const OVERSCAN = 10;
+const INITIAL_RANGE = { start: 0, end: 50 };
+
 const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chosenMedalRef }) => {
 	const { buildUrlWithQueryParams } = useSearchParamsContext();
 
@@ -18,6 +25,47 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 	} = useUserSettingsContext();
 
 	const pageContext = usePageContext();
+
+	const listRef = useRef<HTMLUListElement>(null);
+	const [range, setRange] = useState(INITIAL_RANGE);
+
+	// Sorted once per medal instead of on every scroll re-render.
+	const sortedIntervals = useMemo(() => {
+		if (!chosenMedal?.intervalsEarned) {
+			return [];
+		}
+
+		return chosenMedal.intervalsEarned.toSorted((a: string, b: string) => {
+			if (chosenMedal.interval !== 'weekly') {
+				return new Date(b).getTime() - new Date(a).getTime();
+			}
+			// If it's weekly, split the strings into two since weekly shows both the start and end period. Grab the start period date and sort it by that.
+			const startDateA = a.split(' - ')[0].trim();
+			const startDateB = b.split(' - ')[0].trim();
+
+			return new Date(startDateB).getTime() - new Date(startDateA).getTime();
+		});
+	}, [chosenMedal]);
+
+	useEffect(() => {
+		setRange(INITIAL_RANGE);
+	}, [chosenMedal]);
+
+	// Only the rows inside (or near) the visible part of the scroll container get rendered. The rest of the list's height is filled with padding above and below.
+	const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+		const container = e.currentTarget;
+		const list = listRef.current;
+
+		if (!list) {
+			return;
+		}
+
+		const offset = list.getBoundingClientRect().top - container.getBoundingClientRect().top;
+		const start = Math.max(0, Math.floor(-offset / ROW_HEIGHT) - OVERSCAN);
+		const end = Math.max(start, Math.ceil((container.clientHeight - offset) / ROW_HEIGHT) + OVERSCAN);
+
+		setRange((prev) => (prev.start === start && prev.end === end ? prev : { start, end }));
+	};
 
 	if (!chosenMedal || Object.keys(chosenMedal).length === 0) {
 		return null;
@@ -84,6 +132,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 			ref={chosenMedalRef}
 			className="ui-theme-plate flex justify-center mt-5 overflow-auto gray-scrollbar"
 			style={{ maxHeight }}
+			onScroll={handleScroll}
 		>
 			<div className="w-full">
 				<div className="flex justify-center mb-2">
@@ -117,31 +166,33 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 										Skip list of {timesEarned.toLocaleString()} {(timesEarned === 1 ? getIntervalsEarnedText().slice(0, -1) : getIntervalsEarnedText()).toLowerCase()}
 									</a>
 								</span>
-								<ul role="list" className="pb-3">
-									{intervalsEarned
-										.toSorted((a: string, b: string) => {
-											if (chosenMedal.interval !== 'weekly') {
-												return new Date(b).getTime() - new Date(a).getTime();
-											}
-											// If it's weekly, split the strings into two since weekly shows both the start and end period. Grab the start period date and sort it by that.
-											const startDateA = a.split(' - ')[0].trim();
-											const startDateB = b.split(' - ')[0].trim();
-
-											return new Date(startDateB).getTime() - new Date(startDateA).getTime();
-										})
-										?.map((dateRange: string) => {
-											return (
-												<li key={dateRange} className="list-disc ml-5">
-													<a
-														href={getDateRangeHref(dateRange)}
-														className="hover:underline"
-														aria-label={`View ${chosenMedal.type === 'tasks' ? 'completed tasks' : 'focus records'} for ${dateRange}`}
-													>
-														{dateRange}
-													</a>
-												</li>
-											);
-										})}
+								<ul
+									ref={listRef}
+									role="list"
+									style={{
+										paddingTop: range.start * ROW_HEIGHT,
+										// Extra 12px keeps the original bottom spacing (was pb-3).
+										paddingBottom: Math.max(0, sortedIntervals.length - range.end) * ROW_HEIGHT + 12,
+									}}
+								>
+									{sortedIntervals.slice(range.start, range.end).map((dateRange: string, index: number) => {
+										return (
+											<li
+												key={dateRange}
+												className="list-disc ml-5 h-7 whitespace-nowrap"
+												aria-setsize={sortedIntervals.length}
+												aria-posinset={range.start + index + 1}
+											>
+												<a
+													href={getDateRangeHref(dateRange)}
+													className="hover:underline"
+													aria-label={`View ${chosenMedal.type === 'tasks' ? 'completed tasks' : 'focus records'} for ${dateRange}`}
+												>
+													{dateRange}
+												</a>
+											</li>
+										);
+									})}
 								</ul>
 								<div id="after-intervals-list" tabIndex={-1} />
 							</div>
