@@ -1,0 +1,440 @@
+/* =========================================================================
+   METAL GEAR SOLID (1998) UI THEME
+   Everything here only applies when <html data-ui-theme="mgs">.
+   Inspired by MGS's menus (Option, Key Config, Load, VR Training) and the Codec: a black-green
+   CRT with scanlines and a faint circuit grid, glowing phosphor-green text, options drawn as
+   hexagon "tags" with pointed ends (outlined; filled bright green when selected), thin green
+   boxes with small header tabs, and the Codec's framed box for modals.
+   Font: VT323, a CRT terminal pixel font with upper and lower case.
+   ========================================================================= */
+
+[data-ui-theme='mgs'] {
+	--mgs-green: #7dffb0;
+	--mgs-green-dim: rgba(125, 255, 176, 0.55);
+	--mgs-green-faint: rgba(125, 255, 176, 0.14);
+	--mgs-bright: #d8ffe8;
+	--mgs-dark: #031a0c;
+	--mgs-panel: rgba(4, 20, 12, 0.88);
+	--mgs-bg: #020805;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: #c8ffdc;
+	--color-gray: var(--mgs-bg);
+	--color-gray-25: #b6f5cc;
+	--color-gray-50: #8ad9a6;
+	--color-gray-100: #5fa87a;
+	--color-gray-150: #1f4a30;
+	--color-gray-200: #143322;
+	--color-gray-300: #0c2417;
+	--color-gray-600: #061a0f;
+	--color-gray-650: #081f12;
+	--color-gray-700: #03100a;
+
+	color-scheme: dark;
+	accent-color: var(--mgs-green);
+	font-family: 'VT323', monospace;
+	/* Accessibility: VT323 has small, thin pixel letters (x-height 0.40 vs ~0.51 for the default
+	   font), so scale it ~15% above a plain match to read like normal text */
+	font-size-adjust: 0.55;
+	scrollbar-color: var(--mgs-green-dim) transparent;
+}
+
+/* ---------- Background: black-green CRT with a faint circuit grid and vignette ---------- */
+[data-ui-theme='mgs'] body {
+	background:
+		radial-gradient(ellipse at 50% 45%, rgba(20, 70, 40, 0.35), transparent 70%),
+		radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.7) 100%),
+		linear-gradient(rgba(125, 255, 176, 0.045) 1px, transparent 1px) 0 0 / 48px 48px,
+		linear-gradient(90deg, rgba(125, 255, 176, 0.045) 1px, transparent 1px) 0 0 / 48px 48px,
+		var(--mgs-bg) fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='mgs'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='mgs'] .flex-1.bg-color-gray-700,
+[data-ui-theme='mgs'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='mgs'] .sticky.bg-color-gray-700 {
+	background-color: rgba(2, 8, 5, 0.94);
+}
+
+/* CRT scanlines over the whole screen (behind content) */
+[data-ui-theme='mgs']::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 3px);
+}
+
+/* ---------- Typography: glowing phosphor green ---------- */
+[data-ui-theme='mgs'] .text-white {
+	color: #c8ffdc;
+}
+
+[data-ui-theme='mgs'] body {
+	text-shadow: 0 0 4px rgba(125, 255, 176, 0.35);
+}
+
+[data-ui-theme='mgs'] h1,
+[data-ui-theme='mgs'] h1.font-bold {
+	font-family: 'VT323', monospace;
+	font-weight: 400 !important;
+	letter-spacing: 0.04em;
+	color: var(--mgs-green) !important;
+	text-shadow: 0 0 8px rgba(125, 255, 176, 0.7);
+}
+
+[data-ui-theme='mgs'] h2,
+[data-ui-theme='mgs'] h3 {
+	font-family: 'VT323', monospace;
+	font-weight: 400 !important;
+	letter-spacing: 0.03em;
+	color: var(--mgs-green);
+}
+
+/* VT323 has one weight: don't fake-bold it */
+[data-ui-theme='mgs'] .font-bold,
+[data-ui-theme='mgs'] .font-semibold {
+	font-weight: 400;
+	color: var(--mgs-bright);
+}
+
+/* ---------- Shape: square boxes ---------- */
+[data-ui-theme='mgs'] .rounded,
+[data-ui-theme='mgs'] .rounded-md,
+[data-ui-theme='mgs'] .rounded-lg,
+[data-ui-theme='mgs'] .rounded-xl,
+[data-ui-theme='mgs'] .rounded-2xl {
+	border-radius: 0;
+}
+
+/* ---------- Boxes: thin green outline with a small header tab (like "OPTION") ----------
+   Cards, Stats panels, plates, tiles and modal panels. The tab is ::before (nothing is clipped,
+   so dropdowns inside cards open fully). */
+[data-ui-theme='mgs'] .ui-theme-card,
+[data-ui-theme='mgs'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='mgs'] .ui-theme-plate,
+[data-ui-theme='mgs'] .ui-theme-tile,
+[data-ui-theme='mgs'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--mgs-panel);
+	border: 1px solid var(--mgs-green-dim) !important;
+	border-radius: 0;
+	box-shadow: inset 0 0 24px rgba(125, 255, 176, 0.05);
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+[data-ui-theme='mgs'] .ui-theme-card::before,
+[data-ui-theme='mgs'] .bg-color-gray-600.rounded-lg.p-3::before {
+	content: '';
+	position: absolute;
+	top: -1px;
+	left: 12px;
+	width: 46px;
+	height: 5px;
+	pointer-events: none;
+	background: var(--mgs-green);
+	box-shadow: 0 0 6px rgba(125, 255, 176, 0.6);
+}
+
+/* Hover: brighter outline with a phosphor glow */
+[data-ui-theme='mgs'] .ui-theme-card:hover,
+[data-ui-theme='mgs'] .ui-theme-tile:hover {
+	border-color: var(--mgs-green) !important;
+	box-shadow: inset 0 0 24px rgba(125, 255, 176, 0.08), 0 0 12px rgba(125, 255, 176, 0.3);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='mgs'] .ui-theme-card .animate-pulse {
+	background: rgba(125, 255, 176, 0.14) !important;
+}
+
+/* Stats panels: compact padding, headings get a thin green rule with tick marks */
+[data-ui-theme='mgs'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+[data-ui-theme='mgs'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	background: linear-gradient(90deg, var(--mgs-green), rgba(125, 255, 176, 0)) left bottom / 70% 1px no-repeat;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='mgs'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='mgs'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='mgs'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar */
+[data-ui-theme='mgs'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: rgba(3, 16, 10, 0.92);
+	border-bottom: 1px solid var(--mgs-green-dim);
+	color: var(--mgs-green);
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='mgs'] .ui-theme-tile[aria-checked='true'] {
+	border-color: var(--mgs-green) !important;
+	box-shadow: 0 0 16px rgba(125, 255, 176, 0.45);
+}
+
+[data-ui-theme='mgs'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='mgs'] .ui-theme-tile > .bg-color-gray-200 {
+	background: rgba(3, 16, 10, 0.9);
+	border-left-color: var(--mgs-green) !important;
+	color: var(--mgs-green);
+}
+
+[data-ui-theme='mgs'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='mgs'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--mgs-green);
+	color: var(--mgs-dark) !important;
+	text-shadow: none;
+}
+
+/* ---------- Modals: the Codec box (thin green frame, dark panel) ---------- */
+[data-ui-theme='mgs'] dialog > .ui-theme-bare,
+[data-ui-theme='mgs'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='mgs'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background: rgba(2, 10, 6, 0.96);
+	box-shadow: 0 0 24px rgba(125, 255, 176, 0.18);
+}
+
+/* ---------- Sidebars: dark with a thin green edge; current page is a filled green tag ---------- */
+[data-ui-theme='mgs'] .ui-theme-sidebar {
+	background: linear-gradient(180deg, #03140b, var(--mgs-bg)) !important;
+	border-left: 1px solid var(--mgs-green-dim) !important;
+	box-shadow: -8px 0 24px rgba(0, 0, 0, 0.6);
+}
+
+[data-ui-theme='mgs'] .ui-theme-sidebar nav a {
+	color: var(--mgs-green);
+	padding: 0 12px;
+}
+
+[data-ui-theme='mgs'] .ui-theme-sidebar nav a[aria-current='page'] {
+	border-style: solid;
+	border-color: transparent;
+	border-width: 1px;
+	border-image: url('../assets/themes/mgs/tag-active.svg') 0 10 fill / 0 10px stretch;
+	color: var(--mgs-dark) !important;
+	text-shadow: none;
+}
+
+[data-ui-theme='mgs'] .ui-theme-sidebar nav a:not([aria-current='page']):hover {
+	background: var(--mgs-green-faint);
+	color: var(--mgs-bright) !important;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): dark box with a green outline ---------- */
+[data-ui-theme='mgs'] .ui-theme-tooltip,
+[data-ui-theme='mgs'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='mgs'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='mgs'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='mgs'] .react-tooltip {
+	background: rgba(2, 10, 6, 0.98) !important;
+	border: 1px solid var(--mgs-green) !important;
+	box-shadow: 0 0 14px rgba(125, 255, 176, 0.25) !important;
+	color: #c8ffdc !important;
+	border-radius: 0 !important;
+}
+
+/* Hovered menu row: filled green with dark text */
+[data-ui-theme='mgs'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='mgs'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: var(--mgs-green);
+}
+
+[data-ui-theme='mgs'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='mgs'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover *,
+[data-ui-theme='mgs'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover * {
+	color: var(--mgs-dark) !important;
+	text-shadow: none;
+}
+
+/* ---------- Buttons & tabs: hexagon "tags" with pointed ends ----------
+   Drawn as a border-image sliced 0 10, so the points stay sharp at any width. */
+[data-ui-theme='mgs'] :is(button, a).bg-\[var\(--theme-color\)\],
+[data-ui-theme='mgs'] :is(button, a).bg-color-gray-300,
+[data-ui-theme='mgs'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='mgs'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border-style: solid !important;
+	border-color: transparent !important;
+	border-width: 1px !important;
+	border-radius: 0 !important;
+	border-image: url('../assets/themes/mgs/tag.svg') 0 10 fill / 0 10px stretch;
+	color: var(--mgs-green) !important;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+/* Selected: filled bright green tag with dark text */
+[data-ui-theme='mgs'] :is(button, a).bg-\[var\(--theme-color\)\],
+[data-ui-theme='mgs'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='mgs'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	border-image-source: url('../assets/themes/mgs/tag-active.svg');
+	color: var(--mgs-dark) !important;
+	text-shadow: none;
+}
+
+[data-ui-theme='mgs'] :is(button, a).bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='mgs'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='mgs'] [role='tablist'] [role='tab'][aria-selected='true'] * {
+	color: var(--mgs-dark) !important;
+	text-shadow: none;
+}
+
+/* Big tile-style buttons (icon over label, e.g. Color Mode / UI Theme picker) stay boxes */
+[data-ui-theme='mgs'] :is(button, a).flex-col:is(.bg-color-gray-300, .bg-\[var\(--theme-color\)\]) {
+	border-image: none;
+	border-color: var(--mgs-green-dim) !important;
+}
+
+[data-ui-theme='mgs'] :is(button, a).flex-col.bg-\[var\(--theme-color\)\] {
+	background: var(--mgs-green) !important;
+}
+
+/* ---------- Hover feedback on anything selectable ---------- */
+[data-ui-theme='mgs'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover,
+[data-ui-theme='mgs'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='mgs'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	background-color: var(--mgs-green-faint) !important;
+	color: var(--mgs-bright) !important;
+}
+
+[data-ui-theme='mgs'] :is(a, button).bg-\[var\(--theme-color\)\]:hover {
+	filter: brightness(1.12);
+}
+
+[data-ui-theme='mgs'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: var(--mgs-bright) !important;
+	text-shadow: 0 0 8px rgba(125, 255, 176, 0.8);
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='mgs'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='mgs'] textarea:not(.bg-transparent),
+[data-ui-theme='mgs'] select {
+	background-color: rgba(2, 10, 6, 0.9);
+	border: 1px solid var(--mgs-green-dim);
+	border-radius: 0;
+	color: #c8ffdc;
+}
+
+[data-ui-theme='mgs'] input:not(.bg-transparent):focus,
+[data-ui-theme='mgs'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='mgs'] select:focus {
+	outline: none;
+	border-color: var(--mgs-green);
+	box-shadow: 0 0 10px rgba(125, 255, 176, 0.35);
+}
+
+/* ---------- Dividers: thin green line with small tick marks ---------- */
+[data-ui-theme='mgs'] hr {
+	border: 0;
+	height: 5px;
+	background:
+		linear-gradient(var(--mgs-green-dim), var(--mgs-green-dim)) center / 100% 1px no-repeat,
+		repeating-linear-gradient(90deg, var(--mgs-green-dim) 0 1px, transparent 1px 24px) center / 100% 5px no-repeat;
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='mgs'] ::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+[data-ui-theme='mgs'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='mgs'] ::-webkit-scrollbar-thumb {
+	background: var(--mgs-green-dim);
+}
+
+[data-ui-theme='mgs'] ::selection {
+	background: var(--mgs-green);
+	color: var(--mgs-dark);
+}
+
+/* ---------- Mouse cursor: green pixel arrow; pixel pointing hand on hover ---------- */
+[data-ui-theme='mgs'],
+[data-ui-theme='mgs'] body {
+	cursor: url('../assets/themes/cursors/mgs.svg') 2 2, auto;
+}
+
+[data-ui-theme='mgs'] a,
+[data-ui-theme='mgs'] button,
+[data-ui-theme='mgs'] [role='button'],
+[data-ui-theme='mgs'] [role='tab'],
+[data-ui-theme='mgs'] [role='menuitem'],
+[data-ui-theme='mgs'] [role='radio'],
+[data-ui-theme='mgs'] label,
+[data-ui-theme='mgs'] select,
+[data-ui-theme='mgs'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/mgs-pointer.svg') 11 2, pointer;
+}
+
+/* Chart "empty" areas: dark CRT green instead of neutral dark gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='mgs'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #0c2a18;
+}
+
+[data-ui-theme='mgs'] .recharts-bar-background-rectangle {
+	fill: #11361f;
+}
+
+/* Accessibility: VT323's one-pixel-thin strokes are hard to read below 16px, so in this theme the
+   small text sizes (12-14px labels, e.g. the TickTick Cookie row, profile email, medal names)
+   get a 16px floor. Responsive larger sizes (sm:text-[16px] and up) still apply. */
+[data-ui-theme='mgs'] :is(.text-xs, .text-sm, .text-\[10px\], .text-\[12px\], .text-\[13px\], .text-\[13\.5px\], .text-\[14px\]) {
+	font-size: 16px !important;
+	line-height: 1.3;
+}
+
+/* Chosen Medal / Challenge panel: inner padding so text doesn't touch the green border */
+[data-ui-theme='mgs'] .ui-theme-plate.mt-5 {
+	padding: 10px 14px 12px;
+}
+
+/* Anything sitting on a bright green (theme-colored) fill, e.g. the Applied Filter pills:
+   dark text, no glow (the bold labels would otherwise be light green on green) */
+/* (Focus Record / Completed Tasks cards also carry the theme-color class but are dark panels here) */
+[data-ui-theme='mgs'] :is(.bg-\[var\(--theme-color\)\], .bg-\[var\(--theme-color-half\)\]):not(.ui-theme-card),
+[data-ui-theme='mgs'] :is(.bg-\[var\(--theme-color\)\], .bg-\[var\(--theme-color-half\)\]):not(.ui-theme-card) * {
+	color: var(--mgs-dark) !important;
+	text-shadow: none;
+}
+
+/* Current page in the sidebar is a bright green tag: its icon (theme-colored green) must go dark too */
+[data-ui-theme='mgs'] .ui-theme-sidebar nav a[aria-current='page'] * {
+	color: var(--mgs-dark) !important;
+	text-shadow: none;
+}
+
+/* Medals / Challenges top buttons (Focus · Tasks, Daily · Weekly · Monthly · Yearly): VT323's larger
+   text can push the row past the screen edge, so let it wrap here (other themes don't need to). */
+[data-ui-theme='mgs'] .flex.items-center.gap-2.my-2:has(> a) {
+	flex-wrap: wrap;
+}

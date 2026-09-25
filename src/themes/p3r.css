@@ -1,0 +1,315 @@
+/* =========================================================================
+   PERSONA 3 RELOAD UI THEME
+   Everything here only applies when <html data-ui-theme="p3r">.
+   Inspired by P3R menus: royal-blue backgrounds, deep navy panels, cyan labels,
+   white "selected" pills with a hot pink edge, triangle slot tabs, and a huge
+   faded italic page word in the background (like "LOAD" / "CONFIG").
+   ========================================================================= */
+
+[data-ui-theme='p3r'] {
+	--p3r-blue: #0b2ad6;
+	--p3r-blue-bright: #3d7bff;
+	--p3r-sky: #7fb2ff;
+	--p3r-navy: #141a5e;
+	--p3r-navy-deep: #0b1045;
+	--p3r-cyan: #3fe3f5;
+	--p3r-pink: #ff4f7a;
+	--p3r-yellow: #f5e642;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: #ffffff;
+	--color-gray: #070b33;
+	--color-gray-25: #d3e4ff;
+	--color-gray-50: #a3bbff;
+	--color-gray-100: #7f95da;
+	--color-gray-150: #3a4fb0;
+	--color-gray-200: #2a3a96;
+	--color-gray-300: #1b2575;
+	--color-gray-600: var(--p3r-navy);
+	--color-gray-650: #10164f;
+	--color-gray-700: var(--p3r-navy-deep);
+
+	--theme-color: var(--p3r-cyan);
+	--theme-color-half: rgba(63, 227, 245, 0.35);
+	--theme-on-color: var(--p3r-navy-deep);
+
+	color-scheme: dark;
+	font-family: 'Barlow', sans-serif;
+	scrollbar-color: #ffffff var(--p3r-navy-deep);
+}
+
+/* ---------- Background: royal-blue gradient + diagonal slash + giant page word ---------- */
+[data-ui-theme='p3r'] body {
+	background: linear-gradient(160deg, #1466e8 0%, var(--p3r-blue) 30%, #0a1a8c 65%, #060b3a 100%) fixed;
+	overflow-x: clip;
+}
+
+/* Page wrappers are transparent so the blue background and watermark show through. */
+[data-ui-theme='p3r'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='p3r'] .flex-1.bg-color-gray-700,
+[data-ui-theme='p3r'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='p3r'] .sticky.bg-color-gray-700 {
+	background-color: rgba(11, 16, 69, 0.82);
+	backdrop-filter: blur(6px);
+}
+
+/* Diagonal light slash across the screen. */
+[data-ui-theme='p3r'] body::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		linear-gradient(115deg, transparent 57.5%, rgba(255, 255, 255, 0.35) 57.5%, rgba(255, 255, 255, 0.35) 58%, transparent 58%),
+		linear-gradient(115deg, transparent 58%, rgba(255, 255, 255, 0.08) 58%, rgba(255, 255, 255, 0.08) 72%, transparent 72%);
+}
+
+/* Huge faded italic page word (set from the URL in +Layout.tsx). */
+[data-ui-theme='p3r'] body::before {
+	content: attr(data-watermark);
+	position: fixed;
+	left: -1vw;
+	bottom: -3vw;
+	z-index: -1;
+	pointer-events: none;
+	white-space: nowrap;
+	font-family: 'Jost', sans-serif;
+	font-style: italic;
+	font-weight: 800;
+	font-size: 16vw;
+	line-height: 0.9;
+	letter-spacing: -0.03em;
+	color: rgba(255, 255, 255, 0.06);
+	-webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
+	transform: rotate(-6deg);
+	transform-origin: left bottom;
+	text-transform: uppercase;
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='p3r'] h1,
+[data-ui-theme='p3r'] h1.font-bold {
+	font-family: 'Jost', sans-serif;
+	font-style: italic;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: -0.01em;
+	color: #ffffff;
+	text-shadow: 3px 3px 0 var(--p3r-navy-deep);
+}
+
+[data-ui-theme='p3r'] h2,
+[data-ui-theme='p3r'] h3 {
+	color: var(--p3r-cyan);
+}
+
+[data-ui-theme='p3r'] h2,
+[data-ui-theme='p3r'] h3,
+[data-ui-theme='p3r'] h4,
+[data-ui-theme='p3r'] .font-bold,
+[data-ui-theme='p3r'] .font-semibold {
+	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
+	letter-spacing: 0.015em;
+}
+
+/* ---------- Shape: square panels, pills stay pills ---------- */
+[data-ui-theme='p3r'] .rounded,
+[data-ui-theme='p3r'] .rounded-md {
+	border-radius: 2px;
+}
+
+[data-ui-theme='p3r'] .rounded-lg,
+[data-ui-theme='p3r'] .rounded-xl,
+[data-ui-theme='p3r'] .rounded-2xl {
+	border-radius: 0;
+}
+
+/* ---------- Cards: navy save-slot panels with a light-blue triangle tab ---------- */
+[data-ui-theme='p3r'] .ui-theme-card {
+	position: relative;
+	background-color: rgba(20, 26, 94, 0.95);
+	border-bottom: 3px solid rgba(61, 123, 255, 0.35);
+	transition: box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+[data-ui-theme='p3r'] .ui-theme-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 16px;
+	height: 16px;
+	pointer-events: none;
+	background: var(--p3r-sky);
+	clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* Hovered card gets the hot-pink offset edge of the selected save slot. */
+[data-ui-theme='p3r'] .ui-theme-card:hover {
+	background-color: rgba(28, 37, 128, 0.97);
+	box-shadow: -6px -6px 0 0 var(--p3r-pink);
+}
+
+/* ---------- Stat panels & dropdowns: navy with a thin blue edge ---------- */
+[data-ui-theme='p3r'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='p3r'] .bg-color-gray-600.rounded-xl.shadow-lg {
+	background-color: rgba(20, 26, 94, 0.95);
+	border: 1px solid rgba(61, 123, 255, 0.45);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 20px rgba(3, 6, 30, 0.45);
+}
+
+/* ---------- Modals: navy panel with a blue border and pink offset shadow ---------- */
+[data-ui-theme='p3r'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background-color: #10164f;
+	border: 2px solid var(--p3r-blue-bright);
+	box-shadow: 8px 8px 0 0 var(--p3r-pink);
+}
+
+/* ---------- Tooltips, context menus, toasts: glowing blue dialog box (like Chidori's) ---------- */
+[data-ui-theme='p3r'] .ui-theme-tooltip,
+[data-ui-theme='p3r'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='p3r'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='p3r'] .react-tooltip {
+	background: rgba(20, 30, 120, 0.97) !important;
+	border: 2px solid var(--p3r-blue-bright) !important;
+	box-shadow: 0 0 0 1px var(--p3r-navy-deep), 0 0 16px rgba(61, 123, 255, 0.6) !important;
+	color: #ffffff !important;
+	border-radius: 0 !important;
+}
+
+/* ---------- Buttons: white "selected" pill with a pink edge, dark navy unselected pill ---------- */
+[data-ui-theme='p3r'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='p3r'] a.bg-\[var\(--theme-color\)\] {
+	background: #ffffff !important;
+	color: var(--p3r-navy-deep) !important;
+	border-color: var(--p3r-pink) !important;
+	box-shadow: 0 3px 0 0 var(--p3r-pink);
+}
+
+[data-ui-theme='p3r'] button.bg-color-gray-300 {
+	background: var(--p3r-navy-deep) !important;
+	color: #8fa6e8 !important;
+	border: 1px solid #22308f;
+	font-style: italic;
+}
+
+[data-ui-theme='p3r'] button:not(:disabled):hover {
+	filter: brightness(1.1);
+}
+
+/* ---------- Inputs ---------- */
+/* Inputs marked bg-transparent sit inside their own styled box (e.g. FormInput), so leave them alone. */
+[data-ui-theme='p3r'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='p3r'] textarea:not(.bg-transparent),
+[data-ui-theme='p3r'] select {
+	background-color: #070b33;
+	border-color: #2f4bd0;
+	color: #ffffff;
+}
+
+[data-ui-theme='p3r'] input:not(.bg-transparent):focus,
+[data-ui-theme='p3r'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='p3r'] select:focus {
+	border-color: var(--p3r-cyan);
+	box-shadow: 0 0 0 1px var(--p3r-cyan), 0 0 10px rgba(63, 227, 245, 0.35);
+	outline: none;
+}
+
+/* ---------- Dividers: thin line that fades out, like the "Guide ——" underline ---------- */
+[data-ui-theme='p3r'] hr {
+	border: 0;
+	height: 1px;
+	background: linear-gradient(90deg, #ffffff, rgba(63, 227, 245, 0.6) 40%, transparent);
+}
+
+/* ---------- Scrollbars: white thumb on navy, like the save list ---------- */
+[data-ui-theme='p3r'] ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+[data-ui-theme='p3r'] ::-webkit-scrollbar-track {
+	background: var(--p3r-navy-deep);
+}
+
+[data-ui-theme='p3r'] ::-webkit-scrollbar-thumb {
+	background: #ffffff;
+	border: 2px solid var(--p3r-navy-deep);
+}
+
+/* ---------- Selection ---------- */
+[data-ui-theme='p3r'] ::selection {
+	background: var(--p3r-pink);
+	color: #ffffff;
+}
+
+/* Modal wrappers that only hold an already-framed card (Stats Details / Completion Stats):
+   no modal frame and no box of their own, so the card isn't double-framed. */
+[data-ui-theme='p3r'] dialog > .ui-theme-bare,
+/* extra-specific so it beats the dropdown-box rule that also matches these wrapper classes */
+[data-ui-theme='p3r'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+/* ---------- Mouse cursor (hand-drawn in the game's style, src/assets/themes/cursors/) ---------- */
+[data-ui-theme='p3r'],
+[data-ui-theme='p3r'] body {
+	cursor: url('../assets/themes/cursors/p3r.svg') 3 2, auto;
+}
+
+[data-ui-theme='p3r'] a,
+[data-ui-theme='p3r'] button,
+[data-ui-theme='p3r'] [role='button'],
+[data-ui-theme='p3r'] [role='tab'],
+[data-ui-theme='p3r'] [role='menuitem'],
+[data-ui-theme='p3r'] [role='radio'],
+[data-ui-theme='p3r'] label,
+[data-ui-theme='p3r'] select,
+[data-ui-theme='p3r'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/p3r-pointer.svg') 12 2, pointer;
+}
+
+/* Hovered row in dropdown / context menus: a clear bright-blue highlight */
+[data-ui-theme='p3r'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='p3r'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: rgba(61, 123, 255, 0.45);
+}
+
+/* Chart "empty" areas: deep navy blue instead of neutral dark gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='p3r'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #16246e;
+}
+
+[data-ui-theme='p3r'] .recharts-bar-background-rectangle {
+	fill: #1d2d86;
+}
+
+/* Accessibility: match the site's default text size. Barlow runs ~9% small and Barlow Condensed
+   (headings/labels) ~20% small at the same font size, so scale each up to the default's width. */
+[data-ui-theme='p3r'] {
+	font-size-adjust: 0.55;
+}
+
+[data-ui-theme='p3r'] h2,
+[data-ui-theme='p3r'] h3,
+[data-ui-theme='p3r'] h4,
+[data-ui-theme='p3r'] .font-bold,
+[data-ui-theme='p3r'] .font-semibold {
+	font-size-adjust: 0.65;
+}
+
+/* Main menu sidebar: the current page gets the white "selected" bar with a pink edge, like selected buttons */
+[data-ui-theme='p3r'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: #ffffff;
+	color: var(--p3r-navy-deep) !important;
+	box-shadow: 0 3px 0 0 var(--p3r-pink);
+	padding: 2px 8px;
+	margin-left: -8px;
+}

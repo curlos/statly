@@ -102,16 +102,20 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 		}
 	};
 
-	const getFormattedSelectedDates = () => {
+	// shortMonth: "Sep 25, 2026" / "Sep 2026" for the visible label (saves space in the stats cards);
+	// the screen-reader announcement keeps the full month name.
+	const getFormattedSelectedDates = (shortMonth = false) => {
 		const firstDay = selectedDates[0] || new Date();
 
 		switch (selectedInterval) {
 			case 'Day':
-				return formatCheckedInDayDate(firstDay);
+				return shortMonth
+					? firstDay.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+					: formatCheckedInDayDate(firstDay);
 			case 'Week':
 				return `${getFormattedShortMonthDay(firstDay)} - ${getFormattedShortMonthDay(selectedDates[selectedDates.length - 1])}`;
 			case 'Month':
-				return firstDay.toLocaleString('default', { month: 'long', year: 'numeric' });
+				return firstDay.toLocaleString('default', { month: shortMonth ? 'short' : 'long', year: 'numeric' });
 			case 'Year':
 				return firstDay.toLocaleString('default', { year: 'numeric' });
 			case 'Custom':
@@ -122,7 +126,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 	return (
 		<>
 			<div aria-live="polite" aria-atomic="true" className="sr-only">{getFormattedSelectedDates()}</div>
-			<div className="flex justify-between items-center gap-3 bg-color-gray-600 py-2 rounded-md">
+			<div className="ui-theme-plate flex justify-between items-center gap-3 bg-color-gray-600 py-2 rounded-md">
 				<button
 					type="button"
 					aria-label={`Previous ${selectedInterval.toLowerCase()}`}
@@ -131,7 +135,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 				>
 					<Icon name="keyboard_arrow_left" customClass="!text-[20px] mt-[2px] text-color-gray-100" />
 				</button>
-				<div className="text-[14px] sm:text-[16px]">{getFormattedSelectedDates()}</div>
+				<div className="text-[14px] sm:text-[16px]">{getFormattedSelectedDates(true)}</div>
 				<button
 					type="button"
 					aria-label={`Next ${selectedInterval.toLowerCase()}`}

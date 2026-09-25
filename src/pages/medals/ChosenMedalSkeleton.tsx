@@ -5,7 +5,7 @@ const ChosenMedalSkeleton = ({ maxHeight, chosenMedalRef }: { maxHeight: string;
 	return (
 		<div
 			ref={chosenMedalRef}
-			className="flex justify-center mt-5 overflow-auto gray-scrollbar"
+			className="ui-theme-plate flex justify-center mt-5 overflow-auto gray-scrollbar"
 			style={{ maxHeight }}
 		>
 			<div className="w-full max-w-[400px]">

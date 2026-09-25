@@ -160,7 +160,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 				)}
 
 				<div
-					className={classNames('p-2 rounded-lg w-[95%] sm:w-full relative', customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && (lowerCardOpacity ? bgColorHalfOpacity : bgColor))}
+					className={classNames('ui-theme-card p-2 rounded-lg w-[95%] sm:w-full relative', customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && (lowerCardOpacity ? bgColorHalfOpacity : bgColor))}
 					style={cardBackgroundStyle}
 					onContextMenu={handleContextMenu}
 				>

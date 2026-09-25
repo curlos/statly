@@ -3,10 +3,11 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import ThemeColorList from '../../SidebarModal/ThemeColorList';
 import FontFamilyList from '../../SidebarModal/FontFamilyList';
 import ColorModeList from '../../SidebarModal/ColorModeList';
+import UiThemeList from '../../SidebarModal/UiThemeList';
 import classNames from 'classnames';
 
 const AppearanceSection = () => {
-	const [activeTab, setActiveTab] = useState<'theme-color' | 'font-family' | 'color-mode'>('theme-color');
+	const [activeTab, setActiveTab] = useState<'theme-color' | 'font-family' | 'color-mode' | 'ui-theme'>('theme-color');
 	const { chosenColorObj } = useThemeContext();
 	const { bgColor } = chosenColorObj;
 
@@ -17,7 +18,7 @@ const AppearanceSection = () => {
 	return (
 		<div>
 			{/* Tabs */}
-			<div role="tablist" aria-label="Appearance settings" className="flex justify-center gap-2 mb-6">
+			<div role="tablist" aria-label="Appearance settings" className="flex flex-wrap justify-center gap-2 mb-6">
 				<button
 					role="tab"
 					id="appearance-theme-color-tab"
@@ -48,6 +49,16 @@ const AppearanceSection = () => {
 				>
 					Color Mode
 				</button>
+				<button
+					role="tab"
+					id="appearance-ui-theme-tab"
+					aria-selected={activeTab === 'ui-theme'}
+					aria-controls="appearance-tab-panel"
+					className={activeTab === 'ui-theme' ? selectedButtonStyle : unselectedButtonStyle}
+					onClick={() => setActiveTab('ui-theme')}
+				>
+					UI Theme
+				</button>
 			</div>
 
 			{/* Tab Content */}
@@ -56,6 +67,7 @@ const AppearanceSection = () => {
 				role="tabpanel"
 				aria-labelledby={`appearance-${activeTab}-tab`}
 			>
+				{activeTab === 'ui-theme' && <UiThemeList />}
 				{activeTab === 'theme-color' && <ThemeColorList />}
 				{activeTab === 'font-family' && <FontFamilyList />}
 				{activeTab === 'color-mode' && <ColorModeList />}

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 26">
+	<!-- Gold ornamental pointer that sits to the right of the selected menu item,
+	     pointing left at it (like the one beside "Musician and Muse"). -->
+	<defs>
+		<filter id="ink" x="-5%" y="-10%" width="110%" height="120%">
+			<feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="2" seed="5" result="noise" />
+			<feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2" xChannelSelector="R" yChannelSelector="G" />
+		</filter>
+	</defs>
+
+	<g filter="url(#ink)" stroke="#1c150d" stroke-linejoin="round" stroke-linecap="round">
+		<!-- Shaft -->
+		<path d="M14 10.5 H36 V15.5 H14 Z" fill="#b8902e" stroke-width="2.5" />
+		<!-- Arrow head -->
+		<path d="M2 13 L16 3 L13.5 13 L16 23 Z" fill="#e2b64a" stroke-width="2.8" />
+		<!-- Fletching / fleur tail -->
+		<path d="M34 13 C36 5 42 2 46 5 C42 6 40 9 40 13 C40 17 42 20 46 21 C42 24 36 21 34 13 Z" fill="#e2b64a" stroke-width="2.6" />
+		<circle cx="31" cy="13" r="3.2" fill="#f5dc7a" stroke-width="2.2" />
+	</g>
+	<!-- Highlights -->
+	<path d="M6 12 L14 6.5" stroke="#fff3c4" stroke-width="1.4" stroke-linecap="round" />
+	<path d="M17 12 H33" stroke="#f5dc7a" stroke-width="1.2" stroke-linecap="round" />
+</svg>

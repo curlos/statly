@@ -1,6 +1,15 @@
 import '../index.css';
 import '../App.css';
 import '../fonts';
+import '../themes/hades.css';
+import '../themes/p3r.css';
+import '../themes/p4.css';
+import '../themes/p5.css';
+import '../themes/cyberpunk.css';
+import '../themes/ff7r.css';
+import '../themes/mgs.css';
+import '../themes/rdr2.css';
+import '../themes/ink-marker.css';
 import 'material-symbols';
 
 import { Provider, useSelector, useDispatch } from 'react-redux';
@@ -17,6 +26,7 @@ import { useAutoSync } from '../hooks/useAutoSync';
 import { FontLoadingProvider } from '../contexts/useFontLoadingContext';
 import { useGetLoggedInUserQuery } from '../services/resources/usersApi';
 import Toast from '../components/Toast';
+import CopicFilterDefs from '../components/CopicFilterDefs';
 import { useEffect } from 'react';
 
 const globalClasses = 'text-white select-none';
@@ -97,12 +107,13 @@ interface LoggedInBaseProps {
 
 const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 	const themeContext = useThemeContext();
-	const { selectedFontFamilyKey } = themeContext;
+	const { selectedFontFamilyKey, uiTheme } = themeContext;
 
 	useAutoSync();
 
 	const globalStyle = {
-		fontFamily: selectedFontFamilyKey !== 'Default' ? selectedFontFamilyKey : '',
+		// Game UI themes (e.g. Hades) set their own fonts.
+		fontFamily: selectedFontFamilyKey !== 'Default' && (uiTheme === 'default' || uiTheme === 'ink-marker') ? `'${selectedFontFamilyKey}'` : '',
 	};
 
 	return (
@@ -114,6 +125,9 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 
 			{/* Toast notifications */}
 			<Toast />
+
+			{/* Copic marker texture filter for charts in the Ink & Marker UI theme */}
+			{uiTheme === 'ink-marker' && <CopicFilterDefs />}
 		</div>
 	);
 };

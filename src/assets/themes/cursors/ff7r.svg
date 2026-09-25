@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+	<!-- Final Fantasy VII Remake cursor: a slim light-blue arrow with a soft Mako glow. Hotspot: tip (3 2). -->
+	<polygon points="3,2 3,24 8.5,19 12.5,27.5 16,26 12,17.5 19.5,17.5" fill="none" stroke="#3aa0ff" stroke-opacity="0.45" stroke-width="4" stroke-linejoin="round" />
+	<polygon points="3,2 3,24 8.5,19 12.5,27.5 16,26 12,17.5 19.5,17.5" fill="#dff3ff" stroke="#0a2a6e" stroke-width="1.6" stroke-linejoin="round" />
+	<polygon points="3,2 3,24 8.5,19 10,17.5" fill="#6fe0ff" opacity="0.55" />
+</svg>

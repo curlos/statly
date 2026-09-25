@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20">
+	<!-- Metal Gear Solid option "tag" (unselected): a hexagon with pointed ends, thin phosphor-green
+	     outline on a dark fill. Used as a border-image sliced 0 10 (left/right points stay sharp). -->
+	<polygon points="8,1 32,1 39,10 32,19 8,19 1,10" fill="#04140c" stroke="#7dffb0" stroke-width="1.4" stroke-linejoin="miter" />
+</svg>

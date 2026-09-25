@@ -82,18 +82,18 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 	return (
 		<div
 			ref={chosenMedalRef}
-			className="flex justify-center mt-5 overflow-auto gray-scrollbar"
+			className="ui-theme-plate flex justify-center mt-5 overflow-auto gray-scrollbar"
 			style={{ maxHeight }}
 		>
-			<div>
+			<div className="w-full">
 				<div className="flex justify-center mb-2">
 					<img src={imgSrc} alt={`${chosenMedal.name} Medal`} className="max-h-[300px] max-w-full" />
 				</div>
 				<div>
-					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-2 sticky">
+					<div className="text-[24px] md:text-[26px] font-bold bg-color-gray-200 px-3 sticky">
 						{chosenMedal.name}
 					</div>
-					<div className="mt-2 space-y-1">
+					<div className="mt-2 space-y-1 px-3">
 						<div className="text-[18px]">
 							<span className="font-bold">Description: </span>
 							{name} in a {getIntervalText()}

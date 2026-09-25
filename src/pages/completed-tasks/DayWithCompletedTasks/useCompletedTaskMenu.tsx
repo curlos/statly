@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useBulkDeleteTasksMutation } from '../../../services/resources/deleteApi';
 import { serializeTaskToMarkdown } from '../../../utils/completedTasks.utils';
 import { Task } from '../../../types/models';
 import { AncestorTask } from '../../../types/api';
+import { showToast } from '../../../slices/toastSlice';
 
 interface UseCompletedTaskMenuParams {
 	task: Task | AncestorTask;
 }
 
 export const useCompletedTaskMenu = ({ task }: UseCompletedTaskMenuParams) => {
+	const dispatch = useDispatch();
+
 	// Context menu state (right-click)
 	const [contextMenuVisible, setContextMenuVisible] = useState(false);
 	const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
@@ -26,9 +30,10 @@ export const useCompletedTaskMenu = ({ task }: UseCompletedTaskMenuParams) => {
 	};
 
 	// Copy task title to clipboard
-	const handleCopyTask = () => {
+	const handleCopyTask = async () => {
 		const markdown = serializeTaskToMarkdown(task);
-		navigator.clipboard.writeText(markdown);
+		await navigator.clipboard.writeText(markdown);
+		dispatch(showToast('Task copied to clipboard'));
 	};
 
 	// Delete single task using bulk endpoint
@@ -36,6 +41,7 @@ export const useCompletedTaskMenu = ({ task }: UseCompletedTaskMenuParams) => {
 		try {
 			await bulkDeleteTasks([task.id]).unwrap();
 			setDeleteModalOpen(false);
+			dispatch(showToast('Task deleted'));
 		} catch (error) {
 			console.error('Error deleting task:', error);
 		}

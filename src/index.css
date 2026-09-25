@@ -65,3 +65,49 @@ input[type="search"]::-webkit-search-cancel-button {
 p {
     margin-top: 1em;
 }
+
+/* Buttons and form controls don't inherit font-size-adjust by default (the browser's own control
+   styles reset it), so the UI themes' font-size corrections would skip them. No effect when unset. */
+button,
+input,
+select,
+textarea {
+  font-size-adjust: inherit;
+}
+
+/* Icons are a font too (Material Symbols); never apply the UI themes' text font-size-adjust to
+   them, or they shrink below their intended size. */
+.material-symbols-rounded,
+.material-symbols-outlined,
+.material-symbols-sharp {
+  font-size-adjust: none !important;
+}
+
+/* Medal counts ("x25"): in the UI themes, some fonts draw the "x" nearly as tall as the digits,
+   so keep it smaller than the number (the Default theme's font already does). */
+html[data-ui-theme]:not([data-ui-theme='default']) .medal-count-x {
+  font-size: 0.85em;
+  margin-right: 1px;
+}
+
+/* UI themes: the thin .gray-scrollbar used around the site takes the theme's scrollbar color
+   (set on the page root in each theme) instead of its fixed gray. It stays thin. */
+html[data-ui-theme]:not([data-ui-theme='default']) .gray-scrollbar {
+  scrollbar-color: inherit;
+}
+
+/* UI themes give sidebars their own backgrounds (parchment, gradients, red panels...), so blocks
+   inside them painted with the page-background gray (e.g. the Ring Settings list) would show up
+   as stray boxes. In the Default theme they just blend in, so match that. */
+html[data-ui-theme]:not([data-ui-theme='default']) .ui-theme-sidebar .bg-color-gray-700 {
+  background-color: transparent;
+}
+
+/* Default theme: highlight the current page in the main menu sidebar with a subtle gray pill
+   (the negative margin keeps the text lined up with the other links) */
+html[data-ui-theme='default'] .ui-theme-sidebar nav a[aria-current='page'] {
+  background-color: var(--color-gray-300);
+  font-weight: 700;
+  padding: 2px 8px;
+  margin-left: -8px;
+}

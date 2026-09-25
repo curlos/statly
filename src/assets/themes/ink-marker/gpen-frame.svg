@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+	<!-- G-pen ink frame for the Ink & Marker theme (black, for light mode), used as a 9-slice CSS border-image (slice 20).
+	     Like Kubo's inking: hairline strokes on the lit top/left, heavy strokes on the shadow
+	     bottom/right, and every stroke tapers to a sharp point, overshooting the corners a little
+	     the way pen lines cross. The middle of each edge is uniform so it stretches cleanly. -->
+	<g fill="#111111">
+		<!-- Top: hairline -->
+		<polygon points="0,6 20,5.3 40,5.3 60,6.2 40,6.7 20,6.7" />
+		<!-- Left: hairline -->
+		<polygon points="6,0 5.3,20 5.3,40 6.2,60 6.7,40 6.7,20" />
+		<!-- Bottom: heavy -->
+		<polygon points="1,53.4 20,51.2 40,51.2 60,53.8 40,55.4 20,55.4" />
+		<!-- Right: heavy -->
+		<polygon points="53.4,1 51.2,20 51.2,40 53.8,60 55.4,40 55.4,20" />
+	</g>
+</svg>

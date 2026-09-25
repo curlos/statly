@@ -1,0 +1,374 @@
+/* =========================================================================
+   INK & MARKER UI THEME
+   Everything here only applies when <html data-ui-theme="ink-marker">.
+   Like a manga color spread (e.g. Tite Kubo's Bleach spreads): lines are G-pen ink (black on
+   paper in light mode, white on black board in dark mode) and every theme-colored surface is
+   "colored with a Copic marker": the user's own theme color with a grayscale marker texture
+   blended over it with soft-light. copic-texture.png is made from a real Copic swatch (only its
+   light/dark variation, centered on mid-gray, upscaled and mirrored to tile seamlessly), so it
+   works on any color the user picks: mid-gray leaves the color as is, lighter/darker areas
+   nudge it up or down like uneven marker ink.
+   ========================================================================= */
+
+/* ---------- Ink & paper (dark mode is the default; .light-mode flips it) ---------- */
+html[data-ui-theme='ink-marker'] {
+	--ink: #f2f2f2;
+	--paper: #141414;
+
+	--color-gray: #141414;
+	--color-gray-25: #d6d6d6;
+	--color-gray-50: #b8b8b8;
+	--color-gray-100: #9a9a9a;
+	--color-gray-150: #444444;
+	--color-gray-200: #333333;
+	--color-gray-300: #2a2a2a;
+	--color-gray-600: #181818;
+	--color-gray-650: #1d1d1d;
+	--color-gray-700: #141414;
+
+	font-family: var(--user-font, 'Barlow', sans-serif);
+	accent-color: var(--theme-color);
+	scrollbar-color: var(--ink) transparent;
+}
+
+html.light-mode[data-ui-theme='ink-marker'] {
+	--ink: #111111;
+	--paper: #fbfaf6;
+
+	--color-primary-text: #111111;
+	--color-gray: #fbfaf6;
+	--color-gray-25: #2b2b2b;
+	--color-gray-50: #4a4a4a;
+	--color-gray-100: #6f6f6f;
+	--color-gray-150: #cfcfcf;
+	--color-gray-200: #e4e4e0;
+	--color-gray-300: #efeeea;
+	--color-gray-600: #fbfaf6;
+	--color-gray-650: #f4f3ee;
+	--color-gray-700: #fbfaf6;
+}
+
+/* ---------- Page: drawing paper ---------- */
+/* Dark mode: plain black illustration board (grain on black just reads as noise) */
+[data-ui-theme='ink-marker'] body {
+	background: var(--paper);
+	overflow-x: clip;
+}
+
+[data-ui-theme='ink-marker'].light-mode body {
+	background: url('../assets/themes/ink-marker/paper-grain.svg') 0 0 / 300px 300px, var(--paper);
+	background-blend-mode: multiply;
+}
+
+[data-ui-theme='ink-marker'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='ink-marker'] .flex-1.bg-color-gray-700,
+[data-ui-theme='ink-marker'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+/* Huge outlined page name (set from the URL in +Layout.tsx), like a manga title wordmark */
+[data-ui-theme='ink-marker'] body::before {
+	content: attr(data-watermark);
+	position: fixed;
+	left: -1vw;
+	bottom: -2vw;
+	z-index: -1;
+	pointer-events: none;
+	white-space: nowrap;
+	font-family: var(--user-font, 'Barlow Condensed', sans-serif);
+	font-weight: 700;
+	font-size: 15vw;
+	line-height: 0.85;
+	letter-spacing: 0.02em;
+	color: transparent;
+	-webkit-text-stroke: 2px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+/* ---------- The Copic marker texture on everything theme-colored ---------- */
+[data-ui-theme='ink-marker'] .bg-\[var\(--theme-color\)\],
+[data-ui-theme='ink-marker'] .bg-\[var\(--theme-color-half\)\],
+[data-ui-theme='ink-marker'] .hover\:bg-\[var\(--theme-color\)\]:hover,
+[data-ui-theme='ink-marker'] .hover\:bg-\[var\(--theme-color-half\)\]:hover {
+	background-image: url('../assets/themes/ink-marker/copic-texture.png');
+	background-size: 800px 512px;
+	background-blend-mode: soft-light;
+}
+
+/* Heatmap cells get their color inline, so texture them the same way */
+[data-ui-theme='ink-marker'] .grid.grid-flow-col[class*='grid-rows-'] > *,
+[data-ui-theme='ink-marker'] .h-\[13px\].w-\[13px\] {
+	background-image: url('../assets/themes/ink-marker/copic-texture.png');
+	background-size: 800px 512px;
+	background-blend-mode: soft-light;
+}
+
+/* Charts paint in SVG, so they use the matching SVG filter (CopicFilterDefs.tsx) */
+[data-ui-theme='ink-marker'] .recharts-bar-rectangle,
+[data-ui-theme='ink-marker'] .recharts-area-area,
+[data-ui-theme='ink-marker'] .recharts-pie-sector,
+[data-ui-theme='ink-marker'] .apexcharts-bar-area,
+[data-ui-theme='ink-marker'] .apexcharts-area {
+	filter: url(#ink-marker-copic);
+}
+
+/* ---------- Typography ---------- */
+/* Page titles: heavy italic serif in ink */
+[data-ui-theme='ink-marker'] h1,
+[data-ui-theme='ink-marker'] h1.font-bold {
+	font-family: var(--user-font, 'Playfair Display', serif);
+	font-style: italic;
+	font-weight: 900 !important;
+	letter-spacing: -0.01em;
+	color: var(--ink) !important;
+}
+
+[data-ui-theme='ink-marker'] h2,
+[data-ui-theme='ink-marker'] h3 {
+	font-family: var(--user-font, 'Barlow Condensed', 'Barlow', sans-serif);
+	font-weight: 700 !important;
+	letter-spacing: 0.06em;
+}
+
+/* ---------- Shape: square paper corners (circles stay circles) ---------- */
+[data-ui-theme='ink-marker'] .rounded,
+[data-ui-theme='ink-marker'] .rounded-md,
+[data-ui-theme='ink-marker'] .rounded-lg,
+[data-ui-theme='ink-marker'] .rounded-xl,
+[data-ui-theme='ink-marker'] .rounded-2xl {
+	border-radius: 0;
+}
+
+/* ---------- G-pen ink frames ----------
+   Cards (theme-colored marker fill), Stats panels, plates, tiles and modal panels (paper).
+   A 9-slice border-image: hairline top/left, heavy bottom/right, tapered points.
+   Longhand border properties so the border-image isn't reset. */
+[data-ui-theme='ink-marker'] .ui-theme-card,
+[data-ui-theme='ink-marker'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='ink-marker'] .ui-theme-plate,
+[data-ui-theme='ink-marker'] .ui-theme-tile,
+[data-ui-theme='ink-marker'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	border-width: 14px !important;
+	border-style: solid !important;
+	border-color: transparent !important;
+	border-image: url('../assets/themes/ink-marker/gpen-frame-white.svg') 20 stretch;
+	border-radius: 0;
+	box-shadow: none;
+	transition: box-shadow 0.12s ease;
+}
+
+[data-ui-theme='ink-marker'].light-mode .ui-theme-card,
+[data-ui-theme='ink-marker'].light-mode .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='ink-marker'].light-mode .ui-theme-plate,
+[data-ui-theme='ink-marker'].light-mode .ui-theme-tile,
+[data-ui-theme='ink-marker'].light-mode dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	border-image-source: url('../assets/themes/ink-marker/gpen-frame.svg');
+}
+
+/* Everything except the (marker-colored) cards is plain paper */
+[data-ui-theme='ink-marker'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='ink-marker'] .ui-theme-plate,
+[data-ui-theme='ink-marker'] .ui-theme-tile,
+[data-ui-theme='ink-marker'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background-color: var(--paper);
+}
+
+/* Hover: a solid ink offset, like a heavy spot black behind the panel */
+[data-ui-theme='ink-marker'] .ui-theme-card:hover,
+[data-ui-theme='ink-marker'] .ui-theme-tile:hover {
+	box-shadow: 5px 5px 0 var(--ink);
+}
+
+/* Stats panels: a little inner padding, headings get a short G-pen stroke */
+[data-ui-theme='ink-marker'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 8px;
+}
+
+[data-ui-theme='ink-marker'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 4px;
+	background: url('../assets/themes/ink-marker/gpen-rule-white.svg') left bottom / 70% 3px no-repeat;
+}
+
+[data-ui-theme='ink-marker'].light-mode .bg-color-gray-600.rounded-lg.p-3 h2 {
+	background-image: url('../assets/themes/ink-marker/gpen-rule.svg');
+}
+
+/* Stats date pickers & summary strip: slim frame, little padding, one line */
+[data-ui-theme='ink-marker'] .ui-theme-plate.py-2 {
+	border-width: 10px !important;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='ink-marker'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* ---------- Marker-colored labels (plate titles, selected tile names, sidebar current page) ---------- */
+[data-ui-theme='ink-marker'] .ui-theme-plate .sticky.bg-color-gray-200,
+[data-ui-theme='ink-marker'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='ink-marker'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background-color: var(--theme-color);
+	background-image: url('../assets/themes/ink-marker/copic-texture.png');
+	background-size: 800px 512px;
+	background-blend-mode: soft-light;
+	color: var(--theme-on-color) !important;
+}
+
+[data-ui-theme='ink-marker'] .ui-theme-plate .sticky.bg-color-gray-200,
+[data-ui-theme='ink-marker'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='ink-marker'] .ui-theme-tile > .bg-color-gray-200 {
+	font-family: var(--user-font, 'Barlow Condensed', sans-serif);
+	letter-spacing: 0.04em;
+}
+
+[data-ui-theme='ink-marker'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='ink-marker'] .ui-theme-tile > .bg-color-gray-200 {
+	border-left-color: var(--ink) !important;
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='ink-marker'] .ui-theme-tile[aria-checked='true'] {
+	box-shadow: 0 0 0 3px var(--ink), 6px 6px 0 3px var(--theme-color);
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='ink-marker'] dialog > .ui-theme-bare,
+[data-ui-theme='ink-marker'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+/* Modal section titles read like a chapter caption ("328. The Knuckle Debate") */
+[data-ui-theme='ink-marker'] dialog:not(.ui-theme-sidebar) h2 {
+	font-family: var(--user-font, 'Barlow', sans-serif);
+	font-style: italic;
+	text-transform: none;
+	letter-spacing: 0;
+}
+
+/* ---------- Sidebars: paper with a heavy ink band down the left edge ---------- */
+[data-ui-theme='ink-marker'] .ui-theme-sidebar {
+	background: linear-gradient(var(--ink), var(--ink)) left top / 8px 100% no-repeat, var(--paper) !important;
+	padding-left: 28px !important;
+	box-shadow: -6px 0 18px rgba(0, 0, 0, 0.25);
+}
+
+[data-ui-theme='ink-marker'] .ui-theme-sidebar nav a {
+	font-family: var(--user-font, 'Barlow Condensed', sans-serif);
+	letter-spacing: 0.04em;
+	padding: 0 8px;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): paper with a heavy ink border ---------- */
+[data-ui-theme='ink-marker'] .ui-theme-tooltip,
+[data-ui-theme='ink-marker'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='ink-marker'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='ink-marker'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='ink-marker'] .react-tooltip {
+	background: var(--paper) !important;
+	border: 2px solid var(--ink) !important;
+	box-shadow: 4px 4px 0 var(--ink) !important;
+	color: var(--ink) !important;
+	border-radius: 0 !important;
+}
+
+[data-ui-theme='ink-marker'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='ink-marker'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: color-mix(in srgb, var(--theme-color) 30%, transparent);
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: Copic marker fill (texture from the rule above) with an ink outline + offset */
+[data-ui-theme='ink-marker'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='ink-marker'] a.bg-\[var\(--theme-color\)\] {
+	border: 1.5px solid var(--ink) !important;
+	box-shadow: 3px 3px 0 var(--ink);
+	font-family: var(--user-font, 'Barlow Condensed', sans-serif);
+	letter-spacing: 0.08em;
+}
+
+/* Unselected: paper with an ink outline; hover gets a swipe of marker */
+[data-ui-theme='ink-marker'] button.bg-color-gray-300 {
+	background-color: var(--paper) !important;
+	color: var(--ink) !important;
+	border: 1.5px solid var(--ink);
+	font-family: var(--user-font, 'Barlow Condensed', sans-serif);
+	letter-spacing: 0.08em;
+}
+
+[data-ui-theme='ink-marker'] button.bg-color-gray-300:hover {
+	background-color: var(--theme-color) !important;
+	background-image: url('../assets/themes/ink-marker/copic-texture.png');
+	background-size: 800px 512px;
+	background-blend-mode: soft-light;
+	color: var(--theme-on-color) !important;
+}
+
+/* ---------- Inputs: a single G-pen underline ---------- */
+[data-ui-theme='ink-marker'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='ink-marker'] textarea:not(.bg-transparent),
+[data-ui-theme='ink-marker'] select {
+	background-color: var(--paper);
+	color: var(--ink);
+	border: 0;
+	border-bottom: 2px solid var(--ink);
+	border-radius: 0;
+}
+
+[data-ui-theme='ink-marker'] input:not(.bg-transparent):focus,
+[data-ui-theme='ink-marker'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='ink-marker'] select:focus {
+	outline: none;
+	border-bottom-color: var(--theme-color);
+}
+
+/* ---------- Dividers: a tapered G-pen stroke ---------- */
+[data-ui-theme='ink-marker'] hr {
+	border: 0;
+	height: 3px;
+	background: url('../assets/themes/ink-marker/gpen-rule-white.svg') center / 100% 100% no-repeat;
+}
+
+[data-ui-theme='ink-marker'].light-mode hr {
+	background-image: url('../assets/themes/ink-marker/gpen-rule.svg');
+}
+
+/* ---------- Scrollbar & selection ---------- */
+[data-ui-theme='ink-marker'] ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+[data-ui-theme='ink-marker'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='ink-marker'] ::-webkit-scrollbar-thumb {
+	background: var(--ink);
+}
+
+[data-ui-theme='ink-marker'] ::selection {
+	background: color-mix(in srgb, var(--theme-color) 45%, transparent);
+}
+
+/* Chart "empty" areas: soft paper tones instead of neutral gray (dark board / light paper) */
+[data-ui-theme='ink-marker'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #242424;
+}
+
+[data-ui-theme='ink-marker'] .recharts-bar-background-rectangle {
+	fill: #2c2c2c;
+}
+
+[data-ui-theme='ink-marker'].light-mode .apexcharts-heatmap-rect[fill='#E9E9E9' i] {
+	fill: #ebe8df;
+}
+
+[data-ui-theme='ink-marker'].light-mode .recharts-bar-background-rectangle {
+	fill: #ddd9ce;
+}

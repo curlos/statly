@@ -11,6 +11,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 	// Because this is an SPA, when you go to a new page, it doesn't do a full reload and this causes an issue for screen reader users because if they focused on an element from the previous page, when they go to the new page, they will STILL be focused on the element from the previous page which will now be an invisible, detached element that's no longer in the DOM. To prevent any weird screen reader issues, it's better to always re-focus on the page's main content each time the URL changes.
 	useEffect(() => {
 		document.getElementById('main-content')?.focus({ preventScroll: true });
+		// Big faded background word used by some game UI themes (e.g. "/focus-records" -> "Focus Records").
+		// Title case; themes whose games use caps uppercase it in CSS.
+		document.body.dataset.watermark = (pageContext.urlPathname.split('/').filter(Boolean)[0] || '').replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 	}, [pageContext.urlPathname]);
 
 	return (

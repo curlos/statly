@@ -18,7 +18,7 @@ const OverviewSection = () => {
 
 	return (
 		<div>
-			<div className="bg-color-gray-600 p-4 rounded-md">
+			<div className="ui-theme-plate bg-color-gray-600 p-4 rounded-md">
 				<div className="flex justify-between items-center">
 					<div className="grid grid-cols-2 sm:flex gap-6" aria-live="polite" aria-atomic="true">
 						<div className="flex flex-col md:flex-row md:items-baseline md:gap-1" aria-label={`${(overviewStats?.totalTasksCount ?? 0).toLocaleString()} Total Tasks`}>

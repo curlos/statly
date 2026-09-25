@@ -7,7 +7,7 @@ const ChosenChallengeSkeleton: React.FC<ChosenChallengeSkeletonProps> = ({ maxHe
 	return (
 		<div
 			ref={chosenChallengeRef}
-			className="flex mt-5 overflow-auto gray-scrollbar animate-pulse"
+			className="ui-theme-plate flex mt-5 overflow-auto gray-scrollbar animate-pulse"
 			style={{ maxHeight }}
 		>
 			<div className="w-full">

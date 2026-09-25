@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54" viewBox="0 0 54 54">
+	<!-- Hades-style gold card frame, used as a 9-slice CSS border-image (slice 18).
+	     From the outside in: ink line, beveled gold rail (bright top/left, darker bottom/right),
+	     dark groove, thin inner gold line, ink line. Square gold studs sit on the corners.
+	     The 18-unit corners keep their shape; the straight middle parts stretch. -->
+
+	<!-- Outer ink -->
+	<rect x="1" y="1" width="52" height="52" fill="none" stroke="#0d0a06" stroke-width="2" />
+	<!-- Gold rail -->
+	<rect x="5" y="5" width="44" height="44" fill="none" stroke="#d9a93a" stroke-width="6" />
+	<!-- Bevel: bright highlight top/left, darker gold bottom/right -->
+	<path d="M3 51 V3 H51" fill="none" stroke="#f5dc7a" stroke-width="2" />
+	<path d="M3 51 H51 V3" fill="none" stroke="#8a6a1e" stroke-width="2" />
+	<path d="M7 47 V7 H47" fill="none" stroke="#a8812a" stroke-width="1.2" />
+	<!-- Dark groove -->
+	<rect x="9" y="9" width="36" height="36" fill="none" stroke="#0d0a06" stroke-width="2" />
+	<!-- Thin inner gold line -->
+	<rect x="11" y="11" width="32" height="32" fill="none" stroke="#b8902e" stroke-width="2" />
+	<!-- Inner ink -->
+	<rect x="12.75" y="12.75" width="28.5" height="28.5" fill="none" stroke="#0d0a06" stroke-width="1.5" />
+
+	<!-- Corner studs -->
+	<g stroke="#0d0a06" stroke-linejoin="round">
+		<g id="stud">
+			<rect x="1" y="1" width="14" height="14" fill="#e2b64a" stroke-width="2" />
+			<path d="M3 13 V3 H13" fill="none" stroke="#fff3c4" stroke-width="1.4" />
+			<rect x="5.5" y="5.5" width="5" height="5" fill="#8a6a1e" stroke-width="1.2" />
+		</g>
+		<use href="#stud" xlink:href="#stud" transform="translate(54 0) scale(-1 1)" />
+		<use href="#stud" xlink:href="#stud" transform="translate(0 54) scale(1 -1)" />
+		<use href="#stud" xlink:href="#stud" transform="translate(54 54) scale(-1 -1)" />
+	</g>
+</svg>

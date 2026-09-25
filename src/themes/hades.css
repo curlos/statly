@@ -1,0 +1,526 @@
+/* =========================================================================
+   HADES UI THEME
+   Everything here only applies when <html data-ui-theme="hades">.
+   Inspired by Supergiant's Hades menus: near-black panels, thin gold frames
+   with corner brackets, Alegreya small-caps headings and wide-spaced serif titles.
+   ========================================================================= */
+
+[data-ui-theme='hades'] {
+	--hades-gold: #d9b650;
+	--hades-gold-bright: #f5dc7a;
+	--hades-gold-dark: #7a6128;
+	--hades-green: #8fdc5c;
+	--hades-ember: #e27b3e;
+	--hades-crimson: #c3312b;
+	--hades-violet: #a867ff;
+	--hades-text: #ece6d3;
+	--hades-panel: #181815;
+	--hades-panel-2: #22211c;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--hades-text);
+	--color-gray: #0b0b0a;
+	--color-gray-25: #cfc7b0;
+	--color-gray-50: #aba38c;
+	--color-gray-100: #8e8773;
+	--color-gray-150: #4a4332;
+	--color-gray-200: #3a362a;
+	--color-gray-300: #2a2822;
+	--color-gray-600: var(--hades-panel);
+	--color-gray-650: #141411;
+	--color-gray-700: #0e0e0c;
+
+	--theme-color: var(--hades-gold);
+	--theme-color-half: rgba(217, 182, 80, 0.35);
+	--theme-on-color: #14120c;
+
+	color-scheme: dark;
+	font-family: 'Alegreya Sans', sans-serif;
+	scrollbar-color: var(--hades-gold-dark) transparent;
+}
+
+/* ---------- Page background: dark vignette with a faint underworld glow ---------- */
+[data-ui-theme='hades'] body,
+[data-ui-theme='hades'] .min-h-screen.bg-color-gray-700 {
+	background:
+		radial-gradient(ellipse at 50% -10%, rgba(120, 90, 40, 0.18), transparent 55%),
+		radial-gradient(ellipse at 100% 100%, rgba(60, 120, 60, 0.1), transparent 50%),
+		radial-gradient(ellipse at 0% 100%, rgba(110, 50, 150, 0.1), transparent 50%),
+		#0b0b0a;
+	background-attachment: fixed;
+}
+
+[data-ui-theme='hades'] .text-white {
+	color: var(--hades-text);
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='hades'] h1,
+[data-ui-theme='hades'] h1.font-bold {
+	font-family: 'Cinzel', serif;
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: #e2b64a;
+	text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+[data-ui-theme='hades'] h2,
+[data-ui-theme='hades'] h3,
+[data-ui-theme='hades'] h4,
+[data-ui-theme='hades'] .font-bold,
+[data-ui-theme='hades'] .font-semibold {
+	font-family: 'Alegreya Sans SC', 'Alegreya Sans', sans-serif;
+	letter-spacing: 0.02em;
+}
+
+[data-ui-theme='hades'] em,
+[data-ui-theme='hades'] .italic {
+	font-family: 'Alegreya', serif;
+	font-style: italic;
+	color: var(--hades-ember);
+}
+
+/* ---------- Shape: Hades uses sharp corners (circles stay circles) ---------- */
+[data-ui-theme='hades'] .rounded,
+[data-ui-theme='hades'] .rounded-md,
+[data-ui-theme='hades'] .rounded-lg,
+[data-ui-theme='hades'] .rounded-xl,
+[data-ui-theme='hades'] .rounded-2xl,
+[data-ui-theme='hades'] .rounded-3xl {
+	border-radius: 2px;
+}
+
+/* ---------- The gold frame ----------
+   Used by dropdown panels (cards, stat panels and modals get ornate frames further below).
+   Outer gold line + dark inner hairline + diagonal sheen. */
+[data-ui-theme='hades'] .bg-color-gray-600.rounded-xl.shadow-lg {
+	position: relative;
+	background:
+		linear-gradient(115deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.03) 62%, rgba(255, 255, 255, 0) 100%),
+		linear-gradient(180deg, var(--hades-panel-2), var(--hades-panel));
+	border: 1px solid var(--hades-gold-dark);
+	box-shadow:
+		inset 0 0 0 2px #0a0a08,
+		inset 0 0 0 3px rgba(217, 182, 80, 0.25),
+		0 6px 18px rgba(0, 0, 0, 0.6);
+	/* Corner brackets drawn with gradients so no image assets are needed. */
+	background-clip: padding-box;
+}
+
+/* ---------- Cards (Focus Records & Completed Tasks) and Stats panels: ornate gold frame ----------
+   Like the in-game tooltips: beveled gold rail, dark groove, inner gold line and square corner
+   studs (card-frame.svg, drawn as a 9-slice border-image so the corners never distort), plus a
+   small gold scroll clasp on the left edge (card-clasp.svg). border-image doesn't clip anything,
+   so the ⋯ dropdowns inside cards still open normally. Stats panels share the frame (no clasp). */
+[data-ui-theme='hades'] .ui-theme-card,
+[data-ui-theme='hades'] .bg-color-gray-600.rounded-lg.p-3 {
+	position: relative;
+	background:
+		linear-gradient(115deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.03) 62%, rgba(255, 255, 255, 0) 100%),
+		linear-gradient(180deg, var(--hades-panel-2), var(--hades-panel));
+	border: 15px solid transparent;
+	border-image: url('../assets/themes/hades/card-frame.svg') 18 stretch;
+	border-radius: 0;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+	transition: box-shadow 0.15s ease;
+}
+
+[data-ui-theme='hades'] .ui-theme-card::after {
+	content: '';
+	position: absolute;
+	left: -25px;
+	top: 50%;
+	width: 18px;
+	height: 36px;
+	transform: translateY(-50%);
+	pointer-events: none;
+	z-index: 1;
+	background: url('../assets/themes/hades/card-clasp.svg') center / contain no-repeat;
+}
+
+/* Stats panels: a slimmer frame and less inner padding so charts and grids keep their room
+   (their cards have fixed heights, so a thick frame would push content out the bottom) */
+[data-ui-theme='hades'] .bg-color-gray-600.rounded-lg.p-3 {
+	border-width: 9px;
+	padding: 8px;
+}
+
+/* Panel headings get a short gold ink rule underneath */
+[data-ui-theme='hades'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	background: linear-gradient(90deg, var(--hades-gold), rgba(217, 182, 80, 0)) left bottom / 70% 1px no-repeat;
+}
+
+/* Hovered card: a warm gold glow around the frame (like "Aspect of Nemesis"). */
+[data-ui-theme='hades'] .ui-theme-card:hover {
+	box-shadow:
+		0 0 16px rgba(226, 182, 74, 0.45),
+		0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- Modals: dialogue-box style ----------
+   The dialog wrapper is transparent, so only the inner panel is framed: a warm charcoal plate
+   (like the "ZAGREUS" name plate) inside a beveled gold frame with corner knobs and a notched
+   bottom trim (modal-frame.svg, 9-slice border-image; "round" tiles the trim evenly). */
+[data-ui-theme='hades'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: #3e3b36;
+	border: 12px solid transparent;
+	border-image: url('../assets/themes/hades/modal-frame.svg') 16 round;
+	border-radius: 0;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+}
+
+/* ---------- Tooltips, context menus, toasts: black box with a gold border ---------- */
+[data-ui-theme='hades'] .ui-theme-tooltip,
+[data-ui-theme='hades'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='hades'] .react-tooltip {
+	background: #080807 !important;
+	border: 2px solid var(--hades-gold) !important;
+	box-shadow:
+		inset 0 0 0 1px #000,
+		inset 0 0 0 2px rgba(217, 182, 80, 0.3),
+		0 4px 14px rgba(0, 0, 0, 0.7) !important;
+	color: var(--hades-text) !important;
+	border-radius: 0 !important;
+}
+
+/* ---------- Theme-colored buttons & chips: polished gold with a bevel ---------- */
+[data-ui-theme='hades'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='hades'] a.bg-\[var\(--theme-color\)\] {
+	background: linear-gradient(180deg, var(--hades-gold-bright) 0%, var(--hades-gold) 45%, #a8862f 100%) !important;
+	border-color: #5c4718 !important;
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.45),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+		0 0 8px rgba(217, 182, 80, 0.25);
+	text-shadow: none;
+}
+
+[data-ui-theme='hades'] button:not(:disabled):hover {
+	filter: brightness(1.12);
+}
+
+/* Unselected gray buttons/tabs look like Hades' dark navy tab buttons (Permanent Record). */
+[data-ui-theme='hades'] button.bg-color-gray-300 {
+	background: linear-gradient(180deg, #1f222b, #14161c) !important;
+	border: 1px solid #3a3d47;
+	box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Inputs ---------- */
+/* Inputs marked bg-transparent sit inside their own styled box (e.g. FormInput), so leave them alone. */
+[data-ui-theme='hades'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='hades'] textarea:not(.bg-transparent),
+[data-ui-theme='hades'] select {
+	background-color: #0c0c0a;
+	border-color: var(--hades-gold-dark);
+	color: var(--hades-text);
+}
+
+[data-ui-theme='hades'] input:not(.bg-transparent):focus,
+[data-ui-theme='hades'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='hades'] select:focus {
+	border-color: var(--hades-gold);
+	box-shadow: 0 0 0 1px var(--hades-gold), 0 0 10px rgba(217, 182, 80, 0.3);
+	outline: none;
+}
+
+/* ---------- Dividers: thin gold rule that fades at the ends ---------- */
+[data-ui-theme='hades'] hr {
+	border: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, var(--hades-gold-dark) 15%, var(--hades-gold) 50%, var(--hades-gold-dark) 85%, transparent);
+}
+
+/* ---------- Scrollbars ---------- */
+[data-ui-theme='hades'] ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+[data-ui-theme='hades'] ::-webkit-scrollbar-track {
+	background: #0b0b0a;
+}
+
+[data-ui-theme='hades'] ::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, var(--hades-gold), var(--hades-gold-dark));
+	border: 2px solid #0b0b0a;
+}
+
+/* ---------- Selection ---------- */
+[data-ui-theme='hades'] ::selection {
+	background: rgba(217, 182, 80, 0.4);
+	color: #fff;
+}
+
+/* ---------- Sidebars: parchment scroll (like "The Fated List") ----------
+   Used by the main menu, Settings and Filter sidebars (.ui-theme-sidebar).
+   Art lives in src/assets/themes/hades/*.svg. The parchment is a set of backgrounds on
+   the sidebar itself (pinned while content scrolls); the bottom curl is a sticky
+   ::after so it stays at the bottom AND covers content scrolling underneath it. */
+[data-ui-theme='hades'] .ui-theme-sidebar {
+	/* The curl is ~width/4 tall (≈100px on a 400px sidebar); the sheet ends hidden behind the roll. */
+	--parchment-bottom: 45px;
+
+	/* Light text tones that read on the olive parchment (scoped to the sidebar only). */
+	--color-gray-25: #f4ecd6;
+	--color-gray-50: #efe4c8;
+	--color-gray-100: #e6d8b4;
+	--color-gray-200: rgba(45, 32, 14, 0.45);
+	--color-gray-300: rgba(45, 32, 14, 0.4);
+	--color-gray-500: rgba(45, 32, 14, 0.55);
+	--color-gray-600: rgba(45, 32, 14, 0.35);
+
+	display: flex;
+	flex-direction: column;
+	padding: 52px 30px 0 !important;
+	background-color: transparent !important;
+	/* The whole sheet (wobbly inked edges, rolled top lip, shading, grain, specks) is one stretched SVG. */
+	background: url('../assets/themes/hades/parchment-body.svg') left top / 100% calc(100% - var(--parchment-bottom)) no-repeat;
+	color: #f4ecd6;
+	text-shadow: 0 1px 0 rgba(27, 23, 18, 0.9), 0 0 4px rgba(27, 23, 18, 0.4);
+	scrollbar-color: #3e382c transparent;
+}
+
+/* The rolled curl at the bottom. margin-top:auto keeps it at the bottom when content is short;
+   sticky keeps it there (on top of the content) when content scrolls. */
+[data-ui-theme='hades'] .ui-theme-sidebar::after {
+	content: '';
+	position: sticky;
+	bottom: 0;
+	flex-shrink: 0;
+	aspect-ratio: 400 / 100; /* keeps the drawing's proportions at any sidebar width */
+	margin: auto -30px 0;
+	pointer-events: none;
+	background: url('../assets/themes/hades/scroll-curl.svg') center bottom / 100% 100% no-repeat;
+}
+
+/* Menu items: left-aligned cream small caps with a dark shadow. */
+[data-ui-theme='hades'] .ui-theme-sidebar nav ul {
+	text-align: left;
+	font-size: 22px;
+}
+
+[data-ui-theme='hades'] .ui-theme-sidebar nav li + li {
+	margin-top: 6px;
+}
+
+[data-ui-theme='hades'] .ui-theme-sidebar nav a {
+	position: relative;
+	justify-content: flex-start;
+	/* shrink to the text so the gold pointer (::after, pinned right) sits right after it */
+	width: fit-content;
+	padding-right: 44px;
+	font-family: 'Alegreya Sans SC', sans-serif;
+	font-weight: 700;
+	color: #f6eed8;
+	text-shadow: 0 2px 0 #3a2d18, 0 0 6px rgba(30, 20, 8, 0.6);
+}
+
+/* Hades menus have no icons. */
+[data-ui-theme='hades'] .ui-theme-sidebar nav a > span[aria-hidden='true'] {
+	display: none;
+}
+
+[data-ui-theme='hades'] .ui-theme-sidebar nav a:hover span {
+	text-decoration: none;
+}
+
+/* Gold pointer beside the current page and the hovered item. */
+[data-ui-theme='hades'] .ui-theme-sidebar nav a::after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 38px;
+	height: 21px;
+	transform: translate(6px, -50%);
+	background: url('../assets/themes/hades/gold-pointer.svg') center / contain no-repeat;
+	opacity: 0;
+	transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+[data-ui-theme='hades'] .ui-theme-sidebar nav a:hover::after,
+[data-ui-theme='hades'] .ui-theme-sidebar nav a[aria-current='page']::after {
+	opacity: 1;
+	transform: translate(0, -50%);
+}
+
+[data-ui-theme='hades'] .ui-theme-sidebar nav a:hover,
+[data-ui-theme='hades'] .ui-theme-sidebar nav a[aria-current='page'] {
+	color: #fff8e4;
+}
+
+/* Dividers become ink lines on the parchment. */
+[data-ui-theme='hades'] .ui-theme-sidebar hr {
+	height: 2px;
+	background: linear-gradient(90deg, transparent, rgba(28, 21, 13, 0.75) 12%, rgba(28, 21, 13, 0.75) 88%, transparent);
+}
+
+/* Dropdown menus inside the sidebars: the sidebar makes gray-600 translucent so boxes blend into
+   the parchment, but an open menu needs to be (almost) solid so what's behind it doesn't show. */
+[data-ui-theme='hades'] .ui-theme-sidebar .absolute.top-full.z-50.bg-color-gray-600 {
+	background-color: rgba(34, 27, 17, 0.94);
+	border: 1px solid var(--hades-gold-dark);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+}
+
+/* Hovered option in any dropdown menu (and the card right-click menu): a clearly lighter, warm gold-tinted row
+   (the default gray-200 hover is nearly the same tone as the menu itself in Hades). */
+[data-ui-theme='hades'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='hades'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: rgba(226, 182, 74, 0.22);
+	color: #fff8e4;
+}
+
+/* ---------- Plates: Stats summary strips and the chosen Medal / Challenge panels ----------
+   Warm charcoal name-plate background inside the dialogue-box frame (same art as modals). */
+[data-ui-theme='hades'] .ui-theme-plate {
+	background: #3e3b36;
+	border: 12px solid transparent;
+	border-image: url('../assets/themes/hades/modal-frame.svg') 16 round;
+	border-radius: 0;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+/* Chosen Medal / Challenge title bar: a darker name plate with a thin gold underline */
+[data-ui-theme='hades'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: #2c2a26;
+	border-bottom: 2px solid var(--hades-gold-dark);
+	box-shadow: inset 0 -1px 0 rgba(242, 215, 122, 0.25);
+	color: #e2b64a;
+	font-family: 'Alegreya Sans SC', 'Alegreya Sans', sans-serif;
+}
+
+/* ---------- Tiles: Medal & Challenge cards ----------
+   The dialogue-box frame; the selected tile gets a warm gold glow (like "Aspect of Nemesis"). */
+[data-ui-theme='hades'] .ui-theme-tile {
+	background: #3e3b36;
+	/* longhands: the border shorthand would also reset border-image */
+	border-width: 10px !important;
+	border-style: solid;
+	border-color: transparent !important;
+	border-image: url('../assets/themes/hades/modal-frame.svg') 16 round;
+	border-radius: 0;
+	transition: box-shadow 0.15s ease;
+}
+
+[data-ui-theme='hades'] .ui-theme-tile:hover {
+	box-shadow: 0 0 10px rgba(226, 182, 74, 0.3);
+}
+
+[data-ui-theme='hades'] .ui-theme-tile[aria-checked='true'] {
+	outline: 2px solid #f5dc7a;
+	outline-offset: 1px;
+	box-shadow:
+		0 0 14px 2px rgba(226, 182, 74, 0.7),
+		0 0 32px rgba(226, 182, 74, 0.35);
+}
+
+/* Medal name bar: small name plate with a gold left accent instead of the white bar */
+[data-ui-theme='hades'] .ui-theme-tile .bg-color-gray-150 {
+	background: #2c2a26;
+	border-left-color: var(--hades-gold) !important;
+	font-family: 'Alegreya Sans SC', 'Alegreya Sans', sans-serif;
+}
+
+/* Challenge name bar (unselected): the same dark name plate */
+[data-ui-theme='hades'] .ui-theme-tile > .bg-color-gray-200 {
+	background: #2c2a26;
+	font-family: 'Alegreya Sans SC', 'Alegreya Sans', sans-serif;
+}
+
+/* Stats date pickers ("< 2026 >") and the summary strip: slimmer frame, just a little inner padding */
+[data-ui-theme='hades'] .ui-theme-plate.py-2 {
+	border-width: 8px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='hades'] .ui-theme-plate.p-4 {
+	border-width: 9px;
+	padding: 10px 12px;
+}
+
+/* The sidebar's dark text shadow (for cream text on parchment) smudges dark text on gold,
+   e.g. the Applied Filters pills and gold buttons, so drop it on theme-colored elements. */
+[data-ui-theme='hades'] .ui-theme-sidebar .text-on-theme,
+[data-ui-theme='hades'] .ui-theme-sidebar .text-on-theme *,
+[data-ui-theme='hades'] .ui-theme-sidebar .bg-\[var\(--theme-color\)\],
+[data-ui-theme='hades'] .ui-theme-sidebar .bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='hades'] .ui-theme-sidebar .bg-\[var\(--theme-color-half\)\],
+[data-ui-theme='hades'] .ui-theme-sidebar .bg-\[var\(--theme-color-half\)\] * {
+	text-shadow: none;
+}
+
+/* Project color dots in the filter lists: a dark ink ring + small shadow so they stand out on parchment */
+[data-ui-theme='hades'] .ui-theme-sidebar span.rounded-full.w-\[10px\].h-\[10px\] {
+	box-shadow:
+		0 0 0 1.5px #1b1712,
+		0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Modal wrappers that only hold an already-framed card (Stats Details / Completion Stats):
+   no modal frame and no box of their own, so the card isn't double-framed. */
+[data-ui-theme='hades'] dialog > .ui-theme-bare,
+/* extra-specific so it beats the dropdown-box rule that also matches these wrapper classes */
+[data-ui-theme='hades'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+/* ---------- Mouse cursor (hand-drawn in the game's style, src/assets/themes/cursors/) ---------- */
+[data-ui-theme='hades'],
+[data-ui-theme='hades'] body {
+	cursor: url('../assets/themes/cursors/hades.svg') 3 2, auto;
+}
+
+[data-ui-theme='hades'] a,
+[data-ui-theme='hades'] button,
+[data-ui-theme='hades'] [role='button'],
+[data-ui-theme='hades'] [role='tab'],
+[data-ui-theme='hades'] [role='menuitem'],
+[data-ui-theme='hades'] [role='radio'],
+[data-ui-theme='hades'] label,
+[data-ui-theme='hades'] select,
+[data-ui-theme='hades'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/hades-pointer.svg') 12 2, pointer;
+}
+
+/* Chart "empty" areas: warm dark bronze, like the gold-framed panels instead of neutral dark gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='hades'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #2a261c;
+}
+
+[data-ui-theme='hades'] .recharts-bar-background-rectangle {
+	fill: #353024;
+}
+
+/* Accessibility: match this theme's text size to the standard font. Themed fonts have smaller
+   lowercase letters (x-height) than the site's default; font-size-adjust scales them so 16px text
+   reads like normal 16px text. Display fonts that are already large are excluded below. */
+[data-ui-theme='hades'] {
+	font-size-adjust: 0.59;
+}
+
+/* Page titles (Cinzel caps) are already large */
+[data-ui-theme='hades'] h1,
+[data-ui-theme='hades'] h1.font-bold {
+	font-size-adjust: none;
+}
+
+/* Small-caps headings/labels (Alegreya Sans SC) matched to the default's size too */
+[data-ui-theme='hades'] .ui-theme-sidebar nav a,
+[data-ui-theme='hades'] h2,
+[data-ui-theme='hades'] h3,
+[data-ui-theme='hades'] h4,
+[data-ui-theme='hades'] .font-bold,
+[data-ui-theme='hades'] .font-semibold {
+	font-size-adjust: 0.55;
+}

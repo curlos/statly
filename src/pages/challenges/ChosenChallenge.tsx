@@ -65,7 +65,7 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 	return (
 		<div
 			ref={chosenChallengeRef}
-			className="mt-5 overflow-auto gray-scrollbar"
+			className="ui-theme-plate mt-5 overflow-auto gray-scrollbar"
 			style={{ maxHeight }}
 		>
 			<div>
@@ -73,8 +73,8 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 					<img src={imgSrc} alt={`${name} challenge image`} className="max-h-[300px]" />
 				</div>
 				<div>
-					<div className="text-[20px] md:text-[24px] font-bold bg-color-gray-200 px-2 sticky">{name}</div>
-					<div className="mt-2 space-y-1">
+					<div className="text-[20px] md:text-[24px] font-bold bg-color-gray-200 px-3 sticky">{name}</div>
+					<div className="mt-2 space-y-1 px-3">
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Description: </span>
 							<span className="text-color-gray-50">

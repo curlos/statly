@@ -1,0 +1,518 @@
+/* =========================================================================
+   PERSONA 5 UI THEME
+   Everything here only applies when <html data-ui-theme="p5">.
+   Inspired by P5 menus: black/red/white, nothing is a rectangle. Panels are
+   skewed black shapes with thick white outlines, selected things get a red
+   slab, titles are rotated white ransom-note labels, and the background has
+   starburst rays, halftone dots and a huge "COMMAND"-style word.
+   ========================================================================= */
+
+[data-ui-theme='p5'] {
+	--p5-red: #e5191c;
+	--p5-red-dark: #b3121a;
+	--p5-yellow: #ffe500;
+	--p5-cyan: #19d3e6;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: #ffffff;
+	--color-gray: #000000;
+	--color-gray-25: #e6e6e6;
+	--color-gray-50: #bdbdbd;
+	--color-gray-100: #9a9a9a;
+	--color-gray-150: #444444;
+	--color-gray-200: #333333;
+	--color-gray-300: #222222;
+	--color-gray-600: #0d0d0d;
+	--color-gray-650: #111111;
+	--color-gray-700: #050505;
+
+	--theme-color: var(--p5-red);
+	--theme-color-half: rgba(229, 25, 28, 0.45);
+	--theme-on-color: #ffffff;
+
+	color-scheme: dark;
+	accent-color: var(--p5-red);
+	font-family: 'Archivo', sans-serif;
+	font-weight: 600;
+	scrollbar-color: var(--p5-red) #000;
+}
+
+/* ---------- Background: black + starburst rays + red halftone slab + giant page word ---------- */
+[data-ui-theme='p5'] body {
+	background: #070707;
+	overflow-x: clip;
+}
+
+/* Page wrappers are transparent so the background art shows through. */
+[data-ui-theme='p5'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='p5'] .flex-1.bg-color-gray-700,
+[data-ui-theme='p5'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='p5'] .sticky.bg-color-gray-700 {
+	background-color: #050505;
+}
+
+/* Starburst rays in the top-left corner. */
+[data-ui-theme='p5']::before {
+	content: '';
+	position: fixed;
+	top: -35vmax;
+	left: -35vmax;
+	width: 80vmax;
+	height: 80vmax;
+	z-index: -1;
+	pointer-events: none;
+	background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.1) 0deg 5deg, transparent 5deg 12deg);
+	-webkit-mask-image: radial-gradient(circle, #000 15%, transparent 65%);
+	mask-image: radial-gradient(circle, #000 15%, transparent 65%);
+}
+
+/* Thin white slash next to the red slab. */
+[data-ui-theme='p5']::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: #ffffff;
+	clip-path: polygon(70.5% 0, 71.3% 0, 47.3% 100%, 46.5% 100%);
+	opacity: 0.85;
+}
+
+/* Big red diagonal slab with halftone dots. */
+[data-ui-theme='p5'] body::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		radial-gradient(rgba(0, 0, 0, 0.35) 1.6px, transparent 2px) 0 0 / 11px 11px,
+		linear-gradient(160deg, var(--p5-red), var(--p5-red-dark));
+	clip-path: polygon(72% 0, 100% 0, 100% 100%, 48% 100%);
+}
+
+/* Huge faded page word (set from the URL in +Layout.tsx), like "COMMAND". */
+[data-ui-theme='p5'] body::before {
+	content: attr(data-watermark);
+	position: fixed;
+	left: 1vw;
+	bottom: 2vw;
+	z-index: -1;
+	pointer-events: none;
+	white-space: nowrap;
+	font-family: 'Anton', sans-serif;
+	font-size: 17vw;
+	line-height: 0.85;
+	color: rgba(255, 255, 255, 0.07);
+	transform: rotate(-10deg);
+	transform-origin: left bottom;
+	text-transform: uppercase;
+}
+
+/* ---------- Typography ---------- */
+
+/* Page titles: rotated white label with a red offset shadow and a ransom-note first letter. */
+[data-ui-theme='p5'] h1,
+[data-ui-theme='p5'] h1.font-bold {
+	width: fit-content;
+	padding: 2px 16px 2px 10px;
+	background: #ffffff;
+	color: #000000;
+	font-family: 'Anton', sans-serif;
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	transform: rotate(-2deg);
+	box-shadow: 6px 6px 0 var(--p5-red);
+}
+
+[data-ui-theme='p5'] h1::first-letter {
+	font-family: 'Abril Fatface', serif;
+	font-size: 1.3em;
+	background: #000000;
+	color: #ffffff;
+	padding: 0 5px;
+	margin-right: 3px;
+}
+
+[data-ui-theme='p5'] h2,
+[data-ui-theme='p5'] h3,
+[data-ui-theme='p5'] h4 {
+	font-family: 'Anton', sans-serif;
+	font-weight: 400 !important;
+	letter-spacing: 0.04em;
+}
+
+[data-ui-theme='p5'] .font-bold,
+[data-ui-theme='p5'] .font-semibold {
+	font-weight: 800;
+}
+
+[data-ui-theme='p5'] a:not([class*='bg-']):hover {
+	color: var(--p5-red);
+}
+
+/* ---------- Shape: nothing is rounded in P5 (except true circles) ---------- */
+[data-ui-theme='p5'] .rounded,
+[data-ui-theme='p5'] .rounded-md,
+[data-ui-theme='p5'] .rounded-lg,
+[data-ui-theme='p5'] .rounded-xl,
+[data-ui-theme='p5'] .rounded-2xl,
+[data-ui-theme='p5'] .rounded-3xl {
+	border-radius: 0;
+}
+
+/* ---------- Slanted panels: cards, stat panels, modals ----------
+   The card itself is NOT clipped (that would cut off its dropdown menus). Instead two
+   clipped pseudo-elements sit behind the content: ::before is the white outline shape
+   and ::after is the black inner shape, inset by 3px. */
+[data-ui-theme='p5'] .ui-theme-card,
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: transparent !important;
+	border: 0;
+	box-shadow: none;
+	padding: 22px 34px !important;
+}
+
+[data-ui-theme='p5'] .ui-theme-card::before,
+[data-ui-theme='p5'] .ui-theme-card::after,
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3::before,
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3::after,
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::before,
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+[data-ui-theme='p5'] .ui-theme-card::before,
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3::before,
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::before {
+	background: #ffffff;
+	clip-path: polygon(14px 16px, 100% 0, calc(100% - 22px) 100%, 0 calc(100% - 12px));
+}
+
+[data-ui-theme='p5'] .ui-theme-card::after,
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3::after,
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::after {
+	background: #000000;
+	clip-path: polygon(19px 20px, calc(100% - 5px) 5px, calc(100% - 26px) calc(100% - 4px), 5px calc(100% - 16px));
+}
+
+/* Every other card slants the opposite way, like P5's zig-zagging menus. */
+[data-ui-theme='p5'] :nth-child(even) > div > .ui-theme-card::before {
+	clip-path: polygon(0 0, calc(100% - 14px) 16px, 100% calc(100% - 12px), 22px 100%);
+}
+
+[data-ui-theme='p5'] :nth-child(even) > div > .ui-theme-card::after {
+	clip-path: polygon(5px 5px, calc(100% - 19px) 20px, calc(100% - 5px) calc(100% - 16px), 26px calc(100% - 4px));
+}
+
+/* Content paints above the shapes. Children that already have a z-index (like the ⋯ menu) keep it. */
+[data-ui-theme='p5'] .ui-theme-card > *:not(.absolute),
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3 > *:not(.absolute),
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) > *:not(.absolute) {
+	position: relative;
+}
+
+[data-ui-theme='p5'] .ui-theme-card > *:not([class*='z-']),
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3 > *:not([class*='z-']),
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) > *:not([class*='z-']) {
+	z-index: 1;
+}
+
+/* That z-index:1 turns each panel child into its own layer, so an open dropdown inside a panel
+   header would render behind the chart below it and behind neighboring panels. While a dropdown
+   is open (they only render when open), lift the child that contains it above everything. */
+[data-ui-theme='p5'] .ui-theme-card > *:has(.absolute.top-full.z-50),
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3 > *:has(.absolute.top-full.z-50),
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) > *:has(.absolute.top-full.z-50) {
+	z-index: 60;
+}
+
+/* The panel itself also needs to sit above later panels while its dropdown is open. */
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-lg.p-3:has(.absolute.top-full.z-50),
+[data-ui-theme='p5'] .ui-theme-card:has(.absolute.top-full.z-50) {
+	z-index: 60;
+}
+
+/* Custom card background images sit above the black shape. */
+[data-ui-theme='p5'] .ui-theme-card > .absolute.inset-0 {
+	z-index: 1 !important;
+}
+
+/* Hovered cards and modals: the outline turns into a red slab offset down-left (the P5 "selected" look). */
+[data-ui-theme='p5'] .ui-theme-card:hover::before,
+[data-ui-theme='p5'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::before {
+	background: var(--p5-red);
+	transform: translate(-7px, 7px);
+}
+
+/* ---------- Tooltips, context menus, dropdowns, toasts: black box, white border, red shadow ---------- */
+[data-ui-theme='p5'] .ui-theme-tooltip,
+[data-ui-theme='p5'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='p5'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='p5'] .absolute.z-50.bg-color-gray-600,
+[data-ui-theme='p5'] .react-tooltip {
+	background: #000000 !important;
+	border: 3px solid #ffffff !important;
+	box-shadow: 6px 6px 0 var(--p5-red) !important;
+	color: #ffffff !important;
+	border-radius: 0 !important;
+}
+
+/* ---------- Buttons: red (selected) and white (unselected) parallelograms ---------- */
+[data-ui-theme='p5'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='p5'] a.bg-\[var\(--theme-color\)\],
+[data-ui-theme='p5'] button.bg-color-gray-300 {
+	clip-path: polygon(9px 0, 100% 0, calc(100% - 9px) 100%, 0 100%);
+	padding-left: 18px !important;
+	padding-right: 18px !important;
+	border: 0 !important;
+	font-family: 'Anton', sans-serif;
+	font-weight: 400 !important;
+	letter-spacing: 0.05em;
+}
+
+[data-ui-theme='p5'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='p5'] a.bg-\[var\(--theme-color\)\] {
+	background: var(--p5-red) !important;
+	color: #ffffff !important;
+}
+
+[data-ui-theme='p5'] button.bg-color-gray-300 {
+	background: #ffffff !important;
+	color: #000000 !important;
+}
+
+[data-ui-theme='p5'] button.bg-color-gray-300 * {
+	color: #000000 !important;
+}
+
+[data-ui-theme='p5'] button:not(:disabled):hover {
+	filter: brightness(1.12);
+}
+
+/* ---------- Inputs: white slanted bars with bold black text ---------- */
+/* Inputs marked bg-transparent sit inside their own styled box (e.g. FormInput), so leave them alone. */
+[data-ui-theme='p5'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='p5'] textarea:not(.bg-transparent),
+[data-ui-theme='p5'] select {
+	background-color: #ffffff;
+	color: #000000;
+	font-weight: 700;
+	border: 0;
+	clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 6px 100%);
+}
+
+[data-ui-theme='p5'] input::placeholder,
+[data-ui-theme='p5'] textarea::placeholder {
+	color: #6b6b6b;
+}
+
+[data-ui-theme='p5'] input:not(.bg-transparent):focus,
+[data-ui-theme='p5'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='p5'] select:focus {
+	outline: none;
+	box-shadow: inset 0 -4px 0 var(--p5-red);
+}
+
+/* ---------- Dividers: slightly rotated thick white line ---------- */
+[data-ui-theme='p5'] hr {
+	border: 0;
+	height: 3px;
+	background: #ffffff;
+	transform: rotate(-0.6deg);
+}
+
+/* ---------- Scrollbars ---------- */
+[data-ui-theme='p5'] ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+[data-ui-theme='p5'] ::-webkit-scrollbar-track {
+	background: #000000;
+}
+
+[data-ui-theme='p5'] ::-webkit-scrollbar-thumb {
+	background: var(--p5-red);
+	border: 2px solid #000000;
+}
+
+/* ---------- Selection ---------- */
+[data-ui-theme='p5'] ::selection {
+	background: var(--p5-red);
+	color: #ffffff;
+}
+
+/* ---------- Black buttons (e.g. the Settings modal's section list): lighter gray on hover & selected ----------
+   gray-600 is almost pure black in P5, so its hover/selected states were invisible. */
+[data-ui-theme='p5'] button.bg-color-gray-600,
+[data-ui-theme='p5'] button.hover\:bg-color-gray-600:hover {
+	background-color: #2e2e2e;
+}
+
+/* ---------- White (unselected) buttons: light red on hover ---------- */
+[data-ui-theme='p5'] button.bg-color-gray-300:hover {
+	background: #ffb3b4 !important;
+	filter: none;
+}
+
+/* Modal wrappers that only hold an already-framed card (Stats Details / Completion Stats):
+   no modal frame and no box of their own, so the card isn't double-framed. */
+[data-ui-theme='p5'] dialog > .ui-theme-bare,
+/* extra-specific so it beats the dropdown-box rule that also matches these wrapper classes */
+[data-ui-theme='p5'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+/* ---------- Sidebars (main menu, Settings, Filter): slanted left edge with a solid red offset slab ----------
+   Drawn as a stretched SVG background (not clip-path), so nothing inside the sidebar gets clipped
+   and the shape stays put while the content scrolls. From back to front: red slab, thin white
+   outline, black panel, each with a slanted left edge. */
+[data-ui-theme='p5'] .ui-theme-sidebar {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='3,0 100,0 100,100 0,100' fill='%23e5191c'/%3E%3Cpolygon points='7.2,0 100,0 100,100 3.8,100' fill='%23ffffff'/%3E%3Cpolygon points='8,0 100,0 100,100 4.6,100' fill='%23080808'/%3E%3C/svg%3E") left top / 100% 100% no-repeat !important;
+	padding-left: 40px !important;
+}
+
+/* ---------- Medals & Challenges ----------
+   Tiles and the chosen-item panel become slanted black panels with a white outline (P5 style).
+   Drawn as stretched SVG backgrounds so nothing gets clipped and scroll containers keep their shape
+   while scrolling. The selected tile gets the red offset slab; every other tile slants the other way. */
+[data-ui-theme='p5'] .ui-theme-tile {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='2,1 100,0 98,100 0,98' fill='%23ffffff'/%3E%3Cpolygon points='3.8,3 98.3,2 96.4,97.6 1.8,96' fill='%23080808'/%3E%3C/svg%3E") center / 100% 100% no-repeat !important;
+	border: 0 !important;
+	border-radius: 0;
+	padding: 8px 10px;
+	transition: transform 0.12s ease;
+}
+
+[data-ui-theme='p5'] .ui-theme-tile:nth-child(even) {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='0,0 98,1 100,98 2,100' fill='%23ffffff'/%3E%3Cpolygon points='1.8,2 96.2,3 98.2,96 3.6,97.6' fill='%23080808'/%3E%3C/svg%3E") !important;
+}
+
+/* Selected tile: the red "selected" slab peeks out behind, down-left */
+[data-ui-theme='p5'] .ui-theme-tile[aria-checked='true'] {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='0,5 95,3 98,100 1,100' fill='%23e5191c'/%3E%3Cpolygon points='4,0 100,1 98.5,97 2.5,98' fill='%23ffffff'/%3E%3Cpolygon points='5.8,2 98.3,3 96.9,95 4.3,96' fill='%23080808'/%3E%3C/svg%3E") !important;
+	outline: none;
+	/* keep the bottom row (e.g. the "x25" count) on the black panel, above the white outline and red slab */
+	padding-bottom: 16px;
+}
+
+/* Medal name bar: white slanted label with bold black text instead of the gray bar */
+[data-ui-theme='p5'] .ui-theme-tile .bg-color-gray-150 {
+	background: #ffffff;
+	color: #000000;
+	border-left: 0 !important;
+	padding: 1px 12px;
+	clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 6px 100%);
+	font-family: 'Anton', sans-serif;
+	font-weight: 400 !important;
+	letter-spacing: 0.03em;
+}
+
+/* Challenge name bar: white slanted label (the selected one keeps the red theme color) */
+[data-ui-theme='p5'] .ui-theme-tile > .bg-color-gray-200,
+[data-ui-theme='p5'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 6px 100%);
+	padding-left: 12px !important;
+	font-family: 'Anton', sans-serif;
+	font-weight: 400 !important;
+	letter-spacing: 0.03em;
+}
+
+[data-ui-theme='p5'] .ui-theme-tile > .bg-color-gray-200 {
+	background: #ffffff !important;
+	color: #000000;
+}
+
+/* Chosen medal / challenge panel: big slanted panel with the red slab behind */
+[data-ui-theme='p5'] .ui-theme-plate.mt-5 {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='0,3 97,1.5 100,100 1,100' fill='%23e5191c'/%3E%3Cpolygon points='3,0 100,0.8 98,98 1.5,99' fill='%23ffffff'/%3E%3Cpolygon points='4.5,1.2 98.6,1.8 96.8,97 2.8,97.8' fill='%23080808'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+	padding: 20px 24px;
+}
+
+/* Its title bar: white slanted label */
+[data-ui-theme='p5'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: #ffffff;
+	color: #000000;
+	clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 8px 100%);
+	padding-left: 14px;
+	font-family: 'Anton', sans-serif;
+	font-weight: 400 !important;
+	letter-spacing: 0.03em;
+}
+
+/* Cards that slant the other way have their top-right corner pushed down, which put the ⋯ menu
+   on the white edge. Give those cards a bit more room at the top/right. */
+[data-ui-theme='p5'] :nth-child(even) > div > .ui-theme-card {
+	padding-top: 32px !important;
+	padding-right: 44px !important;
+}
+
+/* The Completed Tasks day card's ⋯ button is absolutely positioned, so move it in too. */
+[data-ui-theme='p5'] :nth-child(even) > div > .ui-theme-card > .absolute.top-\[14px\] {
+	top: 30px;
+	right: 44px;
+}
+
+/* ---------- Mouse cursor (hand-drawn in the game's style, src/assets/themes/cursors/) ---------- */
+[data-ui-theme='p5'],
+[data-ui-theme='p5'] body {
+	cursor: url('../assets/themes/cursors/p5.svg') 2 2, auto;
+}
+
+[data-ui-theme='p5'] a,
+[data-ui-theme='p5'] button,
+[data-ui-theme='p5'] [role='button'],
+[data-ui-theme='p5'] [role='tab'],
+[data-ui-theme='p5'] [role='menuitem'],
+[data-ui-theme='p5'] [role='radio'],
+[data-ui-theme='p5'] label,
+[data-ui-theme='p5'] select,
+[data-ui-theme='p5'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/p5-pointer.svg') 12 2, pointer;
+}
+
+/* Chart "empty" areas: near-black with a hint of red instead of neutral dark gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='p5'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #241818;
+}
+
+[data-ui-theme='p5'] .recharts-bar-background-rectangle {
+	fill: #2e1e1e;
+}
+
+/* Accessibility: Anton (headings) is very condensed, so at the same font size a line reads ~6%
+   smaller than the site's default font. Scale it up to the default's width. */
+[data-ui-theme='p5'] h2,
+[data-ui-theme='p5'] h3,
+[data-ui-theme='p5'] h4 {
+	font-size-adjust: 0.78;
+}
+
+/* Main menu sidebar: the current page gets the red slanted band with white text (and a white icon so it
+   doesn't vanish on the red), like selected buttons */
+[data-ui-theme='p5'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: var(--p5-red);
+	clip-path: polygon(9px 0, 100% 0, calc(100% - 9px) 100%, 0 100%);
+	color: #ffffff !important;
+	padding: 2px 18px;
+	margin-left: -18px;
+}
+
+[data-ui-theme='p5'] .ui-theme-sidebar nav a[aria-current='page'] * {
+	color: #ffffff !important;
+}

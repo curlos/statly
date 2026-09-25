@@ -1,0 +1,465 @@
+/* =========================================================================
+   CYBERPUNK 2077 UI THEME
+   Everything here only applies when <html data-ui-theme="cyberpunk">.
+   Inspired by Cyberpunk 2077's menus (Load Game / Settings): near-black screens with a deep
+   red glow, salmon-red labels, cyan for anything active, thin 1px red outlines on dark panels
+   with a cut bottom-right corner, solid red chamfered slabs for selected toggles, uppercase
+   Rajdhani type (the game's actual UI font), faint scanlines and tiny "protocol" readouts.
+   ========================================================================= */
+
+[data-ui-theme='cyberpunk'] {
+	--cp-red: #ff5c57;
+	--cp-red-dim: rgba(255, 92, 87, 0.55);
+	--cp-red-slab: #c8403d;
+	--cp-cyan: #5ef6ff;
+	--cp-bg: #0d0709;
+	--cp-panel: rgba(22, 10, 14, 0.9);
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: #ffd9d6;
+	--color-gray: #0d0709;
+	--color-gray-25: #ffaaa5;
+	--color-gray-50: #e0847f;
+	--color-gray-100: #a8605c;
+	--color-gray-150: #4d2226;
+	--color-gray-200: #33171b;
+	--color-gray-300: #241013;
+	--color-gray-600: #140a0d;
+	--color-gray-650: #180c10;
+	--color-gray-700: var(--cp-bg);
+
+	color-scheme: dark;
+	accent-color: var(--cp-red);
+	font-family: 'Rajdhani', sans-serif;
+	font-weight: 500;
+	scrollbar-color: var(--cp-red) transparent;
+}
+
+/* ---------- Background: near-black with a deep red glow ---------- */
+[data-ui-theme='cyberpunk'] body {
+	background:
+		radial-gradient(ellipse at 50% -10%, rgba(140, 24, 36, 0.45), transparent 60%),
+		radial-gradient(ellipse at 100% 100%, rgba(20, 70, 80, 0.18), transparent 55%),
+		var(--cp-bg) fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='cyberpunk'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='cyberpunk'] .flex-1.bg-color-gray-700,
+[data-ui-theme='cyberpunk'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='cyberpunk'] .sticky.bg-color-gray-700 {
+	background-color: rgba(13, 7, 9, 0.92);
+}
+
+/* Faint scanlines + dot grid over the screen (behind content) */
+[data-ui-theme='cyberpunk']::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 3px),
+		radial-gradient(rgba(255, 92, 87, 0.08) 1px, transparent 1.5px) 0 0 / 22px 22px;
+}
+
+/* Tiny "protocol" readout in the top-left corner, like the game's HUD fine print */
+[data-ui-theme='cyberpunk']::before {
+	content: 'PROTOCOL 6520-A44 // UNLICENSED ACCESS PROHIBITED // STATLY';
+	position: fixed;
+	top: 6px;
+	left: 10px;
+	z-index: -1;
+	pointer-events: none;
+	font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+	font-size: 9px;
+	letter-spacing: 0.12em;
+	color: rgba(255, 92, 87, 0.45);
+}
+
+/* Page name as vertical code text along the left edge (set from the URL in +Layout.tsx) */
+[data-ui-theme='cyberpunk'] body::before {
+	content: '00032 05 54 0B CP // ' attr(data-watermark) ' // 6520-A44';
+	position: fixed;
+	left: 6px;
+	top: 30%;
+	z-index: -1;
+	pointer-events: none;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+	font-size: 10px;
+	letter-spacing: 0.15em;
+	color: rgba(255, 92, 87, 0.35);
+	text-transform: uppercase;
+}
+
+/* Thin red rule across the top of the screen that fades out at the ends */
+[data-ui-theme='cyberpunk'] body::after {
+	content: '';
+	position: fixed;
+	top: 20px;
+	left: 3%;
+	right: 3%;
+	height: 1px;
+	z-index: -1;
+	pointer-events: none;
+	background: linear-gradient(90deg, transparent, var(--cp-red-dim) 12%, var(--cp-red-dim) 88%, transparent);
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='cyberpunk'] .text-white {
+	color: #ffd9d6;
+}
+
+/* Page titles: uppercase red with a soft glow ("LOAD GAME") */
+[data-ui-theme='cyberpunk'] h1,
+[data-ui-theme='cyberpunk'] h1.font-bold {
+	font-family: 'Rajdhani', sans-serif;
+	font-weight: 600 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--cp-red) !important;
+	text-shadow: 0 0 10px rgba(255, 92, 87, 0.45);
+}
+
+[data-ui-theme='cyberpunk'] h2,
+[data-ui-theme='cyberpunk'] h3 {
+	font-family: 'Rajdhani', sans-serif;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em;
+	color: var(--cp-cyan);
+}
+
+/* ---------- Shape: square everything (circles stay circles) ---------- */
+[data-ui-theme='cyberpunk'] .rounded,
+[data-ui-theme='cyberpunk'] .rounded-md,
+[data-ui-theme='cyberpunk'] .rounded-lg,
+[data-ui-theme='cyberpunk'] .rounded-xl,
+[data-ui-theme='cyberpunk'] .rounded-2xl,
+[data-ui-theme='cyberpunk'] .rounded-3xl {
+	border-radius: 0;
+}
+
+/* ---------- Panels: thin red outline on dark, with a cut bottom-right corner ----------
+   Cards, Stats panels, plates, tiles and modal panels. The cut corner is drawn with ::after
+   (not clip-path) so dropdowns inside cards never get clipped. */
+[data-ui-theme='cyberpunk'] .ui-theme-card,
+[data-ui-theme='cyberpunk'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='cyberpunk'] .ui-theme-plate,
+[data-ui-theme='cyberpunk'] .ui-theme-tile,
+[data-ui-theme='cyberpunk'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--cp-panel);
+	border: 1px solid var(--cp-red-dim) !important;
+	border-radius: 0;
+	box-shadow: none;
+	transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+[data-ui-theme='cyberpunk'] .ui-theme-card::after,
+[data-ui-theme='cyberpunk'] .bg-color-gray-600.rounded-lg.p-3::after,
+[data-ui-theme='cyberpunk'] .ui-theme-plate::after,
+[data-ui-theme='cyberpunk'] .ui-theme-tile::after,
+[data-ui-theme='cyberpunk'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::after {
+	content: '';
+	position: absolute;
+	right: -1px;
+	bottom: -1px;
+	width: 14px;
+	height: 14px;
+	pointer-events: none;
+	z-index: 1;
+	background: linear-gradient(135deg, transparent 0 calc(50% - 0.8px), var(--cp-red) calc(50% - 0.8px) calc(50% + 0.6px), var(--cp-bg) calc(50% + 0.6px));
+}
+
+/* Loading skeleton bars: dim red instead of solid slabs */
+[data-ui-theme='cyberpunk'] .ui-theme-card .animate-pulse {
+	background: rgba(255, 92, 87, 0.18) !important;
+}
+
+/* Hovered / "selected" row: brighter red outline with a faint red wash */
+[data-ui-theme='cyberpunk'] .ui-theme-card:hover,
+[data-ui-theme='cyberpunk'] .ui-theme-tile:hover {
+	border-color: var(--cp-red) !important;
+	background-color: rgba(60, 14, 20, 0.92);
+	box-shadow: 0 0 14px rgba(255, 92, 87, 0.2);
+}
+
+/* Stats panels: compact padding, headings get a thin cyan rule */
+[data-ui-theme='cyberpunk'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+[data-ui-theme='cyberpunk'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	background: linear-gradient(90deg, var(--cp-cyan), rgba(94, 246, 255, 0)) left bottom / 70% 1px no-repeat;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='cyberpunk'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='cyberpunk'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* Chosen medal / challenge title bar */
+[data-ui-theme='cyberpunk'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: #1f0d11;
+	border-bottom: 1px solid var(--cp-red-dim);
+	color: var(--cp-cyan);
+	letter-spacing: 0.05em;
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='cyberpunk'] .ui-theme-tile[aria-checked='true'] {
+	border-color: var(--cp-cyan) !important;
+	box-shadow: 0 0 14px rgba(94, 246, 255, 0.3);
+}
+
+[data-ui-theme='cyberpunk'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='cyberpunk'] .ui-theme-tile > .bg-color-gray-200 {
+	background: #2a1115;
+	border-left-color: var(--cp-red) !important;
+	color: var(--cp-red);
+	letter-spacing: 0.04em;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='cyberpunk'] dialog > .ui-theme-bare,
+[data-ui-theme='cyberpunk'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='cyberpunk'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background: rgba(16, 8, 11, 0.97);
+	box-shadow: 0 0 30px rgba(255, 92, 87, 0.15);
+}
+
+/* ---------- Sidebars: dark with a thin red edge; menu items like the settings list ---------- */
+[data-ui-theme='cyberpunk'] .ui-theme-sidebar {
+	background: linear-gradient(180deg, #170a0e, #0d0709) !important;
+	border-left: 1px solid var(--cp-red-dim) !important;
+	box-shadow: -8px 0 24px rgba(0, 0, 0, 0.6);
+}
+
+[data-ui-theme='cyberpunk'] .ui-theme-sidebar nav a {
+	font-family: 'Rajdhani', sans-serif;
+	font-weight: 600;
+	letter-spacing: 0.05em;
+	color: var(--cp-red);
+	border-left: 2px solid transparent;
+	padding-left: 8px;
+}
+
+[data-ui-theme='cyberpunk'] .ui-theme-sidebar nav a[aria-current='page'] {
+	color: var(--cp-cyan);
+	border-left-color: var(--cp-cyan);
+	text-shadow: 0 0 8px rgba(94, 246, 255, 0.5);
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): dark with a red outline ---------- */
+[data-ui-theme='cyberpunk'] .ui-theme-tooltip,
+[data-ui-theme='cyberpunk'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='cyberpunk'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='cyberpunk'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='cyberpunk'] .react-tooltip {
+	background: #120709 !important;
+	border: 1px solid var(--cp-red) !important;
+	box-shadow: 0 0 16px rgba(255, 92, 87, 0.22) !important;
+	color: #ffd9d6 !important;
+	border-radius: 0 !important;
+}
+
+[data-ui-theme='cyberpunk'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='cyberpunk'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: rgba(255, 92, 87, 0.18);
+	color: var(--cp-cyan);
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: solid red chamfered slab (like the "OFF" toggle and slider knobs) */
+[data-ui-theme='cyberpunk'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='cyberpunk'] a.bg-\[var\(--theme-color\)\] {
+	background: var(--cp-red-slab) !important;
+	color: #ffe3e1 !important;
+	border: 0 !important;
+	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+/* Unselected: dark with a thin cyan outline (like "DEFAULTS" / "GAMMA CORRECTION") */
+[data-ui-theme='cyberpunk'] button.bg-color-gray-300 {
+	background: #140a0d !important;
+	color: var(--cp-cyan) !important;
+	border: 1px solid rgba(94, 246, 255, 0.5);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+[data-ui-theme='cyberpunk'] button.bg-color-gray-300:hover {
+	background: rgba(94, 246, 255, 0.12) !important;
+	border-color: var(--cp-cyan);
+}
+
+/* Tabs: plain uppercase text, red when inactive, cyan when active (SOUND · CONTROLS · GAMEPLAY) */
+[data-ui-theme='cyberpunk'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='cyberpunk'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 0 !important;
+	clip-path: none !important;
+	color: var(--cp-red) !important;
+	font-size: 17px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+[data-ui-theme='cyberpunk'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='cyberpunk'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	color: var(--cp-cyan) !important;
+	text-shadow: 0 0 8px rgba(94, 246, 255, 0.55);
+}
+
+/* Hovered / selected tab (e.g. the Settings modal's Profile · Appearance · Manage Data list):
+   the game's dark slate highlight behind the text */
+[data-ui-theme='cyberpunk'] [role='tablist'] [role='tab']:hover,
+[data-ui-theme='cyberpunk'] [role='tablist'] [role='tab'][aria-selected='true'],
+[data-ui-theme='cyberpunk'] nav[aria-label='Stats sections'] > *:hover {
+	background: #1e2a30 !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='cyberpunk'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='cyberpunk'] textarea:not(.bg-transparent),
+[data-ui-theme='cyberpunk'] select {
+	background-color: #0a0507;
+	border: 1px solid var(--cp-red-dim);
+	border-radius: 0;
+	color: #ffd9d6;
+}
+
+[data-ui-theme='cyberpunk'] input:not(.bg-transparent):focus,
+[data-ui-theme='cyberpunk'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='cyberpunk'] select:focus {
+	outline: none;
+	border-color: var(--cp-cyan);
+	box-shadow: 0 0 10px rgba(94, 246, 255, 0.3);
+}
+
+/* ---------- Dividers: thin glowing cyan line ---------- */
+[data-ui-theme='cyberpunk'] hr {
+	border: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, var(--cp-cyan) 8%, var(--cp-cyan) 92%, transparent);
+	box-shadow: 0 0 6px rgba(94, 246, 255, 0.5);
+}
+
+/* ---------- Scrollbar: thin red bar ---------- */
+[data-ui-theme='cyberpunk'] ::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+[data-ui-theme='cyberpunk'] ::-webkit-scrollbar-track {
+	background: linear-gradient(90deg, transparent 2px, rgba(255, 92, 87, 0.25) 2px, rgba(255, 92, 87, 0.25) 3px, transparent 3px);
+}
+
+[data-ui-theme='cyberpunk'] ::-webkit-scrollbar-thumb {
+	background: var(--cp-red);
+}
+
+[data-ui-theme='cyberpunk'] ::selection {
+	background: rgba(94, 246, 255, 0.35);
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: the in-game cyan square (src/assets/themes/cursors/) ---------- */
+[data-ui-theme='cyberpunk'],
+[data-ui-theme='cyberpunk'] body {
+	cursor: url('../assets/themes/cursors/cyberpunk.svg') 16 16, auto;
+}
+
+[data-ui-theme='cyberpunk'] a,
+[data-ui-theme='cyberpunk'] button,
+[data-ui-theme='cyberpunk'] [role='button'],
+[data-ui-theme='cyberpunk'] [role='tab'],
+[data-ui-theme='cyberpunk'] [role='menuitem'],
+[data-ui-theme='cyberpunk'] [role='radio'],
+[data-ui-theme='cyberpunk'] label,
+[data-ui-theme='cyberpunk'] select,
+[data-ui-theme='cyberpunk'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/cyberpunk-pointer.svg') 16 16, pointer;
+}
+
+/* The chosen Medal / Challenge panel is itself a scroll container: keep its cut corner inside
+   the panel and never scroll sideways (the corner poking out 1px made a horizontal scrollbar). */
+[data-ui-theme='cyberpunk'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* ...and it scrolls, so a cut corner would float mid-content instead of marking the end: hide it */
+[data-ui-theme='cyberpunk'] .ui-theme-plate.overflow-auto::after {
+	display: none;
+}
+
+/* ---------- Hover feedback on anything selectable ----------
+   Unselected controls (buttons, link-tabs like Focus/Tasks · Daily/Weekly, list rows) get the
+   game's dark slate highlight; selected red slabs brighten; plain text links/icon buttons turn cyan. */
+[data-ui-theme='cyberpunk'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):hover {
+	background-color: #1e2a30 !important;
+	background-image: none !important;
+}
+
+/* Link-style unselected tabs (e.g. Medals/Challenges' Focus · Tasks · Daily · Weekly) match the button tabs */
+[data-ui-theme='cyberpunk'] a.bg-color-gray-300 {
+	background-color: #140a0d;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	font-weight: 600;
+}
+
+[data-ui-theme='cyberpunk'] a.bg-\[var\(--theme-color\)\] {
+	background: var(--cp-red-slab) !important;
+	color: #ffe3e1 !important;
+	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+[data-ui-theme='cyberpunk'] :is(a, button).bg-\[var\(--theme-color\)\]:hover {
+	filter: brightness(1.18);
+}
+
+[data-ui-theme='cyberpunk'] :is(a:not([class*='bg-']), button.bg-transparent):hover,
+[data-ui-theme='cyberpunk'] .ui-theme-sidebar nav a:hover {
+	color: var(--cp-cyan) !important;
+}
+
+/* Chart "empty" areas: dark maroon, like the red-glow screens instead of neutral dark gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='cyberpunk'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #2a1015;
+}
+
+[data-ui-theme='cyberpunk'] .recharts-bar-background-rectangle {
+	fill: #37151b;
+}
+
+/* Accessibility: Rajdhani is narrow with short capitals, so at the same font size it reads ~12%
+   smaller than the site's default font. Scale it up so a line of text takes the same space. */
+[data-ui-theme='cyberpunk'] {
+	font-size-adjust: 0.62;
+}

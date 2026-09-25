@@ -122,7 +122,7 @@ const Page = () => {
 						onClose={() => setShowChosenChallengeModal(false)}
 						ariaLabel="Challenge details"
 					>
-						<div className="rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
+						<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
 							{isLoading ? (
 					<ChosenChallengeSkeleton {...{ maxHeight, chosenChallengeRef }} />
 				) : (

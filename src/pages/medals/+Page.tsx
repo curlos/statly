@@ -129,7 +129,7 @@ const Page = () => {
 							onClose={() => setShowChosenMedalModal(false)}
 							ariaLabel="Medal details"
 						>
-							<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">
+							<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2">
 								{isLoading ? (
 									<ChosenMedalSkeleton {...{ maxHeight, chosenMedalRef }} />
 								) : (

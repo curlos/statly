@@ -107,7 +107,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 	};
 
 	const baseClassName = classNames(
-		'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4',
+		'ui-theme-sidebar inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4',
 		isForModal ? 'fixed right-0 w-[85%] max-w-[400px]' : ''
 	);
 

@@ -1,0 +1,475 @@
+/* =========================================================================
+   FINAL FANTASY VII REMAKE UI THEME
+   Everything here only applies when <html data-ui-theme="ff7r">.
+   Inspired by FF7R's menus (Options, Battle Settings, Load/Save, Yes/No prompts): deep
+   Mako-blue screens with faint particles, translucent blue glass panels framed by thin
+   light-blue lines with glowing corner nodes, glowing light-cyan titles, section names written
+   vertically, and a bright blue highlight bar that fades out at both ends for the selection.
+   Font: Belleza, a free stand-in for the game's Optima-style humanist sans.
+   ========================================================================= */
+
+[data-ui-theme='ff7r'] {
+	--ff-cyan: #6fe0ff;
+	--ff-blue: #3aa0ff;
+	--ff-line: rgba(111, 182, 255, 0.45);
+	--ff-line-bright: rgba(159, 220, 255, 0.9);
+	--ff-glass: rgba(10, 40, 100, 0.45);
+	--ff-deep: #02081a;
+	--ff-text: #eaf3ff;
+	/* the selected-row bar: bright blue fading out at both ends */
+	--ff-bar: linear-gradient(90deg, rgba(31, 127, 224, 0) 0%, #1f7fe0 18%, #3aa0ff 50%, #1f7fe0 82%, rgba(31, 127, 224, 0) 100%);
+	--ff-bar-soft: linear-gradient(90deg, rgba(58, 160, 255, 0) 0%, rgba(58, 160, 255, 0.35) 20%, rgba(58, 160, 255, 0.35) 80%, rgba(58, 160, 255, 0) 100%);
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--ff-text);
+	--color-gray: var(--ff-deep);
+	--color-gray-25: #cfe0f5;
+	--color-gray-50: #a9c1e2;
+	--color-gray-100: #7f9cc4;
+	--color-gray-150: #2a4f8f;
+	--color-gray-200: #16356f;
+	--color-gray-300: #102a5e;
+	--color-gray-600: #0a1d4a;
+	--color-gray-650: #0c2150;
+	--color-gray-700: #03102e;
+
+	color-scheme: dark;
+	accent-color: var(--ff-blue);
+	font-family: 'Belleza', sans-serif;
+	scrollbar-color: rgba(111, 182, 255, 0.6) transparent;
+}
+
+/* ---------- Background: Mako-blue gradient with a vignette ---------- */
+[data-ui-theme='ff7r'] body {
+	background:
+		radial-gradient(ellipse at 70% 15%, rgba(40, 120, 220, 0.35), transparent 60%),
+		radial-gradient(ellipse at 50% 115%, rgba(0, 0, 0, 0.75), transparent 60%),
+		linear-gradient(160deg, #0a2a6e 0%, #041233 55%, var(--ff-deep) 100%) fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='ff7r'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='ff7r'] .flex-1.bg-color-gray-700,
+[data-ui-theme='ff7r'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='ff7r'] .sticky.bg-color-gray-700 {
+	background-color: rgba(3, 16, 46, 0.92);
+}
+
+/* Faint drifting particles */
+[data-ui-theme='ff7r']::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		radial-gradient(rgba(159, 220, 255, 0.35) 1px, transparent 1.6px) 0 0 / 137px 131px,
+		radial-gradient(rgba(159, 220, 255, 0.2) 1px, transparent 1.6px) 40px 70px / 211px 197px,
+		radial-gradient(rgba(111, 224, 255, 0.28) 1.4px, transparent 2px) 90px 20px / 293px 271px;
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='ff7r'] .text-white {
+	color: var(--ff-text);
+}
+
+/* Page titles: glowing light cyan ("Camera & Controls") */
+[data-ui-theme='ff7r'] h1,
+[data-ui-theme='ff7r'] h1.font-bold {
+	font-family: 'Belleza', sans-serif;
+	font-weight: 400 !important;
+	letter-spacing: 0.02em;
+	color: var(--ff-cyan) !important;
+	text-shadow: 0 0 12px rgba(111, 224, 255, 0.55);
+}
+
+[data-ui-theme='ff7r'] h2,
+[data-ui-theme='ff7r'] h3 {
+	font-family: 'Belleza', sans-serif;
+	letter-spacing: 0.02em;
+	color: #9fdcff;
+}
+
+/* ---------- Shape: square glass panels ---------- */
+[data-ui-theme='ff7r'] .rounded,
+[data-ui-theme='ff7r'] .rounded-md,
+[data-ui-theme='ff7r'] .rounded-lg,
+[data-ui-theme='ff7r'] .rounded-xl,
+[data-ui-theme='ff7r'] .rounded-2xl,
+[data-ui-theme='ff7r'] .rounded-3xl {
+	border-radius: 0;
+}
+
+/* ---------- Glass panels with glowing corner nodes ----------
+   Cards, Stats panels, plates, tiles and modal panels. The corner nodes are radial-gradient dots
+   on ::after (nothing is clipped, so dropdowns inside cards open fully). */
+[data-ui-theme='ff7r'] .ui-theme-card,
+[data-ui-theme='ff7r'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='ff7r'] .ui-theme-plate,
+[data-ui-theme='ff7r'] .ui-theme-tile,
+[data-ui-theme='ff7r'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--ff-glass);
+	border: 1px solid var(--ff-line) !important;
+	border-radius: 0;
+	box-shadow: inset 0 0 30px rgba(58, 160, 255, 0.08);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-ui-theme='ff7r'] .ui-theme-card::after,
+[data-ui-theme='ff7r'] .bg-color-gray-600.rounded-lg.p-3::after,
+[data-ui-theme='ff7r'] .ui-theme-plate::after,
+[data-ui-theme='ff7r'] .ui-theme-tile::after,
+[data-ui-theme='ff7r'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::after {
+	--node: radial-gradient(circle, #ffffff 0 1.2px, rgba(111, 224, 255, 0.85) 2px, rgba(111, 224, 255, 0) 5px);
+	content: '';
+	position: absolute;
+	inset: -6px;
+	z-index: 1;
+	pointer-events: none;
+	background:
+		var(--node) left top / 12px 12px no-repeat,
+		var(--node) right top / 12px 12px no-repeat,
+		var(--node) left bottom / 12px 12px no-repeat,
+		var(--node) right bottom / 12px 12px no-repeat;
+}
+
+/* Hover: brighter frame with a Mako glow */
+[data-ui-theme='ff7r'] .ui-theme-card:hover,
+[data-ui-theme='ff7r'] .ui-theme-tile:hover {
+	border-color: var(--ff-line-bright) !important;
+	box-shadow: inset 0 0 30px rgba(58, 160, 255, 0.12), 0 0 16px rgba(58, 160, 255, 0.35);
+}
+
+/* Loading skeleton bars: soft blue instead of solid slabs */
+[data-ui-theme='ff7r'] .ui-theme-card .animate-pulse {
+	background: rgba(111, 182, 255, 0.18) !important;
+}
+
+/* Modal panels: a diamond ornament on the top rule */
+[data-ui-theme='ff7r'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background: rgba(6, 26, 72, 0.9);
+	box-shadow: inset 0 0 40px rgba(58, 160, 255, 0.1), 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-ui-theme='ff7r'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::before {
+	content: '';
+	position: absolute;
+	top: -6px;
+	left: 50%;
+	width: 11px;
+	height: 11px;
+	z-index: 2;
+	pointer-events: none;
+	transform: translateX(-50%) rotate(45deg);
+	background: var(--ff-deep);
+	border: 1px solid var(--ff-cyan);
+	box-shadow: 0 0 10px rgba(111, 224, 255, 0.7), inset 0 0 0 2px var(--ff-deep), inset 0 0 0 3.5px var(--ff-cyan);
+}
+
+/* Stats panels: compact padding, headings get a thin light-blue rule */
+[data-ui-theme='ff7r'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+[data-ui-theme='ff7r'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	background: linear-gradient(90deg, var(--ff-cyan), rgba(111, 224, 255, 0)) left bottom / 70% 1px no-repeat;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='ff7r'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='ff7r'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='ff7r'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar */
+[data-ui-theme='ff7r'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: rgba(4, 16, 46, 0.85);
+	border-bottom: 1px solid var(--ff-line);
+	color: var(--ff-cyan);
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='ff7r'] .ui-theme-tile[aria-checked='true'] {
+	border-color: var(--ff-line-bright) !important;
+	box-shadow: 0 0 18px rgba(58, 160, 255, 0.45);
+}
+
+[data-ui-theme='ff7r'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='ff7r'] .ui-theme-tile > .bg-color-gray-200 {
+	background: rgba(4, 16, 46, 0.8);
+	border-left-color: var(--ff-blue) !important;
+	color: #cfe0f5;
+}
+
+[data-ui-theme='ff7r'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='ff7r'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--ff-bar);
+	color: #ffffff !important;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='ff7r'] dialog > .ui-theme-bare,
+[data-ui-theme='ff7r'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+/* ---------- Sidebars: deep blue with a thin light edge; current page gets the highlight bar ---------- */
+[data-ui-theme='ff7r'] .ui-theme-sidebar {
+	background: linear-gradient(180deg, #06173f, var(--ff-deep)) !important;
+	border-left: 1px solid var(--ff-line) !important;
+	box-shadow: -8px 0 24px rgba(0, 0, 0, 0.6);
+}
+
+[data-ui-theme='ff7r'] .ui-theme-sidebar nav a {
+	color: #cfe0f5;
+	padding: 2px 10px;
+}
+
+[data-ui-theme='ff7r'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: var(--ff-bar);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='ff7r'] .ui-theme-sidebar nav a:not([aria-current='page']):hover {
+	background: var(--ff-bar-soft);
+	color: #ffffff !important;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): dark glass with a thin border ---------- */
+[data-ui-theme='ff7r'] .ui-theme-tooltip,
+[data-ui-theme='ff7r'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='ff7r'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='ff7r'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='ff7r'] .react-tooltip {
+	background: rgba(4, 14, 40, 0.97) !important;
+	border: 1px solid rgba(111, 182, 255, 0.6) !important;
+	box-shadow: 0 0 18px rgba(58, 160, 255, 0.3) !important;
+	color: var(--ff-text) !important;
+	border-radius: 0 !important;
+}
+
+/* Hovered menu row: the highlight bar */
+[data-ui-theme='ff7r'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='ff7r'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background: var(--ff-bar);
+	color: #ffffff;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: the bright blue highlight bar with white text ("Yes") */
+[data-ui-theme='ff7r'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='ff7r'] a.bg-\[var\(--theme-color\)\] {
+	background: var(--ff-bar) !important;
+	color: #ffffff !important;
+	border: 0 !important;
+	text-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+[data-ui-theme='ff7r'] button.bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='ff7r'] a.bg-\[var\(--theme-color\)\] * {
+	color: #ffffff !important;
+}
+
+/* Unselected: dark navy with a thin light-blue border ("No") */
+[data-ui-theme='ff7r'] :is(button, a).bg-color-gray-300 {
+	background: rgba(4, 16, 46, 0.85) !important;
+	border: 1px solid var(--ff-line);
+	color: #cfe0f5 !important;
+}
+
+/* Tabs: plain light text; the active one gets the highlight bar */
+[data-ui-theme='ff7r'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='ff7r'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 0 !important;
+	color: #a9c1e2 !important;
+}
+
+[data-ui-theme='ff7r'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='ff7r'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: var(--ff-bar) !important;
+	color: #ffffff !important;
+}
+
+/* ---------- Hover feedback on anything selectable ----------
+   Unselected controls get a soft version of the highlight bar; plain text links / icon buttons
+   turn light cyan. Medal/Challenge tiles have their own hover glow. */
+[data-ui-theme='ff7r'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover,
+[data-ui-theme='ff7r'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='ff7r'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	background: var(--ff-bar-soft) !important;
+	color: #ffffff !important;
+}
+
+[data-ui-theme='ff7r'] :is(a, button).bg-\[var\(--theme-color\)\]:hover {
+	filter: brightness(1.15);
+}
+
+[data-ui-theme='ff7r'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: var(--ff-cyan) !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='ff7r'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='ff7r'] textarea:not(.bg-transparent),
+[data-ui-theme='ff7r'] select {
+	background-color: rgba(2, 8, 26, 0.85);
+	border: 1px solid var(--ff-line);
+	border-radius: 0;
+	color: var(--ff-text);
+}
+
+[data-ui-theme='ff7r'] input:not(.bg-transparent):focus,
+[data-ui-theme='ff7r'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='ff7r'] select:focus {
+	outline: none;
+	border-color: var(--ff-cyan);
+	box-shadow: 0 0 10px rgba(111, 224, 255, 0.4);
+}
+
+/* ---------- Dividers: thin light-blue line with a glowing diamond in the center ---------- */
+/* Drawn as a 1px top border with a gradient border-image (a background on a 1px-tall <hr> doesn't
+   render on some mobile browsers, which left only the diamond) */
+[data-ui-theme='ff7r'] hr {
+	position: relative;
+	overflow: visible;
+	height: 0;
+	border: 0;
+	border-top: 1px solid rgba(111, 182, 255, 0.7);
+	border-image: linear-gradient(90deg, transparent, rgba(111, 182, 255, 0.7) 15%, rgba(111, 182, 255, 0.7) 85%, transparent) 1;
+}
+
+[data-ui-theme='ff7r'] hr::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: -0.5px; /* centered on the 1px top-border line */
+	width: 6px;
+	height: 6px;
+	transform: translate(-50%, -50%) rotate(45deg);
+	background: var(--ff-cyan);
+	box-shadow: 0 0 8px rgba(111, 224, 255, 0.8);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='ff7r'] ::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+[data-ui-theme='ff7r'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='ff7r'] ::-webkit-scrollbar-thumb {
+	background: rgba(111, 182, 255, 0.6);
+}
+
+[data-ui-theme='ff7r'] ::selection {
+	background: rgba(58, 160, 255, 0.45);
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: slim Mako-blue arrow; the classic white-gloved hand (upright) on hover ---------- */
+[data-ui-theme='ff7r'],
+[data-ui-theme='ff7r'] body {
+	cursor: url('../assets/themes/cursors/ff7r.svg') 3 2, auto;
+}
+
+[data-ui-theme='ff7r'] a,
+[data-ui-theme='ff7r'] button,
+[data-ui-theme='ff7r'] [role='button'],
+[data-ui-theme='ff7r'] [role='tab'],
+[data-ui-theme='ff7r'] [role='menuitem'],
+[data-ui-theme='ff7r'] [role='radio'],
+[data-ui-theme='ff7r'] label,
+[data-ui-theme='ff7r'] select,
+[data-ui-theme='ff7r'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/ff7r-pointer.svg') 12 2, pointer;
+}
+
+/* Medal / Challenge tiles sit in a scrolling grid: give each tile a small margin so its corner
+   nodes sit on the border (centered on the corner) without overflowing the grid sideways. */
+[data-ui-theme='ff7r'] .ui-theme-tile {
+	margin: 6px;
+	width: calc(100% - 12px) !important;
+}
+
+/* The chosen Medal / Challenge panel is its own scroll box, which would clip nodes on its border,
+   so draw its nodes on the wrapper around it instead (the panel has a 20px top margin, mt-5). */
+[data-ui-theme='ff7r'] .ui-theme-plate.overflow-auto::after {
+	display: none;
+}
+
+[data-ui-theme='ff7r'] :has(> .ui-theme-plate.overflow-auto.mt-5) {
+	position: relative;
+}
+
+[data-ui-theme='ff7r'] :has(> .ui-theme-plate.overflow-auto.mt-5)::after {
+	--node: radial-gradient(circle, #ffffff 0 1.2px, rgba(111, 224, 255, 0.85) 2px, rgba(111, 224, 255, 0) 5px);
+	content: '';
+	position: absolute;
+	inset: 14px -6px -6px -6px;
+	z-index: 1;
+	pointer-events: none;
+	background:
+		var(--node) left top / 12px 12px no-repeat,
+		var(--node) right top / 12px 12px no-repeat,
+		var(--node) left bottom / 12px 12px no-repeat,
+		var(--node) right bottom / 12px 12px no-repeat;
+}
+
+/* Cards shown inside modals (e.g. Completion Stats / Details): nearly opaque glass, so what's
+   behind the modal doesn't show through and distract. */
+[data-ui-theme='ff7r'] dialog .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='ff7r'] dialog .ui-theme-card,
+[data-ui-theme='ff7r'] dialog .ui-theme-plate,
+[data-ui-theme='ff7r'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background: rgba(5, 22, 60, 0.96);
+	backdrop-filter: blur(6px);
+}
+
+/* Chart "empty" areas: deep Mako blue instead of neutral dark gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='ff7r'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #0f2a5c;
+}
+
+[data-ui-theme='ff7r'] .recharts-bar-background-rectangle {
+	fill: #143468;
+}
+
+/* Accessibility: match this theme's text size to the standard font. Themed fonts have smaller
+   lowercase letters (x-height) than the site's default; font-size-adjust scales them so 16px text
+   reads like normal 16px text. Display fonts that are already large are excluded below. */
+[data-ui-theme='ff7r'] {
+	font-size-adjust: 0.53;
+}
+
+/* In the mobile chosen Medal / Challenge modal, the panel's top margin collapses through its
+   wrapper, so the corner nodes above (placed 14px down to skip that margin) sat too low. Inside
+   modals the panel needs no top margin, so drop it and put the nodes exactly on the corners. */
+[data-ui-theme='ff7r'] dialog .ui-theme-plate.overflow-auto.mt-5 {
+	margin-top: 0;
+}
+
+[data-ui-theme='ff7r'] dialog :has(> .ui-theme-plate.overflow-auto.mt-5)::after {
+	inset: -6px;
+}

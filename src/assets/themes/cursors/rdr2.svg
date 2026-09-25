@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+	<!-- Red Dead Redemption 2 cursor: a worn off-white arrow with a dark outline. Hotspot: tip (3 2). -->
+	<polygon points="3,2 3,25 9,19.5 13.5,29 18,27 13.5,17.8 21.5,17.8" fill="#e8e2d6" stroke="#0b0b0b" stroke-width="2" stroke-linejoin="round" />
+	<polygon points="12.5,17.8 21.5,17.8 3,2 3,25" fill="#b9b1a2" opacity="0.5" />
+</svg>

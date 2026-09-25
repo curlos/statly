@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
+	<!-- The Hades parchment sheet ("The Fated List" style), stretched to fill a sidebar.
+	     Olive-gray parchment with wobbly hand-drawn edges, a rolled top lip, edge shading,
+	     paper grain and ink specks. The bottom is left open: scroll-curl.svg continues it.
+	     vector-effect keeps the ink outline an even thickness however the sheet is stretched.
+	     Sides sit at x≈3 and x≈97 (12px / 388px of a 400px sidebar) to line up with the curl. -->
+	<defs>
+		<linearGradient id="paper" x1="0" y1="0" x2="1" y2="0">
+			<stop offset="0" stop-color="#5a5243" />
+			<stop offset="0.1" stop-color="#716853" />
+			<stop offset="0.45" stop-color="#80765e" />
+			<stop offset="0.8" stop-color="#7a7059" />
+			<stop offset="1" stop-color="#5c5445" />
+		</linearGradient>
+		<linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0" stop-color="#2a2419" stop-opacity="0.35" />
+			<stop offset="0.08" stop-color="#2a2419" stop-opacity="0" />
+			<stop offset="1" stop-color="#2a2419" stop-opacity="0" />
+		</linearGradient>
+		<clipPath id="sheet">
+			<path d="M3.5 14 C30 8 70 13 97 9 C98.3 200 95.8 420 97.4 610 C98.4 800 96.3 900 97 1000 L3 1000 C4.2 820 2.4 610 3.8 410 C4.8 250 2.6 130 3.5 14 Z" />
+		</clipPath>
+		<filter id="grain" x="0" y="0" width="100%" height="100%">
+			<feTurbulence type="fractalNoise" baseFrequency="0.9 0.09" numOctaves="3" seed="11" />
+			<feColorMatrix values="0 0 0 0 0.12  0 0 0 0 0.1  0 0 0 0 0.06  0 0 0 0.35 0" />
+		</filter>
+		<filter id="stains" x="0" y="0" width="100%" height="100%">
+			<feTurbulence type="fractalNoise" baseFrequency="0.05 0.004" numOctaves="3" seed="4" />
+			<feColorMatrix values="0 0 0 0 0.16  0 0 0 0 0.13  0 0 0 0 0.08  0 0 0 1.1 -0.45" />
+		</filter>
+	</defs>
+
+	<g clip-path="url(#sheet)">
+		<!-- Base parchment, darker toward the edges -->
+		<rect width="100" height="1000" fill="url(#paper)" />
+		<rect width="100" height="1000" filter="url(#stains)" />
+		<rect width="100" height="1000" filter="url(#grain)" />
+		<rect width="100" height="1000" fill="url(#fade)" />
+
+		<!-- Cel-shaded shadow band down the left side (hard, slightly wobbly inner edge) -->
+		<path d="M0 0 H12 C10.5 200 13 420 11 620 C9.8 800 12.5 900 11.5 1000 H0 Z" fill="#3e382c" fill-opacity="0.3" />
+		<!-- Soft light band on the right -->
+		<path d="M86 0 C88 250 85 520 87.5 760 C88.5 880 87 950 87.5 1000 H91 C90 900 92 700 90.5 500 C89.5 300 91.5 120 90 0 Z" fill="#9a8f73" fill-opacity="0.25" />
+
+		<!-- Rolled top lip: dark band, highlight, then the ink crease under it -->
+		<path d="M0 0 H100 V34 C70 38 30 31 0 36 Z" fill="#4c4536" />
+		<path d="M4 24 C30 20 70 25 96 21" fill="none" stroke="#9f9476" stroke-width="2" vector-effect="non-scaling-stroke" />
+
+		<!-- Faint vertical paper fibers -->
+		<g fill="none" stroke="#3a3428" stroke-opacity="0.08" stroke-width="1" vector-effect="non-scaling-stroke">
+			<path d="M22 60 C23 260 21 520 22.5 760" />
+			<path d="M58 120 C57 330 59 600 57.5 900" />
+			<path d="M78 80 C79 300 77.5 520 78.5 700" />
+		</g>
+
+		<!-- Ink specks (ellipses pre-squashed so they look round once stretched) -->
+		<g fill="#1b1712">
+			<ellipse cx="14" cy="70" rx="0.45" ry="1.9" />
+			<ellipse cx="72" cy="52" rx="0.35" ry="1.5" />
+			<ellipse cx="88" cy="240" rx="0.4" ry="1.7" />
+			<ellipse cx="9" cy="430" rx="0.35" ry="1.4" />
+			<ellipse cx="91" cy="610" rx="0.45" ry="1.9" />
+			<ellipse cx="33" cy="820" rx="0.35" ry="1.5" />
+			<ellipse cx="80" cy="930" rx="0.4" ry="1.6" />
+		</g>
+	</g>
+
+	<!-- Heavy ink outline: top crease, top edge and wobbly sides (bottom is open) -->
+	<g fill="none" stroke="#1b1712" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke">
+		<path d="M3.5 14 C30 8 70 13 97 9" stroke-width="4" vector-effect="non-scaling-stroke" />
+		<path d="M3.6 36 C30 31 70 38 96.8 34" stroke-width="3" vector-effect="non-scaling-stroke" />
+		<path d="M97 9 C98.3 200 95.8 420 97.4 610 C98.4 800 96.3 900 97 1000" stroke-width="4.5" vector-effect="non-scaling-stroke" />
+		<path d="M3 1000 C4.2 820 2.4 610 3.8 410 C4.8 250 2.6 130 3.5 14" stroke-width="4.5" vector-effect="non-scaling-stroke" />
+	</g>
+</svg>

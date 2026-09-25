@@ -1,0 +1,498 @@
+/* =========================================================================
+   PERSONA 4 GOLDEN UI THEME
+   Everything here only applies when <html data-ui-theme="p4"> (a light theme; see
+   LIGHT_GAME_THEMES in useThemeContext). Inspired by P4G's menus: school-uniform yellow
+   screens, black text, selected rows as full-width black bands with yellow text, orange value
+   pills (Config screen), dialogue boxes with a slanted black name tab and an orange edge,
+   heavy slanted titles ("Result") and white four-point sparkles. Fonts: M PLUS Rounded 1c and
+   M PLUS 1p, free stand-ins for the game's Skip Std B and New Rodin Pro M.
+   ========================================================================= */
+
+html[data-ui-theme='p4'] {
+	--p4-yellow: #ffe45c;
+	--p4-yellow-bright: #ffe200;
+	--p4-cream: #fff7c2;
+	--p4-orange: #f39800;
+	--p4-orange-dark: #c25e00;
+	--p4-ink: #111111;
+
+	/* Re-skin the whole site (beats the .light-mode values) */
+	--color-primary-text: #111111;
+	--color-gray: #ffe45c;
+	--color-gray-25: #2b2400;
+	--color-gray-50: #4a3f00;
+	--color-gray-100: #6b5a00;
+	--color-gray-150: #d9bd2a;
+	--color-gray-200: #ffe36b;
+	--color-gray-300: #ffeb85;
+	--color-gray-600: #fff7c2;
+	--color-gray-650: #fff1a0;
+	--color-gray-700: #ffe45c;
+
+	color-scheme: light;
+	accent-color: var(--p4-orange);
+	font-family: 'M PLUS 1p', sans-serif;
+	scrollbar-color: var(--p4-ink) transparent;
+}
+
+/* ---------- Page: bright yellow with faint diagonal speed stripes ---------- */
+[data-ui-theme='p4'] body {
+	background:
+		repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.22) 0 16px, transparent 16px 64px),
+		var(--p4-yellow) fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='p4'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='p4'] .flex-1.bg-color-gray-700,
+[data-ui-theme='p4'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='p4'] .sticky.bg-color-gray-700 {
+	background-color: rgba(255, 228, 92, 0.94);
+}
+
+/* White sparkles in the top-right corner, like the title screen */
+[data-ui-theme='p4']::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: min(320px, 55vw);
+	height: min(220px, 38vw);
+	z-index: -1;
+	pointer-events: none;
+	background: url('../assets/themes/p4/sparkles.svg') right top / contain no-repeat;
+}
+
+/* Huge faint slanted page name (set from the URL in +Layout.tsx), like the "Result" screen */
+[data-ui-theme='p4'] body::before {
+	content: attr(data-watermark);
+	position: fixed;
+	left: -1vw;
+	bottom: -2vw;
+	z-index: -1;
+	pointer-events: none;
+	white-space: nowrap;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	font-style: italic;
+	font-weight: 700;
+	font-size: 15vw;
+	line-height: 0.85;
+	color: rgba(17, 17, 17, 0.07);
+}
+
+/* ---------- Typography ---------- */
+/* Page titles: heavy slanted condensed caps with an orange underline slash */
+[data-ui-theme='p4'] h1,
+[data-ui-theme='p4'] h1.font-bold {
+	width: fit-content;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	font-style: italic;
+	font-weight: 700 !important;
+	letter-spacing: 0.01em;
+	color: var(--p4-ink) !important;
+	padding: 0 6px;
+	background: linear-gradient(transparent 68%, var(--p4-orange) 68%, var(--p4-orange) 92%, transparent 92%);
+}
+
+[data-ui-theme='p4'] h2,
+[data-ui-theme='p4'] h3 {
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	font-weight: 700 !important;
+	letter-spacing: 0.03em;
+	color: var(--p4-ink);
+}
+
+/* ---------- Yellow accent → readable on yellow ----------
+   The forced theme color is P4 yellow, which would vanish on this yellow UI. Things that paint
+   with it become black bands / dark orange text / black lines instead. */
+[data-ui-theme='p4'] .bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	background-color: var(--p4-ink);
+	color: var(--p4-yellow-bright);
+}
+
+/* (cards also carry the theme-color class but are cream dialogue boxes with dark text) */
+[data-ui-theme='p4'] .bg-\[var\(--theme-color\)\].text-on-theme:not(.ui-theme-card),
+[data-ui-theme='p4'] .bg-\[var\(--theme-color\)\]:not(.ui-theme-card) .text-on-theme {
+	color: var(--p4-yellow-bright) !important;
+}
+
+[data-ui-theme='p4'] .text-\[var\(--theme-color\)\] {
+	color: var(--p4-orange-dark) !important;
+}
+
+[data-ui-theme='p4'] .border-\[var\(--theme-color\)\] {
+	border-color: var(--p4-ink) !important;
+}
+
+/* Timeline icons, lines and dots next to cards (colored inline with the theme color) */
+[data-ui-theme='p4'] article > .absolute [style*='color'],
+[data-ui-theme='p4'] article > .absolute.rounded-full [style*='color'] {
+	color: var(--p4-ink) !important;
+}
+
+[data-ui-theme='p4'] article > .absolute.border-l-\[1px\],
+[data-ui-theme='p4'] article .absolute.rounded-full.border-\[2px\] {
+	border-color: var(--p4-ink) !important;
+}
+
+/* ---------- Shape: square panels ---------- */
+[data-ui-theme='p4'] .rounded,
+[data-ui-theme='p4'] .rounded-md,
+[data-ui-theme='p4'] .rounded-lg,
+[data-ui-theme='p4'] .rounded-xl,
+[data-ui-theme='p4'] .rounded-2xl {
+	border-radius: 0;
+}
+
+/* ---------- Dialogue-box panels ----------
+   Cards, Stats panels, plates, tiles and modal panels: cream box, thick black border, an orange
+   edge down the right, and a slanted black name tab on the top-left (::before, not a clip, so
+   dropdowns inside cards are never cut off). */
+[data-ui-theme='p4'] .ui-theme-card,
+[data-ui-theme='p4'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='p4'] .ui-theme-plate,
+[data-ui-theme='p4'] .ui-theme-tile,
+[data-ui-theme='p4'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--p4-cream);
+	border: 2px solid var(--p4-ink) !important;
+	border-radius: 0;
+	box-shadow: inset -6px 0 0 var(--p4-orange);
+	transition: box-shadow 0.12s ease;
+}
+
+[data-ui-theme='p4'] .ui-theme-card::before,
+[data-ui-theme='p4'] .bg-color-gray-600.rounded-lg.p-3::before,
+[data-ui-theme='p4'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::before {
+	content: '';
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	width: 72px;
+	height: 7px;
+	z-index: 1;
+	pointer-events: none;
+	background: var(--p4-ink);
+	clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+}
+
+[data-ui-theme='p4'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::before {
+	width: 120px;
+	height: 10px;
+}
+
+/* Hover: an orange glow around the box */
+[data-ui-theme='p4'] .ui-theme-card:hover,
+[data-ui-theme='p4'] .ui-theme-tile:hover {
+	box-shadow: inset -6px 0 0 var(--p4-orange), 0 0 0 1px var(--p4-ink), 0 4px 16px rgba(243, 152, 0, 0.5);
+}
+
+/* Loading skeleton bars: soft black instead of solid slabs */
+[data-ui-theme='p4'] .ui-theme-card .animate-pulse {
+	background: rgba(17, 17, 17, 0.12) !important;
+}
+
+/* Stats panels: compact padding, headings get a short thick black rule */
+[data-ui-theme='p4'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px 14px 10px 10px;
+}
+
+[data-ui-theme='p4'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	background: linear-gradient(var(--p4-ink), var(--p4-ink)) left bottom / 60px 3px no-repeat;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='p4'] .ui-theme-plate.py-2 {
+	padding: 2px 10px 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='p4'] .ui-theme-plate.p-4 {
+	padding: 10px 14px 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='p4'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: a black band with yellow text */
+[data-ui-theme='p4'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: var(--p4-ink);
+	color: var(--p4-yellow-bright);
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='p4'] .ui-theme-tile[aria-checked='true'] {
+	box-shadow: inset -6px 0 0 var(--p4-orange), 0 0 0 3px var(--p4-ink), 0 0 16px rgba(243, 152, 0, 0.65);
+}
+
+/* Tile name bars: light yellow with black text (the black tile border frames it); the selected tile keeps the black band */
+[data-ui-theme='p4'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='p4'] .ui-theme-tile > .bg-color-gray-200 {
+	background: #ffe45c;
+	color: var(--p4-ink) !important;
+	border-left-color: var(--p4-orange) !important;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='p4'] dialog > .ui-theme-bare,
+[data-ui-theme='p4'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+/* ---------- Sidebars: yellow with a black edge; current page is a black band with ▶ ---------- */
+[data-ui-theme='p4'] .ui-theme-sidebar {
+	background: var(--p4-yellow) !important;
+	border-left: 3px solid var(--p4-ink) !important;
+	box-shadow: -6px 0 18px rgba(0, 0, 0, 0.25);
+}
+
+[data-ui-theme='p4'] .ui-theme-sidebar nav a {
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	font-weight: 700;
+	padding: 0 8px;
+}
+
+[data-ui-theme='p4'] .ui-theme-sidebar nav a[aria-current='page'],
+[data-ui-theme='p4'] .ui-theme-sidebar nav a:hover {
+	background: var(--p4-ink);
+	color: var(--p4-yellow-bright) !important;
+}
+
+[data-ui-theme='p4'] .ui-theme-sidebar nav a[aria-current='page']::before {
+	content: '▶';
+	font-size: 0.6em;
+	margin-right: 6px;
+	color: var(--p4-orange);
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): cream box, black border ---------- */
+[data-ui-theme='p4'] .ui-theme-tooltip,
+[data-ui-theme='p4'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='p4'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='p4'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='p4'] .react-tooltip {
+	background: var(--p4-cream) !important;
+	border: 2px solid var(--p4-ink) !important;
+	box-shadow: 4px 4px 0 var(--p4-ink) !important;
+	color: var(--p4-ink) !important;
+	border-radius: 0 !important;
+}
+
+/* Hovered menu row: the black selection band */
+[data-ui-theme='p4'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='p4'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: var(--p4-ink);
+}
+
+[data-ui-theme='p4'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover *,
+[data-ui-theme='p4'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='p4'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover * {
+	color: var(--p4-yellow-bright) !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: black band with yellow caps */
+[data-ui-theme='p4'] button.bg-\[var\(--theme-color\)\],
+[data-ui-theme='p4'] a.bg-\[var\(--theme-color\)\] {
+	background: var(--p4-ink) !important;
+	color: var(--p4-yellow-bright) !important;
+	border: 0 !important;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+}
+
+[data-ui-theme='p4'] button.bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='p4'] a.bg-\[var\(--theme-color\)\] * {
+	color: var(--p4-yellow-bright) !important;
+}
+
+/* Unselected: orange pills with white text, like the Config screen's values */
+[data-ui-theme='p4'] :is(button, a).bg-color-gray-300 {
+	background: var(--p4-orange) !important;
+	color: #ffffff !important;
+	border: 0;
+	border-radius: 999px;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+}
+
+[data-ui-theme='p4'] :is(button, a).bg-color-gray-300 * {
+	color: #ffffff !important;
+}
+
+/* Tabs: plain black caps; the active one is a black band with yellow text */
+[data-ui-theme='p4'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='p4'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	color: var(--p4-ink) !important;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	font-weight: 700;
+}
+
+[data-ui-theme='p4'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='p4'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: var(--p4-ink) !important;
+	color: var(--p4-yellow-bright) !important;
+}
+
+/* ---------- Hover feedback on anything selectable ----------
+   Unselected controls get the black selection band; orange pills lighten; selected bands turn
+   orange-edged; plain text links / icon buttons turn dark orange. */
+[data-ui-theme='p4'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover,
+[data-ui-theme='p4'] [role='tablist'] [role='tab']:hover,
+[data-ui-theme='p4'] nav[aria-label='Stats sections'] > *:hover {
+	background-color: var(--p4-ink) !important;
+	color: var(--p4-yellow-bright) !important;
+}
+
+[data-ui-theme='p4'] :is(button, a).bg-color-gray-300.bg-color-gray-300:hover {
+	background: #ffb23d !important;
+}
+
+[data-ui-theme='p4'] :is(a, button).bg-\[var\(--theme-color\)\]:hover {
+	box-shadow: inset 0 -3px 0 var(--p4-orange);
+}
+
+[data-ui-theme='p4'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: var(--p4-orange-dark) !important;
+}
+
+/* ---------- Inputs: cream with a black underline, orange focus ---------- */
+[data-ui-theme='p4'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='p4'] textarea:not(.bg-transparent),
+[data-ui-theme='p4'] select {
+	background-color: var(--p4-cream);
+	color: var(--p4-ink);
+	border: 0;
+	border-bottom: 2px solid var(--p4-ink);
+	border-radius: 0;
+}
+
+[data-ui-theme='p4'] input:not(.bg-transparent):focus,
+[data-ui-theme='p4'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='p4'] select:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px var(--p4-orange);
+}
+
+/* ---------- Dividers: thick black line with an orange underline ---------- */
+[data-ui-theme='p4'] hr {
+	border: 0;
+	height: 3px;
+	background: var(--p4-ink);
+	box-shadow: 0 2px 0 var(--p4-orange);
+}
+
+/* ---------- Scrollbar: black thumb with orange grips ---------- */
+[data-ui-theme='p4'] ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+[data-ui-theme='p4'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='p4'] ::-webkit-scrollbar-thumb {
+	background: var(--p4-ink);
+	border: 2px solid var(--p4-orange);
+}
+
+[data-ui-theme='p4'] ::selection {
+	background: var(--p4-ink);
+	color: var(--p4-yellow-bright);
+}
+
+/* ---------- Mouse cursor (hand-drawn, src/assets/themes/cursors/) ---------- */
+[data-ui-theme='p4'],
+[data-ui-theme='p4'] body {
+	cursor: url('../assets/themes/cursors/p4.svg') 3 2, auto;
+}
+
+[data-ui-theme='p4'] a,
+[data-ui-theme='p4'] button,
+[data-ui-theme='p4'] [role='button'],
+[data-ui-theme='p4'] [role='tab'],
+[data-ui-theme='p4'] [role='menuitem'],
+[data-ui-theme='p4'] [role='radio'],
+[data-ui-theme='p4'] label,
+[data-ui-theme='p4'] select,
+[data-ui-theme='p4'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/p4-pointer.svg') 12 2, pointer;
+}
+
+/* Text that turns the theme color on hover (e.g. "Copy Completed Tasks to Clipboard") would turn
+   P4 yellow on a yellow background, so use a darker yellow instead. */
+[data-ui-theme='p4'] .hover\:text-\[var\(--theme-color\)\]:hover,
+[data-ui-theme='p4'] .hover\:text-\[var\(--theme-color\)\]:hover *,
+[data-ui-theme='p4'] .group:hover .group-hover\:text-\[var\(--theme-color\)\] {
+	color: #8a6d00 !important;
+}
+
+/* Inside a hovered black selection band, all text/icons turn yellow too (child labels have their
+   own text colors, which light mode forces to black, e.g. the TickTick "Cookie configured" row). */
+[data-ui-theme='p4'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover *:not(.text-green-500):not([class*='text-green']),
+[data-ui-theme='p4'] [role='tablist'] [role='tab']:hover *,
+[data-ui-theme='p4'] nav[aria-label='Stats sections'] > *:hover * {
+	color: var(--p4-yellow-bright) !important;
+}
+
+/* Big tile-style buttons (icon stacked over a label, e.g. Color Mode's Dark / Light and the
+   UI Theme picker) get a small radius instead of the full pill, which looks like a blob on them. */
+[data-ui-theme='p4'] :is(button, a).bg-color-gray-300.flex-col {
+	border-radius: 10px;
+}
+
+/* Icons colored inline with the theme color (e.g. the Sync section's idle/syncing status dots)
+   would be P4 yellow on yellow: use the darker yellow. */
+[data-ui-theme='p4'] [style*='rgb(255, 226, 0)'],
+[data-ui-theme='p4'] [style*='#FFE200'],
+[data-ui-theme='p4'] [style*='#ffe200'] {
+	color: #8a6d00 !important;
+}
+
+/* A small hover button inside a hovered black band (e.g. the TickTick Cookie row's pencil):
+   a translucent yellow tint instead of light yellow, so the yellow icon stays visible. */
+[data-ui-theme='p4'] :is(button, a):hover .hover\:bg-color-gray-200:hover {
+	background-color: rgba(255, 226, 0, 0.22) !important;
+}
+
+/* Chart "empty" areas: a warm tan instead of neutral gray, to sit with P4's cream and yellow.
+   (The Timeline heatmap's empty cells and the Most Focused Time bar backgrounds are colored in JS;
+   a CSS fill overrides the SVG fill attribute.) */
+[data-ui-theme='p4'] .apexcharts-heatmap-rect[fill='#E9E9E9' i] {
+	fill: #eedcae;
+}
+
+[data-ui-theme='p4'] .recharts-bar-background-rectangle {
+	fill: #e3cd93;
+}
+
+[data-ui-theme='p4'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='p4'] .ui-theme-tile[aria-checked='true'] > .bg-color-gray-200 {
+	background: var(--p4-ink);
+	color: var(--p4-yellow-bright) !important;
+}
+
+/* Borders that turn the theme color on hover (e.g. the "Filter" button) would be yellow on the
+   yellow page: use black instead, with a faint black tint so the hover is obvious. */
+[data-ui-theme='p4'] .hover\:border-\[var\(--theme-color\)\]:hover {
+	border-color: var(--p4-ink) !important;
+	background-color: rgba(17, 17, 17, 0.08);
+}

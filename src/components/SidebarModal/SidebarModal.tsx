@@ -9,12 +9,14 @@ import { setModalState } from '../../slices/modalSlice';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import DefaultDateRangeInterval from '../FilterSidebar/DefaultDateRangeInterval';
 import { useDialogFocus } from '../../hooks/useDialogFocus';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const SidebarModal = () => {
 	const dispatch = useDispatch();
 	const isSidebarModalOpen = useSelector((state: RootState) => state.modals.modals.ModalSidebar?.isOpen);
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
+	const pageContext = usePageContext();
 
 	const handleClose = () => {
 		dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: false }));
@@ -39,9 +41,13 @@ const SidebarModal = () => {
 	}
 
 	const LinkLi: React.FC<LinkLiProps> = ({ name, linkUrl, iconName }) => {
+		// e.g. "/stats/task" is the current page for the "/stats/overview" link
+		const isCurrentPage = pageContext.urlPathname.split('/')[1] === linkUrl.split('/')[1];
+
 		return (
 			<a
 				href={linkUrl}
+				aria-current={isCurrentPage ? 'page' : undefined}
 				className="group flex items-center gap-2 rounded focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset"
 				onClick={(e) => {
 					e.preventDefault();
@@ -87,7 +93,7 @@ const SidebarModal = () => {
 						exit="hidden"
 						variants={sidebarVariants}
 						aria-modal="true"
-						className="fixed inset-y-0 right-0 left-auto w-[85%] max-w-[400px] h-full bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+						className="ui-theme-sidebar fixed inset-y-0 right-0 left-auto w-[85%] max-w-[400px] h-full bg-color-gray-700 p-4 text-white overflow-auto gray-scrollbar flex flex-col border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
 						onClick={(e) => e.stopPropagation()}
 					>
 						<nav aria-label="Main navigation">

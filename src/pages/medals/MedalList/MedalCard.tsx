@@ -48,7 +48,7 @@ const MedalCard: React.FC<MedalCardProps> = ({
 			tabIndex={isSelected ? 0 : -1}
 			onKeyDown={(e) => onKeyDown(name, e)}
 			className={classNames(
-				'bg-color-gray-600 border-2 cursor-pointer text-left w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:[outline-offset:-2px]',
+				'ui-theme-tile bg-color-gray-600 border-2 cursor-pointer text-left w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:[outline-offset:-2px]',
 				chosenColorObj.hover.borderColor,
 				isSelected ? chosenColorObj.borderColor : 'border-[transparent]',
 				isLoadingFocusOrTasksData ? 'animate-pulse' : timesEarned === 0 && 'opacity-50'
@@ -68,7 +68,10 @@ const MedalCard: React.FC<MedalCardProps> = ({
 				<LazyImage src={imgSrc} alt="Medal image" className="w-full" />
 			</div>
 			<div className="flex justify-end px-2 text-[16px] sm:text-[20px] font-bold">
-				x{timesEarned.toLocaleString()}
+				<span>
+					<span className="medal-count-x">x</span>
+					{timesEarned.toLocaleString()}
+				</span>
 			</div>
 		</button>
 	);

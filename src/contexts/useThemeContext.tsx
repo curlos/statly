@@ -23,6 +23,21 @@ const buildCustomColorObj = (hex: string) => ({
 	},
 });
 
+// Game UI themes ignore the user's theme color and always use their signature accent color.
+const GAME_THEME_COLORS: Record<string, string> = {
+	hades: '#D9B650',
+	p3r: '#3FE3F5',
+	p5: '#E5191C',
+	cyberpunk: '#FF5C57',
+	p4: '#FFE200',
+	ff7r: '#3AA0FF',
+	mgs: '#7DFFB0',
+	rdr2: '#C01D1D',
+};
+
+// Game UI themes with a light look (the rest force dark mode).
+const LIGHT_GAME_THEMES = ['p4'];
+
 const getInitialColorMode = (): 'dark' | 'light' => {
 	const stored = localStorage.getItem('color-mode');
 	if (stored === 'dark' || stored === 'light') return stored;
@@ -37,10 +52,30 @@ const useTheme = () => {
 
 	const [colorMode, setColorMode] = useState<'dark' | 'light'>(getInitialColorMode);
 
+	const uiTheme = userSettings?.theme?.uiTheme || localStorage.getItem('ui-theme') || 'default';
+	const gameThemeColor = GAME_THEME_COLORS[uiTheme];
+	const isGameTheme = !!gameThemeColor;
+	// Ink & Marker keeps the user's own theme color and color mode, but uses its own fonts.
+	const isInkMarker = uiTheme === 'ink-marker';
+
+	// The mode actually showing: game UI themes pick their own (light for LIGHT_GAME_THEMES,
+	// dark for the rest); otherwise the user's saved Color Mode. Use this for any color decisions.
+	const effectiveColorMode: 'dark' | 'light' = LIGHT_GAME_THEMES.includes(uiTheme)
+		? 'light'
+		: isGameTheme
+			? 'dark'
+			: colorMode;
+
+	useLayoutEffect(() => {
+		document.documentElement.dataset.uiTheme = uiTheme;
+		// Remember the theme so the next page load shows it right away, before user settings load
+		localStorage.setItem('ui-theme', uiTheme);
+	}, [uiTheme]);
+
 	useEffect(() => {
-		document.documentElement.classList.toggle('light-mode', colorMode === 'light');
+		document.documentElement.classList.toggle('light-mode', effectiveColorMode === 'light');
 		localStorage.setItem('color-mode', colorMode);
-	}, [colorMode]);
+	}, [colorMode, effectiveColorMode]);
 
 	useEffect(() => {
 		if (userSettings?.theme?.colorMode && userSettings.theme.colorMode !== colorMode) {
@@ -57,12 +92,15 @@ const useTheme = () => {
 	const tailwindColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
 	const customColorHex = userSettings?.theme?.customColor || localStorage.getItem('theme-custom-color') || '#3b82f6';
 	const useCustomColor = userSettings?.theme?.useCustomColor ?? localStorage.getItem('theme-use-custom-color') === 'true';
-	const themeColorKey = useCustomColor ? customColorHex : tailwindColorKey;
-	const isCustomHex = useCustomColor;
+	const themeColorKey = isGameTheme ? gameThemeColor : useCustomColor ? customColorHex : tailwindColorKey;
+	const isCustomHex = isGameTheme || useCustomColor;
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
-	const chosenColorObj = isCustomHex
+	const baseColorObj = isCustomHex
 		? buildCustomColorObj(themeColorKey)
 		: TAILWIND_COLORS_OBJ[chosenColorName][themeColorKey];
+	// Ink & Marker routes the user's color (Tailwind or custom) through the var(--theme-color) classes,
+	// so its CSS can put the Copic marker texture on every themed element.
+	const chosenColorObj = isInkMarker ? buildCustomColorObj(baseColorObj.hexColor) : baseColorObj;
 	const chosenColorVariantsObj = isCustomHex ? {} : TAILWIND_COLORS_OBJ[chosenColorName];
 	const themeHexColor = chosenColorObj?.hexColor;
 
@@ -73,11 +111,11 @@ const useTheme = () => {
 	}, [themeHexColor]);
 
 	useLayoutEffect(() => {
-		if (isCustomHex) {
-			document.documentElement.style.setProperty('--theme-color', themeColorKey);
-			document.documentElement.style.setProperty('--theme-color-half', hexToRgba(themeColorKey, 0.5));
+		if (isCustomHex || isInkMarker) {
+			document.documentElement.style.setProperty('--theme-color', themeHexColor);
+			document.documentElement.style.setProperty('--theme-color-half', hexToRgba(themeHexColor, 0.5));
 		}
-	}, [isCustomHex, themeColorKey]);
+	}, [isCustomHex, isInkMarker, themeHexColor]);
 
 	if (userSettings?.theme?.color && localStorage.getItem('theme-color') !== userSettings?.theme?.color) {
 		localStorage.setItem('theme-color', userSettings?.theme?.color);
@@ -98,8 +136,19 @@ const useTheme = () => {
 	}
 
 	useEffect(() => {
-		document.documentElement.style.fontFamily = selectedFontFamilyKey !== 'Default' ? selectedFontFamilyKey : '';
-	}, [selectedFontFamilyKey]);
+		const root = document.documentElement;
+		const hasChosenFont = selectedFontFamilyKey !== 'Default';
+		// Game UI themes set their own fonts in src/themes/*.css.
+		// Quoted: unquoted names with a word starting with a digit (e.g. "M PLUS 1p") are invalid CSS.
+		root.style.fontFamily = hasChosenFont && !isGameTheme ? `'${selectedFontFamilyKey}'` : '';
+		// Ink & Marker uses the chosen font everywhere (titles, labels, buttons too) via this variable,
+		// and falls back to its own typefaces when the font is "Default".
+		if (hasChosenFont) {
+			root.style.setProperty('--user-font', `'${selectedFontFamilyKey}'`);
+		} else {
+			root.style.removeProperty('--user-font');
+		}
+	}, [selectedFontFamilyKey, isGameTheme]);
 
 	const getNextLightestAndDarkestColor = () => {
 		if (isCustomHex) {
@@ -180,8 +229,11 @@ const useTheme = () => {
 		nextLightestColorObj: getNextLightestOrDarkestColorObj('next-lightest'),
 		nextDarkestColorObj: getNextLightestOrDarkestColorObj('next-darkest'),
 		selectedFontFamilyKey,
-		colorMode,
+		// The mode actually showing (what colors should follow); savedColorMode is the user's setting.
+		colorMode: effectiveColorMode,
+		savedColorMode: colorMode,
 		toggleColorMode,
+		uiTheme,
 	};
 };
 

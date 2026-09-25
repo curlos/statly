@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+	<!-- Hades cursor: a gold arrow with a dark ink outline and a bright bevel, like the theme's gold frames. Hotspot: tip (3 2). -->
+	<polygon points="3,2 3,25 9,19.5 13.5,29 18,27 13.5,17.8 21.5,17.8" fill="#e2b64a" stroke="#1b1712" stroke-width="2" stroke-linejoin="round" />
+	<polygon points="12.5,17.8 21.5,17.8 3,2 3,25" fill="#b8902e" opacity="0.45" />
+	<path d="M5 6 V20" stroke="#fff3c4" stroke-width="1.3" stroke-linecap="round" />
+</svg>

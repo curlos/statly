@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
 
 const ColorModeList = () => {
-	const { chosenColorObj, colorMode, toggleColorMode } = useThemeContext();
+	const { chosenColorObj, savedColorMode: colorMode, toggleColorMode } = useThemeContext();
 	const { borderColor, bgColor } = chosenColorObj;
 
 	return (

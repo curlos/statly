@@ -46,7 +46,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			variants={useSlidingMotion ? sidebarVariants : undefined}
 			aria-modal="true"
 			className={classNames(
-				'inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 left-auto w-[85%] max-w-[400px] h-full border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50',
+				'ui-theme-sidebar inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 left-auto w-[85%] max-w-[400px] h-full border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50',
 			)}
 			onClick={(e) => e.stopPropagation()}
 		>

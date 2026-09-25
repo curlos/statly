@@ -1,0 +1,396 @@
+/* =========================================================================
+   RED DEAD REDEMPTION 2 UI THEME
+   Everything here only applies when <html data-ui-theme="rdr2">.
+   Inspired by RDR2's menus (Settings, Story, Save/Load, Alert, Pause): near-black screens with
+   film grain and a heavy vignette, quiet charcoal panels, a thin red rectangle outline for the
+   selection, weathered condensed caps for titles (like RDR Lino), slab-serif text (like Hapna
+   Slab Serif), and the Pause menu's deep red brushed panel for the sidebar.
+   Fonts: Kirsty and Zilla Slab, free stand-ins for the game's RDR Lino and Hapna Slab Serif.
+   ========================================================================= */
+
+[data-ui-theme='rdr2'] {
+	--rdr-red: #c01d1d;
+	--rdr-red-wash: rgba(192, 29, 29, 0.16);
+	--rdr-bone: #e8e2d6;
+	--rdr-line: rgba(232, 226, 214, 0.16);
+	--rdr-panel: rgba(18, 17, 15, 0.9);
+	--rdr-bg: #0b0b0b;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--rdr-bone);
+	--color-gray: var(--rdr-bg);
+	--color-gray-25: #d6cfc1;
+	--color-gray-50: #b3ab9c;
+	--color-gray-100: #857e72;
+	--color-gray-150: #3a3632;
+	--color-gray-200: #2a2724;
+	--color-gray-300: #1e1c1a;
+	--color-gray-600: #151413;
+	--color-gray-650: #191816;
+	--color-gray-700: #0d0d0c;
+
+	color-scheme: dark;
+	accent-color: var(--rdr-red);
+	font-family: 'Zilla Slab', serif;
+	scrollbar-color: #6b655c transparent;
+}
+
+/* ---------- Background: near-black with a heavy vignette ---------- */
+[data-ui-theme='rdr2'] body {
+	background:
+		radial-gradient(ellipse at 50% 40%, rgba(60, 54, 46, 0.35), transparent 65%),
+		radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.8) 100%),
+		var(--rdr-bg) fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='rdr2'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='rdr2'] .flex-1.bg-color-gray-700,
+[data-ui-theme='rdr2'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='rdr2'] .sticky.bg-color-gray-700 {
+	background-color: rgba(11, 11, 11, 0.94);
+}
+
+/* Film grain over the screen (behind content) */
+[data-ui-theme='rdr2']::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	opacity: 0.09;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 200px 200px;
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='rdr2'] .text-white {
+	color: var(--rdr-bone);
+}
+
+/* Page titles: heavy condensed caps like RDR2's menu headers ("SETTINGS", "GENERAL").
+   Kirsty (Regular) is a close free match for the game's RDR Lino; clean (no wear mask) for readability. */
+[data-ui-theme='rdr2'] h1,
+[data-ui-theme='rdr2'] h1.font-bold {
+	font-family: 'Kirsty', 'Bebas Neue', sans-serif;
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: var(--rdr-bone) !important;
+}
+
+[data-ui-theme='rdr2'] h2,
+[data-ui-theme='rdr2'] h3 {
+	font-family: 'Zilla Slab', serif;
+	font-weight: 600 !important;
+	color: var(--rdr-bone);
+}
+
+/* ---------- Shape: square panels ---------- */
+[data-ui-theme='rdr2'] .rounded,
+[data-ui-theme='rdr2'] .rounded-md,
+[data-ui-theme='rdr2'] .rounded-lg,
+[data-ui-theme='rdr2'] .rounded-xl,
+[data-ui-theme='rdr2'] .rounded-2xl,
+[data-ui-theme='rdr2'] .rounded-3xl {
+	border-radius: 0;
+}
+
+/* ---------- Quiet charcoal panels; hover/selection = the thin red rectangle ---------- */
+[data-ui-theme='rdr2'] .ui-theme-card,
+[data-ui-theme='rdr2'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='rdr2'] .ui-theme-plate,
+[data-ui-theme='rdr2'] .ui-theme-tile,
+[data-ui-theme='rdr2'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--rdr-panel);
+	border: 1px solid var(--rdr-line) !important;
+	border-radius: 0;
+	box-shadow: none;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+[data-ui-theme='rdr2'] .ui-theme-card:hover,
+[data-ui-theme='rdr2'] .ui-theme-tile:hover,
+[data-ui-theme='rdr2'] .ui-theme-tile[aria-checked='true'] {
+	border-color: var(--rdr-red) !important;
+	box-shadow: inset 0 0 0 1px rgba(192, 29, 29, 0.35);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='rdr2'] .ui-theme-card .animate-pulse {
+	background: rgba(232, 226, 214, 0.1) !important;
+}
+
+/* Stats panels: compact padding, headings get a thin fading rule */
+[data-ui-theme='rdr2'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+[data-ui-theme='rdr2'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	background: linear-gradient(90deg, rgba(232, 226, 214, 0.5), rgba(232, 226, 214, 0)) left bottom / 70% 1px no-repeat;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='rdr2'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='rdr2'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='rdr2'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar */
+[data-ui-theme='rdr2'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: rgba(0, 0, 0, 0.55);
+	border-bottom: 1px solid var(--rdr-red);
+	color: var(--rdr-bone);
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='rdr2'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='rdr2'] .ui-theme-tile > .bg-color-gray-200 {
+	background: rgba(0, 0, 0, 0.55);
+	border-left-color: var(--rdr-red) !important;
+	color: var(--rdr-bone);
+}
+
+[data-ui-theme='rdr2'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='rdr2'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--rdr-red);
+	color: #ffffff !important;
+}
+
+/* ---------- Modals: like the "ALERT" box ---------- */
+[data-ui-theme='rdr2'] dialog > .ui-theme-bare,
+[data-ui-theme='rdr2'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='rdr2'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background: rgba(8, 8, 8, 0.97);
+	border-left: 0 !important;
+	border-right: 0 !important;
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+/* Modal titles in weathered caps, like "ALERT" */
+[data-ui-theme='rdr2'] dialog:not(.ui-theme-sidebar) h2 {
+	font-family: 'Kirsty', 'Bebas Neue', sans-serif;
+	font-weight: 400 !important;
+	font-size: 1.6em;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* ---------- Sidebars: the Pause menu's deep red brushed panel ---------- */
+[data-ui-theme='rdr2'] .ui-theme-sidebar {
+	/* light text tones that read on red */
+	--color-gray-25: #f5ece0;
+	--color-gray-50: #eadfcf;
+	--color-gray-100: #d6c8b4;
+	--color-gray-600: rgba(0, 0, 0, 0.28);
+	--color-gray-300: rgba(0, 0, 0, 0.28);
+	--color-gray-200: rgba(0, 0, 0, 0.35);
+
+	background: url('../assets/themes/rdr2/red-brush.svg') 0 0 / 100% 100% no-repeat, #8e0f0f !important;
+	border-left: 3px solid #5e0808 !important;
+	box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+	color: #f5ece0;
+}
+
+[data-ui-theme='rdr2'] .ui-theme-sidebar nav a {
+	font-family: 'Kirsty', 'Bebas Neue', sans-serif;
+	font-weight: 400;
+	font-size: 1.02em;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #f1e4d2;
+	padding-left: 14px;
+	border-left: 3px solid transparent;
+}
+
+[data-ui-theme='rdr2'] .ui-theme-sidebar nav a[aria-current='page'],
+[data-ui-theme='rdr2'] .ui-theme-sidebar nav a:hover {
+	color: #ffffff !important;
+	border-left-color: #ffffff;
+	text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): black with a thin border ---------- */
+[data-ui-theme='rdr2'] .ui-theme-tooltip,
+[data-ui-theme='rdr2'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='rdr2'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='rdr2'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='rdr2'] .react-tooltip {
+	background: rgba(8, 8, 8, 0.98) !important;
+	border: 1px solid rgba(232, 226, 214, 0.25) !important;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7) !important;
+	color: var(--rdr-bone) !important;
+	border-radius: 0 !important;
+}
+
+/* Hovered menu row: the thin red rectangle */
+[data-ui-theme='rdr2'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='rdr2'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: var(--rdr-red-wash);
+	box-shadow: inset 0 0 0 1px var(--rdr-red);
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: red outline with a faint red wash */
+[data-ui-theme='rdr2'] :is(button, a).bg-\[var\(--theme-color\)\] {
+	background: var(--rdr-red-wash) !important;
+	border: 1px solid var(--rdr-red) !important;
+	color: #ffffff !important;
+}
+
+[data-ui-theme='rdr2'] :is(button, a).bg-\[var\(--theme-color\)\] * {
+	color: #ffffff !important;
+}
+
+/* Unselected: dark with a subtle border */
+[data-ui-theme='rdr2'] :is(button, a).bg-color-gray-300 {
+	background: rgba(255, 255, 255, 0.04) !important;
+	border: 1px solid var(--rdr-line);
+	color: #d6cfc1 !important;
+}
+
+/* Tabs: plain text; the active one is white with a red underline */
+[data-ui-theme='rdr2'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='rdr2'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 0 !important;
+	border-bottom: 2px solid transparent !important;
+	color: #a79f91 !important;
+}
+
+[data-ui-theme='rdr2'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='rdr2'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	color: #ffffff !important;
+	border-bottom-color: var(--rdr-red) !important;
+}
+
+/* ---------- Hover feedback on anything selectable: the red outline ---------- */
+[data-ui-theme='rdr2'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background-color: var(--rdr-red-wash) !important;
+	box-shadow: inset 0 0 0 1px var(--rdr-red);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='rdr2'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='rdr2'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	color: #ffffff !important;
+	border-bottom-color: rgba(192, 29, 29, 0.6) !important;
+}
+
+[data-ui-theme='rdr2'] :is(a, button).bg-\[var\(--theme-color\)\]:hover {
+	background: rgba(192, 29, 29, 0.3) !important;
+}
+
+[data-ui-theme='rdr2'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: #ffffff !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='rdr2'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='rdr2'] textarea:not(.bg-transparent),
+[data-ui-theme='rdr2'] select {
+	background-color: rgba(8, 8, 8, 0.9);
+	border: 1px solid var(--rdr-line);
+	border-radius: 0;
+	color: var(--rdr-bone);
+}
+
+[data-ui-theme='rdr2'] input:not(.bg-transparent):focus,
+[data-ui-theme='rdr2'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='rdr2'] select:focus {
+	outline: none;
+	border-color: var(--rdr-red);
+}
+
+/* ---------- Dividers: thin rule fading at the ends ---------- */
+[data-ui-theme='rdr2'] hr {
+	border: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(232, 226, 214, 0.35) 12%, rgba(232, 226, 214, 0.35) 88%, transparent);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='rdr2'] ::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+[data-ui-theme='rdr2'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='rdr2'] ::-webkit-scrollbar-thumb {
+	background: #6b655c;
+}
+
+[data-ui-theme='rdr2'] ::selection {
+	background: rgba(192, 29, 29, 0.55);
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: worn off-white arrow; pointing hand on hover ---------- */
+[data-ui-theme='rdr2'],
+[data-ui-theme='rdr2'] body {
+	cursor: url('../assets/themes/cursors/rdr2.svg') 3 2, auto;
+}
+
+[data-ui-theme='rdr2'] a,
+[data-ui-theme='rdr2'] button,
+[data-ui-theme='rdr2'] [role='button'],
+[data-ui-theme='rdr2'] [role='tab'],
+[data-ui-theme='rdr2'] [role='menuitem'],
+[data-ui-theme='rdr2'] [role='radio'],
+[data-ui-theme='rdr2'] label,
+[data-ui-theme='rdr2'] select,
+[data-ui-theme='rdr2'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/rdr2-pointer.svg') 12 2, pointer;
+}
+
+/* Red theme-colored icons/text would vanish on the red Pause-menu sidebar: use off-white there */
+[data-ui-theme='rdr2'] .ui-theme-sidebar .text-\[var\(--theme-color\)\],
+[data-ui-theme='rdr2'] .ui-theme-sidebar [style*='rgb(192, 29, 29)'] {
+	color: #f1e4d2 !important;
+}
+
+/* Chart "empty" areas: warm charcoal instead of neutral dark gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='rdr2'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #211e1b;
+}
+
+[data-ui-theme='rdr2'] .recharts-bar-background-rectangle {
+	fill: #2c2825;
+}
+
+/* Accessibility: match this theme's text size to the standard font. Themed fonts have smaller
+   lowercase letters (x-height) than the site's default; font-size-adjust scales them so 16px text
+   reads like normal 16px text. Display fonts that are already large are excluded below. */
+[data-ui-theme='rdr2'] {
+	font-size-adjust: 0.53;
+}
+
+[data-ui-theme='rdr2'] h1,
+[data-ui-theme='rdr2'] h1.font-bold,
+[data-ui-theme='rdr2'] .ui-theme-sidebar nav a,
+[data-ui-theme='rdr2'] dialog:not(.ui-theme-sidebar) h2 {
+	font-size-adjust: none;
+}

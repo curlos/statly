@@ -92,7 +92,7 @@ const Tooltip = ({ content, children, className = '', position = 'top', align: m
 			{isVisible && (
 				<div
 					aria-hidden="true"
-					className={`absolute ${positionClasses} ${horizontalAlign} px-3 py-2 bg-color-gray-300 border border-color-gray-50 text-white text-sm rounded z-50 ${className}`}
+					className={`ui-theme-tooltip absolute ${positionClasses} ${horizontalAlign} px-3 py-2 bg-color-gray-300 border border-color-gray-50 text-white text-sm rounded z-50 ${className}`}
 				>
 					{content}
 					<div className={arrowClasses}>

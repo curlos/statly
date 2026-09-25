@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+	<!-- Bottom curl of the Hades parchment sidebar. An original design in Hades' pen & ink style
+	     (Mike Mignola inspired): one even ink line weight, some strokes left open, solid black
+	     shadow shapes instead of gradients, only two flat parchment tones, and a thin warm rim
+	     light along the lit edge. Keeps its proportions (sized with CSS aspect-ratio).
+	     The sheet itself (parchment-body.svg) runs down behind this drawing and ends hidden
+	     behind the roll, so there's no seam. -->
+
+	<!-- Thin dark backing under the roll so scrolling content doesn't peek out below it -->
+	<rect x="0" y="78" width="400" height="22" fill="#0a0908" fill-opacity="0.94" />
+
+	<!-- Hard black shadow where the sheet tucks behind the roll (heavier toward the right) -->
+	<path d="M60 52 C160 50 280 44 388 36 V60 H60 Z" fill="#14100c" />
+
+	<!-- Flared tongue on the right: the roll opens and droops -->
+	<path d="M322 47 C350 45 378 52 394 64 C398 76 394 88 386 97 C372 90 352 87 332 87 Z" fill="#80765e" />
+	<!-- Black hollow inside the opening -->
+	<path d="M338 58 C356 55 376 62 388 73 C376 71 358 71 342 76 C340 70 338 64 338 58 Z" fill="#14100c" />
+
+	<!-- Roll body: flat base tone -->
+	<path d="M34 46 C110 51 200 40 332 47 L334 87 C250 92 150 86 34 93 Z" fill="#80765e" />
+	<!-- Lit top plane (one lighter flat tone) -->
+	<path d="M40 48 C110 53 200 42 328 49 L328 56 C230 51 140 59 44 60 Z" fill="#9d9377" />
+	<!-- Solid black shadow along the underside -->
+	<path d="M40 84 C150 80 250 86 332 79 L334 87 C250 92 150 86 34 93 Z" fill="#14100c" />
+
+	<!-- Left spiral end, seen from the side (so an oval, not a full circle): parchment with a solid black hollow -->
+	<g transform="translate(34 69) scale(0.55 1) translate(-34 -69)">
+		<circle cx="34" cy="69" r="25" fill="#80765e" />
+		<path d="M34 52 C20 52 13 65 17 77 C21 89 38 92 48 82 C41 85 29 82 27 73 C25 64 32 57 41 59 C39 55 37 52 34 52 Z" fill="#14100c" />
+	</g>
+
+	<!-- Ink: one even line weight, several strokes deliberately left open -->
+	<g fill="none" stroke="#14100c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+		<!-- Roll top and bottom edges (the top stops short before the tongue) -->
+		<path d="M44 48 C115 51 200 40 318 46" />
+		<path d="M44 92.5 C150 86 250 92 330 87" />
+		<!-- Tongue outline (open at its inner end) -->
+		<path d="M326 47 C352 45 378 52 394 64 C398 76 394 88 386 97 C372 90 352 87 336 87" />
+		<!-- Spiral (squashed to match the oval end; line weight kept even): outer edge left open, inner curl never closes -->
+		<g transform="translate(34 69) scale(0.55 1) translate(-34 -69)">
+			<path d="M48 47 C36 41 16 46 11 60 C6 75 14 90 28 93 C40 95 52 90 57 81" vector-effect="non-scaling-stroke" />
+			<path d="M36 67 C34 62 28 63 27 68 C26 74 33 77 38 74" vector-effect="non-scaling-stroke" />
+		</g>
+	</g>
+
+	<!-- Warm rim light along the lit top edge -->
+	<path d="M60 46.5 C120 49.5 200 38.5 312 43.5" fill="none" stroke="#e27b3e" stroke-width="1.6" stroke-linecap="round" />
+	<path d="M340 48 C360 49 376 55 386 62" fill="none" stroke="#e27b3e" stroke-width="1.4" stroke-linecap="round" />
+
+	<!-- A few hatch marks on the tongue -->
+	<g stroke="#14100c" stroke-width="1.6" stroke-linecap="round">
+		<path d="M352 80 L362 80" />
+		<path d="M356 84 L366 84" />
+	</g>
+</svg>

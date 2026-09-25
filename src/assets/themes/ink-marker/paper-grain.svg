@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+	<!-- Faint drawing-paper texture for the light-mode page, a seamless tile blended with
+	     "multiply": ~94-100% brightness fine grain plus very soft unevenness. -->
+	<filter id="paper" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+		<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="31" stitchTiles="stitch" result="fine" />
+		<feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" seed="5" stitchTiles="stitch" result="soft" />
+		<feComposite in="fine" in2="soft" operator="arithmetic" k2="0.6" k3="0.4" result="mix" />
+		<feColorMatrix in="mix" type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 0 1" result="gray" />
+		<feComponentTransfer in="gray">
+			<feFuncR type="linear" slope="0.16" intercept="0.9" />
+			<feFuncG type="linear" slope="0.16" intercept="0.9" />
+			<feFuncB type="linear" slope="0.16" intercept="0.9" />
+		</feComponentTransfer>
+	</filter>
+	<rect width="300" height="300" filter="url(#paper)" />
+</svg>

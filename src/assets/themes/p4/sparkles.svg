@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="320" height="220" viewBox="0 0 320 220">
+	<!-- White four-point sparkles like the Persona 4 Golden title screen, for the page corner. -->
+	<defs>
+		<path id="sparkle" d="M0 -20 C2 -6 6 -2 20 0 C6 2 2 6 0 20 C-2 6 -6 2 -20 0 C-6 -2 -2 -6 0 -20 Z" />
+	</defs>
+	<g fill="#ffffff">
+		<use href="#sparkle" xlink:href="#sparkle" transform="translate(250 60) scale(1.6)" />
+		<use href="#sparkle" xlink:href="#sparkle" transform="translate(170 30) scale(0.8)" />
+		<use href="#sparkle" xlink:href="#sparkle" transform="translate(295 150) scale(0.9)" />
+		<use href="#sparkle" xlink:href="#sparkle" transform="translate(120 95) scale(0.5)" />
+		<use href="#sparkle" xlink:href="#sparkle" transform="translate(205 125) scale(0.6)" />
+	</g>
+</svg>

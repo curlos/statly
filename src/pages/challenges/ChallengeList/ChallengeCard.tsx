@@ -62,7 +62,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 			tabIndex={isChosenChallenge ? 0 : -1}
 			onKeyDown={(e) => onKeyDown(name, e)}
 			className={classNames(
-				'cursor-pointer flex flex-col text-left w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:[outline-offset:-2px]',
+				'ui-theme-tile cursor-pointer flex flex-col text-left w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:[outline-offset:-2px]',
 				isChosenChallenge ? `border-2 ${chosenColorObj.borderColor}` : 'border-2 border-color-gray-200',
 				isLoading ? 'animate-pulse' : isIncomplete && 'opacity-50'
 			)}

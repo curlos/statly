@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+	<!-- Metal Gear Solid cursor: a stepped pixel arrow in phosphor green with a dark outline. Hotspot: tip (2 2). -->
+	<path d="M2 2 H4 V4 H6 V6 H8 V8 H10 V10 H12 V12 H14 V14 H16 V16 H18 V18 H12 V20 H14 V24 H16 V28 H12 V24 H10 V20 H8 V22 H6 V24 H4 V26 H2 Z" fill="#7dffb0" stroke="#031a0c" stroke-width="1.5" />
+	<path d="M4 6 H6 V20 H4 Z" fill="#d8ffe8" />
+</svg>

@@ -444,6 +444,7 @@ export interface UserSettings {
 		colorMode?: 'dark' | 'light';
 		customColor?: string;
 		useCustomColor?: boolean;
+		uiTheme?: string;
 	};
 	pages: UserSettingsPages;
 	tickTickInboxProjectId?: string;

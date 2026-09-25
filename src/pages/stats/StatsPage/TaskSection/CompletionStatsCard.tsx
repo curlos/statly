@@ -388,7 +388,7 @@ const CompletionStatsCard = () => {
 				contentRef={scrollableContainerRef}
 				ariaLabelledBy="completion-stats-modal-heading"
 			>
-				<div className="rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
+				<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
 			</Modal>
 		</div>
 	);
