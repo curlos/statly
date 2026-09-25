@@ -1,6 +1,6 @@
 import { useSearchParamsContext } from '../../contexts/useSearchParamsContext';
 import { useEffect, useState } from 'react';
-import { FOCUS_APPS, TO_DO_LIST_APPS } from '../../utils/constants/constants.utils';
+import { FOCUS_APPS, TO_DO_LIST_APPS, SEARCH_OPTIONS } from '../../utils/constants/constants.utils';
 import { useDaysWithCompletedTasksQuery } from '../completed-tasks/useDaysWithCompletedTasksQuery';
 import { useGetProjectsQuery } from '../../services/resources/projectsApi';
 import { usePageContext } from 'vike-react/usePageContext';
@@ -124,11 +124,17 @@ const AppliedFilterItemList = () => {
 		},
 	};
 
+	// Show checked search options alongside the search text (only when there is search text)
+	const checkedSearchOptionNames = SEARCH_OPTIONS.filter(({ param }) => searchParams.get(param) === 'true').map(({ name }) => name);
 	const searchTextFilter = {
 		name: `Search Text`,
-		value: searchTextFromUrl,
+		value: searchTextFromUrl && checkedSearchOptionNames.length > 0
+			? `${searchTextFromUrl} (${checkedSearchOptionNames.join(', ')})`
+			: searchTextFromUrl,
 		handleRemove: () => {
-			updateQueryParams({ search: '', 'sort-by': '', page: '' });
+			// Also clear the search options (Match case, Whole word, etc.) shown in this pill
+			const clearedSearchOptions = Object.fromEntries(SEARCH_OPTIONS.map(({ param }) => [param, '']));
+			updateQueryParams({ search: '', ...clearedSearchOptions, 'sort-by': '', page: '' });
 		},
 	};
 

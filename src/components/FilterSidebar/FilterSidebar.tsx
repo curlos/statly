@@ -14,6 +14,7 @@ import ProjectsTickTickSection from './ProjectsTickTickSection';
 import ProjectsTodoistSection from './ProjectsTodoistSection';
 import ShowRecordsFromEmotionSection from './ShowRecordsFromEmotionSection';
 import GeneralFocusRecordsFilters from './GeneralFocusRecordsFilters';
+import { SEARCH_OPTIONS } from '../../utils/constants/constants.utils';
 
 interface FilterSidebarProps {
 	setIsOpen: (isOpen: boolean) => void;
@@ -56,6 +57,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 		'to-do-list-apps',
 		'general',
 		'year-agnostic',
+		...SEARCH_OPTIONS.map(({ param }) => param),
 	];
 
 	switch (page) {

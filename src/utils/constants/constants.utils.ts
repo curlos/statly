@@ -51,3 +51,11 @@ export const EMOTIONS = {
 	surprise: { id: 'surprise', name: 'SURPRISE', emoji: '🟠', bg: 'bg-orange-500/70', hex: '#f97316b3' },
 	none: { id: 'none', name: 'NONE', emoji: '⚫', bg: 'bg-black/70', hex: '#000000b3' },
 };
+
+// Search option checkboxes in the FilterSidebar (URL param + label)
+export const SEARCH_OPTIONS = [
+	{ name: 'Match case', param: 'search-case-sensitive' },
+	{ name: 'Whole word', param: 'search-whole-word' },
+	{ name: 'Match all terms', param: 'search-match-all' },
+	{ name: 'Regex (advanced)', param: 'search-regex' },
+];
