@@ -3,7 +3,7 @@ import { useUserSettingsContext } from '../../focus-records/useUserSettingsConte
 
 const DayWithCompletedTasksSkeleton = ({ isLastItem = false }) => {
 	const {
-		focusRecordsPageSettings: { lowerCardOpacity },
+		focusRecordsPageSettings: { applyLowerCardOpacity: lowerCardOpacity },
 	} = useUserSettingsContext();
 
 	return (

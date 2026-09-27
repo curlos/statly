@@ -1,0 +1,381 @@
+/* =========================================================================
+   POKÉMON RUBY / SAPPHIRE / EMERALD UI THEME
+   Everything here only applies when <html data-ui-theme="pokemon-rse"> (a light theme; see
+   LIGHT_GAME_THEMES in useThemeContext). Inspired by the GBA menus (Main menu, Option, Save,
+   dialogue, battle): a flat periwinkle screen, white rounded boxes with a slate double frame,
+   dark-gray pixel text with a soft shadow, orange option labels and red chosen values, and the
+   game's selection: the chosen row turns white (the rest are gray) with a black ▶ arrow.
+   Tooltips use the mint-framed dialogue box.
+   Font: Tiny5, a free pixel font with clear digits, close to the GBA menu lettering.
+   ========================================================================= */
+
+html[data-ui-theme='pokemon-rse'] {
+	--pk-periwinkle: #8f90f0;
+	--pk-ink: #383848;
+	--pk-frame: #2c2c48;
+	--pk-band: #8888a8;
+	--pk-gray-row: #c4c4d0;
+	--pk-orange: #a85200;
+	--pk-red: #d02828;
+	--pk-mint: #58c8a0;
+
+	/* Re-skin the whole site (beats the .light-mode values) */
+	--color-primary-text: var(--pk-ink);
+	--color-gray: var(--pk-periwinkle);
+	--color-gray-25: #303040;
+	--color-gray-50: #4a4a5a;
+	--color-gray-100: #666676;
+	--color-gray-150: #b8b8c8;
+	--color-gray-200: #e6e6ee;
+	--color-gray-300: var(--pk-gray-row);
+	--color-gray-600: #ffffff;
+	--color-gray-650: #f4f4f8;
+	--color-gray-700: var(--pk-periwinkle);
+
+	color-scheme: light;
+	accent-color: var(--pk-red);
+	font-family: 'Tiny5', monospace;
+	scrollbar-color: var(--pk-frame) transparent;
+}
+
+/* ---------- Page: flat periwinkle, like the main menu ---------- */
+[data-ui-theme='pokemon-rse'] body {
+	background: var(--pk-periwinkle);
+	overflow-x: clip;
+	/* GBA text has a soft light shadow */
+	text-shadow: 1px 1px 0 rgba(168, 168, 184, 0.55);
+}
+
+[data-ui-theme='pokemon-rse'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='pokemon-rse'] .flex-1.bg-color-gray-700,
+[data-ui-theme='pokemon-rse'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='pokemon-rse'] .sticky.bg-color-gray-700 {
+	background-color: rgba(143, 144, 240, 0.95);
+}
+
+/* ---------- Typography ---------- */
+/* Page titles: dark caps on the periwinkle screen, like "OPTION" */
+[data-ui-theme='pokemon-rse'] h1,
+[data-ui-theme='pokemon-rse'] h1.font-bold {
+	font-family: 'Tiny5', monospace;
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #262636 !important;
+	text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* Panel headings: orange with a darker shadow, like "TEXT SPEED" */
+[data-ui-theme='pokemon-rse'] h2,
+[data-ui-theme='pokemon-rse'] h3 {
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	color: var(--pk-orange);
+	text-shadow: 1px 1px 0 #f0c890;
+}
+
+/* ---------- Shape: rounded boxes ---------- */
+[data-ui-theme='pokemon-rse'] .rounded,
+[data-ui-theme='pokemon-rse'] .rounded-md {
+	border-radius: 5px;
+}
+
+[data-ui-theme='pokemon-rse'] .rounded-lg,
+[data-ui-theme='pokemon-rse'] .rounded-xl,
+[data-ui-theme='pokemon-rse'] .rounded-2xl,
+[data-ui-theme='pokemon-rse'] .rounded-3xl {
+	border-radius: 8px;
+}
+
+/* ---------- White boxes with the slate double frame ---------- */
+[data-ui-theme='pokemon-rse'] .ui-theme-card,
+[data-ui-theme='pokemon-rse'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='pokemon-rse'] .ui-theme-plate,
+[data-ui-theme='pokemon-rse'] .ui-theme-tile,
+[data-ui-theme='pokemon-rse'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: #ffffff !important;
+	color: var(--pk-ink);
+	border: 2px solid var(--pk-frame) !important;
+	border-radius: 8px;
+	box-shadow: inset 0 0 0 3px var(--pk-band), inset 0 0 0 4px #dcdce8;
+}
+
+/* Hover / selected: the frame's inner band lights up red, like the battle box edge */
+[data-ui-theme='pokemon-rse'] .ui-theme-card:hover,
+[data-ui-theme='pokemon-rse'] .ui-theme-tile:hover {
+	box-shadow: inset 0 0 0 3px #e87070, inset 0 0 0 4px #f8d8d8;
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-tile[aria-checked='true'] {
+	box-shadow: inset 0 0 0 3px var(--pk-red), inset 0 0 0 4px #f8d8d8;
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='pokemon-rse'] .ui-theme-card .animate-pulse {
+	background: rgba(136, 136, 168, 0.25) !important;
+}
+
+/* Stats panels: compact padding */
+[data-ui-theme='pokemon-rse'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px 12px;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='pokemon-rse'] .ui-theme-plate.py-2 {
+	padding: 3px 8px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='pokemon-rse'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: like the gray HP-box name strip */
+[data-ui-theme='pokemon-rse'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: #ececf4;
+	border-bottom: 2px solid var(--pk-band);
+	color: var(--pk-ink);
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='pokemon-rse'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='pokemon-rse'] .ui-theme-tile > .bg-color-gray-200 {
+	background: var(--pk-gray-row);
+	border-left-color: var(--pk-frame) !important;
+	color: var(--pk-ink);
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='pokemon-rse'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: #ffffff;
+	color: var(--pk-red) !important;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='pokemon-rse'] dialog > .ui-theme-bare,
+[data-ui-theme='pokemon-rse'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+/* ---------- Sidebars: a tall white menu box (like the START menu) ---------- */
+[data-ui-theme='pokemon-rse'] .ui-theme-sidebar {
+	background: #ffffff !important;
+	color: var(--pk-ink);
+	border-left: 3px solid var(--pk-frame) !important;
+	box-shadow: inset 4px 0 0 var(--pk-band), inset 5px 0 0 #dcdce8, -6px 0 20px rgba(44, 44, 72, 0.35);
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-sidebar nav a {
+	text-transform: uppercase;
+	padding-left: 18px;
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-sidebar nav a:hover {
+	background: #ececf4;
+}
+
+/* Current page: the ▶ arrow */
+[data-ui-theme='pokemon-rse'] .ui-theme-sidebar nav a[aria-current='page'] {
+	position: relative;
+	color: var(--pk-ink) !important;
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-sidebar nav a[aria-current='page']::before {
+	content: '';
+	position: absolute;
+	left: 4px;
+	top: 50%;
+	transform: translateY(-50%);
+	border-left: 8px solid var(--pk-ink);
+	border-top: 6px solid transparent;
+	border-bottom: 6px solid transparent;
+}
+
+/* ---------- Popups: tooltips are the mint-framed dialogue box; menus are white boxes ---------- */
+[data-ui-theme='pokemon-rse'] .ui-theme-tooltip,
+[data-ui-theme='pokemon-rse'] .react-tooltip {
+	background: #ffffff !important;
+	border: 3px solid var(--pk-mint) !important;
+	box-shadow: inset 0 0 0 2px #b8ecd8, 0 0 0 2px #307860 !important;
+	color: var(--pk-ink) !important;
+	border-radius: 6px !important;
+}
+
+[data-ui-theme='pokemon-rse'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='pokemon-rse'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='pokemon-rse'] .absolute.top-full.z-50.bg-color-gray-600 {
+	background: #ffffff !important;
+	border: 2px solid var(--pk-frame) !important;
+	box-shadow: inset 0 0 0 3px var(--pk-band), inset 0 0 0 4px #dcdce8, 0 6px 16px rgba(44, 44, 72, 0.3) !important;
+	color: var(--pk-ink) !important;
+	border-radius: 8px !important;
+}
+
+/* Hovered menu row: light gray-blue, like a highlighted menu row */
+[data-ui-theme='pokemon-rse'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='pokemon-rse'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: #e2e2f0;
+	color: var(--pk-ink) !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: the white row with a ▶ arrow (like "NEW GAME" / "▶YES") */
+[data-ui-theme='pokemon-rse'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	background: #ffffff !important;
+	border: 2px solid var(--pk-frame) !important;
+	color: var(--pk-ink) !important;
+}
+
+[data-ui-theme='pokemon-rse'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) * {
+	color: var(--pk-ink) !important;
+}
+
+[data-ui-theme='pokemon-rse'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card)::before,
+[data-ui-theme='pokemon-rse'] [role='tablist'] [role='tab'][aria-selected='true']::before {
+	content: '';
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+	border-left: 7px solid var(--pk-ink);
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+}
+
+/* Unselected: the gray row (like "OPTION" on the main menu) */
+[data-ui-theme='pokemon-rse'] :is(button, a).bg-color-gray-300 {
+	background: var(--pk-gray-row) !important;
+	border: 2px solid var(--pk-frame);
+	color: var(--pk-ink) !important;
+}
+
+/* Tabs: gray rows; the active one is white with the arrow */
+[data-ui-theme='pokemon-rse'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='pokemon-rse'] [role='tablist'] [role='tab'] {
+	background: var(--pk-gray-row) !important;
+	border: 2px solid var(--pk-frame) !important;
+	color: var(--pk-ink) !important;
+	text-transform: uppercase;
+}
+
+[data-ui-theme='pokemon-rse'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='pokemon-rse'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: #ffffff !important;
+}
+
+/* ---------- Hover feedback on anything selectable: the row turns white ---------- */
+[data-ui-theme='pokemon-rse'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background-color: #ffffff !important;
+	color: var(--pk-ink) !important;
+}
+
+[data-ui-theme='pokemon-rse'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='pokemon-rse'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	background: #ffffff !important;
+}
+
+[data-ui-theme='pokemon-rse'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	background: #f4f4fa !important;
+}
+
+[data-ui-theme='pokemon-rse'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: var(--pk-red) !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='pokemon-rse'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='pokemon-rse'] textarea:not(.bg-transparent),
+[data-ui-theme='pokemon-rse'] select {
+	background-color: #ffffff;
+	border: 2px solid var(--pk-frame);
+	border-radius: 5px;
+	color: var(--pk-ink);
+}
+
+[data-ui-theme='pokemon-rse'] input:not(.bg-transparent):focus,
+[data-ui-theme='pokemon-rse'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='pokemon-rse'] select:focus {
+	outline: none;
+	box-shadow: inset 0 0 0 2px var(--pk-band);
+}
+
+/* ---------- Dividers ---------- */
+[data-ui-theme='pokemon-rse'] hr {
+	border: 0;
+	border-top: 2px solid var(--pk-band);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='pokemon-rse'] ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+[data-ui-theme='pokemon-rse'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='pokemon-rse'] ::-webkit-scrollbar-thumb {
+	background: var(--pk-frame);
+	border-radius: 4px;
+}
+
+[data-ui-theme='pokemon-rse'] ::selection {
+	background: #58c8a0;
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: white arrow; the white pointing glove on hover ---------- */
+[data-ui-theme='pokemon-rse'],
+[data-ui-theme='pokemon-rse'] body {
+	cursor: url('../assets/themes/cursors/pokemon-rse.svg') 3 2, auto;
+}
+
+[data-ui-theme='pokemon-rse'] a,
+[data-ui-theme='pokemon-rse'] button,
+[data-ui-theme='pokemon-rse'] [role='button'],
+[data-ui-theme='pokemon-rse'] [role='tab'],
+[data-ui-theme='pokemon-rse'] [role='menuitem'],
+[data-ui-theme='pokemon-rse'] [role='radio'],
+[data-ui-theme='pokemon-rse'] label,
+[data-ui-theme='pokemon-rse'] select,
+[data-ui-theme='pokemon-rse'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/pokemon-rse-pointer.svg') 12 2, pointer;
+}
+
+/* Accent text: the game's red for chosen values, darkened a little to read on white */
+[data-ui-theme='pokemon-rse'] .text-\[var\(--theme-color\)\] {
+	color: var(--pk-red) !important;
+}
+
+/* Gray icon buttons (e.g. the filter button) would fade into the page background: use the ink color */
+[data-ui-theme='pokemon-rse'] button.bg-transparent > .material-symbols-rounded.text-color-gray-100 {
+	color: var(--pk-ink);
+}
+
+/* Chart "empty" areas: pale gray-blue (colored in JS; CSS fill overrides it) */
+[data-ui-theme='pokemon-rse'] .apexcharts-heatmap-rect[fill='#E9E9E9' i] {
+	fill: #e4e4f0;
+}
+
+[data-ui-theme='pokemon-rse'] .recharts-bar-background-rectangle {
+	fill: #e8e8f2;
+}
+
+/* Accessibility: Tiny5's x-height (0.50) is a bit below the default system font's (0.51 regular,
+   ~0.525 bold); 0.53 keeps every weight at least as large as the default (measured in the browser). */
+html[data-ui-theme='pokemon-rse'] {
+	font-size-adjust: 0.53;
+}

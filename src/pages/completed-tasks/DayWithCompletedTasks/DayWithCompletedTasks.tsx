@@ -40,7 +40,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 	const { updateQueryParams, buildUrlWithQueryParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
-		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow, customDisplay, lowerCardOpacity },
+		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow, customDisplay, applyLowerCardOpacity: lowerCardOpacity },
 	} = useUserSettingsContext();
 
 	// Theme Context

@@ -1,0 +1,385 @@
+/* =========================================================================
+   CASTLEVANIA: SYMPHONY OF THE NIGHT UI THEME
+   Everything here only applies when <html data-ui-theme="sotn">.
+   Inspired by the original PlayStation menus (pause/status, Equip, the Librarian's shop, the save
+   screen): royal-blue windows with a banded (dithered-looking) gradient and a thin white border,
+   white bitmap text with a dark drop shadow, a dark-red bar for the selected row, and the save
+   screen's gilded double frames. Titles use blackletter like the game's "Symphony of the Night" /
+   "File select" lettering.
+   Fonts: DotGothic16 (a free pixel font close to the thin 8px menu font, with clear digits) and UnifrakturMaguntia
+   (a free blackletter close to Goudy Text).
+   ========================================================================= */
+
+[data-ui-theme='sotn'] {
+	--sotn-red: #8a1616;
+	--sotn-red-dark: #4e0a0a;
+	--sotn-red-wash: rgba(170, 30, 30, 0.22);
+	--sotn-gold: #e0b440;
+	--sotn-white: #f2f2fa;
+	--sotn-border: #d4d4e8;
+	/* The menu window: a blue gradient in hard bands, like the PS1's dithered gradient */
+	--sotn-window: linear-gradient(180deg,
+		#131a5c 0%, #131a5c 16%,
+		#172066 16%, #172066 33%,
+		#1b2670 33%, #1b2670 50%,
+		#1f2c7c 50%, #1f2c7c 67%,
+		#243388 67%, #243388 84%,
+		#293a94 84%, #293a94 100%);
+	--sotn-red-bar: linear-gradient(180deg, var(--sotn-red) 0%, #6e1010 55%, var(--sotn-red-dark) 100%);
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--sotn-white);
+	--color-gray: #0a0c24;
+	--color-gray-25: #dcdcec;
+	--color-gray-50: #b4b6d4;
+	--color-gray-100: #8588b4;
+	--color-gray-150: #3a4290;
+	--color-gray-200: #1c2466;
+	--color-gray-300: #161d58;
+	--color-gray-600: #151c5e;
+	--color-gray-650: #121850;
+	--color-gray-700: #07081a;
+
+	color-scheme: dark;
+	accent-color: #b3202a;
+	font-family: 'DotGothic16', monospace;
+	scrollbar-color: #8588b4 transparent;
+}
+
+/* ---------- Background: the dimmed castle behind the pause menu ---------- */
+[data-ui-theme='sotn'] body {
+	background:
+		radial-gradient(ellipse 70% 50% at 50% 0%, rgba(50, 60, 150, 0.35), transparent 70%),
+		radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.6) 100%),
+		linear-gradient(180deg, #10122e 0%, #0a0c20 60%, #050510 100%);
+	background-attachment: fixed;
+	overflow-x: clip;
+	/* The game's white text has a dark drop shadow */
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.75);
+}
+
+[data-ui-theme='sotn'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='sotn'] .flex-1.bg-color-gray-700,
+[data-ui-theme='sotn'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='sotn'] .sticky.bg-color-gray-700 {
+	background-color: rgba(8, 10, 30, 0.94);
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='sotn'] .text-white {
+	color: var(--sotn-white);
+}
+
+/* Page titles: silver-white blackletter with a blue shadow, like "File select" */
+[data-ui-theme='sotn'] h1,
+[data-ui-theme='sotn'] h1.font-bold {
+	font-family: 'UnifrakturMaguntia', serif;
+	font-weight: 400 !important;
+	letter-spacing: 0.02em;
+	color: #eef0ff !important;
+	text-shadow: 2px 2px 0 #1b2a8a, 3px 3px 0 #000;
+}
+
+/* Panel headings: pixel caps, like "STATUS" / "LEVEL" */
+[data-ui-theme='sotn'] h2,
+[data-ui-theme='sotn'] h3 {
+	font-weight: 500 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--sotn-white);
+}
+
+/* ---------- Shape: square windows ---------- */
+[data-ui-theme='sotn'] .rounded,
+[data-ui-theme='sotn'] .rounded-md,
+[data-ui-theme='sotn'] .rounded-lg,
+[data-ui-theme='sotn'] .rounded-xl,
+[data-ui-theme='sotn'] .rounded-2xl,
+[data-ui-theme='sotn'] .rounded-3xl {
+	border-radius: 0;
+}
+
+/* ---------- Menu windows: banded blue gradient, thin white border, dark inner line ---------- */
+[data-ui-theme='sotn'] .ui-theme-card,
+[data-ui-theme='sotn'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='sotn'] .ui-theme-plate,
+[data-ui-theme='sotn'] .ui-theme-tile,
+[data-ui-theme='sotn'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--sotn-window);
+	border: 1px solid var(--sotn-border) !important;
+	border-radius: 0;
+	box-shadow: inset 0 0 0 1px #06082a, 3px 3px 0 rgba(0, 0, 0, 0.55);
+	transition: box-shadow 0.1s ease;
+}
+
+/* Hover / selected tile: the red selection bar's edge */
+[data-ui-theme='sotn'] .ui-theme-card:hover,
+[data-ui-theme='sotn'] .ui-theme-tile:hover {
+	box-shadow: inset 0 0 0 1px #06082a, inset 4px 0 0 var(--sotn-red), 3px 3px 0 rgba(0, 0, 0, 0.55);
+}
+
+[data-ui-theme='sotn'] .ui-theme-tile[aria-checked='true'] {
+	box-shadow: inset 0 0 0 1px #06082a, inset 0 0 0 3px var(--sotn-red), 3px 3px 0 rgba(0, 0, 0, 0.55);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='sotn'] .ui-theme-card .animate-pulse {
+	background: rgba(212, 212, 232, 0.14) !important;
+}
+
+/* Stats panels: compact padding */
+[data-ui-theme='sotn'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='sotn'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='sotn'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='sotn'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: the red selection bar */
+[data-ui-theme='sotn'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: var(--sotn-red-bar);
+	border-bottom: 1px solid var(--sotn-border);
+	color: #ffffff;
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='sotn'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='sotn'] .ui-theme-tile > .bg-color-gray-200 {
+	background: rgba(6, 8, 42, 0.6);
+	border-left-color: var(--sotn-border) !important;
+	color: var(--sotn-white);
+}
+
+[data-ui-theme='sotn'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='sotn'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--sotn-red-bar);
+	color: #ffffff !important;
+}
+
+/* ---------- Modals: the save screen's gilded frame ---------- */
+[data-ui-theme='sotn'] dialog > .ui-theme-bare,
+[data-ui-theme='sotn'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='sotn'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	border-style: solid !important;
+	border-width: 10px !important;
+	border-color: var(--sotn-gold) !important;
+	border-image: url('../assets/themes/sotn/gold-frame.svg') 14 / 10px stretch;
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+[data-ui-theme='sotn'] dialog:not(.ui-theme-sidebar) h2 {
+	font-family: 'UnifrakturMaguntia', serif;
+	font-weight: 400 !important;
+	font-size: 1.5em;
+	text-transform: none;
+	letter-spacing: 0.02em;
+	text-shadow: 2px 2px 0 #1b2a8a, 3px 3px 0 #000;
+}
+
+/* ---------- Sidebars: a tall blue window with the gilded frame ---------- */
+[data-ui-theme='sotn'] .ui-theme-sidebar {
+	background: linear-gradient(180deg, #131a5c 0%, #1b2670 45%, #243388 100%) !important;
+	border-style: solid !important;
+	border-width: 10px !important;
+	border-color: var(--sotn-gold) !important;
+	border-image: url('../assets/themes/sotn/gold-frame.svg') 14 / 10px stretch;
+	box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+}
+
+[data-ui-theme='sotn'] .ui-theme-sidebar nav a {
+	border-left: 3px solid transparent;
+}
+
+[data-ui-theme='sotn'] .ui-theme-sidebar nav a:hover {
+	background: var(--sotn-red-wash);
+	border-left-color: var(--sotn-red);
+	color: #ffffff !important;
+}
+
+/* Current page: the red selection bar */
+[data-ui-theme='sotn'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: var(--sotn-red-bar) !important;
+	color: #ffffff !important;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): small blue windows ---------- */
+[data-ui-theme='sotn'] .ui-theme-tooltip,
+[data-ui-theme='sotn'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='sotn'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='sotn'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='sotn'] .react-tooltip {
+	background: linear-gradient(180deg, #151c60, #243388) !important;
+	border: 1px solid var(--sotn-border) !important;
+	box-shadow: inset 0 0 0 1px #06082a, 3px 3px 0 rgba(0, 0, 0, 0.6) !important;
+	color: var(--sotn-white) !important;
+	border-radius: 0 !important;
+}
+
+/* Hovered menu row: the red selection bar */
+[data-ui-theme='sotn'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='sotn'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background: var(--sotn-red-bar);
+	color: #ffffff !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: the red selection bar with white text */
+[data-ui-theme='sotn'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	background: var(--sotn-red-bar) !important;
+	border: 1px solid var(--sotn-border) !important;
+	color: #ffffff !important;
+}
+
+[data-ui-theme='sotn'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) * {
+	color: #ffffff !important;
+}
+
+/* Unselected: a dark navy window with the thin border */
+[data-ui-theme='sotn'] :is(button, a).bg-color-gray-300 {
+	background: #10165a !important;
+	border: 1px solid rgba(212, 212, 232, 0.55);
+	color: #dcdcec !important;
+}
+
+/* Tabs: plain text; the active one is the red bar */
+[data-ui-theme='sotn'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='sotn'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 1px solid transparent !important;
+	color: #b4b6d4 !important;
+}
+
+[data-ui-theme='sotn'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='sotn'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: var(--sotn-red-bar) !important;
+	border-color: var(--sotn-border) !important;
+	color: #ffffff !important;
+}
+
+/* ---------- Hover feedback on anything selectable: red wash + the bar's left edge ---------- */
+[data-ui-theme='sotn'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background: var(--sotn-red-wash) !important;
+	box-shadow: inset 3px 0 0 var(--sotn-red);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='sotn'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='sotn'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	background: var(--sotn-red-wash) !important;
+	color: #ffffff !important;
+}
+
+[data-ui-theme='sotn'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	background: linear-gradient(180deg, #a82020 0%, #841414 55%, #5e0c0c 100%) !important;
+}
+
+[data-ui-theme='sotn'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: #ffffff !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='sotn'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='sotn'] textarea:not(.bg-transparent),
+[data-ui-theme='sotn'] select {
+	background-color: #0c1250;
+	border: 1px solid rgba(212, 212, 232, 0.55);
+	border-radius: 0;
+	color: var(--sotn-white);
+}
+
+[data-ui-theme='sotn'] input:not(.bg-transparent):focus,
+[data-ui-theme='sotn'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='sotn'] select:focus {
+	outline: none;
+	border-color: #ffffff;
+	box-shadow: inset 3px 0 0 var(--sotn-red);
+}
+
+/* ---------- Dividers: the thin white window line ---------- */
+[data-ui-theme='sotn'] hr {
+	border: 0;
+	border-top: 1px solid rgba(212, 212, 232, 0.5);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='sotn'] ::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+[data-ui-theme='sotn'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='sotn'] ::-webkit-scrollbar-thumb {
+	background: #8588b4;
+}
+
+[data-ui-theme='sotn'] ::selection {
+	background: var(--sotn-red);
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: gold arrow; pointing hand on hover ---------- */
+[data-ui-theme='sotn'],
+[data-ui-theme='sotn'] body {
+	cursor: url('../assets/themes/cursors/sotn.svg') 3 2, auto;
+}
+
+[data-ui-theme='sotn'] a,
+[data-ui-theme='sotn'] button,
+[data-ui-theme='sotn'] [role='button'],
+[data-ui-theme='sotn'] [role='tab'],
+[data-ui-theme='sotn'] [role='menuitem'],
+[data-ui-theme='sotn'] [role='radio'],
+[data-ui-theme='sotn'] label,
+[data-ui-theme='sotn'] select,
+[data-ui-theme='sotn'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/sotn-pointer.svg') 12 2, pointer;
+}
+
+/* Red theme-colored icons/text would vanish on the red selection bars: use white there */
+[data-ui-theme='sotn'] .ui-theme-sidebar nav a[aria-current='page'] .text-\[var\(--theme-color\)\],
+[data-ui-theme='sotn'] .ui-theme-sidebar nav a[aria-current='page'] [style*='rgb(179, 32, 42)'] {
+	color: #ffffff !important;
+}
+
+/* Chart "empty" areas: dark navy (colored in JS; CSS fill overrides it) */
+[data-ui-theme='sotn'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #161d58;
+}
+
+[data-ui-theme='sotn'] .recharts-bar-background-rectangle {
+	fill: #1a226a;
+}
+
+/* Red accent text would be hard to read on the blue windows: use the frames' gold instead */
+[data-ui-theme='sotn'] .text-\[var\(--theme-color\)\]:not(.ui-theme-sidebar nav a[aria-current='page'] *) {
+	color: var(--sotn-gold) !important;
+}
+
+/* Accessibility: no font-size-adjust needed. DotGothic16's x-height (0.57) is already larger than
+   the default system font's (0.51), so text reads at least as large as the default. */

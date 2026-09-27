@@ -1,0 +1,374 @@
+/* =========================================================================
+   CALL OF DUTY: WARZONE UI THEME
+   Everything here only applies when <html data-ui-theme="warzone">.
+   Inspired by Warzone / Modern Warfare (2019) menus (Play, Options): a dark steel-slate backdrop,
+   translucent charcoal rows, thin caps titles with an underline, tabs with a colored underline,
+   the selected tile lit with an amber gradient from its top edge (amber text + top line), and
+   blue for info headings and focused setting rows.
+   Font: Bio Sans (used in the game's menus and loading screens), falling back to Barlow.
+   ========================================================================= */
+
+[data-ui-theme='warzone'] {
+	--wz-amber: #f2a93b;
+	--wz-amber-glow: rgba(242, 169, 59, 0.28);
+	--wz-blue: #4fb3f5;
+	--wz-text: #e6e9ec;
+	--wz-line: rgba(200, 212, 222, 0.14);
+	--wz-panel: rgba(24, 28, 32, 0.84);
+	--wz-bg: #1f2429;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--wz-text);
+	--color-gray: var(--wz-bg);
+	--color-gray-25: #cdd3d9;
+	--color-gray-50: #a9b1b9;
+	--color-gray-100: #7d868f;
+	--color-gray-150: #363d44;
+	--color-gray-200: #2a3036;
+	--color-gray-300: #22272c;
+	--color-gray-600: #181c20;
+	--color-gray-650: #1c2024;
+	--color-gray-700: #0f1215;
+
+	color-scheme: dark;
+	accent-color: var(--wz-amber);
+	font-family: 'Bio Sans', 'Barlow', sans-serif;
+	scrollbar-color: #6c757e transparent;
+}
+
+/* ---------- Background: steel-slate fog with faint topographic lines ---------- */
+[data-ui-theme='warzone'] body {
+	background:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' fill='none' stroke='%23ffffff' stroke-opacity='0.035'%3E%3Cpath d='M-20 80 Q100 20 200 90 T420 70'/%3E%3Cpath d='M-20 130 Q110 70 200 140 T420 120'/%3E%3Cpath d='M-20 250 Q90 190 210 260 T420 240'/%3E%3Cpath d='M-20 310 Q120 260 200 320 T420 300'/%3E%3C/svg%3E") 0 0 / 400px 400px,
+		radial-gradient(ellipse 80% 50% at 50% 0%, rgba(110, 130, 150, 0.28), transparent 70%),
+		linear-gradient(180deg, #2a3138 0%, #1f2429 50%, #14171a 100%);
+	background-attachment: fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='warzone'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='warzone'] .flex-1.bg-color-gray-700,
+[data-ui-theme='warzone'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='warzone'] .sticky.bg-color-gray-700 {
+	background-color: rgba(20, 24, 28, 0.94);
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='warzone'] .text-white {
+	color: var(--wz-text);
+}
+
+/* Page titles: thin light caps with an underline, like "OPTIONS" */
+[data-ui-theme='warzone'] h1,
+[data-ui-theme='warzone'] h1.font-bold {
+	font-weight: 300 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #dfe3e7 !important;
+	padding-bottom: 2px;
+	border-bottom: 1px solid rgba(223, 227, 231, 0.45);
+}
+
+/* Section headings: the game's blue info headings ("Daily Challenges") */
+[data-ui-theme='warzone'] h2,
+[data-ui-theme='warzone'] h3 {
+	font-weight: 600 !important;
+	color: var(--wz-blue);
+}
+
+/* ---------- Shape: square panels ---------- */
+[data-ui-theme='warzone'] .rounded,
+[data-ui-theme='warzone'] .rounded-md,
+[data-ui-theme='warzone'] .rounded-lg,
+[data-ui-theme='warzone'] .rounded-xl,
+[data-ui-theme='warzone'] .rounded-2xl,
+[data-ui-theme='warzone'] .rounded-3xl {
+	border-radius: 0;
+}
+
+/* ---------- Translucent charcoal panels ---------- */
+[data-ui-theme='warzone'] .ui-theme-card,
+[data-ui-theme='warzone'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='warzone'] .ui-theme-plate,
+[data-ui-theme='warzone'] .ui-theme-tile,
+[data-ui-theme='warzone'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--wz-panel);
+	border: 1px solid var(--wz-line) !important;
+	border-radius: 0;
+	box-shadow: none;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+/* Hover / selected: the amber-lit tile (amber top line + glow from the top) */
+[data-ui-theme='warzone'] .ui-theme-card:hover,
+[data-ui-theme='warzone'] .ui-theme-tile:hover {
+	border-color: rgba(242, 169, 59, 0.5) !important;
+	box-shadow: inset 0 2px 0 var(--wz-amber);
+}
+
+[data-ui-theme='warzone'] .ui-theme-tile[aria-checked='true'] {
+	background: linear-gradient(180deg, var(--wz-amber-glow), rgba(24, 28, 32, 0.84) 75%);
+	border-color: var(--wz-amber) !important;
+	box-shadow: inset 0 2px 0 var(--wz-amber);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='warzone'] .ui-theme-card .animate-pulse {
+	background: rgba(200, 212, 222, 0.1) !important;
+}
+
+/* Stats panels: compact padding */
+[data-ui-theme='warzone'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='warzone'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='warzone'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='warzone'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: blue header with an underline */
+[data-ui-theme='warzone'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: rgba(16, 20, 24, 0.95);
+	border-bottom: 1px solid var(--wz-blue);
+	color: var(--wz-blue);
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='warzone'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='warzone'] .ui-theme-tile > .bg-color-gray-200 {
+	background: rgba(0, 0, 0, 0.45);
+	border-left-color: var(--wz-amber) !important;
+	color: var(--wz-text);
+}
+
+[data-ui-theme='warzone'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='warzone'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--wz-amber);
+	color: #15181b !important;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='warzone'] dialog > .ui-theme-bare,
+[data-ui-theme='warzone'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='warzone'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background: rgba(18, 21, 25, 0.97);
+	border-top: 2px solid var(--wz-amber) !important;
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+}
+
+[data-ui-theme='warzone'] dialog:not(.ui-theme-sidebar) h2 {
+	color: var(--wz-text);
+	font-weight: 300 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+/* ---------- Sidebars ---------- */
+[data-ui-theme='warzone'] .ui-theme-sidebar {
+	background: rgba(17, 20, 23, 0.97) !important;
+	border-left: 1px solid var(--wz-line) !important;
+	box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-ui-theme='warzone'] .ui-theme-sidebar nav a {
+	border-top: 2px solid transparent;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+[data-ui-theme='warzone'] .ui-theme-sidebar nav a:hover {
+	background: rgba(255, 255, 255, 0.05);
+	color: #ffffff !important;
+}
+
+/* Current page: the amber-lit tile */
+[data-ui-theme='warzone'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: linear-gradient(180deg, var(--wz-amber-glow), transparent 90%) !important;
+	border-top-color: var(--wz-amber);
+	color: var(--wz-amber) !important;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts) ---------- */
+[data-ui-theme='warzone'] .ui-theme-tooltip,
+[data-ui-theme='warzone'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='warzone'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='warzone'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='warzone'] .react-tooltip {
+	background: rgba(16, 19, 22, 0.98) !important;
+	border: 1px solid rgba(200, 212, 222, 0.22) !important;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+	color: var(--wz-text) !important;
+	border-radius: 0 !important;
+}
+
+/* Hovered menu row: the focused-setting look (navy with a blue underline) */
+[data-ui-theme='warzone'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='warzone'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: #13202c;
+	box-shadow: inset 0 -2px 0 var(--wz-blue);
+	color: #ffffff !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: amber-lit from the top, amber text */
+[data-ui-theme='warzone'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	background: linear-gradient(180deg, rgba(242, 169, 59, 0.38), rgba(242, 169, 59, 0.1)) !important;
+	border: 1px solid rgba(242, 169, 59, 0.55) !important;
+	box-shadow: inset 0 2px 0 var(--wz-amber);
+	color: #ffc877 !important;
+}
+
+[data-ui-theme='warzone'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) * {
+	color: #ffc877 !important;
+}
+
+/* Unselected: translucent gray row */
+[data-ui-theme='warzone'] :is(button, a).bg-color-gray-300 {
+	background: rgba(120, 132, 144, 0.14) !important;
+	border: 1px solid var(--wz-line);
+	color: #cdd3d9 !important;
+}
+
+/* Tabs: small caps text; the active one is amber with an underline (like "PLAY") */
+[data-ui-theme='warzone'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='warzone'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 0 !important;
+	border-bottom: 2px solid transparent !important;
+	box-shadow: none !important;
+	color: #a9b1b9 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+[data-ui-theme='warzone'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='warzone'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: linear-gradient(0deg, var(--wz-amber-glow), transparent) !important;
+	color: var(--wz-amber) !important;
+	border-bottom-color: var(--wz-amber) !important;
+}
+
+[data-ui-theme='warzone'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\] * {
+	color: var(--wz-amber) !important;
+}
+
+/* ---------- Hover feedback on anything selectable ---------- */
+[data-ui-theme='warzone'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background-color: #13202c !important;
+	box-shadow: inset 0 -2px 0 var(--wz-blue);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='warzone'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='warzone'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	color: #ffffff !important;
+	border-bottom-color: rgba(242, 169, 59, 0.55) !important;
+}
+
+[data-ui-theme='warzone'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	background: linear-gradient(180deg, rgba(242, 169, 59, 0.5), rgba(242, 169, 59, 0.16)) !important;
+}
+
+[data-ui-theme='warzone'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: #ffffff !important;
+}
+
+/* ---------- Inputs: dark rows; focus = the blue underline ---------- */
+[data-ui-theme='warzone'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='warzone'] textarea:not(.bg-transparent),
+[data-ui-theme='warzone'] select {
+	background-color: rgba(10, 13, 16, 0.75);
+	border: 1px solid var(--wz-line);
+	border-radius: 0;
+	color: var(--wz-text);
+}
+
+[data-ui-theme='warzone'] input:not(.bg-transparent):focus,
+[data-ui-theme='warzone'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='warzone'] select:focus {
+	outline: none;
+	border-color: var(--wz-line);
+	border-bottom-color: var(--wz-blue);
+	box-shadow: 0 2px 8px -4px var(--wz-blue);
+}
+
+/* ---------- Dividers ---------- */
+[data-ui-theme='warzone'] hr {
+	border: 0;
+	border-top: 1px solid rgba(200, 212, 222, 0.2);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='warzone'] ::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+[data-ui-theme='warzone'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='warzone'] ::-webkit-scrollbar-thumb {
+	background: #6c757e;
+}
+
+[data-ui-theme='warzone'] ::selection {
+	background: rgba(79, 179, 245, 0.45);
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: amber arrow; pointing hand on hover ---------- */
+[data-ui-theme='warzone'],
+[data-ui-theme='warzone'] body {
+	cursor: url('../assets/themes/cursors/warzone.svg') 3 2, auto;
+}
+
+[data-ui-theme='warzone'] a,
+[data-ui-theme='warzone'] button,
+[data-ui-theme='warzone'] [role='button'],
+[data-ui-theme='warzone'] [role='tab'],
+[data-ui-theme='warzone'] [role='menuitem'],
+[data-ui-theme='warzone'] [role='radio'],
+[data-ui-theme='warzone'] label,
+[data-ui-theme='warzone'] select,
+[data-ui-theme='warzone'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/warzone-pointer.svg') 12 2, pointer;
+}
+
+/* Chart "empty" areas: steel gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='warzone'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #262c32;
+}
+
+[data-ui-theme='warzone'] .recharts-bar-background-rectangle {
+	fill: #2b3238;
+}
+
+/* Accessibility: match this theme's text size to the standard font (measured in the browser).
+   Bio Sans (x-height 0.52) is close to the default system font (0.51 regular, ~0.525 bold);
+   0.53 keeps every weight at least as large as the default. */
+[data-ui-theme='warzone'] {
+	font-size-adjust: 0.53;
+}

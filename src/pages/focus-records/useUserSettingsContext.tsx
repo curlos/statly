@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
+import { useThemeContext } from '../../contexts/useThemeContext';
 import type {
 	Ring
 } from '../../types/api';
 
 const useUserSettings = () => {
+	const { uiTheme } = useThemeContext();
 	// Initialize cached settings from localStorage with rings array
 	const [cachedSettings, setCachedSettings] = useState(() => {
 		const defaultSettings = { rings: [], selectedRingId: null };
@@ -191,6 +193,8 @@ const useUserSettings = () => {
 			showFocusNotes,
 			limitTextWidth,
 			lowerCardOpacity,
+			// Game UI themes draw their own card panels, so lower opacity only applies to Default and Ink & Marker
+			applyLowerCardOpacity: lowerCardOpacity && (uiTheme === 'default' || uiTheme === 'ink-marker'),
 			showTotalFocusDuration,
 			showCompletedTasks,
 			showTaskAncestors,

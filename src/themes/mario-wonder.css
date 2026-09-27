@@ -1,0 +1,389 @@
+/* =========================================================================
+   SUPER MARIO BROS. WONDER UI THEME
+   Everything here only applies when <html data-ui-theme="mario-wonder"> (a light theme; see
+   LIGHT_GAME_THEMES in useThemeContext). Inspired by Wonder's menus (Settings, Select a User,
+   Action Guide): an olive-gray checkerboard backdrop with dark bars, cream cards with a thick
+   near-black outline and a hard shadow, white pill value boxes, and the game's selection: a
+   yellow pill/card with the little red pointer (with eyes) at its corner. Titles are bold
+   italic white with a dark outline.
+   Font: Fredoka, a free rounded heavy sans close to the game's lettering.
+   ========================================================================= */
+
+html[data-ui-theme='mario-wonder'] {
+	--mw-yellow: #f8d445;
+	--mw-yellow-soft: #fff1b8;
+	--mw-ink: #1a1a1a;
+	--mw-cream: #fff8e6;
+	--mw-olive: #4b5140;
+	--mw-red: #e8322a;
+
+	/* Re-skin the whole site (beats the .light-mode values) */
+	--color-primary-text: var(--mw-ink);
+	--color-gray: #5f6652;
+	--color-gray-25: #26261c;
+	--color-gray-50: #45453a;
+	--color-gray-100: #666653;
+	--color-gray-150: #cfc8ab;
+	--color-gray-200: #f1e9cc;
+	--color-gray-300: #ffffff;
+	--color-gray-600: var(--mw-cream);
+	--color-gray-650: #fbf1d6;
+	--color-gray-700: #5f6652;
+
+	color-scheme: light;
+	accent-color: var(--mw-yellow);
+	font-family: 'Fredoka', sans-serif;
+	font-weight: 500;
+	scrollbar-color: var(--mw-ink) transparent;
+}
+
+/* ---------- Page: olive checkerboard (the sticky header is the game's dark top bar) ---------- */
+[data-ui-theme='mario-wonder'] body {
+	background: repeating-conic-gradient(#626955 0 25%, #596049 0 50%) 0 0 / 56px 56px;
+	background-attachment: fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='mario-wonder'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='mario-wonder'] .flex-1.bg-color-gray-700,
+[data-ui-theme='mario-wonder'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+/* Sticky page header: the game's dark top bar, white text */
+[data-ui-theme='mario-wonder'] .sticky.bg-color-gray-700 {
+	background-color: rgba(28, 30, 22, 0.92);
+	color: #ffffff;
+}
+
+/* ---------- Typography ---------- */
+/* Page titles: bold italic white with a thick dark outline, like "Settings" */
+[data-ui-theme='mario-wonder'] h1,
+[data-ui-theme='mario-wonder'] h1.font-bold {
+	font-family: 'Fredoka', sans-serif;
+	font-weight: 700 !important;
+	font-style: italic;
+	color: #ffffff !important;
+	-webkit-text-stroke: 5px var(--mw-ink);
+	paint-order: stroke fill;
+	text-shadow: 2px 3px 0 var(--mw-ink);
+}
+
+[data-ui-theme='mario-wonder'] h2,
+[data-ui-theme='mario-wonder'] h3 {
+	font-weight: 600 !important;
+	color: var(--mw-ink);
+}
+
+/* ---------- Shape: rounded ---------- */
+[data-ui-theme='mario-wonder'] .rounded,
+[data-ui-theme='mario-wonder'] .rounded-md {
+	border-radius: 10px;
+}
+
+[data-ui-theme='mario-wonder'] .rounded-lg,
+[data-ui-theme='mario-wonder'] .rounded-xl,
+[data-ui-theme='mario-wonder'] .rounded-2xl,
+[data-ui-theme='mario-wonder'] .rounded-3xl {
+	border-radius: 14px;
+}
+
+/* ---------- Cream cards: thick dark outline and a hard shadow ---------- */
+[data-ui-theme='mario-wonder'] .ui-theme-card,
+[data-ui-theme='mario-wonder'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='mario-wonder'] .ui-theme-plate,
+[data-ui-theme='mario-wonder'] .ui-theme-tile,
+[data-ui-theme='mario-wonder'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--mw-cream) !important;
+	color: var(--mw-ink);
+	border: 3px solid var(--mw-ink) !important;
+	border-radius: 14px;
+	box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+	transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+/* Hover / selected: the yellow card */
+[data-ui-theme='mario-wonder'] .ui-theme-card:hover,
+[data-ui-theme='mario-wonder'] .ui-theme-tile:hover {
+	background: var(--mw-yellow-soft) !important;
+}
+
+[data-ui-theme='mario-wonder'] .ui-theme-tile[aria-checked='true'] {
+	background: var(--mw-yellow) !important;
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='mario-wonder'] .ui-theme-card .animate-pulse {
+	background: rgba(75, 81, 64, 0.16) !important;
+}
+
+/* Stats panels: compact padding; the heading sits in a dark olive strip like a card header */
+[data-ui-theme='mario-wonder'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+[data-ui-theme='mario-wonder'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	margin: -10px -10px 8px;
+	padding: 5px 12px;
+	border-radius: 10px 10px 0 0;
+	background: var(--mw-olive);
+	color: #ffffff;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='mario-wonder'] .ui-theme-plate.py-2 {
+	padding: 2px 8px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='mario-wonder'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='mario-wonder'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: the dark olive header strip */
+[data-ui-theme='mario-wonder'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: var(--mw-olive);
+	color: #ffffff;
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='mario-wonder'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='mario-wonder'] .ui-theme-tile > .bg-color-gray-200 {
+	background: var(--mw-olive);
+	border-left-color: var(--mw-yellow) !important;
+	color: #ffffff;
+}
+
+[data-ui-theme='mario-wonder'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='mario-wonder'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--mw-ink);
+	color: var(--mw-yellow) !important;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='mario-wonder'] dialog > .ui-theme-bare,
+[data-ui-theme='mario-wonder'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='mario-wonder'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Sidebars: a tall cream card ---------- */
+[data-ui-theme='mario-wonder'] .ui-theme-sidebar {
+	background: var(--mw-cream) !important;
+	color: var(--mw-ink);
+	border-left: 4px solid var(--mw-ink) !important;
+	box-shadow: -8px 0 0 rgba(0, 0, 0, 0.25);
+}
+
+[data-ui-theme='mario-wonder'] .ui-theme-sidebar nav a {
+	font-weight: 600;
+	border: 3px solid transparent;
+	border-radius: 999px;
+	padding-left: 12px;
+}
+
+[data-ui-theme='mario-wonder'] .ui-theme-sidebar nav a:hover {
+	background: var(--mw-yellow-soft);
+	border-color: var(--mw-ink);
+}
+
+/* Current page: the yellow pill with the red pointer */
+[data-ui-theme='mario-wonder'] .ui-theme-sidebar nav a[aria-current='page'] {
+	position: relative;
+	background: var(--mw-yellow) !important;
+	border-color: var(--mw-ink);
+	color: var(--mw-ink) !important;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts) ---------- */
+[data-ui-theme='mario-wonder'] .ui-theme-tooltip,
+[data-ui-theme='mario-wonder'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='mario-wonder'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='mario-wonder'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='mario-wonder'] .react-tooltip {
+	background: #ffffff !important;
+	border: 3px solid var(--mw-ink) !important;
+	box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35) !important;
+	color: var(--mw-ink) !important;
+	border-radius: 14px !important;
+}
+
+/* Hovered menu row: the yellow pill */
+[data-ui-theme='mario-wonder'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='mario-wonder'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: var(--mw-yellow);
+	border-radius: 999px;
+	color: var(--mw-ink) !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: the yellow pill with a thick outline */
+[data-ui-theme='mario-wonder'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	position: relative;
+	background: var(--mw-yellow) !important;
+	border: 3px solid var(--mw-ink) !important;
+	border-radius: 999px;
+	color: var(--mw-ink) !important;
+	font-weight: 600;
+}
+
+[data-ui-theme='mario-wonder'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) * {
+	color: var(--mw-ink) !important;
+}
+
+/* The red pointer badge at the selected item's corner (buttons, tabs, sidebar current page) */
+[data-ui-theme='mario-wonder'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card)::after,
+[data-ui-theme='mario-wonder'] [role='tablist'] [role='tab'][aria-selected='true']::after,
+[data-ui-theme='mario-wonder'] .ui-theme-sidebar nav a[aria-current='page']::after {
+	content: '';
+	position: absolute;
+	right: -9px;
+	bottom: -11px;
+	width: 20px;
+	height: 20px;
+	background: url('../assets/themes/mario-wonder/pointer-badge.svg') center / contain no-repeat;
+	pointer-events: none;
+	z-index: 1;
+}
+
+/* Unselected: the white pill with a thick outline (like "OK") */
+[data-ui-theme='mario-wonder'] :is(button, a).bg-color-gray-300 {
+	background: #ffffff !important;
+	border: 3px solid var(--mw-ink);
+	border-radius: 999px;
+	color: var(--mw-ink) !important;
+}
+
+/* Tabs: white pills; the active one is the yellow pill */
+[data-ui-theme='mario-wonder'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='mario-wonder'] [role='tablist'] [role='tab'] {
+	position: relative;
+	background: #ffffff !important;
+	border: 3px solid var(--mw-ink) !important;
+	border-radius: 999px !important;
+	color: var(--mw-ink) !important;
+}
+
+[data-ui-theme='mario-wonder'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='mario-wonder'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: var(--mw-yellow) !important;
+}
+
+/* ---------- Hover feedback on anything selectable: pale yellow ---------- */
+[data-ui-theme='mario-wonder'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background-color: var(--mw-yellow-soft) !important;
+	color: var(--mw-ink) !important;
+}
+
+[data-ui-theme='mario-wonder'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='mario-wonder'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	background: var(--mw-yellow-soft) !important;
+}
+
+[data-ui-theme='mario-wonder'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	background: #ffdf5c !important;
+}
+
+/* ---------- Inputs: white pills ---------- */
+[data-ui-theme='mario-wonder'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='mario-wonder'] textarea:not(.bg-transparent),
+[data-ui-theme='mario-wonder'] select {
+	background-color: #ffffff;
+	border: 3px solid var(--mw-ink);
+	border-radius: 12px;
+	color: var(--mw-ink);
+}
+
+[data-ui-theme='mario-wonder'] input:not(.bg-transparent):focus,
+[data-ui-theme='mario-wonder'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='mario-wonder'] select:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px var(--mw-yellow);
+}
+
+/* ---------- Dividers ---------- */
+[data-ui-theme='mario-wonder'] hr {
+	border: 0;
+	border-top: 2px solid rgba(26, 26, 26, 0.25);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='mario-wonder'] ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+[data-ui-theme='mario-wonder'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='mario-wonder'] ::-webkit-scrollbar-thumb {
+	background: var(--mw-ink);
+	border-radius: 4px;
+}
+
+[data-ui-theme='mario-wonder'] ::selection {
+	background: var(--mw-yellow);
+	color: var(--mw-ink);
+}
+
+/* ---------- Mouse cursor: the red Wonder pointer; Mario's white glove on hover ---------- */
+[data-ui-theme='mario-wonder'],
+[data-ui-theme='mario-wonder'] body {
+	cursor: url('../assets/themes/cursors/mario-wonder.svg') 3 2, auto;
+}
+
+[data-ui-theme='mario-wonder'] a,
+[data-ui-theme='mario-wonder'] button,
+[data-ui-theme='mario-wonder'] [role='button'],
+[data-ui-theme='mario-wonder'] [role='tab'],
+[data-ui-theme='mario-wonder'] [role='menuitem'],
+[data-ui-theme='mario-wonder'] [role='radio'],
+[data-ui-theme='mario-wonder'] label,
+[data-ui-theme='mario-wonder'] select,
+[data-ui-theme='mario-wonder'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/mario-wonder-pointer.svg') 12 2, pointer;
+}
+
+/* Yellow accent text/icons would vanish on cream and yellow: use a readable dark gold */
+[data-ui-theme='mario-wonder'] .text-\[var\(--theme-color\)\] {
+	color: #9a6a00 !important;
+}
+
+[data-ui-theme='mario-wonder'] .sticky.bg-color-gray-700 .text-\[var\(--theme-color\)\],
+[data-ui-theme='mario-wonder'] .sticky.bg-color-gray-700 [style*='rgb(250, 208, 44)'] {
+	color: var(--mw-yellow) !important;
+}
+
+/* Gray icon buttons (e.g. the filter button) would fade into the page background: use the ink color */
+[data-ui-theme='mario-wonder'] button.bg-transparent > .material-symbols-rounded.text-color-gray-100 {
+	color: var(--mw-ink);
+}
+
+/* Chart "empty" areas: warm cream-gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='mario-wonder'] .apexcharts-heatmap-rect[fill='#E9E9E9' i] {
+	fill: #ece4c8;
+}
+
+[data-ui-theme='mario-wonder'] .recharts-bar-background-rectangle {
+	fill: #efe7cc;
+}
+
+/* Accessibility: Fredoka's x-height (~0.49) is a bit below the default system font's (0.51 regular,
+   ~0.525 bold); 0.53 keeps every weight, titles included, at least as large as the default. */
+html[data-ui-theme='mario-wonder'] {
+	font-size-adjust: 0.53;
+}

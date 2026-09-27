@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+	<!-- Pokémon Ruby/Sapphire/Emerald cursor: a white GBA-style arrow with a dark outline and gray shading. Hotspot: tip (3 2). -->
+	<polygon points="3,2 3,25 9,19.5 13.5,29 18,27 13.5,17.8 21.5,17.8" fill="#f8f8f8" stroke="#23232e" stroke-width="2" stroke-linejoin="miter" />
+	<polygon points="12.5,17.8 21.5,17.8 3,2 3,25" fill="#a8a8b8" opacity="0.5" />
+</svg>

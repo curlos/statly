@@ -11,6 +11,12 @@
 import './fonts-css/bf-modernista.css';
 import './fonts-css/kirsty.css';
 import './fonts-css/bio-sans.css';
+// Castlevania: Symphony of the Night UI theme fonts (OFL, bundled locally)
+import './fonts-css/dotgothic16.css';
+import './fonts-css/unifrakturmaguntia.css';
+// Super Mario Bros. Wonder and Pokémon Ruby/Sapphire/Emerald UI theme fonts (OFL, bundled locally)
+import './fonts-css/fredoka.css';
+import './fonts-css/tiny5.css';
 
 // Font Family options (Fontsource, self-hosted npm packages)
 import '@fontsource/mozilla-headline/200.css';

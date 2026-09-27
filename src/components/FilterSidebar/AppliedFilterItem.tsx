@@ -16,7 +16,7 @@ const AppliedFilterItem = ({ name, value, onRemove }: AppliedFilterItemProps) =>
 	const { bgColor, bgColorHalfOpacity } = chosenColorObj;
 
 	const {
-		focusRecordsPageSettings: { lowerCardOpacity },
+		focusRecordsPageSettings: { applyLowerCardOpacity: lowerCardOpacity },
 	} = useUserSettingsContext();
 
 	return (

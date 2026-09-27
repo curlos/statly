@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" shape-rendering="crispEdges">
+	<!-- Symphony of the Night save-screen frame, for border-image (slice 14): a gilded double line with
+	     a dark gap and small gold flourishes in the corners. The middle stays empty. -->
+	<g fill="none">
+		<rect x="1" y="1" width="46" height="46" stroke="#5a3a08" stroke-width="2" />
+		<rect x="2.5" y="2.5" width="43" height="43" stroke="#e8c050" stroke-width="2" />
+		<rect x="5" y="5" width="38" height="38" stroke="#1a1004" stroke-width="2" />
+		<rect x="7" y="7" width="34" height="34" stroke="#b88a28" stroke-width="1.5" />
+	</g>
+	<!-- corner flourishes -->
+	<g fill="#f2d470" stroke="#3a2404" stroke-width="0.8">
+		<path d="M1 1 H12 L9 4 H4 V9 L1 12 Z" />
+		<path d="M47 1 H36 L39 4 H44 V9 L47 12 Z" />
+		<path d="M1 47 H12 L9 44 H4 V39 L1 36 Z" />
+		<path d="M47 47 H36 L39 44 H44 V39 L47 36 Z" />
+		<rect x="9" y="9" width="3" height="3" />
+		<rect x="36" y="9" width="3" height="3" />
+		<rect x="9" y="36" width="3" height="3" />
+		<rect x="36" y="36" width="3" height="3" />
+	</g>
+</svg>

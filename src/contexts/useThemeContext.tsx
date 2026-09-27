@@ -33,10 +33,16 @@ const GAME_THEME_COLORS: Record<string, string> = {
 	ff7r: '#3AA0FF',
 	mgs: '#7DFFB0',
 	rdr2: '#C01D1D',
+	bf1: '#EDE8DD',
+	warzone: '#F2A93B',
+	hades2: '#6BE3B0',
+	sotn: '#B3202A',
+	'mario-wonder': '#FAD02C',
+	'pokemon-rse': '#E03030',
 };
 
 // Game UI themes with a light look (the rest force dark mode).
-const LIGHT_GAME_THEMES = ['p4'];
+const LIGHT_GAME_THEMES = ['p4', 'mario-wonder', 'pokemon-rse'];
 
 const getInitialColorMode = (): 'dark' | 'light' => {
 	const stored = localStorage.getItem('color-mode');

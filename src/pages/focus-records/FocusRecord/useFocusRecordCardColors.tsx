@@ -61,10 +61,16 @@ export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj, lowerO
         if (customDisplay.useBackgroundColor) {
             return customDisplay.backgroundColor
         }
-        // Game UI theme cards are panels instead of theme-colored fills: cream for Persona 4's
-        // light look, dark for the rest (Ink & Marker keeps the theme-colored fill, textured like Copic marker)
+        // Game UI theme cards are panels instead of theme-colored fills: cream/white for the light
+        // looks (Persona 4, Mario Wonder, Pokémon), dark for the rest (Ink & Marker keeps the theme-colored fill, textured like Copic marker)
         if (uiTheme === 'p4') {
             return '#fff7c2'
+        }
+        if (uiTheme === 'mario-wonder') {
+            return '#fff8e6'
+        }
+        if (uiTheme === 'pokemon-rse') {
+            return '#ffffff'
         }
         if (uiTheme !== 'default' && uiTheme !== 'ink-marker') {
             return '#1d1c18'

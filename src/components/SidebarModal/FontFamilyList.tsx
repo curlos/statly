@@ -5,10 +5,10 @@ import useDebouncedCallback from '../../hooks/useDebouncedCallback';
 
 // Which UI themes use each font, shown next to its name in the list
 const FONT_USED_IN: Record<string, string[]> = {
-	Jost: ['Persona 3 Reload'],
-	Cinzel: ['Hades'],
-	'Alegreya Sans': ['Hades'],
-	'Alegreya Sans SC': ['Hades'],
+	Jost: ['Persona 3 Reload', 'Battlefield 1'],
+	Cinzel: ['Hades', 'Hades II'],
+	'Alegreya Sans': ['Hades', 'Hades II'],
+	'Alegreya Sans SC': ['Hades', 'Hades II'],
 	Barlow: ['Persona 3 Reload', 'Ink & Marker'],
 	'Barlow Condensed': ['Persona 3 Reload', 'Ink & Marker'],
 	'M PLUS Rounded 1c': ['Persona 4 Golden'],
@@ -22,6 +22,11 @@ const FONT_USED_IN: Record<string, string[]> = {
 	Kirsty: ['Red Dead Redemption 2'],
 	'Zilla Slab': ['Red Dead Redemption 2'],
 	'Playfair Display': ['Ink & Marker'],
+	'Bio Sans': ['Call of Duty: Warzone'],
+	DotGothic16: ['Castlevania: Symphony of the Night'],
+	UnifrakturMaguntia: ['Castlevania: Symphony of the Night'],
+	Fredoka: ['Super Mario Bros. Wonder'],
+	Tiny5: ['Pokémon Ruby, Sapphire & Emerald'],
 };
 
 const FontFamilyList = () => {
@@ -69,6 +74,10 @@ const FontFamilyList = () => {
 		'Bebas Neue',
 		'Zilla Slab',
 		'Playfair Display',
+		'DotGothic16',
+		'UnifrakturMaguntia',
+		'Fredoka',
+		'Tiny5',
 	];
 
 	const handleChangeFontFamily = useDebouncedCallback(async (fontFamilyKey: string) => {

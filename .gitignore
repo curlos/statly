@@ -46,5 +46,13 @@ src/assets/fonts/*
 !src/assets/fonts/Jost/
 !src/assets/fonts/Bio Sans/**
 !src/assets/fonts/Bio Sans/
+!src/assets/fonts/DotGothic16/**
+!src/assets/fonts/DotGothic16/
+!src/assets/fonts/UnifrakturMaguntia/**
+!src/assets/fonts/UnifrakturMaguntia/
+!src/assets/fonts/Fredoka/**
+!src/assets/fonts/Fredoka/
+!src/assets/fonts/Tiny5/**
+!src/assets/fonts/Tiny5/
 
 public/cloudinary

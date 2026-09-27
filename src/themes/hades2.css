@@ -1,0 +1,427 @@
+/* =========================================================================
+   HADES II UI THEME
+   Everything here only applies when <html data-ui-theme="hades2">.
+   Inspired by Hades II's menus (Title, Pause, dialogue): a deep indigo night backdrop with a faint
+   teal witch-light, charcoal stone slabs with rounded corners and silver/teal filigree, wide-spaced
+   caps titles ("P A U S E D"), small-caps menu items, and the game's selection: the chosen item
+   simply glows mint-green (no bar). Dialogue boxes are parchment with a dark frame (used for tooltips).
+   Fonts: Cinzel (titles) and Alegreya Sans / Alegreya Sans SC, shared with the Hades theme.
+   ========================================================================= */
+
+[data-ui-theme='hades2'] {
+	--h2-mint: #6be3b0;
+	--h2-mint-glow: rgba(107, 227, 176, 0.35);
+	--h2-teal: #3fa8a0;
+	--h2-silver: #b9c0c4;
+	--h2-text: #e7e6e1;
+	--h2-parchment: #ece3cc;
+	--h2-slab: rgba(33, 33, 34, 0.92);
+	--h2-line: rgba(185, 192, 196, 0.35);
+	--h2-bg: #141429;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--h2-text);
+	--color-gray: var(--h2-bg);
+	--color-gray-25: #d4d4d0;
+	--color-gray-50: #adadab;
+	--color-gray-100: #858689;
+	--color-gray-150: #3a3b40;
+	--color-gray-200: #2c2d31;
+	--color-gray-300: #252629;
+	--color-gray-600: #1f1f21;
+	--color-gray-650: #1b1b1e;
+	--color-gray-700: #0c0c18;
+
+	color-scheme: dark;
+	accent-color: var(--h2-mint);
+	font-family: 'Alegreya Sans', sans-serif;
+	scrollbar-color: #5c6a6c transparent;
+}
+
+/* ---------- Background: indigo night with a faint teal witch-light ---------- */
+[data-ui-theme='hades2'] body {
+	background:
+		radial-gradient(ellipse 55% 40% at 80% 5%, rgba(63, 168, 160, 0.18), transparent 70%),
+		radial-gradient(ellipse 70% 50% at 10% 100%, rgba(95, 60, 150, 0.25), transparent 70%),
+		radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.5) 100%),
+		linear-gradient(180deg, #1b1a38 0%, #141429 50%, #0b0b17 100%);
+	background-attachment: fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='hades2'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='hades2'] .flex-1.bg-color-gray-700,
+[data-ui-theme='hades2'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='hades2'] .sticky.bg-color-gray-700 {
+	background-color: rgba(18, 18, 34, 0.94);
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='hades2'] .text-white {
+	color: var(--h2-text);
+}
+
+/* Page titles: wide-spaced serif caps, like "P A U S E D" */
+[data-ui-theme='hades2'] h1,
+[data-ui-theme='hades2'] h1.font-bold {
+	font-family: 'Cinzel', serif;
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--h2-text) !important;
+}
+
+/* Headings and menu items: small caps, like "Continue" / "Options" */
+[data-ui-theme='hades2'] h2,
+[data-ui-theme='hades2'] h3 {
+	font-family: 'Alegreya Sans SC', sans-serif;
+	font-weight: 500 !important;
+	letter-spacing: 0.03em;
+	color: var(--h2-text);
+}
+
+/* ---------- Shape: gently rounded slabs (the game's panels are rounded) ---------- */
+[data-ui-theme='hades2'] .rounded,
+[data-ui-theme='hades2'] .rounded-md {
+	border-radius: 4px;
+}
+
+[data-ui-theme='hades2'] .rounded-lg,
+[data-ui-theme='hades2'] .rounded-xl,
+[data-ui-theme='hades2'] .rounded-2xl,
+[data-ui-theme='hades2'] .rounded-3xl {
+	border-radius: 10px;
+}
+
+/* ---------- Charcoal stone slabs: silver edge + teal inner line ---------- */
+[data-ui-theme='hades2'] .ui-theme-card,
+[data-ui-theme='hades2'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='hades2'] .ui-theme-plate,
+[data-ui-theme='hades2'] .ui-theme-tile,
+[data-ui-theme='hades2'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background:
+		radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%),
+		var(--h2-slab);
+	border: 1px solid var(--h2-line) !important;
+	border-radius: 10px;
+	box-shadow:
+		inset 0 0 0 3px rgba(12, 12, 14, 0.9),
+		inset 0 0 0 4px rgba(63, 168, 160, 0.3),
+		0 6px 18px rgba(0, 0, 0, 0.45);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* A small teal gem at the top-center of cards, panels and modals (inside the box) */
+[data-ui-theme='hades2'] .ui-theme-card::after,
+[data-ui-theme='hades2'] .bg-color-gray-600.rounded-lg.p-3::after,
+[data-ui-theme='hades2'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare)::after {
+	content: '';
+	position: absolute;
+	top: 1px;
+	left: 50%;
+	width: 7px;
+	height: 7px;
+	transform: translateX(-50%) rotate(45deg);
+	background: var(--h2-mint);
+	border: 1px solid #0c1614;
+	box-shadow: 0 0 6px var(--h2-mint-glow);
+	pointer-events: none;
+}
+
+/* Hover / selected: the mint glow */
+[data-ui-theme='hades2'] .ui-theme-card:hover,
+[data-ui-theme='hades2'] .ui-theme-tile:hover,
+[data-ui-theme='hades2'] .ui-theme-tile[aria-checked='true'] {
+	border-color: rgba(107, 227, 176, 0.6) !important;
+	box-shadow:
+		inset 0 0 0 3px rgba(12, 12, 14, 0.9),
+		inset 0 0 0 4px rgba(107, 227, 176, 0.45),
+		0 0 14px rgba(107, 227, 176, 0.18);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='hades2'] .ui-theme-card .animate-pulse {
+	background: rgba(185, 192, 196, 0.1) !important;
+}
+
+/* Stats panels: compact padding, headings get a silver rule fading at the ends */
+[data-ui-theme='hades2'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 12px;
+}
+
+[data-ui-theme='hades2'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	background: linear-gradient(90deg, transparent, rgba(185, 192, 196, 0.5), transparent) center bottom / 80% 1px no-repeat;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='hades2'] .ui-theme-plate.py-2 {
+	padding: 2px 8px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='hades2'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='hades2'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: mint small caps */
+[data-ui-theme='hades2'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: rgba(20, 20, 22, 0.96);
+	border-bottom: 1px solid var(--h2-line);
+	color: var(--h2-mint);
+	font-family: 'Alegreya Sans SC', sans-serif;
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='hades2'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='hades2'] .ui-theme-tile > .bg-color-gray-200 {
+	background: rgba(0, 0, 0, 0.45);
+	border-left-color: var(--h2-teal) !important;
+	color: var(--h2-text);
+}
+
+[data-ui-theme='hades2'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='hades2'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: rgba(107, 227, 176, 0.16);
+	color: var(--h2-mint) !important;
+}
+
+/* ---------- Modals: like the Pause slab ---------- */
+[data-ui-theme='hades2'] dialog > .ui-theme-bare,
+[data-ui-theme='hades2'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='hades2'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	border-radius: 14px;
+	border-color: rgba(185, 192, 196, 0.55) !important;
+}
+
+[data-ui-theme='hades2'] dialog:not(.ui-theme-sidebar) h2 {
+	font-family: 'Cinzel', serif;
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+}
+
+/* ---------- Sidebars: tall slab; current page glows mint ---------- */
+[data-ui-theme='hades2'] .ui-theme-sidebar {
+	background:
+		radial-gradient(ellipse at 50% 0%, rgba(63, 168, 160, 0.12), transparent 60%),
+		rgba(24, 24, 26, 0.98) !important;
+	border-left: 1px solid rgba(185, 192, 196, 0.45) !important;
+	box-shadow: inset 3px 0 0 rgba(12, 12, 14, 0.9), inset 4px 0 0 rgba(63, 168, 160, 0.3), -10px 0 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-ui-theme='hades2'] .ui-theme-sidebar nav a {
+	font-family: 'Alegreya Sans SC', sans-serif;
+	font-weight: 500;
+	letter-spacing: 0.03em;
+}
+
+[data-ui-theme='hades2'] .ui-theme-sidebar nav a:hover {
+	background: rgba(255, 255, 255, 0.04);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='hades2'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: radial-gradient(ellipse at 50% 50%, rgba(107, 227, 176, 0.14), transparent 75%) !important;
+	color: var(--h2-mint) !important;
+	text-shadow: 0 0 8px var(--h2-mint-glow);
+}
+
+/* ---------- Popups: tooltips are parchment (like dialogue boxes); menus are slabs ---------- */
+[data-ui-theme='hades2'] .ui-theme-tooltip,
+[data-ui-theme='hades2'] .react-tooltip {
+	background: var(--h2-parchment) !important;
+	border: 2px solid #2a2622 !important;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55) !important;
+	color: #2a2622 !important;
+	border-radius: 6px !important;
+}
+
+[data-ui-theme='hades2'] .ui-theme-tooltip * {
+	color: #2a2622 !important;
+}
+
+[data-ui-theme='hades2'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='hades2'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='hades2'] .absolute.top-full.z-50.bg-color-gray-600 {
+	background: rgba(28, 28, 30, 0.99) !important;
+	border: 1px solid rgba(185, 192, 196, 0.4) !important;
+	box-shadow: inset 0 0 0 2px rgba(12, 12, 14, 0.9), inset 0 0 0 3px rgba(63, 168, 160, 0.25), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+	color: var(--h2-text) !important;
+	border-radius: 8px !important;
+}
+
+/* Hovered menu row: mint text */
+[data-ui-theme='hades2'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='hades2'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: rgba(107, 227, 176, 0.08);
+	color: var(--h2-mint) !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: dark with mint text, a mint edge and glow */
+[data-ui-theme='hades2'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	background: rgba(107, 227, 176, 0.1) !important;
+	border: 1px solid rgba(107, 227, 176, 0.65) !important;
+	color: var(--h2-mint) !important;
+	text-shadow: 0 0 8px var(--h2-mint-glow);
+}
+
+[data-ui-theme='hades2'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) * {
+	color: var(--h2-mint) !important;
+}
+
+/* Unselected: charcoal with a silver edge */
+[data-ui-theme='hades2'] :is(button, a).bg-color-gray-300 {
+	background: rgba(40, 40, 44, 0.9) !important;
+	border: 1px solid rgba(185, 192, 196, 0.25);
+	color: #d4d4d0 !important;
+}
+
+/* Tabs: small caps text; the active one glows mint with a mint underline */
+[data-ui-theme='hades2'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='hades2'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 0 !important;
+	border-bottom: 2px solid transparent !important;
+	color: #adadab !important;
+	font-family: 'Alegreya Sans SC', sans-serif;
+	text-shadow: none;
+}
+
+[data-ui-theme='hades2'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='hades2'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	color: var(--h2-mint) !important;
+	border-bottom-color: var(--h2-mint) !important;
+	text-shadow: 0 0 8px var(--h2-mint-glow);
+}
+
+/* ---------- Hover feedback on anything selectable: brighter text + soft mint wash ---------- */
+[data-ui-theme='hades2'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background-color: rgba(107, 227, 176, 0.08) !important;
+	border-color: rgba(107, 227, 176, 0.45);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='hades2'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='hades2'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	color: #ffffff !important;
+	border-bottom-color: rgba(107, 227, 176, 0.45) !important;
+}
+
+[data-ui-theme='hades2'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	background: rgba(107, 227, 176, 0.18) !important;
+}
+
+[data-ui-theme='hades2'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: var(--h2-mint) !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='hades2'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='hades2'] textarea:not(.bg-transparent),
+[data-ui-theme='hades2'] select {
+	background-color: rgba(14, 14, 16, 0.85);
+	border: 1px solid rgba(185, 192, 196, 0.25);
+	border-radius: 6px;
+	color: var(--h2-text);
+}
+
+[data-ui-theme='hades2'] input:not(.bg-transparent):focus,
+[data-ui-theme='hades2'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='hades2'] select:focus {
+	outline: none;
+	border-color: var(--h2-mint);
+	box-shadow: 0 0 8px rgba(107, 227, 176, 0.2);
+}
+
+/* ---------- Dividers: silver rule fading at the ends ---------- */
+[data-ui-theme='hades2'] hr {
+	border: 0;
+	border-top: 1px solid;
+	border-image: linear-gradient(90deg, transparent, rgba(185, 192, 196, 0.45) 15%, rgba(185, 192, 196, 0.45) 85%, transparent) 1;
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='hades2'] ::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+[data-ui-theme='hades2'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='hades2'] ::-webkit-scrollbar-thumb {
+	background: #5c6a6c;
+	border-radius: 3px;
+}
+
+[data-ui-theme='hades2'] ::selection {
+	background: rgba(107, 227, 176, 0.4);
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: mint arrow; pointing hand on hover ---------- */
+[data-ui-theme='hades2'],
+[data-ui-theme='hades2'] body {
+	cursor: url('../assets/themes/cursors/hades2.svg') 3 2, auto;
+}
+
+[data-ui-theme='hades2'] a,
+[data-ui-theme='hades2'] button,
+[data-ui-theme='hades2'] [role='button'],
+[data-ui-theme='hades2'] [role='tab'],
+[data-ui-theme='hades2'] [role='menuitem'],
+[data-ui-theme='hades2'] [role='radio'],
+[data-ui-theme='hades2'] label,
+[data-ui-theme='hades2'] select,
+[data-ui-theme='hades2'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/hades2-pointer.svg') 12 2, pointer;
+}
+
+/* Chart "empty" areas: cool charcoal (colored in JS; CSS fill overrides it) */
+[data-ui-theme='hades2'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #26262d;
+}
+
+[data-ui-theme='hades2'] .recharts-bar-background-rectangle {
+	fill: #2b2b33;
+}
+
+/* Accessibility: match this theme's text size to the standard font (same fonts and values as the
+   Hades theme). Cinzel caps titles are already large, so they're excluded. */
+[data-ui-theme='hades2'] {
+	font-size-adjust: 0.59;
+}
+
+[data-ui-theme='hades2'] h1,
+[data-ui-theme='hades2'] h1.font-bold,
+[data-ui-theme='hades2'] dialog:not(.ui-theme-sidebar) h2 {
+	font-size-adjust: none;
+}
+
+/* Small-caps headings/labels (Alegreya Sans SC) */
+[data-ui-theme='hades2'] .ui-theme-sidebar nav a,
+[data-ui-theme='hades2'] h2,
+[data-ui-theme='hades2'] h3,
+[data-ui-theme='hades2'] [role='tablist'] [role='tab'],
+[data-ui-theme='hades2'] nav[aria-label='Stats sections'] > * {
+	font-size-adjust: 0.55;
+}

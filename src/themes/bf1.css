@@ -1,0 +1,392 @@
+/* =========================================================================
+   BATTLEFIELD 1 UI THEME
+   Everything here only applies when <html data-ui-theme="bf1">.
+   Inspired by Battlefield 1's menus (Quickmatch, Options, Campaign): a hazy, warm dusk backdrop
+   under dark smoke, flat translucent panels, hairline dividers between list rows, wide thin caps
+   titles, and the game's selection: a solid off-white bar with dark text (hover = a translucent
+   bar with a white left edge).
+   Font: Jost, a free Futura-style geometric sans close to the game's menu lettering.
+   ========================================================================= */
+
+[data-ui-theme='bf1'] {
+	--bf1-bone: #ede8dd;
+	--bf1-ink: #1a1816;
+	--bf1-orange: #e89a3c;
+	--bf1-line: rgba(237, 232, 221, 0.16);
+	--bf1-wash: rgba(237, 232, 221, 0.12);
+	--bf1-panel: rgba(28, 27, 27, 0.82);
+	--bf1-bg: #2a2727;
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--bf1-bone);
+	--color-gray: var(--bf1-bg);
+	--color-gray-25: #d9d4ca;
+	--color-gray-50: #b5b0a6;
+	--color-gray-100: #8a857c;
+	--color-gray-150: #3d3a38;
+	--color-gray-200: #2d2b2a;
+	--color-gray-300: #222120;
+	--color-gray-600: #1c1b1b;
+	--color-gray-650: #201f1f;
+	--color-gray-700: #121111;
+
+	color-scheme: dark;
+	accent-color: var(--bf1-bone);
+	font-family: 'Jost', sans-serif;
+	scrollbar-color: #77726a transparent;
+}
+
+/* ---------- Background: warm dusk haze under dark smoke ---------- */
+[data-ui-theme='bf1'] body {
+	background:
+		radial-gradient(ellipse 60% 45% at 62% 8%, rgba(236, 170, 130, 0.22), transparent 70%),
+		radial-gradient(ellipse 90% 60% at 30% 0%, rgba(150, 110, 110, 0.25), transparent 70%),
+		linear-gradient(180deg, #3a3334 0%, #2a2727 45%, #1b1a1b 100%) fixed;
+	background-attachment: fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='bf1'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='bf1'] .flex-1.bg-color-gray-700,
+[data-ui-theme='bf1'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+[data-ui-theme='bf1'] .sticky.bg-color-gray-700 {
+	background-color: rgba(30, 28, 28, 0.92);
+}
+
+/* ---------- Typography ---------- */
+[data-ui-theme='bf1'] .text-white {
+	color: var(--bf1-bone);
+}
+
+/* Page titles: wide, thin caps like "QUICKMATCH" / "O P T I O N S" */
+[data-ui-theme='bf1'] h1,
+[data-ui-theme='bf1'] h1.font-bold {
+	font-family: 'Jost', sans-serif;
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	color: var(--bf1-bone) !important;
+}
+
+[data-ui-theme='bf1'] h2,
+[data-ui-theme='bf1'] h3 {
+	font-family: 'Jost', sans-serif;
+	font-weight: 500 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--bf1-bone);
+}
+
+/* ---------- Shape: square panels ---------- */
+[data-ui-theme='bf1'] .rounded,
+[data-ui-theme='bf1'] .rounded-md,
+[data-ui-theme='bf1'] .rounded-lg,
+[data-ui-theme='bf1'] .rounded-xl,
+[data-ui-theme='bf1'] .rounded-2xl,
+[data-ui-theme='bf1'] .rounded-3xl {
+	border-radius: 0;
+}
+
+/* ---------- Flat translucent panels with a hairline frame ---------- */
+[data-ui-theme='bf1'] .ui-theme-card,
+[data-ui-theme='bf1'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='bf1'] .ui-theme-plate,
+[data-ui-theme='bf1'] .ui-theme-tile,
+[data-ui-theme='bf1'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: var(--bf1-panel);
+	border: 1px solid var(--bf1-line) !important;
+	border-radius: 0;
+	box-shadow: none;
+	backdrop-filter: blur(6px);
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* Hover: the translucent bar's white left edge */
+[data-ui-theme='bf1'] .ui-theme-card:hover,
+[data-ui-theme='bf1'] .ui-theme-tile:hover {
+	border-color: rgba(237, 232, 221, 0.35) !important;
+	box-shadow: inset 2px 0 0 var(--bf1-bone);
+}
+
+[data-ui-theme='bf1'] .ui-theme-tile[aria-checked='true'] {
+	border-color: var(--bf1-bone) !important;
+	box-shadow: inset 0 0 0 1px var(--bf1-bone);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='bf1'] .ui-theme-card .animate-pulse {
+	background: rgba(237, 232, 221, 0.1) !important;
+}
+
+/* Stats panels: compact padding, headings get a hairline under them */
+[data-ui-theme='bf1'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+[data-ui-theme='bf1'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+	padding-bottom: 3px;
+	border-bottom: 1px solid var(--bf1-line);
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='bf1'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='bf1'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='bf1'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: the off-white selection bar */
+[data-ui-theme='bf1'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: var(--bf1-bone);
+	color: var(--bf1-ink);
+}
+
+[data-ui-theme='bf1'] .ui-theme-plate .sticky.bg-color-gray-200 * {
+	color: var(--bf1-ink) !important;
+}
+
+/* ---------- Medal & Challenge tiles ---------- */
+[data-ui-theme='bf1'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='bf1'] .ui-theme-tile > .bg-color-gray-200 {
+	background: rgba(0, 0, 0, 0.45);
+	border-left-color: var(--bf1-bone) !important;
+	color: var(--bf1-bone);
+}
+
+[data-ui-theme='bf1'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='bf1'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--bf1-bone);
+	color: var(--bf1-ink) !important;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='bf1'] dialog > .ui-theme-bare,
+[data-ui-theme='bf1'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='bf1'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	background: rgba(24, 23, 23, 0.96);
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+}
+
+[data-ui-theme='bf1'] dialog:not(.ui-theme-sidebar) h2 {
+	font-weight: 400 !important;
+	letter-spacing: 0.12em;
+}
+
+/* ---------- Sidebars: dark smoke panel, rows split by hairlines ---------- */
+[data-ui-theme='bf1'] .ui-theme-sidebar {
+	background: rgba(22, 21, 21, 0.97) !important;
+	border-left: 1px solid var(--bf1-line) !important;
+	box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-ui-theme='bf1'] .ui-theme-sidebar nav a {
+	font-weight: 500 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	border-bottom: 1px solid var(--bf1-line);
+	border-left: 2px solid transparent;
+}
+
+[data-ui-theme='bf1'] .ui-theme-sidebar nav a:hover {
+	background: var(--bf1-wash);
+	border-left-color: var(--bf1-bone);
+	color: #ffffff !important;
+}
+
+/* Current page: the solid off-white bar */
+[data-ui-theme='bf1'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: var(--bf1-bone) !important;
+	color: var(--bf1-ink) !important;
+}
+
+[data-ui-theme='bf1'] .ui-theme-sidebar nav a[aria-current='page'] * {
+	color: var(--bf1-ink) !important;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts) ---------- */
+[data-ui-theme='bf1'] .ui-theme-tooltip,
+[data-ui-theme='bf1'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='bf1'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='bf1'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='bf1'] .react-tooltip {
+	background: rgba(20, 19, 19, 0.98) !important;
+	border: 1px solid rgba(237, 232, 221, 0.25) !important;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+	color: var(--bf1-bone) !important;
+	border-radius: 0 !important;
+}
+
+/* Hovered menu row: the off-white selection bar */
+[data-ui-theme='bf1'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='bf1'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: var(--bf1-bone);
+	color: var(--bf1-ink) !important;
+}
+
+[data-ui-theme='bf1'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover *,
+[data-ui-theme='bf1'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover * {
+	color: var(--bf1-ink) !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: the solid off-white bar with dark text */
+[data-ui-theme='bf1'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	background: var(--bf1-bone) !important;
+	border: 1px solid var(--bf1-bone) !important;
+	color: var(--bf1-ink) !important;
+}
+
+[data-ui-theme='bf1'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) * {
+	color: var(--bf1-ink) !important;
+}
+
+/* Unselected: translucent with a hairline */
+[data-ui-theme='bf1'] :is(button, a).bg-color-gray-300 {
+	background: rgba(255, 255, 255, 0.05) !important;
+	border: 1px solid var(--bf1-line);
+	color: #d9d4ca !important;
+}
+
+/* Tabs: plain caps; the active one is the off-white bar */
+[data-ui-theme='bf1'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='bf1'] [role='tablist'] [role='tab'] {
+	background: transparent !important;
+	border: 0 !important;
+	color: #b5b0a6 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+[data-ui-theme='bf1'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='bf1'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: var(--bf1-bone) !important;
+	color: var(--bf1-ink) !important;
+}
+
+[data-ui-theme='bf1'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='bf1'] [role='tablist'] [role='tab'][aria-selected='true'] * {
+	color: var(--bf1-ink) !important;
+}
+
+/* ---------- Hover feedback on anything selectable: translucent bar + white left edge ---------- */
+[data-ui-theme='bf1'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background-color: var(--bf1-wash) !important;
+	box-shadow: inset 2px 0 0 var(--bf1-bone);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='bf1'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='bf1'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	background: var(--bf1-wash) !important;
+	box-shadow: inset 2px 0 0 var(--bf1-bone);
+	color: #ffffff !important;
+}
+
+[data-ui-theme='bf1'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	background: #ffffff !important;
+}
+
+[data-ui-theme='bf1'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: #ffffff !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='bf1'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='bf1'] textarea:not(.bg-transparent),
+[data-ui-theme='bf1'] select {
+	background-color: rgba(12, 12, 12, 0.7);
+	border: 1px solid var(--bf1-line);
+	border-radius: 0;
+	color: var(--bf1-bone);
+}
+
+[data-ui-theme='bf1'] input:not(.bg-transparent):focus,
+[data-ui-theme='bf1'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='bf1'] select:focus {
+	outline: none;
+	border-color: var(--bf1-bone);
+}
+
+/* ---------- Dividers: hairline ---------- */
+[data-ui-theme='bf1'] hr {
+	border: 0;
+	border-top: 1px solid var(--bf1-line);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='bf1'] ::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+}
+
+[data-ui-theme='bf1'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='bf1'] ::-webkit-scrollbar-thumb {
+	background: #77726a;
+}
+
+[data-ui-theme='bf1'] ::selection {
+	background: var(--bf1-bone);
+	color: var(--bf1-ink);
+}
+
+/* ---------- Mouse cursor: off-white arrow; pointing hand on hover ---------- */
+[data-ui-theme='bf1'],
+[data-ui-theme='bf1'] body {
+	cursor: url('../assets/themes/cursors/bf1.svg') 3 2, auto;
+}
+
+[data-ui-theme='bf1'] a,
+[data-ui-theme='bf1'] button,
+[data-ui-theme='bf1'] [role='button'],
+[data-ui-theme='bf1'] [role='tab'],
+[data-ui-theme='bf1'] [role='menuitem'],
+[data-ui-theme='bf1'] [role='radio'],
+[data-ui-theme='bf1'] label,
+[data-ui-theme='bf1'] select,
+[data-ui-theme='bf1'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/bf1-pointer.svg') 12 2, pointer;
+}
+
+/* Off-white icons/text would vanish on the off-white selection bars: use dark ink there */
+[data-ui-theme='bf1'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) [style*='rgb(237, 232, 221)'],
+[data-ui-theme='bf1'] .ui-theme-sidebar nav a[aria-current='page'] .text-\[var\(--theme-color\)\] {
+	color: var(--bf1-ink) !important;
+}
+
+/* Chart "empty" areas: warm charcoal (colored in JS; CSS fill overrides it) */
+[data-ui-theme='bf1'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #2a2726;
+}
+
+[data-ui-theme='bf1'] .recharts-bar-background-rectangle {
+	fill: #302d2c;
+}
+
+/* Accessibility: match this theme's text size to the standard font (measured in the browser).
+   Jost has a smaller x-height (0.46) than the default system font (0.51 regular, ~0.525 bold);
+   0.53 keeps every weight at least as large as the default. */
+[data-ui-theme='bf1'] {
+	font-size-adjust: 0.53;
+}

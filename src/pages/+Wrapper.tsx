@@ -9,6 +9,12 @@ import '../themes/cyberpunk.css';
 import '../themes/ff7r.css';
 import '../themes/mgs.css';
 import '../themes/rdr2.css';
+import '../themes/bf1.css';
+import '../themes/warzone.css';
+import '../themes/hades2.css';
+import '../themes/sotn.css';
+import '../themes/mario-wonder.css';
+import '../themes/pokemon-rse.css';
 import '../themes/ink-marker.css';
 import 'material-symbols';
 

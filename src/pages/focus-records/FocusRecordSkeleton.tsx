@@ -3,7 +3,7 @@ import { useUserSettingsContext } from './useUserSettingsContext';
 
 const FocusRecordSkeleton = ({ isLastItem = false }) => {
 	const {
-		focusRecordsPageSettings: { lowerCardOpacity },
+		focusRecordsPageSettings: { applyLowerCardOpacity: lowerCardOpacity },
 	} = useUserSettingsContext();
 
 	return (

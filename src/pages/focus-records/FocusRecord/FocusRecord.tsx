@@ -45,7 +45,7 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 			showCompletedTasks,
 			showFocusNotes,
 			limitTextWidth,
-			lowerCardOpacity,
+			applyLowerCardOpacity: lowerCardOpacity,
 			showMedals,
 			selectedMedalImage,
 			medalImageSizePx,
