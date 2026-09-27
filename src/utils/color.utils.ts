@@ -94,12 +94,16 @@ export const getColorBrightness = (hex: string): number => {
 
 const TIER_STEP = 0.14;
 
-export const getHeatmapColors = (hexColor: string, count = 7): string[] => {
+// BF1's near-white accent would darken almost to black on its dark cards, so its heatmap scale stops at
+// this much darkening (spread evenly), keeping the darkest step clearly visible. Other themes: undefined.
+export const getHeatmapMaxDarken = (uiTheme: string): number | undefined => (uiTheme === 'bf1' ? 0.6 : undefined);
+
+export const getHeatmapColors = (hexColor: string, count = 7, maxDarken?: number): string[] => {
 	const brightness = getColorBrightness(hexColor);
 	const pivotTier = Math.min(count - 1, Math.floor(brightness / (255 / count)));
 	return Array.from({ length: count }, (_, i) => {
 		if (i === pivotTier) return hexColor;
-		if (i < pivotTier) return darkenHex(hexColor, Math.min((pivotTier - i) * TIER_STEP, 0.85));
+		if (i < pivotTier) return darkenHex(hexColor, maxDarken !== undefined ? ((pivotTier - i) / pivotTier) * maxDarken : Math.min((pivotTier - i) * TIER_STEP, 0.85));
 		return lightenHex(hexColor, Math.min((i - pivotTier) * TIER_STEP, 0.92));
 	});
 };

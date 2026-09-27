@@ -90,7 +90,7 @@ const ModalImportProgress: React.FC = () => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} customClasses="!w-[700px]" ariaLabelledBy="import-progress-title">
-			<div className="bg-color-gray-650 rounded-lg p-6 shadow-xl relative">
+			<div className="bg-color-gray-650 rounded-lg p-6 shadow-xl relative flex flex-col max-h-[calc(90vh-1.5rem)]">
 				{/* Close button */}
 				<button
 					onClick={handleClose}
@@ -119,7 +119,7 @@ const ModalImportProgress: React.FC = () => {
 
 
 				{/* Batch list with scrollbar */}
-				<div className="space-y-4 max-h-[500px] overflow-auto pr-2">
+				<div className="relative space-y-4 max-h-[500px] min-h-0 overflow-auto pr-2">
 					{batches.map((batch) => {
 						const statusDisplay = getBatchStatusDisplay(batch.status);
 

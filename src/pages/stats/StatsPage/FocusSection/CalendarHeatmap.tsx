@@ -4,7 +4,7 @@ import Dropdown from '../../../../components/Dropdown/Dropdown';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
 import { getAllDatesInYear, getFormattedLongDay } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
-import { getHeatmapColors } from '../../../../utils/color.utils';
+import { getHeatmapColors, getHeatmapMaxDarken } from '../../../../utils/color.utils';
 import type { FocusStatsResponse, FocusStatsByDayItem } from '../../../../types/api';
 
 interface DayDurationData {
@@ -35,10 +35,10 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 
 	const allDatesInYear = getAllDatesInYear(selectedDates[0].getFullYear());
 	const year = selectedDates[0].getFullYear();
-	const { chosenColorObj } = useThemeContext();
+	const { chosenColorObj, uiTheme } = useThemeContext();
 	const { hexColor } = chosenColorObj;
 
-	const heatmapColors = getHeatmapColors(hexColor);
+	const heatmapColors = getHeatmapColors(hexColor, 7, getHeatmapMaxDarken(uiTheme));
 	const zeroColor = 'var(--color-gray-200)';
 	const durations = [
 		{ value: '0m',    bgStyle: { backgroundColor: zeroColor } },
@@ -161,12 +161,12 @@ const CalendarDay = forwardRef<HTMLButtonElement, CalendarDayProps>(({ date, foc
 	const [isVisible, setIsVisible] = useState(false);
 	const dropdownRef = useRef(null);
 	const themeContext = useThemeContext();
-	const { chosenColorObj } = themeContext;
+	const { chosenColorObj, uiTheme } = themeContext;
 
 	const dateKey = getFormattedLongDay(date);
 	const focusDataForDate = focusRecordsGroupedByDate?.[dateKey];
 	const focusDurationForDay = focusDataForDate?.duration || 0;
-	const rangeStyle = getRangeStyle(focusDurationForDay, chosenColorObj.hexColor);
+	const rangeStyle = getRangeStyle(focusDurationForDay, chosenColorObj.hexColor, getHeatmapMaxDarken(uiTheme));
 
 	const formattedDurationForTheDay = getFormattedDuration(focusDurationForDay, false);
 
@@ -207,8 +207,8 @@ const CalendarDay = forwardRef<HTMLButtonElement, CalendarDayProps>(({ date, foc
 
 CalendarDay.displayName = 'CalendarDay';
 
-const getRangeStyle = (seconds: number, hexColor: string): React.CSSProperties => {
-	const colors = getHeatmapColors(hexColor);
+const getRangeStyle = (seconds: number, hexColor: string, maxDarken?: number): React.CSSProperties => {
+	const colors = getHeatmapColors(hexColor, 7, maxDarken);
 
 	// 6 hours - 5m offset = 21300 seconds
 	if (seconds >= 21300) return { backgroundColor: colors[0] };

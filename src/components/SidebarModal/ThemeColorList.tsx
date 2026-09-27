@@ -17,7 +17,7 @@ const ThemeColorList = () => {
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const themeContext = useThemeContext();
-	const { themeColorKey, cssStyles, chosenColorObj } = themeContext;
+	const { themeColorKey, savedTailwindColorKey, cssStyles, chosenColorObj } = themeContext;
 
 	const useCustomColor = userSettings?.theme?.useCustomColor ?? false;
 	const customColorHex = userSettings?.theme?.customColor || localStorage.getItem('theme-custom-color') || '#3b82f6';
@@ -223,7 +223,7 @@ const ThemeColorList = () => {
 													label={colorKey}
 													name={groupedColorName}
 													value={colorKey}
-													checked={!useCustomColor && themeColorKey === colorKey}
+													checked={!useCustomColor && savedTailwindColorKey === colorKey}
 													onChange={() => handleChangeTailwindColor(colorKey)}
 													customLabelClass={textColor}
 													customOuterCircleClasses={classNames(

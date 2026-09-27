@@ -9,7 +9,7 @@ import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import ReactApexChart from 'react-apexcharts';
 import apexchart from 'apexcharts';
 import type { FocusStatsResponse, FocusRecordDetail } from '../../../../types/api';
-import { getHeatmapColors } from '../../../../utils/color.utils';
+import { getHeatmapColors, getHeatmapMaxDarken } from '../../../../utils/color.utils';
 
 interface DailyHourBlock {
 	seconds: number;
@@ -124,11 +124,11 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 	}, []);
 
 	const chartId = 'timeline';
-	const { chosenColorObj, colorMode } = useThemeContext();
+	const { chosenColorObj, colorMode, uiTheme } = useThemeContext();
 
 	const options = useMemo(() => {
 		const getColorScaleRanges = () => {
-			const colors = getHeatmapColors(chosenColorObj.hexColor, 6);
+			const colors = getHeatmapColors(chosenColorObj.hexColor, 6, getHeatmapMaxDarken(uiTheme));
 			return [
 				{ from: 0, to: 0, color: colorMode === 'dark' ? '#2f2f2f' : '#E9E9E9', name: '0m' },
 				{ from: 1, to: 600, color: colors[5], name: '0m-10m' },
@@ -194,7 +194,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 				show: false,
 			},
 		};
-	}, [chosenColorObj.hexColor, colorMode]);
+	}, [chosenColorObj.hexColor, colorMode, uiTheme]);
 
 	const tooltipContent = useMemo(() => {
 		if (!tooltipPos) return null;
