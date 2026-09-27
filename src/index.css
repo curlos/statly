@@ -52,12 +52,14 @@ input[type="search"]::-webkit-search-cancel-button {
   color: #000000 !important;
 }
 
-/* ...except on solid red buttons (e.g. "Cancel Remaining Analysis"), where white still reads better than black */
-.light-mode :is(.bg-red-500, .bg-red-600).text-white {
+/* ...except on solid red or dark green buttons (e.g. "Cancel Remaining Analysis", the ring's "Active"
+   toggle), where white still reads better than black */
+.light-mode :is(.bg-red-500, .bg-red-600, .bg-green-700).text-white {
   color: #ffffff !important;
 }
 
-.light-mode .border-white {
+.light-mode .border-white,
+.light-mode .after\:border-white::after {
   border-color: #000000 !important;
 }
 

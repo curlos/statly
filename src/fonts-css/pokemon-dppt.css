@@ -1,0 +1,10 @@
+/* === Pokemon DPPt Font Styles (Pokémon Platinum theme) ===
+   "Pokemon DPPt" by aztecwarrior28 (https://fontstruct.com/fontstructions/show/1951915), a recreation of the
+   Diamond / Pearl / Platinum text, licensed CC BY-SA 3.0. Its license.txt and readme.txt stay next to the font file. */
+@font-face {
+  font-family: 'Pokemon DPPt';
+  src: url('../assets/fonts/PokemonDPPT/pokemon-dppt.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

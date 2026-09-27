@@ -1,0 +1,627 @@
+/* =========================================================================
+   POKÉMON PLATINUM (DS) UI THEME
+   Everything here only applies when <html data-ui-theme="pokemon-plat"> (a light theme; see
+   LIGHT_GAME_THEMES in useThemeContext). Inspired by the DS menus (the X menu, party screen, bag,
+   summary and the battle touch screen): slate-blue striped screens, white
+   rounded boxes with a grey double frame, blue header bars with white caps titles, and the game's
+   selection: an orange rounded outline (the menu cursor). Lists outline the chosen row in red,
+   descriptions sit in a purple strip, and the Stats tabs are the chunky red / blue / green battle buttons.
+   Font: Pokemon DPPt, aztecwarrior28's recreation of the Diamond / Pearl / Platinum text (CC BY-SA 3.0).
+   ========================================================================= */
+
+html[data-ui-theme='pokemon-plat'] {
+	--pp-blue: #5070b0;
+	--pp-blue-dark: #2c4478;
+	--pp-header: #3a74c4;
+	--pp-header-dark: #24569e;
+	--pp-ink: #383844;
+	--pp-frame: #4e5666;
+	--pp-band: #b4bccb;
+	--pp-soft: #eef1f7;
+	--pp-orange: #e8702a;
+	--pp-orange-text: #b4501a;
+	--pp-orange-bright: #ff9a50;
+	--pp-red: #d83030;
+	--pp-purple: #5850a8;
+
+	/* Re-skin the whole site (beats the .light-mode values) */
+	--color-primary-text: var(--pp-ink);
+	--color-gray: var(--pp-blue);
+	--color-gray-25: #30303c;
+	--color-gray-50: #4a4a58;
+	--color-gray-100: #646474;
+	--color-gray-150: #bcc3d0;
+	--color-gray-200: #e4e8f0;
+	--color-gray-300: #ffffff;
+	--color-gray-600: #ffffff;
+	--color-gray-650: #f4f6fa;
+	--color-gray-700: var(--pp-blue);
+
+	color-scheme: light;
+	accent-color: var(--pp-orange);
+	font-family: 'Pokemon DPPt', monospace;
+	scrollbar-color: var(--pp-frame) transparent;
+}
+
+/* ---------- Page: the party screen's slate-blue stripes ---------- */
+[data-ui-theme='pokemon-plat'] body {
+	background:
+		repeating-linear-gradient(135deg, #5676b6 0 6px, #4e6eae 6px 12px);
+	background-attachment: fixed;
+	overflow-x: clip;
+	/* DS text has a soft light shadow */
+	text-shadow: 1px 1px 0 rgba(160, 168, 184, 0.45);
+}
+
+[data-ui-theme='pokemon-plat'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='pokemon-plat'] .flex-1.bg-color-gray-700,
+[data-ui-theme='pokemon-plat'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+/* Sticky page header: a darker blue bar */
+[data-ui-theme='pokemon-plat'] .sticky.bg-color-gray-700 {
+	background-color: rgba(44, 68, 120, 0.95);
+	color: #ffffff;
+}
+
+/* ---------- Typography ---------- */
+/* Page titles: white caps with a dark shadow on the blue screen */
+[data-ui-theme='pokemon-plat'] h1,
+[data-ui-theme='pokemon-plat'] h1.font-bold {
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: #ffffff !important;
+	text-shadow: 2px 2px 0 #1e2c4c;
+}
+
+/* Headings: caps, like the menu and header-bar labels */
+[data-ui-theme='pokemon-plat'] h2,
+[data-ui-theme='pokemon-plat'] h3 {
+	font-weight: 400 !important;
+	text-transform: uppercase;
+	color: var(--pp-header-dark);
+}
+
+/* ---------- Shape: rounded boxes ---------- */
+[data-ui-theme='pokemon-plat'] .rounded,
+[data-ui-theme='pokemon-plat'] .rounded-md {
+	border-radius: 5px;
+}
+
+[data-ui-theme='pokemon-plat'] .rounded-lg,
+[data-ui-theme='pokemon-plat'] .rounded-xl,
+[data-ui-theme='pokemon-plat'] .rounded-2xl,
+[data-ui-theme='pokemon-plat'] .rounded-3xl {
+	border-radius: 9px;
+}
+
+/* ---------- White boxes with the grey double frame (the X menu) ---------- */
+[data-ui-theme='pokemon-plat'] .ui-theme-card,
+[data-ui-theme='pokemon-plat'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='pokemon-plat'] .ui-theme-plate,
+[data-ui-theme='pokemon-plat'] .ui-theme-tile,
+[data-ui-theme='pokemon-plat'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: #ffffff !important;
+	color: var(--pp-ink);
+	border: 2px solid var(--pp-frame) !important;
+	border-radius: 9px;
+	box-shadow: inset 0 0 0 3px var(--pp-band);
+}
+
+/* Hover: the menu cursor's orange outline */
+[data-ui-theme='pokemon-plat'] .ui-theme-card:hover {
+	border-color: var(--pp-orange) !important;
+	box-shadow: inset 0 0 0 2px var(--pp-orange);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='pokemon-plat'] .ui-theme-card .animate-pulse {
+	background: rgba(78, 86, 102, 0.16) !important;
+}
+
+/* Stats panels: compact padding; the heading sits in the summary screen's blue header bar */
+[data-ui-theme='pokemon-plat'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+[data-ui-theme='pokemon-plat'] .bg-color-gray-600.rounded-lg.p-3 h2:not(button h2) {
+	margin: -8px -8px 8px;
+	padding: 4px 10px;
+	border-radius: 6px 6px 0 0;
+	background: linear-gradient(180deg, var(--pp-header), var(--pp-header-dark));
+	color: #ffffff;
+	text-shadow: 1px 1px 0 #1a3466;
+}
+
+/* When the heading shares a row with buttons (e.g. Completion Stats), keep a gap after the bar */
+[data-ui-theme='pokemon-plat'] .bg-color-gray-600.rounded-lg.p-3 .flex > h2:not(button h2) {
+	margin-right: 8px;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='pokemon-plat'] .ui-theme-plate.py-2 {
+	padding: 3px 8px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
+[data-ui-theme='pokemon-plat'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+/* Chosen medal / challenge title bar: the blue header bar */
+[data-ui-theme='pokemon-plat'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: linear-gradient(180deg, var(--pp-header), var(--pp-header-dark));
+	color: #ffffff;
+	text-shadow: 1px 1px 0 #1a3466;
+}
+
+/* ---------- Medal & Challenge tiles (like the party slots) ---------- */
+/* The frame is drawn on top of the contents so the rounded corners stay clean (a real border leaves a
+   sliver of background along the curve next to the clipped name bar / image) */
+[data-ui-theme='pokemon-plat'] .ui-theme-tile {
+	overflow: hidden;
+	border-width: 0 !important;
+	box-shadow: none;
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-tile::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 2px var(--pp-frame), inset 0 0 0 4px var(--pp-band);
+	pointer-events: none;
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-tile:hover::after,
+[data-ui-theme='pokemon-plat'] .ui-theme-tile[aria-checked='true']::after {
+	box-shadow: inset 0 0 0 3px var(--pp-orange), inset 0 0 0 4px #ffd9b8;
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='pokemon-plat'] .ui-theme-tile > .bg-color-gray-200 {
+	background: linear-gradient(180deg, var(--pp-header), var(--pp-header-dark));
+	border-left-color: #ffffff !important;
+	color: #ffffff;
+	text-shadow: 1px 1px 0 #1a3466;
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='pokemon-plat'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	/* deep enough for white text at 4.5:1 */
+	background: linear-gradient(180deg, #b8501a, #9c4212);
+	color: #ffffff !important;
+	text-shadow: 1px 1px 0 #6a2a06;
+}
+
+/* ---------- Modals ---------- */
+[data-ui-theme='pokemon-plat'] dialog > .ui-theme-bare,
+[data-ui-theme='pokemon-plat'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+}
+
+[data-ui-theme='pokemon-plat'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	box-shadow: inset 0 0 0 3px var(--pp-band), 0 8px 24px rgba(20, 30, 60, 0.45);
+}
+
+[data-ui-theme='pokemon-plat'] dialog:not(.ui-theme-sidebar) h2 {
+	color: var(--pp-header-dark);
+}
+
+/* ---------- Sidebars: a tall X-menu box ---------- */
+[data-ui-theme='pokemon-plat'] .ui-theme-sidebar {
+	background: #ffffff !important;
+	color: var(--pp-ink);
+	border-left: 3px solid var(--pp-frame) !important;
+	box-shadow: inset 4px 0 0 var(--pp-band), -6px 0 20px rgba(20, 30, 60, 0.35);
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-sidebar nav a {
+	text-transform: uppercase;
+	border: 3px solid transparent;
+	border-radius: 9px;
+	padding-left: 10px;
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-sidebar nav a:hover {
+	background: #fff1e6;
+	border-color: #f4b58c;
+}
+
+/* Current page: filled orange with white text, like the selected buttons */
+[data-ui-theme='pokemon-plat'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0 45%, transparent 45%), var(--pp-orange-text) !important;
+	border-color: #7a3208;
+	color: #ffffff !important;
+	text-shadow: 1px 1px 0 #6a2a06;
+}
+
+/* ...its icon too (an orange icon would vanish on the orange fill) */
+[data-ui-theme='pokemon-plat'] .ui-theme-sidebar nav a[aria-current='page'] * {
+	color: #ffffff !important;
+}
+
+/* ---------- Boxes inside the white sidebars and modals: a soft grey fill with a thin frame ---------- */
+[data-ui-theme='pokemon-plat'] dialog .bg-color-gray-600 {
+	background-color: var(--pp-soft);
+	box-shadow: 0 0 0 1.5px var(--pp-frame);
+}
+
+[data-ui-theme='pokemon-plat'] dialog label > .bg-color-gray-600.rounded-full {
+	background-color: #ffffff;
+	box-shadow: 0 0 0 1.5px var(--pp-frame);
+}
+
+/* The selected dot keeps its own fill (the option's color); it only gets the thin frame so pale colors show */
+[data-ui-theme='pokemon-plat'] dialog label > .bg-color-gray-600.rounded-full > .rounded-full {
+	box-shadow: 0 0 0 1.5px var(--pp-frame);
+}
+
+[data-ui-theme='pokemon-plat'] label:has(> input[type='radio']) {
+	padding-block: 3px;
+}
+
+[data-ui-theme='pokemon-plat'] dialog .material-symbols-rounded.bg-color-gray-300 {
+	background-color: var(--pp-soft);
+	box-shadow: 0 0 0 1.5px var(--pp-frame);
+}
+
+[data-ui-theme='pokemon-plat'] dialog .border-color-gray-600 {
+	border-color: var(--pp-frame);
+}
+
+[data-ui-theme='pokemon-plat'] label > span.w-11.h-6.rounded-full {
+	box-shadow: 0 0 0 1.5px var(--pp-frame);
+}
+
+[data-ui-theme='pokemon-plat'] label > span.w-11.h-6.rounded-full > span {
+	border-color: var(--pp-frame);
+}
+
+/* Page-background-colored boxes inside modals (e.g. the "Records 1 to 50" rows) would show the blue
+   page color: soft grey with an inset frame (inset so scrolling lists don't clip it) */
+[data-ui-theme='pokemon-plat'] dialog:not(.ui-theme-sidebar) .bg-color-gray-700 {
+	background-color: var(--pp-soft);
+	box-shadow: inset 0 0 0 2px var(--pp-frame);
+}
+
+/* Input wrappers (Search field, Profile form fields): white with the frame; orange focus ring */
+[data-ui-theme='pokemon-plat'] dialog div:is(.bg-color-gray-300, .bg-color-gray-700):has(> input) {
+	background-color: #ffffff !important;
+	border-color: transparent;
+	box-shadow: 0 0 0 2px var(--pp-frame);
+}
+
+[data-ui-theme='pokemon-plat'] dialog div:is(.bg-color-gray-300, .bg-color-gray-700):has(> input):focus-within {
+	box-shadow: 0 0 0 2px var(--pp-orange);
+}
+
+/* ---------- Popups: tooltips are the bag's purple description strip; menus are white boxes ---------- */
+[data-ui-theme='pokemon-plat'] .ui-theme-tooltip,
+[data-ui-theme='pokemon-plat'] .react-tooltip {
+	background: var(--pp-purple) !important;
+	border: 2px solid #3a3478 !important;
+	box-shadow: 0 6px 16px rgba(20, 30, 60, 0.35) !important;
+	color: #ffffff !important;
+	text-shadow: 1px 1px 0 #2a2458;
+	border-radius: 6px !important;
+}
+
+[data-ui-theme='pokemon-plat'] .ui-theme-tooltip * {
+	color: #ffffff !important;
+}
+
+[data-ui-theme='pokemon-plat'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='pokemon-plat'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='pokemon-plat'] .absolute.top-full.z-50.bg-color-gray-600 {
+	background: #ffffff !important;
+	border: 2px solid var(--pp-frame) !important;
+	box-shadow: inset 0 0 0 3px var(--pp-band), 0 6px 16px rgba(20, 30, 60, 0.3) !important;
+	color: var(--pp-ink) !important;
+	border-radius: 9px !important;
+}
+
+/* Hovered menu row: the bag's red row outline */
+[data-ui-theme='pokemon-plat'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='pokemon-plat'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: #fff4f4;
+	box-shadow: inset 0 0 0 2px var(--pp-red);
+	color: var(--pp-ink) !important;
+}
+
+/* ---------- Buttons ---------- */
+/* Selected / theme-colored: filled orange with white text, like the battle-screen buttons (a deeper orange
+   than the accent so the white text keeps 5.1:1) with a darker edge and a light top highlight */
+[data-ui-theme='pokemon-plat'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0 45%, transparent 45%), var(--pp-orange-text) !important;
+	border: 2px solid #7a3208 !important;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+	color: #ffffff !important;
+	text-shadow: 1px 1px 0 #6a2a06;
+}
+
+[data-ui-theme='pokemon-plat'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) * {
+	color: #ffffff !important;
+}
+
+/* Unselected: white with the grey frame */
+[data-ui-theme='pokemon-plat'] :is(button, a).bg-color-gray-300 {
+	background: #ffffff !important;
+	border: 2px solid var(--pp-frame);
+	color: var(--pp-ink) !important;
+}
+
+/* Stats section tabs: the battle touch-screen buttons (FIGHT red, RUN blue, POKéMON green), a shade deeper
+   than the game so the small white labels keep 4.5:1 contrast. The selectors
+   name the element and class so they beat the general selected/unselected button rules above. */
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button) {
+	--pp-btn: #64749c;
+	--pp-btn-dark: #3c4866;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0 45%, transparent 45%), var(--pp-btn) !important;
+	border: 2px solid var(--pp-btn-dark) !important;
+	border-radius: 9px !important;
+	box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
+	color: #ffffff !important;
+	text-transform: uppercase;
+	text-shadow: 1px 0 0 var(--pp-btn-dark), -1px 0 0 var(--pp-btn-dark), 0 1px 0 var(--pp-btn-dark), 0 -1px 0 var(--pp-btn-dark);
+}
+
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button).bg-\[var\(--theme-color\)\]:nth-child(1) {
+	--pp-btn: #d83838;
+	--pp-btn-dark: #8a1818;
+}
+
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button).bg-\[var\(--theme-color\)\]:nth-child(2) {
+	--pp-btn: #2f6cc8;
+	--pp-btn-dark: #1a4690;
+}
+
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button).bg-\[var\(--theme-color\)\]:nth-child(3) {
+	--pp-btn: #2a7f20;
+	--pp-btn-dark: #185212;
+}
+
+/* The selected tab repeats the button look at a higher specificity (the general "selected button" rule
+   would otherwise turn it white) */
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button).bg-\[var\(--theme-color\)\] {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0 45%, transparent 45%), var(--pp-btn) !important;
+	border: 2px solid var(--pp-btn-dark) !important;
+	box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
+	color: #ffffff !important;
+}
+
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button).bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button) * {
+	color: #ffffff !important;
+}
+
+/* Hover on an unselected tab: a lighter grey-blue button */
+[data-ui-theme='pokemon-plat'] nav[aria-label='Stats sections'] > :is(a, button):not(.bg-\[var\(--theme-color\)\]):hover {
+	--pp-btn: #5d6d96;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0 45%, transparent 45%), var(--pp-btn) !important;
+	color: #ffffff !important;
+}
+
+/* Other tabs: white rows; the active one gets the orange outline */
+[data-ui-theme='pokemon-plat'] [role='tablist'] [role='tab'] {
+	background: #ffffff !important;
+	border: 2px solid var(--pp-frame) !important;
+	color: var(--pp-ink) !important;
+	text-transform: uppercase;
+}
+
+[data-ui-theme='pokemon-plat'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	border-color: var(--pp-orange) !important;
+	box-shadow: inset 0 0 0 1px var(--pp-orange);
+}
+
+/* ---------- Hover feedback on anything selectable: pale orange wash + outline ---------- */
+[data-ui-theme='pokemon-plat'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+	background-color: #fff1e6 !important;
+	color: var(--pp-ink) !important;
+}
+
+[data-ui-theme='pokemon-plat'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover {
+	background: #fff1e6 !important;
+	border-color: #f4b58c !important;
+}
+
+[data-ui-theme='pokemon-plat'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0 45%, transparent 45%), #a4480f !important;
+}
+
+[data-ui-theme='pokemon-plat'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: var(--pp-orange-text) !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='pokemon-plat'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='pokemon-plat'] textarea:not(.bg-transparent),
+[data-ui-theme='pokemon-plat'] select {
+	background-color: #ffffff;
+	border: 2px solid var(--pp-frame);
+	border-radius: 5px;
+	color: var(--pp-ink);
+}
+
+[data-ui-theme='pokemon-plat'] input:not(.bg-transparent):focus,
+[data-ui-theme='pokemon-plat'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='pokemon-plat'] select:focus {
+	outline: none;
+	border-color: var(--pp-orange);
+}
+
+/* ---------- Dividers ---------- */
+[data-ui-theme='pokemon-plat'] hr {
+	border: 0;
+	border-top: 2px solid var(--pp-band);
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='pokemon-plat'] ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+[data-ui-theme='pokemon-plat'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='pokemon-plat'] ::-webkit-scrollbar-thumb {
+	background: var(--pp-frame);
+	border-radius: 4px;
+}
+
+[data-ui-theme='pokemon-plat'] ::selection {
+	background: var(--pp-orange);
+	color: #ffffff;
+}
+
+/* ---------- Mouse cursor: orange arrow; the white pointing glove on hover ---------- */
+[data-ui-theme='pokemon-plat'],
+[data-ui-theme='pokemon-plat'] body {
+	cursor: url('../assets/themes/cursors/pokemon-plat.svg') 3 2, auto;
+}
+
+[data-ui-theme='pokemon-plat'] a,
+[data-ui-theme='pokemon-plat'] button,
+[data-ui-theme='pokemon-plat'] [role='button'],
+[data-ui-theme='pokemon-plat'] [role='tab'],
+[data-ui-theme='pokemon-plat'] [role='menuitem'],
+[data-ui-theme='pokemon-plat'] [role='radio'],
+[data-ui-theme='pokemon-plat'] label,
+[data-ui-theme='pokemon-plat'] select,
+[data-ui-theme='pokemon-plat'] .cursor-pointer {
+	cursor: url('../assets/themes/cursors/pokemon-plat-pointer.svg') 12 2, pointer;
+}
+
+/* ---------- Accent colors that stay readable ---------- */
+/* Orange accent text on white: a darker orange (the selection orange is too light for text) */
+[data-ui-theme='pokemon-plat'] .text-\[var\(--theme-color\)\] {
+	color: var(--pp-orange-text) !important;
+}
+
+/* ...a brighter one on black (chart tooltips, the Year Grids day tooltip) and on the dark header bar */
+[data-ui-theme='pokemon-plat'] :is(.bg-black.text-\[var\(--theme-color\)\], .bg-black .text-\[var\(--theme-color\)\], .sticky.bg-color-gray-700 .text-\[var\(--theme-color\)\]) {
+	color: var(--pp-orange-bright) !important;
+}
+
+/* Orange fire icons inside modals/sidebars (e.g. "Current Streak") are too light on the soft grey boxes: a
+   deeper orange (the ones on the blue page have a dark outline instead) */
+[data-ui-theme='pokemon-plat'] dialog .text-orange-500 {
+	color: #c2410c !important;
+}
+
+/* Green "from yesterday" arrows and "all good" checkmarks (sync status, cookie) are too light on white:
+   a deeper green */
+[data-ui-theme='pokemon-plat'] :is(.text-emerald-500, .text-green-400) {
+	color: #047857 !important;
+}
+
+/* Applied-filter chips (e.g. "Search Text: ..."): white text on a deeper orange. On the bright accent
+   orange neither white (3.1:1) nor dark text (3.7:1) reads well; the deeper orange gives white 5.1:1. */
+[data-ui-theme='pokemon-plat'] div.bg-\[var\(--theme-color\)\].rounded-xl.text-\[14px\] {
+	background-color: var(--pp-orange-text) !important;
+	color: #ffffff;
+	text-shadow: 1px 1px 0 #6a2a06;
+}
+
+/* Selected-image checkmark badges (card image picker, custom images): a white check on the deeper orange,
+   instead of the dark check the light mode would give it */
+[data-ui-theme='pokemon-plat'] .rounded-full.bg-\[var\(--theme-color\)\]:has(> .material-symbols-rounded) {
+	background-color: var(--pp-orange-text) !important;
+}
+
+[data-ui-theme='pokemon-plat'] .rounded-full.bg-\[var\(--theme-color\)\] > .material-symbols-rounded.text-white {
+	color: #ffffff !important;
+}
+
+/* ---------- Readability on the blue page (text/icons outside the white boxes) ---------- */
+/* Site logo: orange with a dark outline */
+[data-ui-theme='pokemon-plat'] svg[aria-label='Statly'] {
+	color: var(--pp-orange) !important;
+	filter: drop-shadow(1px 0 0 #1e2c4c) drop-shadow(-1px 0 0 #1e2c4c) drop-shadow(0 1px 0 #1e2c4c) drop-shadow(0 -1px 0 #1e2c4c);
+}
+
+/* Top-bar icons (filter, page settings, main menu): white with a dark outline */
+[data-ui-theme='pokemon-plat'] :is(button[aria-label='Open filter sidebar'], button[aria-label='Open page settings'], button[aria-label='Open main menu']) .material-symbols-rounded {
+	color: #ffffff !important;
+	filter: drop-shadow(1px 0 0 #1e2c4c) drop-shadow(-1px 0 0 #1e2c4c) drop-shadow(0 1px 0 #1e2c4c) drop-shadow(0 -1px 0 #1e2c4c);
+}
+
+/* "Filter" / "Filter & Sort" buttons and pagination: white framed boxes */
+[data-ui-theme='pokemon-plat'] button.rounded-3xl.border.bg-transparent,
+[data-ui-theme='pokemon-plat'] nav[aria-label='Pagination'] button:not(.bg-\[var\(--theme-color\)\]) {
+	background: #ffffff !important;
+	border: 2px solid var(--pp-frame) !important;
+	color: var(--pp-ink) !important;
+}
+
+/* Timeline icons next to Focus Records / Completed Tasks cards: white, like the white cards */
+[data-ui-theme='pokemon-plat'] .bg-primary-10.rounded-full .material-symbols-rounded {
+	color: #ffffff !important;
+	filter: drop-shadow(1px 1px 0 #1e2c4c);
+}
+
+/* ...and the timeline line and dots they sit on (the orange accent barely shows on the blue page) */
+[data-ui-theme='pokemon-plat'] :is(.absolute.border-solid.border-l-\[1px\], .absolute.w-\[10px\].h-\[10px\].rounded-full.border-solid) {
+	border-color: #ffffff !important;
+}
+
+[data-ui-theme='pokemon-plat'] .absolute.w-\[10px\].h-\[10px\].rounded-full.border-solid {
+	box-shadow: 0 0 0 1px #1e2c4c;
+}
+
+/* Focus Records empty state ("No Focus Records") sits on the page */
+[data-ui-theme='pokemon-plat'] .container.py-12.text-color-gray-25 {
+	color: #ffffff;
+}
+
+/* Focus Time Goal page: ring names are white with a dark outline on the blue page (the Stats card's
+   smaller version is on white and stays dark) */
+[data-ui-theme='pokemon-plat'] button[aria-label^='View details for'] h2.text-\[22px\] > .truncate {
+	color: #ffffff;
+	text-shadow: 1px 0 0 #1e2c4c, -1px 0 0 #1e2c4c, 0 1px 0 #1e2c4c, 0 -1px 0 #1e2c4c, 1px 1px 0 #1e2c4c;
+}
+
+/* Ring-colored times, streak counts, status titles and fire icons: a dark outline so any ring color reads on blue or white */
+[data-ui-theme='pokemon-plat'] button[aria-label^='View details for'] p,
+[data-ui-theme='pokemon-plat'] :is(button[aria-label^='View details for'], button[aria-label^='View streak details for']) .text-orange-500:not(.material-symbols-rounded),
+[data-ui-theme='pokemon-plat'] button[aria-label='View combined streak details'] span:not(.material-symbols-rounded),
+[data-ui-theme='pokemon-plat'] dialog:not(.ui-theme-sidebar) .bg-color-gray-700 h3[style*='color'] {
+	/* a thin shadow outline: a text stroke fills in the small gaps of this thin pixel font */
+	text-shadow: 1px 0 0 #1e2c4c, -1px 0 0 #1e2c4c, 0 1px 0 #1e2c4c, 0 -1px 0 #1e2c4c, 1px 1px 0 #1e2c4c;
+}
+
+[data-ui-theme='pokemon-plat'] :is(button[aria-label^='View details for'], button[aria-label^='View streak details for']) .material-symbols-rounded.text-orange-500,
+[data-ui-theme='pokemon-plat'] button[aria-label='View combined streak details'] .material-symbols-rounded {
+	filter: drop-shadow(1px 0 0 #1e2c4c) drop-shadow(-1px 0 0 #1e2c4c) drop-shadow(0 1px 0 #1e2c4c) drop-shadow(0 -1px 0 #1e2c4c);
+}
+
+/* Chart "empty" areas: pale blue-grey (colored in JS; CSS fill overrides it) */
+[data-ui-theme='pokemon-plat'] .apexcharts-heatmap-rect[fill='#E9E9E9' i] {
+	fill: #e4e8f0;
+}
+
+[data-ui-theme='pokemon-plat'] .recharts-bar-background-rectangle {
+	fill: #e8ecf4;
+}
+
+/* Accessibility: Pokemon DPPt's x-height (0.375) is well below the default system font's (0.51 regular,
+   ~0.525 bold); 0.53 scales it up (~22px for 16px text) so every weight reads at least as large as the default. */
+html[data-ui-theme='pokemon-plat'] {
+	font-size-adjust: 0.53;
+}

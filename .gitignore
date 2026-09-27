@@ -52,7 +52,9 @@ src/assets/fonts/*
 !src/assets/fonts/UnifrakturMaguntia/
 !src/assets/fonts/Fredoka/**
 !src/assets/fonts/Fredoka/
-!src/assets/fonts/Tiny5/**
-!src/assets/fonts/Tiny5/
+!src/assets/fonts/PokemonEmerald/**
+!src/assets/fonts/PokemonEmerald/
+!src/assets/fonts/PokemonDPPT/**
+!src/assets/fonts/PokemonDPPT/
 
 public/cloudinary

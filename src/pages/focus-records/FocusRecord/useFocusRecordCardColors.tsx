@@ -69,7 +69,7 @@ export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj, lowerO
         if (uiTheme === 'mario-wonder') {
             return '#fff8e6'
         }
-        if (uiTheme === 'pokemon-rse') {
+        if (uiTheme === 'pokemon-rse' || uiTheme === 'pokemon-plat') {
             return '#ffffff'
         }
         if (uiTheme !== 'default' && uiTheme !== 'ink-marker') {

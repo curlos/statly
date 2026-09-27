@@ -15,6 +15,7 @@ import '../themes/hades2.css';
 import '../themes/sotn.css';
 import '../themes/mario-wonder.css';
 import '../themes/pokemon-rse.css';
+import '../themes/pokemon-plat.css';
 import '../themes/ink-marker.css';
 import 'material-symbols';
 

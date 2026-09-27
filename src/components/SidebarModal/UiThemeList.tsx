@@ -22,6 +22,7 @@ const UI_THEMES: { key: string; label: string; icon?: string; emoji?: string }[]
 	{ key: 'sotn', label: 'Castlevania: Symphony of the Night', icon: iconUrl('sotn.png') },
 	{ key: 'mario-wonder', label: 'Super Mario Bros. Wonder', icon: iconUrl('mario-wonder.png') },
 	{ key: 'pokemon-rse', label: 'Pokémon Ruby, Sapphire & Emerald', icon: iconUrl('pokemon-rse.svg') },
+	{ key: 'pokemon-plat', label: 'Pokémon Platinum', icon: iconUrl('pokemon-plat.svg') },
 	{ key: 'ink-marker', label: 'Ink & Marker', emoji: '🖋️' },
 ];
 

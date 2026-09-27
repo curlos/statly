@@ -1,0 +1,10 @@
+/* === Pokemon Emerald Font Styles (Pokémon Ruby, Sapphire & Emerald theme) ===
+   "Pokemon Emerald" by aztecwarrior28 (https://fontstruct.com/fontstructions/show/1975556), a recreation
+   of the GBA games' text, licensed CC BY-SA 3.0. Its license.txt and readme.txt stay next to the font file. */
+@font-face {
+  font-family: 'Pokemon Emerald';
+  src: url('../assets/fonts/PokemonEmerald/pokemon-emerald.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

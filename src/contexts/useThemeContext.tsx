@@ -39,10 +39,11 @@ const GAME_THEME_COLORS: Record<string, string> = {
 	sotn: '#B3202A',
 	'mario-wonder': '#FAD02C',
 	'pokemon-rse': '#E03030',
+	'pokemon-plat': '#E8702A',
 };
 
 // Game UI themes with a light look (the rest force dark mode).
-const LIGHT_GAME_THEMES = ['p4', 'mario-wonder', 'pokemon-rse'];
+const LIGHT_GAME_THEMES = ['p4', 'mario-wonder', 'pokemon-rse', 'pokemon-plat'];
 
 const getInitialColorMode = (): 'dark' | 'light' => {
 	const stored = localStorage.getItem('color-mode');
@@ -228,6 +229,8 @@ const useTheme = () => {
 
 	return {
 		themeColorKey,
+		// The user's saved Tailwind color (themeColorKey is the game's own accent while a game UI theme is on)
+		savedTailwindColorKey: tailwindColorKey,
 		cssStyles: TAILWIND_COLORS_OBJ,
 		chosenColorObj,
 		chosenColorVariantsObj, // To get all the variants. If a chosen color is red-500, then the variants would be red-50, red-100, red-200, red-300, etc.

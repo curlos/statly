@@ -6,7 +6,7 @@
    dark-gray pixel text with a soft shadow, orange option labels and red chosen values, and the
    game's selection: the chosen row turns white (the rest are gray) with a black ▶ arrow.
    Tooltips use the mint-framed dialogue box.
-   Font: Tiny5, a free pixel font with clear digits, close to the GBA menu lettering.
+   Font: Pokemon Emerald, aztecwarrior28's recreation of the GBA games' text (CC BY-SA 3.0).
    ========================================================================= */
 
 html[data-ui-theme='pokemon-rse'] {
@@ -34,7 +34,7 @@ html[data-ui-theme='pokemon-rse'] {
 
 	color-scheme: light;
 	accent-color: var(--pk-red);
-	font-family: 'Tiny5', monospace;
+	font-family: 'Pokemon Emerald', monospace;
 	scrollbar-color: var(--pk-frame) transparent;
 }
 
@@ -60,7 +60,7 @@ html[data-ui-theme='pokemon-rse'] {
 /* Page titles: dark caps on the periwinkle screen, like "OPTION" */
 [data-ui-theme='pokemon-rse'] h1,
 [data-ui-theme='pokemon-rse'] h1.font-bold {
-	font-family: 'Tiny5', monospace;
+	font-family: 'Pokemon Emerald', monospace;
 	font-weight: 400 !important;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
@@ -105,13 +105,36 @@ html[data-ui-theme='pokemon-rse'] {
 }
 
 /* Hover / selected: the frame's inner band lights up red, like the battle box edge */
-[data-ui-theme='pokemon-rse'] .ui-theme-card:hover,
-[data-ui-theme='pokemon-rse'] .ui-theme-tile:hover {
+[data-ui-theme='pokemon-rse'] .ui-theme-card:hover {
 	box-shadow: inset 0 0 0 3px #e87070, inset 0 0 0 4px #f8d8d8;
 }
 
-[data-ui-theme='pokemon-rse'] .ui-theme-tile[aria-checked='true'] {
-	box-shadow: inset 0 0 0 3px var(--pk-red), inset 0 0 0 4px #f8d8d8;
+/* Medal / Challenge tiles: the frame is drawn on top of the contents (not as a border) and the tile is
+   clipped to its rounded corners, so the square name bar can't cover the frame at the corners */
+[data-ui-theme='pokemon-rse'] .ui-theme-tile {
+	overflow: hidden;
+	border-width: 0 !important;
+	box-shadow: none;
+	/* the frame + inner band are 5px wide: keep the name bar and contents inside them */
+	padding: 5px;
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-tile::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 2px var(--pk-frame), inset 0 0 0 5px var(--pk-band), inset 0 0 0 6px #dcdce8;
+	pointer-events: none;
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-tile:hover::after {
+	box-shadow: inset 0 0 0 2px var(--pk-frame), inset 0 0 0 5px #e87070, inset 0 0 0 6px #f8d8d8;
+}
+
+[data-ui-theme='pokemon-rse'] .ui-theme-tile[aria-checked='true']::after {
+	box-shadow: inset 0 0 0 2px var(--pk-frame), inset 0 0 0 5px var(--pk-red), inset 0 0 0 6px #f8d8d8;
 }
 
 /* Loading skeleton bars */
@@ -138,6 +161,8 @@ html[data-ui-theme='pokemon-rse'] {
 /* The chosen Medal / Challenge panel scrolls: no sideways scrolling */
 [data-ui-theme='pokemon-rse'] .ui-theme-plate.overflow-auto {
 	overflow-x: hidden;
+	/* keep the contents (and the sticky title bar) inside the frame's inner band, which is drawn beneath them */
+	padding: 4px;
 }
 
 /* Chosen medal / challenge title bar: like the gray HP-box name strip */
@@ -365,6 +390,105 @@ html[data-ui-theme='pokemon-rse'] {
 	color: var(--pk-ink);
 }
 
+/* ---------- Value fields: white text boxes (grey is the game's "unselected row", not a field) ---------- */
+/* Dropdown buttons (e.g. "All", "Days", "Month") */
+[data-ui-theme='pokemon-rse'] button.bg-color-gray-300[aria-label^='Select option'] {
+	background: #ffffff !important;
+	border: 2px solid var(--pk-frame) !important;
+	color: var(--pk-ink) !important;
+}
+
+/* Action buttons in sidebars (e.g. "Analyze Note Emotions", "Revalidate Midnight Crossing"): white like
+   "Sync Now", not the grey unselected-row look (which stays for unselected options on the pages) */
+[data-ui-theme='pokemon-rse'] .ui-theme-sidebar button.bg-color-gray-300.rounded-full {
+	background: #ffffff !important;
+	border: 2px solid var(--pk-frame) !important;
+	color: var(--pk-ink) !important;
+}
+
+/* Boxes inside sidebars/modals (streak boxes, "Days goal met", streak list rows, cookie status...) are white
+   on the white panel, so give them the frame (inset, so scrolling lists don't clip it) */
+[data-ui-theme='pokemon-rse'] dialog .bg-color-gray-600 {
+	box-shadow: inset 0 0 0 2px var(--pk-frame);
+}
+
+/* Icon buttons drawn as small boxes (Details card's group/sort/copy, Export & Backup, Import icons): white
+   with the frame, not the grey "unselected row" look */
+[data-ui-theme='pokemon-rse'] .material-symbols-rounded:is(.bg-color-gray-300, .bg-color-gray-600) {
+	background-color: #ffffff !important;
+	border-color: var(--pk-frame) !important;
+}
+
+/* ...the ones without their own border (in sidebars/modals) get the frame drawn inside, so they keep their size */
+[data-ui-theme='pokemon-rse'] dialog .material-symbols-rounded:is(.bg-color-gray-300, .bg-color-gray-600):not(.border) {
+	box-shadow: inset 0 0 0 2px var(--pk-frame);
+}
+
+/* Input wrappers in sidebars/modals (Search field, Profile form fields): white with the frame */
+[data-ui-theme='pokemon-rse'] dialog div:is(.bg-color-gray-300, .bg-color-gray-700):has(> input) {
+	background-color: #ffffff !important;
+	border: 2px solid var(--pk-frame);
+}
+
+[data-ui-theme='pokemon-rse'] dialog div:is(.bg-color-gray-300, .bg-color-gray-700):has(> input):focus-within {
+	box-shadow: inset 0 0 0 2px var(--pk-band);
+}
+
+/* Page-colored boxes inside modals (e.g. the "Records 1 to 50" rows) would show the periwinkle page:
+   white with the frame (inset, so scrolling lists don't clip it) */
+[data-ui-theme='pokemon-rse'] dialog:not(.ui-theme-sidebar) .bg-color-gray-700:not(:has(> input)) {
+	background-color: #ffffff;
+	box-shadow: inset 0 0 0 2px var(--pk-frame);
+}
+
+/* "Filter" / "Filter & Sort" buttons and pagination sit on the periwinkle page: white with the full frame
+   (their thin grey line barely showed) */
+[data-ui-theme='pokemon-rse'] button.rounded-3xl.border.bg-transparent,
+[data-ui-theme='pokemon-rse'] nav[aria-label='Pagination'] button:not(.bg-\[var\(--theme-color\)\]) {
+	background: #ffffff !important;
+	border: 2px solid var(--pk-frame) !important;
+	color: var(--pk-ink) !important;
+}
+
+/* Applied-filter chips (e.g. "Projects (TickTick): ...") are filled with the red accent: white text reads
+   better on it than the dark ink (the game also puts white text on its red boxes) */
+[data-ui-theme='pokemon-rse'] div.bg-\[var\(--theme-color\)\].rounded-xl.text-\[14px\] {
+	color: #ffffff;
+	text-shadow: 1px 1px 0 #801818;
+}
+
+/* ---------- Readability on the periwinkle page (outside the white boxes) ---------- */
+/* Site logo and the top-bar icons (filter, page settings, main menu): white with a dark outline */
+[data-ui-theme='pokemon-rse'] svg[aria-label='Statly'],
+[data-ui-theme='pokemon-rse'] :is(button[aria-label='Open filter sidebar'], button[aria-label='Open page settings'], button[aria-label='Open main menu']) .material-symbols-rounded {
+	color: #ffffff !important;
+	filter: drop-shadow(1px 0 0 var(--pk-frame)) drop-shadow(-1px 0 0 var(--pk-frame)) drop-shadow(0 1px 0 var(--pk-frame)) drop-shadow(0 -1px 0 var(--pk-frame));
+}
+
+/* Focus Time Goal page: ring names are white with a dark outline (the Stats card's smaller version sits on
+   a white box and keeps the orange heading style) */
+[data-ui-theme='pokemon-rse'] button[aria-label^='View details for'] h2.text-\[22px\] > .truncate {
+	color: #ffffff;
+	text-shadow: 1px 0 0 var(--pk-frame), -1px 0 0 var(--pk-frame), 0 1px 0 var(--pk-frame), 0 -1px 0 var(--pk-frame), 1px 1px 0 var(--pk-frame);
+}
+
+/* Ring-colored times, streak counts and fire icons: a thin dark outline so any ring color (yellow, purple,
+   orange...) reads on the periwinkle page and on white (a text stroke would clog the thin pixel font) */
+[data-ui-theme='pokemon-rse'] button[aria-label^='View details for'] p,
+[data-ui-theme='pokemon-rse'] :is(button[aria-label^='View details for'], button[aria-label^='View streak details for']) .text-orange-500:not(.material-symbols-rounded),
+[data-ui-theme='pokemon-rse'] button[aria-label='View combined streak details'] span:not(.material-symbols-rounded) {
+	text-shadow: 1px 0 0 var(--pk-frame), -1px 0 0 var(--pk-frame), 0 1px 0 var(--pk-frame), 0 -1px 0 var(--pk-frame), 1px 1px 0 var(--pk-frame);
+}
+
+[data-ui-theme='pokemon-rse'] button[aria-label^='View details for'] p .opacity-60 {
+	opacity: 0.85;
+}
+
+[data-ui-theme='pokemon-rse'] :is(button[aria-label^='View details for'], button[aria-label^='View streak details for']) .material-symbols-rounded.text-orange-500,
+[data-ui-theme='pokemon-rse'] button[aria-label='View combined streak details'] .material-symbols-rounded {
+	filter: drop-shadow(1px 0 0 var(--pk-frame)) drop-shadow(-1px 0 0 var(--pk-frame)) drop-shadow(0 1px 0 var(--pk-frame)) drop-shadow(0 -1px 0 var(--pk-frame));
+}
+
 /* Chart "empty" areas: pale gray-blue (colored in JS; CSS fill overrides it) */
 [data-ui-theme='pokemon-rse'] .apexcharts-heatmap-rect[fill='#E9E9E9' i] {
 	fill: #e4e4f0;
@@ -374,8 +498,14 @@ html[data-ui-theme='pokemon-rse'] {
 	fill: #e8e8f2;
 }
 
-/* Accessibility: Tiny5's x-height (0.50) is a bit below the default system font's (0.51 regular,
-   ~0.525 bold); 0.53 keeps every weight at least as large as the default (measured in the browser). */
+/* Accessibility: Pokemon Emerald's x-height (0.40) is well below the default system font's (0.51 regular,
+   ~0.525 bold); 0.53 scales it up (~21px for 16px text) so every weight reads at least as large as the default. */
 html[data-ui-theme='pokemon-rse'] {
 	font-size-adjust: 0.53;
+}
+
+/* Green "from yesterday" arrows and "all good" checkmarks (sync status, cookie) are too light on the
+   light panels and sidebar: a deeper green */
+[data-ui-theme='pokemon-rse'] :is(.text-emerald-500, .text-green-400) {
+	color: #047857 !important;
 }

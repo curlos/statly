@@ -507,3 +507,9 @@ html[data-ui-theme='p4'] {
 [data-ui-theme='p4'] .animate-pulse.border-color-gray-200 {
 	border-color: rgba(17, 17, 17, 0.3) !important;
 }
+
+/* Green "from yesterday" arrows and "all good" checkmarks (sync status, cookie) are too light on the
+   light panels and sidebar: a deeper green */
+[data-ui-theme='p4'] :is(.text-emerald-500, .text-green-400) {
+	color: #047857 !important;
+}

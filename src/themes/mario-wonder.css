@@ -123,7 +123,7 @@ html[data-ui-theme='mario-wonder'] {
 	padding: 10px;
 }
 
-[data-ui-theme='mario-wonder'] .bg-color-gray-600.rounded-lg.p-3 h2 {
+[data-ui-theme='mario-wonder'] .bg-color-gray-600.rounded-lg.p-3 h2:not(button h2) {
 	margin: -10px -10px 8px;
 	padding: 5px 12px;
 	border-radius: 10px 10px 0 0;
@@ -154,6 +154,25 @@ html[data-ui-theme='mario-wonder'] {
 }
 
 /* ---------- Medal & Challenge tiles ---------- */
+/* Clip the tile's contents to its rounded corners, so the square name bar (and its accent stripe) and
+   the challenge image don't poke out past the thick outline */
+[data-ui-theme='mario-wonder'] .ui-theme-tile {
+	overflow: hidden;
+	/* The outline is drawn on top of the contents (below) instead of as a border: a real border leaves a
+	   thin sliver of the tile's background showing along the rounded corners, next to the clipped contents */
+	border-width: 0 !important;
+}
+
+[data-ui-theme='mario-wonder'] .ui-theme-tile::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 3px var(--mw-ink);
+	pointer-events: none;
+}
+
 [data-ui-theme='mario-wonder'] .ui-theme-tile .bg-color-gray-150,
 [data-ui-theme='mario-wonder'] .ui-theme-tile > .bg-color-gray-200 {
 	background: var(--mw-olive);
@@ -186,6 +205,80 @@ html[data-ui-theme='mario-wonder'] {
 	color: var(--mw-ink);
 	border-left: 4px solid var(--mw-ink) !important;
 	box-shadow: -8px 0 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Boxes and buttons inside sidebars and modals (cookie status, instructions, streak boxes, inputs, small
+   buttons) use the same cream as the sidebar/modal itself and would vanish: white fill with a thin dark
+   outline, like the other panels (sidebars are dialogs too) */
+[data-ui-theme='mario-wonder'] dialog .bg-color-gray-600 {
+	background-color: #ffffff;
+	box-shadow: 0 0 0 2px var(--mw-ink);
+}
+
+/* ...radio circles get a thinner ring: the full outline made them look heavy and run into each other,
+   but pale ones (e.g. gray-50) still need a dark edge to show up on cream */
+[data-ui-theme='mario-wonder'] dialog label > .bg-color-gray-600.rounded-full {
+	box-shadow: 0 0 0 1.5px var(--mw-ink);
+}
+
+/* The selected dot too, so pale colors (e.g. gray-50) still show as selected inside the white circle */
+[data-ui-theme='mario-wonder'] dialog label > .bg-color-gray-600.rounded-full > .rounded-full {
+	box-shadow: 0 0 0 1.5px var(--mw-ink);
+}
+
+/* A little breathing room between radio options (e.g. the theme color list) */
+[data-ui-theme='mario-wonder'] label:has(> input[type='radio']) {
+	padding-block: 3px;
+}
+
+/* Icon buttons drawn as white circles (e.g. the Export & Backup icons): same thin dark outline, so they
+   don't fade into the cream (the gray-600 ones already get it from the rule above) */
+[data-ui-theme='mario-wonder'] dialog .material-symbols-rounded.bg-color-gray-300 {
+	box-shadow: 0 0 0 2px var(--mw-ink);
+}
+
+/* Borders drawn in the panel color (e.g. the "Delete All ..." rows) match the cream modal and vanish: dark instead.
+   (Only inside modals/sidebars: elsewhere, like the Year Grids squares, the cream border is meant to be a gap.) */
+[data-ui-theme='mario-wonder'] dialog .border-color-gray-600 {
+	border-color: var(--mw-ink);
+}
+
+/* Toggle switches (e.g. "Select All"): the white track and knob vanish on cream, so outline them */
+[data-ui-theme='mario-wonder'] label > span.w-11.h-6.rounded-full {
+	box-shadow: 0 0 0 2px var(--mw-ink);
+}
+
+[data-ui-theme='mario-wonder'] label > span.w-11.h-6.rounded-full > span {
+	border-color: var(--mw-ink);
+}
+
+/* Boxes in the page-background color inside modals (e.g. the "Records 1 to 50" rows while analyzing
+   emotions) would show the olive page color: white with the thin dark outline instead. (Sidebars already
+   make these transparent.) */
+[data-ui-theme='mario-wonder'] dialog:not(.ui-theme-sidebar) .bg-color-gray-700 {
+	background-color: #ffffff;
+	/* inset, so the outline isn't clipped when the boxes sit in a scrolling list (like these rows) */
+	box-shadow: inset 0 0 0 2px var(--mw-ink);
+}
+
+/* Status-colored titles in those boxes (yellow "in progress", red, green...): dark outline so any status
+   color reads on white, like the ring values */
+[data-ui-theme='mario-wonder'] dialog:not(.ui-theme-sidebar) .bg-color-gray-700 h3[style*='color'] {
+	-webkit-text-stroke: 3px var(--mw-ink);
+	paint-order: stroke fill;
+}
+
+/* Input wrappers (e.g. the Filter sidebar's Search field, the Profile form fields): white with the
+   same thin dark outline as the other boxes, and the yellow focus ring the other inputs use */
+[data-ui-theme='mario-wonder'] dialog div:is(.bg-color-gray-300, .bg-color-gray-700):has(> input) {
+	/* gray-700 wrappers (form fields like Name / Email) would otherwise show the olive page color */
+	background-color: #ffffff !important;
+	border-color: transparent;
+	box-shadow: 0 0 0 2px var(--mw-ink);
+}
+
+[data-ui-theme='mario-wonder'] dialog div:is(.bg-color-gray-300, .bg-color-gray-700):has(> input):focus-within {
+	box-shadow: 0 0 0 2px var(--mw-ink), 0 0 0 5px var(--mw-yellow);
 }
 
 [data-ui-theme='mario-wonder'] .ui-theme-sidebar nav a {
@@ -361,6 +454,84 @@ html[data-ui-theme='mario-wonder'] {
 /* Yellow accent text/icons would vanish on cream and yellow: use a readable dark gold */
 [data-ui-theme='mario-wonder'] .text-\[var\(--theme-color\)\] {
 	color: #9a6a00 !important;
+}
+
+/* ...but on black (chart tooltips, the Year Grids day tooltip) the bright yellow reads best */
+[data-ui-theme='mario-wonder'] :is(.bg-black.text-\[var\(--theme-color\)\], .bg-black .text-\[var\(--theme-color\)\]) {
+	color: var(--mw-yellow) !important;
+}
+
+/* The site logo sits on the olive page, where the dark gold fades: use the bright yellow with a dark
+   outline-like shadow, like the white-and-black titles next to it */
+[data-ui-theme='mario-wonder'] svg[aria-label='Statly'] {
+	color: var(--mw-yellow) !important;
+	filter: drop-shadow(2px 2px 0 var(--mw-ink));
+}
+
+/* ---------- Readability on the olive page (text/icons outside the cream cards) ---------- */
+/* Page top-bar icons (filter, page settings, main menu): white with a dark outline, like the titles */
+[data-ui-theme='mario-wonder'] :is(button[aria-label='Open filter sidebar'], button[aria-label='Open page settings'], button[aria-label='Open main menu']) .material-symbols-rounded {
+	color: #ffffff !important;
+	filter: drop-shadow(1.5px 0 0 var(--mw-ink)) drop-shadow(-1.5px 0 0 var(--mw-ink)) drop-shadow(0 1.5px 0 var(--mw-ink)) drop-shadow(0 -1.5px 0 var(--mw-ink));
+}
+
+/* "Filter" / "Filter & Sort" buttons (Medals, Challenges, Focus Records): the game's white outlined pill */
+[data-ui-theme='mario-wonder'] button.rounded-3xl.border.bg-transparent {
+	background: #ffffff !important;
+	border: 3px solid var(--mw-ink) !important;
+	color: var(--mw-ink) !important;
+}
+
+/* Pagination (page numbers, arrows, "..."): dark text would sit right on the olive page, so give the other
+   pages the game's white outlined pill (the current page is already the yellow pill) */
+[data-ui-theme='mario-wonder'] nav[aria-label='Pagination'] button:not(.bg-\[var\(--theme-color\)\]) {
+	background: #ffffff !important;
+	border: 2px solid var(--mw-ink) !important;
+	border-radius: 999px;
+	color: var(--mw-ink) !important;
+}
+
+/* Timeline icons next to Focus Records / Completed Tasks cards: bright yellow, like the timeline line
+   they sit on (the default dark gold faded into the olive page) */
+[data-ui-theme='mario-wonder'] .bg-primary-10.rounded-full .material-symbols-rounded {
+	color: var(--theme-color) !important;
+}
+
+/* Focus Records empty state ("No Focus Records") sits on the page */
+[data-ui-theme='mario-wonder'] .container.py-12.text-color-gray-25 {
+	color: #ffffff;
+}
+
+/* Focus Time Goal rings (page and Stats card): the ring-colored times, streak counts and fire icons get a
+   dark outline so any ring color (yellow, purple, orange...) reads on both the olive page and cream cards */
+[data-ui-theme='mario-wonder'] button[aria-label^='View details for'] p,
+[data-ui-theme='mario-wonder'] :is(button[aria-label^='View details for'], button[aria-label^='View streak details for']) .text-orange-500:not(.material-symbols-rounded),
+[data-ui-theme='mario-wonder'] button[aria-label='View combined streak details'] span:not(.material-symbols-rounded) {
+	-webkit-text-stroke: 4px var(--mw-ink);
+	paint-order: stroke fill;
+}
+
+[data-ui-theme='mario-wonder'] button[aria-label^='View details for'] p .opacity-60 {
+	opacity: 0.85;
+}
+
+[data-ui-theme='mario-wonder'] :is(button[aria-label^='View details for'], button[aria-label^='View streak details for']) .material-symbols-rounded.text-orange-500,
+[data-ui-theme='mario-wonder'] button[aria-label='View combined streak details'] .material-symbols-rounded {
+	filter: drop-shadow(1px 0 0 var(--mw-ink)) drop-shadow(-1px 0 0 var(--mw-ink)) drop-shadow(0 1px 0 var(--mw-ink)) drop-shadow(0 -1px 0 var(--mw-ink));
+}
+
+/* Green "from yesterday" arrows and "all good" checkmarks (sync status, cookie) are too light on cream:
+   use a deeper green */
+[data-ui-theme='mario-wonder'] :is(.text-emerald-500, .text-green-400) {
+	color: #047857 !important;
+}
+
+/* Focus Time Goal page: the ring names sit right on the olive page (no card), where dark ink fades, so
+   use white with a dark outline like the page titles. (The Stats card's smaller version is on cream and stays dark.) */
+[data-ui-theme='mario-wonder'] button[aria-label^='View details for'] h2.text-\[22px\] > .truncate {
+	color: #ffffff;
+	-webkit-text-stroke: 4px var(--mw-ink);
+	paint-order: stroke fill;
 }
 
 [data-ui-theme='mario-wonder'] .sticky.bg-color-gray-700 .text-\[var\(--theme-color\)\],

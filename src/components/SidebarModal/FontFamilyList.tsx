@@ -26,7 +26,8 @@ const FONT_USED_IN: Record<string, string[]> = {
 	DotGothic16: ['Castlevania: Symphony of the Night'],
 	UnifrakturMaguntia: ['Castlevania: Symphony of the Night'],
 	Fredoka: ['Super Mario Bros. Wonder'],
-	Tiny5: ['Pokémon Ruby, Sapphire & Emerald'],
+	'Pokemon Emerald': ['Pokémon Ruby, Sapphire & Emerald'],
+	'Pokemon DPPt': ['Pokémon Platinum'],
 };
 
 const FontFamilyList = () => {
@@ -77,7 +78,8 @@ const FontFamilyList = () => {
 		'DotGothic16',
 		'UnifrakturMaguntia',
 		'Fredoka',
-		'Tiny5',
+		'Pokemon Emerald',
+		'Pokemon DPPt',
 	];
 
 	const handleChangeFontFamily = useDebouncedCallback(async (fontFamilyKey: string) => {
