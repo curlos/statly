@@ -80,6 +80,13 @@
 	color: var(--bf1-bone);
 }
 
+/* Card headings (date, project name, task title): keep their original casing */
+[data-ui-theme='bf1'] h2.ui-theme-task-title,
+[data-ui-theme='bf1'] h3.ui-theme-task-title {
+	text-transform: none;
+	letter-spacing: normal;
+}
+
 /* ---------- Shape: square panels ---------- */
 [data-ui-theme='bf1'] .rounded,
 [data-ui-theme='bf1'] .rounded-md,

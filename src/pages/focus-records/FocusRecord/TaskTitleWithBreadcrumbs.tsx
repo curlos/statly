@@ -20,7 +20,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
 
     if (isLoading) {
         return (
-            <h2 className={headerStyling.replace('cursor-pointer', '')}>
+            <h2 className={classNames('ui-theme-task-title', headerStyling.replace('cursor-pointer', ''))}>
                 <a
                     href={buildTaskUrl(task.taskId)}
                     className="hover:text-blue-500 hover:underline font-bold text-left"
@@ -41,7 +41,7 @@ const TaskTitleWithBreadcrumbs: React.FC<TaskTitleWithBreadcrumbsProps> = ({ tas
 
     return (
         <div className="min-w-0 break-words text-[22px]">
-            <h2 className="inline hover:underline font-bold hover:text-blue-500 m-0">
+            <h2 className="ui-theme-task-title inline hover:underline font-bold hover:text-blue-500 m-0">
                 <a
                     href={buildTaskUrl(parentTaskId)}
                     style={customDisplay.useTextColor ? { color: cardTextColor } : {}}

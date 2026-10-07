@@ -220,7 +220,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 										onClick={handleClickDay}
 										style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 									>
-										<h2 className="inline">
+										<h2 className="ui-theme-task-title inline">
 											<span>{dateStr.replace(/\b0(\d),/, '$1,')}</span>
 											<span> ({completedTasksForDay.length})</span>
 										</h2>
