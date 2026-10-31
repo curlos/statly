@@ -120,3 +120,12 @@ export const serializeFocusRecordToMarkdown = (
 
 	return lines.join('\n');
 };
+
+/**
+ * Goal a day's focus time has to reach, allowing for TickTick being a little off.
+ * Goals of 30 minutes or less have no offset since 5 minutes is too big a share of them
+ * (e.g., 5h55m counts for a 6h goal and 55m for a 1h goal, but 25m doesn't count for a 30m goal)
+ */
+export const getRequiredSecondsForGoal = (goalSeconds: number) => {
+	return goalSeconds > 1800 ? goalSeconds - 300 : goalSeconds; // 5-minute offset
+};

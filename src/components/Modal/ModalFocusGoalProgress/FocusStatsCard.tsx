@@ -8,6 +8,7 @@ import {
 	getAllDaysInYearFromDate,
 	getAllDaysInRange,
 } from '../../../utils/date.utils';
+import { getRequiredSecondsForGoal } from '../../../utils/focusRecords.utils';
 import Icon from '../../Icon';
 
 const FocusStatsCard = ({
@@ -134,7 +135,7 @@ const FocusStatsCard = ({
 				: daysWithRecords.filter((dateKey) => {
 						const duration = dailyDurationsMap[dateKey];
 						const dailyGoalSeconds = customDailyFocusGoal?.[dateKey] ?? goalSeconds;
-						const offsetDailyGoal = dailyGoalSeconds - 300; // 5-minute offset
+						const offsetDailyGoal = getRequiredSecondsForGoal(dailyGoalSeconds);
 						return duration >= offsetDailyGoal;
 					});
 
