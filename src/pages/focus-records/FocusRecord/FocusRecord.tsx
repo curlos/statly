@@ -317,11 +317,12 @@ const FocusRecord: React.FC<FocusRecordProps> = ({ focusRecord, isLastItemForThe
 								{completedTasksDuringFocusSession.map((completedTask: Task, index: number) => {
 									const completedTaskText = completedTask.title;
 									const containsUrl = completedTaskText?.match(urlRegex);
+									const statusIsWillNotDo = 'status' in completedTask && completedTask.status === -1;
 
 									return (
 										<li key={`${focusRecord.id}-${index}`} className="flex items-start gap-1">
 											<Icon
-												name="check_box"
+												name={statusIsWillNotDo ? 'disabled_by_default' : 'check_box'}
 												customClass={classNames('!text-[20px] mt-[2px]')}
 												customStyle={{ color: cardTextColor }}
 											/>
