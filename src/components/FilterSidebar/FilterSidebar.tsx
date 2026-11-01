@@ -70,6 +70,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 		case 'medals':
 		case 'challenges':
 		case 'stats':
+		case 'forest-page':
 			allPossibleFilterStrings.push(
 				'categories',
 				'focus-apps',
@@ -175,7 +176,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 				</>
 			)}
 
-			{page !== 'focus-records-page' && page !== 'focus-time-goal-page' && (
+			{page !== 'focus-records-page' && page !== 'focus-time-goal-page' && page !== 'forest-page' && (
 				<>
 					<ShowDaysFromToDoListAppSection />
 				</>

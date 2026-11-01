@@ -5,7 +5,8 @@ import type {
 	FocusMedalsResponse,
 	FocusChallengesResponse,
 	AllFocusRecordsResponse,
-	FocusRecordsNeedingSentimentResponse
+	FocusRecordsNeedingSentimentResponse,
+	ForestTreesResponse
 } from '../../types/api';
 
 /**
@@ -23,6 +24,10 @@ export const focusRecordsApi = baseAPI.injectEndpoints({
             transformResponse: (response: FocusRecordsResponse) => {
                 return response;
             },
+            providesTags: ['FocusRecord'],
+        }),
+        getForestTrees: builder.query<ForestTreesResponse, Record<string, unknown>>({
+            query: (queryParams) => `/focus-records/forest?${buildQueryString(queryParams)}`,
             providesTags: ['FocusRecord'],
         }),
         getFocusRecordsExport: builder.query<unknown, Record<string, unknown>>({
@@ -99,4 +104,4 @@ export const focusRecordsApi = baseAPI.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useGetFocusRecordsQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery, useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, useRevalidateCrossesMidnightMutation } = focusRecordsApi;
+export const { useGetFocusRecordsQuery, useGetForestTreesQuery, useGetFocusRecordsExportQuery, useGetFocusMedalsQuery, useGetFocusChallengesQuery, useGetAllFocusRecordsQuery, useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, useRevalidateCrossesMidnightMutation } = focusRecordsApi;

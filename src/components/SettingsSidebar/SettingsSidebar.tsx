@@ -9,6 +9,7 @@ import ExportBackupSectionCompletedTasks from '../FilterSidebar/ExportBackupSect
 import SyncUpdateSection from './SyncUpdateSection';
 import CardImage from '../../pages/challenges/CardImage';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
+import ForestPageSettingsSection from '../FilterSidebar/ForestPageSettingsSection';
 import FocusHoursGoalPageSettingsSection from '../FilterSidebar/FocusHoursGoalPageSettingsSection';
 
 interface SettingsSidebarProps {
@@ -126,6 +127,13 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 							page={isForChallengesPage ? 'challenges' : 'medals'}
 						/>
 					</div>
+				</>
+			)}
+
+			{page === 'forest-page' && (
+				<>
+					<hr aria-hidden="true" className="border-color-gray-100 my-4" />
+					<ForestPageSettingsSection />
 				</>
 			)}
 

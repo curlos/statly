@@ -7,7 +7,7 @@ import ChecklistTimerIcon from '../ChecklistTimerIcon';
 import { setModalState } from '../../slices/modalSlice';
 import ModalFilterSidebar from '../FilterSidebar/ModalFilterSidebar';
 
-const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
+const Navbar = ({ page = '', showFilterSidebarIcon = false, showSettingsIcon = true }) => {
 	const dispatch = useDispatch();
 	const isSidebarModalOpen = useSelector((state: RootState) => state.modals.modals.ModalSidebar?.isOpen);
 	const [isSettingsSidebarModalOpen, setIsSettingsSidebarModalOpen] = useState(false);
@@ -29,15 +29,17 @@ const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
 						<Icon name="page_info" customClass={'!text-[30px] text-color-gray-100'} />
 					</button>
 				)}
-				<button
-					type="button"
-					aria-label="Open page settings"
-					aria-expanded={isSettingsSidebarModalOpen}
-					className="bg-transparent border-0 p-0 cursor-pointer"
-					onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
-				>
-					<Icon name="settings" customClass={'!text-[30px] text-color-gray-100'} />
-				</button>
+				{showSettingsIcon && (
+					<button
+						type="button"
+						aria-label="Open page settings"
+						aria-expanded={isSettingsSidebarModalOpen}
+						className="bg-transparent border-0 p-0 cursor-pointer"
+						onClick={() => setIsSettingsSidebarModalOpen(!isSettingsSidebarModalOpen)}
+					>
+						<Icon name="settings" customClass={'!text-[30px] text-color-gray-100'} />
+					</button>
+				)}
 				<button
 					type="button"
 					aria-label="Open main menu"
@@ -49,7 +51,7 @@ const Navbar = ({ page = '', showFilterSidebarIcon = false }) => {
 				</button>
 			</div>
 
-			{isSettingsSidebarModalOpen && (
+			{showSettingsIcon && isSettingsSidebarModalOpen && (
 				<ModalSettingsSidebar
 					{...{
 						isOpen: isSettingsSidebarModalOpen,

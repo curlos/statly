@@ -1,5 +1,6 @@
 import { baseAPI } from '../api';
 import { invalidateOnSuccess } from '../utils/rtkHelpers';
+import { applySettingsPatch } from '../../utils/settingsPatch';
 import type { GetUserSettingsResponse, UserSettings } from '../../types/api';
 
 export const userSettingsApi = baseAPI.injectEndpoints({
@@ -29,7 +30,8 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 						// Overwrite user settings properties with those from payload
 						// This will update user settings with all the properties from payload
 						// Existing properties in user settings that are also in the payload will be overwritten
-						Object.assign(currentUserSettings, payload);
+						// Dotted keys like "pages.forest.landStyle" are set by their path
+						applySettingsPatch(currentUserSettings as unknown as Record<string, unknown>, payload);
 					})
 				);
 

@@ -67,6 +67,25 @@
     scrollbar-color: #919191 transparent;
 }
 
+/* Stays visible when not scrolling. Chrome ignores the ::-webkit-scrollbar styles below if scrollbar-color is set, and it's inherited from a parent's .gray-scrollbar, so reset it. The doubled class beats the thin scrollbars set by UI themes. */
+.always-visible-scrollbar {
+    scrollbar-color: auto;
+}
+
+.always-visible-scrollbar.always-visible-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.always-visible-scrollbar.always-visible-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+}
+
+.always-visible-scrollbar.always-visible-scrollbar::-webkit-scrollbar-thumb {
+    background: #919191;
+    border-radius: 3px;
+}
+
 .circle-with-line {
     position: relative;
     width: 14px;

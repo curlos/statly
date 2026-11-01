@@ -124,6 +124,9 @@ const SidebarModal = () => {
 								<li>
 									<LinkLi name="Challenges" linkUrl="/challenges/focus" iconName="swords" />
 								</li>
+								<li>
+									<LinkLi name="Forest" linkUrl="/forest" iconName="forest" />
+								</li>
 							</ul>
 						</nav>
 

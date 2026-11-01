@@ -6,6 +6,9 @@ import ModalPickDateRange from '../components/Modal/ModalPickDateRange';
 interface UseStatsDateRangeOptions {
 	initialInterval: string;
 	initialDates: Date[];
+	// The custom range's dates at the start. Without them a custom range would begin as today.
+	initialStartDate?: Date;
+	initialEndDate?: Date;
 }
 
 /**
@@ -13,15 +16,15 @@ interface UseStatsDateRangeOptions {
  * Handles selected interval, selected dates, custom date modal, and API date formatting
  */
 export const useStatsDateRange = (options: UseStatsDateRangeOptions) => {
-	const { initialInterval, initialDates } = options;
+	const { initialInterval, initialDates, initialStartDate, initialEndDate } = options;
 
 	const [selectedInterval, setSelectedInterval] = useState(initialInterval);
 	const [selectedDates, setSelectedDates] = useState(initialDates);
 
 	// Custom date modal state
 	const [isModalPickDateRangeOpen, setIsModalPickDateRangeOpen] = useState(false);
-	const [startDate, setStartDate] = useState(new Date());
-	const [endDate, setEndDate] = useState(new Date());
+	const [startDate, setStartDate] = useState(initialStartDate ?? new Date());
+	const [endDate, setEndDate] = useState(initialEndDate ?? new Date());
 
 	// Get API-formatted date range
 	const getApiDateRange = () => {

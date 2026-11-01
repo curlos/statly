@@ -31,6 +31,7 @@ const useUserSettings = () => {
 	const focusHoursGoalPageSettings = userSettings?.pages?.focusHoursGoal
 	const challengesPageSettings = userSettings?.pages?.challenges
 	const medalsPageSettings = userSettings?.pages?.medals
+	const forestPageSettings = userSettings?.pages?.forest
 
 	// Extract rings from focusHoursGoal settings - use cached rings while loading
 	const rings = isLoadingGetUserSettings && cachedSettings?.rings?.length > 0
@@ -87,6 +88,7 @@ const useUserSettings = () => {
 
 	const { selectedChallengeCardImage } = challengesPageSettings || {};
 	const { selectedMedalCardImage } = medalsPageSettings || {};
+	const { landStyle = 'auto', hemisphere = 'auto', projectTrees = {} } = forestPageSettings || {};
 
 	// Sync rings array to localStorage after API fetch completes
 	useEffect(() => {
@@ -232,6 +234,11 @@ const useUserSettings = () => {
 		},
 		medalsPageSettings: {
 			selectedMedalCardImage,
+		},
+		forestPageSettings: {
+			landStyle,
+			hemisphere,
+			projectTrees,
 		},
 		isLoadingGetUserSettings
 	};

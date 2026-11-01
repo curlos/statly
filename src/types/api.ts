@@ -426,13 +426,38 @@ export interface MedalsPageSettings {
 	selectedMedalCardImage: CardImageSettings;
 }
 
+export interface ForestPageSettings {
+	landStyle: string;
+	// 'auto' goes by the device's time zone
+	hemisphere: 'auto' | 'northern' | 'southern';
+	projectTrees: Record<string, string>;
+}
+
+export interface ForestTreesResponse {
+	rows: ForestTreeRow[];
+	// How many records match, which is more than the rows when the server's cap cut off the oldest ones
+	totalRecords: number;
+	isTruncated: boolean;
+}
+
+export interface ForestTreeRow {
+	recordId: string;
+	startTime: string;
+	projectId: string;
+	// The whole record's length
+	seconds: number;
+	// The time each project had in this record, from its tasks
+	projectSeconds: Record<string, number>;
+}
+
 export interface UserSettingsPages {
 	focusRecords: FocusRecordsPageSettings;
 	completedTasks: CompletedTasksPageSettings;
 	focusHoursGoal: FocusHoursGoalPageSettings;
 	challenges: ChallengesPageSettings;
 	medals: MedalsPageSettings;
-	[key: string]: FocusRecordsPageSettings | CompletedTasksPageSettings | FocusHoursGoalPageSettings | ChallengesPageSettings | MedalsPageSettings;
+	forest: ForestPageSettings;
+	[key: string]: FocusRecordsPageSettings | CompletedTasksPageSettings | FocusHoursGoalPageSettings | ChallengesPageSettings | MedalsPageSettings | ForestPageSettings;
 }
 
 export interface UserSettings {
