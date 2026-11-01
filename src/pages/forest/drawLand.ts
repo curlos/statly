@@ -1,5 +1,6 @@
 import type { LandColors } from './landStyles';
 import { LAND_DEPTH, TILE_HALF_HEIGHT, TILE_HALF_WIDTH, getSeededRandom } from './forestLayout';
+import { buildTopDecor, buildWallDecor, hasTopDecor, type WallShape } from './landDecor';
 
 const WATER_RIM_DEPTH = 2.5;
 // How many grid cells of water surround the sand island, and how tall the island's edge stands above the water.
@@ -19,13 +20,6 @@ const MAX_TUFTS = 700;
 const MAX_FLOWER_PATCHES = 90;
 const MAX_TOP_ORNAMENTS = 400;
 const ORNAMENT_COLORS = ['#e23b3b', '#f2c84b', '#4aa3ff', '#f6f6f6'];
-
-interface WallShape {
-	color: string;
-	alpha: number;
-	path: Path2D;
-	lineWidth?: number;
-}
 
 // One side wall of the block: stacked wavy layers, stones, and a thick lip of grass or lumps hanging over the top.
 const buildWallShapes = (land: LandColors, side: number, direction: 1 | -1) => {
@@ -174,6 +168,8 @@ const buildWallShapes = (land: LandColors, side: number, direction: 1 | -1) => {
 		});
 	}
 
+	shapes.push(...buildWallDecor(land.decor, label, side, getEdgePoint));
+
 	// The right wall faces away from the light.
 	if (direction === 1) {
 		const path = new Path2D();
@@ -308,9 +304,10 @@ const drawShapes = (context: CanvasRenderingContext2D, land: LandColors, key: st
 	const shapes = landShapes.get(key) ?? buildShapes();
 	landShapes.set(key, shapes);
 
-	shapes.forEach(({ color, alpha, path, lineWidth }) => {
+	shapes.forEach(({ color, alpha, path, lineWidth, round }) => {
 		context.globalAlpha = alpha;
 		if (lineWidth) {
+			context.lineCap = round ? 'round' : 'butt';
 			context.strokeStyle = color;
 			context.lineWidth = lineWidth;
 			context.stroke(path);
@@ -427,6 +424,7 @@ export const drawLand = (context: CanvasRenderingContext2D, land: LandColors, si
 	}
 	drawLandDetails(context, land, side);
 	if (land.decor === 'christmas') drawShapes(context, land, `${side}-decor`, () => buildChristmasShapes(side));
+	if (land.decor && hasTopDecor(land.decor)) drawShapes(context, land, `${side}-top-decor`, () => buildTopDecor(land.decor!, side));
 	context.restore();
 };
 

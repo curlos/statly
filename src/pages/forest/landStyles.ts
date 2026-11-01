@@ -1,5 +1,5 @@
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
-export type LandStyleName = Season | 'blossom' | 'sand' | 'lavender' | 'halloween' | 'christmas' | 'thanksgiving' | "st. patrick's" | 'easter' | 'beach';
+export type LandStyleName = Season | 'blossom' | 'sand' | 'lavender' | 'halloween' | 'christmas' | 'thanksgiving' | "st. patrick's" | 'easter' | 'beach' | 'volcano' | 'desert' | 'space';
 
 export interface LandColors {
 	top: string;
@@ -12,11 +12,11 @@ export interface LandColors {
 	speckles: string[];
 	speckleShape: 'flower' | 'leaf' | 'snow';
 	edge: 'blades' | 'lumps' | 'waves';
-	decor?: 'christmas' | 'beach';
+	decor?: 'christmas' | 'beach' | 'volcano' | 'desert' | 'space';
 }
 
 // Auto follows the holidays and falls back to the season. Seasons follows only the season.
-export const LAND_OPTIONS = ['Auto', 'Seasons', 'Spring', 'Summer', 'Autumn', 'Winter', 'Blossom', 'Sand', 'Lavender', 'Halloween', 'Christmas', 'Thanksgiving', "St. Patrick's", 'Easter', 'Beach'];
+export const LAND_OPTIONS = ['Auto', 'Seasons', 'Spring', 'Summer', 'Autumn', 'Winter', 'Blossom', 'Sand', 'Lavender', 'Halloween', 'Christmas', 'Thanksgiving', "St. Patrick's", 'Easter', 'Beach', 'Volcano', 'Desert', 'Space'];
 
 export const LAND_STYLES: Record<LandStyleName, LandColors> = {
 	spring: {
@@ -176,6 +176,45 @@ export const LAND_STYLES: Record<LandStyleName, LandColors> = {
 		speckleShape: 'snow',
 		edge: 'waves',
 		decor: 'beach',
+	},
+	volcano: {
+		top: '#4a3f3f',
+		topLight: '#5c4f4e',
+		line: '#3a3030',
+		turf: '#3b3232',
+		turfShade: '#2a2222',
+		layers: ['#ff6a1f', '#c8381a', '#7a1f14'],
+		stone: '#2a1512',
+		speckles: ['#ff8a2b', '#ffc23d', '#ff5a1f'],
+		speckleShape: 'snow',
+		edge: 'lumps',
+		decor: 'volcano',
+	},
+	desert: {
+		top: '#efbf74',
+		topLight: '#f6cf8c',
+		line: '#dfab5c',
+		turf: '#e4a95a',
+		turfShade: '#c88a40',
+		layers: ['#c9693a', '#a9512d', '#873f23'],
+		stone: '#7a3a20',
+		speckles: ['#fff0cf', '#c98a4e', '#a9683a'],
+		speckleShape: 'snow',
+		edge: 'lumps',
+		decor: 'desert',
+	},
+	space: {
+		top: '#2a2650',
+		topLight: '#3a3568',
+		line: '#221f44',
+		turf: '#241f4a',
+		turfShade: '#18143a',
+		layers: ['#3d2f78', '#2e2360', '#201848'],
+		stone: '#150f33',
+		speckles: ['#ffffff', '#bcd8ff', '#ffe9a8'],
+		speckleShape: 'snow',
+		edge: 'lumps',
+		decor: 'space',
 	},
 };
 
