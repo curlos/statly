@@ -1,6 +1,7 @@
 import CompletionStatsCard from './CompletionStatsCard';
 import OverviewCard from './OverviewCard';
 import CompletedTasksCurveCard from '../OverviewSection/CompletedTasksCurveCard';
+import IntervalRankingsCard from '../IntervalRankingsCard';
 
 const TaskSection = () => {
 	return (
@@ -15,7 +16,9 @@ const TaskSection = () => {
 					<CompletionStatsCard />
 				</div>
 
-				<div className="flex-[4] w-full lg:h-[380px]"></div>
+				<div className="flex-[4] w-full lg:h-[380px]">
+					<IntervalRankingsCard type="tasks" />
+				</div>
 			</div>
 		</div>
 	);

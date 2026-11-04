@@ -37,7 +37,7 @@ const YearGridsCard = () => {
 
 	return (
 		<section
-			className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-auto sm:h-[350px] relative"
+			className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-auto sm:h-[380px] relative"
 			aria-labelledby="year-grids-heading"
 		>
 			<div className="flex justify-between items-center mb-2">

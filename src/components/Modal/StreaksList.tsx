@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Icon from '../Icon';
 import Pagination from '../Pagination';
+import { useThemeContext } from '../../contexts/useThemeContext';
 
 interface Streak {
 	days: number;
@@ -32,6 +33,7 @@ const formatDateWithoutTimezone = (dateString: string): string => {
 
 const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, sortBy }) => {
 	const [currentPage, setCurrentPage] = useState(1);
+	const { chosenColorObj } = useThemeContext();
 
 	// Reset to page 1 when sort changes
 	useEffect(() => {
@@ -114,7 +116,7 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 									</span>
 									<Icon
 										name="local_fire_department"
-										customClass={isCurrent ? 'text-orange-500' : 'text-purple-500'}
+										customClass={isCurrent ? 'text-orange-500' : chosenColorObj.textColor}
 									/>
 									{isCurrent && (
 										<span className="ml-auto text-orange-500 text-sm font-medium">

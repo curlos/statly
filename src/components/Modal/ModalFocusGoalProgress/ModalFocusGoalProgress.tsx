@@ -147,7 +147,7 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 								: streakData?.longestStreak
 						}
 						iconName="local_fire_department"
-						iconColor="text-purple-500"
+						iconColor={chosenColorObj.textColor}
 					/>
 				</div>
 

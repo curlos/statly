@@ -6,6 +6,7 @@ import TimelineCard from './TimelineCard';
 import FocusDurationCurveCard from './FocusDurationCurveCard';
 import YearGridsCard from './YearGridsCard';
 import DailyHoursFocusGoalCard from './DailyFocusHourGoalCard';
+import IntervalRankingsCard from '../IntervalRankingsCard';
 
 const FocusSection = () => {
 	return (
@@ -28,6 +29,7 @@ const FocusSection = () => {
 				<TimelineCard />
 				<MostFocusedTimeCard />
 				<YearGridsCard />
+				<IntervalRankingsCard type="focus" />
 			</div>
 		</div>
 	);

@@ -15,6 +15,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "formatAllFilesPrettier": "npx prettier --write '**/*.{ts,tsx}'",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "check": "npm run format && npm run lint && tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "start-electron": "electron .",

@@ -4,6 +4,7 @@ import type {
 	TaskStatsResponse,
 	FocusStatsResponse,
 	SourceCountsResponse,
+	IntervalRankingsResponse,
 } from '../../types/api';
 
 /**
@@ -41,6 +42,12 @@ export const statsApi = baseAPI.injectEndpoints({
 			},
 			providesTags: ['TasksStats'],
 		}),
+		getIntervalRankings: builder.query<IntervalRankingsResponse, Record<string, unknown>>({
+			query: (queryParams) => `/stats/rankings?${buildQueryString(queryParams)}`,
+			providesTags: (_result, _error, queryParams) => [
+				queryParams.type === 'focus' ? 'FocusStats' : 'TasksStats',
+			],
+		}),
 		getSourceCounts: builder.query<SourceCountsResponse, void>({
 			query: () => '/stats/source-counts',
 			transformResponse: (response: SourceCountsResponse) => response,
@@ -50,5 +57,10 @@ export const statsApi = baseAPI.injectEndpoints({
 	overrideExisting: false,
 });
 
-export const { useGetOverviewStatsQuery, useGetFocusStatsQuery, useGetTasksStatsQuery, useGetSourceCountsQuery } =
-	statsApi;
+export const {
+	useGetOverviewStatsQuery,
+	useGetFocusStatsQuery,
+	useGetTasksStatsQuery,
+	useGetSourceCountsQuery,
+	useGetIntervalRankingsQuery,
+} = statsApi;

@@ -167,6 +167,20 @@ export interface FocusStatsResponse {
 // For backwards compatibility - union type
 export type StatsResponse = TaskStatsResponse | FocusStatsResponse;
 
+export interface IntervalRankingItem {
+	rank: number;
+	date: string; // "2024-01-04" (day), "January 01, 2024" (week), "January 2024" (month), "2024" (year)
+	count: number; // Completed tasks or focus records
+	duration?: number; // Focus seconds (focus only)
+}
+
+export interface IntervalRankingsResponse {
+	rankings: IntervalRankingItem[];
+	page: number;
+	totalPages: number;
+	totalItems: number;
+}
+
 // ============================================================================
 // User API
 // ============================================================================
