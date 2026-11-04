@@ -17,6 +17,8 @@ interface ModalConfirmDeleteProps {
 	};
 	isDeleting: boolean;
 	showCounts?: boolean;
+	isConfirmDisabled?: boolean;
+	children?: React.ReactNode;
 }
 
 const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
@@ -27,6 +29,8 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 	counts,
 	isDeleting,
 	showCounts = true,
+	isConfirmDisabled = false,
+	children,
 }) => {
 	const hasMultipleCategories = Object.keys(counts).length > 1;
 	const headingRef = useRef<HTMLHeadingElement>(null);
@@ -83,6 +87,8 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 					<p className="text-red-500 mb-6 font-medium">This action cannot be undone!</p>
 				</div>
 
+				{children}
+
 				<div className="flex gap-3 justify-end">
 					<button
 						onClick={onClose}
@@ -93,7 +99,7 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 					</button>
 					<button
 						onClick={onConfirm}
-						disabled={isDeleting}
+						disabled={isDeleting || isConfirmDisabled}
 						className="px-4 py-2 bg-red-600 hover:bg-red-700 text-[#ffffff] rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						{isDeleting ? 'Deleting...' : 'Confirm Delete'}

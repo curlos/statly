@@ -84,6 +84,13 @@ export const usersApi = baseAPI.injectEndpoints({
 				body: credentials,
 			}),
 		}),
+		deleteAccount: builder.mutation<unknown, { password: string }>({
+			query: (body) => ({
+				url: '/users/delete-account',
+				method: 'DELETE',
+				body,
+			}),
+		}),
 	}),
 });
 
@@ -94,4 +101,5 @@ export const {
 	useLoginAsGuestMutation,
 	useUpdateUserProfileMutation,
 	useUpdateUserPasswordMutation,
+	useDeleteAccountMutation,
 } = usersApi;
