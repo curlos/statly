@@ -15,8 +15,7 @@ const TaskSection = () => {
 					<CompletionStatsCard />
 				</div>
 
-				<div className="flex-[4] w-full lg:h-[380px]">
-				</div>
+				<div className="flex-[4] w-full lg:h-[380px]"></div>
 			</div>
 		</div>
 	);

@@ -42,11 +42,11 @@ const Page = () => {
 
 	// Fetch challenges data from backend based on type
 	const { data: focusChallengesData, isLoading: isLoadingFocusChallenges } = useGetFocusChallengesQuery(queryParams, {
-		skip: type !== 'focus' || shouldSkipQuery
+		skip: type !== 'focus' || shouldSkipQuery,
 	});
 
 	const { data: tasksChallengesData, isLoading: isLoadingTasksChallenges } = useGetTasksChallengesQuery(queryParams, {
-		skip: type !== 'tasks' || shouldSkipQuery
+		skip: type !== 'tasks' || shouldSkipQuery,
 	});
 
 	const challengesData = type === 'focus' ? focusChallengesData : tasksChallengesData;
@@ -68,52 +68,61 @@ const Page = () => {
 			<div ref={topHeaderRef}>
 				<Navbar page="challenges-page" />
 				<section aria-labelledby="challenges-heading">
-				<div className="container flex justify-between items-center">
-					<div className="flex items-center gap-4">
-						<h1 id="challenges-heading" className="text-[28px] font-bold">Challenges</h1>
+					<div className="container flex justify-between items-center">
+						<div className="flex items-center gap-4">
+							<h1 id="challenges-heading" className="text-[28px] font-bold">
+								Challenges
+							</h1>
 
-						<div className="hidden lg:block">
-							<AppliedFilterItemList />
+							<div className="hidden lg:block">
+								<AppliedFilterItemList />
+							</div>
+						</div>
+
+						<button
+							type="button"
+							aria-label="Open filters"
+							aria-expanded={isFilterSidebarModalOpen}
+							disabled={isLoading}
+							className={classNames(
+								'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors bg-transparent cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
+								chosenColorObj.hover.borderColor,
+								chosenColorObj.hover.textColor
+							)}
+							onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
+						>
+							<span className="hidden sm:block">Filter</span>
+							<Icon name="page_info" fill={0} customClass={'!text-[20px]'} />
+						</button>
+					</div>
+					<div className="container grid grid-cols-12">
+						<div className="col-span-8">
+							<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
 						</div>
 					</div>
-
-					<button
-						type="button"
-						aria-label="Open filters"
-						aria-expanded={isFilterSidebarModalOpen}
-						disabled={isLoading}
-						className={classNames(
-							'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors bg-transparent cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
-							chosenColorObj.hover.borderColor,
-							chosenColorObj.hover.textColor
-						)}
-						onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
-					>
-						<span className="hidden sm:block">Filter</span>
-						<Icon name="page_info" fill={0} customClass={'!text-[20px]'} />
-					</button>
-				</div>
-				<div className="container grid grid-cols-12">
-					<div className="col-span-8">
-						<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
-					</div>
-				</div>
 				</section>
 			</div>
 
 			<main id="main-content" tabIndex={-1} className="container grid grid-cols-12 gap-2 outline-none">
 				<div className="col-span-12 md:col-span-7 lg:col-span-8 mr-2">
 					<ChallengeList
-						{...{ maxHeight, chosenChallenge, setChosenChallenge, setShowChosenChallengeModal, challengesData, isLoading }}
+						{...{
+							maxHeight,
+							chosenChallenge,
+							setChosenChallenge,
+							setShowChosenChallengeModal,
+							challengesData,
+							isLoading,
+						}}
 					/>
 				</div>
 
 				<div className="hidden sm:block md:col-span-5 lg:col-span-4">
 					{isLoading ? (
-					<ChosenChallengeSkeleton {...{ maxHeight, chosenChallengeRef }} />
-				) : (
-					<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
-				)}
+						<ChosenChallengeSkeleton {...{ maxHeight, chosenChallengeRef }} />
+					) : (
+						<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
+					)}
 				</div>
 
 				<div className="md:hidden">
@@ -124,10 +133,10 @@ const Page = () => {
 					>
 						<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2 max-w-[]">
 							{isLoading ? (
-					<ChosenChallengeSkeleton {...{ maxHeight, chosenChallengeRef }} />
-				) : (
-					<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
-				)}
+								<ChosenChallengeSkeleton {...{ maxHeight, chosenChallengeRef }} />
+							) : (
+								<ChosenChallenge {...{ chosenChallenge, maxHeight, chosenChallengeRef }} />
+							)}
 						</div>
 					</Modal>
 				</div>

@@ -11,7 +11,12 @@ interface FilterBarProps {
 	isFetching?: boolean;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({ showFilterSidebar, setShowFilterSidebar, headerContent, isFetching = false }) => {
+const FilterBar: React.FC<FilterBarProps> = ({
+	showFilterSidebar,
+	setShowFilterSidebar,
+	headerContent,
+	isFetching = false,
+}) => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 
@@ -42,14 +47,14 @@ const FilterBar: React.FC<FilterBarProps> = ({ showFilterSidebar, setShowFilterS
 							onClick={() => setShowFilterSidebar(!showFilterSidebar)}
 						>
 							<span className="hidden sm:block">Filter & Sort</span>
-							<Icon
-								name="page_info"
-								fill={0}
-								customClass={'!text-[20px]'}
-							/>
+							<Icon name="page_info" fill={0} customClass={'!text-[20px]'} />
 						</button>
 
-						<SyncButton showText={false} showTooltip={true} customClass="hover:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed h-[20px] mt-[3px]" />
+						<SyncButton
+							showText={false}
+							showTooltip={true}
+							customClass="hover:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed h-[20px] mt-[3px]"
+						/>
 					</div>
 				</div>
 			</div>

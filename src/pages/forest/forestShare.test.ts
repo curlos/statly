@@ -2,7 +2,11 @@ import { describe, expect, it } from '@jest/globals';
 import { getBars, getRangeLabel, getSlices } from './forestShare';
 
 const row = (date: Date, seconds: number) => ({ startTime: date.toISOString(), seconds });
-const daysFrom = (start: Date, count: number) => Array.from({ length: count }, (_, index) => new Date(start.getFullYear(), start.getMonth(), start.getDate() + index, 12));
+const daysFrom = (start: Date, count: number) =>
+	Array.from(
+		{ length: count },
+		(_, index) => new Date(start.getFullYear(), start.getMonth(), start.getDate() + index, 12)
+	);
 
 describe('getRangeLabel', () => {
 	it('words each interval like the date picker does', () => {
@@ -21,10 +25,21 @@ describe('getRangeLabel', () => {
 
 describe('getBars', () => {
 	it('gives a day 24 hourly bars, with a label on every third hour', () => {
-		const bars = getBars([row(new Date(2026, 9, 1, 14, 30), 1800), row(new Date(2026, 9, 1, 14, 50), 600)], 'Day', [new Date(2026, 9, 1, 12)]);
+		const bars = getBars([row(new Date(2026, 9, 1, 14, 30), 1800), row(new Date(2026, 9, 1, 14, 50), 600)], 'Day', [
+			new Date(2026, 9, 1, 12),
+		]);
 		expect(bars).toHaveLength(24);
 		expect(bars[14].seconds).toBe(2400);
-		expect(bars.map((bar) => bar.label).filter(Boolean)).toEqual(['12a', '3a', '6a', '9a', '12p', '3p', '6p', '9p']);
+		expect(bars.map((bar) => bar.label).filter(Boolean)).toEqual([
+			'12a',
+			'3a',
+			'6a',
+			'9a',
+			'12p',
+			'3p',
+			'6p',
+			'9p',
+		]);
 	});
 
 	it('gives a week 7 daily bars named by weekday', () => {
@@ -37,12 +52,37 @@ describe('getBars', () => {
 		const bars = getBars([row(new Date(2026, 9, 31, 9), 900)], 'Month', daysFrom(new Date(2026, 9, 1), 31));
 		expect(bars).toHaveLength(31);
 		expect(bars[30].seconds).toBe(900);
-		expect(bars.filter((bar) => bar.label).map((bar) => bar.label)).toEqual(['1', '5', '10', '15', '20', '25', '30']);
+		expect(bars.filter((bar) => bar.label).map((bar) => bar.label)).toEqual([
+			'1',
+			'5',
+			'10',
+			'15',
+			'20',
+			'25',
+			'30',
+		]);
 	});
 
 	it('gives a year 12 monthly bars', () => {
-		const bars = getBars([row(new Date(2026, 2, 3, 9), 1000), row(new Date(2026, 2, 20, 9), 500)], 'Year', daysFrom(new Date(2026, 0, 1), 365));
-		expect(bars.map((bar) => bar.label)).toEqual(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+		const bars = getBars(
+			[row(new Date(2026, 2, 3, 9), 1000), row(new Date(2026, 2, 20, 9), 500)],
+			'Year',
+			daysFrom(new Date(2026, 0, 1), 365)
+		);
+		expect(bars.map((bar) => bar.label)).toEqual([
+			'Jan',
+			'Feb',
+			'Mar',
+			'Apr',
+			'May',
+			'Jun',
+			'Jul',
+			'Aug',
+			'Sep',
+			'Oct',
+			'Nov',
+			'Dec',
+		]);
 		expect(bars[2].seconds).toBe(1500);
 	});
 
@@ -57,7 +97,13 @@ describe('getBars', () => {
 
 	it('picks daily bars for a short custom range and monthly bars for a longer one', () => {
 		expect(getBars([], 'Custom', daysFrom(new Date(2026, 9, 1), 20))).toHaveLength(20);
-		expect(getBars([], 'Custom', daysFrom(new Date(2026, 0, 15), 120)).map((bar) => bar.label)).toEqual(['Jan', 'Feb', 'Mar', 'Apr', 'May']);
+		expect(getBars([], 'Custom', daysFrom(new Date(2026, 0, 15), 120)).map((bar) => bar.label)).toEqual([
+			'Jan',
+			'Feb',
+			'Mar',
+			'Apr',
+			'May',
+		]);
 	});
 
 	it('has no bars for all time when there is nothing to show', () => {
@@ -71,11 +117,18 @@ describe('getSlices', () => {
 			{ name: 'Small', color: '#111111', seconds: 100 },
 			{ name: 'Big', color: '#222222', seconds: 300 },
 		]);
-		expect(slices.map((slice) => [slice.name, slice.percent])).toEqual([['Big', 75], ['Small', 25]]);
+		expect(slices.map((slice) => [slice.name, slice.percent])).toEqual([
+			['Big', 75],
+			['Small', 25],
+		]);
 	});
 
 	it('lumps the smallest projects into Other when there are too many', () => {
-		const projects = Array.from({ length: 12 }, (_, index) => ({ name: `Project ${index}`, color: '#123456', seconds: (12 - index) * 100 }));
+		const projects = Array.from({ length: 12 }, (_, index) => ({
+			name: `Project ${index}`,
+			color: '#123456',
+			seconds: (12 - index) * 100,
+		}));
 		const slices = getSlices(projects, 5);
 		expect(slices).toHaveLength(5);
 		expect(slices[4].name).toBe('Other');

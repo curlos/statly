@@ -5,14 +5,20 @@ import type { AncestorTask } from '../../../types/api';
  * @description // Go through all of the Completed Tasks for the day and group them up together by parent. So, all of the tasks with the same parent will be in the same array like "{ "5391586608": [{...}, {...}, ...] }". Also, get the "parentTasks" which are the tasks that have no parent.
  * @returns {Object}
  */
-export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancestorTasksById }: { completedTasksForDay: (Task | AncestorTask)[]; ancestorTasksById: Record<string, Task | AncestorTask> }) => {
+export const getGroupedSubtasksAndParentTasks = ({
+	completedTasksForDay,
+	ancestorTasksById,
+}: {
+	completedTasksForDay: (Task | AncestorTask)[];
+	ancestorTasksById: Record<string, Task | AncestorTask>;
+}) => {
 	const groupedSubtasksByParentTask: Record<string, (Task | AncestorTask)[]> = {};
 	const parentTasksArr: (Task | AncestorTask)[] = [];
 	const parentTasksObj: Record<string, boolean> = {};
 
 	for (const task of completedTasksForDay) {
 		if (!task) {
-			continue
+			continue;
 		}
 
 		const parentId = task.parentId;
@@ -52,7 +58,7 @@ export const getGroupedSubtasksAndParentTasks = ({ completedTasksForDay, ancesto
 export const getTasksWithParentIdAndNoParent = ({
 	completedTasksForDay,
 	ancestorTasksById,
-	includeDirectParentTasksWithNoChild = false
+	includeDirectParentTasksWithNoChild = false,
 }: {
 	completedTasksForDay: (Task | AncestorTask)[];
 	ancestorTasksById: Record<string, Task | AncestorTask>;
@@ -62,24 +68,26 @@ export const getTasksWithParentIdAndNoParent = ({
 
 	for (const task of completedTasksForDay) {
 		if (!task) {
-			continue
+			continue;
 		}
 
-		const groupTaskBreadcrumbs = task.ancestorIds
+		const groupTaskBreadcrumbs = task.ancestorIds;
 
 		if (groupTaskBreadcrumbs && groupTaskBreadcrumbs.length > 0) {
 			// Go through each "taskId" and if it has a parentId, then map it to that parentId, else map it to null.
 			groupTaskBreadcrumbs.forEach((taskId: string) => {
 				// If the task is not in the DB, then do not store in the grouped tasks as that'll cause trouble later on.
 				if (!ancestorTasksById[taskId]) {
-					return
+					return;
 				}
 
 				const breadcrumbTask = taskId === task.id ? task : ancestorTasksById[taskId];
 
 				if (breadcrumbTask.parentId) {
 					// If the task has a parent, that parent also has to be in the DB to properly use it for grouping later on (like putting it under the parent task). If the parent task isn't in the DB, then this task will be treated as a task with no parent.
-					tasksWithParentId[breadcrumbTask.id] = ancestorTasksById[breadcrumbTask.parentId] ? breadcrumbTask.parentId : null;
+					tasksWithParentId[breadcrumbTask.id] = ancestorTasksById[breadcrumbTask.parentId]
+						? breadcrumbTask.parentId
+						: null;
 				} else {
 					tasksWithParentId[breadcrumbTask.id] = null;
 				}

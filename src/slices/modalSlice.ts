@@ -15,16 +15,16 @@ const DEFAULT_MODAL_STATE: ModalState = {
 	props: {},
 };
 
-const MODAL_IDS: string[] = [
-	'ModalErrorMessenger',
-	'ModalSidebar',
-];
+const MODAL_IDS: string[] = ['ModalErrorMessenger', 'ModalSidebar'];
 
 const initialState: ModalsState = {
-	modals: MODAL_IDS.reduce((acc, modalId) => {
-		acc[modalId] = { ...DEFAULT_MODAL_STATE };
-		return acc;
-	}, {} as Record<string, ModalState>),
+	modals: MODAL_IDS.reduce(
+		(acc, modalId) => {
+			acc[modalId] = { ...DEFAULT_MODAL_STATE };
+			return acc;
+		},
+		{} as Record<string, ModalState>
+	),
 };
 
 interface SetModalStatePayload {
@@ -43,10 +43,13 @@ const modalSlice = createSlice({
 			state.modals[modalId].props = props ? props : DEFAULT_MODAL_STATE.props;
 		},
 		resetModals: (state) => {
-			state.modals = MODAL_IDS.reduce((acc, modalId) => {
-				acc[modalId] = { ...DEFAULT_MODAL_STATE };
-				return acc;
-			}, {} as Record<string, ModalState>);
+			state.modals = MODAL_IDS.reduce(
+				(acc, modalId) => {
+					acc[modalId] = { ...DEFAULT_MODAL_STATE };
+					return acc;
+				},
+				{} as Record<string, ModalState>
+			);
 		},
 	},
 });

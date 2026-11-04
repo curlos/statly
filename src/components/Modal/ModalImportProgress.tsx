@@ -12,7 +12,6 @@ import {
 	setModalOpen,
 } from '../../slices/importProgressSlice';
 
-
 const ModalImportProgress: React.FC = () => {
 	const dispatch = useDispatch();
 	const batches = useSelector(selectImportBatches);
@@ -21,9 +20,7 @@ const ModalImportProgress: React.FC = () => {
 	const { chosenColorObj } = useThemeContext();
 
 	// Calculate completed batches
-	const completedBatches = batches.filter(
-		(batch) => batch.status === 'success' || batch.status === 'error'
-	).length;
+	const completedBatches = batches.filter((batch) => batch.status === 'success' || batch.status === 'error').length;
 	const totalBatches = batches.length;
 
 	const headingRef = useRef<HTMLHeadingElement>(null);
@@ -101,7 +98,14 @@ const ModalImportProgress: React.FC = () => {
 				</button>
 
 				{/* Title */}
-				<h2 id="import-progress-title" ref={headingRef} tabIndex={-1} className="text-xl font-bold mb-2 text-white focus:outline-none">Import Files</h2>
+				<h2
+					id="import-progress-title"
+					ref={headingRef}
+					tabIndex={-1}
+					className="text-xl font-bold mb-2 text-white focus:outline-none"
+				>
+					Import Files
+				</h2>
 
 				{/* Progress counter */}
 				<div className="text-color-gray-100 mb-4 flex items-center gap-2">
@@ -117,7 +121,6 @@ const ModalImportProgress: React.FC = () => {
 					)}
 				</div>
 
-
 				{/* Batch list with scrollbar */}
 				<div className="relative space-y-4 max-h-[500px] min-h-0 overflow-auto pr-2">
 					{batches.map((batch) => {
@@ -129,7 +132,10 @@ const ModalImportProgress: React.FC = () => {
 									title={
 										<div className="w-full pr-2 flex items-center justify-between">
 											<div>
-												<h3 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
+												<h3
+													className="font-bold text-[18px]"
+													style={{ color: statusDisplay.color }}
+												>
 													Batch {batch.batchIndex + 1}
 												</h3>
 												{/* Summary results - only show after batch completes */}
@@ -153,7 +159,11 @@ const ModalImportProgress: React.FC = () => {
 													<Spinner size="sm" />
 												) : (
 													<div style={{ color: statusDisplay.color }}>
-														<Icon name={statusDisplay.icon} fill={1} customClass="!text-[20px] mt-[5px]" />
+														<Icon
+															name={statusDisplay.icon}
+															fill={1}
+															customClass="!text-[20px] mt-[5px]"
+														/>
 													</div>
 												)}
 											</div>
@@ -183,13 +193,40 @@ const ModalImportProgress: React.FC = () => {
 										<div className="mt-3 pt-3 border-t border-color-gray-600">
 											<h3 className="text-color-gray-100 mb-2 font-bold">Results:</h3>
 											<ul className="pl-4 space-y-1 list-disc list-inside text-color-gray-100">
-												<li>{formatCategoryResult('Focus Records', batch.result.details.focusRecords)}</li>
+												<li>
+													{formatCategoryResult(
+														'Focus Records',
+														batch.result.details.focusRecords
+													)}
+												</li>
 												<li>{formatCategoryResult('Tasks', batch.result.details.tasks)}</li>
-												<li>{formatCategoryResult('Projects', batch.result.details.projects)}</li>
-												<li>{formatCategoryResult('Project Groups', batch.result.details.projectGroups)}</li>
-												<li>{formatCategoryResult('User Settings', batch.result.details.userSettings)}</li>
-												<li>{formatCategoryResult('Custom Images', batch.result.details.customImages)}</li>
-												<li>{formatCategoryResult('Custom Image Folders', batch.result.details.customImageFolders)}</li>
+												<li>
+													{formatCategoryResult('Projects', batch.result.details.projects)}
+												</li>
+												<li>
+													{formatCategoryResult(
+														'Project Groups',
+														batch.result.details.projectGroups
+													)}
+												</li>
+												<li>
+													{formatCategoryResult(
+														'User Settings',
+														batch.result.details.userSettings
+													)}
+												</li>
+												<li>
+													{formatCategoryResult(
+														'Custom Images',
+														batch.result.details.customImages
+													)}
+												</li>
+												<li>
+													{formatCategoryResult(
+														'Custom Image Folders',
+														batch.result.details.customImageFolders
+													)}
+												</li>
 											</ul>
 										</div>
 									)}

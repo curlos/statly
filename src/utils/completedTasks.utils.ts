@@ -91,7 +91,7 @@ export function serializeNestedTaskNode(
 			title: taskName,
 			projectId: '',
 			parentId: null,
-			ancestorIds: []
+			ancestorIds: [],
 		} as AncestorTask;
 	}
 
@@ -101,12 +101,10 @@ export function serializeNestedTaskNode(
 
 	// Check if this node has children to recurse into
 	const hasChildren =
-		node.parentDirectChildrenCompletedTasks &&
-		Object.keys(node.parentDirectChildrenCompletedTasks).length > 0;
+		node.parentDirectChildrenCompletedTasks && Object.keys(node.parentDirectChildrenCompletedTasks).length > 0;
 
 	// Check if this node has direct completed subtasks
-	const hasDirectCompletedSubtasks =
-		node.directCompletedSubtasks && node.directCompletedSubtasks.length > 0;
+	const hasDirectCompletedSubtasks = node.directCompletedSubtasks && node.directCompletedSubtasks.length > 0;
 
 	// Special case: if this task only has itself as a child (nesting under itself)
 	// Don't show the parent name twice - just show the checkboxes from the nested child
@@ -201,13 +199,7 @@ export function serializeNestedDay(
 	const rootTaskIds = Object.keys(nestedTasks);
 	rootTaskIds.forEach((rootTaskId, index) => {
 		const rootNode = nestedTasks[rootTaskId] as NestedTaskNode;
-		const rootMarkdown = serializeNestedTaskNode(
-			rootTaskId,
-			rootNode,
-			ancestorTasksById,
-			0,
-			projectsById
-		);
+		const rootMarkdown = serializeNestedTaskNode(rootTaskId, rootNode, ancestorTasksById, 0, projectsById);
 		if (rootMarkdown) {
 			lines.push(rootMarkdown);
 		}

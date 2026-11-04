@@ -47,12 +47,14 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 			variants={useSlidingMotion ? sidebarVariants : undefined}
 			aria-modal="true"
 			className={classNames(
-				'ui-theme-sidebar inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 left-auto w-[85%] max-w-[400px] h-full border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50',
+				'ui-theme-sidebar inset-y-0 bg-color-gray-700 text-white overflow-auto gray-scrollbar p-4 fixed right-0 left-auto w-[85%] max-w-[400px] h-full border-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
 			)}
 			onClick={(e) => e.stopPropagation()}
 		>
 			<div className="flex justify-between items-center">
-				<h2 id="settings-sidebar-title" className="font-bold text-[18px]">Settings</h2>
+				<h2 id="settings-sidebar-title" className="font-bold text-[18px]">
+					Settings
+				</h2>
 				<div className="flex items-center gap-3">
 					<button
 						type="button"
@@ -63,7 +65,9 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ setIsOpen, page, useS
 						<Icon
 							name="close"
 							fill={0}
-							customClass={'text-color-gray-50 !text-[22px] hover:text-white bg-color-gray-600 rounded-2xl p-1'}
+							customClass={
+								'text-color-gray-50 !text-[22px] hover:text-white bg-color-gray-600 rounded-2xl p-1'
+							}
 						/>
 					</button>
 				</div>

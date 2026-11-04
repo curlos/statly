@@ -21,13 +21,16 @@ export function secondsToHoursAndMinutes(seconds: number) {
  * @returns {Object} An object with keys derived from each object's specified property and values as the objects themselves.
  */
 export function arrayToObjectByKey<T>(array: T[], keyProperty: string): Record<string, T> {
-	return array.reduce((acc, obj) => {
-		// Use the value of the specified property as the key
-		const key = keyProperty ? String((obj as Record<string, unknown>)[keyProperty]) : String(obj);
-		// Assign the entire object as the value for this key
-		acc[key] = obj;
-		return acc;
-	}, {} as Record<string, T>);
+	return array.reduce(
+		(acc, obj) => {
+			// Use the value of the specified property as the key
+			const key = keyProperty ? String((obj as Record<string, unknown>)[keyProperty]) : String(obj);
+			// Assign the entire object as the value for this key
+			acc[key] = obj;
+			return acc;
+		},
+		{} as Record<string, T>
+	);
 }
 
 interface DebouncedFunction<T extends unknown[]> {
@@ -35,7 +38,11 @@ interface DebouncedFunction<T extends unknown[]> {
 	cancel: () => void;
 }
 
-export function debounce<T extends unknown[]>(func: (...args: T) => void, wait: number, immediate: boolean | null = null): DebouncedFunction<T> {
+export function debounce<T extends unknown[]>(
+	func: (...args: T) => void,
+	wait: number,
+	immediate: boolean | null = null
+): DebouncedFunction<T> {
 	let timeout: ReturnType<typeof setTimeout> | null = null;
 	let cancelled = false; // flag to check if the debounce was cancelled
 
@@ -69,7 +76,11 @@ export function formatTimeToHoursMinutesSeconds(seconds: number) {
 	return { hours, minutes, seconds: secondsRemaining };
 }
 
-export const getFormattedDuration = (duration: number, includeSeconds: boolean = true, includeMinutes: boolean = true) => {
+export const getFormattedDuration = (
+	duration: number,
+	includeSeconds: boolean = true,
+	includeMinutes: boolean = true
+) => {
 	if (!duration) {
 		return includeSeconds ? '0s' : includeMinutes ? '0m' : '0h';
 	}
@@ -123,7 +134,11 @@ export const isPokemonTcgCard = (imageUrl: string) => {
 	return gameInfo?.game === 'POKEMON TCG CARDS';
 };
 
-export const getMedalImageClasses = (medalImageSizePx: number, isBattlefieldOneOrThreeMedal: boolean, imageUrl: string = '') => {
+export const getMedalImageClasses = (
+	medalImageSizePx: number,
+	isBattlefieldOneOrThreeMedal: boolean,
+	imageUrl: string = ''
+) => {
 	let medalImageClass = '';
 	const isPokemon = isPokemonTcgCard(imageUrl);
 

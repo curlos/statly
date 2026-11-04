@@ -11,21 +11,55 @@ export const deleteApi = baseAPI.injectEndpoints({
 				url: `/delete/focus-record/${id}`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'TodayFocus', 'StreakHistory', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+			invalidatesTags: invalidateOnSuccess([
+				'FocusRecord',
+				'ExportFocusRecord',
+				'AllFocusRecords',
+				'FocusMedal',
+				'FocusChallenge',
+				'FocusStats',
+				'TodayFocus',
+				'StreakHistory',
+				'OverviewStats',
+				'SyncMetadata',
+				'DocumentCounts',
+			] as const),
 		}),
 		deleteFocusRecords: builder.mutation({
 			query: () => ({
 				url: `/delete/focus-records`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: invalidateOnSuccess(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'TodayFocus', 'StreakHistory', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+			invalidatesTags: invalidateOnSuccess([
+				'FocusRecord',
+				'ExportFocusRecord',
+				'AllFocusRecords',
+				'FocusMedal',
+				'FocusChallenge',
+				'FocusStats',
+				'TodayFocus',
+				'StreakHistory',
+				'OverviewStats',
+				'SyncMetadata',
+				'DocumentCounts',
+			] as const),
 		}),
 		deleteTasks: builder.mutation({
 			query: () => ({
 				url: `/delete/tasks`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: invalidateOnSuccess(['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+			invalidatesTags: invalidateOnSuccess([
+				'DayWithCompletedTasks',
+				'ExportDayWithCompletedTasks',
+				'AllTasks',
+				'TasksMedal',
+				'TasksChallenge',
+				'TasksStats',
+				'OverviewStats',
+				'SyncMetadata',
+				'DocumentCounts',
+			] as const),
 		}),
 		bulkDeleteTasks: builder.mutation({
 			query: (taskIds: string[]) => ({
@@ -34,21 +68,43 @@ export const deleteApi = baseAPI.injectEndpoints({
 				body: { taskIds },
 			}),
 			invalidatesTags: (_result, error) =>
-				error ? [] : ['DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'],
+				error
+					? []
+					: [
+							'DayWithCompletedTasks',
+							'ExportDayWithCompletedTasks',
+							'AllTasks',
+							'TasksMedal',
+							'TasksChallenge',
+							'TasksStats',
+							'OverviewStats',
+							'SyncMetadata',
+							'DocumentCounts',
+						],
 		}),
 		deleteProjects: builder.mutation({
 			query: () => ({
 				url: `/delete/projects`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: invalidateOnSuccess(['Project', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+			invalidatesTags: invalidateOnSuccess([
+				'Project',
+				'OverviewStats',
+				'SyncMetadata',
+				'DocumentCounts',
+			] as const),
 		}),
 		deleteProjectGroups: builder.mutation({
 			query: () => ({
 				url: `/delete/project-groups`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: invalidateOnSuccess(['ProjectGroup', 'OverviewStats', 'SyncMetadata', 'DocumentCounts'] as const),
+			invalidatesTags: invalidateOnSuccess([
+				'ProjectGroup',
+				'OverviewStats',
+				'SyncMetadata',
+				'DocumentCounts',
+			] as const),
 		}),
 		deleteAllDocuments: builder.mutation({
 			query: () => ({
@@ -57,13 +113,28 @@ export const deleteApi = baseAPI.injectEndpoints({
 			}),
 			invalidatesTags: invalidateOnSuccess([
 				// General tags that need mostly every group
-				'OverviewStats', 'SyncMetadata', 'DocumentCounts',
+				'OverviewStats',
+				'SyncMetadata',
+				'DocumentCounts',
 				// Projects
-				'Project', 'ProjectGroup',
+				'Project',
+				'ProjectGroup',
 				// Tasks
-				'DayWithCompletedTasks', 'ExportDayWithCompletedTasks', 'AllTasks', 'TasksMedal', 'TasksChallenge', 'TasksStats',
+				'DayWithCompletedTasks',
+				'ExportDayWithCompletedTasks',
+				'AllTasks',
+				'TasksMedal',
+				'TasksChallenge',
+				'TasksStats',
 				// Focus Records
-				'FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats', 'TodayFocus', 'StreakHistory'
+				'FocusRecord',
+				'ExportFocusRecord',
+				'AllFocusRecords',
+				'FocusMedal',
+				'FocusChallenge',
+				'FocusStats',
+				'TodayFocus',
+				'StreakHistory',
 			] as const),
 		}),
 	}),
@@ -77,5 +148,5 @@ export const {
 	useBulkDeleteTasksMutation,
 	useDeleteProjectsMutation,
 	useDeleteProjectGroupsMutation,
-	useDeleteAllDocumentsMutation
+	useDeleteAllDocumentsMutation,
 } = deleteApi;

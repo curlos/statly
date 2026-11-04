@@ -28,15 +28,24 @@ const TimelineCard = () => {
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams, {
-		skip: shouldSkipQuery
+	const {
+		data: statsData,
+		isLoading,
+		isFetching,
+	} = useGetFocusStatsQuery(queryParams, {
+		skip: shouldSkipQuery,
 	});
 
 	return (
-		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col sm:h-[350px] lg:h-[380px] relative" aria-labelledby="timeline-heading">
+		<section
+			className="bg-color-gray-600 p-3 rounded-lg flex flex-col sm:h-[350px] lg:h-[380px] relative"
+			aria-labelledby="timeline-heading"
+		>
 			<div className="flex flex-col sm:flex-row justify-between sm:items-center">
 				<div className="flex items-center gap-2">
-					<h2 id="timeline-heading" className="font-bold text-[16px]">Timeline</h2>
+					<h2 id="timeline-heading" className="font-bold text-[16px]">
+						Timeline
+					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -71,7 +80,9 @@ const CustomWeekPicker: React.FC<CustomWeekPickerProps> = ({ selectedDates, setS
 
 	const { chosenColorObj } = useThemeContext();
 
-	const [date, setDate] = useState<Date | null>(selectedDates && selectedDates.length > 0 ? selectedDates[0] : new Date());
+	const [date, setDate] = useState<Date | null>(
+		selectedDates && selectedDates.length > 0 ? selectedDates[0] : new Date()
+	);
 
 	return (
 		<div className="flex items-center gap-2">

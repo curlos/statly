@@ -1,1 +1,1 @@
-export default "Completed Tasks - Statly";
+export default 'Completed Tasks - Statly';

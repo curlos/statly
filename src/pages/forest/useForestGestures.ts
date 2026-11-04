@@ -25,7 +25,14 @@ interface UseForestGesturesOptions {
 }
 
 // Moving and zooming the forest with the mouse wheel, a mouse drag, one finger or two, and telling a tap from a drag.
-export const useForestGestures = ({ viewRef, canvasRef, scheduleDraw, findTreeAtPoint, setHoveredTree, onOpenTree }: UseForestGesturesOptions) => {
+export const useForestGestures = ({
+	viewRef,
+	canvasRef,
+	scheduleDraw,
+	findTreeAtPoint,
+	setHoveredTree,
+	onOpenTree,
+}: UseForestGesturesOptions) => {
 	// Every finger or mouse button currently pressed on the canvas, so one pointer can pan and two can pinch
 	const pointersRef = useRef(new Map<number, { x: number; y: number }>());
 	const tapRef = useRef<{ x: number; y: number; time: number; moved: boolean } | null>(null);
@@ -43,7 +50,10 @@ export const useForestGestures = ({ viewRef, canvasRef, scheduleDraw, findTreeAt
 			const cursorX = event.clientX - bounds.left;
 			const cursorY = event.clientY - bounds.top;
 			const maxScale = Math.max(3, view.fitScale * 3);
-			const newScale = Math.min(maxScale, Math.max(view.fitScale * 0.8, view.scale * Math.exp(-event.deltaY * 0.002)));
+			const newScale = Math.min(
+				maxScale,
+				Math.max(view.fitScale * 0.8, view.scale * Math.exp(-event.deltaY * 0.002))
+			);
 
 			view.x = cursorX - ((cursorX - view.x) / view.scale) * newScale;
 			view.y = cursorY - ((cursorY - view.y) / view.scale) * newScale;
@@ -73,7 +83,10 @@ export const useForestGestures = ({ viewRef, canvasRef, scheduleDraw, findTreeAt
 		}
 
 		pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
-		tapRef.current = pointersRef.current.size === 1 ? { x: event.clientX, y: event.clientY, time: Date.now(), moved: false } : null;
+		tapRef.current =
+			pointersRef.current.size === 1
+				? { x: event.clientX, y: event.clientY, time: Date.now(), moved: false }
+				: null;
 
 		// On touch the details stay until the finger starts dragging, so a second tap on the same tree can open its day.
 		if (event.pointerType === 'mouse') setHoveredTree(null);
@@ -113,11 +126,20 @@ export const useForestGestures = ({ viewRef, canvasRef, scheduleDraw, findTreeAt
 			const [newFirst, newSecond] = [...pointers.values()];
 			const oldDistance = Math.hypot(oldFirst.x - oldSecond.x, oldFirst.y - oldSecond.y) || 1;
 			const newDistance = Math.hypot(newFirst.x - newSecond.x, newFirst.y - newSecond.y);
-			const oldCenter = { x: (oldFirst.x + oldSecond.x) / 2 - bounds.left, y: (oldFirst.y + oldSecond.y) / 2 - bounds.top };
-			const newCenter = { x: (newFirst.x + newSecond.x) / 2 - bounds.left, y: (newFirst.y + newSecond.y) / 2 - bounds.top };
+			const oldCenter = {
+				x: (oldFirst.x + oldSecond.x) / 2 - bounds.left,
+				y: (oldFirst.y + oldSecond.y) / 2 - bounds.top,
+			};
+			const newCenter = {
+				x: (newFirst.x + newSecond.x) / 2 - bounds.left,
+				y: (newFirst.y + newSecond.y) / 2 - bounds.top,
+			};
 
 			const maxScale = Math.max(3, view.fitScale * 3);
-			const newScale = Math.min(maxScale, Math.max(view.fitScale * 0.8, (view.scale * newDistance) / oldDistance));
+			const newScale = Math.min(
+				maxScale,
+				Math.max(view.fitScale * 0.8, (view.scale * newDistance) / oldDistance)
+			);
 			const worldX = (oldCenter.x - view.x) / view.scale;
 			const worldY = (oldCenter.y - view.y) / view.scale;
 			view.x = newCenter.x - worldX * newScale;
@@ -137,7 +159,12 @@ export const useForestGestures = ({ viewRef, canvasRef, scheduleDraw, findTreeAt
 		pointersRef.current.delete(event.pointerId);
 		tapRef.current = null;
 
-		const isTap = event.type === 'pointerup' && tap && !tap.moved && wasOnlyPointer && Date.now() - tap.time <= TAP_MAX_DURATION_MS;
+		const isTap =
+			event.type === 'pointerup' &&
+			tap &&
+			!tap.moved &&
+			wasOnlyPointer &&
+			Date.now() - tap.time <= TAP_MAX_DURATION_MS;
 		if (!isTap) return;
 
 		const { x, y } = getPointInCanvas(event);

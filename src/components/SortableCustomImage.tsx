@@ -30,14 +30,10 @@ const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
 	tabIndex = -1,
 }) => {
 	const { chosenColorObj } = useThemeContext();
-	const {
-		attributes,
-		listeners,
-		setNodeRef,
-		transform,
-		transition,
-		isDragging,
-	} = useSortable({ id: image._id, disabled: !isEditMode });
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+		id: image._id,
+		disabled: !isEditMode,
+	});
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
@@ -56,7 +52,9 @@ const SortableCustomImage: React.FC<SortableCustomImageProps> = ({
 			className={classNames(
 				'relative overflow-hidden focus-visible:outline-none',
 				"focus-visible:after:content-[''] focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:border-2 focus-visible:after:border-white focus-visible:after:pointer-events-none",
-				isSelected && !isEditMode && "after:content-[''] after:absolute after:inset-0 after:border-2 after:border-white after:pointer-events-none",
+				isSelected &&
+					!isEditMode &&
+					"after:content-[''] after:absolute after:inset-0 after:border-2 after:border-white after:pointer-events-none",
 				!isEditMode && 'cursor-pointer hover:opacity-80 transition',
 				isDragging && 'z-50'
 			)}

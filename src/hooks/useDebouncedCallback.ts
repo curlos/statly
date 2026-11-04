@@ -10,8 +10,12 @@ const useDebouncedCallback = <TArgs extends unknown[], TReturn>(
 
 	useEffect(() => {
 		if (!onlyForKeyboard) return;
-		const onKeyDown = () => { usingKeyboard.current = true; };
-		const onMouseDown = () => { usingKeyboard.current = false; };
+		const onKeyDown = () => {
+			usingKeyboard.current = true;
+		};
+		const onMouseDown = () => {
+			usingKeyboard.current = false;
+		};
 		document.addEventListener('keydown', onKeyDown);
 		document.addEventListener('mousedown', onMouseDown);
 		return () => {

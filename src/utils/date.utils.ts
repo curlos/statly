@@ -107,7 +107,7 @@ export const getCalendarMonth = (year: number, month: number, weeksInCalendar: n
 		const days = [];
 		for (let i = 0; i < 7; i++) {
 			// 7 days per week - create each date at noon
-			const dayNumber = startDate + (week * 7) + i;
+			const dayNumber = startDate + week * 7 + i;
 			const newDate = new Date(year, month, dayNumber, 12, 0, 0);
 			days.push(newDate);
 		}
@@ -237,41 +237,43 @@ export const convertTo12HourFormat = (hour24: string) => {
 };
 
 export const getAllMonths = (date: Date) => {
-    const months: Date[] = [];
-    const year = date.getFullYear(); // Extract the year from the date
-    const day = date.getDate(); // Extract the day from the date
+	const months: Date[] = [];
+	const year = date.getFullYear(); // Extract the year from the date
+	const day = date.getDate(); // Extract the day from the date
 
-    for (let month = 0; month < 12; month++) {
-        // Handle cases where the day does not exist in the month by using the last day of the month
-        const testDate = new Date(year, month + 1, 0); // Gets the last day of this month
-        const finalDay = day > testDate.getDate() ? testDate.getDate() : day; // Use the smaller of the provided day or the last day of the month
+	for (let month = 0; month < 12; month++) {
+		// Handle cases where the day does not exist in the month by using the last day of the month
+		const testDate = new Date(year, month + 1, 0); // Gets the last day of this month
+		const finalDay = day > testDate.getDate() ? testDate.getDate() : day; // Use the smaller of the provided day or the last day of the month
 
-        months.push(new Date(year, month, finalDay)); // Create the date with the final day
-    }
-    return months;
+		months.push(new Date(year, month, finalDay)); // Create the date with the final day
+	}
+	return months;
 };
 
 export const getFormattedDateAndTimeForFileName = () => {
 	const now = new Date();
 
-	const formattedDate = now.toLocaleDateString('en-US', {
-	year: 'numeric',
-	month: 'long',
-	day: 'numeric',
-	})
-	.replace(/,?/g, '')        // Remove commas
-	.replace(/\s+/g, '_');     // Replace spaces with underscores
+	const formattedDate = now
+		.toLocaleDateString('en-US', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+		})
+		.replace(/,?/g, '') // Remove commas
+		.replace(/\s+/g, '_'); // Replace spaces with underscores
 
-	const formattedTime = now.toLocaleTimeString('en-US', {
-	hour: 'numeric',
-	minute: '2-digit',
-	hour12: true
-	})
-	.replace(':', '_')         // e.g. "2:44 PM" -> "2_44PM"
-	.replace(/\s/g, '');       // Remove space before AM/PM
+	const formattedTime = now
+		.toLocaleTimeString('en-US', {
+			hour: 'numeric',
+			minute: '2-digit',
+			hour12: true,
+		})
+		.replace(':', '_') // e.g. "2:44 PM" -> "2_44PM"
+		.replace(/\s/g, ''); // Remove space before AM/PM
 
-	return `${formattedDate}_${formattedTime}`
-}
+	return `${formattedDate}_${formattedTime}`;
+};
 
 /**
  * Convert selected dates array to start/end date strings for API queries
@@ -288,7 +290,7 @@ export const getDateRangeFromSelectedDates = (selectedDates: Date[]) => {
 
 	return {
 		startDate: getFormattedLongDay(startDate),
-		endDate: getFormattedLongDay(endDate)
+		endDate: getFormattedLongDay(endDate),
 	};
 };
 
@@ -313,46 +315,46 @@ export const formatDateWithoutTimezone = (dateString: string): string => {
 };
 
 export const parseDateRange = (rangeType: string, rangeValue: string) => {
-  const parseMonthYear = (str: string) => {
-    const [monthName, year] = str.split(" ");
-    const month = new Date(`${monthName} 1, ${year}`).getMonth();
-    return { month, year: parseInt(year) };
-  };
+	const parseMonthYear = (str: string) => {
+		const [monthName, year] = str.split(' ');
+		const month = new Date(`${monthName} 1, ${year}`).getMonth();
+		return { month, year: parseInt(year) };
+	};
 
-  const parseWeek = (str: string) => {
-    const [startStr, endStr] = str.split(" - ");
-    return [new Date(startStr), new Date(endStr)];
-  };
+	const parseWeek = (str: string) => {
+		const [startStr, endStr] = str.split(' - ');
+		return [new Date(startStr), new Date(endStr)];
+	};
 
-  switch (rangeType.toLowerCase()) {
-    case "day": {
-      const date = new Date(rangeValue);
-      return { startDate: date, endDate: date };
-    }
+	switch (rangeType.toLowerCase()) {
+		case 'day': {
+			const date = new Date(rangeValue);
+			return { startDate: date, endDate: date };
+		}
 
-    case "week": {
-      const [start, end] = parseWeek(rangeValue);
-      return { startDate: start, endDate: end };
-    }
+		case 'week': {
+			const [start, end] = parseWeek(rangeValue);
+			return { startDate: start, endDate: end };
+		}
 
-    case "month": {
-      const { month, year } = parseMonthYear(rangeValue);
-      const startDate = new Date(year, month, 1);
-      const endDate = new Date(year, month + 1, 0); // last day of the month
-      return { startDate, endDate };
-    }
+		case 'month': {
+			const { month, year } = parseMonthYear(rangeValue);
+			const startDate = new Date(year, month, 1);
+			const endDate = new Date(year, month + 1, 0); // last day of the month
+			return { startDate, endDate };
+		}
 
-    case "year": {
-      const year = parseInt(rangeValue);
-      const startDate = new Date(year, 0, 1);
-      const endDate = new Date(year, 11, 31);
-      return { startDate, endDate };
-    }
+		case 'year': {
+			const year = parseInt(rangeValue);
+			const startDate = new Date(year, 0, 1);
+			const endDate = new Date(year, 11, 31);
+			return { startDate, endDate };
+		}
 
-    default:
-      throw new Error("Unsupported range type: " + rangeType);
-  }
-}
+		default:
+			throw new Error('Unsupported range type: ' + rangeType);
+	}
+};
 
 /**
  * Checks if a given date falls within the current year
@@ -371,10 +373,7 @@ export const isCurrentYear = (date: Date): boolean => {
  */
 export const isCurrentMonth = (date: Date): boolean => {
 	const now = new Date();
-	return (
-		date.getFullYear() === now.getFullYear() &&
-		date.getMonth() === now.getMonth()
-	);
+	return date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
 };
 
 /**
@@ -390,12 +389,8 @@ export const isCurrentWeek = (date: Date): boolean => {
 	// Normalize dates to midnight for comparison
 	const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-	return currentWeekDays.some(weekDay => {
-		const normalizedWeekDay = new Date(
-			weekDay.getFullYear(),
-			weekDay.getMonth(),
-			weekDay.getDate()
-		);
+	return currentWeekDays.some((weekDay) => {
+		const normalizedWeekDay = new Date(weekDay.getFullYear(), weekDay.getMonth(), weekDay.getDate());
 		return normalizedWeekDay.getTime() === normalizedDate.getTime();
 	});
 };
@@ -456,11 +451,7 @@ export const getFirstDayOfWeek = (date: Date): Date => {
  * @param toInterval - The interval we're switching to
  * @returns Date - The date to use for the new interval
  */
-export const getSmartDateForIntervalChange = (
-	currentDate: Date,
-	fromInterval: string,
-	toInterval: string
-): Date => {
+export const getSmartDateForIntervalChange = (currentDate: Date, fromInterval: string, toInterval: string): Date => {
 	const now = new Date();
 
 	// Helper to check if we should use "current" date

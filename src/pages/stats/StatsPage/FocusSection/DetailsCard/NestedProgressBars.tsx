@@ -1,515 +1,551 @@
-import classNames from "classnames";
-import { useState, useEffect, useRef, RefObject } from "react";
-import Accordion from "../../../../../components/Accordion/Accordion";
-import Pagination from "../../../../../components/Pagination";
-import { getFormattedDuration } from "../../../../../utils/helpers.utils";
-import ProgressBar from "../ProgressBar";
-import { shouldBreakAllText } from "../../../../../utils/text.utils";
-import Spinner from "../../../../../components/Loaders/Spinner";
-import type { Project } from "../../../../../types/models";
-import type { AncestorTask } from "../../../../../types/api";
-import type { ProgressBarItemData, AggregationResults, GroupedTaskById } from "../../../../../types/stats";
+import classNames from 'classnames';
+import { useState, useEffect, useRef, RefObject } from 'react';
+import Accordion from '../../../../../components/Accordion/Accordion';
+import Pagination from '../../../../../components/Pagination';
+import { getFormattedDuration } from '../../../../../utils/helpers.utils';
+import ProgressBar from '../ProgressBar';
+import { shouldBreakAllText } from '../../../../../utils/text.utils';
+import Spinner from '../../../../../components/Loaders/Spinner';
+import type { Project } from '../../../../../types/models';
+import type { AncestorTask } from '../../../../../types/api';
+import type { ProgressBarItemData, AggregationResults, GroupedTaskById } from '../../../../../types/stats';
 
 interface NestedProgressBarsProps {
-    data: ProgressBarItemData[];
-    dataByTasks?: ProgressBarItemData[];
-    dataType: string;
-    focusDurationForInterval: number;
-    fromModal: boolean;
-    setIsModalOpen: (isOpen: boolean) => void;
-    sortBy: string;
-    projectsById: Record<string, Project>;
-    sessionCategoriesById?: Record<string, Project>;
-    ancestorTasksById: Record<string, AncestorTask>;
-    metricType?: 'duration' | 'count';
-    aggregationResults: AggregationResults;
-    intervalStartDate: string;
-    intervalEndDate: string;
-    emotionId?: string;
-    showPagination?: boolean;
-    innerScrollableContainerRef?: RefObject<HTMLElement>;
+	data: ProgressBarItemData[];
+	dataByTasks?: ProgressBarItemData[];
+	dataType: string;
+	focusDurationForInterval: number;
+	fromModal: boolean;
+	setIsModalOpen: (isOpen: boolean) => void;
+	sortBy: string;
+	projectsById: Record<string, Project>;
+	sessionCategoriesById?: Record<string, Project>;
+	ancestorTasksById: Record<string, AncestorTask>;
+	metricType?: 'duration' | 'count';
+	aggregationResults: AggregationResults;
+	intervalStartDate: string;
+	intervalEndDate: string;
+	emotionId?: string;
+	showPagination?: boolean;
+	innerScrollableContainerRef?: RefObject<HTMLElement>;
 }
 
 const NestedProgressBars: React.FC<NestedProgressBarsProps> = ({
-    data,
-    dataByTasks,
-    dataType,
-    focusDurationForInterval,
-    fromModal,
-    setIsModalOpen,
-    sortBy,
-    projectsById,
-    sessionCategoriesById,
-    ancestorTasksById,
-    metricType = 'duration',
-    aggregationResults,
-    intervalStartDate,
-    intervalEndDate,
-    emotionId,
-    showPagination = true,
-    innerScrollableContainerRef
+	data,
+	dataByTasks,
+	dataType,
+	focusDurationForInterval,
+	fromModal,
+	setIsModalOpen,
+	sortBy,
+	projectsById,
+	sessionCategoriesById,
+	ancestorTasksById,
+	metricType = 'duration',
+	aggregationResults,
+	intervalStartDate,
+	intervalEndDate,
+	emotionId,
+	showPagination = true,
+	innerScrollableContainerRef,
 }) => {
-    // Pagination state for modal view
-    const [currentPage, setCurrentPage] = useState(1);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const userInitiatedPageChangeRef = useRef(false);
+	// Pagination state for modal view
+	const [currentPage, setCurrentPage] = useState(1);
+	const containerRef = useRef<HTMLDivElement>(null);
+	const userInitiatedPageChangeRef = useRef(false);
 
-    const groupedTasksCollapsedByDefault = useState(false);
+	const groupedTasksCollapsedByDefault = useState(false);
 
-    const isFocusDuration = metricType === 'duration';
-    const metricKey = isFocusDuration ? 'duration' : 'count';
+	const isFocusDuration = metricType === 'duration';
+	const metricKey = isFocusDuration ? 'duration' : 'count';
 
-    // Reset to page 1 when sorting changes or data length changes
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [sortBy, data]);
+	// Reset to page 1 when sorting changes or data length changes
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [sortBy, data]);
 
-    // Scroll to top and focus first item when page changes
-    useEffect(() => {
-        if (innerScrollableContainerRef?.current) {
-            innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+	// Scroll to top and focus first item when page changes
+	useEffect(() => {
+		if (innerScrollableContainerRef?.current) {
+			innerScrollableContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+		}
 
-        if (userInitiatedPageChangeRef.current) {
-            const firstFocusable = containerRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
-            firstFocusable?.focus({ preventScroll: true });
-            userInitiatedPageChangeRef.current = false;
-        }
+		if (userInitiatedPageChangeRef.current) {
+			const firstFocusable = containerRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
+			firstFocusable?.focus({ preventScroll: true });
+			userInitiatedPageChangeRef.current = false;
+		}
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentPage]);
 
-    if (!data || !ancestorTasksById || (dataType === 'Project' && !dataByTasks)) {
-        return (
-            <div className="flex justify-center items-center p-8">
-                <Spinner size="lg" />
-            </div>
-        );
-    }
+	if (!data || !ancestorTasksById || (dataType === 'Project' && !dataByTasks)) {
+		return (
+			<div className="flex justify-center items-center p-8">
+				<Spinner size="lg" />
+			</div>
+		);
+	}
 
-    const dataToUse = dataType === 'Project' && dataByTasks ? dataByTasks : data;
+	const dataToUse = dataType === 'Project' && dataByTasks ? dataByTasks : data;
 
-    const taskIds = dataToUse?.map((dataObj) => dataObj.id);
+	const taskIds = dataToUse?.map((dataObj) => dataObj.id);
 
-    if (!taskIds) {
-        return;
-    }
+	if (!taskIds) {
+		return;
+	}
 
-    const {
-        totalMetricOnParentTask,
-        tasksWithNoParent,
-        groupedTasksInfo,
-        groupedTasksById,
-        virtualAncestorsById,
-        parentDirectChildrenTaskIdsByParentId,
-        progressBarDataById
-    } = aggregationResults;
+	const {
+		totalMetricOnParentTask,
+		tasksWithNoParent,
+		groupedTasksInfo,
+		groupedTasksById,
+		virtualAncestorsById,
+		parentDirectChildrenTaskIdsByParentId,
+		progressBarDataById,
+	} = aggregationResults;
 
-    const otherFocusRecordTaskIds: string[] = [];
-    taskIds.forEach((id) => {
-        if (!ancestorTasksById[id] && !groupedTasksById[id] && !virtualAncestorsById[id]) {
-            otherFocusRecordTaskIds.push(id);
-        }
-    });
-    
-    const renderDirectTasks = (taskId: string, parentTaskId: string, parentTaskIdAndChildrenTaskIds: string[], projectColor: string) => {
-        // Need to investigate but progressBarDataById should be used here because it somehow gives me the duration and percentage of hte direct tasks. Maybe it's because out of all of the totals, this one is the most pure and just gives me the duration or count for each task directly.
-        const item = progressBarDataById[taskId];
+	const otherFocusRecordTaskIds: string[] = [];
+	taskIds.forEach((id) => {
+		if (!ancestorTasksById[id] && !groupedTasksById[id] && !virtualAncestorsById[id]) {
+			otherFocusRecordTaskIds.push(id);
+		}
+	});
 
-        if (!item) {
-            return null;
-        }
+	const renderDirectTasks = (
+		taskId: string,
+		parentTaskId: string,
+		parentTaskIdAndChildrenTaskIds: string[],
+		projectColor: string
+	) => {
+		// Need to investigate but progressBarDataById should be used here because it somehow gives me the duration and percentage of hte direct tasks. Maybe it's because out of all of the totals, this one is the most pure and just gives me the duration or count for each task directly.
+		const item = progressBarDataById[taskId];
 
-        const shouldBreakAll = shouldBreakAllText(item?.name);
-        const formattedMetric = isFocusDuration
-        ? getFormattedDuration(item?.[metricType] ?? 0, false)
-        : `${item?.[metricType]?.toLocaleString() || 0} task${totalMetricOnParentTask[parentTaskId].value !== 1 ? 's' : ''}`;
+		if (!item) {
+			return null;
+		}
 
-        const renderProgressBar = () => (
-            <li key={taskId} className="flex items-start gap-1 mb-6">
-                <ProgressBar item={item} projectsById={projectsById} sessionCategoriesById={sessionCategoriesById || {}} metricType={metricType} ancestorTasksById={ancestorTasksById} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} emotionId={emotionId} />
-            </li>
-        )
+		const shouldBreakAll = shouldBreakAllText(item?.name);
+		const formattedMetric = isFocusDuration
+			? getFormattedDuration(item?.[metricType] ?? 0, false)
+			: `${item?.[metricType]?.toLocaleString() || 0} task${totalMetricOnParentTask[parentTaskId].value !== 1 ? 's' : ''}`;
 
-        // If this is a direct task (such as YouTube Bookmark Extension's direct focus task with 46h59m), then it will just show one progress bar when the Accordion is oepned. This is rendered inside the Accordion where the "renderDirectTasks" function is called.
-        if (parentTaskIdAndChildrenTaskIds.length === 1) {
-            return renderProgressBar()
-        }
+		const renderProgressBar = () => (
+			<li key={taskId} className="flex items-start gap-1 mb-6">
+				<ProgressBar
+					item={item}
+					projectsById={projectsById}
+					sessionCategoriesById={sessionCategoriesById || {}}
+					metricType={metricType}
+					ancestorTasksById={ancestorTasksById}
+					intervalStartDate={intervalStartDate}
+					intervalEndDate={intervalEndDate}
+					emotionId={emotionId}
+				/>
+			</li>
+		);
 
-        return (
-            <li key={taskId}>
-                <Accordion
-                title={
-                    <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
-                        <span
-                            className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
-                            style={{ backgroundColor: projectColor }}
-                        />
-                        {" "}
-                        <span className="hover:underline">
-                            <span className={classNames({ 'break-all': shouldBreakAll })}>{`${parentTaskId === taskId ? 'Direct Parent Task: ' : ''}${item.name}`} </span>
-                            {" "}
-                            <span className="text-color-gray-25">
-                                ({formattedMetric},{' '}
-                                {item?.percentage}%)
-                            </span>
-                        </span>
+		// If this is a direct task (such as YouTube Bookmark Extension's direct focus task with 46h59m), then it will just show one progress bar when the Accordion is oepned. This is rendered inside the Accordion where the "renderDirectTasks" function is called.
+		if (parentTaskIdAndChildrenTaskIds.length === 1) {
+			return renderProgressBar();
+		}
 
-                    </span>
-                }
-                openByDefault={!groupedTasksCollapsedByDefault}
-                showArrowNextToText={true}
-                customToggleOpen={() => {
-                    if (!fromModal) {
-                        setIsModalOpen(true);
-                    }
-                }}
-                preventOpen={!fromModal}
-            >
+		return (
+			<li key={taskId}>
+				<Accordion
+					title={
+						<span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+							<span
+								className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+								style={{ backgroundColor: projectColor }}
+							/>{' '}
+							<span className="hover:underline">
+								<span className={classNames({ 'break-all': shouldBreakAll })}>
+									{`${parentTaskId === taskId ? 'Direct Parent Task: ' : ''}${item.name}`}{' '}
+								</span>{' '}
+								<span className="text-color-gray-25">
+									({formattedMetric}, {item?.percentage}%)
+								</span>
+							</span>
+						</span>
+					}
+					openByDefault={!groupedTasksCollapsedByDefault}
+					showArrowNextToText={true}
+					customToggleOpen={() => {
+						if (!fromModal) {
+							setIsModalOpen(true);
+						}
+					}}
+					preventOpen={!fromModal}
+				>
+					<ul className="space-y-4 pl-2 md:pl-4 lg:pl-6 mb-6">{renderProgressBar()}</ul>
+				</Accordion>
+			</li>
+		);
+	};
 
-                <ul className="space-y-4 pl-2 md:pl-4 lg:pl-6 mb-6">
-                    {renderProgressBar()}
-                </ul>
-            </Accordion>
-            </li>
-        );
-    }
+	const renderNestedTasks = (parentTaskId: string) => {
+		// Check if this is a grouped task (daily habit)
+		const isGroupedTask = groupedTasksInfo && groupedTasksInfo[parentTaskId];
 
-    const renderNestedTasks = (parentTaskId: string) => {
-        // Check if this is a grouped task (daily habit)
-        const isGroupedTask = groupedTasksInfo && groupedTasksInfo[parentTaskId];
+		// Check if this is a virtual focus app task
+		const isVirtualTask = virtualAncestorsById?.[parentTaskId];
 
-        // Check if this is a virtual focus app task
-        const isVirtualTask = virtualAncestorsById?.[parentTaskId];
+		const parentTask = isGroupedTask
+			? groupedTasksById[parentTaskId]
+			: virtualAncestorsById?.[parentTaskId] || ancestorTasksById[parentTaskId];
 
-        const parentTask = isGroupedTask
-            ? groupedTasksById[parentTaskId]
-            : (virtualAncestorsById?.[parentTaskId] || ancestorTasksById[parentTaskId]);
+		const formattedMetric = isFocusDuration
+			? getFormattedDuration(totalMetricOnParentTask[parentTaskId].value, false)
+			: `${totalMetricOnParentTask[parentTaskId].value?.toLocaleString() || 0} task${totalMetricOnParentTask[parentTaskId].value !== 1 ? 's' : ''}`;
 
-        const formattedMetric = isFocusDuration
-            ? getFormattedDuration(totalMetricOnParentTask[parentTaskId].value, false)
-            : `${totalMetricOnParentTask[parentTaskId].value?.toLocaleString() || 0} task${totalMetricOnParentTask[parentTaskId].value !== 1 ? 's' : ''}`;
+		// For grouped tasks or virtual tasks, show a simple accordion with just one progress bar inside
+		if (isGroupedTask || isVirtualTask) {
+			const groupedItem = progressBarDataById[parentTaskId];
+			const projectColor = isVirtualTask
+				? (parentTask?.projectId && projectsById?.[parentTask.projectId]?.color) ||
+					(parentTask as GroupedTaskById).color ||
+					'#808080'
+				: groupedTasksInfo[parentTaskId]?.color || '#808080';
 
-        // For grouped tasks or virtual tasks, show a simple accordion with just one progress bar inside
-        if (isGroupedTask || isVirtualTask) {
-            const groupedItem = progressBarDataById[parentTaskId];
-            const projectColor = isVirtualTask
-                ? (parentTask?.projectId && projectsById?.[parentTask.projectId]?.color) || (parentTask as GroupedTaskById).color || '#808080'
-                : (groupedTasksInfo[parentTaskId]?.color || '#808080')
+			const shouldBreakAll = shouldBreakAllText(groupedItem?.name);
 
-            const shouldBreakAll = shouldBreakAllText(groupedItem?.name);
+			return (
+				<li key={parentTaskId} className="text-[16px] w-full">
+					<Accordion
+						title={
+							<span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+								<span
+									className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+									style={{ backgroundColor: projectColor }}
+								/>{' '}
+								<span className="hover:underline">
+									<span className={classNames({ 'break-all': shouldBreakAll })}>
+										{groupedItem.name}{' '}
+									</span>{' '}
+									<span className="text-color-gray-25">
+										({formattedMetric}, {totalMetricOnParentTask[parentTaskId].percentage}%)
+									</span>
+								</span>
+							</span>
+						}
+						openByDefault={!groupedTasksCollapsedByDefault}
+						showArrowNextToText={true}
+						customToggleOpen={() => {
+							if (!fromModal) {
+								setIsModalOpen(true);
+							}
+						}}
+						preventOpen={!fromModal}
+					>
+						<ul className="space-y-4 pl-2 md:pl-4 lg:pl-6 mb-6">
+							<li className="flex items-start gap-1">
+								<ProgressBar
+									item={groupedItem}
+									projectsById={projectsById}
+									sessionCategoriesById={sessionCategoriesById || {}}
+									metricType={metricType}
+									ancestorTasksById={ancestorTasksById}
+									intervalStartDate={intervalStartDate}
+									intervalEndDate={intervalEndDate}
+									emotionId={emotionId}
+								/>
+							</li>
+						</ul>
+					</Accordion>
+				</li>
+			);
+		}
 
-            return (
-                <li key={parentTaskId} className="text-[16px] w-full">
-                    <Accordion
-                        title={
-                            <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
-                                <span
-                                    className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
-                                    style={{ backgroundColor: projectColor }}
-                                />
-                                {" "}
-                                <span className="hover:underline">
-                                    <span className={classNames({ 'break-all': shouldBreakAll })}>{groupedItem.name} </span>
-                                    {" "}
-                                    <span className="text-color-gray-25">
-                                        ({formattedMetric},{' '}
-                                        {totalMetricOnParentTask[parentTaskId].percentage}%)
-                                    </span>
-                                </span>
+		const projectColor =
+			(projectsById && parentTask?.projectId && projectsById[parentTask.projectId]?.color) || '#808080';
+		const taskName = (parentTask as GroupedTaskById).title || (parentTask as GroupedTaskById).content;
+		const shouldBreakAll = shouldBreakAllText(taskName);
+		const parentTaskIdAndChildrenTaskIds = [
+			...(parentDirectChildrenTaskIdsByParentId[parentTaskId] || []),
+			parentTaskId,
+		];
+		let tasksToRender = parentTaskIdAndChildrenTaskIds;
 
-                            </span>
-                        }
-                        openByDefault={!groupedTasksCollapsedByDefault}
-                        showArrowNextToText={true}
-                        customToggleOpen={() => {
-                            if (!fromModal) {
-                                setIsModalOpen(true);
-                            }
-                        }}
-                        preventOpen={!fromModal}
-                    >
-                        <ul className="space-y-4 pl-2 md:pl-4 lg:pl-6 mb-6">
-                            <li className="flex items-start gap-1">
-                                <ProgressBar
-                                    item={groupedItem}
-                                    projectsById={projectsById}
-                                    sessionCategoriesById={sessionCategoriesById || {}}
-                                    metricType={metricType}
-                                    ancestorTasksById={ancestorTasksById}
-                                    intervalStartDate={intervalStartDate}
-                                    intervalEndDate={intervalEndDate}
-                                    emotionId={emotionId}
-                                />
-                            </li>
-                        </ul>
-                    </Accordion>
-                </li>
-            );
-        }
+		if (metricType === 'count') {
+			const directTaskIdsToGroup: string[] = [];
+			const taskIdsWithChildren: string[] = [];
 
-        const projectColor = (projectsById && parentTask?.projectId && projectsById[parentTask.projectId]?.color) || '#808080'
-        const taskName = (parentTask as GroupedTaskById).title || (parentTask as GroupedTaskById).content;
-        const shouldBreakAll = shouldBreakAllText(taskName);
-        const parentTaskIdAndChildrenTaskIds = [...(parentDirectChildrenTaskIdsByParentId[parentTaskId] || []), parentTaskId]
-        let tasksToRender = parentTaskIdAndChildrenTaskIds
+			parentTaskIdAndChildrenTaskIds?.map((taskId: string) => {
+				const isTaskWithChildren =
+					parentDirectChildrenTaskIdsByParentId[taskId] &&
+					parentDirectChildrenTaskIdsByParentId[taskId].length > 0;
 
-        if (metricType === 'count') {
-            const directTaskIdsToGroup: string[] = []
-            const taskIdsWithChildren: string[] = []
+				if (isTaskWithChildren && taskId !== parentTaskId) {
+					// In this case, this task has children who could either have children or direct completed tasks.
+					taskIdsWithChildren.push(taskId);
+				} else {
+					if (progressBarDataById[taskId]) {
+						// In this case, it must be a direct completed task (either a subtask/item or the parentTask itself being completed).
+						directTaskIdsToGroup.push(taskId);
+					}
+				}
+			});
 
-            parentTaskIdAndChildrenTaskIds?.map((taskId: string) => {
-                const isTaskWithChildren = parentDirectChildrenTaskIdsByParentId[taskId] && parentDirectChildrenTaskIdsByParentId[taskId].length > 0
-                
-                if (isTaskWithChildren && taskId !== parentTaskId) {
-                    // In this case, this task has children who could either have children or direct completed tasks.
-                    taskIdsWithChildren.push(taskId)
-                } else {
-                    if (progressBarDataById[taskId]) {
-                        // In this case, it must be a direct completed task (either a subtask/item or the parentTask itself being completed).
-                        directTaskIdsToGroup.push(taskId)
-                    }
-                }
-            })
+			// Calculate total count from all direct children
+			const totalCount = directTaskIdsToGroup?.length || 0;
 
-            // Calculate total count from all direct children
-            const totalCount = directTaskIdsToGroup?.length || 0;
+			if (totalCount > 0) {
+				// Calculate percentage
+				const percentage = Number(((totalCount / focusDurationForInterval) * 100).toFixed(2));
 
-            if (totalCount > 0) {
-                // Calculate percentage
-                const percentage = Number(((totalCount / focusDurationForInterval) * 100).toFixed(2));
+				const groupId = `grouped-direct-tasks-${parentTaskId}`;
 
-                const groupId = `grouped-direct-tasks-${parentTaskId}`
+				// Create consolidated item
+				const parentTaskName = (parentTask as GroupedTaskById).title || (parentTask as GroupedTaskById).content;
+				const parentTaskColor = (parentTask as GroupedTaskById).color;
+				const groupedDirectChildTasks: ProgressBarItemData = {
+					id: parentTaskId,
+					projectId: parentTask.projectId,
+					name: `Direct Child Tasks: ${parentTaskName}`,
+					count: totalCount,
+					percentage: percentage,
+					color: parentTaskColor || '#808080',
+					type: 'task' as const,
+					isGroupedDirectTasksForCount: true,
+				};
 
-                // Create consolidated item
-                const parentTaskName = (parentTask as GroupedTaskById).title || (parentTask as GroupedTaskById).content;
-                const parentTaskColor = (parentTask as GroupedTaskById).color;
-                const groupedDirectChildTasks: ProgressBarItemData = {
-                    id: parentTaskId,
-                    projectId: parentTask.projectId,
-                    name: `Direct Child Tasks: ${parentTaskName}`,
-                    count: totalCount,
-                    percentage: percentage,
-                    color: parentTaskColor || '#808080',
-                    type: 'task' as const,
-                    isGroupedDirectTasksForCount: true
-                };
-                
-                progressBarDataById[groupId] = groupedDirectChildTasks
-                taskIdsWithChildren.push(groupId)
-                tasksToRender = taskIdsWithChildren
-            }
-        }
+				progressBarDataById[groupId] = groupedDirectChildTasks;
+				taskIdsWithChildren.push(groupId);
+				tasksToRender = taskIdsWithChildren;
+			}
+		}
 
-        return (
-            <li key={parentTaskId} className="text-[16px] w-full">
-                <Accordion
-                    title={
-                        <span className="text-[18px] cursor-pointer font-normal break-words w-full">
-                            <span
-                                className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
-                                style={{ backgroundColor: projectColor }}
-                            />
-                            {" "}
-                            <span className="hover:underline">
-                                <span className={classNames({ 'break-all': shouldBreakAll })}>{taskName}</span>
-                                {" "}
-                                <span className="text-color-gray-25">
-                                    ({formattedMetric},{' '}
-                                    {totalMetricOnParentTask[parentTaskId].percentage}%)
-                                </span>
-                            </span>
-                        </span>
-                    }
-                    openByDefault={!groupedTasksCollapsedByDefault}
-                    showArrowNextToText={true}
-                    customToggleOpen={() => {
-                        if (!fromModal) {
-                            setIsModalOpen(true);
-                        }
-                    }}
-                    preventOpen={!fromModal}
-                >
-                    <ul className="pl-2 md:pl-4 lg:pl-6">
-                        {tasksToRender
-                                ?.sort((taskIdOne: string, taskIdTwo: string) => {
-                                    // If it's the direct task of the parent displayed, then we need to grab the data from "progressBarDataById" because this'll tell us the actual value of the parent task itself, not the value of the children combined and passed up to the parent. Otherwise, for everyone else, you either use that combined child value (duration/count) or the pure progressBarDataById value on itself.
-                                    const valueOne = (taskIdOne === parentTaskId ? progressBarDataById[taskIdOne]?.[metricType] : totalMetricOnParentTask[taskIdOne]?.value || progressBarDataById[taskIdOne]?.[metricType]) as number || 0;
+		return (
+			<li key={parentTaskId} className="text-[16px] w-full">
+				<Accordion
+					title={
+						<span className="text-[18px] cursor-pointer font-normal break-words w-full">
+							<span
+								className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+								style={{ backgroundColor: projectColor }}
+							/>{' '}
+							<span className="hover:underline">
+								<span className={classNames({ 'break-all': shouldBreakAll })}>{taskName}</span>{' '}
+								<span className="text-color-gray-25">
+									({formattedMetric}, {totalMetricOnParentTask[parentTaskId].percentage}%)
+								</span>
+							</span>
+						</span>
+					}
+					openByDefault={!groupedTasksCollapsedByDefault}
+					showArrowNextToText={true}
+					customToggleOpen={() => {
+						if (!fromModal) {
+							setIsModalOpen(true);
+						}
+					}}
+					preventOpen={!fromModal}
+				>
+					<ul className="pl-2 md:pl-4 lg:pl-6">
+						{tasksToRender
+							?.sort((taskIdOne: string, taskIdTwo: string) => {
+								// If it's the direct task of the parent displayed, then we need to grab the data from "progressBarDataById" because this'll tell us the actual value of the parent task itself, not the value of the children combined and passed up to the parent. Otherwise, for everyone else, you either use that combined child value (duration/count) or the pure progressBarDataById value on itself.
+								const valueOne =
+									((taskIdOne === parentTaskId
+										? progressBarDataById[taskIdOne]?.[metricType]
+										: totalMetricOnParentTask[taskIdOne]?.value ||
+											progressBarDataById[taskIdOne]?.[metricType]) as number) || 0;
 
-                                    const valueTwo = (taskIdTwo === parentTaskId ? progressBarDataById[taskIdTwo]?.[metricType] : totalMetricOnParentTask[taskIdTwo]?.value || progressBarDataById[taskIdTwo]?.[metricType]) as number || 0;
+								const valueTwo =
+									((taskIdTwo === parentTaskId
+										? progressBarDataById[taskIdTwo]?.[metricType]
+										: totalMetricOnParentTask[taskIdTwo]?.value ||
+											progressBarDataById[taskIdTwo]?.[metricType]) as number) || 0;
 
-                                    return valueTwo - valueOne; // Sort from highest to lowest
-                                })
-                                ?.map((taskId: string) => {
-                                    const isTaskWithChildren = parentDirectChildrenTaskIdsByParentId[taskId] &&
-                                        parentDirectChildrenTaskIdsByParentId[taskId].length > 0
+								return valueTwo - valueOne; // Sort from highest to lowest
+							})
+							?.map((taskId: string) => {
+								const isTaskWithChildren =
+									parentDirectChildrenTaskIdsByParentId[taskId] &&
+									parentDirectChildrenTaskIdsByParentId[taskId].length > 0;
 
-                                    if (isTaskWithChildren) {
-                                        // For the direct parent task, it needs to be rendered with either an Accordion + one progress bar OR as null if there's no direct parent task in progressBarDataById.
-                                        if (taskId === parentTaskId) {
-                                            return renderDirectTasks(taskId, parentTaskId, tasksToRender, projectColor)
-                                        }
+								if (isTaskWithChildren) {
+									// For the direct parent task, it needs to be rendered with either an Accordion + one progress bar OR as null if there's no direct parent task in progressBarDataById.
+									if (taskId === parentTaskId) {
+										return renderDirectTasks(taskId, parentTaskId, tasksToRender, projectColor);
+									}
 
-                                        // Otherwise, if it's a task with children that isn't the parent, we need to recursively render the nested tasks.
-                                        return renderNestedTasks(taskId);
-                                    } else {
-                                        // if the task doesn't have children, then we can just render it with an Accordion + one progress bar if it's in progressBarDataById. The reason we don't just render the progressBar directly and have an accordion wrapped around it first is because I need to match the rest of the nested accordions.
-                                        return renderDirectTasks(taskId, parentTaskId, tasksToRender, projectColor)
-                                    }
-                            })}
-                    </ul>
-                </Accordion>
-            </li>
-        );
-    };
+									// Otherwise, if it's a task with children that isn't the parent, we need to recursively render the nested tasks.
+									return renderNestedTasks(taskId);
+								} else {
+									// if the task doesn't have children, then we can just render it with an Accordion + one progress bar if it's in progressBarDataById. The reason we don't just render the progressBar directly and have an accordion wrapped around it first is because I need to match the rest of the nested accordions.
+									return renderDirectTasks(taskId, parentTaskId, tasksToRender, projectColor);
+								}
+							})}
+					</ul>
+				</Accordion>
+			</li>
+		);
+	};
 
-    const sortedTasksWithNoParent = [...tasksWithNoParent].sort((taskIdOne: string, taskIdTwo: string) => {
-        const valueOne = totalMetricOnParentTask[taskIdOne].value;
-        const valueTwo = totalMetricOnParentTask[taskIdTwo].value;
+	const sortedTasksWithNoParent = [...tasksWithNoParent].sort((taskIdOne: string, taskIdTwo: string) => {
+		const valueOne = totalMetricOnParentTask[taskIdOne].value;
+		const valueTwo = totalMetricOnParentTask[taskIdTwo].value;
 
-        if (sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least') {
-            return valueTwo - valueOne;
-        }
+		if (sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least') {
+			return valueTwo - valueOne;
+		}
 
-        return valueOne - valueTwo;
-    });
+		return valueOne - valueTwo;
+	});
 
-    const maxTasksWithNoParent = fromModal ? sortedTasksWithNoParent.length : 4;
+	const maxTasksWithNoParent = fromModal ? sortedTasksWithNoParent.length : 4;
 
-    // Pagination calculations for modal view
-    const itemsPerPage = 10;
-    const totalTaskPages = Math.ceil(sortedTasksWithNoParent.length / itemsPerPage);
-    const taskStartIndex = (currentPage - 1) * itemsPerPage;
-    const taskEndIndex = taskStartIndex + itemsPerPage;
+	// Pagination calculations for modal view
+	const itemsPerPage = 10;
+	const totalTaskPages = Math.ceil(sortedTasksWithNoParent.length / itemsPerPage);
+	const taskStartIndex = (currentPage - 1) * itemsPerPage;
+	const taskEndIndex = taskStartIndex + itemsPerPage;
 
-    if (dataType === 'Project') {
-        const groupedProjectsAndTasks: Record<string, string[]> = {};
+	if (dataType === 'Project') {
+		const groupedProjectsAndTasks: Record<string, string[]> = {};
 
-        for (const taskId of [...sortedTasksWithNoParent, ...otherFocusRecordTaskIds]) {
-            const task = ancestorTasksById[taskId] || virtualAncestorsById[taskId] || groupedTasksById[taskId];
+		for (const taskId of [...sortedTasksWithNoParent, ...otherFocusRecordTaskIds]) {
+			const task = ancestorTasksById[taskId] || virtualAncestorsById[taskId] || groupedTasksById[taskId];
 
-            if (!task) {
-                continue;
-            }
+			if (!task) {
+				continue;
+			}
 
-            const projectId = task.projectId;
+			const projectId = task.projectId;
 
-            if (!projectId) {
-                continue;
-            }
+			if (!projectId) {
+				continue;
+			}
 
-            if (!groupedProjectsAndTasks[projectId]) {
-                groupedProjectsAndTasks[projectId] = [];
-            }
+			if (!groupedProjectsAndTasks[projectId]) {
+				groupedProjectsAndTasks[projectId] = [];
+			}
 
-            groupedProjectsAndTasks[projectId].push(taskId);
-        }
+			groupedProjectsAndTasks[projectId].push(taskId);
+		}
 
-        const sortedProjects = [...data].sort((projectOne, projectTwo) => {
-            const valueOne = projectOne[metricKey] as number || 0;
-            const valueTwo = projectTwo[metricKey] as number || 0;
+		const sortedProjects = [...data].sort((projectOne, projectTwo) => {
+			const valueOne = (projectOne[metricKey] as number) || 0;
+			const valueTwo = (projectTwo[metricKey] as number) || 0;
 
-            if (sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least') {
-                return valueTwo - valueOne;
-            }
+			if (sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least') {
+				return valueTwo - valueOne;
+			}
 
-            return valueOne - valueTwo;
-        });
+			return valueOne - valueTwo;
+		});
 
-        const maxProjects = fromModal ? sortedProjects.length : 5;
+		const maxProjects = fromModal ? sortedProjects.length : 5;
 
-        // Pagination calculations for Project view in modal
-        const totalProjectPages = Math.ceil(sortedProjects.length / itemsPerPage);
-        const projectStartIndex = (currentPage - 1) * itemsPerPage;
-        const projectEndIndex = projectStartIndex + itemsPerPage;
+		// Pagination calculations for Project view in modal
+		const totalProjectPages = Math.ceil(sortedProjects.length / itemsPerPage);
+		const projectStartIndex = (currentPage - 1) * itemsPerPage;
+		const projectEndIndex = projectStartIndex + itemsPerPage;
 
-        return (
-            <>
-                <div ref={containerRef}>
-                    <ul className="w-full">
-                    {sortedProjects.slice(fromModal ? projectStartIndex : 0, fromModal ? projectEndIndex : maxProjects)?.map((project: ProgressBarItemData) => {
-                    const projectMetricValue = project[metricKey] as number || 0;
-                    const projectFormattedMetric = isFocusDuration
-                        ? getFormattedDuration(projectMetricValue, false)
-                        : `${projectMetricValue.toLocaleString()} task${projectMetricValue !== 1 ? 's' : ''}`;
+		return (
+			<>
+				<div ref={containerRef}>
+					<ul className="w-full">
+						{sortedProjects
+							.slice(fromModal ? projectStartIndex : 0, fromModal ? projectEndIndex : maxProjects)
+							?.map((project: ProgressBarItemData) => {
+								const projectMetricValue = (project[metricKey] as number) || 0;
+								const projectFormattedMetric = isFocusDuration
+									? getFormattedDuration(projectMetricValue, false)
+									: `${projectMetricValue.toLocaleString()} task${projectMetricValue !== 1 ? 's' : ''}`;
 
-                    const shouldBreakAllProject = shouldBreakAllText(project.name);
+								const shouldBreakAllProject = shouldBreakAllText(project.name);
 
-                    return (
-                        <li key={project.id}>
-                            <Accordion
-                                title={
-                                    <span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+								return (
+									<li key={project.id}>
+										<Accordion
+											title={
+												<span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+													<span
+														className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+														style={{ backgroundColor: project.color }}
+													/>{' '}
+													<span className="hover:underline">
+														<span
+															className={classNames({
+																'break-all': shouldBreakAllProject,
+															})}
+														>
+															{project.name}
+														</span>{' '}
+														<span className="text-color-gray-25">
+															({projectFormattedMetric}, {project.percentage}%)
+														</span>
+													</span>
+												</span>
+											}
+											openByDefault={!groupedTasksCollapsedByDefault}
+											showArrowNextToText={true}
+											customToggleOpen={() => {
+												if (!fromModal) {
+													setIsModalOpen(true);
+												}
+											}}
+											preventOpen={!fromModal}
+										>
+											<ul className="pl-2 md:pl-4 lg:pl-6">
+												{groupedProjectsAndTasks[project.id]?.map((taskId: string) =>
+													renderNestedTasks(taskId)
+												)}
+											</ul>
+										</Accordion>
+									</li>
+								);
+							})}
+					</ul>
+				</div>
 
-                                        <span
-                                            className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
-                                            style={{ backgroundColor: project.color }}
-                                        />
-                                        {" "}
-                                        <span className="hover:underline">
-                                            <span className={classNames({ 'break-all': shouldBreakAllProject })}>{project.name}</span>
-                                            {" "}
-                                            <span className="text-color-gray-25">
-                                                ({projectFormattedMetric}, {project.percentage}%)
-                                            </span>
-                                        </span>
-                                    </span>
-                                }
-                                openByDefault={!groupedTasksCollapsedByDefault}
-                                showArrowNextToText={true}
-                                customToggleOpen={() => {
-                                    if (!fromModal) {
-                                        setIsModalOpen(true);
-                                    }
-                                }}
-                                preventOpen={!fromModal}
-                            >
-                                <ul className="pl-2 md:pl-4 lg:pl-6">
-                                    {groupedProjectsAndTasks[project.id]?.map((taskId: string) => renderNestedTasks(taskId))}
-                                </ul>
-                            </Accordion>
-                        </li>
-                    );
-                })}
-                    </ul>
-                </div>
+				{fromModal && showPagination && totalProjectPages > 1 && (
+					<div className="flex justify-center pt-4">
+						<Pagination
+							total={totalProjectPages}
+							currentPage={currentPage}
+							setCurrentPage={(page) => {
+								userInitiatedPageChangeRef.current = true;
+								setCurrentPage(page);
+							}}
+							totalPages={totalProjectPages}
+							compactView={true}
+						/>
+					</div>
+				)}
+			</>
+		);
+	}
 
-                {fromModal && showPagination && totalProjectPages > 1 && (
-                    <div className="flex justify-center pt-4">
-                        <Pagination
-                            total={totalProjectPages}
-                            currentPage={currentPage}
-                            setCurrentPage={(page) => { userInitiatedPageChangeRef.current = true; setCurrentPage(page); }}
-                            totalPages={totalProjectPages}
-                            compactView={true}
-                        />
-                    </div>
-                )}
-            </>
-        );
-    }
+	return (
+		<>
+			<div ref={containerRef} className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')}>
+				<ul className="w-full">
+					{sortedTasksWithNoParent
+						.slice(fromModal ? taskStartIndex : 0, fromModal ? taskEndIndex : maxTasksWithNoParent)
+						?.map((taskId: string) => renderNestedTasks(taskId))}
+				</ul>
+			</div>
 
-    return (
-        <>
-            <div ref={containerRef} className={classNames('w-full', !fromModal && 'overflow-auto max-h-[230px]')}>
-                <ul className="w-full">
-                    {sortedTasksWithNoParent.slice(fromModal ? taskStartIndex : 0, fromModal ? taskEndIndex : maxTasksWithNoParent)?.map((taskId: string) => renderNestedTasks(taskId))}
-                </ul>
-            </div>
-
-            {fromModal && showPagination && totalTaskPages > 1 && (
-                <div className="flex justify-center pt-4">
-                    <Pagination
-                        total={totalTaskPages}
-                        currentPage={currentPage}
-                        setCurrentPage={(page) => { userInitiatedPageChangeRef.current = true; setCurrentPage(page); }}
-                        totalPages={totalTaskPages}
-                        compactView={true}
-                    />
-                </div>
-            )}
-        </>
-    );
+			{fromModal && showPagination && totalTaskPages > 1 && (
+				<div className="flex justify-center pt-4">
+					<Pagination
+						total={totalTaskPages}
+						currentPage={currentPage}
+						setCurrentPage={(page) => {
+							userInitiatedPageChangeRef.current = true;
+							setCurrentPage(page);
+						}}
+						totalPages={totalTaskPages}
+						compactView={true}
+					/>
+				</div>
+			)}
+		</>
+	);
 };
 
-export default NestedProgressBars
+export default NestedProgressBars;

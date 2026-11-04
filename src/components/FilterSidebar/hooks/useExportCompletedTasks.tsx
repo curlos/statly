@@ -6,10 +6,7 @@ import { useSharedQueryParams } from '../../../hooks/useSharedQueryParams';
 import { tasksApi } from '../../../services/resources/tasksApi';
 import { useDispatch } from 'react-redux';
 import { getAppliedFiltersMarkdown } from './getAppliedFiltersMarkdown';
-import {
-	serializeDayWithCompletedTasks,
-	serializeNestedDay
-} from '../../../utils/completedTasks.utils';
+import { serializeDayWithCompletedTasks, serializeNestedDay } from '../../../utils/completedTasks.utils';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import type { Task } from '../../../types/models';
 import type { AncestorTask } from '../../../types/api';
@@ -36,11 +33,14 @@ interface FlatExportResponse {
 }
 
 interface FlatGroupedExportResponse {
-	grouped: Record<string, {
-		days: Array<{ dateStr: string; parentTasks: ParentTaskData[]; taskCount: number }>;
-		totalCompletedTasks: number;
-		groupName: string;
-	}>;
+	grouped: Record<
+		string,
+		{
+			days: Array<{ dateStr: string; parentTasks: ParentTaskData[]; taskCount: number }>;
+			totalCompletedTasks: number;
+			groupName: string;
+		}
+	>;
 }
 
 interface NestedExportResponse {
@@ -59,7 +59,8 @@ const useExportCompletedTasks = () => {
 	const dispatch = useDispatch();
 	const { queryParams, urlValues } = useSharedQueryParams();
 	const userSettings = useUserSettingsContext();
-	const taskIdIncludeCompletedTasksFromSubtasks = userSettings?.completedTasksPageSettings?.taskIdIncludeCompletedTasksFromSubtasks ?? true;
+	const taskIdIncludeCompletedTasksFromSubtasks =
+		userSettings?.completedTasksPageSettings?.taskIdIncludeCompletedTasksFromSubtasks ?? true;
 	const onlyExportTasksWithNoParent = userSettings?.completedTasksPageSettings?.onlyExportTasksWithNoParent ?? true;
 	const showIndentedTasks = userSettings?.completedTasksPageSettings?.showIndentedTasks ?? false;
 	const { data: fetchedProjects } = useGetProjectsQuery();
@@ -85,11 +86,7 @@ const useExportCompletedTasks = () => {
 
 		for (let i = 0; i < days.length; i++) {
 			const day = days[i];
-			const dayMarkdown = serializeDayWithCompletedTasks(
-				day.dateStr,
-				day.parentTasks,
-				day.taskCount
-			);
+			const dayMarkdown = serializeDayWithCompletedTasks(day.dateStr, day.parentTasks, day.taskCount);
 
 			allDaysWithCompletedTasksMarkdown.push(dayMarkdown);
 
@@ -128,7 +125,14 @@ const useExportCompletedTasks = () => {
 				// Since we hardcode 'group-by': 'none', the structure is always { [dateStr]: { [rootTaskId]: NestedTaskNode } }
 				const days = Object.entries(nestedData)
 					.filter(([key]) => key !== 'ancestorTasksById' && key !== 'totalTasks') // Filter out metadata
-					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks as Record<string, unknown>, ancestorTasksById, projectsById))
+					.map(([dateStr, nestedTasks]) =>
+						serializeNestedDay(
+							dateStr,
+							nestedTasks as Record<string, unknown>,
+							ancestorTasksById,
+							projectsById
+						)
+					)
 					.join('\n---\n');
 
 				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
@@ -177,7 +181,14 @@ const useExportCompletedTasks = () => {
 				// nestedData is { [dateStr]: { [rootTaskId]: NestedTaskNode }, ancestorTasksById, totalTasks }
 				const days = Object.entries(nestedData)
 					.filter(([key]) => key !== 'ancestorTasksById' && key !== 'totalTasks')
-					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks as Record<string, unknown>, ancestorTasksById, projectsById))
+					.map(([dateStr, nestedTasks]) =>
+						serializeNestedDay(
+							dateStr,
+							nestedTasks as Record<string, unknown>,
+							ancestorTasksById,
+							projectsById
+						)
+					)
 					.join('\n---\n');
 
 				finalMarkdown = `# Completed Tasks (${totalTasks.toLocaleString()})\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
@@ -245,7 +256,7 @@ const useExportCompletedTasks = () => {
 					groupId,
 					groupName,
 					daysData: daysDataTyped,
-					totalCompletedTasks
+					totalCompletedTasks,
 				};
 			});
 
@@ -261,14 +272,24 @@ const useExportCompletedTasks = () => {
 
 				// Serialize all days for this group
 				const days = Object.entries(daysData)
-					.map(([dateStr, nestedTasks]) => serializeNestedDay(dateStr, nestedTasks as Record<string, unknown>, ancestorTasksById, projectsById))
+					.map(([dateStr, nestedTasks]) =>
+						serializeNestedDay(
+							dateStr,
+							nestedTasks as Record<string, unknown>,
+							ancestorTasksById,
+							projectsById
+						)
+					)
 					.join('\n---\n');
 
 				const customTitle = `${groupName} - Completed Tasks (${totalCompletedTasks.toLocaleString()})`;
 				const markdown = `# ${customTitle}\n\n${getAppliedFiltersMarkdown({ ...urlValues, projectsById })}---\n\n${days}`;
 
 				// Filename for the markdown file
-				const sanitizedName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(/[/\\?%*:|"<>]/g, '-');
+				const sanitizedName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(
+					/[/\\?%*:|"<>]/g,
+					'-'
+				);
 				// Adjust date to local timezone to fix zip file timestamp display
 				const localDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
 				zip.file(`${sanitizedName}.md`, markdown, { date: localDate });
@@ -300,7 +321,10 @@ const useExportCompletedTasks = () => {
 				const markdown = getCompletedTasksMarkdown(days, customTitle, totalCompletedTasks);
 
 				// Filename for the markdown file - sanitize forward slashes to prevent folder creation
-				const sanitizedName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(/[/\\?%*:|"<>]/g, '-');
+				const sanitizedName = `${paddedIndex}_${groupName}_(${totalCompletedTasks.toLocaleString()})`.replace(
+					/[/\\?%*:|"<>]/g,
+					'-'
+				);
 				// Adjust date to local timezone to fix zip file timestamp display
 				const localDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
 				zip.file(`${sanitizedName}.md`, markdown, { date: localDate });

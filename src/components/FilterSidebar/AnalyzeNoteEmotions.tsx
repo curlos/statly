@@ -1,5 +1,9 @@
 import Icon from '../Icon';
-import { useLazyGetFocusRecordsNeedingSentimentQuery, useAnalyzeNoteEmotionsMutation, focusRecordsApi } from '../../services/resources/focusRecordsApi';
+import {
+	useLazyGetFocusRecordsNeedingSentimentQuery,
+	useAnalyzeNoteEmotionsMutation,
+	focusRecordsApi,
+} from '../../services/resources/focusRecordsApi';
 import { useEffect, useRef } from 'react';
 import ModalSentimentProgress from '../Modal/ModalSentimentProgress';
 import { ChunkStatus } from '../../slices/sentimentAnalysisSlice';
@@ -27,7 +31,8 @@ const AnalyzeNoteEmotions = () => {
 	// Use ref to store cancellation flag so checks always read current value
 	const isCancelledRef = useRef(false);
 
-	const [getFocusRecordsNeedingSentiment, { isLoading: isFetchingIds }] = useLazyGetFocusRecordsNeedingSentimentQuery();
+	const [getFocusRecordsNeedingSentiment, { isLoading: isFetchingIds }] =
+		useLazyGetFocusRecordsNeedingSentimentQuery();
 	const [analyzeNoteEmotions] = useAnalyzeNoteEmotionsMutation();
 
 	// Sync ref with Redux state
@@ -88,7 +93,10 @@ const AnalyzeNoteEmotions = () => {
 				try {
 					// Get the record IDs for this chunk from stored recordIds
 					const chunkIds = recordIds.slice(initialChunks[i].startRecord - 1, initialChunks[i].endRecord);
-					const analysisResult = await analyzeNoteEmotions(chunkIds).unwrap() as { analyzed: number; failed: number };
+					const analysisResult = (await analyzeNoteEmotions(chunkIds).unwrap()) as {
+						analyzed: number;
+						failed: number;
+					};
 
 					// Update status to 'success' with result
 					dispatch(
@@ -104,7 +112,9 @@ const AnalyzeNoteEmotions = () => {
 						})
 					);
 				} catch (error: unknown) {
-					const errorMessage = (error as { data?: { message?: string } })?.data?.message || 'Failed to update emotions for these records';
+					const errorMessage =
+						(error as { data?: { message?: string } })?.data?.message ||
+						'Failed to update emotions for these records';
 
 					// Update status to 'error'
 					dispatch(
@@ -120,7 +130,16 @@ const AnalyzeNoteEmotions = () => {
 			}
 
 			// Manually invalidate tags after all chunks complete (or after last chunk if cancelled)
-			dispatch(focusRecordsApi.util.invalidateTags(['FocusRecord', 'ExportFocusRecord', 'AllFocusRecords', 'FocusMedal', 'FocusChallenge', 'FocusStats']));
+			dispatch(
+				focusRecordsApi.util.invalidateTags([
+					'FocusRecord',
+					'ExportFocusRecord',
+					'AllFocusRecords',
+					'FocusMedal',
+					'FocusChallenge',
+					'FocusStats',
+				])
+			);
 		} catch (error) {
 			console.error('Error updating focus record emotions:', error);
 		}
@@ -142,11 +161,7 @@ const AnalyzeNoteEmotions = () => {
 						{isLoading ? (
 							<Spinner size="sm" />
 						) : (
-							<Icon
-								name="favorite"
-								fill={1}
-								customClass="!text-[20px]"
-							/>
+							<Icon name="favorite" fill={1} customClass="!text-[20px]" />
 						)}
 						<span>{isLoading ? 'Analyzing Note Emotions...' : 'Analyze Note Emotions'}</span>
 					</button>

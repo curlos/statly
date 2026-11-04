@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import classNames from 'classnames';
-import BackupData from "../../SidebarModal/OtherSection/BackupData";
-import ImportData from "../../SidebarModal/OtherSection/ImportData";
-import UpdateArchivedProjects from "../../SidebarModal/OtherSection/UpdateArchivedProjects";
-import DeleteDataSection from "./DeleteDataSection";
-import CheckboxOther from "../../FilterSidebar/CheckboxOther";
+import BackupData from '../../SidebarModal/OtherSection/BackupData';
+import ImportData from '../../SidebarModal/OtherSection/ImportData';
+import UpdateArchivedProjects from '../../SidebarModal/OtherSection/UpdateArchivedProjects';
+import DeleteDataSection from './DeleteDataSection';
+import CheckboxOther from '../../FilterSidebar/CheckboxOther';
 import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../../services/resources/userSettingsApi';
 import GuestDisabled from '../../GuestDisabled';
 
@@ -60,7 +60,9 @@ const ManageDataSection = () => {
 			<div
 				id="manage-data-tab-panel"
 				role="tabpanel"
-				aria-labelledby={activeTab === 'data-operations' ? 'manage-data-operations-tab' : 'manage-delete-data-tab'}
+				aria-labelledby={
+					activeTab === 'data-operations' ? 'manage-data-operations-tab' : 'manage-delete-data-tab'
+				}
 			>
 				{activeTab === 'data-operations' && (
 					<div>
@@ -71,12 +73,20 @@ const ManageDataSection = () => {
 								handleCheckboxClick={handleAutoSyncToggle}
 							/>
 						</div>
-						<GuestDisabled><UpdateArchivedProjects /></GuestDisabled>
+						<GuestDisabled>
+							<UpdateArchivedProjects />
+						</GuestDisabled>
 						<BackupData />
-						<GuestDisabled><ImportData /></GuestDisabled>
+						<GuestDisabled>
+							<ImportData />
+						</GuestDisabled>
 					</div>
 				)}
-				{activeTab === 'delete-data' && <GuestDisabled><DeleteDataSection /></GuestDisabled>}
+				{activeTab === 'delete-data' && (
+					<GuestDisabled>
+						<DeleteDataSection />
+					</GuestDisabled>
+				)}
 			</div>
 		</div>
 	);

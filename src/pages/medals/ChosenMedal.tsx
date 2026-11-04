@@ -105,7 +105,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 		}
 	};
 
-	const imgSrc = selectedMedalCardImage?.[chosenMedal.type]
+	const imgSrc = selectedMedalCardImage?.[chosenMedal.type];
 
 	const getDateRangeHref = (dateRange: string) => {
 		const nonDateQueryParams = { ...pageContext.urlParsed.search };
@@ -121,7 +121,7 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(startDate),
 				'end-date': getFormattedShortMonthDay(endDate),
-				'year-agnostic': ''
+				'year-agnostic': '',
 			},
 			`/${isForFocusMedals ? 'focus-records' : 'completed-tasks'}`
 		);
@@ -160,10 +160,16 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 										className="sr-only focus:fixed focus:bottom-4 focus:right-4 focus:z-50 focus:w-auto focus:h-auto focus:overflow-visible focus:m-0 focus:whitespace-normal focus:[clip:auto] focus:px-2 focus:py-1 focus:bg-white focus:text-black focus:rounded"
 										onClick={(e) => {
 											e.preventDefault();
-											document.getElementById('after-intervals-list')?.focus({ preventScroll: true });
+											document
+												.getElementById('after-intervals-list')
+												?.focus({ preventScroll: true });
 										}}
 									>
-										Skip list of {timesEarned.toLocaleString()} {(timesEarned === 1 ? getIntervalsEarnedText().slice(0, -1) : getIntervalsEarnedText()).toLowerCase()}
+										Skip list of {timesEarned.toLocaleString()}{' '}
+										{(timesEarned === 1
+											? getIntervalsEarnedText().slice(0, -1)
+											: getIntervalsEarnedText()
+										).toLowerCase()}
 									</a>
 								</span>
 								<ul
@@ -172,27 +178,30 @@ const ChosenMedal: React.FC<ChosenMedalProps> = ({ chosenMedal, maxHeight, chose
 									style={{
 										paddingTop: range.start * ROW_HEIGHT,
 										// Extra 12px keeps the original bottom spacing (was pb-3).
-										paddingBottom: Math.max(0, sortedIntervals.length - range.end) * ROW_HEIGHT + 12,
+										paddingBottom:
+											Math.max(0, sortedIntervals.length - range.end) * ROW_HEIGHT + 12,
 									}}
 								>
-									{sortedIntervals.slice(range.start, range.end).map((dateRange: string, index: number) => {
-										return (
-											<li
-												key={dateRange}
-												className="list-disc ml-5 h-7 whitespace-nowrap"
-												aria-setsize={sortedIntervals.length}
-												aria-posinset={range.start + index + 1}
-											>
-												<a
-													href={getDateRangeHref(dateRange)}
-													className="hover:underline"
-													aria-label={`View ${chosenMedal.type === 'tasks' ? 'completed tasks' : 'focus records'} for ${dateRange}`}
+									{sortedIntervals
+										.slice(range.start, range.end)
+										.map((dateRange: string, index: number) => {
+											return (
+												<li
+													key={dateRange}
+													className="list-disc ml-5 h-7 whitespace-nowrap"
+													aria-setsize={sortedIntervals.length}
+													aria-posinset={range.start + index + 1}
 												>
-													{dateRange}
-												</a>
-											</li>
-										);
-									})}
+													<a
+														href={getDateRangeHref(dateRange)}
+														className="hover:underline"
+														aria-label={`View ${chosenMedal.type === 'tasks' ? 'completed tasks' : 'focus records'} for ${dateRange}`}
+													>
+														{dateRange}
+													</a>
+												</li>
+											);
+										})}
 								</ul>
 								<div id="after-intervals-list" tabIndex={-1} />
 							</div>

@@ -14,18 +14,20 @@ export const useMedalsQuery = ({ type, interval }: UseMedalsQueryProps) => {
 
 	const medalsQueryParams = {
 		...queryParams,
-		interval: interval || 'daily'
+		interval: interval || 'daily',
 	};
 
-	const { data: focusMedalsData, isLoading: isLoadingFocus, isFetching: isFetchingFocus } = useGetFocusMedalsQuery(
-		medalsQueryParams,
-		{ skip: type !== 'focus' || shouldSkipQuery }
-	);
+	const {
+		data: focusMedalsData,
+		isLoading: isLoadingFocus,
+		isFetching: isFetchingFocus,
+	} = useGetFocusMedalsQuery(medalsQueryParams, { skip: type !== 'focus' || shouldSkipQuery });
 
-	const { data: tasksMedalsData, isLoading: isLoadingTasks, isFetching: isFetchingTasks } = useGetTasksMedalsQuery(
-		medalsQueryParams,
-		{ skip: type !== 'tasks' || shouldSkipQuery }
-	);
+	const {
+		data: tasksMedalsData,
+		isLoading: isLoadingTasks,
+		isFetching: isFetchingTasks,
+	} = useGetTasksMedalsQuery(medalsQueryParams, { skip: type !== 'tasks' || shouldSkipQuery });
 
 	const medalsData = type === 'focus' ? focusMedalsData : tasksMedalsData;
 	const isLoading = shouldSkipQuery || (type === 'focus' ? isLoadingFocus : isLoadingTasks);
@@ -34,6 +36,6 @@ export const useMedalsQuery = ({ type, interval }: UseMedalsQueryProps) => {
 	return {
 		medalsData,
 		isLoading,
-		isFetching
+		isFetching,
 	};
 };

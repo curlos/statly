@@ -38,9 +38,7 @@ const FocusRecordList: React.FC<FocusRecordListProps> = ({
 		if (!pendingFocusIdRef.current) return;
 		const id = pendingFocusIdRef.current;
 		pendingFocusIdRef.current = null;
-		document.querySelector<HTMLElement>(
-			`[data-focus-record-id="${id}"] button[aria-haspopup="menu"]`
-		)?.focus();
+		document.querySelector<HTMLElement>(`[data-focus-record-id="${id}"] button[aria-haspopup="menu"]`)?.focus();
 	}, [focusRecords]);
 
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
@@ -79,7 +77,10 @@ const FocusRecordList: React.FC<FocusRecordListProps> = ({
 								{/* Show sync button or add cookie button */}
 								<div className="mt-4">
 									{hasCookie ? (
-										<SyncButton showText={true} customClass="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed" />
+										<SyncButton
+											showText={true}
+											customClass="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+										/>
 									) : (
 										<button
 											onClick={handleOpenSidebar}

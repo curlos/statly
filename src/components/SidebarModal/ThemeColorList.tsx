@@ -22,29 +22,50 @@ const ThemeColorList = () => {
 	const useCustomColor = userSettings?.theme?.useCustomColor ?? false;
 	const customColorHex = userSettings?.theme?.customColor || localStorage.getItem('theme-custom-color') || '#3b82f6';
 
-	const handleChangeTailwindColor = useDebouncedCallback(async (colorKey: string) => {
-		localStorage.setItem('theme-color', colorKey);
-		localStorage.setItem('theme-use-custom-color', 'false');
-		await editUserSettings({ theme: { ...userSettings?.theme, color: colorKey, useCustomColor: false } }).unwrap();
-	}, 500, true);
+	const handleChangeTailwindColor = useDebouncedCallback(
+		async (colorKey: string) => {
+			localStorage.setItem('theme-color', colorKey);
+			localStorage.setItem('theme-use-custom-color', 'false');
+			await editUserSettings({
+				theme: { ...userSettings?.theme, color: colorKey, useCustomColor: false },
+			}).unwrap();
+		},
+		500,
+		true
+	);
 
-	const handleChangeCustomColor = useDebouncedCallback(async (hex: string) => {
-		localStorage.setItem('theme-custom-color', hex);
-		localStorage.setItem('theme-use-custom-color', 'true');
-		await editUserSettings({ theme: { ...userSettings?.theme, customColor: hex, useCustomColor: true } }).unwrap();
-	}, 500, true);
+	const handleChangeCustomColor = useDebouncedCallback(
+		async (hex: string) => {
+			localStorage.setItem('theme-custom-color', hex);
+			localStorage.setItem('theme-use-custom-color', 'true');
+			await editUserSettings({
+				theme: { ...userSettings?.theme, customColor: hex, useCustomColor: true },
+			}).unwrap();
+		},
+		500,
+		true
+	);
 
 	// Favorites are stored newest first
 	const favoriteCustomColors = userSettings?.theme?.favoriteCustomColors ?? [];
-	const isCurrentColorFavorited = favoriteCustomColors.some((hex) => hex.toLowerCase() === customColorHex.toLowerCase());
+	const isCurrentColorFavorited = favoriteCustomColors.some(
+		(hex) => hex.toLowerCase() === customColorHex.toLowerCase()
+	);
 
 	const handleAddFavoriteColor = async () => {
 		if (isCurrentColorFavorited) return;
-		await editUserSettings({ theme: { ...userSettings?.theme, favoriteCustomColors: [customColorHex, ...favoriteCustomColors] } }).unwrap();
+		await editUserSettings({
+			theme: { ...userSettings?.theme, favoriteCustomColors: [customColorHex, ...favoriteCustomColors] },
+		}).unwrap();
 	};
 
 	const handleRemoveFavoriteColor = async (hexToRemove: string) => {
-		await editUserSettings({ theme: { ...userSettings?.theme, favoriteCustomColors: favoriteCustomColors.filter((hex) => hex !== hexToRemove) } }).unwrap();
+		await editUserSettings({
+			theme: {
+				...userSettings?.theme,
+				favoriteCustomColors: favoriteCustomColors.filter((hex) => hex !== hexToRemove),
+			},
+		}).unwrap();
 	};
 
 	const handleToggleColorMode = async (mode: 'tailwind' | 'custom') => {
@@ -100,10 +121,17 @@ const ThemeColorList = () => {
 						disabled={isCurrentColorFavorited}
 						className={classNames(
 							'mt-3 flex items-center gap-1 px-3 py-1 rounded border border-color-gray-100',
-							isCurrentColorFavorited ? 'opacity-60 cursor-default' : 'cursor-pointer hover:bg-color-gray-600'
+							isCurrentColorFavorited
+								? 'opacity-60 cursor-default'
+								: 'cursor-pointer hover:bg-color-gray-600'
 						)}
 					>
-						<Icon name="favorite" fill={isCurrentColorFavorited ? 1 : 0} customClass="!text-[18px]" aria-hidden={true} />
+						<Icon
+							name="favorite"
+							fill={isCurrentColorFavorited ? 1 : 0}
+							customClass="!text-[18px]"
+							aria-hidden={true}
+						/>
 						{isCurrentColorFavorited ? 'In Favorites' : 'Add to Favorites'}
 					</button>
 
@@ -114,7 +142,11 @@ const ThemeColorList = () => {
 									<div className="font-semibold">Favorites ({favoriteCustomColors.length})</div>
 									<div className="flex items-center gap-1" aria-hidden="true">
 										{favoriteCustomColors.slice(0, 5).map((hex) => (
-											<div key={hex} className="w-[15px] h-[15px] rounded-full" style={{ backgroundColor: hex }} />
+											<div
+												key={hex}
+												className="w-[15px] h-[15px] rounded-full"
+												style={{ backgroundColor: hex }}
+											/>
 										))}
 									</div>
 								</div>
@@ -132,7 +164,10 @@ const ThemeColorList = () => {
 											className="flex items-center gap-2 cursor-pointer rounded px-1 hover:bg-color-gray-600"
 											aria-label={`Use color ${hex}`}
 										>
-											<div className="w-[15px] h-[15px] rounded-full" style={{ backgroundColor: hex }} />
+											<div
+												className="w-[15px] h-[15px] rounded-full"
+												style={{ backgroundColor: hex }}
+											/>
 											<span>{hex}</span>
 										</button>
 										<button
@@ -179,7 +214,8 @@ const ThemeColorList = () => {
 					{Object.keys(cssStyles).map((groupedColorName) => {
 						const colorsFromGroup = cssStyles[groupedColorName];
 						const color500VariantObj = colorsFromGroup[`${groupedColorName}-500`];
-						const isColorFromGroupChosen = !useCustomColor && chosenColorObj.textColor.includes(groupedColorName);
+						const isColorFromGroupChosen =
+							!useCustomColor && chosenColorObj.textColor.includes(groupedColorName);
 
 						return (
 							<div key={groupedColorName}>
@@ -230,7 +266,10 @@ const ThemeColorList = () => {
 														'!w-[20px] !h-[20px]',
 														borderColor
 													)}
-													customInnerCircleClasses={classNames('!w-[10px] !h-[10px]', bgColor)}
+													customInnerCircleClasses={classNames(
+														'!w-[10px] !h-[10px]',
+														bgColor
+													)}
 												/>
 											);
 										})}

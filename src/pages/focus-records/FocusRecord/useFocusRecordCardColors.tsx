@@ -3,105 +3,109 @@ import { useThemeContext } from '../../../contexts/useThemeContext';
 import { getReadableTextColor, getHalfOpacityFillColor, getMutedTextPercent } from '../../../utils/color.utils';
 
 interface CustomDisplay {
-    useBackgroundColor: boolean;
-    backgroundColor: string;
-    useTextColor: boolean;
-    textColor: string;
-    useBackgroundImage: boolean;
-    backgroundImage: string;
-    backgroundImageOpacity: number;
+	useBackgroundColor: boolean;
+	backgroundColor: string;
+	useTextColor: boolean;
+	textColor: string;
+	useBackgroundImage: boolean;
+	backgroundImage: string;
+	backgroundImageOpacity: number;
 }
 
 interface ChosenColorObj {
-    hexColor: string;
+	hexColor: string;
 }
 
 interface UseFocusRecordCardColorsParams {
-    customDisplay: CustomDisplay;
-    chosenColorObj: ChosenColorObj;
-    lowerOpacity?: boolean;
+	customDisplay: CustomDisplay;
+	chosenColorObj: ChosenColorObj;
+	lowerOpacity?: boolean;
 }
 
-export const useFocusRecordCardColors = ({ customDisplay, chosenColorObj, lowerOpacity = false }: UseFocusRecordCardColorsParams) => {
-    const { colorMode, uiTheme } = useThemeContext();
-    const getCardBackgroundStyle = () => {
-        if (customDisplay.useBackgroundColor) {
-            return { backgroundColor: customDisplay.backgroundColor };
-        }
-        return {};
-    };
+export const useFocusRecordCardColors = ({
+	customDisplay,
+	chosenColorObj,
+	lowerOpacity = false,
+}: UseFocusRecordCardColorsParams) => {
+	const { colorMode, uiTheme } = useThemeContext();
+	const getCardBackgroundStyle = () => {
+		if (customDisplay.useBackgroundColor) {
+			return { backgroundColor: customDisplay.backgroundColor };
+		}
+		return {};
+	};
 
-    const getBackgroundImageStyle = () => {
-        if (customDisplay.useBackgroundImage && customDisplay.backgroundImage) {
-            return {
-                backgroundImage: `url(${customDisplay.backgroundImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                opacity: customDisplay.backgroundImageOpacity,
-            };
-        }
-        return {};
-    };
+	const getBackgroundImageStyle = () => {
+		if (customDisplay.useBackgroundImage && customDisplay.backgroundImage) {
+			return {
+				backgroundImage: `url(${customDisplay.backgroundImage})`,
+				backgroundSize: 'cover',
+				backgroundPosition: 'center',
+				backgroundRepeat: 'no-repeat',
+				opacity: customDisplay.backgroundImageOpacity,
+			};
+		}
+		return {};
+	};
 
-    const getCardBgColor = () => {
-        // Use theme only if no custom background
-        if (customDisplay.useBackgroundColor) {
-            return customDisplay.backgroundColor
-        }
+	const getCardBgColor = () => {
+		// Use theme only if no custom background
+		if (customDisplay.useBackgroundColor) {
+			return customDisplay.backgroundColor;
+		}
 
-        return chosenColorObj.hexColor
-    };
+		return chosenColorObj.hexColor;
+	};
 
-    // The color the card actually shows behind its text
-    const getCardFillColor = () => {
-        if (customDisplay.useBackgroundImage) {
-            return '#000000'
-        }
-        if (customDisplay.useBackgroundColor) {
-            return customDisplay.backgroundColor
-        }
-        // Game UI theme cards are panels instead of theme-colored fills: cream/white for the light
-        // looks (Persona 4, Mario Wonder, Pokémon), dark for the rest (Ink & Marker keeps the theme-colored fill, textured like Copic marker)
-        if (uiTheme === 'p4') {
-            return '#fff7c2'
-        }
-        if (uiTheme === 'mario-wonder') {
-            return '#fff8e6'
-        }
-        if (uiTheme === 'pokemon-rse' || uiTheme === 'pokemon-plat') {
-            return '#ffffff'
-        }
-        if (uiTheme !== 'default' && uiTheme !== 'ink-marker') {
-            return '#1d1c18'
-        }
-        return lowerOpacity ? getHalfOpacityFillColor(chosenColorObj.hexColor, colorMode) : chosenColorObj.hexColor
-    };
+	// The color the card actually shows behind its text
+	const getCardFillColor = () => {
+		if (customDisplay.useBackgroundImage) {
+			return '#000000';
+		}
+		if (customDisplay.useBackgroundColor) {
+			return customDisplay.backgroundColor;
+		}
+		// Game UI theme cards are panels instead of theme-colored fills: cream/white for the light
+		// looks (Persona 4, Mario Wonder, Pokémon), dark for the rest (Ink & Marker keeps the theme-colored fill, textured like Copic marker)
+		if (uiTheme === 'p4') {
+			return '#fff7c2';
+		}
+		if (uiTheme === 'mario-wonder') {
+			return '#fff8e6';
+		}
+		if (uiTheme === 'pokemon-rse' || uiTheme === 'pokemon-plat') {
+			return '#ffffff';
+		}
+		if (uiTheme !== 'default' && uiTheme !== 'ink-marker') {
+			return '#1d1c18';
+		}
+		return lowerOpacity ? getHalfOpacityFillColor(chosenColorObj.hexColor, colorMode) : chosenColorObj.hexColor;
+	};
 
-    const getCardTextColor = () => {
-        if (customDisplay.useTextColor) {
-            return customDisplay.textColor
-        }
-        if (customDisplay.useBackgroundImage) {
-            return colorMode === 'dark' ? 'white' : 'black'
-        }
-        return getReadableTextColor(getCardFillColor())
-    };
+	const getCardTextColor = () => {
+		if (customDisplay.useTextColor) {
+			return customDisplay.textColor;
+		}
+		if (customDisplay.useBackgroundImage) {
+			return colorMode === 'dark' ? 'white' : 'black';
+		}
+		return getReadableTextColor(getCardFillColor());
+	};
 
-    const cardTextColor = getCardTextColor()
-    const mutedTextPercent = getMutedTextPercent(cardTextColor, getCardFillColor())
-    const cardBackgroundStyle: CSSProperties & Record<`--${string}`, string> = {
-        ...getCardBackgroundStyle(),
-        color: cardTextColor,
-        '--muted-text-percent': `${mutedTextPercent}%`,
-    }
-    const backgroundImageStyle = getBackgroundImageStyle()
-    const cardBgColor = getCardBgColor()
+	const cardTextColor = getCardTextColor();
+	const mutedTextPercent = getMutedTextPercent(cardTextColor, getCardFillColor());
+	const cardBackgroundStyle: CSSProperties & Record<`--${string}`, string> = {
+		...getCardBackgroundStyle(),
+		color: cardTextColor,
+		'--muted-text-percent': `${mutedTextPercent}%`,
+	};
+	const backgroundImageStyle = getBackgroundImageStyle();
+	const cardBgColor = getCardBgColor();
 
-    return {
-        cardBackgroundStyle,
-        backgroundImageStyle,
-        cardBgColor,
-        cardTextColor
-    }
-}
+	return {
+		cardBackgroundStyle,
+		backgroundImageStyle,
+		cardBgColor,
+		cardTextColor,
+	};
+};

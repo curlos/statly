@@ -1,1 +1,1 @@
-export default "Medals - Statly";
+export default 'Medals - Statly';

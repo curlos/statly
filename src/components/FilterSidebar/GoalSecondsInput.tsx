@@ -3,11 +3,21 @@ import { debounce, secondsToHoursAndMinutes } from '../../utils/helpers.utils';
 import CustomInput from '../CustomInput';
 import Spinner from '../Loaders/Spinner';
 
-const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUpdateRingSetting, customDailyFocusGoal = {} }: {
+const GoalSecondsInput = ({
+	defaultValue,
+	customDateKey = null,
+	ringId,
+	handleUpdateRingSetting,
+	customDailyFocusGoal = {},
+}: {
 	defaultValue: number;
 	customDateKey?: string | null;
 	ringId: string;
-	handleUpdateRingSetting: (ringId: string, property: string, value: number | Record<string, number>) => Promise<void>;
+	handleUpdateRingSetting: (
+		ringId: string,
+		property: string,
+		value: number | Record<string, number>
+	) => Promise<void>;
 	customDailyFocusGoal?: Record<string, number>;
 }) => {
 	const { hours: defaultHours, minutes: defaultMinutes } = secondsToHoursAndMinutes(defaultValue);
@@ -36,7 +46,7 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 
 	const handleDebouncedUpdate = debounce(async () => {
 		// Convert hours and minutes to seconds
-		const newGoalSeconds = (Number(hours) * 3600) + (Number(minutes) * 60);
+		const newGoalSeconds = Number(hours) * 3600 + Number(minutes) * 60;
 
 		// Don't send API call if value hasn't changed from default
 		if (newGoalSeconds === defaultValue) {
@@ -90,13 +100,27 @@ const GoalSecondsInput = ({ defaultValue, customDateKey = null, ringId, handleUp
 			<div role="group" aria-label="Duration" className="flex gap-2 mt-1 mb-1 ml-1 items-center">
 				<div className="flex items-center gap-2">
 					<div className="max-w-[50px]">
-						<CustomInput value={hours} setValue={setHours} type="number" min={0} max={23} ariaLabel="Hours" />
+						<CustomInput
+							value={hours}
+							setValue={setHours}
+							type="number"
+							min={0}
+							max={23}
+							ariaLabel="Hours"
+						/>
 					</div>
 					<div aria-hidden="true">hours</div>
 				</div>
 				<div className="flex items-center gap-2">
 					<div className="max-w-[50px]">
-						<CustomInput value={minutes} setValue={setMinutes} type="number" min={0} max={59} ariaLabel="Minutes" />
+						<CustomInput
+							value={minutes}
+							setValue={setMinutes}
+							type="number"
+							min={0}
+							max={59}
+							ariaLabel="Minutes"
+						/>
 					</div>
 					<div aria-hidden="true">minutes</div>
 				</div>

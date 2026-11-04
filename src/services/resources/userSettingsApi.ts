@@ -64,8 +64,4 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 	}),
 });
 
-export const {
-	useGetUserSettingsQuery,
-	useEditUserSettingsMutation,
-	useGetDocumentCountsQuery
-} = userSettingsApi;
+export const { useGetUserSettingsQuery, useEditUserSettingsMutation, useGetDocumentCountsQuery } = userSettingsApi;

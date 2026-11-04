@@ -49,14 +49,22 @@ const buildWallShapes = (land: LandColors, side: number, direction: 1 | -1) => {
 				path.lineTo(direction * width, height + LAND_DEPTH);
 				path.lineTo(0, frontY + LAND_DEPTH);
 			} else {
-				const layerDepth = LAND_DEPTH * (isGrass ? 0.82 + index * 0.1 : isWater ? 0.42 + index * 0.25 : 0.56 + index * 0.2);
+				const layerDepth =
+					LAND_DEPTH * (isGrass ? 0.82 + index * 0.1 : isWater ? 0.42 + index * 0.25 : 0.56 + index * 0.2);
 				const waveSize = isWater ? 0.5 : 1;
 				const phase = getSeededRandom(`${label}-phase`, index) * Math.PI * 2;
 				const stepCount = side * LAND_WAVE_STEPS_PER_CELL;
 				for (let step = stepCount; step >= 0; step--) {
 					const progress = step / stepCount;
 					const { x, y } = getEdgePoint(progress);
-					path.lineTo(x, y + layerDepth + (Math.sin(progress * side * 1.9 + phase) * 1.6 + Math.sin(progress * side * 0.7 + phase) * 1.4) * waveSize);
+					path.lineTo(
+						x,
+						y +
+							layerDepth +
+							(Math.sin(progress * side * 1.9 + phase) * 1.6 +
+								Math.sin(progress * side * 0.7 + phase) * 1.4) *
+								waveSize
+					);
 				}
 			}
 			path.closePath();
@@ -67,9 +75,20 @@ const buildWallShapes = (land: LandColors, side: number, direction: 1 | -1) => {
 		const path = new Path2D();
 		const stoneCount = Math.round(side * (isGrass ? LAND_COBBLES_PER_CELL : LAND_STONES_PER_CELL));
 		for (let index = 0; index < stoneCount; index++) {
-			const { x, y } = getEdgePoint(isGrass ? (index + 0.2 + getSeededRandom(`${label}-stone-x`, index) * 0.6) / stoneCount : 0.02 + getSeededRandom(`${label}-stone-x`, index) * 0.96);
-			const stoneY = y + LAND_DEPTH * (isGrass ? 0.58 + getSeededRandom(`${label}-stone-y`, index) * 0.32 : 0.5 + getSeededRandom(`${label}-stone-y`, index) * 0.42);
-			const stoneSize = isGrass ? 2.6 + getSeededRandom(`${label}-stone-size`, index) * 2.2 : 3.5 + getSeededRandom(`${label}-stone-size`, index) * 5;
+			const { x, y } = getEdgePoint(
+				isGrass
+					? (index + 0.2 + getSeededRandom(`${label}-stone-x`, index) * 0.6) / stoneCount
+					: 0.02 + getSeededRandom(`${label}-stone-x`, index) * 0.96
+			);
+			const stoneY =
+				y +
+				LAND_DEPTH *
+					(isGrass
+						? 0.58 + getSeededRandom(`${label}-stone-y`, index) * 0.32
+						: 0.5 + getSeededRandom(`${label}-stone-y`, index) * 0.42);
+			const stoneSize = isGrass
+				? 2.6 + getSeededRandom(`${label}-stone-size`, index) * 2.2
+				: 3.5 + getSeededRandom(`${label}-stone-size`, index) * 5;
 			path.moveTo(x + stoneSize, stoneY);
 			path.ellipse(x, stoneY, stoneSize, stoneSize * 0.62, -direction * 0.5, 0, Math.PI * 2);
 		}
@@ -87,12 +106,22 @@ const buildWallShapes = (land: LandColors, side: number, direction: 1 | -1) => {
 				const end = getEdgePoint((lump - 1) / lumpCount);
 				const size = lipDepth * (1.05 + getSeededRandom(`${label}-lump`, lump) * 0.3);
 				path.lineTo(start.x, start.y + lipDepth * 0.65);
-				path.bezierCurveTo(start.x, start.y + size * 1.15, end.x, end.y + size * 1.15, end.x, end.y + lipDepth * 0.65);
+				path.bezierCurveTo(
+					start.x,
+					start.y + size * 1.15,
+					end.x,
+					end.y + size * 1.15,
+					end.x,
+					end.y + lipDepth * 0.65
+				);
 			}
 		} else {
 			// Many small, uneven grass tufts with slightly softened tips. A few run longer than the rest.
 			const tuftCount = Math.round(side * LAND_BLADES_PER_CELL);
-			const tuftWidths = Array.from({ length: tuftCount }, (_, tuft) => 0.6 + getSeededRandom(`${label}-width`, tuft) * 0.9);
+			const tuftWidths = Array.from(
+				{ length: tuftCount },
+				(_, tuft) => 0.6 + getSeededRandom(`${label}-width`, tuft) * 0.9
+			);
 			const totalWidth = tuftWidths.reduce((total, tuftWidth) => total + tuftWidth, 0);
 			const tuftEdges = [0];
 			tuftWidths.forEach((tuftWidth) => tuftEdges.push(tuftEdges[tuftEdges.length - 1] + tuftWidth / totalWidth));
@@ -101,7 +130,8 @@ const buildWallShapes = (land: LandColors, side: number, direction: 1 | -1) => {
 				const startProgress = tuftEdges[tuft + 1];
 				const endProgress = tuftEdges[tuft];
 				const tuftProgressWidth = startProgress - endProgress;
-				const tipProgress = endProgress + tuftProgressWidth * (0.3 + getSeededRandom(`${label}-lean`, tuft) * 0.4);
+				const tipProgress =
+					endProgress + tuftProgressWidth * (0.3 + getSeededRandom(`${label}-lean`, tuft) * 0.4);
 				const tipRounding = tuftProgressWidth * 0.1;
 				const isLongTuft = getSeededRandom(`${label}-long`, tuft) > 0.82;
 				const valleyDepth = lipDepth * (0.84 + getSeededRandom(`${label}-valley`, tuft) * 0.08);
@@ -235,14 +265,21 @@ const buildIslandPath = (side: number, offsetY: number) => {
 	const pointsPerEdge = Math.min(Math.max(16, side * 3), 300);
 	const path = new Path2D();
 
-	const toWorld = (u: number, v: number) => ({ x: (u - v) * TILE_HALF_WIDTH, y: (u + v) * TILE_HALF_HEIGHT + offsetY });
+	const toWorld = (u: number, v: number) => ({
+		x: (u - v) * TILE_HALF_WIDTH,
+		y: (u + v) * TILE_HALF_HEIGHT + offsetY,
+	});
 	const getEdgePoint = (edge: number, progress: number) => {
 		const [startU, startV] = corners[edge];
 		const [endU, endV] = corners[(edge + 1) % 4];
 		const length = Math.hypot(endU - startU, endV - startV);
-		const wobble = Math.sin(progress * length * 0.9 + edge * 1.7) * 0.2 + Math.sin(progress * length * 0.35 + edge) * 0.14;
+		const wobble =
+			Math.sin(progress * length * 0.9 + edge * 1.7) * 0.2 + Math.sin(progress * length * 0.35 + edge) * 0.14;
 		const [normalU, normalV] = normals[edge];
-		return toWorld(startU + (endU - startU) * progress + normalU * wobble, startV + (endV - startV) * progress + normalV * wobble);
+		return toWorld(
+			startU + (endU - startU) * progress + normalU * wobble,
+			startV + (endV - startV) * progress + normalV * wobble
+		);
 	};
 
 	for (let edge = 0; edge < 4; edge++) {
@@ -297,7 +334,12 @@ const buildBeachShapes = (side: number): WallShape[] => {
 // Building big shapes means thousands of curves, so each one is built once and reused on every redraw.
 const shapesByLand = new WeakMap<LandColors, Map<string, WallShape[]>>();
 
-const drawShapes = (context: CanvasRenderingContext2D, land: LandColors, key: string, buildShapes: () => WallShape[]) => {
+const drawShapes = (
+	context: CanvasRenderingContext2D,
+	land: LandColors,
+	key: string,
+	buildShapes: () => WallShape[]
+) => {
 	const landShapes = shapesByLand.get(land) ?? new Map<string, WallShape[]>();
 	shapesByLand.set(land, landShapes);
 
@@ -388,7 +430,12 @@ const drawLandDetails = (context: CanvasRenderingContext2D, land: LandColors, si
 			} else if (land.speckleShape === 'snow') {
 				context.ellipse(x, y, 1.8, 0.9, 0, 0, Math.PI * 2);
 			} else {
-				[[-0.8, 0], [0.8, 0], [0, -0.5], [0, 0.5]].forEach(([offsetX, offsetY]) => {
+				[
+					[-0.8, 0],
+					[0.8, 0],
+					[0, -0.5],
+					[0, 0.5],
+				].forEach(([offsetX, offsetY]) => {
 					context.moveTo(x + offsetX + 0.65, y + offsetY);
 					context.arc(x + offsetX, y + offsetY, 0.65, 0, Math.PI * 2);
 				});
@@ -424,7 +471,7 @@ export const drawLand = (context: CanvasRenderingContext2D, land: LandColors, si
 	}
 	drawLandDetails(context, land, side);
 	if (land.decor === 'christmas') drawShapes(context, land, `${side}-decor`, () => buildChristmasShapes(side));
-	if (land.decor && hasTopDecor(land.decor)) drawShapes(context, land, `${side}-top-decor`, () => buildTopDecor(land.decor!, side));
+	if (land.decor && hasTopDecor(land.decor))
+		drawShapes(context, land, `${side}-top-decor`, () => buildTopDecor(land.decor!, side));
 	context.restore();
 };
-

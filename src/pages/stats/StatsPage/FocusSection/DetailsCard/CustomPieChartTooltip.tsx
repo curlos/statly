@@ -1,4 +1,4 @@
-import { getFormattedDuration } from "../../../../../utils/helpers.utils";
+import { getFormattedDuration } from '../../../../../utils/helpers.utils';
 
 interface TooltipPayloadItem {
 	payload: {

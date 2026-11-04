@@ -22,7 +22,6 @@ const MedalCard: React.FC<MedalCardProps> = ({
 	setShowChosenMedalModal,
 	onKeyDown,
 }) => {
-
 	const { chosenColorObj } = useThemeContext();
 	const {
 		medalsPageSettings: { selectedMedalCardImage },
@@ -37,7 +36,7 @@ const MedalCard: React.FC<MedalCardProps> = ({
 
 	const isSelected = chosenMedal?.name === name;
 
-	console.log(medal)
+	console.log(medal);
 
 	return (
 		<button

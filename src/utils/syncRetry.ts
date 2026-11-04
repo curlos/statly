@@ -6,10 +6,7 @@
  * @param maxRetries - Maximum number of retry attempts (default: 8)
  * @returns The result of the sync operation
  */
-export async function syncWithRetry<T>(
-	syncOperation: () => Promise<T>,
-	maxRetries: number = 8
-): Promise<T> {
+export async function syncWithRetry<T>(syncOperation: () => Promise<T>, maxRetries: number = 8): Promise<T> {
 	let attempt = 0;
 
 	while (attempt <= maxRetries) {
@@ -24,7 +21,7 @@ export async function syncWithRetry<T>(
 				// Exponential backoff: 2s, 4s, 8s, 16s, 32s, 64s, 128s, 256s
 				const delayMs = Math.min(Math.pow(2, attempt) * 1000, 256000);
 				console.log(`Sync in progress, retrying in ${delayMs / 1000}s (attempt ${attempt}/${maxRetries})...`);
-				await new Promise(resolve => setTimeout(resolve, delayMs));
+				await new Promise((resolve) => setTimeout(resolve, delayMs));
 			} else {
 				// Not a 409 or max retries reached
 				throw error;

@@ -1,7 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from './Modal';
 import Icon from '../Icon';
-import { setShowFirstSyncModal, selectShowFirstSyncModal, selectIsSyncing, selectSyncStatus } from '../../slices/syncSlice';
+import {
+	setShowFirstSyncModal,
+	selectShowFirstSyncModal,
+	selectIsSyncing,
+	selectSyncStatus,
+} from '../../slices/syncSlice';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useSyncStatusHelpers } from '../../hooks/useSyncStatusHelpers';
 
@@ -41,9 +46,12 @@ const ModalFirstSync = () => {
 
 				<div className="flex flex-col items-center text-center space-y-4">
 					{/* Icon */}
-					<div className="relative" style={{ color: isSyncing ? themeColor : (hasError ? '#ef4444' : '#4ade80') }}>
+					<div
+						className="relative"
+						style={{ color: isSyncing ? themeColor : hasError ? '#ef4444' : '#4ade80' }}
+					>
 						<Icon
-							name={isSyncing ? "sync" : (hasError ? "error" : "check_circle")}
+							name={isSyncing ? 'sync' : hasError ? 'error' : 'check_circle'}
 							fill={1}
 							customClass={`!text-[64px] ${isSyncing ? 'animate-spin' : ''}`}
 						/>
@@ -51,7 +59,7 @@ const ModalFirstSync = () => {
 
 					{/* Title */}
 					<h2 id="first-sync-title" className="text-2xl font-bold text-white">
-						{isSyncing ? 'First Time Sync in Progress' : (hasError ? 'Sync Failed' : 'Sync Complete!')}
+						{isSyncing ? 'First Time Sync in Progress' : hasError ? 'Sync Failed' : 'Sync Complete!'}
 					</h2>
 
 					{/* Message */}
@@ -68,24 +76,16 @@ const ModalFirstSync = () => {
 							</>
 						) : hasError ? (
 							<>
-								<p className="text-lg text-red-400 mt-0">
-									One or more syncs failed.
-								</p>
+								<p className="text-lg text-red-400 mt-0">One or more syncs failed.</p>
 								<p className="mt-0">
 									Please check your TickTick cookie and try again. Some data may not be available.
 								</p>
 							</>
 						) : (
 							<>
-								<p className="text-lg">
-									Your data has been successfully synced!
-								</p>
-								<p>
-									You can now view all your tasks, projects, and focus records.
-								</p>
-								<p className="text-color-gray-100">
-									This modal will close automatically in 2 seconds.
-								</p>
+								<p className="text-lg">Your data has been successfully synced!</p>
+								<p>You can now view all your tasks, projects, and focus records.</p>
+								<p className="text-color-gray-100">This modal will close automatically in 2 seconds.</p>
 							</>
 						)}
 					</div>
@@ -98,11 +98,20 @@ const ModalFirstSync = () => {
 						{syncCategories.map((category) => {
 							const statusInfo = getStatusIcon(category.key);
 							// For idle state, show "Waiting..." text
-							const displayInfo = statusInfo || { name: 'schedule', color: '#9ca3af', text: 'Waiting...', spin: false };
+							const displayInfo = statusInfo || {
+								name: 'schedule',
+								color: '#9ca3af',
+								text: 'Waiting...',
+								spin: false,
+							};
 							return (
 								<div key={category.label} className="flex items-center justify-between">
 									<div className="flex items-center gap-2">
-										<Icon name={category.icon} fill={1} customClass="!text-[18px] text-color-gray-100" />
+										<Icon
+											name={category.icon}
+											fill={1}
+											customClass="!text-[18px] text-color-gray-100"
+										/>
 										<span className="text-color-gray-100">{category.label}</span>
 									</div>
 									<div className="flex items-center gap-2" style={{ color: displayInfo.color }}>

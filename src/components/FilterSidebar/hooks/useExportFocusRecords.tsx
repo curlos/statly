@@ -18,19 +18,23 @@ interface FocusRecordsExportData {
 	totalDuration: number;
 	emotionCounts?: Record<string, number>;
 	noteStats?: { totalCharacters: number; totalWords: number };
-	grouped?: Record<string, {
-		records: FocusRecord[];
-		totalDuration: number;
-		groupName: string;
-		emotionCounts?: Record<string, number>;
-	}>;
+	grouped?: Record<
+		string,
+		{
+			records: FocusRecord[];
+			totalDuration: number;
+			groupName: string;
+			emotionCounts?: Record<string, number>;
+		}
+	>;
 }
 
 const useExportFocusRecords = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const { queryParams, urlValues } = useSharedQueryParams();
 	const userSettings = useUserSettingsContext();
-	const taskIdIncludeFocusRecordsFromSubtasks = userSettings?.focusRecordsPageSettings?.taskIdIncludeFocusRecordsFromSubtasks ?? true;
+	const taskIdIncludeFocusRecordsFromSubtasks =
+		userSettings?.focusRecordsPageSettings?.taskIdIncludeFocusRecordsFromSubtasks ?? true;
 	const onlyExportTasksWithNoParent = userSettings?.focusRecordsPageSettings?.onlyExportTasksWithNoParent ?? true;
 	const showFocusRecordEmotions = userSettings?.focusRecordsPageSettings?.showFocusRecordEmotions ?? true;
 	const showEmotionCount = userSettings?.focusRecordsPageSettings?.showEmotionCount ?? false;
@@ -38,12 +42,19 @@ const useExportFocusRecords = () => {
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
 
-
-	const getFocusRecordsMarkdown = (focusRecords: FocusRecord[], customTitle: string | null, totalDuration: number, emotionCounts?: Record<string, number>, noteStats?: { totalCharacters: number; totalWords: number }) => {
+	const getFocusRecordsMarkdown = (
+		focusRecords: FocusRecord[],
+		customTitle: string | null,
+		totalDuration: number,
+		emotionCounts?: Record<string, number>,
+		noteStats?: { totalCharacters: number; totalWords: number }
+	) => {
 		const allFocusRecordsMarkdown: string[] = [];
 
 		// Add title as H1 at the beginning
-		const titleInfo = customTitle || `Focus Records (${focusRecords.length.toLocaleString()}) - ${getFormattedDuration(totalDuration, false)}`;
+		const titleInfo =
+			customTitle ||
+			`Focus Records (${focusRecords.length.toLocaleString()}) - ${getFormattedDuration(totalDuration, false)}`;
 		allFocusRecordsMarkdown.push(`# ${titleInfo}\n`);
 
 		// Add note stats if showNoteStats is true and noteStats exist
@@ -200,7 +211,7 @@ const useExportFocusRecords = () => {
 			if (showNoteStats) {
 				let totalCharacters = 0;
 				let totalWords = 0;
-				records.forEach(record => {
+				records.forEach((record) => {
 					if (record.note) {
 						totalCharacters += record.note.length;
 						const trimmedNote = record.note.trim();
@@ -214,7 +225,13 @@ const useExportFocusRecords = () => {
 
 			// Title used in the markdown content
 			const customTitle = `${displayName} - Focus Records (${records.length.toLocaleString()}) - ${formattedDuration}`;
-			const markdown = getFocusRecordsMarkdown(records, customTitle, totalDuration, groupEmotionCounts, groupNoteStats);
+			const markdown = getFocusRecordsMarkdown(
+				records,
+				customTitle,
+				totalDuration,
+				groupEmotionCounts,
+				groupNoteStats
+			);
 
 			// Filename for the markdown file - sanitize forward slashes to prevent folder creation
 			const sanitizedName = `${paddedIndex}_${displayName}_${formattedDuration}`.replace(/[/\\?%*:|"<>]/g, '-');

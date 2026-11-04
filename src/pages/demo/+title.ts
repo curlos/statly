@@ -1,1 +1,1 @@
-export default "Demo - Statly";
+export default 'Demo - Statly';

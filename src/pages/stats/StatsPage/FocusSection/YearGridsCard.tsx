@@ -27,15 +27,24 @@ const YearGridsCard = () => {
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams, {
-		skip: shouldSkipQuery
+	const {
+		data: statsData,
+		isLoading,
+		isFetching,
+	} = useGetFocusStatsQuery(queryParams, {
+		skip: shouldSkipQuery,
 	});
 
 	return (
-		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-auto sm:h-[350px] relative" aria-labelledby="year-grids-heading">
+		<section
+			className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-auto sm:h-[350px] relative"
+			aria-labelledby="year-grids-heading"
+		>
 			<div className="flex justify-between items-center mb-2">
 				<div className="flex items-center gap-2">
-					<h2 id="year-grids-heading" className="font-bold text-[16px]">Year Grids</h2>
+					<h2 id="year-grids-heading" className="font-bold text-[16px]">
+						Year Grids
+					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 

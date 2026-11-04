@@ -15,7 +15,7 @@
 export const invalidateOnSuccess = <T extends string>(tags: readonly T[]) => {
 	return (_result: unknown, error: unknown) => {
 		if (error) {
-			return [] as const;  // Don't invalidate on error
+			return [] as const; // Don't invalidate on error
 		}
 		return tags;
 	};

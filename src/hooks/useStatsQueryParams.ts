@@ -6,7 +6,7 @@ interface UseStatsQueryParamsOptions {
 	'group-by'?: string;
 	'interval-start-date'?: string;
 	'interval-end-date'?: string;
-	'nested'?: boolean;
+	nested?: boolean;
 }
 
 /**
@@ -22,9 +22,7 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 	const {
-		focusRecordsPageSettings: {
-			taskIdIncludeFocusRecordsFromSubtasks
-		}
+		focusRecordsPageSettings: { taskIdIncludeFocusRecordsFromSubtasks },
 	} = useUserSettingsContext();
 
 	// Extract options properties to avoid complex expressions in dependency array
@@ -42,8 +40,8 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 			// Interval Dropdown dates (from component options) - second tier filter
 			'interval-start-date': intervalStartDate || undefined,
 			'interval-end-date': intervalEndDate || undefined,
-			'nested': nested || undefined,
-			'search': searchParams.get('search') || undefined,
+			nested: nested || undefined,
+			search: searchParams.get('search') || undefined,
 			'search-case-sensitive': searchParams.get('search-case-sensitive') || undefined,
 			'search-whole-word': searchParams.get('search-whole-word') || undefined,
 			'search-match-all': searchParams.get('search-match-all') || undefined,
@@ -51,13 +49,13 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 			'focus-apps': searchParams.get('focus-apps') || undefined,
 			'projects-ticktick': searchParams.get('projects') || undefined,
 			'projects-todoist': searchParams.get('projects-todoist') || undefined,
-			'categories': searchParams.get('categories') || undefined,
+			categories: searchParams.get('categories') || undefined,
 			'to-do-list-apps': searchParams.get('to-do-list-apps') || undefined,
 			'task-id': searchParams.get('task-id') || undefined,
 			'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
-			'timezone': timezone,
-			'emotions': searchParams.get('emotions') || undefined,
-			'general': searchParams.get('general') || undefined,
+			timezone: timezone,
+			emotions: searchParams.get('emotions') || undefined,
+			general: searchParams.get('general') || undefined,
 			'year-agnostic': searchParams.get('year-agnostic') || undefined,
 		};
 	}, [
@@ -67,7 +65,7 @@ export const useStatsQueryParams = (options: UseStatsQueryParamsOptions = {}) =>
 		nested,
 		searchParams,
 		timezone,
-		taskIdIncludeFocusRecordsFromSubtasks
+		taskIdIncludeFocusRecordsFromSubtasks,
 	]);
 
 	return queryParams;

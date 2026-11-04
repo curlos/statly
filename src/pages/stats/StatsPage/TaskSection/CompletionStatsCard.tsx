@@ -66,7 +66,7 @@ const CompletionStatsCard = () => {
 		'group-by': selected === 'Project' ? 'project' : 'task',
 		'interval-start-date': apiStartDate ?? undefined,
 		'interval-end-date': apiEndDate ?? undefined,
-		'nested': showNestedProgressBars,
+		nested: showNestedProgressBars,
 	});
 
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
@@ -76,8 +76,12 @@ const CompletionStatsCard = () => {
 	const { projectsById } = fetchedProjects || {};
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetTasksStatsQuery(queryParams, {
-		skip: shouldSkipQuery
+	const {
+		data: statsData,
+		isLoading,
+		isFetching,
+	} = useGetTasksStatsQuery(queryParams, {
+		skip: shouldSkipQuery,
 	});
 	const { ancestorTasksById } = statsData || {};
 
@@ -94,9 +98,14 @@ const CompletionStatsCard = () => {
 			projectId?: string;
 			color?: string;
 			[key: string]: unknown;
-		}> = selected === 'Project'
-			? (statsData?.byProject && statsData.byProject.length > 0 ? statsData.byProject : noData)
-			: (statsData?.byTask && statsData.byTask.length > 0 ? statsData.byTask : noData);
+		}> =
+			selected === 'Project'
+				? statsData?.byProject && statsData.byProject.length > 0
+					? statsData.byProject
+					: noData
+				: statsData?.byTask && statsData.byTask.length > 0
+					? statsData.byTask
+					: noData;
 
 		let aggregationResults: AggregationResults | null = null;
 
@@ -117,7 +126,12 @@ const CompletionStatsCard = () => {
 				data = aggregationResults.aggregatedData;
 			} else {
 				// Use simple flat aggregation for non-nested view
-				data = groupTasksByParent(data as GroupedDataItem[], ancestorTasksById, totalCount, 'count') as typeof data;
+				data = groupTasksByParent(
+					data as GroupedDataItem[],
+					ancestorTasksById,
+					totalCount,
+					'count'
+				) as typeof data;
 			}
 		}
 
@@ -144,19 +158,16 @@ const CompletionStatsCard = () => {
 			data = [...data].map((item) => {
 				const projectId = item.type === 'project' ? item.id : item.projectId;
 
-				const name = item.type === 'project' && projectId
-					? (projectsById?.[projectId]?.name || projectId)
-					: item.name;
-				const color = projectId && projectsById?.[projectId]?.color
-					? projectsById[projectId].color
-					: '#808080';
+				const name =
+					item.type === 'project' && projectId ? projectsById?.[projectId]?.name || projectId : item.name;
+				const color = projectId && projectsById?.[projectId]?.color ? projectsById[projectId].color : '#808080';
 
 				return {
 					...item,
 					name,
-					color
-				}
-			})
+					color,
+				};
+			});
 		}
 
 		return { progressBarData: data, aggregationResults };
@@ -178,11 +189,19 @@ const CompletionStatsCard = () => {
 		const CardTag = fromModal ? 'div' : 'section';
 
 		return (
-			<CardTag className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby={fromModal ? undefined : 'completion-stats-heading'}>
+			<CardTag
+				className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative"
+				aria-labelledby={fromModal ? undefined : 'completion-stats-heading'}
+			>
 				<div className="flex gap-4">
 					<div className="md:flex justify-between items-center w-full">
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
-							<h2 id={fromModal ? 'completion-stats-modal-heading' : 'completion-stats-heading'} className="font-bold text-[16px]">Completion Stats</h2>
+							<h2
+								id={fromModal ? 'completion-stats-modal-heading' : 'completion-stats-heading'}
+								className="font-bold text-[16px]"
+							>
+								Completion Stats
+							</h2>
 							{(isLoading || isFetching) && <Spinner size="md" />}
 							{fromModal && (
 								<button
@@ -207,7 +226,9 @@ const CompletionStatsCard = () => {
 							<div className="flex items-center gap-2">
 								<button
 									type="button"
-									aria-label={showNestedProgressBars ? 'Switch to flat view' : 'Switch to nested view'}
+									aria-label={
+										showNestedProgressBars ? 'Switch to flat view' : 'Switch to nested view'
+									}
 									className="bg-transparent border-0 p-0 cursor-pointer"
 									onClick={() => setShowNestedProgressBars(!showNestedProgressBars)}
 								>
@@ -223,13 +244,13 @@ const CompletionStatsCard = () => {
 
 								<button
 									type="button"
-									aria-label={sortBy === 'Tasks: Most-Least' ? 'Sort by least tasks' : 'Sort by most tasks'}
+									aria-label={
+										sortBy === 'Tasks: Most-Least' ? 'Sort by least tasks' : 'Sort by most tasks'
+									}
 									className="bg-transparent border-0 p-0 cursor-pointer"
 									onClick={() =>
 										setSortBy(
-											sortBy === 'Tasks: Most-Least'
-												? 'Tasks: Least-Most'
-												: 'Tasks: Most-Least'
+											sortBy === 'Tasks: Most-Least' ? 'Tasks: Least-Most' : 'Tasks: Most-Least'
 										)
 									}
 								>
@@ -305,7 +326,9 @@ const CompletionStatsCard = () => {
 										key={entry.id ? `${entry.id}-index` : index}
 										fill={entry.color}
 										stroke="none"
-										aria-label={entry.id === 'No Data' ? 'No data' : `${entry.name}: ${entry.percentage}%`}
+										aria-label={
+											entry.id === 'No Data' ? 'No data' : `${entry.name}: ${entry.percentage}%`
+										}
 									/>
 								))}
 
@@ -388,7 +411,9 @@ const CompletionStatsCard = () => {
 				contentRef={scrollableContainerRef}
 				ariaLabelledBy="completion-stats-modal-heading"
 			>
-				<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
+				<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2">
+					{getCoreDetailsCard(isModalOpen)}
+				</div>
 			</Modal>
 		</div>
 	);

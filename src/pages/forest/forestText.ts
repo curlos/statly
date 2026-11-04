@@ -28,11 +28,15 @@ export const describeTree = (tree: ForestTree, getProjectName: (projectId: strin
 
 	return {
 		title: projectName,
-		projectLines: hasSeveralProjects ? projectsInRecord.map(({ name, seconds }) => `${name} · ${getFormattedDuration(seconds, false)}`) : [],
+		projectLines: hasSeveralProjects
+			? projectsInRecord.map(({ name, seconds }) => `${name} · ${getFormattedDuration(seconds, false)}`)
+			: [],
 		details: `${getFormattedDuration(tree.seconds, false)} · ${day}`,
 		treeLabel,
 		description: `${
-			hasSeveralProjects ? projectsInRecord.map(({ name, seconds }) => `${name} ${getSpokenDuration(seconds)}`).join(' and ') : projectName
+			hasSeveralProjects
+				? projectsInRecord.map(({ name, seconds }) => `${name} ${getSpokenDuration(seconds)}`).join(' and ')
+				: projectName
 		}, ${getSpokenDuration(tree.seconds)}${hasSeveralProjects ? ' in total' : ''}, ${day}, ${treeLabel}`,
 	};
 };

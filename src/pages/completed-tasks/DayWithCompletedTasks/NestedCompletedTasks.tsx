@@ -127,7 +127,7 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 			<li key={parentTaskId} className="text-[16px]">
 				<Accordion
 					titleHasLinks
-						mutedArrow
+					mutedArrow
 					title={
 						<div className="flex items-center gap-2 text-[18px]">
 							<h3 className="ui-theme-task-title min-w-0 break-words underline hover:text-blue-500 font-bold m-0">
@@ -145,16 +145,18 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 
 					<ul className="pl-2 sm:pl-6 [&>li]:mt-2">
 						{parentDirectChildrenTaskIdsByParentId[parentTaskId] &&
-							sortByCompletedCount(parentDirectChildrenTaskIdsByParentId[parentTaskId]).map((taskId: string) => {
-								if (
-									parentDirectChildrenTaskIdsByParentId[taskId] &&
-									parentDirectChildrenTaskIdsByParentId[taskId].length > 0
-								) {
-									return renderNestedTasks(taskId);
-								} else {
-									return null;
+							sortByCompletedCount(parentDirectChildrenTaskIdsByParentId[parentTaskId]).map(
+								(taskId: string) => {
+									if (
+										parentDirectChildrenTaskIdsByParentId[taskId] &&
+										parentDirectChildrenTaskIdsByParentId[taskId].length > 0
+									) {
+										return renderNestedTasks(taskId);
+									} else {
+										return null;
+									}
 								}
-							})}
+							)}
 					</ul>
 				</Accordion>
 			</li>
@@ -198,29 +200,32 @@ const NestedCompletedTasks: React.FC<NestedCompletedTasksProps> = ({
 					}))
 					.sort((a, b) => b.count - a.count)
 					.map(({ projectId, taskIds, count }) => (
-					<li key={projectId}>
-						<Accordion
-							titleHasLinks
-							mutedArrow
-							title={
-								<div className="flex items-center gap-2 text-[18px]">
-									<h3 className="ui-theme-task-title min-w-0 break-words underline hover:text-blue-500 font-bold m-0">
-										<a href={getProjectUrl(projectId)} style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
-											{projectsById?.[projectId]?.name || projectId || 'No Project'}
-										</a>
-									</h3>
-									{renderCount(count)}
-								</div>
-							}
-							openByDefault={!groupedTasksCollapsedByDefault}
-							showArrowNextToText={true}
-						>
-							<ul className="space-y-5 list-none pl-2 sm:pl-6 m-0">
-								{taskIds.map((taskId: string) => renderNestedTasks(taskId))}
-							</ul>
-						</Accordion>
-					</li>
-				))}
+						<li key={projectId}>
+							<Accordion
+								titleHasLinks
+								mutedArrow
+								title={
+									<div className="flex items-center gap-2 text-[18px]">
+										<h3 className="ui-theme-task-title min-w-0 break-words underline hover:text-blue-500 font-bold m-0">
+											<a
+												href={getProjectUrl(projectId)}
+												style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+											>
+												{projectsById?.[projectId]?.name || projectId || 'No Project'}
+											</a>
+										</h3>
+										{renderCount(count)}
+									</div>
+								}
+								openByDefault={!groupedTasksCollapsedByDefault}
+								showArrowNextToText={true}
+							>
+								<ul className="space-y-5 list-none pl-2 sm:pl-6 m-0">
+									{taskIds.map((taskId: string) => renderNestedTasks(taskId))}
+								</ul>
+							</Accordion>
+						</li>
+					))}
 			</ul>
 		</>
 	);

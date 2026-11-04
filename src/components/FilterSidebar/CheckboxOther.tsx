@@ -25,14 +25,21 @@ const CheckboxOther: React.FC<CheckboxOtherProps> = ({ name, showValue, handleCh
 				<Icon
 					name={showValue ? 'check_box' : 'check_box_outline_blank'}
 					fill={1}
-					customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
+					customClass={classNames(
+						'!text-[22px]',
+						chosenColorObj.textColor,
+						(nextLightestColorObj || chosenColorObj).hover.textColor
+					)}
 				/>
 			</span>
 			<span className="flex-1 flex justify-between">
 				<span>{name}</span>
 				{project?.color && (
 					<span aria-hidden="true">
-						<span className="block w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: project.color }} />
+						<span
+							className="block w-[10px] h-[10px] rounded-full mr-[4px]"
+							style={{ backgroundColor: project.color }}
+						/>
 					</span>
 				)}
 			</span>

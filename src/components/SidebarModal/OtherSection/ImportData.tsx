@@ -183,7 +183,12 @@ const ImportData = () => {
 		} catch (error) {
 			console.error('Error importing backup data:', error);
 			const errorMessage =
-				error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'error' in error.data
+				error &&
+				typeof error === 'object' &&
+				'data' in error &&
+				error.data &&
+				typeof error.data === 'object' &&
+				'error' in error.data
 					? String(error.data.error)
 					: 'An error occurred importing backup data.';
 			alert(errorMessage);
@@ -235,7 +240,10 @@ const ImportData = () => {
 				{isImporting && batches.length > 0 && (
 					<button
 						type="button"
-						className={classNames('flex items-center gap-2 ml-9 my-2 w-full text-left', chosenColorObj.hover.textColor)}
+						className={classNames(
+							'flex items-center gap-2 ml-9 my-2 w-full text-left',
+							chosenColorObj.hover.textColor
+						)}
 						onClick={() => dispatch(setModalOpen(true))}
 					>
 						<Icon

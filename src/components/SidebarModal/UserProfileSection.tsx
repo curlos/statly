@@ -63,7 +63,7 @@ const UserProfileSection = () => {
 		}
 	};
 
-	return (	
+	return (
 		<div className="relative" onKeyDown={handleKeyDown}>
 			<button
 				ref={toggleRef}
@@ -91,7 +91,12 @@ const UserProfileSection = () => {
 				<Icon name="more_horiz" customClass="text-color-gray-50 !text-[24px]" />
 			</button>
 
-			<Dropdown isVisible={isDropdownOpen} setIsVisible={setIsDropdownOpen} toggleRef={toggleRef} customClasses="w-full max-w-[250px] !text-[16px] border border-color-gray-25">
+			<Dropdown
+				isVisible={isDropdownOpen}
+				setIsVisible={setIsDropdownOpen}
+				toggleRef={toggleRef}
+				customClasses="w-full max-w-[250px] !text-[16px] border border-color-gray-25"
+			>
 				<div
 					role="menu"
 					className="p-2"
@@ -101,7 +106,9 @@ const UserProfileSection = () => {
 						}
 					}}
 					onKeyDown={(e) => {
-						const items = Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="menuitem"]'));
+						const items = Array.from(
+							e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')
+						);
 						const index = items.indexOf(document.activeElement as HTMLButtonElement);
 						if (e.key === 'ArrowDown') {
 							e.preventDefault();

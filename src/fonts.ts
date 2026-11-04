@@ -57,7 +57,6 @@ import '@fontsource/comic-neue/400-italic.css';
 import '@fontsource/comic-neue/700.css';
 import '@fontsource/comic-neue/700-italic.css';
 
-
 // Cyberpunk 2077 UI theme font
 import '@fontsource/rajdhani/400.css';
 import '@fontsource/rajdhani/500.css';

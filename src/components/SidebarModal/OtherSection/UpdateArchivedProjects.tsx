@@ -45,12 +45,17 @@ const UpdateArchivedProjects = () => {
 
 	return (
 		<div>
-			<span role="status" aria-live="polite" className="sr-only">{updateStatus === 'done' ? 'Update complete' : ''}</span>
+			<span role="status" aria-live="polite" className="sr-only">
+				{updateStatus === 'done' ? 'Update complete' : ''}
+			</span>
 			<button
 				type="button"
 				disabled={updateStatus === 'loading'}
 				aria-busy={updateStatus === 'loading'}
-				className={classNames('flex items-center gap-2 my-2 w-full text-left disabled:opacity-50 disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
+				className={classNames(
+					'flex items-center gap-2 my-2 w-full text-left disabled:opacity-50 disabled:cursor-not-allowed',
+					chosenColorObj.hover.textColor
+				)}
 				onClick={handleClick}
 			>
 				{updateStatus === 'loading' ? (
@@ -83,7 +88,10 @@ interface ArchivedProjectsCheckboxListProps {
 	setCheckedArchivedProjects: (projects: Record<string, boolean>) => void;
 }
 
-const ArchivedProjectsCheckboxList: React.FC<ArchivedProjectsCheckboxListProps> = ({ checkedArchivedProjects, setCheckedArchivedProjects }) => {
+const ArchivedProjectsCheckboxList: React.FC<ArchivedProjectsCheckboxListProps> = ({
+	checkedArchivedProjects,
+	setCheckedArchivedProjects,
+}) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 
 	// RTK Query - Projects
@@ -148,7 +156,8 @@ const ArchivedProjectsCheckboxList: React.FC<ArchivedProjectsCheckboxListProps> 
 						onChange={toggleSelectAllArchivedProjects}
 						className="sr-only"
 					/>
-					<span aria-hidden="true"
+					<span
+						aria-hidden="true"
 						className={`relative w-11 h-6 rounded-full transition-colors ${selectedAll ? chosenColorObj.bgColor : 'bg-color-gray-300'}`}
 					>
 						<span
@@ -175,7 +184,11 @@ interface CheckboxArchivedProjectProps {
 	setCheckedArchivedProjects: (projects: Record<string, boolean>) => void;
 }
 
-const CheckboxArchivedProject: React.FC<CheckboxArchivedProjectProps> = ({ project, checkedArchivedProjects, setCheckedArchivedProjects }) => {
+const CheckboxArchivedProject: React.FC<CheckboxArchivedProjectProps> = ({
+	project,
+	checkedArchivedProjects,
+	setCheckedArchivedProjects,
+}) => {
 	const { chosenColorObj, nextLightestColorObj } = useThemeContext();
 	const isChecked = checkedArchivedProjects[project.id];
 
@@ -191,14 +204,21 @@ const CheckboxArchivedProject: React.FC<CheckboxArchivedProjectProps> = ({ proje
 				<Icon
 					name={isChecked ? 'check_box' : 'check_box_outline_blank'}
 					fill={1}
-					customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
+					customClass={classNames(
+						'!text-[22px]',
+						chosenColorObj.textColor,
+						(nextLightestColorObj || chosenColorObj).hover.textColor
+					)}
 				/>
 			</span>
 			<span className="flex-1 flex justify-between items-center gap-1">
 				<span>{project.name}</span>
 				{project?.color && (
 					<span aria-hidden="true">
-						<span className="block w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: project.color }} />
+						<span
+							className="block w-[10px] h-[10px] rounded-full mr-[4px]"
+							style={{ backgroundColor: project.color }}
+						/>
 					</span>
 				)}
 			</span>

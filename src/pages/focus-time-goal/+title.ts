@@ -1,1 +1,1 @@
-export default "Focus Time Goal - Statly";
+export default 'Focus Time Goal - Statly';

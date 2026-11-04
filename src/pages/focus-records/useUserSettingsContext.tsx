@@ -1,9 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useEditUserSettingsMutation, useGetUserSettingsQuery } from '../../services/resources/userSettingsApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import type {
-	Ring
-} from '../../types/api';
+import type { Ring } from '../../types/api';
 
 const useUserSettings = () => {
 	const { uiTheme } = useThemeContext();
@@ -26,21 +24,22 @@ const useUserSettings = () => {
 	const { data: fetchedUserSettings, isLoading: isLoadingGetUserSettings } = useGetUserSettingsQuery();
 	const { userSettings } = fetchedUserSettings || {};
 
-	const focusRecordsPageSettings = userSettings?.pages?.focusRecords
-	const completedTasksPageSettings = userSettings?.pages?.completedTasks
-	const focusHoursGoalPageSettings = userSettings?.pages?.focusHoursGoal
-	const challengesPageSettings = userSettings?.pages?.challenges
-	const medalsPageSettings = userSettings?.pages?.medals
-	const forestPageSettings = userSettings?.pages?.forest
+	const focusRecordsPageSettings = userSettings?.pages?.focusRecords;
+	const completedTasksPageSettings = userSettings?.pages?.completedTasks;
+	const focusHoursGoalPageSettings = userSettings?.pages?.focusHoursGoal;
+	const challengesPageSettings = userSettings?.pages?.challenges;
+	const medalsPageSettings = userSettings?.pages?.medals;
+	const forestPageSettings = userSettings?.pages?.forest;
 
 	// Extract rings from focusHoursGoal settings - use cached rings while loading
-	const rings = isLoadingGetUserSettings && cachedSettings?.rings?.length > 0
-		? cachedSettings.rings
-		: (focusHoursGoalPageSettings?.rings || []);
+	const rings =
+		isLoadingGetUserSettings && cachedSettings?.rings?.length > 0
+			? cachedSettings.rings
+			: focusHoursGoalPageSettings?.rings || [];
 	const activeRings = rings.filter((ring: Ring) => ring.isActive);
 
 	// Auto-select first active ring if no selection yet
-	const effectiveSelectedRingId = selectedRingId || (activeRings[0]?.id || null);
+	const effectiveSelectedRingId = selectedRingId || activeRings[0]?.id || null;
 
 	// Find current ring by selectedRingId
 	const currentRing = rings.find((ring: Ring) => ring.id === effectiveSelectedRingId) || null;
@@ -67,12 +66,13 @@ const useUserSettings = () => {
 		analyzeNoteEmotionsWhileSyncingFocusRecords = false,
 		customDisplay = {
 			useBackgroundImage: false,
-			backgroundImage: "https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Blue_Tiger_Camo_Icon_MW2019.webp",
+			backgroundImage:
+				'https://res.cloudinary.com/dvsuz3v37/image/upload/v1766609482/Statly/mw2019-weapon-camos/TIGER/Blue_Tiger_Camo_Icon_MW2019.webp',
 			backgroundImageOpacity: 1,
 			useBackgroundColor: false,
-			backgroundColor: "#3b82f6",
+			backgroundColor: '#3b82f6',
 			useTextColor: false,
-			textColor: "#ffffff"
+			textColor: '#ffffff',
 		},
 	} = focusRecordsPageSettings || {};
 
@@ -96,7 +96,7 @@ const useUserSettings = () => {
 			try {
 				const settingsToCache = {
 					rings: focusHoursGoalPageSettings.rings,
-					selectedRingId: effectiveSelectedRingId
+					selectedRingId: effectiveSelectedRingId,
 				};
 				localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(settingsToCache));
 				setCachedSettings(settingsToCache);
@@ -104,7 +104,12 @@ const useUserSettings = () => {
 				console.error('Failed to cache settings:', error);
 			}
 		}
-	}, [isLoadingGetUserSettings, focusHoursGoalPageSettings?.rings, effectiveSelectedRingId, focusHoursGoalPageSettings]);
+	}, [
+		isLoadingGetUserSettings,
+		focusHoursGoalPageSettings?.rings,
+		effectiveSelectedRingId,
+		focusHoursGoalPageSettings,
+	]);
 
 	// Helper function to switch selected ring
 	const handleSetSelectedRing = (ringId: string) => {
@@ -148,7 +153,7 @@ const useUserSettings = () => {
 				return {
 					...ring,
 					[settingProperty]: newValue,
-					updatedAt: new Date().toISOString()
+					updatedAt: new Date().toISOString(),
 				};
 			}
 			return ring;
@@ -171,7 +176,7 @@ const useUserSettings = () => {
 			const currentCache = JSON.parse(localStorage.getItem('focusHoursGoalPageSettings') || '{}');
 			const updatedCache = {
 				...currentCache,
-				rings: updatedRings
+				rings: updatedRings,
 			};
 			localStorage.setItem('focusHoursGoalPageSettings', JSON.stringify(updatedCache));
 			setCachedSettings(updatedCache);
@@ -180,8 +185,8 @@ const useUserSettings = () => {
 		}
 	};
 
-	const defaultDateRangeInterval = userSettings?.defaultDateRangeInterval || 'All'
-	const defaultCustomStartDate = userSettings?.defaultCustomStartDate || ''
+	const defaultDateRangeInterval = userSettings?.defaultDateRangeInterval || 'All';
+	const defaultCustomStartDate = userSettings?.defaultCustomStartDate || '';
 
 	return {
 		userSettings,
@@ -240,7 +245,7 @@ const useUserSettings = () => {
 			hemisphere,
 			projectTrees,
 		},
-		isLoadingGetUserSettings
+		isLoadingGetUserSettings,
 	};
 };
 

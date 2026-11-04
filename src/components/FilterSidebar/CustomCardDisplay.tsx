@@ -17,7 +17,7 @@ const CustomCardDisplay = () => {
 		useBackgroundColor,
 		backgroundColor,
 		useTextColor,
-		textColor
+		textColor,
 	} = customDisplay;
 
 	// Local state for opacity slider (for smooth UX)
@@ -49,23 +49,21 @@ const CustomCardDisplay = () => {
 				handleCheckboxClick={() =>
 					handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 						...customDisplay,
-						useBackgroundImage: !useBackgroundImage
+						useBackgroundImage: !useBackgroundImage,
 					})
 				}
 			/>
 
 			{useBackgroundImage && (
 				<div className="pl-10 mt-2 space-y-3">
-					<CardImage
-						cardType="background"
-						imageSrc={backgroundImage}
-						page="focus-records"
-					/>
+					<CardImage cardType="background" imageSrc={backgroundImage} page="focus-records" />
 
 					{/* Opacity Slider */}
 					<div className="space-y-1">
 						<div className="flex items-center justify-between">
-							<label htmlFor="opacity-slider" className="text-[14px] text-color-gray-100">Opacity:</label>
+							<label htmlFor="opacity-slider" className="text-[14px] text-color-gray-100">
+								Opacity:
+							</label>
 							<span className="text-[14px] text-color-gray-100">{Math.round(localOpacity * 100)}%</span>
 						</div>
 						<input
@@ -91,7 +89,7 @@ const CustomCardDisplay = () => {
 								debounceTimerRef.current = setTimeout(() => {
 									handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 										...customDisplay,
-										backgroundImageOpacity: newOpacity
+										backgroundImageOpacity: newOpacity,
 									});
 								}, 1000);
 							}}
@@ -108,7 +106,7 @@ const CustomCardDisplay = () => {
 				handleCheckboxClick={() =>
 					handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 						...customDisplay,
-						useBackgroundColor: !useBackgroundColor
+						useBackgroundColor: !useBackgroundColor,
 					})
 				}
 			/>
@@ -122,7 +120,7 @@ const CustomCardDisplay = () => {
 						onColorChange={(newColor) =>
 							handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 								...customDisplay,
-								backgroundColor: newColor
+								backgroundColor: newColor,
 							})
 						}
 					/>
@@ -136,7 +134,7 @@ const CustomCardDisplay = () => {
 				handleCheckboxClick={() =>
 					handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 						...customDisplay,
-						useTextColor: !useTextColor
+						useTextColor: !useTextColor,
 					})
 				}
 			/>
@@ -150,7 +148,7 @@ const CustomCardDisplay = () => {
 						onColorChange={(newColor) =>
 							handleUpdateUserSettingForPage('focusRecords', 'customDisplay', {
 								...customDisplay,
-								textColor: newColor
+								textColor: newColor,
 							})
 						}
 					/>

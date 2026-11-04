@@ -6,7 +6,11 @@ import { truncateText } from '../../utils/text.utils';
 import { useState } from 'react';
 import classNames from 'classnames';
 import { useThemeContext } from '../../contexts/useThemeContext';
-import { useGetStreaksTodayQuery, useGetStreakHistoryQuery, useGetCombinedStreakHistoryQuery } from '../../services/resources/streaksApi';
+import {
+	useGetStreaksTodayQuery,
+	useGetStreakHistoryQuery,
+	useGetCombinedStreakHistoryQuery,
+} from '../../services/resources/streaksApi';
 import Spinner from '../../components/Loaders/Spinner';
 import { useSharedQueryParams } from '../../hooks/useSharedQueryParams';
 import ModalFocusGoalProgress from '../../components/Modal/ModalFocusGoalProgress/ModalFocusGoalProgress';
@@ -80,7 +84,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { queryParams } = useSharedQueryParams();
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 	const { data: allRingsTodayData, isLoading: isTodayLoading } = useGetStreaksTodayQuery(queryParams, {
-		skip: shouldSkipQuery
+		skip: shouldSkipQuery,
 	}) as {
 		data: AllRingsTodayResponse | undefined;
 		isLoading: boolean;
@@ -94,12 +98,15 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { width } = useWindowSize();
 	const truncateLength = (width ?? 0) >= 576 ? 20 : 15;
 
-	const { userSettings, focusHoursGoalPageSettings: { activeRings, showMultiRingViewForOneActiveRing } } = useUserSettingsContext();
+	const {
+		userSettings,
+		focusHoursGoalPageSettings: { activeRings, showMultiRingViewForOneActiveRing },
+	} = useUserSettingsContext();
 
 	const combinedRingsSettings = userSettings?.pages?.focusHoursGoal?.combinedRingsSettings || {
 		showStreakCount: true,
 		showGoalDays: true,
-		goalDays: 7
+		goalDays: 7,
 	};
 
 	// Determine if we should fetch streak history
@@ -114,7 +121,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	};
 
 	// Fetch combined streak history when there are 2+ active rings
-	const shouldFetchCombinedStreaks = activeRings.length >= 2
+	const shouldFetchCombinedStreaks = activeRings.length >= 2;
 	const { data: combinedStreakData } = useGetCombinedStreakHistoryQuery(queryParams, {
 		skip: !shouldFetchCombinedStreaks || shouldSkipQuery,
 	}) as {
@@ -136,7 +143,12 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	};
 
 	// Helper function to render a single ring
-	const renderSingleRing = (ring: Ring, ringTodayData: RingTodayData | undefined, ringStreakData: RingStreakData | undefined, size = 'large') => {
+	const renderSingleRing = (
+		ring: Ring,
+		ringTodayData: RingTodayData | undefined,
+		ringStreakData: RingStreakData | undefined,
+		size = 'large'
+	) => {
 		const { showStreakCount = true, goalDays = 7, showGoalDays = true } = ring;
 		const { totalFocusDurationForDay = 0 } = ringTodayData || {};
 		const goalSeconds = getGoalSecondsForRing(ring);
@@ -167,8 +179,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 									? '!text-[48px]'
 									: '!text-[40px]'
 								: isLarge
-								? '!text-[32px]'
-								: '!text-[28px]'
+									? '!text-[32px]'
+									: '!text-[28px]'
 						)}
 					/>
 					{showStreakCount && (
@@ -179,7 +191,9 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 							{showGoalDays && (
 								<>
 									<span className="mx-[2px]">/</span>
-									<span className={isLarge ? 'text-[24px]' : 'text-[20px]'}>{goalDays.toLocaleString()}</span>
+									<span className={isLarge ? 'text-[24px]' : 'text-[20px]'}>
+										{goalDays.toLocaleString()}
+									</span>
 								</>
 							)}
 						</span>
@@ -190,8 +204,11 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					strokeWidth={6}
 					styles={buildStyles({
 						textColor: '#4772F9',
-						pathColor: ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor),
-						trailColor: hexToRgba(ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor), 0.2),
+						pathColor: ring.useThemeColor ? chosenColorObj.hexColor : ring.color || chosenColorObj.hexColor,
+						trailColor: hexToRgba(
+							ring.useThemeColor ? chosenColorObj.hexColor : ring.color || chosenColorObj.hexColor,
+							0.2
+						),
 					})}
 					counterClockwise={false}
 				>
@@ -204,7 +221,12 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 								<span className="mx-[3px] text-color-gray-25">/</span>
 								<span className="text-color-gray-25">{getFormattedDuration(goalSeconds, false)}</span>
 							</div>
-							<div className={classNames(isLarge ? 'text-[22px]' : 'text-[20px]', 'mt-[-5px] text-color-gray-100')}>
+							<div
+								className={classNames(
+									isLarge ? 'text-[22px]' : 'text-[20px]',
+									'mt-[-5px] text-color-gray-100'
+								)}
+							>
 								{Number(percentageOfFocusedGoalHours).toFixed(2)}%
 							</div>
 						</div>
@@ -225,16 +247,18 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 	const { ring: modalRing, streakData: modalStreakData } = getModalData();
 
 	// Transform RingStreakData to StreakData for the modal (remove ringId)
-	const modalStreakDataForModal = modalStreakData ? {
-		currentStreak: modalStreakData.currentStreak,
-		longestStreak: modalStreakData.longestStreak,
-		allStreaks: modalStreakData.allStreaks,
-		dailyDurationsMap: modalStreakData.dailyDurationsMap
-	} : undefined;
+	const modalStreakDataForModal = modalStreakData
+		? {
+				currentStreak: modalStreakData.currentStreak,
+				longestStreak: modalStreakData.longestStreak,
+				allStreaks: modalStreakData.allStreaks,
+				dailyDurationsMap: modalStreakData.dailyDurationsMap,
+			}
+		: undefined;
 
 	return (
 		<div className="relative">
-			{(isTodayLoading) && (
+			{isTodayLoading && (
 				<div className="absolute top-4 right-4 z-10">
 					<Spinner size="md" />
 				</div>
@@ -245,7 +269,8 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 				<div>
 					{renderSingleRing(
 						activeRings[0],
-						allRingsTodayData?.rings?.find((r: RingTodayEntry) => r.todayData?.ringId === activeRings[0].id)?.todayData,
+						allRingsTodayData?.rings?.find((r: RingTodayEntry) => r.todayData?.ringId === activeRings[0].id)
+							?.todayData,
 						allRingsStreakData?.rings?.find((r: RingStreakData) => r.ringId === activeRings[0].id),
 						type
 					)}
@@ -256,8 +281,12 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					{/* LEFT SIDE - Text Stats */}
 					<div className="flex-1 space-y-2">
 						{activeRings.map((ring: Ring) => {
-							const ringTodayData = allRingsTodayData?.rings?.find((r: RingTodayEntry) => r.todayData?.ringId === ring.id)?.todayData;
-							const ringStreakData = allRingsStreakData?.rings?.find((r: RingStreakData) => r.ringId === ring.id);
+							const ringTodayData = allRingsTodayData?.rings?.find(
+								(r: RingTodayEntry) => r.todayData?.ringId === ring.id
+							)?.todayData;
+							const ringStreakData = allRingsStreakData?.rings?.find(
+								(r: RingStreakData) => r.ringId === ring.id
+							);
 							const goalSeconds = getGoalSecondsForRing(ring);
 
 							return (
@@ -274,39 +303,63 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 									{type === 'small' && (
 										<div className="w-[70px] h-[70px] mr-3 flex-shrink-0">
 											<CircularProgressbar
-												value={((ringTodayData?.totalFocusDurationForDay || 0) / goalSeconds) * 100}
+												value={
+													((ringTodayData?.totalFocusDurationForDay || 0) / goalSeconds) * 100
+												}
 												strokeWidth={12}
 												styles={buildStyles({
-													pathColor: ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor),
-													trailColor: hexToRgba(ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor), 0.2),
+													pathColor: ring.useThemeColor
+														? chosenColorObj.hexColor
+														: ring.color || chosenColorObj.hexColor,
+													trailColor: hexToRgba(
+														ring.useThemeColor
+															? chosenColorObj.hexColor
+															: ring.color || chosenColorObj.hexColor,
+														0.2
+													),
 												})}
 											/>
 										</div>
 									)}
 									<div className="flex-1 min-w-0">
 										{/* Ring name with fire icon and streak */}
-										<h2 className={classNames(
-											"text-color-gray-25 flex items-center gap-2",
-											type === 'small' ? "text-[18px]" : "text-[22px]"
-										)}>
+										<h2
+											className={classNames(
+												'text-color-gray-25 flex items-center gap-2',
+												type === 'small' ? 'text-[18px]' : 'text-[22px]'
+											)}
+										>
 											<span className="truncate">{truncateText(ring.name, truncateLength)}</span>
 											<div className="flex items-center">
-												<Icon name="local_fire_department" customClass={classNames(
-													"text-orange-500",
-													type === 'small' ? "!text-[20px]" : "!text-[24px]"
-												)} />
+												<Icon
+													name="local_fire_department"
+													customClass={classNames(
+														'text-orange-500',
+														type === 'small' ? '!text-[20px]' : '!text-[24px]'
+													)}
+												/>
 												{ring.showStreakCount && (
 													<span className="text-orange-500">
-														<span className={classNames(
-															"font-bold",
-															type === 'small' ? "text-[20px]" : "text-[24px]"
-														)}>
-															{(ringStreakData?.currentStreak?.days ?? 0).toLocaleString()}
+														<span
+															className={classNames(
+																'font-bold',
+																type === 'small' ? 'text-[20px]' : 'text-[24px]'
+															)}
+														>
+															{(
+																ringStreakData?.currentStreak?.days ?? 0
+															).toLocaleString()}
 														</span>
 														{ring.showGoalDays && (
 															<>
 																<span className="mx-[2px]">/</span>
-																<span className={type === 'small' ? "text-[14px]" : "text-[18px]"}>{ring.goalDays.toLocaleString()}</span>
+																<span
+																	className={
+																		type === 'small' ? 'text-[14px]' : 'text-[18px]'
+																	}
+																>
+																	{ring.goalDays.toLocaleString()}
+																</span>
 															</>
 														)}
 													</span>
@@ -317,19 +370,32 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 										{/* Focus duration / goal */}
 										<p
 											className="mt-0 font-semibold"
-											style={{ color: ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor) }}
+											style={{
+												color: ring.useThemeColor
+													? chosenColorObj.hexColor
+													: ring.color || chosenColorObj.hexColor,
+											}}
 										>
-											<span className={type === 'small' ? "text-[22px]" : "text-[28px]"}>
-												{getFormattedDuration(ringTodayData?.totalFocusDurationForDay || 0, false)}
+											<span className={type === 'small' ? 'text-[22px]' : 'text-[28px]'}>
+												{getFormattedDuration(
+													ringTodayData?.totalFocusDurationForDay || 0,
+													false
+												)}
 											</span>
-											<span className={classNames(
-												"mx-[3px] opacity-60",
-												type === 'small' ? "text-[16px]" : "text-[20px]"
-											)}>/</span>
-											<span className={classNames(
-												"opacity-60",
-												type === 'small' ? "text-[16px]" : "text-[20px]"
-											)}>
+											<span
+												className={classNames(
+													'mx-[3px] opacity-60',
+													type === 'small' ? 'text-[16px]' : 'text-[20px]'
+												)}
+											>
+												/
+											</span>
+											<span
+												className={classNames(
+													'opacity-60',
+													type === 'small' ? 'text-[16px]' : 'text-[20px]'
+												)}
+											>
 												{getFormattedDuration(goalSeconds, false)}
 											</span>
 										</p>
@@ -343,50 +409,74 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					{type !== 'small' && (
 						<div className="relative w-[300px] h-[300px] flex-shrink-0 flex items-center justify-center">
 							{/* Fire icon for combined streak (only shown when 2+ rings) */}
-							{activeRings.length >= 2 && (() => {
-								const currentStreakDays = combinedStreakData?.combinedStreaks?.currentStreak?.days ?? 0;
-								const shouldOffsetRight = combinedRingsSettings.showGoalDays || currentStreakDays > 1000;
+							{activeRings.length >= 2 &&
+								(() => {
+									const currentStreakDays =
+										combinedStreakData?.combinedStreaks?.currentStreak?.days ?? 0;
+									const shouldOffsetRight =
+										combinedRingsSettings.showGoalDays || currentStreakDays > 1000;
 
-								return (
-								<div className={classNames("absolute top-[-20px] z-10", shouldOffsetRight ? "right-[-10px]" : "right-[0px]")}>
-									<button
-										type="button"
-										aria-label="View combined streak details"
-										className="flex items-center text-orange-500 cursor-pointer ml-2 bg-transparent border-0 p-0"
-										onClick={() => {
-											setSelectedModalRingId('combined');
-											setIsFocusGoalModalOpen(true);
-										}}
-									>
-										<Icon name="local_fire_department" customClass={type === 'small' ? "!text-[22px]" : "!text-[28px]"} />
-										{combinedRingsSettings.showStreakCount && (
-											<span>
-												<span className={classNames(
-													"font-bold",
-													type === 'small' ? "text-[18px]" : "text-[24px]"
-												)}>
-													{(combinedStreakData?.combinedStreaks?.currentStreak?.days ?? 0).toLocaleString()}
-												</span>
-												{combinedRingsSettings.showGoalDays && (
-													<>
-														<span className="mx-[2px]">/</span>
-														<span className={type === 'small' ? "text-[12px]" : "text-[16px]"}>{combinedRingsSettings.goalDays.toLocaleString()}</span>
-													</>
+									return (
+										<div
+											className={classNames(
+												'absolute top-[-20px] z-10',
+												shouldOffsetRight ? 'right-[-10px]' : 'right-[0px]'
+											)}
+										>
+											<button
+												type="button"
+												aria-label="View combined streak details"
+												className="flex items-center text-orange-500 cursor-pointer ml-2 bg-transparent border-0 p-0"
+												onClick={() => {
+													setSelectedModalRingId('combined');
+													setIsFocusGoalModalOpen(true);
+												}}
+											>
+												<Icon
+													name="local_fire_department"
+													customClass={type === 'small' ? '!text-[22px]' : '!text-[28px]'}
+												/>
+												{combinedRingsSettings.showStreakCount && (
+													<span>
+														<span
+															className={classNames(
+																'font-bold',
+																type === 'small' ? 'text-[18px]' : 'text-[24px]'
+															)}
+														>
+															{(
+																combinedStreakData?.combinedStreaks?.currentStreak
+																	?.days ?? 0
+															).toLocaleString()}
+														</span>
+														{combinedRingsSettings.showGoalDays && (
+															<>
+																<span className="mx-[2px]">/</span>
+																<span
+																	className={
+																		type === 'small' ? 'text-[12px]' : 'text-[16px]'
+																	}
+																>
+																	{combinedRingsSettings.goalDays.toLocaleString()}
+																</span>
+															</>
+														)}
+													</span>
 												)}
-											</span>
-										)}
-									</button>
-								</div>
-								);
-							})()}
+											</button>
+										</div>
+									);
+								})()}
 
 							{activeRings.map((ring: Ring, index: number) => {
-								const ringTodayData = allRingsTodayData?.rings?.find((r: RingTodayEntry) => r.todayData?.ringId === ring.id)?.todayData;
+								const ringTodayData = allRingsTodayData?.rings?.find(
+									(r: RingTodayEntry) => r.todayData?.ringId === ring.id
+								)?.todayData;
 								const goalSeconds = getGoalSecondsForRing(ring);
 								// Ring sizing: adjust based on type
 								const largestSize = type === 'small' ? 187 : 280;
 								const ringDecrement = type === 'small' ? 47 : 70;
-								const size = largestSize - (index * ringDecrement);
+								const size = largestSize - index * ringDecrement;
 								const percentage = ((ringTodayData?.totalFocusDurationForDay || 0) / goalSeconds) * 100;
 
 								// Scale stroke width so all rings appear same thickness
@@ -403,8 +493,15 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 											value={percentage}
 											strokeWidth={strokeWidth}
 											styles={buildStyles({
-												pathColor: ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor),
-												trailColor: hexToRgba(ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor), 0.2),
+												pathColor: ring.useThemeColor
+													? chosenColorObj.hexColor
+													: ring.color || chosenColorObj.hexColor,
+												trailColor: hexToRgba(
+													ring.useThemeColor
+														? chosenColorObj.hexColor
+														: ring.color || chosenColorObj.hexColor,
+													0.2
+												),
 											})}
 										/>
 									</div>
@@ -423,7 +520,7 @@ const DailyHoursFocusGoal = ({ type = 'large' }) => {
 					setSelectedModalRingId(null);
 				}}
 				mode={selectedModalRingId === 'combined' ? 'combined' : 'single'}
-				streakData={selectedModalRingId !== 'combined' ? modalStreakDataForModal : undefined as never}
+				streakData={selectedModalRingId !== 'combined' ? modalStreakDataForModal : (undefined as never)}
 				ring={selectedModalRingId !== 'combined' ? modalRing : undefined}
 				combinedStreakData={selectedModalRingId === 'combined' ? combinedStreakData : undefined}
 				rings={selectedModalRingId === 'combined' ? combinedStreakData?.rings : undefined}

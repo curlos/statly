@@ -13,7 +13,7 @@ const passwordValidation = {
 		if (!/\d/.test(value)) return 'Password must contain at least one number';
 		if (!/[@$!%*?&]/.test(value)) return 'Password must contain at least one special character (@$!%*?&)';
 		return true;
-	}
+	},
 };
 
 interface PasswordFormData {
@@ -70,7 +70,6 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 		}
 	};
 
-
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto">
 			<div className="flex flex-col gap-4">
@@ -88,7 +87,7 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 					placeholder="New Password"
 					register={register('newPassword', {
 						required: 'New password is required',
-						...passwordValidation
+						...passwordValidation,
 					})}
 					error={errors.newPassword}
 				/>
@@ -116,7 +115,11 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 					role="alert"
 					aria-live="assertive"
 					aria-atomic="true"
-					className={submitError ? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm' : 'sr-only'}
+					className={
+						submitError
+							? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm'
+							: 'sr-only'
+					}
 				>
 					{submitError ?? ''}
 				</div>
@@ -126,7 +129,11 @@ const PasswordTabSection: React.FC<PasswordTabSectionProps> = ({ onSuccess, onEr
 					role="status"
 					aria-live="polite"
 					aria-atomic="true"
-					className={submitSuccess ? 'bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm' : 'sr-only'}
+					className={
+						submitSuccess
+							? 'bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm'
+							: 'sr-only'
+					}
 				>
 					{submitSuccess ?? ''}
 				</div>

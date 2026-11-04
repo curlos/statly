@@ -121,16 +121,18 @@ const InputNumUserSettings = ({
 		setErrorMessage('');
 
 		// If page-level update for combined settings
-		if (pageLevel && page === 'focus-time-goal-page' && pageProperty && handleUpdateUserSettingForPage && currentPageValue) {
+		if (
+			pageLevel &&
+			page === 'focus-time-goal-page' &&
+			pageProperty &&
+			handleUpdateUserSettingForPage &&
+			currentPageValue
+		) {
 			setApiRequestLoading(true);
-			await handleUpdateUserSettingForPage(
-				'focusHoursGoal',
-				pageProperty,
-				{
-					...currentPageValue,
-					goalDays: localValue
-				}
-			);
+			await handleUpdateUserSettingForPage('focusHoursGoal', pageProperty, {
+				...currentPageValue,
+				goalDays: localValue,
+			});
 			setApiRequestLoading(false);
 			return;
 		}

@@ -6,12 +6,15 @@ export const buildQueryString = (params: Record<string, unknown>) => {
 	if (!params) return '';
 
 	// Filter out empty, null, or undefined values
-	const filteredParams = Object.entries(params).reduce((acc, [key, value]) => {
-		if (value !== '' && value !== null && value !== undefined) {
-			acc[key] = value;
-		}
-		return acc;
-	}, {} as Record<string, unknown>);
+	const filteredParams = Object.entries(params).reduce(
+		(acc, [key, value]) => {
+			if (value !== '' && value !== null && value !== undefined) {
+				acc[key] = value;
+			}
+			return acc;
+		},
+		{} as Record<string, unknown>
+	);
 
 	return new URLSearchParams(filteredParams as Record<string, string>).toString();
 };
@@ -46,7 +49,7 @@ export const baseAPI = createApi({
 		'StreakHistory',
 		'CombinedStreakHistory',
 		'CustomImage',
-		'CustomImageFolder'
+		'CustomImageFolder',
 	],
 	endpoints: () => ({}),
 });

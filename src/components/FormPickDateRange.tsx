@@ -125,12 +125,7 @@ interface DateInputProps {
 	setIsDropdownCalendarOpenForParent?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DateInput: React.FC<DateInputProps> = ({
-	labelName,
-	date,
-	setDate,
-	setIsDropdownCalendarOpenForParent
-}) => {
+const DateInput: React.FC<DateInputProps> = ({ labelName, date, setDate, setIsDropdownCalendarOpenForParent }) => {
 	const dropdownTimeCalenderRef = useRef<HTMLButtonElement>(null);
 	const [isDropdownTimeCalendarVisible, setIsDropdownTimeCalendarVisible] = useState(false);
 

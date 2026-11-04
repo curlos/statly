@@ -32,7 +32,7 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 	buildUrlWithTaskIdQueryParam,
 	groupedTasksCollapsedByDefault,
 	cardTextColor,
-	customDisplay
+	customDisplay,
 }) => {
 	const { data: fetchedProjects } = useGetProjectsQuery();
 	const { projectsById } = fetchedProjects || {};
@@ -44,92 +44,109 @@ const CompletedTasksWithBreadcrumbs: React.FC<CompletedTasksWithBreadcrumbsProps
 		Object.keys(groupedSubtasksByParentTask)
 			.sort((a, b) => groupedSubtasksByParentTask[b].length - groupedSubtasksByParentTask[a].length)
 			.map((parentTaskId, i) => {
-			const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
-			const parentTask =
-				ancestorTasksById && ancestorTasksById[parentTaskId];
-			const parentTaskTitle = parentTask?.title || parentTaskId;
-			const parentTaskBreadcrumbs = parentTask?.ancestorIds?.slice(1)
+				const completedSubtasks = groupedSubtasksByParentTask[parentTaskId];
+				const parentTask = ancestorTasksById && ancestorTasksById[parentTaskId];
+				const parentTaskTitle = parentTask?.title || parentTaskId;
+				const parentTaskBreadcrumbs = parentTask?.ancestorIds?.slice(1);
 
-			const taskProject = (projectsById && parentTask?.projectId) ? projectsById[parentTask.projectId] : undefined;
-			const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
+				const taskProject =
+					projectsById && parentTask?.projectId ? projectsById[parentTask.projectId] : undefined;
+				const projectQueryParam = taskProject?.source === 'ProjectTickTick' ? 'projects' : 'projects-todoist';
 
-			return (
-				<Accordion
-					key={dateStr + parentTaskId + i}
-					titleHasLinks
-					mutedArrow
-					title={
-						<div className="text-[18px] break-words">
-							<h3 className="ui-theme-task-title inline underline font-bold hover:text-blue-500 m-0">
-								<a
-									href={buildUrlWithTaskIdQueryParam(parentTaskId)}
+				return (
+					<Accordion
+						key={dateStr + parentTaskId + i}
+						titleHasLinks
+						mutedArrow
+						title={
+							<div className="text-[18px] break-words">
+								<h3 className="ui-theme-task-title inline underline font-bold hover:text-blue-500 m-0">
+									<a
+										href={buildUrlWithTaskIdQueryParam(parentTaskId)}
+										style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+									>
+										{parentTaskTitle}
+									</a>
+								</h3>
+
+								<span
+									className="ml-1 text-muted-inherit"
 									style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
 								>
-									{parentTaskTitle}
-								</a>
-							</h3>
-
-							<span className="ml-1 text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
-								({completedSubtasks.length})
-							</span>
-
-							{parentTaskBreadcrumbs?.length > 0 && (
-								<span className="ml-1 text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
-									-{' '}
-									{parentTaskBreadcrumbs.map((taskId: string, index: number) => {
-										const taskObj = ancestorTasksById[taskId];
-										const title = taskObj?.title || taskId;
-
-										return (
-											<span key={`breadcrumbs-${dateStr}-${taskId}-${index}`}>
-												<a
-													href={buildUrlWithTaskIdQueryParam(taskId)}
-													className="hover:text-blue-500 hover:underline"
-												>
-													{title}
-												</a>
-												{index !== parentTaskBreadcrumbs.length - 1 && <span>{' > '}</span>}
-											</span>
-										);
-									})}
+									({completedSubtasks.length})
 								</span>
-							)}
 
-							{(taskProject || parentTask?.projectId) && (
-								<span className="text-muted-inherit" style={customDisplay.useTextColor ? { color: cardTextColor } : {}}>
-									{' - '}
-								</span>
-							)}
+								{parentTaskBreadcrumbs?.length > 0 && (
+									<span
+										className="ml-1 text-muted-inherit"
+										style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+									>
+										-{' '}
+										{parentTaskBreadcrumbs.map((taskId: string, index: number) => {
+											const taskObj = ancestorTasksById[taskId];
+											const title = taskObj?.title || taskId;
 
-							{(taskProject || parentTask?.projectId) && (
-								<a
-								href={buildUrlWithQueryParams({ [projectQueryParam]: taskProject?.id || parentTask?.projectId, 'task-id': '', 'sort-by': '', search: '', 'start-date': '', 'end-date': '', page: '' })}
-								className="text-muted-inherit hover:underline hover:text-blue-500"
-								style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
-							>
-								({taskProject?.name || parentTask?.projectId})
-							</a>
-							)}
-						</div>
-					}
-					openByDefault={!groupedTasksCollapsedByDefault}
-					showArrowNextToText={true}
-				>
-					<ul className="space-y-1 list-none p-0 m-0">
-						{completedSubtasks.map((task, i) => (
-							<li key={dateStr + task.id + i}>
-								<CompletedTask
-									task={task}
-									isFullTask={false}
-									buildUrlWithTaskIdQueryParam={buildUrlWithTaskIdQueryParam}
-									cardTextColor={cardTextColor}
-								/>
-							</li>
-						))}
-					</ul>
-				</Accordion>
-			);
-		})
+											return (
+												<span key={`breadcrumbs-${dateStr}-${taskId}-${index}`}>
+													<a
+														href={buildUrlWithTaskIdQueryParam(taskId)}
+														className="hover:text-blue-500 hover:underline"
+													>
+														{title}
+													</a>
+													{index !== parentTaskBreadcrumbs.length - 1 && <span>{' > '}</span>}
+												</span>
+											);
+										})}
+									</span>
+								)}
+
+								{(taskProject || parentTask?.projectId) && (
+									<span
+										className="text-muted-inherit"
+										style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+									>
+										{' - '}
+									</span>
+								)}
+
+								{(taskProject || parentTask?.projectId) && (
+									<a
+										href={buildUrlWithQueryParams({
+											[projectQueryParam]: taskProject?.id || parentTask?.projectId,
+											'task-id': '',
+											'sort-by': '',
+											search: '',
+											'start-date': '',
+											'end-date': '',
+											page: '',
+										})}
+										className="text-muted-inherit hover:underline hover:text-blue-500"
+										style={customDisplay.useTextColor ? { color: cardTextColor } : {}}
+									>
+										({taskProject?.name || parentTask?.projectId})
+									</a>
+								)}
+							</div>
+						}
+						openByDefault={!groupedTasksCollapsedByDefault}
+						showArrowNextToText={true}
+					>
+						<ul className="space-y-1 list-none p-0 m-0">
+							{completedSubtasks.map((task, i) => (
+								<li key={dateStr + task.id + i}>
+									<CompletedTask
+										task={task}
+										isFullTask={false}
+										buildUrlWithTaskIdQueryParam={buildUrlWithTaskIdQueryParam}
+										cardTextColor={cardTextColor}
+									/>
+								</li>
+							))}
+						</ul>
+					</Accordion>
+				);
+			})
 	);
 };
 

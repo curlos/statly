@@ -19,7 +19,7 @@ const ChallengeList: React.FC<ChallengeListProps> = ({
 	setChosenChallenge,
 	setShowChosenChallengeModal,
 	challengesData,
-	isLoading
+	isLoading,
 }) => {
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const pageContext = usePageContext();
@@ -78,7 +78,12 @@ const ChallengeList: React.FC<ChallengeListProps> = ({
 	}
 
 	return (
-		<div ref={scrollContainerRef} role="radiogroup" aria-label="Challenges" className="overflow-auto gray-scrollbar">
+		<div
+			ref={scrollContainerRef}
+			role="radiogroup"
+			aria-label="Challenges"
+			className="overflow-auto gray-scrollbar"
+		>
 			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2 p-[2px]" style={{ maxHeight }}>
 				{completedChallenges.map((challenge: Challenge) => {
 					return (

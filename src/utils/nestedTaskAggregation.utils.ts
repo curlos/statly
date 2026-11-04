@@ -1,5 +1,8 @@
 import { arrayToObjectByKey } from './helpers.utils';
-import { getTasksWithParentIdAndNoParent, getGroupedSubtasksAndParentTasks } from '../pages/completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
+import {
+	getTasksWithParentIdAndNoParent,
+	getGroupedSubtasksAndParentTasks,
+} from '../pages/completed-tasks/DayWithCompletedTasks/getGroupedSubtasksAndParentTasks.util';
 import type { Project } from '../types/models';
 import type { AncestorTask } from '../types/api';
 import type { ProgressBarItemData, GroupedTaskInfo, GroupedTaskById } from '../types/stats';
@@ -70,7 +73,7 @@ function buildAggregatedDataForTopLevelParents(
 			color: color,
 			[metricKey]: totals.value,
 			percentage: totals.percentage,
-			type: 'task' as const
+			type: 'task' as const,
 		};
 	});
 }
@@ -117,12 +120,12 @@ function groupStandaloneTasksByNameWithBookkeeping(
 		} else {
 			// Multiple instances with same name - group them together
 			const totalMetric = tasks.reduce((sum, t) => sum + (t[metricKey] as number), 0);
-			const totalPercentage = (totalMetric / totalDurationOrCount) * 100
+			const totalPercentage = (totalMetric / totalDurationOrCount) * 100;
 			// const totalPercentage = tasks.reduce((sum, t) => sum + t.percentage, 0);
 			const groupedId = `grouped-${name}`;
 
 			// Track which task IDs were grouped
-			tasks.forEach(task => groupedTaskIds.add(task.id));
+			tasks.forEach((task) => groupedTaskIds.add(task.id));
 
 			// Store grouped task info for NestedProgressBars to use
 			groupedTasksInfo[groupedId] = {
@@ -134,13 +137,13 @@ function groupStandaloneTasksByNameWithBookkeeping(
 				percentage: Number(totalPercentage.toFixed(2)),
 				type: 'task' as const,
 				isGrouped: true,
-				instanceCount: tasks.length
+				instanceCount: tasks.length,
 			};
 
 			// Add to totalMetricOnParentTask so it can be rendered like a parent task
 			totalMetricOnParentTask[groupedId] = {
 				value: totalMetric,
-				percentage: Number(totalPercentage.toFixed(2))
+				percentage: Number(totalPercentage.toFixed(2)),
 			};
 
 			return groupedTasksInfo[groupedId];
@@ -148,26 +151,26 @@ function groupStandaloneTasksByNameWithBookkeeping(
 	});
 
 	// Update tasksWithNoParent: remove individual grouped task IDs and add grouped IDs
-	const filteredTasksWithNoParent = tasksWithNoParent.filter(taskId => !groupedTaskIds.has(taskId));
+	const filteredTasksWithNoParent = tasksWithNoParent.filter((taskId) => !groupedTaskIds.has(taskId));
 	const groupedTaskIdsArray = Object.keys(groupedTasksInfo);
 	const updatedTasksWithNoParent = [...filteredTasksWithNoParent, ...groupedTaskIdsArray];
 
 	// Update progressBarDataById to include grouped tasks. Even though an individual "Check Streaks" task might've been in there before, we now need the grouped id (like "grouped-Check Streaks") to also be in there since that's the task that will now be shown in the NestedProgressBars.
-	groupedTaskIdsArray.forEach(groupedId => {
+	groupedTaskIdsArray.forEach((groupedId) => {
 		const groupedInfo = groupedTasksInfo[groupedId];
 		progressBarDataById[groupedId] = groupedInfo;
 	});
 
 	// Create groupedTasksById with task info for NestedProgressBars
 	const groupedTasksById: Record<string, GroupedTaskById> = {};
-	groupedTaskIdsArray.forEach(groupedId => {
+	groupedTaskIdsArray.forEach((groupedId) => {
 		const groupedInfo = groupedTasksInfo[groupedId];
 		groupedTasksById[groupedId] = {
 			id: groupedId,
 			title: groupedInfo.name || 'Unknown',
 			content: groupedInfo.name || 'Unknown',
 			projectId: groupedInfo.projectId as string | undefined,
-			color: groupedInfo.color as string | undefined
+			color: groupedInfo.color as string | undefined,
 		};
 	});
 
@@ -178,7 +181,7 @@ function groupStandaloneTasksByNameWithBookkeeping(
 		finalAggregatedData,
 		updatedTasksWithNoParent,
 		groupedTasksInfo,
-		groupedTasksById
+		groupedTasksById,
 	};
 }
 
@@ -205,7 +208,7 @@ export function aggregateNestedTasksByParent(
 			virtualAncestorsById: {},
 			groupedSubtasksByParentTask: {},
 			parentDirectChildrenTaskIdsByParentId: {},
-			progressBarDataById: {}
+			progressBarDataById: {},
 		};
 	}
 
@@ -226,7 +229,7 @@ export function aggregateNestedTasksByParent(
 	// Group subtasks by their parent task.
 	const { groupedSubtasksByParentTask } = getGroupedSubtasksAndParentTasks({
 		completedTasksForDay: tasksFromTickTickOrTodoist,
-		ancestorTasksById
+		ancestorTasksById,
 	});
 
 	// Map parent IDs to their direct children
@@ -249,7 +252,8 @@ export function aggregateNestedTasksByParent(
 		let totalMetric = 0;
 
 		// Add the task's direct focus. Like "Stats Page" might have other nested tasks with focus but I could've focused directly on the "Stats" page task first. This direct task focus data would be present on "progressBarDataById"
-		totalMetric += (progressBarDataById[parentTaskId] && (progressBarDataById[parentTaskId]?.[metricKey] as number)) || 0
+		totalMetric +=
+			(progressBarDataById[parentTaskId] && (progressBarDataById[parentTaskId]?.[metricKey] as number)) || 0;
 
 		// Add direct children's metrics
 		// Convert task objects to IDs and deduplicate to avoid double-counting
@@ -261,7 +265,7 @@ export function aggregateNestedTasksByParent(
 		if (childFocusTaskIds && childFocusTaskIds.length > 0) {
 			childFocusTaskIds.forEach((taskId) => {
 				const totalMetricFromChild = calculateTotalMetricFromChildren(taskId).value;
-				totalMetric += totalMetricFromChild
+				totalMetric += totalMetricFromChild;
 			});
 		}
 
@@ -288,19 +292,15 @@ export function aggregateNestedTasksByParent(
 	);
 
 	// Group standalone daily habit tasks and perform all bookkeeping
-	const {
-		finalAggregatedData,
-		updatedTasksWithNoParent,
-		groupedTasksInfo,
-		groupedTasksById
-	} = groupStandaloneTasksByNameWithBookkeeping(
-		aggregatedData,
-		metricKey,
-		tasksWithNoParent,
-		totalMetricOnParentTask,
-		progressBarDataById,
-		totalDurationOrCount
-	);
+	const { finalAggregatedData, updatedTasksWithNoParent, groupedTasksInfo, groupedTasksById } =
+		groupStandaloneTasksByNameWithBookkeeping(
+			aggregatedData,
+			metricKey,
+			tasksWithNoParent,
+			totalMetricOnParentTask,
+			progressBarDataById,
+			totalDurationOrCount
+		);
 
 	// Include virtual focus app tasks in the final data for sorting/display
 	const combinedAggregatedData = [...finalAggregatedData, ...virtualFocusAppTasks];
@@ -309,14 +309,14 @@ export function aggregateNestedTasksByParent(
 	const virtualTaskIds: string[] = [];
 	const virtualAncestorsById: Record<string, GroupedTaskById> = {};
 
-	virtualFocusAppTasks.forEach(task => {
+	virtualFocusAppTasks.forEach((task) => {
 		// Create ancestor entry for each virtual task (task is its own ancestor)
 		virtualAncestorsById[task.id] = {
 			id: task.id,
 			title: task.name || 'Unknown',
 			content: task.name || 'Unknown',
 			projectId: task.projectId as string | undefined,
-			color: task.color as string | undefined
+			color: task.color as string | undefined,
 		};
 
 		// Add to progressBarDataById (already there, but ensure it's present)
@@ -325,7 +325,7 @@ export function aggregateNestedTasksByParent(
 		// Add to totalMetricOnParentTask so it has percentage data
 		totalMetricOnParentTask[task.id] = {
 			value: task[metricKey] as number,
-			percentage: task.percentage || 0
+			percentage: task.percentage || 0,
 		};
 
 		virtualTaskIds.push(task.id);
@@ -343,6 +343,6 @@ export function aggregateNestedTasksByParent(
 		virtualAncestorsById,
 		groupedSubtasksByParentTask,
 		parentDirectChildrenTaskIdsByParentId,
-		progressBarDataById
+		progressBarDataById,
 	};
 }

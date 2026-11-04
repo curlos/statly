@@ -1,10 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useThemeContext } from '../../../../contexts/useThemeContext';
-import {
-	convertTo12HourFormat,
-	getFormattedLongDay,
-	getDailyHourBlocks,
-} from '../../../../utils/date.utils';
+import { convertTo12HourFormat, getFormattedLongDay, getDailyHourBlocks } from '../../../../utils/date.utils';
 import { getFormattedDuration } from '../../../../utils/helpers.utils';
 import ReactApexChart from 'react-apexcharts';
 import apexchart from 'apexcharts';
@@ -24,16 +20,31 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 	const focusRecords = useMemo(() => statsData?.records || [], [statsData?.records]);
 
 	// Create series in reverse order (12:00 AM at top, 11:00 PM at bottom)
-	const DEFAULT_SERIES = useMemo(() => Array.from({ length: 24 }, (_, i) => {
-		const startHour = convertTo12HourFormat(`${i.toString().padStart(2, '0')}:00`);
-		return {
-			name: startHour, // Y-axis label shows just start hour
-			data: Array.from({ length: 7 }, () => 0),
-		};
-	}).reverse(), []);
+	const DEFAULT_SERIES = useMemo(
+		() =>
+			Array.from({ length: 24 }, (_, i) => {
+				const startHour = convertTo12HourFormat(`${i.toString().padStart(2, '0')}:00`);
+				return {
+					name: startHour, // Y-axis label shows just start hour
+					data: Array.from({ length: 7 }, () => 0),
+				};
+			}).reverse(),
+		[]
+	);
 
 	const [series, setSeries] = useState(DEFAULT_SERIES);
-	const [tooltipPos, setTooltipPos] = useState<{ cellLeft: number; cellTop: number; cellRight: number; cellWidth: number; cellHeight: number; containerWidth: number; flipLeft: boolean; row: number; col: number; mode: 'mouse' | 'keyboard' } | null>(null);
+	const [tooltipPos, setTooltipPos] = useState<{
+		cellLeft: number;
+		cellTop: number;
+		cellRight: number;
+		cellWidth: number;
+		cellHeight: number;
+		containerWidth: number;
+		flipLeft: boolean;
+		row: number;
+		col: number;
+		mode: 'mouse' | 'keyboard';
+	} | null>(null);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const kbRow = useRef(0); // i=0 → "11 PM" (bottom), i=23 → "12 AM" (top)
@@ -54,9 +65,22 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 			if (!cell) return;
 			const r = cell.getBoundingClientRect();
 			const cr = container.getBoundingClientRect();
-			setTooltipPos(r.width > 0 && r.height > 0
-				? { cellLeft: r.left - cr.left, cellTop: r.top - cr.top, cellRight: r.right - cr.left, cellWidth: r.width, cellHeight: r.height, containerWidth: cr.width, flipLeft: r.right + 180 > window.innerWidth, row, col, mode: 'keyboard' }
-				: null);
+			setTooltipPos(
+				r.width > 0 && r.height > 0
+					? {
+							cellLeft: r.left - cr.left,
+							cellTop: r.top - cr.top,
+							cellRight: r.right - cr.left,
+							cellWidth: r.width,
+							cellHeight: r.height,
+							containerWidth: cr.width,
+							flipLeft: r.right + 180 > window.innerWidth,
+							row,
+							col,
+							mode: 'keyboard',
+						}
+					: null
+			);
 		};
 
 		const onFocusIn = (e: FocusEvent) => {
@@ -78,13 +102,26 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 			let row = kbRow.current;
 			let col = kbCol.current;
 			switch (e.key) {
-				case 'ArrowUp':    row = (row + 1) % ROWS; break; // higher i = visually up
-				case 'ArrowDown':  row = (row - 1 + ROWS) % ROWS; break; // lower i = visually down
-				case 'ArrowLeft':  col = Math.max(0, col - 1); break;
-				case 'ArrowRight': col = Math.min(COLS - 1, col + 1); break;
-				case 'Home': col = 0; break;
-				case 'End':  col = COLS - 1; break;
-				default: return;
+				case 'ArrowUp':
+					row = (row + 1) % ROWS;
+					break; // higher i = visually up
+				case 'ArrowDown':
+					row = (row - 1 + ROWS) % ROWS;
+					break; // lower i = visually down
+				case 'ArrowLeft':
+					col = Math.max(0, col - 1);
+					break;
+				case 'ArrowRight':
+					col = Math.min(COLS - 1, col + 1);
+					break;
+				case 'Home':
+					col = 0;
+					break;
+				case 'End':
+					col = COLS - 1;
+					break;
+				default:
+					return;
 			}
 			e.preventDefault();
 			e.stopPropagation(); // prevent ApexCharts' SVG listener from also handling this
@@ -94,13 +131,27 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 		const onMouseMove = (e: MouseEvent) => {
 			if (kbActive.current) return;
 			const cell = (e.target as Element).closest?.('.apexcharts-heatmap-rect');
-			if (!cell) { setTooltipPos(null); return; }
+			if (!cell) {
+				setTooltipPos(null);
+				return;
+			}
 			const row = parseInt(cell.getAttribute('i') ?? '0');
 			const col = parseInt(cell.getAttribute('j') ?? '0');
 			const r = cell.getBoundingClientRect();
 			const cr = container.getBoundingClientRect();
 			if (r.width > 0 && r.height > 0) {
-				setTooltipPos({ cellLeft: r.left - cr.left, cellTop: r.top - cr.top, cellRight: r.right - cr.left, cellWidth: r.width, cellHeight: r.height, containerWidth: cr.width, flipLeft: r.right + 180 > window.innerWidth, row, col, mode: 'mouse' });
+				setTooltipPos({
+					cellLeft: r.left - cr.left,
+					cellTop: r.top - cr.top,
+					cellRight: r.right - cr.left,
+					cellWidth: r.width,
+					cellHeight: r.height,
+					containerWidth: cr.width,
+					flipLeft: r.right + 180 > window.innerWidth,
+					row,
+					col,
+					mode: 'mouse',
+				});
 			}
 		};
 
@@ -204,7 +255,9 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 		const value = s.data[col] ?? 0;
 		const hourLabel = s.name;
 		const date = selectedDates[col];
-		const formattedDate = date ? date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+		const formattedDate = date
+			? date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+			: '';
 		const hourMatch = hourLabel.match(/(\d+):00 (AM|PM)/);
 		let timeRange = hourLabel;
 		if (hourMatch) {
@@ -212,9 +265,16 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 			const period = hourMatch[2];
 			let nextHour: number;
 			let nextPeriod: string;
-			if (hour === 12) { nextHour = 1; nextPeriod = period; }
-			else if (hour === 11) { nextHour = 12; nextPeriod = period === 'AM' ? 'PM' : 'AM'; }
-			else { nextHour = hour + 1; nextPeriod = period; }
+			if (hour === 12) {
+				nextHour = 1;
+				nextPeriod = period;
+			} else if (hour === 11) {
+				nextHour = 12;
+				nextPeriod = period === 'AM' ? 'PM' : 'AM';
+			} else {
+				nextHour = hour + 1;
+				nextPeriod = period;
+			}
 			timeRange = `${hourLabel} - ${nextHour}:00 ${nextPeriod}`;
 		}
 		return { value, timeRange, formattedDate };
@@ -223,13 +283,13 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 	useEffect(() => {
 		if (focusRecords.length === 0) {
 			// Reset to empty data when no records
-			const emptySeries = DEFAULT_SERIES.map(s => ({ ...s, data: [...s.data] }));
+			const emptySeries = DEFAULT_SERIES.map((s) => ({ ...s, data: [...s.data] }));
 			apexchart.exec(chartId, 'updateSeries', emptySeries);
 			setSeries(emptySeries);
 			return;
 		}
 
-		const newSeries = DEFAULT_SERIES.map(s => ({ ...s, data: [...s.data] }));
+		const newSeries = DEFAULT_SERIES.map((s) => ({ ...s, data: [...s.data] }));
 
 		// Group records by date - a record can span multiple days, so add it to all affected days
 		const recordsByDate: Record<string, FocusRecordDetail[]> = {};
@@ -310,8 +370,18 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 	}, [focusRecords, selectedDates, DEFAULT_SERIES]);
 
 	return (
-		<div ref={containerRef} role="region" aria-label="Timeline heatmap" tabIndex={0} className="relative outline-none">
-			<p className="sr-only">Heatmap chart showing focus session activity by hour of day across the selected date range. Each cell represents one hour on one day; darker colors indicate more focus time. Use arrow keys to navigate between cells, Home/End to jump to the first or last cell, and Enter or Space to see details.</p>
+		<div
+			ref={containerRef}
+			role="region"
+			aria-label="Timeline heatmap"
+			tabIndex={0}
+			className="relative outline-none"
+		>
+			<p className="sr-only">
+				Heatmap chart showing focus session activity by hour of day across the selected date range. Each cell
+				represents one hour on one day; darker colors indicate more focus time. Use arrow keys to navigate
+				between cells, Home/End to jump to the first or last cell, and Enter or Space to see details.
+			</p>
 			<div aria-live="polite" aria-atomic="true" className="sr-only">
 				{tooltipPos?.mode === 'keyboard' && tooltipContent
 					? `${tooltipContent.formattedDate}, ${tooltipContent.timeRange}, ${getFormattedDuration(tooltipContent.value, false)}`
@@ -319,33 +389,37 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 			</div>
 			<ReactApexChart options={options as ApexCharts.ApexOptions} series={series} type="heatmap" height={310} />
 			{tooltipPos?.mode === 'keyboard' && (
-				<div style={{
-					position: 'absolute',
-					left: tooltipPos.cellLeft,
-					top: tooltipPos.cellTop,
-					width: tooltipPos.cellWidth,
-					height: tooltipPos.cellHeight,
-					outline: '2px solid white',
-					outlineOffset: '-1px',
-					zIndex: 9998,
-					pointerEvents: 'none',
-				}} />
+				<div
+					style={{
+						position: 'absolute',
+						left: tooltipPos.cellLeft,
+						top: tooltipPos.cellTop,
+						width: tooltipPos.cellWidth,
+						height: tooltipPos.cellHeight,
+						outline: '2px solid white',
+						outlineOffset: '-1px',
+						zIndex: 9998,
+						pointerEvents: 'none',
+					}}
+				/>
 			)}
 			{tooltipPos && tooltipContent && (
-				<div style={{
-					position: 'absolute',
-					...(tooltipPos.flipLeft
-						? { right: tooltipPos.containerWidth - tooltipPos.cellLeft + 8 }
-						: { left: tooltipPos.cellRight + 8 }),
-					top: tooltipPos.cellTop,
-					zIndex: 9999,
-					pointerEvents: 'none',
-					padding: '8px',
-					background: 'black',
-					borderRadius: '4px',
-					color: chosenColorObj.hexColor,
-					whiteSpace: 'nowrap',
-				}}>
+				<div
+					style={{
+						position: 'absolute',
+						...(tooltipPos.flipLeft
+							? { right: tooltipPos.containerWidth - tooltipPos.cellLeft + 8 }
+							: { left: tooltipPos.cellRight + 8 }),
+						top: tooltipPos.cellTop,
+						zIndex: 9999,
+						pointerEvents: 'none',
+						padding: '8px',
+						background: 'black',
+						borderRadius: '4px',
+						color: chosenColorObj.hexColor,
+						whiteSpace: 'nowrap',
+					}}
+				>
 					<div style={{ marginBottom: '4px' }}>{tooltipContent.formattedDate}</div>
 					<div style={{ marginBottom: '4px' }}>{tooltipContent.timeRange}</div>
 					<div style={{ fontWeight: 'bold' }}>{getFormattedDuration(tooltipContent.value, false)}</div>

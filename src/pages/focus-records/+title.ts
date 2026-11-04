@@ -1,1 +1,1 @@
-export default "Focus Records - Statly";
+export default 'Focus Records - Statly';

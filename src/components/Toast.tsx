@@ -20,7 +20,10 @@ const Toast: React.FC = () => {
 
 	// Delay the live region update so it fires after the focus-return announcement
 	useEffect(() => {
-		if (!isVisible) { setAnnouncedMessage(''); return; }
+		if (!isVisible) {
+			setAnnouncedMessage('');
+			return;
+		}
 		const id = setTimeout(() => setAnnouncedMessage(message), 150);
 		return () => clearTimeout(id);
 	}, [isVisible, message]);

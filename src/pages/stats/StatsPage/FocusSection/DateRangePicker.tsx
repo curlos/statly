@@ -18,7 +18,13 @@ interface DateRangePickerProps {
 	endDate?: Date;
 }
 
-const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSelectedDates, selectedInterval, startDate, endDate }) => {
+const DateRangePicker: React.FC<DateRangePickerProps> = ({
+	selectedDates,
+	setSelectedDates,
+	selectedInterval,
+	startDate,
+	endDate,
+}) => {
 	// Track previous interval to detect changes
 	const prevIntervalRef = useRef<string>(selectedInterval);
 
@@ -40,11 +46,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 		let dateToUse: Date;
 		if (intervalChanged && selectedInterval !== 'Custom') {
 			// Use smart navigation when interval changes
-			dateToUse = getSmartDateForIntervalChange(
-				firstDay,
-				previousInterval,
-				selectedInterval
-			);
+			dateToUse = getSmartDateForIntervalChange(firstDay, previousInterval, selectedInterval);
 		} else {
 			// Preserve current date when not changing intervals
 			dateToUse = firstDay;
@@ -119,13 +121,17 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ selectedDates, setSel
 			case 'Year':
 				return firstDay.toLocaleString('default', { year: 'numeric' });
 			case 'Custom':
-				return startDate && endDate ? `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}` : '';
+				return startDate && endDate
+					? `${getFormattedShortMonthDay(startDate)} - ${getFormattedShortMonthDay(endDate)}`
+					: '';
 		}
 	};
 
 	return (
 		<>
-			<div aria-live="polite" aria-atomic="true" className="sr-only">{getFormattedSelectedDates()}</div>
+			<div aria-live="polite" aria-atomic="true" className="sr-only">
+				{getFormattedSelectedDates()}
+			</div>
 			<div className="ui-theme-plate flex justify-between items-center gap-3 bg-color-gray-600 py-2 rounded-md">
 				<button
 					type="button"

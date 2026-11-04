@@ -1,5 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
-import { LAND_OPTIONS, LAND_STYLES, getAutoLandForDate, getHolidayForDate, getSeasonForDate, isSouthernHemisphereTimeZone } from './landStyles';
+import {
+	LAND_OPTIONS,
+	LAND_STYLES,
+	getAutoLandForDate,
+	getHolidayForDate,
+	getSeasonForDate,
+	isSouthernHemisphereTimeZone,
+} from './landStyles';
 
 describe('getSeasonForDate', () => {
 	it('uses northern-hemisphere seasons', () => {
@@ -25,12 +32,22 @@ describe('southern hemisphere', () => {
 	});
 
 	it('recognizes southern time zones, and not northern ones', () => {
-		['Australia/Sydney', 'Australia/Perth', 'Pacific/Auckland', 'America/Sao_Paulo', 'America/Argentina/Buenos_Aires', 'Africa/Johannesburg', 'America/Santiago'].forEach((zone) => {
+		[
+			'Australia/Sydney',
+			'Australia/Perth',
+			'Pacific/Auckland',
+			'America/Sao_Paulo',
+			'America/Argentina/Buenos_Aires',
+			'Africa/Johannesburg',
+			'America/Santiago',
+		].forEach((zone) => {
 			expect(isSouthernHemisphereTimeZone(zone)).toBe(true);
 		});
-		['America/New_York', 'Europe/London', 'Asia/Tokyo', 'America/Bogota', 'Africa/Nairobi', 'UTC', ''].forEach((zone) => {
-			expect(isSouthernHemisphereTimeZone(zone)).toBe(false);
-		});
+		['America/New_York', 'Europe/London', 'Asia/Tokyo', 'America/Bogota', 'Africa/Nairobi', 'UTC', ''].forEach(
+			(zone) => {
+				expect(isSouthernHemisphereTimeZone(zone)).toBe(false);
+			}
+		);
 	});
 
 	it('still uses the holiday by date, so Christmas is Christmas in summer too', () => {

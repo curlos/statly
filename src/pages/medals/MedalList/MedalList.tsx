@@ -14,16 +14,27 @@ interface MedalListProps {
 	interval: string;
 }
 
-const MedalList: React.FC<MedalListProps> = ({ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal, medalsData, isLoading, type, interval }) => {
+const MedalList: React.FC<MedalListProps> = ({
+	maxHeight,
+	chosenMedal,
+	setChosenMedal,
+	setShowChosenMedalModal,
+	medalsData,
+	isLoading,
+	type,
+	interval,
+}) => {
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 	// Convert backend response to array format for rendering
-	const medalsToUse = medalsData ? Object.entries(medalsData).map(([name, medalData]) => ({
-		name,
-		intervalsEarned: medalData.intervalsEarned || [],
-		interval,
-		type: medalData.type
-	})) : [];
+	const medalsToUse = medalsData
+		? Object.entries(medalsData).map(([name, medalData]) => ({
+				name,
+				intervalsEarned: medalData.intervalsEarned || [],
+				interval,
+				type: medalData.type,
+			}))
+		: [];
 
 	// Set default chosen medal - always update when interval/type/filters change
 	useEffect(() => {

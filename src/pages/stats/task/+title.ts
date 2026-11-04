@@ -1,1 +1,1 @@
-export default "Task Stats - Statly";
+export default 'Task Stats - Statly';

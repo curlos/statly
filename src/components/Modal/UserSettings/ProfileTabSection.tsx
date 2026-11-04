@@ -40,7 +40,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 			name: user?.name || '',
 			email: user?.email || '',
 			currentPassword: '',
-		}
+		},
 	});
 
 	const [updateProfile, { isLoading }] = useUpdateUserProfileMutation();
@@ -146,9 +146,13 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 		}
 	};
 
-
 	const getInitials = (name: string) => {
-		return name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2);
+		return name
+			.split(' ')
+			.map((n) => n[0])
+			.join('')
+			.toUpperCase()
+			.slice(0, 2);
 	};
 
 	const displayImage = previewImage || user?.profilePic || null;
@@ -157,13 +161,14 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 		<form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto">
 			{/* Profile Picture */}
 			<div className="flex flex-col items-center mb-6">
-				<button type="button" aria-label="Change profile picture" className="relative mb-2 cursor-pointer" onClick={handleProfilePicClick}>
+				<button
+					type="button"
+					aria-label="Change profile picture"
+					className="relative mb-2 cursor-pointer"
+					onClick={handleProfilePicClick}
+				>
 					{displayImage ? (
-						<img
-							src={displayImage}
-							alt="Profile"
-							className="w-24 h-24 rounded-full object-cover"
-						/>
+						<img src={displayImage} alt="Profile" className="w-24 h-24 rounded-full object-cover" />
 					) : (
 						<div
 							className={`w-24 h-24 rounded-full flex items-center justify-center font-bold text-3xl ${chosenColorObj.bgColor}`}
@@ -176,13 +181,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 						<Icon name="camera_alt" fill={0} customClass="!text-[24px] text-[#ffffff]" />
 					</div>
 				</button>
-				<input
-					ref={fileInputRef}
-					type="file"
-					accept="image/*"
-					onChange={handleFileChange}
-					className="hidden"
-				/>
+				<input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
 			</div>
 
 			<div className="flex flex-col gap-4">
@@ -196,7 +195,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 							const trimmed = value?.trim();
 							if (!trimmed || trimmed.length === 0) return 'Name cannot be empty';
 							return true;
-						}
+						},
 					})}
 					error={errors.name}
 				/>
@@ -208,7 +207,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					placeholder="Email"
 					register={register('email', {
 						required: 'Email is required',
-						pattern: { value: EMAIL_REGEX, message: 'Please enter a valid email address' }
+						pattern: { value: EMAIL_REGEX, message: 'Please enter a valid email address' },
 					})}
 					error={errors.email}
 					rightElement={
@@ -218,10 +217,7 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 							className="w-64"
 							align="right"
 						>
-							<Icon
-								name="help"
-								customClass="!text-[20px] text-color-gray-50 cursor-pointer"
-							/>
+							<Icon name="help" customClass="!text-[20px] text-color-gray-50 cursor-pointer" />
 						</Tooltip>
 					}
 				/>
@@ -253,7 +249,11 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					aria-live="assertive"
 					aria-atomic="true"
 					tabIndex={-1}
-					className={submitError ? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm outline-none' : 'sr-only'}
+					className={
+						submitError
+							? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm outline-none'
+							: 'sr-only'
+					}
 				>
 					{submitError ?? ''}
 				</div>
@@ -264,7 +264,11 @@ const ProfileTabSection: React.FC<ProfileTabSectionProps> = ({ onSuccess, onErro
 					aria-live="polite"
 					aria-atomic="true"
 					tabIndex={-1}
-					className={submitSuccess ? 'bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm outline-none' : 'sr-only'}
+					className={
+						submitSuccess
+							? 'bg-green-500/10 border border-green-500 text-green-500 rounded-xl p-3 text-sm outline-none'
+							: 'sr-only'
+					}
 				>
 					{submitSuccess ?? ''}
 				</div>

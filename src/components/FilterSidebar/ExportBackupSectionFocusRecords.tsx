@@ -10,9 +10,7 @@ import useExportFocusRecords from './hooks/useExportFocusRecords';
 
 const ExportBackupSectionFocusRecords = () => {
 	const {
-		focusRecordsPageSettings: {
-			onlyExportTasksWithNoParent,
-		},
+		focusRecordsPageSettings: { onlyExportTasksWithNoParent },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -27,11 +25,7 @@ const ExportBackupSectionFocusRecords = () => {
 				title={
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Export & Backup</h3>
-						<Icon
-							name="backup"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
-						/>
+						<Icon name="backup" fill={0} customClass={'text-color-gray-50 !text-[20px] cursor-pointer'} />
 					</div>
 				}
 				openByDefault={true}
@@ -108,7 +102,8 @@ const FocusRecordsExporter: React.FC<FocusRecordsExporterProps> = ({ text, icon,
 	const { chosenColorObj } = useThemeContext();
 
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedFocusRecords } = useExportFocusRecords();
+	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedFocusRecords } =
+		useExportFocusRecords();
 
 	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
@@ -116,14 +111,18 @@ const FocusRecordsExporter: React.FC<FocusRecordsExporterProps> = ({ text, icon,
 		downloadZipFolderOfGroupedFocusRecords: downloadZipFolderOfGroupedFocusRecords,
 	} as Record<string, (...args: unknown[]) => Promise<void>>;
 
-	const statusLabel = copiedToClipboardStatus === 'copying' ? 'Loading' : copiedToClipboardStatus === 'done' ? 'Done' : '';
+	const statusLabel =
+		copiedToClipboardStatus === 'copying' ? 'Loading' : copiedToClipboardStatus === 'done' ? 'Done' : '';
 
 	return (
 		<button
 			type="button"
 			disabled={copiedToClipboardStatus === 'copying'}
 			aria-busy={copiedToClipboardStatus === 'copying'}
-			className={classNames('flex items-center gap-2 my-2 cursor-pointer disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
+			className={classNames(
+				'flex items-center gap-2 my-2 cursor-pointer disabled:cursor-not-allowed',
+				chosenColorObj.hover.textColor
+			)}
 			onClick={() => {
 				setCopiedToClipboardStatus('copying');
 
@@ -155,7 +154,11 @@ const FocusRecordsExporter: React.FC<FocusRecordsExporterProps> = ({ text, icon,
 				/>
 			)}
 			<span>{text}</span>
-			{statusLabel && <span className="sr-only" aria-live="polite">{statusLabel}</span>}
+			{statusLabel && (
+				<span className="sr-only" aria-live="polite">
+					{statusLabel}
+				</span>
+			)}
 		</button>
 	);
 };

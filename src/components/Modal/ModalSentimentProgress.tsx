@@ -17,7 +17,7 @@ export interface ChunkStatus {
 	chunkIndex: number;
 	recordCount: number;
 	startRecord: number; // e.g., 1, 251, 501
-	endRecord: number;   // e.g., 250, 500, 750
+	endRecord: number; // e.g., 250, 500, 750
 	status: 'idle' | 'analyzing' | 'success' | 'error';
 	errorMessage?: string;
 	result?: {
@@ -37,7 +37,10 @@ const ModalSentimentProgress: React.FC = () => {
 	// Calculate total records processed
 	const totalRecords = chunks.reduce((sum, chunk) => sum + chunk.recordCount, 0);
 	const processedRecords = chunks
-		.filter((chunk) => chunk.status === 'success' || (chunk.status === 'error' && chunk.errorMessage !== 'Cancelled by user'))
+		.filter(
+			(chunk) =>
+				chunk.status === 'success' || (chunk.status === 'error' && chunk.errorMessage !== 'Cancelled by user')
+		)
 		.reduce((sum, chunk) => sum + chunk.recordCount, 0);
 
 	// Auto-scroll to the chunk that is currently being analyzed
@@ -94,11 +97,14 @@ const ModalSentimentProgress: React.FC = () => {
 				</button>
 
 				{/* Title */}
-				<h2 id="sentiment-modal-title" className="text-xl font-bold mb-2 text-white">Analyze Focus Record Note Emotions</h2>
+				<h2 id="sentiment-modal-title" className="text-xl font-bold mb-2 text-white">
+					Analyze Focus Record Note Emotions
+				</h2>
 
 				{/* Description */}
 				<p className="text-color-gray-50 mt-0 mb-4">
-					This process uses AI to accurately analyze the emotions in each focus record's note. Please be patient as this may take a few minutes.
+					This process uses AI to accurately analyze the emotions in each focus record's note. Please be
+					patient as this may take a few minutes.
 				</p>
 
 				{/* Progress counter */}
@@ -140,8 +146,12 @@ const ModalSentimentProgress: React.FC = () => {
 									title={
 										<div className="w-full pr-2 flex items-center justify-between">
 											<div>
-												<h3 className="font-bold text-[18px]" style={{ color: statusDisplay.color }}>
-													Records {chunk.startRecord.toLocaleString()} to {chunk.endRecord.toLocaleString()}
+												<h3
+													className="font-bold text-[18px]"
+													style={{ color: statusDisplay.color }}
+												>
+													Records {chunk.startRecord.toLocaleString()} to{' '}
+													{chunk.endRecord.toLocaleString()}
 												</h3>
 												{/* Summary results - only show after chunk completes */}
 												{chunk.result && chunk.status === 'success' && (
@@ -163,7 +173,11 @@ const ModalSentimentProgress: React.FC = () => {
 													<Spinner size="sm" />
 												) : (
 													<div style={{ color: statusDisplay.color }}>
-														<Icon name={statusDisplay.icon} fill={1} customClass="!text-[20px] mt-[5px]" />
+														<Icon
+															name={statusDisplay.icon}
+															fill={1}
+															customClass="!text-[20px] mt-[5px]"
+														/>
 													</div>
 												)}
 											</div>
@@ -179,7 +193,8 @@ const ModalSentimentProgress: React.FC = () => {
 									{/* Record count */}
 									<div className="mb-3 mt-2">
 										<div className="text-color-gray-50 mb-1">
-											<span className="font-bold">Total Focus Records:</span> {chunk.recordCount.toLocaleString()}
+											<span className="font-bold">Total Focus Records:</span>{' '}
+											{chunk.recordCount.toLocaleString()}
 										</div>
 									</div>
 

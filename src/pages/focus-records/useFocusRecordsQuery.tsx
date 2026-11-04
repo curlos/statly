@@ -12,21 +12,37 @@ export const useFocusRecordsQuery = ({ skip = false }: { skip?: boolean } = {}) 
 			taskIdIncludeFocusRecordsFromSubtasks,
 			maxFocusRecordsPerPage,
 			showEmotionCount,
-			showNoteStats
+			showNoteStats,
 		},
-		isLoadingGetUserSettings
+		isLoadingGetUserSettings,
 	} = useUserSettingsContext();
 
-	const { data: fetchedFocusRecords, isLoading, isFetching } = useGetFocusRecordsQuery({
-		...queryParams,
-		page: Number(urlValues.currentPageFromUrl) - 1,
-		'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
-		'limit': maxFocusRecordsPerPage,
-		'show-emotion-count': showEmotionCount,
-		'show-note-stats': showNoteStats
-	}, { skip: skip || isLoadingGetUserSettings || shouldSkipQuery });
+	const {
+		data: fetchedFocusRecords,
+		isLoading,
+		isFetching,
+	} = useGetFocusRecordsQuery(
+		{
+			...queryParams,
+			page: Number(urlValues.currentPageFromUrl) - 1,
+			'task-id-include-focus-records-from-subtasks': taskIdIncludeFocusRecordsFromSubtasks,
+			limit: maxFocusRecordsPerPage,
+			'show-emotion-count': showEmotionCount,
+			'show-note-stats': showNoteStats,
+		},
+		{ skip: skip || isLoadingGetUserSettings || shouldSkipQuery }
+	);
 
-	const { data: focusRecords, total, totalPages, totalDuration, onlyTasksTotalDuration, ancestorTasksById, emotionCounts, noteStats } = fetchedFocusRecords || {};
+	const {
+		data: focusRecords,
+		total,
+		totalPages,
+		totalDuration,
+		onlyTasksTotalDuration,
+		ancestorTasksById,
+		emotionCounts,
+		noteStats,
+	} = fetchedFocusRecords || {};
 
 	return {
 		fetchedFocusRecords,

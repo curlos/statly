@@ -26,7 +26,7 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 	title,
 	counts,
 	isDeleting,
-	showCounts = true
+	showCounts = true,
 }) => {
 	const hasMultipleCategories = Object.keys(counts).length > 1;
 	const headingRef = useRef<HTMLHeadingElement>(null);
@@ -36,15 +36,31 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 	}, [isOpen]);
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[500px]" ariaLabelledBy={TITLE_ID} ariaDescribedBy={DESC_ID} role="alertdialog">
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			customClasses="!max-w-[500px]"
+			ariaLabelledBy={TITLE_ID}
+			ariaDescribedBy={DESC_ID}
+			role="alertdialog"
+		>
 			<div className="bg-color-gray-700 rounded-lg p-6 shadow-lg">
-				<h2 ref={headingRef} id={TITLE_ID} tabIndex={-1} className="text-xl font-semibold mb-4 focus:outline-none">{title}</h2>
+				<h2
+					ref={headingRef}
+					id={TITLE_ID}
+					tabIndex={-1}
+					className="text-xl font-semibold mb-4 focus:outline-none"
+				>
+					{title}
+				</h2>
 
 				<div id={DESC_ID}>
 					{showCounts && (
 						<div className="mb-6">
 							<p className="text-color-gray-25 mb-3">
-								{hasMultipleCategories ? 'Deleting:' : `Deleting ${Object.values(counts)[0]?.toLocaleString()} documents`}
+								{hasMultipleCategories
+									? 'Deleting:'
+									: `Deleting ${Object.values(counts)[0]?.toLocaleString()} documents`}
 							</p>
 
 							{hasMultipleCategories && (
@@ -52,9 +68,7 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 									{counts.focusRecords !== undefined && (
 										<li>- {counts.focusRecords.toLocaleString()} focus records</li>
 									)}
-									{counts.tasks !== undefined && (
-										<li>- {counts.tasks.toLocaleString()} tasks</li>
-									)}
+									{counts.tasks !== undefined && <li>- {counts.tasks.toLocaleString()} tasks</li>}
 									{counts.projects !== undefined && (
 										<li>- {counts.projects.toLocaleString()} projects</li>
 									)}
@@ -66,9 +80,7 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
 						</div>
 					)}
 
-					<p className="text-red-500 mb-6 font-medium">
-						This action cannot be undone!
-					</p>
+					<p className="text-red-500 mb-6 font-medium">This action cannot be undone!</p>
 				</div>
 
 				<div className="flex gap-3 justify-end">

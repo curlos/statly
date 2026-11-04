@@ -11,15 +11,19 @@ const FOCUSABLE_SELECTOR =
 let lastFocusedElement: HTMLElement | null = null;
 
 if (typeof document !== 'undefined') {
-	document.addEventListener('focus', (e: FocusEvent) => {
-		const target = e.target as HTMLElement;
-		// Only track elements in the natural tab order (tabIndex >= 0).
-		// Elements with tabIndex=-1 are programmatic-only containers (modals, dialogs)
-		// and should not overwrite the intended return-focus target.
-		if (target !== document.body && target.tabIndex >= 0) {
-			lastFocusedElement = target;
-		}
-	}, true);
+	document.addEventListener(
+		'focus',
+		(e: FocusEvent) => {
+			const target = e.target as HTMLElement;
+			// Only track elements in the natural tab order (tabIndex >= 0).
+			// Elements with tabIndex=-1 are programmatic-only containers (modals, dialogs)
+			// and should not overwrite the intended return-focus target.
+			if (target !== document.body && target.tabIndex >= 0) {
+				lastFocusedElement = target;
+			}
+		},
+		true
+	);
 }
 
 export function useDialogFocus<T extends HTMLElement = HTMLDivElement>(active = true, onClose?: () => void) {
@@ -27,7 +31,9 @@ export function useDialogFocus<T extends HTMLElement = HTMLDivElement>(active = 
 
 	// Needed to stop React from bitching about onClose needing to be included in the dependency array.
 	const onCloseRef = useRef(onClose);
-	useEffect(() => { onCloseRef.current = onClose; });
+	useEffect(() => {
+		onCloseRef.current = onClose;
+	});
 
 	useEffect(() => {
 		if (!active) return;
@@ -49,7 +55,9 @@ export function useDialogFocus<T extends HTMLElement = HTMLDivElement>(active = 
 			if (e.key === 'Escape') {
 				// If focus is inside a nested popup, let that element handle Escape first.
 				const focused = document.activeElement;
-				const nestedPopup = focused?.closest('[role="listbox"], [role="menu"], [role="combobox"], [role="dialog"]');
+				const nestedPopup = focused?.closest(
+					'[role="listbox"], [role="menu"], [role="combobox"], [role="dialog"]'
+				);
 				if (nestedPopup && nestedPopup !== el) return;
 
 				e.preventDefault();
@@ -74,7 +82,7 @@ export function useDialogFocus<T extends HTMLElement = HTMLDivElement>(active = 
 					}
 				}
 			}
-			const focusable = allFocusable.filter(elem => {
+			const focusable = allFocusable.filter((elem) => {
 				if (elem instanceof HTMLInputElement && elem.type === 'radio' && elem.name) {
 					if (seenRadioGroups.get(elem.name) !== elem) return false;
 				}
@@ -98,7 +106,7 @@ export function useDialogFocus<T extends HTMLElement = HTMLDivElement>(active = 
 					e.preventDefault();
 					last.focus();
 				}
-			// If we're pressing only TAB, we must be going forwards (first to last) and thus if we get to the last element or the modal itself, wrap around to the first element.
+				// If we're pressing only TAB, we must be going forwards (first to last) and thus if we get to the last element or the modal itself, wrap around to the first element.
 			} else {
 				if (currentIndex === focusable.length - 1 || currentIndex === -1 || document.activeElement === el) {
 					e.preventDefault();
@@ -118,8 +126,9 @@ export function useDialogFocus<T extends HTMLElement = HTMLDivElement>(active = 
 			if (prev?.isConnected) {
 				prev.focus();
 			} else {
-				const remaining = Array.from(document.querySelectorAll<HTMLElement>('[aria-modal="true"]'))
-					.filter(m => m !== el);
+				const remaining = Array.from(document.querySelectorAll<HTMLElement>('[aria-modal="true"]')).filter(
+					(m) => m !== el
+				);
 				remaining.at(-1)?.focus();
 			}
 		};

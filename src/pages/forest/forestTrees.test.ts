@@ -1,5 +1,14 @@
 import { describe, expect, it } from '@jest/globals';
-import { DEFAULT_TREE, TREE_NAMES, getAssignedTree, getPlantedTreeNames, getSeasonalTree, getSpokenDuration, getTreeDisplayName, getTreeImageSrc } from './forestTrees';
+import {
+	DEFAULT_TREE,
+	TREE_NAMES,
+	getAssignedTree,
+	getPlantedTreeNames,
+	getSeasonalTree,
+	getSpokenDuration,
+	getTreeDisplayName,
+	getTreeImageSrc,
+} from './forestTrees';
 
 describe('getTreeDisplayName', () => {
 	it('turns file names into title case words', () => {
@@ -69,7 +78,13 @@ describe('getPlantedTreeNames', () => {
 	});
 
 	it('uses the default tree for projects with nothing assigned, and keeps projects separate', () => {
-		const planted = getPlantedTreeNames([{ projectId: 'a', startTime: inJuly }, { projectId: 'b', startTime: inJuly }], { b: 'maple_tree' });
+		const planted = getPlantedTreeNames(
+			[
+				{ projectId: 'a', startTime: inJuly },
+				{ projectId: 'b', startTime: inJuly },
+			],
+			{ b: 'maple_tree' }
+		);
 		expect(planted.get('a')).toEqual([DEFAULT_TREE]);
 		expect(planted.get('b')).toEqual(['maple_tree']);
 	});

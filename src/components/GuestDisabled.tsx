@@ -14,7 +14,11 @@ const GuestDisabled: React.FC<GuestDisabledProps> = ({ children }) => {
 	}
 
 	return (
-		<fieldset disabled data-guest-disabled className="min-w-0 m-0 p-0 border-0 opacity-50 cursor-not-allowed [&_*]:pointer-events-none">
+		<fieldset
+			disabled
+			data-guest-disabled
+			className="min-w-0 m-0 p-0 border-0 opacity-50 cursor-not-allowed [&_*]:pointer-events-none"
+		>
 			{children}
 		</fieldset>
 	);

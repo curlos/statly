@@ -39,7 +39,13 @@ const renderNestedTaskMD = (
 	agg: AggregationResults,
 	ancestorLookup: TaskLookup
 ): string => {
-	const { totalMetricOnParentTask, groupedTasksInfo, virtualAncestorsById, parentDirectChildrenTaskIdsByParentId, progressBarDataById } = agg;
+	const {
+		totalMetricOnParentTask,
+		groupedTasksInfo,
+		virtualAncestorsById,
+		parentDirectChildrenTaskIdsByParentId,
+		progressBarDataById,
+	} = agg;
 	const metric = totalMetricOnParentTask[taskId];
 	if (!metric) return '';
 
@@ -82,7 +88,7 @@ const renderNestedTaskMD = (
 
 	childEntries.sort((a, b) => b.value - a.value);
 
-	if (childEntries.length > 0) line += '\n' + childEntries.map(e => e.text).join('\n');
+	if (childEntries.length > 0) line += '\n' + childEntries.map((e) => e.text).join('\n');
 
 	return line;
 };
@@ -104,13 +110,15 @@ const renderProjectViewMD = (
 	}
 
 	return projects
-		.filter(p => p.id !== 'No Data')
-		.map(project => {
+		.filter((p) => p.id !== 'No Data')
+		.map((project) => {
 			let line = formatLine(project.name || project.id, project.count ?? 0, project.percentage ?? 0, baseDepth);
-			const taskIds = [...(groupedProjectsAndTasks[project.id] || [])].sort((a, b) =>
-				(totalMetricOnParentTask[b]?.value ?? 0) - (totalMetricOnParentTask[a]?.value ?? 0)
+			const taskIds = [...(groupedProjectsAndTasks[project.id] || [])].sort(
+				(a, b) => (totalMetricOnParentTask[b]?.value ?? 0) - (totalMetricOnParentTask[a]?.value ?? 0)
 			);
-			const taskLines = taskIds.map(taskId => renderNestedTaskMD(taskId, baseDepth + 1, agg, ancestorLookup)).filter(Boolean);
+			const taskLines = taskIds
+				.map((taskId) => renderNestedTaskMD(taskId, baseDepth + 1, agg, ancestorLookup))
+				.filter(Boolean);
 			if (taskLines.length > 0) line += '\n' + taskLines.join('\n');
 			return line;
 		})
@@ -118,15 +126,27 @@ const renderProjectViewMD = (
 };
 
 const buildMarkdown = (params: UseCompletionMarkdownParams): string => {
-	const { selectedInterval, apiStartDate, apiEndDate, showNestedProgressBars, aggregationResults, progressBarData, selected, ancestorTasksById } = params;
+	const {
+		selectedInterval,
+		apiStartDate,
+		apiEndDate,
+		showNestedProgressBars,
+		aggregationResults,
+		progressBarData,
+		selected,
+		ancestorTasksById,
+	} = params;
 
 	const header = `# ${getIntervalLabel(selectedInterval, apiStartDate, apiEndDate)}\n\n`;
 
 	if (!showNestedProgressBars || !aggregationResults) {
-		return header + progressBarData
-			.filter(item => item.id !== 'No Data')
-			.map(item => formatLine(item.name || 'Unknown', item.count ?? 0, item.percentage ?? 0, 0))
-			.join('\n');
+		return (
+			header +
+			progressBarData
+				.filter((item) => item.id !== 'No Data')
+				.map((item) => formatLine(item.name || 'Unknown', item.count ?? 0, item.percentage ?? 0, 0))
+				.join('\n')
+		);
 	}
 
 	const ancestorLookup = (ancestorTasksById || {}) as TaskLookup;
@@ -139,10 +159,18 @@ const buildMarkdown = (params: UseCompletionMarkdownParams): string => {
 
 	if (selected === 'Task') {
 		if (!aggregationResults.tasksWithNoParent) return '';
-		const sortedTasks = [...aggregationResults.tasksWithNoParent].sort((a, b) =>
-			(aggregationResults.totalMetricOnParentTask[b]?.value ?? 0) - (aggregationResults.totalMetricOnParentTask[a]?.value ?? 0)
+		const sortedTasks = [...aggregationResults.tasksWithNoParent].sort(
+			(a, b) =>
+				(aggregationResults.totalMetricOnParentTask[b]?.value ?? 0) -
+				(aggregationResults.totalMetricOnParentTask[a]?.value ?? 0)
 		);
-		return header + sortedTasks.map(taskId => renderNestedTaskMD(taskId, 0, aggregationResults, ancestorLookup)).filter(Boolean).join('\n');
+		return (
+			header +
+			sortedTasks
+				.map((taskId) => renderNestedTaskMD(taskId, 0, aggregationResults, ancestorLookup))
+				.filter(Boolean)
+				.join('\n')
+		);
 	}
 
 	return '';

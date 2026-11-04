@@ -10,9 +10,9 @@
 export const shouldBreakAllText = (text: string | undefined | null, maxWordLength = 26): boolean => {
 	if (!text) return false;
 
-	const longestWord = text.split(/\s+/).reduce((longest, word) =>
-		word.length > longest.length ? word : longest, ''
-	);
+	const longestWord = text
+		.split(/\s+/)
+		.reduce((longest, word) => (word.length > longest.length ? word : longest), '');
 
 	return longestWord.length > maxWordLength;
 };

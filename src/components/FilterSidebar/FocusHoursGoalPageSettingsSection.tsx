@@ -25,14 +25,20 @@ import type { Ring } from '../../types/api';
 const cleanupSameDayInactivePeriods = (
 	periods: Array<{ startDate: string; endDate: string | null }>
 ): Array<{ startDate: string; endDate: string | null }> => {
-	return periods.filter(period => period.startDate !== period.endDate);
+	return periods.filter((period) => period.startDate !== period.endDate);
 };
 
 const FocusHoursGoalPageSettingsSection = () => {
 	const {
 		userSettings,
 		editUserSettings,
-		focusHoursGoalPageSettings: { rings, activeRings, currentRing, selectedRingId, showMultiRingViewForOneActiveRing },
+		focusHoursGoalPageSettings: {
+			rings,
+			activeRings,
+			currentRing,
+			selectedRingId,
+			showMultiRingViewForOneActiveRing,
+		},
 		handleUpdateRingSetting,
 		handleSetSelectedRing,
 		handleUpdateUserSettingForPage,
@@ -61,7 +67,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 	const combinedRingsSettings = userSettings?.pages?.focusHoursGoal?.combinedRingsSettings || {
 		showStreakCount: true,
 		showGoalDays: true,
-		goalDays: 7
+		goalDays: 7,
 	};
 
 	const themeContext = useThemeContext();
@@ -118,18 +124,14 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 	const handleCombinedCheckboxClick = (showValue: boolean, propertyName: string) => {
 		const newShowValue = !showValue;
-		handleUpdateUserSettingForPage(
-			'focusHoursGoal',
-			'combinedRingsSettings',
-			{
-				...combinedRingsSettings,
-				[propertyName]: newShowValue
-			}
-		);
+		handleUpdateUserSettingForPage('focusHoursGoal', 'combinedRingsSettings', {
+			...combinedRingsSettings,
+			[propertyName]: newShowValue,
+		});
 	};
 
 	const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
-	const dayLabels: Record<typeof daysOfWeek[number], string> = {
+	const dayLabels: Record<(typeof daysOfWeek)[number], string> = {
 		monday: 'Mon',
 		tuesday: 'Tue',
 		wednesday: 'Wed',
@@ -203,7 +205,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 			// Pausing ring - add new inactive period
 			inactivePeriods.push({
 				startDate: today,
-				endDate: null
+				endDate: null,
 			});
 		} else {
 			// Reactivating ring - close last inactive period
@@ -212,7 +214,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				if (lastPeriod.endDate === null) {
 					inactivePeriods[inactivePeriods.length - 1] = {
 						...lastPeriod,
-						endDate: today
+						endDate: today,
 					};
 				}
 			}
@@ -281,10 +283,14 @@ const FocusHoursGoalPageSettingsSection = () => {
 				preventOpen={false}
 			>
 				<div className="mb-4 bg-color-gray-700 rounded-lg">
-					<div aria-live="polite" aria-atomic="true" className="sr-only">{ringSelectionAnnouncement}</div>
+					<div aria-live="polite" aria-atomic="true" className="sr-only">
+						{ringSelectionAnnouncement}
+					</div>
 					<div role="tablist" aria-label="Ring settings" className="space-y-2">
 						{rings.map((ring: Ring) => {
-							const ringColor = ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor);
+							const ringColor = ring.useThemeColor
+								? chosenColorObj.hexColor
+								: ring.color || chosenColorObj.hexColor;
 
 							return (
 								<button
@@ -294,7 +300,9 @@ const FocusHoursGoalPageSettingsSection = () => {
 									aria-selected={selectedRingId === ring.id}
 									onClick={() => {
 										handleSetSelectedRing(ring.id);
-										setRingSelectionAnnouncement(`${ring.name}${!ring.isActive ? ' (Paused)' : ''} selected`);
+										setRingSelectionAnnouncement(
+											`${ring.name}${!ring.isActive ? ' (Paused)' : ''} selected`
+										);
 									}}
 									className={classNames(
 										'px-3 py-2 rounded-full text-[14px] transition-colors flex items-center gap-2',
@@ -310,14 +318,15 @@ const FocusHoursGoalPageSettingsSection = () => {
 												strokeWidth={12}
 												styles={buildStyles({
 													pathColor: ringColor,
-													trailColor: ringColor
+													trailColor: ringColor,
 												})}
 											/>
 										</div>
 									)}
-									<span>{truncateText(ring.name, truncateLength)} {!ring.isActive && (
-										<span className="text-color-gray-50">(Paused)</span>
-									)}</span>
+									<span>
+										{truncateText(ring.name, truncateLength)}{' '}
+										{!ring.isActive && <span className="text-color-gray-50">(Paused)</span>}
+									</span>
 								</button>
 							);
 						})}
@@ -327,7 +336,9 @@ const FocusHoursGoalPageSettingsSection = () => {
 				<div role="tabpanel" aria-labelledby={`ring-tab-${selectedRingId}`}>
 					{/* Ring Status Toggle */}
 					<div className="mb-4">
-						<h4 id="ring-status-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">Ring Status</h4>
+						<h4 id="ring-status-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">
+							Ring Status
+						</h4>
 						<div role="group" aria-labelledby="ring-status-heading" className="flex items-center gap-3">
 							<button
 								onClick={handleToggleRingActive}
@@ -344,9 +355,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 							</button>
 							{isTogglingRingStatus && <Spinner size="sm" />}
 							{isOnlyActiveRing() && (
-								<p className="text-[12px] text-orange-400">
-									At least one ring must remain active
-								</p>
+								<p className="text-[12px] text-orange-400">At least one ring must remain active</p>
 							)}
 						</div>
 					</div>
@@ -375,15 +384,11 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 					{/* Ring Appearance Section */}
 					<div className="mb-4 px-1">
-						<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">
-							Ring Color
-						</h4>
+						<h4 className="text-[14px] font-semibold text-color-gray-25 mb-2">Ring Color</h4>
 						<RingColorPicker
 							color={currentRing.color}
 							useThemeColor={currentRing.useThemeColor || false}
-							onColorChange={(newColor) =>
-								handleUpdateRingSetting(selectedRingId, 'color', newColor)
-							}
+							onColorChange={(newColor) => handleUpdateRingSetting(selectedRingId, 'color', newColor)}
 							onUseThemeColorChange={(useThemeColor) =>
 								handleUpdateRingSetting(selectedRingId, 'useThemeColor', useThemeColor)
 							}
@@ -462,7 +467,9 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 					{/* Streak Goal Section */}
 					<div className="mb-4">
-						<h4 id="streak-goal-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">Streak Goal</h4>
+						<h4 id="streak-goal-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">
+							Streak Goal
+						</h4>
 						<div role="group" aria-labelledby="streak-goal-heading">
 							<InputNumUserSettings
 								key={`goal-days-${selectedRingId}`}
@@ -482,7 +489,9 @@ const FocusHoursGoalPageSettingsSection = () => {
 
 					{/* Daily Focus Goal Section */}
 					<div className="mb-4">
-						<h4 id="daily-focus-goal-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">Daily Focus Goal</h4>
+						<h4 id="daily-focus-goal-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">
+							Daily Focus Goal
+						</h4>
 						<div role="group" aria-labelledby="daily-focus-goal-heading">
 							<GoalSecondsInput
 								key={`goal-seconds-${selectedRingId}`}
@@ -499,7 +508,12 @@ const FocusHoursGoalPageSettingsSection = () => {
 						<p id="streak-days-description" className="text-[14px] text-color-gray-50 mt-0 mb-2">
 							Select days that can break your streak. Unselected days are "freebie" days.
 						</p>
-						<div role="group" aria-label="Streak days" aria-describedby="streak-days-description" className="flex gap-2 flex-wrap">
+						<div
+							role="group"
+							aria-label="Streak days"
+							aria-describedby="streak-days-description"
+							className="flex gap-2 flex-wrap"
+						>
 							{daysOfWeek.map((day) => (
 								<button
 									key={day}
@@ -542,11 +556,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				title={
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Combined Rings Settings</h3>
-						<Icon
-							name="groups"
-							fill={1}
-							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
-						/>
+						<Icon name="groups" fill={1} customClass={'text-color-gray-50 !text-[20px] cursor-pointer'} />
 						<Icon
 							name="nest_thermostat_gen_3"
 							fill={0}
@@ -568,21 +578,25 @@ const FocusHoursGoalPageSettingsSection = () => {
 						{...{
 							name: 'Show Streak Count',
 							showValue: combinedRingsSettings.showStreakCount,
-							handleCheckboxClick: () => handleCombinedCheckboxClick(combinedRingsSettings.showStreakCount, 'showStreakCount'),
+							handleCheckboxClick: () =>
+								handleCombinedCheckboxClick(combinedRingsSettings.showStreakCount, 'showStreakCount'),
 						}}
 					/>
 					<CheckboxOther
 						{...{
 							name: 'Show Goal Days',
 							showValue: combinedRingsSettings.showGoalDays,
-							handleCheckboxClick: () => handleCombinedCheckboxClick(combinedRingsSettings.showGoalDays, 'showGoalDays'),
+							handleCheckboxClick: () =>
+								handleCombinedCheckboxClick(combinedRingsSettings.showGoalDays, 'showGoalDays'),
 						}}
 					/>
 				</div>
 
 				{/* Streak Goal Section */}
 				<div className="mb-4">
-					<h4 id="combined-streak-goal-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">Streak Goal</h4>
+					<h4 id="combined-streak-goal-heading" className="text-[14px] font-semibold text-color-gray-25 mb-2">
+						Streak Goal
+					</h4>
 					<div role="group" aria-labelledby="combined-streak-goal-heading">
 						<InputNumUserSettings
 							key="combined-goal-days"
@@ -609,11 +623,7 @@ const FocusHoursGoalPageSettingsSection = () => {
 				title={
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Page Settings</h3>
-						<Icon
-							name="settings"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
-						/>
+						<Icon name="settings" fill={0} customClass={'text-color-gray-50 !text-[20px] cursor-pointer'} />
 					</div>
 				}
 				openByDefault={true}
@@ -627,7 +637,12 @@ const FocusHoursGoalPageSettingsSection = () => {
 					{...{
 						name: 'Show Multi-Ring View for One Active Ring',
 						showValue: showMultiRingViewForOneActiveRing,
-						handleCheckboxClick: () => handleUpdateUserSettingForPage('focusHoursGoal', 'showMultiRingViewForOneActiveRing', !showMultiRingViewForOneActiveRing),
+						handleCheckboxClick: () =>
+							handleUpdateUserSettingForPage(
+								'focusHoursGoal',
+								'showMultiRingViewForOneActiveRing',
+								!showMultiRingViewForOneActiveRing
+							),
 					}}
 				/>
 			</Accordion>

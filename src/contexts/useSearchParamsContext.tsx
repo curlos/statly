@@ -13,11 +13,13 @@ const useSearchParamsCustom = () => {
 		setSearchParams(newSearchParams);
 	}, [location.search]);
 
-	const buildUrlWithQueryParams = (newParams: Record<string, string>, customNewUrl?: string, preserveExisting = true) => {
+	const buildUrlWithQueryParams = (
+		newParams: Record<string, string>,
+		customNewUrl?: string,
+		preserveExisting = true
+	) => {
 		// Preserve existing query params or start fresh
-		const searchParams = preserveExisting
-			? new URLSearchParams(location.search)
-			: new URLSearchParams();
+		const searchParams = preserveExisting ? new URLSearchParams(location.search) : new URLSearchParams();
 
 		// Update or set new parameters
 		Object.keys(newParams).forEach((key) => {

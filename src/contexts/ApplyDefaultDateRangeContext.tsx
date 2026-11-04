@@ -23,7 +23,7 @@ const ROUTES_WITH_DEFAULTS = new Set([
 	'/focus-records',
 	'/completed-tasks',
 	'/medals',
-	'/challenges'
+	'/challenges',
 ]);
 
 export const ApplyDefaultDateRangeProvider = ({ children }: { children: ReactNode }) => {
@@ -61,7 +61,11 @@ export const ApplyDefaultDateRangeProvider = ({ children }: { children: ReactNod
 
 	useEffect(() => {
 		// If we've already loaded the user settings and sent the updateQueryParams call with the default date interval, then we need to keep waiting here until either the date query params in the URL show up. If the default date interval is "All" though, then there'd be no query params in the URL and thus we are finished so we can mark it as successfully queried.
-		if (!isLoadingGetUserSettings && sentUpdateQueryParamsForDefaultsRef.current && (hasQueryParams || dateInterval === 'All')) {
+		if (
+			!isLoadingGetUserSettings &&
+			sentUpdateQueryParamsForDefaultsRef.current &&
+			(hasQueryParams || dateInterval === 'All')
+		) {
 			hasSuccessfullyQueriedRef.current = true;
 		}
 	}, [hasQueryParams, isLoadingGetUserSettings, dateInterval]);
@@ -87,7 +91,7 @@ export const ApplyDefaultDateRangeProvider = ({ children }: { children: ReactNod
 			updateQueryParams({
 				'start-date': startDate,
 				'end-date': endDate,
-				'date-interval': dateInterval || ''
+				'date-interval': dateInterval || '',
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

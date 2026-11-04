@@ -18,12 +18,7 @@ import {
 	useSensors,
 	type DragEndEvent,
 } from '@dnd-kit/core';
-import {
-	arrayMove,
-	SortableContext,
-	sortableKeyboardCoordinates,
-	rectSortingStrategy,
-} from '@dnd-kit/sortable';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from '@dnd-kit/sortable';
 import SortableCustomImage from './SortableCustomImage';
 import { useThemeContext } from '../contexts/useThemeContext';
 import type { CustomImage } from '../types/models';
@@ -125,7 +120,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 		}
 	};
 
-	const hasSelectionInCurrentPage = localImages.some(img => img.imageUrl === selectedImageSrc);
+	const hasSelectionInCurrentPage = localImages.some((img) => img.imageUrl === selectedImageSrc);
 
 	const handleGridKeyDown = (e: React.KeyboardEvent) => {
 		if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
@@ -134,7 +129,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 		const radios = gridRef.current?.querySelectorAll<HTMLElement>('[role="radio"]');
 		if (!radios || radios.length === 0) return;
 
-		const currentIndex = Array.from(radios).findIndex(r => r === document.activeElement);
+		const currentIndex = Array.from(radios).findIndex((r) => r === document.activeElement);
 
 		let nextIndex: number;
 		if (e.key === 'Home') {
@@ -163,15 +158,15 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 		const { active, over } = event;
 
 		if (over && active.id !== over.id) {
-			const oldIndex = localImages.findIndex(img => img._id === active.id);
-			const newIndex = localImages.findIndex(img => img._id === over.id);
+			const oldIndex = localImages.findIndex((img) => img._id === active.id);
+			const newIndex = localImages.findIndex((img) => img._id === over.id);
 
 			const newOrder = arrayMove(localImages, oldIndex, newIndex);
 			setLocalImages(newOrder);
 
 			// Send reorder request to backend
 			try {
-				await reorderCustomImages(newOrder.map(img => img._id)).unwrap();
+				await reorderCustomImages(newOrder.map((img) => img._id)).unwrap();
 			} catch (error) {
 				console.error('Failed to reorder images:', error);
 				// Revert on error
@@ -192,13 +187,9 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 	return (
 		<div>
 			{/* Images Grid with Drag and Drop */}
-			<DndContext
-				sensors={sensors}
-				collisionDetection={closestCenter}
-				onDragEnd={handleDragEnd}
-			>
+			<DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
 				<SortableContext
-					items={localImages.map(img => img._id)}
+					items={localImages.map((img) => img._id)}
 					strategy={rectSortingStrategy}
 					disabled={!isEditMode}
 				>
@@ -211,7 +202,7 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 					>
 						{localImages.map((image, index) => {
 							const isSelected = selectedImageSrc === image.imageUrl;
-							const tabIndex = isSelected ? 0 : (index === 0 && !hasSelectionInCurrentPage ? 0 : -1);
+							const tabIndex = isSelected ? 0 : index === 0 && !hasSelectionInCurrentPage ? 0 : -1;
 
 							return (
 								<SortableCustomImage
@@ -253,7 +244,9 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 				ariaLabelledBy="delete-image-heading"
 			>
 				<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm mx-4">
-					<h3 id="delete-image-heading" tabIndex={-1} autoFocus className="text-lg font-bold mb-3">Delete Image?</h3>
+					<h3 id="delete-image-heading" tabIndex={-1} autoFocus className="text-lg font-bold mb-3">
+						Delete Image?
+					</h3>
 					<p className="text-color-gray-25 mb-6">
 						This action cannot be undone. The image will be permanently deleted.
 					</p>
@@ -280,11 +273,16 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 			{/* Move Modal */}
 			<Modal
 				isOpen={!!showMoveModal}
-				onClose={() => { setShowMoveModal(null); setMoveDestinationFolder(''); }}
+				onClose={() => {
+					setShowMoveModal(null);
+					setMoveDestinationFolder('');
+				}}
 				ariaLabelledBy="move-folder-heading"
 			>
 				<div className="bg-color-gray-700 rounded-lg p-6 max-w-sm mx-4">
-					<h3 id="move-folder-heading" className="text-lg font-bold mb-3">Move to Folder</h3>
+					<h3 id="move-folder-heading" className="text-lg font-bold mb-3">
+						Move to Folder
+					</h3>
 
 					<div className="relative mb-4">
 						<select
@@ -294,11 +292,12 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 						>
 							<option value="">Select folder...</option>
 							{availableFolders
-								.filter(f => f !== currentFolder)
-								.map(folder => (
-									<option key={folder} value={folder}>{folder}</option>
-								))
-							}
+								.filter((f) => f !== currentFolder)
+								.map((folder) => (
+									<option key={folder} value={folder}>
+										{folder}
+									</option>
+								))}
 						</select>
 						<div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
 							<Icon name="expand_more" customClass="!text-[20px] text-white" />
@@ -307,7 +306,10 @@ const ExistingCustomImages: React.FC<ExistingCustomImagesProps> = ({
 
 					<div className="flex gap-3 justify-end">
 						<button
-							onClick={() => { setShowMoveModal(null); setMoveDestinationFolder(''); }}
+							onClick={() => {
+								setShowMoveModal(null);
+								setMoveDestinationFolder('');
+							}}
 							className="px-4 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded"
 						>
 							Cancel

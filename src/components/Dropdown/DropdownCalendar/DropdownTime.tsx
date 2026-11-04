@@ -13,7 +13,14 @@ interface DropdownTimeProps {
 	customClasses?: string;
 }
 
-const DropdownTime: React.FC<DropdownTimeProps> = ({ toggleRef, isVisible, setIsVisible, selectedTime, setSelectedTime, customClasses }) => {
+const DropdownTime: React.FC<DropdownTimeProps> = ({
+	toggleRef,
+	isVisible,
+	setIsVisible,
+	selectedTime,
+	setSelectedTime,
+	customClasses,
+}) => {
 	const defaultTime = extractTimeDetails(selectedTime);
 
 	const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString());

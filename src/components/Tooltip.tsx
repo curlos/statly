@@ -10,7 +10,15 @@ interface TooltipProps {
 	ariaLabel?: string;
 }
 
-const Tooltip = ({ content, children, className = '', position = 'top', align: manualAlign, tabIndex = 0, ariaLabel }: TooltipProps) => {
+const Tooltip = ({
+	content,
+	children,
+	className = '',
+	position = 'top',
+	align: manualAlign,
+	tabIndex = 0,
+	ariaLabel,
+}: TooltipProps) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -62,19 +70,19 @@ const Tooltip = ({ content, children, className = '', position = 'top', align: m
 
 	const align = manualAlign || getAlignment();
 
-	const positionClasses = position === 'top'
-		? 'bottom-full mb-2'
-		: 'top-full mt-2';
+	const positionClasses = position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
 
 	const horizontalAlign = align === 'left' ? 'left-0' : align === 'right' ? 'right-0' : 'left-1/2 -translate-x-1/2';
 
-	const arrowClasses = position === 'top'
-		? `absolute top-full ${align === 'left' ? 'left-2' : align === 'right' ? 'right-2' : 'left-1/2 -translate-x-1/2'} -mt-1`
-		: `absolute bottom-full ${align === 'left' ? 'left-2' : align === 'right' ? 'right-2' : 'left-1/2 -translate-x-1/2'} -mb-1`;
+	const arrowClasses =
+		position === 'top'
+			? `absolute top-full ${align === 'left' ? 'left-2' : align === 'right' ? 'right-2' : 'left-1/2 -translate-x-1/2'} -mt-1`
+			: `absolute bottom-full ${align === 'left' ? 'left-2' : align === 'right' ? 'right-2' : 'left-1/2 -translate-x-1/2'} -mb-1`;
 
-	const arrowBorderClasses = position === 'top'
-		? 'border-4 border-transparent border-t-color-gray-300'
-		: 'border-4 border-transparent border-b-color-gray-300';
+	const arrowBorderClasses =
+		position === 'top'
+			? 'border-4 border-transparent border-t-color-gray-300'
+			: 'border-4 border-transparent border-b-color-gray-300';
 
 	return (
 		<div

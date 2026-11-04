@@ -26,7 +26,7 @@ const EmotionTag = ({ emotionObj, href, showScore = false, count }: EmotionTagPr
 	const sharedClasses = classNames(
 		'px-3 py-1 text-[14px] text-[#ffffff] rounded-full transition-opacity border border-color-gray-25',
 		emotionData.bg,
-		href && 'cursor-pointer hover:opacity-80',
+		href && 'cursor-pointer hover:opacity-80'
 	);
 
 	const content = (
@@ -44,9 +44,7 @@ const EmotionTag = ({ emotionObj, href, showScore = false, count }: EmotionTagPr
 					{content}
 				</a>
 			) : (
-				<div className={sharedClasses}>
-					{content}
-				</div>
+				<div className={sharedClasses}>{content}</div>
 			)}
 		</div>
 	);

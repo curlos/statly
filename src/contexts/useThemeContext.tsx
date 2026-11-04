@@ -98,7 +98,8 @@ const useTheme = () => {
 
 	const tailwindColorKey = userSettings?.theme?.color || localStorage.getItem('theme-color') || 'red-500';
 	const customColorHex = userSettings?.theme?.customColor || localStorage.getItem('theme-custom-color') || '#3b82f6';
-	const useCustomColor = userSettings?.theme?.useCustomColor ?? localStorage.getItem('theme-use-custom-color') === 'true';
+	const useCustomColor =
+		userSettings?.theme?.useCustomColor ?? localStorage.getItem('theme-use-custom-color') === 'true';
 	const themeColorKey = isGameTheme ? gameThemeColor : useCustomColor ? customColorHex : tailwindColorKey;
 	const isCustomHex = isGameTheme || useCustomColor;
 	const [chosenColorName, chosenColorNum] = themeColorKey.split('-');
@@ -128,11 +129,17 @@ const useTheme = () => {
 		localStorage.setItem('theme-color', userSettings?.theme?.color);
 	}
 
-	if (userSettings?.theme?.customColor && localStorage.getItem('theme-custom-color') !== userSettings?.theme?.customColor) {
+	if (
+		userSettings?.theme?.customColor &&
+		localStorage.getItem('theme-custom-color') !== userSettings?.theme?.customColor
+	) {
 		localStorage.setItem('theme-custom-color', userSettings?.theme?.customColor);
 	}
 
-	if (userSettings?.theme?.useCustomColor !== undefined && localStorage.getItem('theme-use-custom-color') !== String(userSettings.theme.useCustomColor)) {
+	if (
+		userSettings?.theme?.useCustomColor !== undefined &&
+		localStorage.getItem('theme-use-custom-color') !== String(userSettings.theme.useCustomColor)
+	) {
 		localStorage.setItem('theme-use-custom-color', String(userSettings.theme.useCustomColor));
 	}
 

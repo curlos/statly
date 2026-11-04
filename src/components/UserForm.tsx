@@ -21,20 +21,20 @@ const signupValidationRules = {
 				return 'Name cannot be empty or only whitespace';
 			}
 			return true;
-		}
+		},
 	},
 	email: {
 		required: 'Email is required',
 		pattern: {
 			value: EMAIL_REGEX,
-			message: 'Please enter a valid email address'
-		}
+			message: 'Please enter a valid email address',
+		},
 	},
 	password: {
 		required: 'Password is required',
 		minLength: {
 			value: 8,
-			message: 'Password must be at least 8 characters long'
+			message: 'Password must be at least 8 characters long',
 		},
 		validate: (value: string) => {
 			if (!/[a-z]/.test(value)) {
@@ -50,11 +50,11 @@ const signupValidationRules = {
 				return 'Password must contain at least one special character (@$!%*?&)';
 			}
 			return true;
-		}
+		},
 	},
 	confirmPassword: {
 		required: 'Please confirm your password',
-	}
+	},
 };
 
 // Validation rules for login (minimal validation)
@@ -63,12 +63,12 @@ const loginValidationRules = {
 		required: 'Email is required',
 		pattern: {
 			value: EMAIL_REGEX,
-			message: 'Please enter a valid email address'
-		}
+			message: 'Please enter a valid email address',
+		},
 	},
 	password: {
-		required: 'Password is required'
-	}
+		required: 'Password is required',
+	},
 };
 
 interface UserFormProps {
@@ -172,7 +172,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 					placeholder="Confirm Password"
 					register={register('confirmPassword', {
 						...(validationRules as typeof signupValidationRules).confirmPassword,
-						validate: (value, formValues) => value === formValues.password || 'Passwords do not match'
+						validate: (value, formValues) => value === formValues.password || 'Passwords do not match',
 					})}
 					error={errors.confirmPassword}
 				/>
@@ -184,7 +184,11 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 				tabIndex={-1}
 				role="alert"
 				aria-atomic="true"
-				className={submitError ? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm outline-none' : 'sr-only'}
+				className={
+					submitError
+						? 'bg-red-500/10 border border-red-500 text-red-500 rounded-xl p-3 text-sm outline-none'
+						: 'sr-only'
+				}
 			>
 				{submitError ?? ''}
 			</div>
@@ -204,7 +208,11 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 						Have an account already?{' '}
 						<Link
 							href="/login"
-							className={classNames(linkColorObj.textColor, linkColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
+							className={classNames(
+								linkColorObj.textColor,
+								linkColorObj.borderColor,
+								'cursor-pointer border-b pb-[1.5px]'
+							)}
 						>
 							Log In
 						</Link>
@@ -214,7 +222,11 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 						Don't have an account?{' '}
 						<Link
 							href="/signup"
-							className={classNames(linkColorObj.textColor, linkColorObj.borderColor, 'cursor-pointer border-b pb-[1.5px]')}
+							className={classNames(
+								linkColorObj.textColor,
+								linkColorObj.borderColor,
+								'cursor-pointer border-b pb-[1.5px]'
+							)}
 						>
 							Sign Up
 						</Link>

@@ -1,14 +1,10 @@
-import { useMemo } from "react";
-import { getFormattedShortMonthDay, getAllDaysInWeekFromDate } from "../utils/date.utils";
-import { useUserSettingsContext } from "../pages/focus-records/useUserSettingsContext";
+import { useMemo } from 'react';
+import { getFormattedShortMonthDay, getAllDaysInWeekFromDate } from '../utils/date.utils';
+import { useUserSettingsContext } from '../pages/focus-records/useUserSettingsContext';
 
 const useGetDefaultDateRangeIntervalDates = () => {
 	// Get medal settings
-	const {
-		defaultDateRangeInterval,
-		defaultCustomStartDate,
-		isLoadingGetUserSettings,
-	} = useUserSettingsContext();
+	const { defaultDateRangeInterval, defaultCustomStartDate, isLoadingGetUserSettings } = useUserSettingsContext();
 
 	const defaultMedalDates = useMemo(() => {
 		if (isLoadingGetUserSettings) {
@@ -67,6 +63,6 @@ const useGetDefaultDateRangeIntervalDates = () => {
 	}, [isLoadingGetUserSettings, defaultDateRangeInterval, defaultCustomStartDate]);
 
 	return defaultMedalDates;
-}
+};
 
-export default useGetDefaultDateRangeIntervalDates
+export default useGetDefaultDateRangeIntervalDates;

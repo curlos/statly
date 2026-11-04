@@ -75,4 +75,5 @@ export const generateTailwindColorObjects = () => {
 	return colors;
 };
 
-const isNumber = (value: unknown): value is number | string => typeof value === 'number' || (typeof value === 'string' && !isNaN(Number(value)));
+const isNumber = (value: unknown): value is number | string =>
+	typeof value === 'number' || (typeof value === 'string' && !isNaN(Number(value)));

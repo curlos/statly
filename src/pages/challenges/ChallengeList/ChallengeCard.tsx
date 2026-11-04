@@ -34,10 +34,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 		challengesPageSettings: { selectedChallengeCardImage },
 	} = useUserSettingsContext();
 
-	const imgSrc =
-		challenge.type === 'focus'
-			? selectedChallengeCardImage?.focus
-			: selectedChallengeCardImage?.tasks;
+	const imgSrc = challenge.type === 'focus' ? selectedChallengeCardImage?.focus : selectedChallengeCardImage?.tasks;
 
 	const { width } = useWindowSize();
 

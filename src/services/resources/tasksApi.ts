@@ -3,7 +3,7 @@ import type {
 	DaysWithCompletedTasksResponse,
 	TasksMedalsResponse,
 	TasksChallengesResponse,
-	AllTasksResponse
+	AllTasksResponse,
 } from '../../types/api';
 
 /**
@@ -14,7 +14,7 @@ export const tasksApi = baseAPI.injectEndpoints({
 		getDaysWithCompletedTasks: builder.query<DaysWithCompletedTasksResponse, Record<string, unknown>>({
 			query: (queryParams) => {
 				const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-			const queryString = buildQueryString({ ...queryParams, timezone });
+				const queryString = buildQueryString({ ...queryParams, timezone });
 				return queryString
 					? `/tasks/days-with-completed-tasks?${queryString}`
 					: '/tasks/days-with-completed-tasks';
@@ -27,9 +27,7 @@ export const tasksApi = baseAPI.injectEndpoints({
 		getTasksMedals: builder.query<TasksMedalsResponse, Record<string, unknown>>({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString
-					? `/tasks/medals?${queryString}`
-					: '/tasks/medals';
+				return queryString ? `/tasks/medals?${queryString}` : '/tasks/medals';
 			},
 			transformResponse: (response: TasksMedalsResponse) => {
 				return response;
@@ -39,9 +37,7 @@ export const tasksApi = baseAPI.injectEndpoints({
 		getTasksChallenges: builder.query<TasksChallengesResponse, Record<string, unknown>>({
 			query: (queryParams) => {
 				const queryString = buildQueryString(queryParams);
-				return queryString
-					? `/tasks/challenges?${queryString}`
-					: '/tasks/challenges';
+				return queryString ? `/tasks/challenges?${queryString}` : '/tasks/challenges';
 			},
 			transformResponse: (response: TasksChallengesResponse) => {
 				return response;
@@ -64,17 +60,20 @@ export const tasksApi = baseAPI.injectEndpoints({
 		getAllTasks: builder.query<AllTasksResponse, { page?: number; limit?: number } | void>({
 			query: (queryParams?: { page?: number; limit?: number }) => {
 				const queryString = buildQueryString(queryParams || {});
-				return queryString
-					? `/tasks/all?${queryString}`
-					: '/tasks/all';
+				return queryString ? `/tasks/all?${queryString}` : '/tasks/all';
 			},
 			transformResponse: (response: AllTasksResponse) => {
 				return response;
 			},
 			providesTags: ['AllTasks'],
-		})
+		}),
 	}),
 	overrideExisting: false,
 });
 
-export const { useGetDaysWithCompletedTasksQuery, useGetTasksMedalsQuery, useGetTasksChallengesQuery, useGetAllTasksQuery } = tasksApi;
+export const {
+	useGetDaysWithCompletedTasksQuery,
+	useGetTasksMedalsQuery,
+	useGetTasksChallengesQuery,
+	useGetAllTasksQuery,
+} = tasksApi;

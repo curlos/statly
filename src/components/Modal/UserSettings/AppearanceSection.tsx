@@ -7,7 +7,9 @@ import UiThemeList from '../../SidebarModal/UiThemeList';
 import classNames from 'classnames';
 
 const AppearanceSection = () => {
-	const [activeTab, setActiveTab] = useState<'theme-color' | 'font-family' | 'color-mode' | 'ui-theme'>('theme-color');
+	const [activeTab, setActiveTab] = useState<'theme-color' | 'font-family' | 'color-mode' | 'ui-theme'>(
+		'theme-color'
+	);
 	const { chosenColorObj } = useThemeContext();
 	const { bgColor } = chosenColorObj;
 
@@ -62,11 +64,7 @@ const AppearanceSection = () => {
 			</div>
 
 			{/* Tab Content */}
-			<div
-				id="appearance-tab-panel"
-				role="tabpanel"
-				aria-labelledby={`appearance-${activeTab}-tab`}
-			>
+			<div id="appearance-tab-panel" role="tabpanel" aria-labelledby={`appearance-${activeTab}-tab`}>
 				{activeTab === 'ui-theme' && <UiThemeList />}
 				{activeTab === 'theme-color' && <ThemeColorList />}
 				{activeTab === 'font-family' && <FontFamilyList />}

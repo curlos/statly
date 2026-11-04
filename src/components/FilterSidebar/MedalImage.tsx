@@ -29,16 +29,25 @@ const MedalImage = () => {
 
 	const { chosenColorObj } = useThemeContext();
 
-	const handleMedalImageSizeChange = useDebouncedCallback((px: number) => {
-		handleUpdateUserSettingForPage('focusRecords', 'medalImageSizePx', String(px));
-	}, 500, true);
+	const handleMedalImageSizeChange = useDebouncedCallback(
+		(px: number) => {
+			handleUpdateUserSettingForPage('focusRecords', 'medalImageSizePx', String(px));
+		},
+		500,
+		true
+	);
 
 	return (
 		<div>
-			<CardImage cardType="Medal Image" imageSrc={selectedMedalImage} page={'focus-records'} showGlow={showMedalGlow} />
+			<CardImage
+				cardType="Medal Image"
+				imageSrc={selectedMedalImage}
+				page={'focus-records'}
+				showGlow={showMedalGlow}
+			/>
 
-		<fieldset className="space-y-1 mt-2 border-0 p-0 m-0">
-			<legend className="sr-only">Medal image size</legend>
+			<fieldset className="space-y-1 mt-2 border-0 p-0 m-0">
+				<legend className="sr-only">Medal image size</legend>
 				{medalImageSizeOptions.map((imageSizeOption) => {
 					return (
 						<CustomRadioButton
@@ -60,7 +69,9 @@ const MedalImage = () => {
 				<CheckboxOther
 					name="Show Medal Glow"
 					showValue={showMedalGlow}
-					handleCheckboxClick={() => handleUpdateUserSettingForPage('focusRecords', 'showMedalGlow', !showMedalGlow)}
+					handleCheckboxClick={() =>
+						handleUpdateUserSettingForPage('focusRecords', 'showMedalGlow', !showMedalGlow)
+					}
 				/>
 			</div>
 		</div>

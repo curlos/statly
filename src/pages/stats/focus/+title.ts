@@ -1,1 +1,1 @@
-export default "Focus Stats - Statly";
+export default 'Focus Stats - Statly';

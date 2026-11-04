@@ -37,10 +37,7 @@ const Icon: React.FC<IconProps> = ({
 
 	if (!fontsLoaded) {
 		return (
-			<span
-				key={iconKey}
-				className={"invisible" + (customClass ? ' ' + customClass : '')}
-			>
+			<span key={iconKey} className={'invisible' + (customClass ? ' ' + customClass : '')}>
 				<Spinner size="sm" />
 			</span>
 		);
@@ -53,7 +50,7 @@ const Icon: React.FC<IconProps> = ({
 			className={'material-symbols-rounded' + (customClass ? ' ' + customClass : '')}
 			style={{
 				fontVariationSettings: `'FILL' ${fill}, 'wght' ${wght}, 'GRAD' ${grad}, 'opsz' ${opsz}`,
-				...customStyle
+				...customStyle,
 			}}
 			onClick={onClick}
 			onMouseOver={onMouseOver}

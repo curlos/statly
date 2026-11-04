@@ -8,9 +8,7 @@ import GuestDisabled from '../GuestDisabled';
 
 const SyncUpdateSection = () => {
 	const {
-		focusRecordsPageSettings: {
-			analyzeNoteEmotionsWhileSyncingFocusRecords,
-		},
+		focusRecordsPageSettings: { analyzeNoteEmotionsWhileSyncingFocusRecords },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -25,11 +23,7 @@ const SyncUpdateSection = () => {
 				title={
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Sync & Update</h3>
-						<Icon
-							name="sync"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
-						/>
+						<Icon name="sync" fill={0} customClass={'text-color-gray-50 !text-[20px] cursor-pointer'} />
 					</div>
 				}
 				openByDefault={true}
@@ -39,20 +33,28 @@ const SyncUpdateSection = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
-				<GuestDisabled><AnalyzeNoteEmotions /></GuestDisabled>
+				<GuestDisabled>
+					<AnalyzeNoteEmotions />
+				</GuestDisabled>
 
 				<div className="mt-4 ml-6">
 					<CheckboxOther
 						{...{
 							name: 'Analyze Note Emotions While Syncing Focus Records',
 							showValue: analyzeNoteEmotionsWhileSyncingFocusRecords,
-							handleCheckboxClick: () => handleCheckboxClick(analyzeNoteEmotionsWhileSyncingFocusRecords, 'analyzeNoteEmotionsWhileSyncingFocusRecords'),
+							handleCheckboxClick: () =>
+								handleCheckboxClick(
+									analyzeNoteEmotionsWhileSyncingFocusRecords,
+									'analyzeNoteEmotionsWhileSyncingFocusRecords'
+								),
 						}}
 					/>
 				</div>
 
 				<div className="mt-4">
-					<GuestDisabled><RevalidateCrossesMidnight /></GuestDisabled>
+					<GuestDisabled>
+						<RevalidateCrossesMidnight />
+					</GuestDisabled>
 				</div>
 			</Accordion>
 		</div>

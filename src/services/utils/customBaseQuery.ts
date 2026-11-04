@@ -2,7 +2,13 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { logoutUser } from '../../slices/userSlice';
 import { showToast } from '../../slices/toastSlice';
-import { GUEST_DISABLED_MESSAGE, getGuestRequestAction, isGuestToken, saveGuestSettingsPatch, withGuestRingsHeader } from '../../utils/guest.utils';
+import {
+	GUEST_DISABLED_MESSAGE,
+	getGuestRequestAction,
+	isGuestToken,
+	saveGuestSettingsPatch,
+	withGuestRingsHeader,
+} from '../../utils/guest.utils';
 
 interface RootState {
 	user: {
@@ -18,11 +24,7 @@ interface ViteImportMeta {
 }
 
 // Public endpoints that don't require authentication
-const PUBLIC_ENDPOINTS = new Set([
-	'/users/register',
-	'/users/login',
-	'/users/guest',
-]);
+const PUBLIC_ENDPOINTS = new Set(['/users/register', '/users/login', '/users/guest']);
 
 const isPublicEndpoint = (url: string): boolean => {
 	// Extract pathname (remove query params if present)
@@ -32,11 +34,7 @@ const isPublicEndpoint = (url: string): boolean => {
 	return PUBLIC_ENDPOINTS.has(normalizedPath);
 };
 
-export const createAuthenticatedBaseQuery = (): BaseQueryFn<
-	string | FetchArgs,
-	unknown,
-	FetchBaseQueryError
-> => {
+export const createAuthenticatedBaseQuery = (): BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> => {
 	// Create the base query instance
 	const baseQuery = fetchBaseQuery({
 		baseUrl: (import.meta as unknown as ViteImportMeta).env.VITE_SERVER_URL,
@@ -64,7 +62,7 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 
 		// Guests share one account so nothing they do is ever sent to be saved. Their settings changes are kept in their own browser instead.
 		const isGuest = isGuestToken(token);
-		const method = typeof args === 'string' ? 'GET' : (args.method || 'GET');
+		const method = typeof args === 'string' ? 'GET' : args.method || 'GET';
 		const body = typeof args === 'string' ? undefined : args.body;
 		const guestAction = isGuest ? getGuestRequestAction(method, url, body) : 'allow';
 
@@ -97,8 +95,8 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 			// Check for auth errors that require logout
 			if (result.error) {
 				const errorData = result.error.data as { message?: string } | undefined;
-				const is401InvalidToken = result.error.status === 401 && errorData?.message === "Invalid token";
-				const is404UserNotFound = result.error.status === 404 && errorData?.message === "User not found";
+				const is401InvalidToken = result.error.status === 401 && errorData?.message === 'Invalid token';
+				const is404UserNotFound = result.error.status === 404 && errorData?.message === 'User not found';
 
 				// Logout only for: 401 with "Invalid token" OR 404 with "User not found". The reason we need to kick them out is because the logout button doesn't show up when this happens and the user would have to either log back in or sign up with a new account anyways.
 				if (is401InvalidToken || is404UserNotFound) {

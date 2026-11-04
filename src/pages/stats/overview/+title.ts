@@ -1,1 +1,1 @@
-export default "Stats Overview - Statly";
+export default 'Stats Overview - Statly';

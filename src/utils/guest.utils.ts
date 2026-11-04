@@ -37,7 +37,9 @@ export const isGuestToken = (token?: string | null) => {
 const getGuestSettingsPatches = (): Record<string, unknown>[] => {
 	try {
 		const patches = JSON.parse(localStorage.getItem(GUEST_SETTINGS_PATCHES_KEY) || '[]');
-		return Array.isArray(patches) ? patches.filter((patch) => typeof patch === 'object' && patch !== null && !Array.isArray(patch)) : [];
+		return Array.isArray(patches)
+			? patches.filter((patch) => typeof patch === 'object' && patch !== null && !Array.isArray(patch))
+			: [];
 	} catch {
 		return [];
 	}
@@ -50,7 +52,11 @@ export const addGuestSettingsPatch = (patches: Record<string, unknown>[], patch:
 	const newKeys = Object.keys(patch);
 
 	const remaining = patches
-		.map((earlierPatch) => Object.fromEntries(Object.entries(earlierPatch).filter(([key]) => !newKeys.some((newKey) => isSameOrInside(key, newKey)))))
+		.map((earlierPatch) =>
+			Object.fromEntries(
+				Object.entries(earlierPatch).filter(([key]) => !newKeys.some((newKey) => isSameOrInside(key, newKey)))
+			)
+		)
 		.filter((earlierPatch) => Object.keys(earlierPatch).length > 0);
 
 	return [...remaining, patch];
@@ -59,7 +65,10 @@ export const addGuestSettingsPatch = (patches: Record<string, unknown>[], patch:
 // Guests share one account so their settings changes stay in their own browser.
 export const saveGuestSettingsPatch = (patch: Record<string, unknown>) => {
 	try {
-		localStorage.setItem(GUEST_SETTINGS_PATCHES_KEY, JSON.stringify(addGuestSettingsPatch(getGuestSettingsPatches(), patch)));
+		localStorage.setItem(
+			GUEST_SETTINGS_PATCHES_KEY,
+			JSON.stringify(addGuestSettingsPatch(getGuestSettingsPatches(), patch))
+		);
 	} catch (error) {
 		console.error('Failed to save guest settings:', error);
 	}
@@ -118,5 +127,11 @@ export const withGuestRingsHeader = (args: string | FetchArgs): string | FetchAr
 	}
 
 	const fetchArgs = typeof args === 'string' ? { url: args } : args;
-	return { ...fetchArgs, headers: { ...(fetchArgs.headers as Record<string, string> | undefined), [GUEST_RINGS_HEADER]: ringsHeaderValue } };
+	return {
+		...fetchArgs,
+		headers: {
+			...(fetchArgs.headers as Record<string, string> | undefined),
+			[GUEST_RINGS_HEADER]: ringsHeaderValue,
+		},
+	};
 };

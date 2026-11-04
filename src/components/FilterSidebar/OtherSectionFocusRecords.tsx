@@ -44,11 +44,7 @@ const OtherSectionFocusRecords = () => {
 				title={
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Page Settings</h3>
-						<Icon
-							name="settings"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
-						/>
+						<Icon name="settings" fill={0} customClass={'text-color-gray-50 !text-[20px] cursor-pointer'} />
 					</div>
 				}
 				openByDefault={true}
@@ -83,7 +79,8 @@ const OtherSectionFocusRecords = () => {
 								{...{
 									name: 'Show Focus Record Emotions',
 									showValue: showFocusRecordEmotions,
-									handleCheckboxClick: () => handleCheckboxClick(showFocusRecordEmotions, 'showFocusRecordEmotions'),
+									handleCheckboxClick: () =>
+										handleCheckboxClick(showFocusRecordEmotions, 'showFocusRecordEmotions'),
 								}}
 							/>
 
@@ -91,13 +88,14 @@ const OtherSectionFocusRecords = () => {
 								{...{
 									name: 'Show Emotion Count',
 									showValue: showEmotionCount,
-									handleCheckboxClick: () => handleCheckboxClick(showEmotionCount, 'showEmotionCount'),
+									handleCheckboxClick: () =>
+										handleCheckboxClick(showEmotionCount, 'showEmotionCount'),
 								}}
 							/>
 
 							<CheckboxOther
 								{...{
-									name: "Show Note Words & Chars Count",
+									name: 'Show Note Words & Chars Count',
 									showValue: showNoteStats,
 									handleCheckboxClick: () => handleCheckboxClick(showNoteStats, 'showNoteStats'),
 								}}
@@ -120,7 +118,8 @@ const OtherSectionFocusRecords = () => {
 								{...{
 									name: 'Show Task Ancestors',
 									showValue: showTaskAncestors,
-									handleCheckboxClick: () => handleCheckboxClick(showTaskAncestors, 'showTaskAncestors'),
+									handleCheckboxClick: () =>
+										handleCheckboxClick(showTaskAncestors, 'showTaskAncestors'),
 								}}
 							/>
 
@@ -155,7 +154,10 @@ const OtherSectionFocusRecords = () => {
 									name: 'Show Total Number of Focus Records',
 									showValue: showTotalNumberOfFocusRecords,
 									handleCheckboxClick: () =>
-										handleCheckboxClick(showTotalNumberOfFocusRecords, 'showTotalNumberOfFocusRecords'),
+										handleCheckboxClick(
+											showTotalNumberOfFocusRecords,
+											'showTotalNumberOfFocusRecords'
+										),
 								}}
 							/>
 
@@ -186,7 +188,8 @@ const OtherSectionFocusRecords = () => {
 								{...{
 									name: 'Lower Card Opacity',
 									showValue: lowerCardOpacity,
-									handleCheckboxClick: () => handleCheckboxClick(lowerCardOpacity, 'lowerCardOpacity'),
+									handleCheckboxClick: () =>
+										handleCheckboxClick(lowerCardOpacity, 'lowerCardOpacity'),
 								}}
 							/>
 

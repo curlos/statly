@@ -10,12 +10,7 @@ interface RingColorPickerProps {
 	onUseThemeColorChange: (useThemeColor: boolean) => void;
 }
 
-const RingColorPicker = ({
-	color,
-	useThemeColor,
-	onColorChange,
-	onUseThemeColorChange
-}: RingColorPickerProps) => {
+const RingColorPicker = ({ color, useThemeColor, onColorChange, onUseThemeColorChange }: RingColorPickerProps) => {
 	const themeContext = useThemeContext();
 	const { chosenColorObj } = themeContext;
 

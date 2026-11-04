@@ -56,8 +56,11 @@ const AppliedFilterItemList = () => {
 	);
 
 	// Conditionally fetch based on current page
-	const { ancestorTasksById: ancestorTasksByIdCompletedTasks, isLoading: isLoadingDaysWithCompletedTasks } = useDaysWithCompletedTasksQuery({ skip: !isCompletedTasksPage });
-	const { ancestorTasksById: ancestorTasksByIdFocusRecords, isLoading: isLoadingFocusRecords } = useFocusRecordsQuery({ skip: !isFocusRecordsPage });
+	const { ancestorTasksById: ancestorTasksByIdCompletedTasks, isLoading: isLoadingDaysWithCompletedTasks } =
+		useDaysWithCompletedTasksQuery({ skip: !isCompletedTasksPage });
+	const { ancestorTasksById: ancestorTasksByIdFocusRecords, isLoading: isLoadingFocusRecords } = useFocusRecordsQuery(
+		{ skip: !isFocusRecordsPage }
+	);
 
 	// Use the appropriate ancestorTasksById based on current page
 	const ancestorTasksById = isCompletedTasksPage ? ancestorTasksByIdCompletedTasks : ancestorTasksByIdFocusRecords;
@@ -75,7 +78,7 @@ const AppliedFilterItemList = () => {
 		}
 
 		if (isFocusRecordsPage && isLoadingFocusRecords) {
-			return
+			return;
 		}
 
 		const newProjectNamesStr = getUrlNamesStr(projectsFromUrl, projectsById, 'name');
@@ -101,15 +104,20 @@ const AppliedFilterItemList = () => {
 		isLoadingGetProjects,
 	]);
 
-	const getUrlNamesStr = (commaSeparatedStr: string | null, obj: Record<string, unknown> | undefined, entityPropToGetValue: string) => {
+	const getUrlNamesStr = (
+		commaSeparatedStr: string | null,
+		obj: Record<string, unknown> | undefined,
+		entityPropToGetValue: string
+	) => {
 		const commaSeparatedArr = commaSeparatedStr ? commaSeparatedStr.split(',') : [];
 		const namesArr: string[] = [];
 
 		commaSeparatedArr.forEach((key) => {
 			const value = obj?.[key];
-			const name = (value && typeof value === 'object' && entityPropToGetValue in value)
-				? (value as Record<string, unknown>)[entityPropToGetValue] as string
-				: key;
+			const name =
+				value && typeof value === 'object' && entityPropToGetValue in value
+					? ((value as Record<string, unknown>)[entityPropToGetValue] as string)
+					: key;
 			namesArr.push(name);
 		});
 
@@ -125,12 +133,15 @@ const AppliedFilterItemList = () => {
 	};
 
 	// Show checked search options alongside the search text (only when there is search text)
-	const checkedSearchOptionNames = SEARCH_OPTIONS.filter(({ param }) => searchParams.get(param) === 'true').map(({ name }) => name);
+	const checkedSearchOptionNames = SEARCH_OPTIONS.filter(({ param }) => searchParams.get(param) === 'true').map(
+		({ name }) => name
+	);
 	const searchTextFilter = {
 		name: `Search Text`,
-		value: searchTextFromUrl && checkedSearchOptionNames.length > 0
-			? `${searchTextFromUrl} (${checkedSearchOptionNames.join(', ')})`
-			: searchTextFromUrl,
+		value:
+			searchTextFromUrl && checkedSearchOptionNames.length > 0
+				? `${searchTextFromUrl} (${checkedSearchOptionNames.join(', ')})`
+				: searchTextFromUrl,
 		handleRemove: () => {
 			// Also clear the search options (Match case, Whole word, etc.) shown in this pill
 			const clearedSearchOptions = Object.fromEntries(SEARCH_OPTIONS.map(({ param }) => [param, '']));
@@ -140,9 +151,7 @@ const AppliedFilterItemList = () => {
 
 	const getTaskTitle = () => {
 		if (taskIdToFilterBy && ancestorTasksById) {
-			return (
-				ancestorTasksById[taskIdToFilterBy]?.title || taskIdToFilterBy
-			);
+			return ancestorTasksById[taskIdToFilterBy]?.title || taskIdToFilterBy;
 		}
 	};
 
@@ -164,7 +173,10 @@ const AppliedFilterItemList = () => {
 
 	const intervalDateRangeFilter = {
 		name: `Interval Date Range`,
-		value: intervalStartDateFromUrl && intervalEndDateFromUrl ? `${intervalStartDateFromUrl} - ${intervalEndDateFromUrl}` : '',
+		value:
+			intervalStartDateFromUrl && intervalEndDateFromUrl
+				? `${intervalStartDateFromUrl} - ${intervalEndDateFromUrl}`
+				: '',
 		handleRemove: () => {
 			updateQueryParams({ 'interval-start-date': '', 'interval-end-date': '', page: '' });
 		},
@@ -212,7 +224,12 @@ const AppliedFilterItemList = () => {
 
 	const emotionsFilter = {
 		name: 'Emotions',
-		value: emotionsFromUrl ? emotionsFromUrl.split(',').map(e => e.toUpperCase()).join(', ') : '',
+		value: emotionsFromUrl
+			? emotionsFromUrl
+					.split(',')
+					.map((e) => e.toUpperCase())
+					.join(', ')
+			: '',
 		handleRemove: () => {
 			updateQueryParams({ emotions: '', page: '' });
 		},
@@ -223,13 +240,16 @@ const AppliedFilterItemList = () => {
 		'without-notes': 'Without Notes',
 		'pomodoro-mode': 'Pomodoro Mode',
 		'stopwatch-mode': 'Stopwatch Mode',
-		'crosses-midnight': 'Crosses Midnight'
+		'crosses-midnight': 'Crosses Midnight',
 	};
 
 	const generalFilter = {
 		name: 'General',
 		value: generalFromUrl
-			? generalFromUrl.split(',').map(id => GENERAL_FILTER_NAMES[id] || id).join(', ')
+			? generalFromUrl
+					.split(',')
+					.map((id) => GENERAL_FILTER_NAMES[id] || id)
+					.join(', ')
 			: '',
 		handleRemove: () => {
 			updateQueryParams({ general: '', page: '' });
@@ -280,7 +300,14 @@ const AppliedFilterItemList = () => {
 				<div className="flex flex-wrap gap-3">
 					{nonDefaultFilterList.map((nonDefaultFilter) => {
 						const { name, value, handleRemove } = nonDefaultFilter;
-						return <AppliedFilterItem key={name + value} name={name} value={value || ''} onRemove={handleRemove} />;
+						return (
+							<AppliedFilterItem
+								key={name + value}
+								name={name}
+								value={value || ''}
+								onRemove={handleRemove}
+							/>
+						);
 					})}
 				</div>
 			)}

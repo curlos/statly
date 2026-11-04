@@ -6,7 +6,13 @@ import Icon from '../Icon';
 import Accordion from '../Accordion/Accordion';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
-import { DEFAULT_TREE, TREE_NAMES, getAssignedTree, getTreeDisplayName, getTreeImageSrc } from '../../pages/forest/forestTrees';
+import {
+	DEFAULT_TREE,
+	TREE_NAMES,
+	getAssignedTree,
+	getTreeDisplayName,
+	getTreeImageSrc,
+} from '../../pages/forest/forestTrees';
 import { useGetProjectGroupsQuery, useGetProjectsQuery } from '../../services/resources/projectsApi';
 import { useEditUserSettingsMutation } from '../../services/resources/userSettingsApi';
 import type { Project, ProjectGroup, ProjectTickTick } from '../../types/models';
@@ -48,7 +54,9 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 
 	const { chosenColorObj } = useThemeContext();
 	const { data: fetchedProjects } = useGetProjectsQuery();
-	const { forestPageSettings: { projectTrees } } = useUserSettingsContext();
+	const {
+		forestPageSettings: { projectTrees },
+	} = useUserSettingsContext();
 	const [editUserSettings] = useEditUserSettingsMutation();
 
 	const { data: fetchedProjectGroups } = useGetProjectGroupsQuery();
@@ -78,8 +86,18 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 
 		return {
 			projectsAndFolders: [
-				...ungroupedProjects.map((project) => ({ sortOrder: project.sortOrder, project, folder: null, projects: [] })),
-				...folders.map(({ folder, projects }) => ({ sortOrder: folder.sortOrder, project: null, folder, projects })),
+				...ungroupedProjects.map((project) => ({
+					sortOrder: project.sortOrder,
+					project,
+					folder: null,
+					projects: [],
+				})),
+				...folders.map(({ folder, projects }) => ({
+					sortOrder: folder.sortOrder,
+					project: null,
+					folder,
+					projects,
+				})),
 			].sort(bySortOrder),
 			archivedProjects: closedProjects.sort(bySortOrder),
 			sessionCategories: fetchedProjects?.projectsSession || [],
@@ -143,10 +161,16 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 					className="w-full flex items-center gap-2 p-2 rounded-md bg-color-gray-300 cursor-pointer text-left"
 					onClick={() => selectProject(isSelected ? null : project.id)}
 				>
-					<span aria-hidden="true" className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: project.color || 'transparent' }} />
+					<span
+						aria-hidden="true"
+						className="w-3 h-3 rounded-full shrink-0"
+						style={{ backgroundColor: project.color || 'transparent' }}
+					/>
 					<span className="flex-1 min-w-0">
 						<span className="block truncate">{project.name}</span>
-						<span className="block truncate text-color-gray-50 text-[12px]">{isAssigned ? getTreeDisplayName(assignedTree) : 'Default'}</span>
+						<span className="block truncate text-color-gray-50 text-[12px]">
+							{isAssigned ? getTreeDisplayName(assignedTree) : 'Default'}
+						</span>
 					</span>
 					<img src={getTreeImageSrc(assignedTree)} alt="" loading="lazy" className="w-8 h-8 object-contain" />
 				</button>
@@ -154,7 +178,11 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 				{isSelected && (
 					<div className="p-2">
 						<div className="mb-2">
-							<SearchBox value={treeSearch} onChange={setTreeSearch} placeholder="Search trees, like maple or palm" />
+							<SearchBox
+								value={treeSearch}
+								onChange={setTreeSearch}
+								placeholder="Search trees, like maple or palm"
+							/>
 						</div>
 
 						{isAssigned && (
@@ -168,7 +196,11 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 						)}
 
 						<div className="grid grid-cols-3 sm:grid-cols-5 gap-2 max-h-[340px] overflow-y-scroll pr-1 always-visible-scrollbar">
-							{treeResults.length === 0 && <p className="col-span-full m-0 p-2 text-color-gray-50">No trees match "{treeSearch.trim()}".</p>}
+							{treeResults.length === 0 && (
+								<p className="col-span-full m-0 p-2 text-color-gray-50">
+									No trees match "{treeSearch.trim()}".
+								</p>
+							)}
 							{treeResults.map((treeName) => (
 								<button
 									key={treeName}
@@ -176,12 +208,21 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 									aria-pressed={isAssigned && assignedTree === treeName}
 									className={classNames(
 										'flex flex-col items-center gap-1 p-1 rounded-md border bg-transparent cursor-pointer',
-										isAssigned && assignedTree === treeName ? chosenColorObj.borderColor : 'border-transparent'
+										isAssigned && assignedTree === treeName
+											? chosenColorObj.borderColor
+											: 'border-transparent'
 									)}
 									onClick={() => updateProjectTree(project.id, treeName)}
 								>
-									<img src={getTreeImageSrc(treeName)} alt="" loading="lazy" className="w-16 h-16 object-contain" />
-									<span className="text-[12px] text-center leading-tight">{getTreeDisplayName(treeName)}</span>
+									<img
+										src={getTreeImageSrc(treeName)}
+										alt=""
+										loading="lazy"
+										className="w-16 h-16 object-contain"
+									/>
+									<span className="text-[12px] text-center leading-tight">
+										{getTreeDisplayName(treeName)}
+									</span>
 								</button>
 							))}
 						</div>
@@ -208,11 +249,23 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 	);
 
 	return (
-		<Modal isOpen={isOpen} onClose={closeModal} customClasses="!w-[720px]" ariaLabelledBy="modal-forest-trees-heading">
+		<Modal
+			isOpen={isOpen}
+			onClose={closeModal}
+			customClasses="!w-[720px]"
+			ariaLabelledBy="modal-forest-trees-heading"
+		>
 			<div className="bg-color-gray-600 rounded-lg p-4">
 				<div className="flex justify-between items-center mb-3">
-					<h2 id="modal-forest-trees-heading" className="font-bold text-[18px]">Assign Trees to Projects</h2>
-					<button type="button" aria-label="Close" className="bg-transparent border-0 p-0 cursor-pointer" onClick={closeModal}>
+					<h2 id="modal-forest-trees-heading" className="font-bold text-[18px]">
+						Assign Trees to Projects
+					</h2>
+					<button
+						type="button"
+						aria-label="Close"
+						className="bg-transparent border-0 p-0 cursor-pointer"
+						onClick={closeModal}
+					>
 						<Icon name="close" customClass="!text-[24px] text-color-gray-50" />
 					</button>
 				</div>
@@ -232,19 +285,26 @@ const ModalForestTrees: React.FC<ModalForestTreesProps> = ({ isOpen, onClose }) 
 					</>
 				) : (
 					<>
-						<Accordion title={<h3 className="text-[16px] font-bold">Projects (TickTick)</h3>} openByDefault={true}>
+						<Accordion
+							title={<h3 className="text-[16px] font-bold">Projects (TickTick)</h3>}
+							openByDefault={true}
+						>
 							<ul className="space-y-1 mt-1">
 								{projectsAndFolders.map(({ project, folder, projects }) =>
 									project ? renderProject(project) : renderFolder(folder!.name, 'folder', projects)
 								)}
-								{archivedProjects.length > 0 && renderFolder('Archived', 'folder_off', archivedProjects)}
+								{archivedProjects.length > 0 &&
+									renderFolder('Archived', 'folder_off', archivedProjects)}
 							</ul>
 						</Accordion>
 
 						{sessionCategories.length > 0 && (
 							<>
 								<hr aria-hidden="true" className="border-color-gray-100 my-4" />
-								<Accordion title={<h3 className="text-[16px] font-bold">Categories (Session App)</h3>} openByDefault={true}>
+								<Accordion
+									title={<h3 className="text-[16px] font-bold">Categories (Session App)</h3>}
+									openByDefault={true}
+								>
 									<ul className="space-y-1 mt-1">{sessionCategories.map(renderProject)}</ul>
 								</Accordion>
 							</>

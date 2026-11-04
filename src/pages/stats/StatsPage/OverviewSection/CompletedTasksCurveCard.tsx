@@ -50,18 +50,22 @@ const CompletedTasksCurveCard = () => {
 			}
 		});
 
-		const averageCount = intervalsWithAtLeastOneCompletedTask === 0
-			? 0
-			: totalCount / intervalsWithAtLeastOneCompletedTask;
+		const averageCount =
+			intervalsWithAtLeastOneCompletedTask === 0 ? 0 : totalCount / intervalsWithAtLeastOneCompletedTask;
 
 		return `Average: ${averageCount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} tasks`;
 	};
 
 	return (
-		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px] relative" aria-labelledby="completed-tasks-curve-heading">
+		<section
+			className="bg-color-gray-600 p-3 rounded-lg flex flex-col min-h-[350px] relative"
+			aria-labelledby="completed-tasks-curve-heading"
+		>
 			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-2">
-					<h2 id="completed-tasks-curve-heading" className="font-bold text-[16px]">Completed Tasks Curve</h2>
+					<h2 id="completed-tasks-curve-heading" className="font-bold text-[16px]">
+						Completed Tasks Curve
+					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -107,7 +111,7 @@ const CompletedTasksCurveCard = () => {
 						top: 10,
 						right: 30,
 						left: 0,
-						bottom: (selectedInterval === 'Week' || selectedInterval === 'Custom') ? 10 : 5,
+						bottom: selectedInterval === 'Week' || selectedInterval === 'Custom' ? 10 : 5,
 					}}
 				>
 					<defs>
@@ -138,7 +142,9 @@ const CompletedTasksCurveCard = () => {
 								return (
 									<div className={classNames(textColor, 'bg-black p-2 rounded-md')}>
 										<div>{nameToUse}</div>
-										<div className="font-bold">{score?.toLocaleString()} {unit}</div>
+										<div className="font-bold">
+											{score?.toLocaleString()} {unit}
+										</div>
 									</div>
 								);
 							}
@@ -149,7 +155,13 @@ const CompletedTasksCurveCard = () => {
 							return null;
 						}}
 					/>
-					<Area type="monotone" dataKey="score" stroke={hexColor} strokeWidth={getStrokeWidthByDataLength(data.length)} fill="url(#colorPv)" />
+					<Area
+						type="monotone"
+						dataKey="score"
+						stroke={hexColor}
+						strokeWidth={getStrokeWidthByDataLength(data.length)}
+						fill="url(#colorPv)"
+					/>
 				</AreaChart>
 			</ResponsiveContainer>
 

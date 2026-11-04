@@ -21,11 +21,16 @@ const ForestPageSettingsSection = () => {
 
 			<fieldset className="mt-3 p-0 border-0">
 				<legend className="text-[14px] font-semibold text-color-gray-100 mb-1">Hemisphere</legend>
-				<p className="m-0 mb-2 text-[13px] text-color-gray-50">Flips the seasons for the Auto and Seasons land.</p>
+				<p className="m-0 mb-2 text-[13px] text-color-gray-50">
+					Flips the seasons for the Auto and Seasons land.
+				</p>
 
 				<div className="flex flex-col gap-2">
 					{HEMISPHERE_OPTIONS.map(({ value, label, description }) => (
-						<label key={value} className="flex items-start gap-2 cursor-pointer has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white rounded">
+						<label
+							key={value}
+							className="flex items-start gap-2 cursor-pointer has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white rounded"
+						>
 							<input
 								type="radio"
 								name={groupName}

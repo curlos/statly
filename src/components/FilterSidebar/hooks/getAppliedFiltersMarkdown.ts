@@ -91,21 +91,21 @@ export const getAppliedFiltersMarkdown = (params: AppliedFiltersParams): string 
 	// Projects (TickTick)
 	if (projectsFromUrl && projectsById) {
 		const projectIds = projectsFromUrl.split(',');
-		const projectNames = projectIds.map(id => projectsById[id]?.name || id).join(', ');
+		const projectNames = projectIds.map((id) => projectsById[id]?.name || id).join(', ');
 		filters.push(`**Projects (TickTick):** ${projectNames}`);
 	}
 
 	// Projects (Todoist)
 	if (projectsTodoistFromUrl && projectsById) {
 		const projectIds = projectsTodoistFromUrl.split(',');
-		const projectNames = projectIds.map(id => projectsById[id]?.name || id).join(', ');
+		const projectNames = projectIds.map((id) => projectsById[id]?.name || id).join(', ');
 		filters.push(`**Projects (Todoist):** ${projectNames}`);
 	}
 
 	// Categories (Session App) - for Focus Records
 	if (categoriesFromUrl && projectsById) {
 		const categoryIds = categoriesFromUrl.split(',');
-		const categoryNames = categoryIds.map(id => projectsById[id]?.name || id).join(', ');
+		const categoryNames = categoryIds.map((id) => projectsById[id]?.name || id).join(', ');
 		filters.push(`**Categories (Session App):** ${categoryNames}`);
 	}
 

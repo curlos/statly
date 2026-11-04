@@ -66,14 +66,22 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 				const tickTickProject = project as ProjectTickTick;
 				if (tickTickProject.closed) {
 					acc.archivedProjects.push(tickTickProject);
-				} else if (tickTickProject.groupId && tickTickProject.groupId !== 'NONE' && projectGroupsById?.[tickTickProject.groupId]) {
+				} else if (
+					tickTickProject.groupId &&
+					tickTickProject.groupId !== 'NONE' &&
+					projectGroupsById?.[tickTickProject.groupId]
+				) {
 					acc.groupedProjects.push(tickTickProject);
 				} else {
 					acc.ungroupedProjects.push(tickTickProject);
 				}
 				return acc;
 			},
-			{ groupedProjects: [] as ProjectTickTick[], ungroupedProjects: [] as ProjectTickTick[], archivedProjects: [] as ProjectTickTick[] }
+			{
+				groupedProjects: [] as ProjectTickTick[],
+				ungroupedProjects: [] as ProjectTickTick[],
+				archivedProjects: [] as ProjectTickTick[],
+			}
 		);
 
 		const groupedProjectsByGroupId: Record<string, ProjectTickTick[]> = {};
@@ -91,7 +99,9 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 			groupedProjectsByGroupId[groupId].push(groupedProject);
 		});
 
-		const projectGroups = Object.keys(groupedProjectsByGroupId).map((groupId) => projectGroupsById?.[groupId]).filter(Boolean) as ProjectGroup[];
+		const projectGroups = Object.keys(groupedProjectsByGroupId)
+			.map((groupId) => projectGroupsById?.[groupId])
+			.filter(Boolean) as ProjectGroup[];
 
 		// Sort all the grouped projects within the specifc Project Group project's array.
 		Object.keys(groupedProjectsByGroupId).forEach((groupId) => {
@@ -112,8 +122,8 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 
 	// This is the combined array of the "Project Groups" and the ungrouped Projects. It's necessary for them to be a combined array because it's possible on TickTick 1.0 for them to be mixed together. You could have a "Project Group" between two ungrouped "Projects". So, to be as accurate as possible, they both need to be in the same array.
 	// Archived Projects don't need to be here as they're technically not an actual Project Group in TickTick 1.0 and are the lowest priority since they're not active anymore.
-	const sortedProjectsAndGroups: (ProjectTickTick | ProjectGroup)[] = sortedUngroupedProjects &&
-		sortedProjectGroups ? [...sortedUngroupedProjects, ...sortedProjectGroups] : [];
+	const sortedProjectsAndGroups: (ProjectTickTick | ProjectGroup)[] =
+		sortedUngroupedProjects && sortedProjectGroups ? [...sortedUngroupedProjects, ...sortedProjectGroups] : [];
 
 	sortedProjectsAndGroups?.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
@@ -156,9 +166,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 		const selectedIds = getSelectedProjectIds();
 		if (!projectsById || selectedIds.length === 0) return '';
 
-		const projectNames = selectedIds
-			.map(id => projectsById[id]?.name || id)
-			.filter(Boolean); // Remove undefined entries
+		const projectNames = selectedIds.map((id) => projectsById[id]?.name || id).filter(Boolean); // Remove undefined entries
 
 		return projectNames.join(', ');
 	};
@@ -168,7 +176,7 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 		// Set all projects to false
 		const clearedProjects: Record<string, boolean> = {};
 		if (filteredProjects) {
-			Object.keys(filteredProjects).forEach(projectId => {
+			Object.keys(filteredProjects).forEach((projectId) => {
 				clearedProjects[projectId] = false;
 			});
 		}
@@ -176,10 +184,10 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 		await handleCheckboxClick('projects', clearedProjects);
 	};
 
-	const isLoading = isLoadingGetProjects || isLoadingGetProjectGroups
+	const isLoading = isLoadingGetProjects || isLoadingGetProjectGroups;
 
 	if (!isLoading && sortedProjectsAndGroups.length === 0 && sortedArchivedProjects.length === 0) {
-		return null
+		return null;
 	}
 
 	return (
@@ -188,7 +196,8 @@ const ProjectsTickTickSection: React.FC<ProjectsTickTickSectionProps> = ({ page 
 				<div>
 					<h4 className="text-[14px] font-semibold text-color-gray-25 mb-1">Filtered Projects</h4>
 					<p className="text-[14px] text-color-gray-50 mt-0 mb-2">
-						Select projects to count towards your focus hours for this ring. Only time tracked in selected projects will contribute to your daily goal.
+						Select projects to count towards your focus hours for this ring. Only time tracked in selected
+						projects will contribute to your daily goal.
 					</p>
 				</div>
 			) : (

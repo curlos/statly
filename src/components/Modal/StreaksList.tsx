@@ -84,10 +84,7 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 
 	const sortedStreaks = getSortedStreaks();
 	const totalPages = Math.ceil(sortedStreaks.length / ITEMS_PER_PAGE);
-	const pagedStreaks = sortedStreaks.slice(
-		(currentPage - 1) * ITEMS_PER_PAGE,
-		currentPage * ITEMS_PER_PAGE
-	);
+	const pagedStreaks = sortedStreaks.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
 	return (
 		<div>
@@ -97,9 +94,7 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 				className="space-y-3 pr-2 list-none p-0 m-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded mb-3"
 			>
 				{pagedStreaks.length === 0 ? (
-					<li className="text-center text-color-gray-25 py-8">
-						No streaks found
-					</li>
+					<li className="text-center text-color-gray-25 py-8">No streaks found</li>
 				) : (
 					pagedStreaks.map((streak, pageIndex) => {
 						const absoluteIndex = (currentPage - 1) * ITEMS_PER_PAGE + pageIndex;
@@ -109,15 +104,11 @@ const StreaksList: React.FC<StreaksListProps> = ({ allStreaks, currentStreak, so
 								key={`${streak.from}-${streak.to}-${absoluteIndex}`}
 								aria-label={`Rank ${absoluteIndex + 1}: ${streak.days} ${streak.days === 1 ? 'day' : 'days'}${streak.from && streak.to ? `, ${formatDateWithoutTimezone(streak.from)} to ${formatDateWithoutTimezone(streak.to)}` : ''}${isCurrent ? ', current streak' : ''}`}
 								className={`p-4 rounded-lg ${
-									isCurrent
-										? 'bg-orange-500/20 border border-orange-500'
-										: 'bg-color-gray-600'
+									isCurrent ? 'bg-orange-500/20 border border-orange-500' : 'bg-color-gray-600'
 								}`}
 							>
 								<div className="flex items-center gap-2">
-									<span className="text-color-gray-25 font-medium">
-										{absoluteIndex + 1}.
-									</span>
+									<span className="text-color-gray-25 font-medium">{absoluteIndex + 1}.</span>
 									<span className="font-semibold">
 										{streak.days} {streak.days === 1 ? 'Day' : 'Days'}
 									</span>

@@ -9,8 +9,24 @@ const copicTexture = new URL('../assets/themes/ink-marker/copic-texture.png', im
  */
 const CopicFilterDefs = () => (
 	<svg aria-hidden="true" focusable="false" width="0" height="0" style={{ position: 'absolute' }}>
-		<filter id="ink-marker-copic" x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB" primitiveUnits="userSpaceOnUse">
-			<feImage href={copicTexture} x="0" y="0" width="800" height="512" preserveAspectRatio="none" result="texture" />
+		<filter
+			id="ink-marker-copic"
+			x="0"
+			y="0"
+			width="100%"
+			height="100%"
+			colorInterpolationFilters="sRGB"
+			primitiveUnits="userSpaceOnUse"
+		>
+			<feImage
+				href={copicTexture}
+				x="0"
+				y="0"
+				width="800"
+				height="512"
+				preserveAspectRatio="none"
+				result="texture"
+			/>
 			<feTile in="texture" result="tiled" />
 			<feBlend in="tiled" in2="SourceGraphic" mode="soft-light" result="inked" />
 			{/* keep the original shape (and its transparency) */}

@@ -40,8 +40,8 @@ const FocusRecordMenuItems: React.FC<FocusRecordMenuItemsProps> = ({ menuItems, 
 						item.disabled || item.guestDisabled
 							? 'text-gray-500 cursor-not-allowed'
 							: item.isDanger
-							? 'text-red-400 hover:bg-color-gray-200 cursor-pointer'
-							: 'text-white hover:bg-color-gray-200 cursor-pointer'
+								? 'text-red-400 hover:bg-color-gray-200 cursor-pointer'
+								: 'text-white hover:bg-color-gray-200 cursor-pointer'
 					)}
 				>
 					<Icon name={item.icon} customClass="!text-[18px]" />

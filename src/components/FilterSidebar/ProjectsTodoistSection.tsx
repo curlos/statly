@@ -63,7 +63,7 @@ const ProjectsTodoistSection = () => {
 	};
 
 	if (!isLoading && (!projectsTodoist || projectsTodoist.length === 0)) {
-		return null
+		return null;
 	}
 
 	return (
@@ -105,12 +105,16 @@ const ProjectsTodoistSection = () => {
 										<Icon
 											name={isOpenForParent ? 'folder_open' : 'folder'}
 											fill={0}
-											customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+											customClass={
+												'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'
+											}
 										/>
 										<Icon
 											name={'folder_off'}
 											fill={0}
-											customClass={'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'}
+											customClass={
+												'text-color-gray-50 !text-[20px] hover:text-white cursor-pointer'
+											}
 										/>
 										<div>Archived</div>
 									</div>

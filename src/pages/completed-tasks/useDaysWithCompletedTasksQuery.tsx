@@ -9,15 +9,22 @@ export const useDaysWithCompletedTasksQuery = ({ skip = false }: { skip?: boolea
 
 	const {
 		completedTasksPageSettings: { maxDaysPerPage, taskIdIncludeCompletedTasksFromSubtasks },
-		isLoadingGetUserSettings
+		isLoadingGetUserSettings,
 	} = useUserSettingsContext();
 
-	const { data: fetchedDaysWithCompletedTasks, isLoading, isFetching } = useGetDaysWithCompletedTasksQuery({
-		...queryParams,
-		page: Number(urlValues.currentPageFromUrl) - 1,
-		'max-days-per-page': maxDaysPerPage,
-		'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
-	}, { skip: skip || isLoadingGetUserSettings || shouldSkipQuery });
+	const {
+		data: fetchedDaysWithCompletedTasks,
+		isLoading,
+		isFetching,
+	} = useGetDaysWithCompletedTasksQuery(
+		{
+			...queryParams,
+			page: Number(urlValues.currentPageFromUrl) - 1,
+			'max-days-per-page': maxDaysPerPage,
+			'task-id-include-completed-tasks-from-subtasks': taskIdIncludeCompletedTasksFromSubtasks,
+		},
+		{ skip: skip || isLoadingGetUserSettings || shouldSkipQuery }
+	);
 
 	const { totalPages, data: daysWithCompletedTasks, ancestorTasksById } = fetchedDaysWithCompletedTasks || {};
 
@@ -28,6 +35,6 @@ export const useDaysWithCompletedTasksQuery = ({ skip = false }: { skip?: boolea
 		ancestorTasksById,
 		isLoading: isLoading || isLoadingGetUserSettings,
 		isFetching: isFetching || isLoadingGetUserSettings,
-		...urlValues
+		...urlValues,
 	};
 };

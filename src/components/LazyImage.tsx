@@ -53,7 +53,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', on
 		onError?.();
 	};
 
-	const usePokemonCardSkeleton = isPokemonTcgCard(src)
+	const usePokemonCardSkeleton = isPokemonTcgCard(src);
 
 	if (!isInView) {
 		const containerStyle = usePokemonCardSkeleton ? { aspectRatio: '162 / 226' } : {};
@@ -79,8 +79,8 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', on
 	const containerStyle = hasSpecificDimensions
 		? { minWidth: 'max-content' }
 		: usePokemonCardSkeleton
-		? { aspectRatio: '162 / 226' }
-		: {};
+			? { aspectRatio: '162 / 226' }
+			: {};
 
 	return (
 		<div ref={placeholderRef} className={classNames('relative', className)} style={containerStyle}>
@@ -101,7 +101,11 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt = '', className = '', on
 					isLoaded ? 'opacity-100' : 'opacity-0',
 					className
 				)}
-				style={showGlow ? { filter: `drop-shadow(0 0 3px ${hexColor}) drop-shadow(0 4px 6px ${hexColor})` } : undefined}
+				style={
+					showGlow
+						? { filter: `drop-shadow(0 0 3px ${hexColor}) drop-shadow(0 4px 6px ${hexColor})` }
+						: undefined
+				}
 				onLoad={handleLoad}
 				onError={handleError}
 				loading="lazy"

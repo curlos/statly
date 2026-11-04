@@ -55,7 +55,12 @@ const TimelineItemSkeleton = ({
 					></div>
 				)}
 
-				<div className={classNames(lowerOpacity ? bgColorHalfOpacity : bgColor, 'ui-theme-card p-2 rounded-lg w-[95%] sm:w-full')}>
+				<div
+					className={classNames(
+						lowerOpacity ? bgColorHalfOpacity : bgColor,
+						'ui-theme-card p-2 rounded-lg w-[95%] sm:w-full'
+					)}
+				>
 					<div className="space-y-2">
 						{/* Header skeleton */}
 						<div

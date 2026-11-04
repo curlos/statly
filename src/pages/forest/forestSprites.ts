@@ -79,4 +79,3 @@ export const loadSprites = (treeName: string, onLoad: () => void) => {
 	image.onerror = () => loadingTrees.delete(treeName);
 	image.src = getTreeImageSrc(treeName);
 };
-

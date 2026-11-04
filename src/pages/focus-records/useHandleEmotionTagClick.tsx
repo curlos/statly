@@ -6,8 +6,7 @@ export const useHandleEmotionTagClick = () => {
 	const emotionsFromUrl = searchParams.get('emotions');
 	const emotionsByName = getCommaSeparatedObj(emotionsFromUrl ?? undefined);
 
-	const buildEmotionUrl = (emotionId: string) =>
-		buildUrlWithQueryParams({ emotions: emotionId, page: '' });
+	const buildEmotionUrl = (emotionId: string) => buildUrlWithQueryParams({ emotions: emotionId, page: '' });
 
 	const handleEmotionTagClick = (emotionId: string, multiSelect: boolean = false) => {
 		if (!multiSelect) {
@@ -25,7 +24,7 @@ export const useHandleEmotionTagClick = () => {
 			updatedEmotions[emotionId] = true;
 		}
 
-		const selectedEmotions = Object.keys(updatedEmotions).filter(key => updatedEmotions[key]);
+		const selectedEmotions = Object.keys(updatedEmotions).filter((key) => updatedEmotions[key]);
 		updateQueryParams({ emotions: selectedEmotions.join(','), page: '' });
 	};
 

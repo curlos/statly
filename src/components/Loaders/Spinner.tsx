@@ -7,15 +7,17 @@ interface SpinnerProps {
 }
 
 const Spinner: React.FC<SpinnerProps> = ({ size = 'sm', customClass = '' }) => {
-	const { chosenColorObj } = useThemeContext() || { chosenColorObj: {
-		textColor: 'text-red-500'
-	}};
+	const { chosenColorObj } = useThemeContext() || {
+		chosenColorObj: {
+			textColor: 'text-red-500',
+		},
+	};
 
 	const sizeClasses = {
 		sm: 'h-5 w-5',
 		md: 'h-7 w-7',
 		lg: 'h-10 w-10',
-		xl: 'h-16 w-16'
+		xl: 'h-16 w-16',
 	};
 
 	return (

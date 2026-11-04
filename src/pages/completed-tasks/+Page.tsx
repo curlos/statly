@@ -21,15 +21,15 @@ const Page = () => {
 		projectsFromUrl,
 		taskIdFromUrl,
 		sortBy,
-		currentPageFromUrl
+		currentPageFromUrl,
 	} = useDaysWithCompletedTasksQuery();
 
-	const sortByOptions = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most']
+	const sortByOptions = ['Newest', 'Oldest', 'Completed Tasks: Most-Least', 'Completed Tasks: Least-Most'];
 
 	const getFilterBarHeaderContent = () => {
 		return (
 			<h1 className="font-bold text-[18px] sm:text-[20px] md:text-[24px]">
-				Completed Tasks {!isLoading && `(${(fetchedDaysWithCompletedTasks?.totalTasks)?.toLocaleString() || 0})`}
+				Completed Tasks {!isLoading && `(${fetchedDaysWithCompletedTasks?.totalTasks?.toLocaleString() || 0})`}
 			</h1>
 		);
 	};
@@ -48,45 +48,50 @@ const Page = () => {
 			<Navbar page="completed-tasks-page" />
 
 			<main id="main-content" tabIndex={-1} className="outline-none">
-			<FilterBar
-				{...{
-					isFetching,
-					showFilterSidebar,
-					setShowFilterSidebar,
-					headerContent: getFilterBarHeaderContent(),
-				}}
-			/>
+				<FilterBar
+					{...{
+						isFetching,
+						showFilterSidebar,
+						setShowFilterSidebar,
+						headerContent: getFilterBarHeaderContent(),
+					}}
+				/>
 
-			<div className="w-full flex flex-col">
-				<a href="#pagination" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-black focus:px-3 focus:py-1 focus:rounded focus:text-sm">Skip to pagination</a>
-				<div className="flex-1 flex justify-center bg-color-gray-700">
-					<div className="container p-1">
-						<CompletedTaskList
-							{...{
-								daysWithCompletedTasks: daysWithCompletedTasks || [],
-								ancestorTasksById: ancestorTasksById || {},
-								isFetching,
-								sortByOptions,
-								showFilterSidebar,
-								setShowFilterSidebar,
-							}}
-						/>
+				<div className="w-full flex flex-col">
+					<a
+						href="#pagination"
+						className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-black focus:px-3 focus:py-1 focus:rounded focus:text-sm"
+					>
+						Skip to pagination
+					</a>
+					<div className="flex-1 flex justify-center bg-color-gray-700">
+						<div className="container p-1">
+							<CompletedTaskList
+								{...{
+									daysWithCompletedTasks: daysWithCompletedTasks || [],
+									ancestorTasksById: ancestorTasksById || {},
+									isFetching,
+									sortByOptions,
+									showFilterSidebar,
+									setShowFilterSidebar,
+								}}
+							/>
+						</div>
 					</div>
+
+					{totalPages && totalPages > 0 ? (
+						<div id="pagination" className="flex justify-center pt-1 pb-2 bg-color-gray-700">
+							<Pagination
+								total={totalPages}
+								currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
+								setCurrentPage={(value) => {
+									updateQueryParams({ page: value === 1 ? '' : String(value) });
+								}}
+								totalPages={totalPages}
+							/>
+						</div>
+					) : null}
 				</div>
-
-				{totalPages && totalPages > 0 ? (
-					<div id="pagination" className="flex justify-center pt-1 pb-2 bg-color-gray-700">
-						<Pagination
-							total={totalPages}
-							currentPage={!currentPageFromUrl ? 1 : Number(currentPageFromUrl)}
-							setCurrentPage={(value) => {
-								updateQueryParams({ page: value === 1 ? '' : String(value) });
-							}}
-							totalPages={totalPages}
-						/>
-					</div>
-				) : null}
-			</div>
 			</main>
 		</div>
 	);

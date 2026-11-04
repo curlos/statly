@@ -9,7 +9,12 @@ interface InfiniteScrollSelectorProps<T extends string | number> {
 	setSelectedValue: React.Dispatch<React.SetStateAction<T>>;
 }
 
-const InfiniteScrollSelector = <T extends string | number>({ items, unit, selectedValue, setSelectedValue }: InfiniteScrollSelectorProps<T>) => {
+const InfiniteScrollSelector = <T extends string | number>({
+	items,
+	unit,
+	selectedValue,
+	setSelectedValue,
+}: InfiniteScrollSelectorProps<T>) => {
 	const { chosenColorObj } = useThemeContext();
 
 	const scrollRef = useRef<HTMLDivElement | null>(null);

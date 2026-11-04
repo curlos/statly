@@ -2,7 +2,10 @@ import Modal from '../Modal/Modal';
 import Icon from '../Icon';
 import Spinner from '../Loaders/Spinner';
 import { useBulkDeleteCustomImagesMutation } from '../../services/resources/customImagesApi';
-import { useDeleteCustomImageFolderMutation, type CustomImageFolder } from '../../services/resources/customImageFoldersApi';
+import {
+	useDeleteCustomImageFolderMutation,
+	type CustomImageFolder,
+} from '../../services/resources/customImageFoldersApi';
 import type { CustomImage } from '../../types/models';
 
 interface DeleteFolderModalProps {
@@ -35,7 +38,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 	};
 
 	const handleDeleteFolderMoveToGeneral = async () => {
-		const folderId = customFolders?.find(f => f.name === selectedMedalType)?._id;
+		const folderId = customFolders?.find((f) => f.name === selectedMedalType)?._id;
 		if (folderId) {
 			try {
 				await deleteFolder({ id: folderId, strategy: 'moveToGeneral' }).unwrap();
@@ -48,7 +51,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 	};
 
 	const handleDeleteFolderAndImages = async () => {
-		const folderId = customFolders?.find(f => f.name === selectedMedalType)?._id;
+		const folderId = customFolders?.find((f) => f.name === selectedMedalType)?._id;
 		if (folderId) {
 			try {
 				await deleteFolder({ id: folderId, strategy: 'deleteImages' }).unwrap();
@@ -61,7 +64,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 	};
 
 	const handleDeleteEmptyFolder = async () => {
-		const folderId = customFolders?.find(f => f.name === selectedMedalType)?._id;
+		const folderId = customFolders?.find((f) => f.name === selectedMedalType)?._id;
 		if (folderId) {
 			try {
 				await deleteFolder({ id: folderId }).unwrap();
@@ -93,13 +96,14 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 				<p className="text-color-gray-50 mb-4">
 					{filteredCustomImages.length > 0 ? (
 						<>
-							This folder contains <span className="font-semibold text-white">{filteredCustomImages.length} image(s)</span>.
+							This folder contains{' '}
+							<span className="font-semibold text-white">{filteredCustomImages.length} image(s)</span>.
 							<span className="block mt-2">What would you like to do?</span>
 						</>
+					) : selectedMedalType === 'GENERAL' ? (
+						'This folder is empty.'
 					) : (
-						selectedMedalType === 'GENERAL'
-							? 'This folder is empty.'
-							: 'This folder is empty and will be permanently deleted.'
+						'This folder is empty and will be permanently deleted.'
 					)}
 				</p>
 
@@ -126,7 +130,7 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 							</div>
 						</button>
 					)}
-					
+
 					{/* Options for non-GENERAL folders only */}
 					{selectedMedalType !== 'GENERAL' && (
 						<>
@@ -146,7 +150,8 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 										<div>
 											<div className="font-semibold">Delete Folder & Move Images to GENERAL</div>
 											<div className="text-sm text-blue-100 mt-0.5">
-												Delete this folder, keep all {filteredCustomImages.length} image(s) in GENERAL
+												Delete this folder, keep all {filteredCustomImages.length} image(s) in
+												GENERAL
 											</div>
 										</div>
 									</div>
@@ -164,12 +169,18 @@ const DeleteFolderModal: React.FC<DeleteFolderModalProps> = ({
 										{isDeletingFolder ? (
 											<Spinner size="sm" customClass="mt-0.5 !text-[#ffffff]" />
 										) : (
-											<Icon name="delete_forever" customClass="!text-[20px] text-[#ffffff] mt-0.5" />
+											<Icon
+												name="delete_forever"
+												customClass="!text-[20px] text-[#ffffff] mt-0.5"
+											/>
 										)}
 										<div>
-											<div className="font-semibold text-[#ffffff]">Delete Folder & All Images</div>
+											<div className="font-semibold text-[#ffffff]">
+												Delete Folder & All Images
+											</div>
 											<div className="text-sm text-red-100 mt-0.5">
-												Permanently delete this folder and all {filteredCustomImages.length} image(s)
+												Permanently delete this folder and all {filteredCustomImages.length}{' '}
+												image(s)
 											</div>
 										</div>
 									</div>

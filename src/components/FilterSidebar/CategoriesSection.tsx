@@ -21,10 +21,10 @@ const CategoriesSection = () => {
 	const { projectsSession } = fetchedProjects || {};
 
 	const categoriesFromUrlById = getCommaSeparatedObj(categoriesFromUrl ?? undefined);
-	const sessionCategories = projectsSession
+	const sessionCategories = projectsSession;
 
 	if (!isLoadingGetProjects && (!sessionCategories || sessionCategories.length === 0)) {
-		return null
+		return null;
 	}
 
 	return (

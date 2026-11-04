@@ -8,10 +8,7 @@ import { useEditUserSettingsMutation } from '../../services/resources/userSettin
 import Tooltip from '../Tooltip';
 
 const DefaultDateRangeInterval = () => {
-	const {
-		defaultDateRangeInterval,
-		defaultCustomStartDate,
-	} = useUserSettingsContext();
+	const { defaultDateRangeInterval, defaultCustomStartDate } = useUserSettingsContext();
 
 	const { chosenColorObj } = useThemeContext();
 
@@ -19,7 +16,9 @@ const DefaultDateRangeInterval = () => {
 
 	const selectedIntervalOptions = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 	const [isDropdownOpenForParent, setIsDropdownOpenForParent] = useState(false);
-	const [startDate, setStartDate] = useState(defaultCustomStartDate && defaultCustomStartDate !== '' ? new Date(defaultCustomStartDate) : new Date());
+	const [startDate, setStartDate] = useState(
+		defaultCustomStartDate && defaultCustomStartDate !== '' ? new Date(defaultCustomStartDate) : new Date()
+	);
 
 	const handleIntervalChange = (newInterval: string) => {
 		const payload = {

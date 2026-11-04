@@ -23,8 +23,15 @@ const ColorModeList = () => {
 					)}
 					onClick={() => colorMode !== 'dark' && toggleColorMode()}
 				>
-					<span className="text-2xl" aria-hidden="true">🌙</span>
-					<span className={classNames('text-[14px] font-bold', colorMode === 'dark' ? '' : 'text-color-gray-25')}>
+					<span className="text-2xl" aria-hidden="true">
+						🌙
+					</span>
+					<span
+						className={classNames(
+							'text-[14px] font-bold',
+							colorMode === 'dark' ? '' : 'text-color-gray-25'
+						)}
+					>
 						Dark
 					</span>
 				</button>
@@ -40,8 +47,15 @@ const ColorModeList = () => {
 					)}
 					onClick={() => colorMode !== 'light' && toggleColorMode()}
 				>
-					<span className="text-2xl" aria-hidden="true">☀️</span>
-					<span className={classNames('text-[14px] font-bold', colorMode === 'light' ? '' : 'text-color-gray-25')}>
+					<span className="text-2xl" aria-hidden="true">
+						☀️
+					</span>
+					<span
+						className={classNames(
+							'text-[14px] font-bold',
+							colorMode === 'light' ? '' : 'text-color-gray-25'
+						)}
+					>
 						Light
 					</span>
 				</button>

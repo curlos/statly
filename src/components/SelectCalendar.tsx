@@ -22,7 +22,8 @@ interface CalendarProps {
 	onConfirm?: () => void;
 }
 
-const NAV_BTN_CLASS = 'inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded';
+const NAV_BTN_CLASS =
+	'inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded';
 
 const SelectCalendar: React.FC<CalendarProps> = ({
 	dueDate,
@@ -111,39 +112,75 @@ const SelectCalendar: React.FC<CalendarProps> = ({
 			<div className="flex items-center justify-between px-4">
 				<button
 					type="button"
-					aria-label={showYearView ? `${currentYear}, switch to month view` : `${monthName} ${currentYear}, switch to year view`}
+					aria-label={
+						showYearView
+							? `${currentYear}, switch to month view`
+							: `${monthName} ${currentYear}, switch to year view`
+					}
 					className="flex-1 text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
 					onClick={() => setShowYearView(!showYearView)}
 				>
 					{showYearView ? `${currentYear}` : `${monthName} ${currentYear}`}
 				</button>
 				<div className="flex items-center">
-					<button type="button" aria-label="Previous year" onClick={goToPreviousYear} className={NAV_BTN_CLASS}>
-						<Icon name="keyboard_double_arrow_left" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+					<button
+						type="button"
+						aria-label="Previous year"
+						onClick={goToPreviousYear}
+						className={NAV_BTN_CLASS}
+					>
+						<Icon
+							name="keyboard_double_arrow_left"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[18px] hover:text-white'}
+						/>
 					</button>
-					<button type="button" aria-label="Previous month" onClick={goToPreviousMonth} className={NAV_BTN_CLASS}>
-						<Icon name="chevron_left" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+					<button
+						type="button"
+						aria-label="Previous month"
+						onClick={goToPreviousMonth}
+						className={NAV_BTN_CLASS}
+					>
+						<Icon
+							name="chevron_left"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[18px] hover:text-white'}
+						/>
 					</button>
-					<Icon name="fiber_manual_record" fill={0} customClass={'text-color-gray-50 !text-[14px] leading-none'} />
+					<Icon
+						name="fiber_manual_record"
+						fill={0}
+						customClass={'text-color-gray-50 !text-[14px] leading-none'}
+					/>
 					<button type="button" aria-label="Next month" onClick={goToNextMonth} className={NAV_BTN_CLASS}>
-						<Icon name="chevron_right" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+						<Icon
+							name="chevron_right"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[18px] hover:text-white'}
+						/>
 					</button>
 					<button type="button" aria-label="Next year" onClick={goToNextYear} className={NAV_BTN_CLASS}>
-						<Icon name="keyboard_double_arrow_right" fill={0} customClass={'text-color-gray-50 !text-[18px] hover:text-white'} />
+						<Icon
+							name="keyboard_double_arrow_right"
+							fill={0}
+							customClass={'text-color-gray-50 !text-[18px] hover:text-white'}
+						/>
 					</button>
 				</div>
 			</div>
 
 			{showYearView ? (
-				<YearView {...{
-					localCurrentDate,
-					setLocalCurrentDate,
-					setDueDate,
-					setShowYearView: () => {
-						shouldFocusMonthGrid.current = true;
-						setShowYearView(false);
-					},
-				}} />
+				<YearView
+					{...{
+						localCurrentDate,
+						setLocalCurrentDate,
+						setDueDate,
+						setShowYearView: () => {
+							shouldFocusMonthGrid.current = true;
+							setShowYearView(false);
+						},
+					}}
+				/>
 			) : (
 				<MonthView
 					{...{
@@ -233,10 +270,13 @@ const MonthView: React.FC<MonthViewProps> = ({
 	// When the displayed month changes via prev/next buttons, ensure focusedDate stays within the visible grid
 	useEffect(() => {
 		if (pendingFocusKey.current) return; // arrow-key cross-month nav already set focusedDate correctly
-		const dueDateInCurrentMonth = dueDate &&
+		const dueDateInCurrentMonth =
+			dueDate &&
 			dueDate.getMonth() === localCurrentDate.getMonth() &&
 			dueDate.getFullYear() === localCurrentDate.getFullYear();
-		setFocusedDate(dueDateInCurrentMonth ? dueDate : new Date(localCurrentDate.getFullYear(), localCurrentDate.getMonth(), 1));
+		setFocusedDate(
+			dueDateInCurrentMonth ? dueDate : new Date(localCurrentDate.getFullYear(), localCurrentDate.getMonth(), 1)
+		);
 	}, [localCurrentDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
@@ -271,7 +311,8 @@ const MonthView: React.FC<MonthViewProps> = ({
 								const isCurrentMonth = day.getMonth() === localCurrentDate.getMonth();
 								const isDayToday = areDatesEqual(new Date(), day);
 								const isChosenDay = areDatesEqual(dueDate, day);
-								const isInSelectedWeek = !!allDaysInWeekFromDate && formatCheckedInDayDate(day) in allDaysInWeekFromDate;
+								const isInSelectedWeek =
+									!!allDaysInWeekFromDate && formatCheckedInDayDate(day) in allDaysInWeekFromDate;
 								const isFocused = areDatesEqual(day, focusedDate);
 								const appliedStyles = [];
 
@@ -292,7 +333,14 @@ const MonthView: React.FC<MonthViewProps> = ({
 								const handleClick = () => {
 									setLocalCurrentDate(new Date(day.getFullYear(), day.getMonth(), 1));
 
-									let newDueDate = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 12, 0, 0);
+									let newDueDate = new Date(
+										day.getFullYear(),
+										day.getMonth(),
+										day.getDate(),
+										12,
+										0,
+										0
+									);
 
 									if (time) {
 										const newDateObject = setTimeOnDateString(newDueDate, time);
@@ -318,25 +366,56 @@ const MonthView: React.FC<MonthViewProps> = ({
 									const d = day.getDate();
 
 									switch (e.key) {
-										case 'ArrowRight': e.preventDefault(); newDate = new Date(y, m, d + 1); break;
-										case 'ArrowLeft':  e.preventDefault(); newDate = new Date(y, m, d - 1); break;
-										case 'ArrowDown':  e.preventDefault(); newDate = new Date(y, m, d + 7); break;
-										case 'ArrowUp':    e.preventDefault(); newDate = new Date(y, m, d - 7); break;
-										case 'Home':       e.preventDefault(); newDate = new Date(y, m, d - (day.getDay() + 6) % 7); break;
-										case 'End':        e.preventDefault(); newDate = new Date(y, m, d + (7 - day.getDay()) % 7); break;
-										case 'PageUp':     e.preventDefault(); newDate = new Date(y, m - 1, d); break;
-										case 'PageDown':   e.preventDefault(); newDate = new Date(y, m + 1, d); break;
+										case 'ArrowRight':
+											e.preventDefault();
+											newDate = new Date(y, m, d + 1);
+											break;
+										case 'ArrowLeft':
+											e.preventDefault();
+											newDate = new Date(y, m, d - 1);
+											break;
+										case 'ArrowDown':
+											e.preventDefault();
+											newDate = new Date(y, m, d + 7);
+											break;
+										case 'ArrowUp':
+											e.preventDefault();
+											newDate = new Date(y, m, d - 7);
+											break;
+										case 'Home':
+											e.preventDefault();
+											newDate = new Date(y, m, d - ((day.getDay() + 6) % 7));
+											break;
+										case 'End':
+											e.preventDefault();
+											newDate = new Date(y, m, d + ((7 - day.getDay()) % 7));
+											break;
+										case 'PageUp':
+											e.preventDefault();
+											newDate = new Date(y, m - 1, d);
+											break;
+										case 'PageDown':
+											e.preventDefault();
+											newDate = new Date(y, m + 1, d);
+											break;
 										case 'Enter':
-											if ((isChosenDay || isInSelectedWeek) && onConfirm) { e.preventDefault(); onConfirm(); }
+											if ((isChosenDay || isInSelectedWeek) && onConfirm) {
+												e.preventDefault();
+												onConfirm();
+											}
 											break;
 									}
 
 									if (newDate) {
 										const key = `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}`;
-										const isSameMonthYear = newDate.getMonth() === localCurrentDate.getMonth() && newDate.getFullYear() === localCurrentDate.getFullYear();
+										const isSameMonthYear =
+											newDate.getMonth() === localCurrentDate.getMonth() &&
+											newDate.getFullYear() === localCurrentDate.getFullYear();
 										setFocusedDate(newDate);
 										if (isSameMonthYear) {
-											gridRef.current?.querySelector<HTMLButtonElement>(`[data-date="${key}"]`)?.focus();
+											gridRef.current
+												?.querySelector<HTMLButtonElement>(`[data-date="${key}"]`)
+												?.focus();
 										} else {
 											pendingFocusKey.current = key;
 											setLocalCurrentDate(new Date(newDate.getFullYear(), newDate.getMonth(), 1));
@@ -350,8 +429,12 @@ const MonthView: React.FC<MonthViewProps> = ({
 										type="button"
 										data-date={`${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`}
 										tabIndex={isFocused ? 0 : -1}
-										aria-label={day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-										aria-pressed={(isChosenDay || isInSelectedWeek) || undefined}
+										aria-label={day.toLocaleDateString('en-US', {
+											month: 'long',
+											day: 'numeric',
+											year: 'numeric',
+										})}
+										aria-pressed={isChosenDay || isInSelectedWeek || undefined}
 										className={`py-1 cursor-pointer rounded-full w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${appliedStyles}`}
 										onClick={handleClick}
 										onFocus={() => setFocusedDate(day)}
@@ -424,12 +507,30 @@ const YearView: React.FC<YearViewProps> = ({ localCurrentDate, setLocalCurrentDa
 						onFocus={() => setFocusedIndex(i)}
 						onKeyDown={(e) => {
 							switch (e.key) {
-								case 'ArrowRight': e.preventDefault(); focusMonth(i + 1); break;
-								case 'ArrowLeft':  e.preventDefault(); focusMonth(i - 1); break;
-								case 'ArrowDown':  e.preventDefault(); focusMonth(i + 3); break;
-								case 'ArrowUp':    e.preventDefault(); focusMonth(i - 3); break;
-								case 'Home':       e.preventDefault(); focusMonth(0); break;
-								case 'End':        e.preventDefault(); focusMonth(11); break;
+								case 'ArrowRight':
+									e.preventDefault();
+									focusMonth(i + 1);
+									break;
+								case 'ArrowLeft':
+									e.preventDefault();
+									focusMonth(i - 1);
+									break;
+								case 'ArrowDown':
+									e.preventDefault();
+									focusMonth(i + 3);
+									break;
+								case 'ArrowUp':
+									e.preventDefault();
+									focusMonth(i - 3);
+									break;
+								case 'Home':
+									e.preventDefault();
+									focusMonth(0);
+									break;
+								case 'End':
+									e.preventDefault();
+									focusMonth(11);
+									break;
 							}
 						}}
 						onClick={() => {

@@ -77,15 +77,11 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	};
 
 	const goToPreviousYear = () => {
-		setCurrentDate(
-			new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate())
-		);
+		setCurrentDate(new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate()));
 	};
 
 	const goToNextYear = () => {
-		setCurrentDate(
-			new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate())
-		);
+		setCurrentDate(new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()));
 	};
 
 	const monthName = currentDate.toLocaleString('default', { month: 'long' });
@@ -107,12 +103,19 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} customClasses="!max-w-[650px]" ariaLabelledBy="focus-goal-progress-title">
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			customClasses="!max-w-[650px]"
+			ariaLabelledBy="focus-goal-progress-title"
+		>
 			<div className="bg-color-gray-700 rounded-lg p-6">
 				{/* Header */}
 				<div className="flex justify-between items-center mb-6">
 					<h2 id="focus-goal-progress-title" className="text-2xl font-semibold">
-						{mode === 'combined' ? 'Combined Focus Goals' : `${ringName ? `${truncateText(ringName, truncateLength)} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
+						{mode === 'combined'
+							? 'Combined Focus Goals'
+							: `${ringName ? `${truncateText(ringName, truncateLength)} - ` : ''}Focus ${getFormattedDuration(goalSeconds, false, true)}`}
 					</h2>
 					<button
 						type="button"
@@ -128,13 +131,21 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 				<div role="group" aria-label="Streaks" className="grid grid-cols-2 gap-3 mb-3">
 					<StreakDisplay
 						title="Current Streak"
-						streak={mode === 'combined' ? combinedStreakData?.combinedStreaks?.currentStreak : streakData?.currentStreak}
+						streak={
+							mode === 'combined'
+								? combinedStreakData?.combinedStreaks?.currentStreak
+								: streakData?.currentStreak
+						}
 						iconName="local_fire_department"
 						iconColor="text-orange-500"
 					/>
 					<StreakDisplay
 						title="Longest Streak"
-						streak={mode === 'combined' ? combinedStreakData?.combinedStreaks?.longestStreak : streakData?.longestStreak}
+						streak={
+							mode === 'combined'
+								? combinedStreakData?.combinedStreaks?.longestStreak
+								: streakData?.longestStreak
+						}
 						iconName="local_fire_department"
 						iconColor="text-purple-500"
 					/>
@@ -149,15 +160,15 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 						selectedDates={selectedDates}
 						setSelectedDates={setSelectedDates}
 						selectedIntervalOptions={selectedIntervalOptions}
-						dailyDurationsMap={mode === 'combined'
-							? (combinedStreakData?.dailyDurationsMap || {})
-							: (streakData?.dailyDurationsMap || {})
+						dailyDurationsMap={
+							mode === 'combined'
+								? combinedStreakData?.dailyDurationsMap || {}
+								: streakData?.dailyDurationsMap || {}
 						}
 						goalSeconds={goalSeconds}
 						customDailyFocusGoal={customDailyFocusGoal}
-						combinedGoalMetMap={mode === 'combined'
-							? (combinedStreakData?.combinedGoalMetMap || {})
-							: undefined
+						combinedGoalMetMap={
+							mode === 'combined' ? combinedStreakData?.combinedGoalMetMap || {} : undefined
 						}
 						setIsModalPickDateRangeOpen={setIsModalPickDateRangeOpen}
 						startDate={startDate}
@@ -184,8 +195,8 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 						aria-pressed={viewMode === 'streaks'}
 						onClick={() => setViewMode(viewMode === 'calendar' ? 'streaks' : 'calendar')}
 						className={classNames(
-							"text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border text-color-gray-50 transition-colors flex items-center gap-1",
-							"border-color-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white",
+							'text-[14px] py-1 px-3 rounded-3xl cursor-pointer bg-color-gray-600 border text-color-gray-50 transition-colors flex items-center gap-1',
+							'border-color-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white',
 							chosenColorObj.hover.textColor,
 							chosenColorObj.hover.borderColor
 						)}
@@ -249,8 +260,16 @@ const ModalFocusGoalProgress: React.FC<ModalFocusGoalProgressProps> = ({
 					</>
 				) : (
 					<StreaksList
-						allStreaks={mode === 'combined' ? combinedStreakData?.combinedStreaks?.allStreaks || [] : streakData?.allStreaks || []}
-						currentStreak={mode === 'combined' ? combinedStreakData?.combinedStreaks?.currentStreak : streakData?.currentStreak}
+						allStreaks={
+							mode === 'combined'
+								? combinedStreakData?.combinedStreaks?.allStreaks || []
+								: streakData?.allStreaks || []
+						}
+						currentStreak={
+							mode === 'combined'
+								? combinedStreakData?.combinedStreaks?.currentStreak
+								: streakData?.currentStreak
+						}
 						sortBy={getSortByValue()}
 					/>
 				)}

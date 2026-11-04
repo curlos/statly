@@ -89,13 +89,19 @@ const DateRangeSection = () => {
 	const pageContext = usePageContext();
 	const urlSearchParams = pageContext.urlParsed.search || {};
 
-	const displayStartDate = selectedInterval === 'Custom' && urlSearchParams['start-date']
-		? new Date(urlSearchParams['start-date'])
-		: (selectedInterval === 'Custom' && selectedDates.length > 0 ? selectedDates[0] : startDate);
+	const displayStartDate =
+		selectedInterval === 'Custom' && urlSearchParams['start-date']
+			? new Date(urlSearchParams['start-date'])
+			: selectedInterval === 'Custom' && selectedDates.length > 0
+				? selectedDates[0]
+				: startDate;
 
-	const displayEndDate = selectedInterval === 'Custom' && urlSearchParams['end-date']
-		? new Date(urlSearchParams['end-date'])
-		: (selectedInterval === 'Custom' && selectedDates.length > 0 ? selectedDates[selectedDates.length - 1] : endDate);
+	const displayEndDate =
+		selectedInterval === 'Custom' && urlSearchParams['end-date']
+			? new Date(urlSearchParams['end-date'])
+			: selectedInterval === 'Custom' && selectedDates.length > 0
+				? selectedDates[selectedDates.length - 1]
+				: endDate;
 
 	return (
 		<div>
@@ -163,7 +169,9 @@ const DateRangeSection = () => {
 						<CheckboxOther
 							name="Year-Agnostic"
 							showValue={yearAgnosticFromUrl}
-							handleCheckboxClick={() => updateQueryParams({ 'year-agnostic': yearAgnosticFromUrl ? '' : 'true', page: '' })}
+							handleCheckboxClick={() =>
+								updateQueryParams({ 'year-agnostic': yearAgnosticFromUrl ? '' : 'true', page: '' })
+							}
 						/>
 						<Tooltip
 							content="When unchecked, filters by exact dates (e.g., only Dec 25, 2025). When checked, filters by month and day across all years (e.g., every Dec 25 regardless of year)."

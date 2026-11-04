@@ -152,11 +152,14 @@ export interface FocusStatsResponse {
 	byProject?: StatItem[];
 	byTask?: StatItem[];
 	byEmotion?: StatItem[];
-	byEmotionWithTasks?: Record<string, {
-		byProject: StatItem[];
-		byTask: StatItem[];
-		ancestorTasksById: Record<string, AncestorTask>;
-	}>;
+	byEmotionWithTasks?: Record<
+		string,
+		{
+			byProject: StatItem[];
+			byTask: StatItem[];
+			ancestorTasksById: Record<string, AncestorTask>;
+		}
+	>;
 	records?: FocusRecordDetail[];
 	ancestorTasksById?: Record<string, AncestorTask>;
 }
@@ -457,7 +460,13 @@ export interface UserSettingsPages {
 	challenges: ChallengesPageSettings;
 	medals: MedalsPageSettings;
 	forest: ForestPageSettings;
-	[key: string]: FocusRecordsPageSettings | CompletedTasksPageSettings | FocusHoursGoalPageSettings | ChallengesPageSettings | MedalsPageSettings | ForestPageSettings;
+	[key: string]:
+		| FocusRecordsPageSettings
+		| CompletedTasksPageSettings
+		| FocusHoursGoalPageSettings
+		| ChallengesPageSettings
+		| MedalsPageSettings
+		| ForestPageSettings;
 }
 
 export interface UserSettings {

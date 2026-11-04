@@ -26,14 +26,12 @@ interface QueryResponse<T> {
 
 const BackupData = () => {
 	// RTK Query - Lazy queries that only trigger on button click
-	const [triggerGetAllTasks, { isLoading: isLoadingGetAllTasks }] =
-		tasksApi.useLazyGetAllTasksQuery();
+	const [triggerGetAllTasks, { isLoading: isLoadingGetAllTasks }] = tasksApi.useLazyGetAllTasksQuery();
 
 	const [triggerGetAllFocusRecords, { isLoading: isLoadingGetAllFocusRecords }] =
 		focusRecordsApi.useLazyGetAllFocusRecordsQuery();
 
-	const [triggerGetProjects, { isLoading: isLoadingGetDocumentsProjects }] =
-		projectsApi.useLazyGetProjectsQuery();
+	const [triggerGetProjects, { isLoading: isLoadingGetDocumentsProjects }] = projectsApi.useLazyGetProjectsQuery();
 
 	const [triggerGetProjectGroups, { isLoading: isLoadingGetDocumentsProjectGroups }] =
 		projectsApi.useLazyGetProjectGroupsQuery();
@@ -76,23 +74,16 @@ const BackupData = () => {
 
 		// Fetch remaining pages in parallel
 		const remainingPages = Array.from({ length: totalPages - 1 }, (_, i) => i + 2);
-		const remainingPagesPromises = remainingPages.map((page) =>
-			triggerQuery({ page, limit })
-		);
+		const remainingPagesPromises = remainingPages.map((page) => triggerQuery({ page, limit }));
 
 		const remainingPagesResponses = await Promise.all(remainingPagesPromises);
 
 		// Combine all pages
-		const allData = [
-			firstPageData,
-			...remainingPagesResponses.map((response) => response.data?.data || []),
-		].flat();
+		const allData = [firstPageData, ...remainingPagesResponses.map((response) => response.data?.data || [])].flat();
 
 		// Deduplicate by id to prevent duplicate entries in backup
 		// This handles edge cases where pagination might return duplicate items
-		const uniqueData = Array.from(
-			new Map(allData.map(item => [item.id, item])).values()
-		);
+		const uniqueData = Array.from(new Map(allData.map((item) => [item.id, item])).values());
 
 		return uniqueData;
 	};
@@ -182,7 +173,7 @@ const BackupData = () => {
 			// Create folder first with correct timestamp by adding a directory entry
 			zip.file(`${data.folderName}/`, null, {
 				dir: true,
-				date: localDate
+				date: localDate,
 			});
 
 			// All responses are now arrays, so we can directly chunk them
@@ -232,13 +223,24 @@ const BackupData = () => {
 			<button
 				type="button"
 				disabled={isLoadingAny || status === 'backing up'}
-				className={classNames('flex items-center gap-2 my-2 w-full text-left disabled:opacity-50 disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
+				className={classNames(
+					'flex items-center gap-2 my-2 w-full text-left disabled:opacity-50 disabled:cursor-not-allowed',
+					chosenColorObj.hover.textColor
+				)}
 				onClick={async () => {
 					setStatus('backing up');
 
 					try {
 						// Fetch all paginated data in parallel
-						const [allTasks, allFocusRecords, projects, projectGroups, userSettingsData, customImages, customImageFolders] = await Promise.all([
+						const [
+							allTasks,
+							allFocusRecords,
+							projects,
+							projectGroups,
+							userSettingsData,
+							customImages,
+							customImageFolders,
+						] = await Promise.all([
 							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							fetchAllPages<Task>(triggerGetAllTasks as any),
 							// eslint-disable-next-line @typescript-eslint/no-explicit-any

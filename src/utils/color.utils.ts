@@ -19,7 +19,9 @@ export const blendHexOverBackground = (foregroundHex: string, backgroundHex: str
 	const blendChannel = (start: number) => {
 		const foreground = parseInt(foregroundHex.slice(start, start + 2), 16);
 		const background = parseInt(backgroundHex.slice(start, start + 2), 16);
-		return Math.round(foreground * alpha + background * (1 - alpha)).toString(16).padStart(2, '0');
+		return Math.round(foreground * alpha + background * (1 - alpha))
+			.toString(16)
+			.padStart(2, '0');
 	};
 	return `#${blendChannel(1)}${blendChannel(3)}${blendChannel(5)}`;
 };
@@ -33,7 +35,10 @@ export const lightenHex = (hex: string, factor: number): string => {
 	const r = parseInt(hex.slice(1, 3), 16);
 	const g = parseInt(hex.slice(3, 5), 16);
 	const b = parseInt(hex.slice(5, 7), 16);
-	const toHex = (v: number) => Math.round(v + (255 - v) * factor).toString(16).padStart(2, '0');
+	const toHex = (v: number) =>
+		Math.round(v + (255 - v) * factor)
+			.toString(16)
+			.padStart(2, '0');
 	return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 };
 
@@ -41,7 +46,10 @@ export const darkenHex = (hex: string, factor: number): string => {
 	const r = parseInt(hex.slice(1, 3), 16);
 	const g = parseInt(hex.slice(3, 5), 16);
 	const b = parseInt(hex.slice(5, 7), 16);
-	const toHex = (v: number) => Math.round(v * (1 - factor)).toString(16).padStart(2, '0');
+	const toHex = (v: number) =>
+		Math.round(v * (1 - factor))
+			.toString(16)
+			.padStart(2, '0');
 	return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 };
 
@@ -103,7 +111,13 @@ export const getHeatmapColors = (hexColor: string, count = 7, maxDarken?: number
 	const pivotTier = Math.min(count - 1, Math.floor(brightness / (255 / count)));
 	return Array.from({ length: count }, (_, i) => {
 		if (i === pivotTier) return hexColor;
-		if (i < pivotTier) return darkenHex(hexColor, maxDarken !== undefined ? ((pivotTier - i) / pivotTier) * maxDarken : Math.min((pivotTier - i) * TIER_STEP, 0.85));
+		if (i < pivotTier)
+			return darkenHex(
+				hexColor,
+				maxDarken !== undefined
+					? ((pivotTier - i) / pivotTier) * maxDarken
+					: Math.min((pivotTier - i) * TIER_STEP, 0.85)
+			);
 		return lightenHex(hexColor, Math.min((i - pivotTier) * TIER_STEP, 0.92));
 	});
 };

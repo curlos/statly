@@ -41,14 +41,14 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 	const heatmapColors = getHeatmapColors(hexColor, 7, getHeatmapMaxDarken(uiTheme));
 	const zeroColor = 'var(--color-gray-200)';
 	const durations = [
-		{ value: '0m',    bgStyle: { backgroundColor: zeroColor } },
+		{ value: '0m', bgStyle: { backgroundColor: zeroColor } },
 		{ value: '0-59m', bgStyle: { backgroundColor: heatmapColors[6] } },
-		{ value: '1h+',   bgStyle: { backgroundColor: heatmapColors[5] } },
-		{ value: '2h+',   bgStyle: { backgroundColor: heatmapColors[4] } },
-		{ value: '3h+',   bgStyle: { backgroundColor: heatmapColors[3] } },
-		{ value: '4h+',   bgStyle: { backgroundColor: heatmapColors[2] } },
-		{ value: '5h+',   bgStyle: { backgroundColor: heatmapColors[1] } },
-		{ value: '6h+',   bgStyle: { backgroundColor: heatmapColors[0] } },
+		{ value: '1h+', bgStyle: { backgroundColor: heatmapColors[5] } },
+		{ value: '2h+', bgStyle: { backgroundColor: heatmapColors[4] } },
+		{ value: '3h+', bgStyle: { backgroundColor: heatmapColors[3] } },
+		{ value: '4h+', bgStyle: { backgroundColor: heatmapColors[2] } },
+		{ value: '5h+', bgStyle: { backgroundColor: heatmapColors[1] } },
+		{ value: '6h+', bgStyle: { backgroundColor: heatmapColors[0] } },
 	];
 
 	const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -83,13 +83,26 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 	const handleGridKeyDown = (e: React.KeyboardEvent) => {
 		let next = activeIndex;
 		switch (e.key) {
-			case 'ArrowUp':    next = activeIndex - 1; break;
-			case 'ArrowDown':  next = activeIndex + 1; break;
-			case 'ArrowLeft':  next = activeIndex - rowCount; break;
-			case 'ArrowRight': next = activeIndex + rowCount; break;
-			case 'Home': next = 0; break;
-			case 'End':  next = allDatesInYear.length - 1; break;
-			default: return;
+			case 'ArrowUp':
+				next = activeIndex - 1;
+				break;
+			case 'ArrowDown':
+				next = activeIndex + 1;
+				break;
+			case 'ArrowLeft':
+				next = activeIndex - rowCount;
+				break;
+			case 'ArrowRight':
+				next = activeIndex + rowCount;
+				break;
+			case 'Home':
+				next = 0;
+				break;
+			case 'End':
+				next = allDatesInYear.length - 1;
+				break;
+			default:
+				return;
 		}
 		next = Math.max(0, Math.min(allDatesInYear.length - 1, next));
 		if (next !== activeIndex) {
@@ -113,7 +126,10 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 						{monthsShort.map((month, index) => index % 2 === 0 && <div key={month}>{month}</div>)}
 					</div>
 
-					<p className="sr-only">Year-at-a-glance heatmap showing daily focus duration. Each cell represents one day; darker colors indicate more focus time. Use arrow keys to navigate between days.</p>
+					<p className="sr-only">
+						Year-at-a-glance heatmap showing daily focus duration. Each cell represents one day; darker
+						colors indicate more focus time. Use arrow keys to navigate between days.
+					</p>
 					<div
 						ref={gridRef}
 						className="grid grid-flow-col grid-rows-[repeat(auto-fill,_15px)] max-h-[360px] sm:max-h-[210px] md:max-h-[150px] lg:max-h-[250px] xl:max-h-[210px] gap-[1px]"
@@ -127,7 +143,9 @@ const CalendarHeatmap: React.FC<CalendarHeatmapProps> = ({ selectedDates, statsD
 								date={date}
 								focusRecordsGroupedByDate={focusRecordsGroupedByDate}
 								isActive={index === activeIndex}
-								ref={(el) => { dayNodesRef.current[index] = el; }}
+								ref={(el) => {
+									dayNodesRef.current[index] = el;
+								}}
 								onFocus={() => setActiveIndex(index)}
 							/>
 						))}
@@ -157,53 +175,60 @@ interface CalendarDayProps {
 	onFocus: () => void;
 }
 
-const CalendarDay = forwardRef<HTMLButtonElement, CalendarDayProps>(({ date, focusRecordsGroupedByDate, isActive, onFocus }, ref) => {
-	const [isVisible, setIsVisible] = useState(false);
-	const dropdownRef = useRef(null);
-	const themeContext = useThemeContext();
-	const { chosenColorObj, uiTheme } = themeContext;
+const CalendarDay = forwardRef<HTMLButtonElement, CalendarDayProps>(
+	({ date, focusRecordsGroupedByDate, isActive, onFocus }, ref) => {
+		const [isVisible, setIsVisible] = useState(false);
+		const dropdownRef = useRef(null);
+		const themeContext = useThemeContext();
+		const { chosenColorObj, uiTheme } = themeContext;
 
-	const dateKey = getFormattedLongDay(date);
-	const focusDataForDate = focusRecordsGroupedByDate?.[dateKey];
-	const focusDurationForDay = focusDataForDate?.duration || 0;
-	const rangeStyle = getRangeStyle(focusDurationForDay, chosenColorObj.hexColor, getHeatmapMaxDarken(uiTheme));
+		const dateKey = getFormattedLongDay(date);
+		const focusDataForDate = focusRecordsGroupedByDate?.[dateKey];
+		const focusDurationForDay = focusDataForDate?.duration || 0;
+		const rangeStyle = getRangeStyle(focusDurationForDay, chosenColorObj.hexColor, getHeatmapMaxDarken(uiTheme));
 
-	const formattedDurationForTheDay = getFormattedDuration(focusDurationForDay, false);
+		const formattedDurationForTheDay = getFormattedDuration(focusDurationForDay, false);
 
-	return (
-		<div className="relative">
-			<button
-				ref={ref}
-				type="button"
-				aria-label={`${dateKey}: ${formattedDurationForTheDay}`}
-				tabIndex={isActive ? 0 : -1}
-				style={rangeStyle}
-				className={classNames(
-					'h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] rounded p-0 relative',
-					'focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-1 focus-visible:z-10',
-					chosenColorObj.hover.borderColor
-				)}
-				onFocus={() => { setIsVisible(true); onFocus(); }}
-				onBlur={() => setIsVisible(false)}
-				onMouseEnter={() => setIsVisible(true)}
-				onMouseLeave={() => setIsVisible(false)}
-				onClick={() => setIsVisible(v => !v)}
-			/>
+		return (
+			<div className="relative">
+				<button
+					ref={ref}
+					type="button"
+					aria-label={`${dateKey}: ${formattedDurationForTheDay}`}
+					tabIndex={isActive ? 0 : -1}
+					style={rangeStyle}
+					className={classNames(
+						'h-[15px] w-[15px] flex-shrink-0 cursor-pointer border-[1.25px] border-color-gray-600 hover:border-[2px] rounded p-0 relative',
+						'focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-1 focus-visible:z-10',
+						chosenColorObj.hover.borderColor
+					)}
+					onFocus={() => {
+						setIsVisible(true);
+						onFocus();
+					}}
+					onBlur={() => setIsVisible(false)}
+					onMouseEnter={() => setIsVisible(true)}
+					onMouseLeave={() => setIsVisible(false)}
+					onClick={() => setIsVisible((v) => !v)}
+				/>
 
-			<Dropdown
-				toggleRef={dropdownRef}
-				isVisible={isVisible}
-				setIsVisible={setIsVisible}
-				customClasses={'!bg-black'}
-			>
-				<div className={classNames(chosenColorObj.textColor, 'p-2 text-[16px] bg-black text-nowrap rounded')}>
-					<div>{dateKey}</div>
-					<div className="font-bold">{formattedDurationForTheDay}</div>
-				</div>
-			</Dropdown>
-		</div>
-	);
-});
+				<Dropdown
+					toggleRef={dropdownRef}
+					isVisible={isVisible}
+					setIsVisible={setIsVisible}
+					customClasses={'!bg-black'}
+				>
+					<div
+						className={classNames(chosenColorObj.textColor, 'p-2 text-[16px] bg-black text-nowrap rounded')}
+					>
+						<div>{dateKey}</div>
+						<div className="font-bold">{formattedDurationForTheDay}</div>
+					</div>
+				</Dropdown>
+			</div>
+		);
+	}
+);
 
 CalendarDay.displayName = 'CalendarDay';
 
@@ -223,13 +248,13 @@ const getRangeStyle = (seconds: number, hexColor: string, maxDarken?: number): R
 	if (seconds >= 10500) return { backgroundColor: colors[3] };
 
 	// 2 hours - 5m offset = 6900 seconds
-	if (seconds >=  6900) return { backgroundColor: colors[4] };
+	if (seconds >= 6900) return { backgroundColor: colors[4] };
 
 	// 1 hour - 5m offset = 3300 seconds
-	if (seconds >=  3300) return { backgroundColor: colors[5] };
+	if (seconds >= 3300) return { backgroundColor: colors[5] };
 
 	// Any time > 0
-	if (seconds >      0) return { backgroundColor: colors[6] };
+	if (seconds > 0) return { backgroundColor: colors[6] };
 
 	// 0 seconds
 	return { backgroundColor: 'var(--color-gray-200)' };

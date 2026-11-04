@@ -53,12 +53,14 @@ const ShowRecordsFromEmotionSection = () => {
 								<Icon
 									name={isChecked ? 'check_box' : 'check_box_outline_blank'}
 									fill={1}
-									customClass={classNames('!text-[22px]', chosenColorObj.textColor, (nextLightestColorObj || chosenColorObj).hover.textColor)}
+									customClass={classNames(
+										'!text-[22px]',
+										chosenColorObj.textColor,
+										(nextLightestColorObj || chosenColorObj).hover.textColor
+									)}
 								/>
 							</span>
-							<EmotionTag
-								emotionObj={{ emotion: emotion.id, score: 0 }}
-							/>
+							<EmotionTag emotionObj={{ emotion: emotion.id, score: 0 }} />
 						</label>
 					);
 				})}

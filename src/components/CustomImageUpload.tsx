@@ -41,14 +41,7 @@ interface SortablePreviewItemProps {
 }
 
 const SortablePreviewItem: React.FC<SortablePreviewItemProps> = ({ id, url, index, onCrop, onDelete }) => {
-	const {
-		attributes,
-		listeners,
-		setNodeRef,
-		transform,
-		transition,
-		isDragging,
-	} = useSortable({ id });
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
@@ -59,11 +52,7 @@ const SortablePreviewItem: React.FC<SortablePreviewItemProps> = ({ id, url, inde
 	return (
 		<div ref={setNodeRef} style={style} className="relative group">
 			<div {...attributes} {...listeners} className="cursor-move">
-				<img
-					src={url}
-					alt={`Preview ${index + 1}`}
-					className="w-full h-full object-cover rounded"
-				/>
+				<img src={url} alt={`Preview ${index + 1}`} className="w-full h-full object-cover rounded" />
 			</div>
 			{/* Action Icons */}
 			<div className="absolute top-1 right-1 flex gap-1">
@@ -136,7 +125,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 		}
 
 		// Validate file sizes
-		const invalidFiles = files.filter(file => file.size > 5 * 1024 * 1024);
+		const invalidFiles = files.filter((file) => file.size > 5 * 1024 * 1024);
 		if (invalidFiles.length > 0) {
 			setError(`${invalidFiles.length} file(s) exceed 5MB limit`);
 			e.target.value = '';
@@ -163,7 +152,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 			reader.onloadend = () => {
 				newPreviewUrls[startIndex + fileIndex] = reader.result as string;
 				// Update state once all files are read
-				if (newPreviewUrls.every(url => url !== '')) {
+				if (newPreviewUrls.every((url) => url !== '')) {
 					setPreviewUrls([...newPreviewUrls]);
 				}
 			};
@@ -298,10 +287,26 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 			)}
 
 			{/* Error/Success Messages */}
-			<div ref={errorRef} role="alert" tabIndex={-1} className={error ? `mb-4 p-3 bg-red-900/30 border border-red-700 rounded text-sm focus:outline-none ${colorMode === 'dark' ? 'text-red-200' : 'text-red-700'}` : 'sr-only'}>
+			<div
+				ref={errorRef}
+				role="alert"
+				tabIndex={-1}
+				className={
+					error
+						? `mb-4 p-3 bg-red-900/30 border border-red-700 rounded text-sm focus:outline-none ${colorMode === 'dark' ? 'text-red-200' : 'text-red-700'}`
+						: 'sr-only'
+				}
+			>
 				{error}
 			</div>
-			<div role="status" className={success ? `mb-4 p-3 bg-green-900/30 border border-green-900 rounded text-sm ${colorMode === 'dark' ? 'text-green-200' : 'text-green-900'}` : 'sr-only'}>
+			<div
+				role="status"
+				className={
+					success
+						? `mb-4 p-3 bg-green-900/30 border border-green-900 rounded text-sm ${colorMode === 'dark' ? 'text-green-200' : 'text-green-900'}`
+						: 'sr-only'
+				}
+			>
 				{success}
 			</div>
 
@@ -314,15 +319,8 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 			)}
 			{previewUrls.length > 0 && (
 				<div>
-					<DndContext
-						sensors={sensors}
-						collisionDetection={closestCenter}
-						onDragEnd={handleDragEnd}
-					>
-						<SortableContext
-							items={fileIds}
-							strategy={rectSortingStrategy}
-						>
+					<DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+						<SortableContext items={fileIds} strategy={rectSortingStrategy}>
 							<div className="grid grid-cols-3 md:grid-cols-4 gap-2 mb-4">
 								{fileIds.map((id, index) => (
 									<SortablePreviewItem
@@ -343,7 +341,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({
 						<CheckboxOther
 							name="Compress Image Quality"
 							showValue={compress}
-							handleCheckboxClick={() => setCompress(prev => !prev)}
+							handleCheckboxClick={() => setCompress((prev) => !prev)}
 						/>
 					</div>
 

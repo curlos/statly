@@ -1,4 +1,4 @@
-import { Ring } from "../../../types/api";
+import { Ring } from '../../../types/api';
 
 export interface Streak {
 	days: number;

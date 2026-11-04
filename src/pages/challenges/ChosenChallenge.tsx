@@ -14,7 +14,7 @@ interface ChosenChallengeProps {
 const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxHeight, chosenChallengeRef }) => {
 	const { data: overviewStats } = useGetOverviewStatsQuery({
 		skipTodayStats: true,
-		includeFirstData: true
+		includeFirstData: true,
 	});
 
 	const {
@@ -31,9 +31,7 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 	const { name, completedDate } = chosenChallenge;
 
 	const imgSrc =
-		chosenChallenge.type === 'focus'
-			? selectedChallengeCardImage?.focus
-			: selectedChallengeCardImage?.tasks;
+		chosenChallenge.type === 'focus' ? selectedChallengeCardImage?.focus : selectedChallengeCardImage?.tasks;
 
 	const getCompletedDateHref = () => {
 		if (!completedDate) return undefined;
@@ -42,9 +40,10 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 		let startDate = pageContext.urlParsed.search['start-date'];
 
 		if (!startDate) {
-			startDate = chosenChallenge.type === 'focus'
-				? (overviewStats?.firstFocusRecordDate || 'Jan 1, 100')
-				: (overviewStats?.firstCompletedTaskDate || 'Jan 1, 100');
+			startDate =
+				chosenChallenge.type === 'focus'
+					? overviewStats?.firstFocusRecordDate || 'Jan 1, 100'
+					: overviewStats?.firstCompletedTaskDate || 'Jan 1, 100';
 		}
 
 		delete nonDateQueryParams['start-date'];
@@ -56,7 +55,7 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 			{
 				...nonDateQueryParams,
 				'start-date': getFormattedShortMonthDay(new Date(startDate)),
-				'end-date': getFormattedShortMonthDay(new Date(completedDate))
+				'end-date': getFormattedShortMonthDay(new Date(completedDate)),
 			},
 			`/${isForFocusChallenges ? 'focus-records' : 'completed-tasks'}`
 		);
@@ -77,9 +76,7 @@ const ChosenChallenge: React.FC<ChosenChallengeProps> = ({ chosenChallenge, maxH
 					<div className="mt-2 space-y-1 px-3">
 						<div className="text-[16px] md:text-[18px]">
 							<span className="font-bold">Description: </span>
-							<span className="text-color-gray-50">
-								{name} in total
-							</span>
+							<span className="text-color-gray-50">{name} in total</span>
 						</div>
 						<div className="text-[16px] md:text-[18px] pb-2">
 							<span className="font-bold">Completion Date: </span>

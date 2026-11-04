@@ -81,10 +81,18 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 		};
 
 		const syncItems = [
-			{ label: 'Focus Records', key: 'focusRecords' as const, metadata: syncMetadataByType?.tickTickFocusRecords },
+			{
+				label: 'Focus Records',
+				key: 'focusRecords' as const,
+				metadata: syncMetadataByType?.tickTickFocusRecords,
+			},
 			{ label: 'Tasks', key: 'tasks' as const, metadata: syncMetadataByType?.tickTickTasks },
 			{ label: 'Projects', key: 'projects' as const, metadata: syncMetadataByType?.tickTickProjects },
-			{ label: 'Project Groups', key: 'projectGroups' as const, metadata: syncMetadataByType?.tickTickProjectGroups }
+			{
+				label: 'Project Groups',
+				key: 'projectGroups' as const,
+				metadata: syncMetadataByType?.tickTickProjectGroups,
+			},
 		];
 
 		return (
@@ -122,7 +130,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 			disabled={isSyncing || !syncMetadata}
 			aria-disabled={isGuest || undefined}
 			data-guest-disabled={isGuest || undefined}
-			aria-label={showText ? undefined : (isSyncing ? 'Syncing in progress' : 'Sync Now')}
+			aria-label={showText ? undefined : isSyncing ? 'Syncing in progress' : 'Sync Now'}
 			aria-busy={isSyncing}
 			className={`${customClass || 'flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed'}${isGuest ? ' opacity-50 cursor-not-allowed' : ''}`}
 		>
@@ -138,7 +146,9 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 
 	return (
 		<>
-			<span role="status" className="sr-only">{syncMessage}</span>
+			<span role="status" className="sr-only">
+				{syncMessage}
+			</span>
 			{showTooltip && !isGuest ? (
 				<Tooltip content={getTooltipContent()} position="bottom" tabIndex={-1}>
 					{buttonContent}

@@ -83,10 +83,18 @@ const SyncSection = () => {
 			</div>
 
 			<div className="space-y-2">
-				<SyncItem label="Focus Records" syncKey="focusRecords" metadata={syncMetadataByType?.tickTickFocusRecords} />
+				<SyncItem
+					label="Focus Records"
+					syncKey="focusRecords"
+					metadata={syncMetadataByType?.tickTickFocusRecords}
+				/>
 				<SyncItem label="Tasks" syncKey="tasks" metadata={syncMetadataByType?.tickTickTasks} />
 				<SyncItem label="Projects" syncKey="projects" metadata={syncMetadataByType?.tickTickProjects} />
-				<SyncItem label="Project Groups" syncKey="projectGroups" metadata={syncMetadataByType?.tickTickProjectGroups} />
+				<SyncItem
+					label="Project Groups"
+					syncKey="projectGroups"
+					metadata={syncMetadataByType?.tickTickProjectGroups}
+				/>
 
 				<SyncButton
 					showText={true}
@@ -95,7 +103,9 @@ const SyncSection = () => {
 			</div>
 
 			{/* Cookie Input Section */}
-			<GuestDisabled><CookieSection /></GuestDisabled>
+			<GuestDisabled>
+				<CookieSection />
+			</GuestDisabled>
 
 			<div className="mt-4">
 				<Accordion

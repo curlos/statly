@@ -12,8 +12,12 @@ const OverviewSection = () => {
 	const overviewQueryParams = useStatsQueryParams();
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
-	const { data: overviewStats, isLoading, isFetching } = useGetOverviewStatsQuery(overviewQueryParams, {
-		skip: shouldSkipQuery
+	const {
+		data: overviewStats,
+		isLoading,
+		isFetching,
+	} = useGetOverviewStatsQuery(overviewQueryParams, {
+		skip: shouldSkipQuery,
 	});
 
 	return (
@@ -21,16 +25,32 @@ const OverviewSection = () => {
 			<div className="ui-theme-plate bg-color-gray-600 p-4 rounded-md">
 				<div className="flex justify-between items-center">
 					<div className="grid grid-cols-2 sm:flex gap-6" aria-live="polite" aria-atomic="true">
-						<div className="flex flex-col md:flex-row md:items-baseline md:gap-1" aria-label={`${(overviewStats?.totalTasksCount ?? 0).toLocaleString()} Total Tasks`}>
-							<span className="font-bold">{(overviewStats?.totalTasksCount ?? 0).toLocaleString()}</span> <span className="text-color-gray-25">Total Tasks</span>
+						<div
+							className="flex flex-col md:flex-row md:items-baseline md:gap-1"
+							aria-label={`${(overviewStats?.totalTasksCount ?? 0).toLocaleString()} Total Tasks`}
+						>
+							<span className="font-bold">{(overviewStats?.totalTasksCount ?? 0).toLocaleString()}</span>{' '}
+							<span className="text-color-gray-25">Total Tasks</span>
 						</div>
 
-						<div className="flex flex-col md:flex-row md:items-baseline md:gap-1" aria-label={`${(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()} Completed Tasks`}>
-							<span className="font-bold">{(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()}</span> <span className="text-color-gray-25">Completed Tasks</span>
+						<div
+							className="flex flex-col md:flex-row md:items-baseline md:gap-1"
+							aria-label={`${(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()} Completed Tasks`}
+						>
+							<span className="font-bold">
+								{(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()}
+							</span>{' '}
+							<span className="text-color-gray-25">Completed Tasks</span>
 						</div>
 
-						<div className="flex flex-col md:flex-row md:items-baseline md:gap-1" aria-label={`${(overviewStats?.totalProjectsCount ?? 0).toLocaleString()} Projects`}>
-							<span className="font-bold">{(overviewStats?.totalProjectsCount ?? 0).toLocaleString()}</span> <span className="text-color-gray-25">Projects</span>
+						<div
+							className="flex flex-col md:flex-row md:items-baseline md:gap-1"
+							aria-label={`${(overviewStats?.totalProjectsCount ?? 0).toLocaleString()} Projects`}
+						>
+							<span className="font-bold">
+								{(overviewStats?.totalProjectsCount ?? 0).toLocaleString()}
+							</span>{' '}
+							<span className="text-color-gray-25">Projects</span>
 						</div>
 
 						<div className="flex flex-col md:flex-row md:items-center md:gap-1">

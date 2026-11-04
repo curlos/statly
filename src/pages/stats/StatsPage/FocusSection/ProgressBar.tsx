@@ -20,7 +20,16 @@ interface ProgressBarProps {
 	emotionId?: string;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCategoriesById, metricType = 'duration', ancestorTasksById, intervalStartDate, intervalEndDate, emotionId }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({
+	item,
+	projectsById,
+	sessionCategoriesById,
+	metricType = 'duration',
+	ancestorTasksById,
+	intervalStartDate,
+	intervalEndDate,
+	emotionId,
+}) => {
 	const { colorMode } = useThemeContext();
 	const pageContext = usePageContext();
 
@@ -75,32 +84,35 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 		? getFormattedDuration(item.duration ?? 0, false)
 		: `${item.count?.toLocaleString() || 0} task${item.count !== 1 ? 's' : ''}`;
 
-	const color = item.type === 'task' ? (item.projectId && projectsById[item.projectId]?.color || item.color || '#808080') : (item.color || '#808080')
+	const color =
+		item.type === 'task'
+			? (item.projectId && projectsById[item.projectId]?.color) || item.color || '#808080'
+			: item.color || '#808080';
 
-	let topMostAncestorTaskName = null
-	let topMostAncestorTaskId: string | null = null
-	let projectName = null
-	let projectId: string | null | undefined = null
+	let topMostAncestorTaskName = null;
+	let topMostAncestorTaskId: string | null = null;
+	let projectName = null;
+	let projectId: string | null | undefined = null;
 
 	// For "Stats - Focus", the tasks that are displayed can be unclear since it could be a task like "BUILD" which is the task's name BUT I need more context like "BUILD - MG JUSTICE (GUNPLA)" which'll tell me which GUNPLA this "BUILD" task is for.
 	if (item.type === 'task' && ancestorTasksById && item.id) {
-		const fullTask = ancestorTasksById[item.id]
-		topMostAncestorTaskId = fullTask?.ancestorIds?.[fullTask.ancestorIds.length - 1]
-		const fullTopMostAncestorTask = topMostAncestorTaskId ? ancestorTasksById[topMostAncestorTaskId] : undefined
+		const fullTask = ancestorTasksById[item.id];
+		topMostAncestorTaskId = fullTask?.ancestorIds?.[fullTask.ancestorIds.length - 1];
+		const fullTopMostAncestorTask = topMostAncestorTaskId ? ancestorTasksById[topMostAncestorTaskId] : undefined;
 
 		if (topMostAncestorTaskId !== item.id) {
-			topMostAncestorTaskName = fullTopMostAncestorTask?.title
+			topMostAncestorTaskName = fullTopMostAncestorTask?.title;
 		}
 
-		projectId = item.projectId
-		const taskProject = projectId ? projectsById[projectId] : undefined
-		projectName = taskProject?.name || projectId
+		projectId = item.projectId;
+		const taskProject = projectId ? projectsById[projectId] : undefined;
+		projectName = taskProject?.name || projectId;
 	}
 
 	const shouldBreakAll = shouldBreakAllText(item.name);
 
 	// If no projectName, it's from a non-TickTick/Session app - use the app name
-	if (!projectName && item.name !== 'No Data' || (projectName && projectName in sourceToAppName)) {
+	if ((!projectName && item.name !== 'No Data') || (projectName && projectName in sourceToAppName)) {
 		projectName = item.projectId ? sourceToAppName[item.projectId] || null : null;
 	}
 
@@ -115,7 +127,10 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 							'cursor-pointer hover:underline text-left',
 							{ 'break-all': shouldBreakAll }
 						)}
-						onClick={(e) => { e.preventDefault(); navigate(getHref()); }}
+						onClick={(e) => {
+							e.preventDefault();
+							navigate(getHref());
+						}}
 					>
 						{item.name}
 					</a>
@@ -125,18 +140,24 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ item, projectsById, sessionCa
 							<a
 								href={getHref({ id: topMostAncestorTaskId, type: 'task' })}
 								className="cursor-pointer hover:underline"
-								onClick={(e) => { e.preventDefault(); navigate(getHref({ id: topMostAncestorTaskId, type: 'task' })); }}
+								onClick={(e) => {
+									e.preventDefault();
+									navigate(getHref({ id: topMostAncestorTaskId, type: 'task' }));
+								}}
 							>
 								{topMostAncestorTaskName}
 							</a>
 						)}
-						{topMostAncestorTaskName && <span>{" - "}</span>}
+						{topMostAncestorTaskName && <span>{' - '}</span>}
 						{projectName && topMostAncestorTaskName && <span>(</span>}
 						{projectName && projectId && (
 							<a
 								href={getHref({ id: projectId, type: 'project' })}
 								className="cursor-pointer hover:underline"
-								onClick={(e) => { e.preventDefault(); navigate(getHref({ id: projectId, type: 'project' })); }}
+								onClick={(e) => {
+									e.preventDefault();
+									navigate(getHref({ id: projectId, type: 'project' }));
+								}}
 							>
 								{projectName}
 							</a>

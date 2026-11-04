@@ -9,9 +9,13 @@ describe('applySettingsPatch', () => {
 	});
 
 	it('sets a value deep inside the settings from a dotted key, leaving its neighbors alone', () => {
-		const settings: Record<string, unknown> = { pages: { forest: { landStyle: 'auto', projectTrees: { a: 'maple_tree' } }, medals: { keep: true } } };
+		const settings: Record<string, unknown> = {
+			pages: { forest: { landStyle: 'auto', projectTrees: { a: 'maple_tree' } }, medals: { keep: true } },
+		};
 		applySettingsPatch(settings, { 'pages.forest.landStyle': 'winter' });
-		expect(settings).toEqual({ pages: { forest: { landStyle: 'winter', projectTrees: { a: 'maple_tree' } }, medals: { keep: true } } });
+		expect(settings).toEqual({
+			pages: { forest: { landStyle: 'winter', projectTrees: { a: 'maple_tree' } }, medals: { keep: true } },
+		});
 	});
 
 	it('replaces a whole nested object, and adds the path when it does not exist yet', () => {

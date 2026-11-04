@@ -34,13 +34,24 @@ interface DayWithCompletedTasksProps {
 /**
  * @description This is a card that will show the Completed Tasks for a specific day.
  */
-const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithCompletedTasks, isLastItemForTheDay = false, ancestorTasksById, pendingFocusDateRef }) => {
-
+const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({
+	dateWithCompletedTasks,
+	isLastItemForTheDay = false,
+	ancestorTasksById,
+	pendingFocusDateRef,
+}) => {
 	// Context
 	const { updateQueryParams, buildUrlWithQueryParams } = useSearchParamsContext();
 	const {
 		completedTasksPageSettings: { groupedTasksCollapsedByDefault, showIndentedTasks },
-		focusRecordsPageSettings: { showMedals, selectedMedalImage, medalImageSizePx, showMedalGlow, customDisplay, applyLowerCardOpacity: lowerCardOpacity },
+		focusRecordsPageSettings: {
+			showMedals,
+			selectedMedalImage,
+			medalImageSizePx,
+			showMedalGlow,
+			customDisplay,
+			applyLowerCardOpacity: lowerCardOpacity,
+		},
 	} = useUserSettingsContext();
 
 	// Theme Context
@@ -80,12 +91,12 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 
 	const { groupedSubtasksByParentTask } = getGroupedSubtasksAndParentTasks({
 		completedTasksForDay,
-		ancestorTasksById
+		ancestorTasksById,
 	});
 
 	const { tasksWithParentId, tasksWithNoParent } = getTasksWithParentIdAndNoParent({
 		completedTasksForDay,
-		ancestorTasksById
+		ancestorTasksById,
 	});
 
 	const buildUrlWithTaskIdQueryParam = (taskId: string) =>
@@ -109,7 +120,11 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 		BATTLEFIELD_1_MEDALS_BY_URL[selectedMedalImage] || BATTLEFIELD_3_MEDALS_BY_URL[selectedMedalImage]
 	);
 
-	const { cardBackgroundStyle, backgroundImageStyle, cardTextColor, cardBgColor } = useFocusRecordCardColors({ customDisplay, chosenColorObj, lowerOpacity: lowerCardOpacity });
+	const { cardBackgroundStyle, backgroundImageStyle, cardTextColor, cardBgColor } = useFocusRecordCardColors({
+		customDisplay,
+		chosenColorObj,
+		lowerOpacity: lowerCardOpacity,
+	});
 
 	return (
 		<article
@@ -133,15 +148,17 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 
 			{!showMedals && (
 				<div className="absolute w-[24px] h-[24px] bg-primary-10 rounded-full flex items-center justify-center">
-					<Icon name="check_box" customClass={classNames('!text-[20px]')} customStyle={{ color: cardBgColor }} />
+					<Icon
+						name="check_box"
+						customClass={classNames('!text-[20px]')}
+						customStyle={{ color: cardBgColor }}
+					/>
 				</div>
 			)}
 
 			{!isLastItemForTheDay && !showMedals && (
 				<div
-					className={classNames(
-						'absolute top-[28px] left-[11px] h-full border-solid border-l-[1px]'
-					)}
+					className={classNames('absolute top-[28px] left-[11px] h-full border-solid border-l-[1px]')}
 					style={{ height: 'calc(100% - 16px)', borderColor: cardBgColor }}
 				></div>
 			)}
@@ -160,21 +177,26 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 				)}
 
 				<div
-					className={classNames('ui-theme-card p-2 rounded-lg w-[95%] sm:w-full relative', customDisplay.useBackgroundImage ? 'bg-black' : !customDisplay.useBackgroundColor && (lowerCardOpacity ? bgColorHalfOpacity : bgColor))}
+					className={classNames(
+						'ui-theme-card p-2 rounded-lg w-[95%] sm:w-full relative',
+						customDisplay.useBackgroundImage
+							? 'bg-black'
+							: !customDisplay.useBackgroundColor && (lowerCardOpacity ? bgColorHalfOpacity : bgColor)
+					)}
 					style={cardBackgroundStyle}
 					onContextMenu={handleContextMenu}
 				>
 					{/* Separate background image layer */}
-                    {customDisplay.useBackgroundImage && customDisplay.backgroundImage && (
-                        <div
-                            className="absolute inset-0 rounded-lg"
-                            style={{
-                                ...backgroundImageStyle,
-                                zIndex: 0,
-                                pointerEvents: 'none',
-                            }}
-                        ></div>
-                    )}
+					{customDisplay.useBackgroundImage && customDisplay.backgroundImage && (
+						<div
+							className="absolute inset-0 rounded-lg"
+							style={{
+								...backgroundImageStyle,
+								zIndex: 0,
+								pointerEvents: 'none',
+							}}
+						></div>
+					)}
 
 					{/* Three-dot dropdown menu (positioned outside Accordion button to avoid nested buttons) */}
 					<div className="absolute top-[14px] right-[30px] z-[11] flex-shrink-0" ref={dropdownToggleRef}>
@@ -204,10 +226,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 							customClasses="min-w-[200px] !text-[14px]"
 							role="menu"
 						>
-							<FocusRecordMenuItems
-								menuItems={menuItems}
-								onItemClick={() => setDropdownOpen(false)}
-							/>
+							<FocusRecordMenuItems menuItems={menuItems} onItemClick={() => setDropdownOpen(false)} />
 						</Dropdown>
 					</div>
 
@@ -242,7 +261,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 											buildUrlWithTaskIdQueryParam,
 											ancestorTasksById,
 											cardTextColor,
-											customDisplay
+											customDisplay,
 										}}
 									/>
 								) : (
@@ -254,7 +273,7 @@ const DayWithCompletedTasks: React.FC<DayWithCompletedTasksProps> = ({ dateWithC
 											buildUrlWithTaskIdQueryParam,
 											groupedTasksCollapsedByDefault,
 											cardTextColor,
-											customDisplay
+											customDisplay,
 										}}
 									/>
 								)}

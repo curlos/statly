@@ -10,7 +10,10 @@ export const usersApi = baseAPI.injectEndpoints({
 			query: () => '/users/logged-in-user',
 			providesTags: ['User'],
 		}),
-		registerUser: builder.mutation<AuthResponse, { email: string; password: string; name?: string; colorMode?: string }>({
+		registerUser: builder.mutation<
+			AuthResponse,
+			{ email: string; password: string; name?: string; colorMode?: string }
+		>({
 			query: (userDetails) => ({
 				url: '/users/register',
 				method: 'POST',

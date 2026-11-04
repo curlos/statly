@@ -41,7 +41,7 @@ const RevalidateCrossesMidnight = () => {
 			setIsRevalidating(true);
 
 			// Process all records in single request
-			const revalidationResult = await revalidateCrossesMidnight({ timezone }).unwrap() as RevalidationResult;
+			const revalidationResult = (await revalidateCrossesMidnight({ timezone }).unwrap()) as RevalidationResult;
 
 			// Show summary
 			const message = `Revalidation complete!\n\nUpdated: ${revalidationResult.updated.toLocaleString()} records\n  • Changed false → true: ${revalidationResult.falseToTrue.toLocaleString()}\n  • Changed true → false: ${revalidationResult.trueToFalse.toLocaleString()}\n\nUnchanged: ${revalidationResult.unchanged.toLocaleString()} records\nFailed: ${revalidationResult.failed.toLocaleString()} records`;
@@ -69,11 +69,7 @@ const RevalidateCrossesMidnight = () => {
 					{isRevalidating ? (
 						<Spinner size="sm" />
 					) : (
-						<Icon
-							name="schedule"
-							fill={1}
-							customClass="!text-[20px]"
-						/>
+						<Icon name="schedule" fill={1} customClass="!text-[20px]" />
 					)}
 					<span>{isRevalidating ? 'Revalidating Midnight Crossing...' : 'Revalidate Midnight Crossing'}</span>
 				</button>

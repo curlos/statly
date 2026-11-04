@@ -54,7 +54,9 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
 						className="w-full px-3 py-2 bg-color-gray-300 rounded mb-2"
 						maxLength={maxLength}
 					/>
-					<div className={`flex justify-end text-sm mb-4 ${isAtMax ? 'text-red-500' : 'text-color-gray-100'}`}>
+					<div
+						className={`flex justify-end text-sm mb-4 ${isAtMax ? 'text-red-500' : 'text-color-gray-100'}`}
+					>
 						{charCount} / {maxLength}
 					</div>
 					<div className="flex gap-3 justify-end">

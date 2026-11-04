@@ -18,7 +18,8 @@ const INTERVALS: string[] = ['Day', 'Week', 'Month', 'Year', 'All', 'Custom'];
 // A hand-edited URL can't make the page build more days than this
 const MAX_DAYS = 7400;
 
-const formatDate = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const formatDate = (date: Date) =>
+	date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
 // Noon keeps a date on the right day when clocks change
 const atNoon = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12);
@@ -32,7 +33,11 @@ const parseDate = (text?: string | null) => {
 
 const getDaysInRange = (first: Date, last: Date) => {
 	const days: Date[] = [];
-	for (let day = atNoon(first); day.getTime() <= last.getTime() && days.length < MAX_DAYS; day = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1, 12)) {
+	for (
+		let day = atNoon(first);
+		day.getTime() <= last.getTime() && days.length < MAX_DAYS;
+		day = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1, 12)
+	) {
 		days.push(day);
 	}
 	return days;

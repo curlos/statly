@@ -8,7 +8,7 @@ import {
 	useDeleteTasksMutation,
 	useDeleteProjectsMutation,
 	useDeleteProjectGroupsMutation,
-	useDeleteAllDocumentsMutation
+	useDeleteAllDocumentsMutation,
 } from '../../../services/resources/deleteApi';
 
 type DeleteCategory = 'focusRecords' | 'tasks' | 'projects' | 'projectGroups' | 'all';
@@ -69,12 +69,12 @@ const DeleteDataSection = () => {
 				focusRecords: documentCounts.focusRecords,
 				tasks: documentCounts.tasks,
 				projects: documentCounts.projects,
-				projectGroups: documentCounts.projectGroups
+				projectGroups: documentCounts.projectGroups,
 			};
 		}
 
 		return {
-			[deleteCategory]: documentCounts[deleteCategory]
+			[deleteCategory]: documentCounts[deleteCategory],
 		};
 	};
 
@@ -99,30 +99,28 @@ const DeleteDataSection = () => {
 		{
 			id: 'focusRecords' as DeleteCategory,
 			label: 'Delete All Focus Records',
-			icon: 'timer'
+			icon: 'timer',
 		},
 		{
 			id: 'tasks' as DeleteCategory,
 			label: 'Delete All Tasks',
-			icon: 'check_circle'
+			icon: 'check_circle',
 		},
 		{
 			id: 'projects' as DeleteCategory,
 			label: 'Delete All Projects',
-			icon: 'folder'
+			icon: 'folder',
 		},
 		{
 			id: 'projectGroups' as DeleteCategory,
 			label: 'Delete All Project Groups',
-			icon: 'folder_open'
-		}
+			icon: 'folder_open',
+		},
 	];
 
 	return (
 		<div>
-			<p className="text-color-gray-100 mb-4">
-				Delete your data by category. This action cannot be undone.
-			</p>
+			<p className="text-color-gray-100 mb-4">Delete your data by category. This action cannot be undone.</p>
 
 			<div className="space-y-3">
 				{deleteButtons.map((button) => (
@@ -135,11 +133,7 @@ const DeleteDataSection = () => {
 						)}
 						onClick={() => handleDeleteClick(button.id)}
 					>
-						<Icon
-							name={button.icon}
-							fill={0}
-							customClass="!text-[20px] text-red-500"
-						/>
+						<Icon name={button.icon} fill={0} customClass="!text-[20px] text-red-500" />
 						<div className="flex-1">
 							<div className="text-color-gray-50">{button.label}</div>
 							{documentCounts && (
@@ -159,11 +153,7 @@ const DeleteDataSection = () => {
 					)}
 					onClick={() => handleDeleteClick('all')}
 				>
-					<Icon
-						name="delete_forever"
-						fill={0}
-						customClass="!text-[20px] text-red-500"
-					/>
+					<Icon name="delete_forever" fill={0} customClass="!text-[20px] text-red-500" />
 					<div className="flex-1">
 						<div className="text-red-500 font-semibold">Delete All Documents</div>
 						<div className="text-sm text-color-gray-100">

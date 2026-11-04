@@ -14,8 +14,12 @@ const FormInput = ({ id, type, placeholder, register, error, rightElement }: For
 	const { colorMode } = useThemeContext();
 	return (
 		<div>
-			<label htmlFor={id} className="block mb-1 text-[14px] text-color-gray-25">{placeholder}</label>
-			<div className={`flex items-center gap-2 ${colorMode === 'dark' ? 'bg-color-gray-200' : 'bg-color-gray-700'} rounded-xl p-2 border border-color-gray-100`}>
+			<label htmlFor={id} className="block mb-1 text-[14px] text-color-gray-25">
+				{placeholder}
+			</label>
+			<div
+				className={`flex items-center gap-2 ${colorMode === 'dark' ? 'bg-color-gray-200' : 'bg-color-gray-700'} rounded-xl p-2 border border-color-gray-100`}
+			>
 				<input
 					id={id}
 					type={type}
@@ -26,7 +30,11 @@ const FormInput = ({ id, type, placeholder, register, error, rightElement }: For
 				/>
 				{rightElement}
 			</div>
-			{error && <p id={`${id}-error`} role="alert" className="text-red-500 mt-1">{error.message}</p>}
+			{error && (
+				<p id={`${id}-error`} role="alert" className="text-red-500 mt-1">
+					{error.message}
+				</p>
+			)}
 		</div>
 	);
 };

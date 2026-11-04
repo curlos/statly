@@ -1,5 +1,18 @@
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
-export type LandStyleName = Season | 'blossom' | 'sand' | 'lavender' | 'halloween' | 'christmas' | 'thanksgiving' | "st. patrick's" | 'easter' | 'beach' | 'volcano' | 'desert' | 'space';
+export type LandStyleName =
+	| Season
+	| 'blossom'
+	| 'sand'
+	| 'lavender'
+	| 'halloween'
+	| 'christmas'
+	| 'thanksgiving'
+	| "st. patrick's"
+	| 'easter'
+	| 'beach'
+	| 'volcano'
+	| 'desert'
+	| 'space';
 
 export interface LandColors {
 	top: string;
@@ -16,7 +29,26 @@ export interface LandColors {
 }
 
 // Auto follows the holidays and falls back to the season. Seasons follows only the season.
-export const LAND_OPTIONS = ['Auto', 'Seasons', 'Spring', 'Summer', 'Autumn', 'Winter', 'Blossom', 'Sand', 'Lavender', 'Halloween', 'Christmas', 'Thanksgiving', "St. Patrick's", 'Easter', 'Beach', 'Volcano', 'Desert', 'Space'];
+export const LAND_OPTIONS = [
+	'Auto',
+	'Seasons',
+	'Spring',
+	'Summer',
+	'Autumn',
+	'Winter',
+	'Blossom',
+	'Sand',
+	'Lavender',
+	'Halloween',
+	'Christmas',
+	'Thanksgiving',
+	"St. Patrick's",
+	'Easter',
+	'Beach',
+	'Volcano',
+	'Desert',
+	'Space',
+];
 
 export const LAND_STYLES: Record<LandStyleName, LandColors> = {
 	spring: {
@@ -248,7 +280,8 @@ export const getHolidayForDate = (date: Date): LandStyleName | null => {
 	const year = date.getFullYear();
 	const month = date.getMonth();
 	const day = date.getDate();
-	const daysUntil = (holiday: Date) => Math.round((holiday.getTime() - new Date(year, month, day).getTime()) / (24 * 60 * 60 * 1000));
+	const daysUntil = (holiday: Date) =>
+		Math.round((holiday.getTime() - new Date(year, month, day).getTime()) / (24 * 60 * 60 * 1000));
 
 	if (month === 11) return 'christmas';
 	if (month === 9 && day >= 15) return 'halloween';
@@ -266,22 +299,75 @@ export const getHolidayForDate = (date: Date): LandStyleName | null => {
 	return null;
 };
 
-export const getAutoLandForDate = (date: Date, isSouthern = false): LandStyleName => getHolidayForDate(date) ?? getSeasonForDate(date, isSouthern);
+export const getAutoLandForDate = (date: Date, isSouthern = false): LandStyleName =>
+	getHolidayForDate(date) ?? getSeasonForDate(date, isSouthern);
 
 // Time zones south of the equator, found by name since the browser can't say where it is. A zone that straddles the equator isn't listed, so those count as northern.
 const SOUTHERN_TIME_ZONE_PREFIXES = ['Australia/', 'Antarctica/', 'America/Argentina/'];
 const SOUTHERN_TIME_ZONES = new Set([
-	'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fiji', 'Pacific/Tahiti', 'Pacific/Noumea', 'Pacific/Port_Moresby', 'Pacific/Apia', 'Pacific/Tongatapu', 'Pacific/Norfolk', 'Pacific/Guadalcanal', 'Pacific/Efate', 'Pacific/Pago_Pago', 'Pacific/Rarotonga',
-	'America/Sao_Paulo', 'America/Buenos_Aires', 'America/Santiago', 'America/Montevideo', 'America/Asuncion', 'America/La_Paz', 'America/Lima', 'America/Campo_Grande', 'America/Cuiaba', 'America/Bahia', 'America/Fortaleza', 'America/Recife', 'America/Maceio', 'America/Manaus', 'America/Porto_Velho', 'America/Rio_Branco', 'America/Punta_Arenas',
-	'Africa/Johannesburg', 'Africa/Maseru', 'Africa/Mbabane', 'Africa/Windhoek', 'Africa/Gaborone', 'Africa/Harare', 'Africa/Lusaka', 'Africa/Maputo', 'Africa/Blantyre', 'Africa/Luanda', 'Africa/Lubumbashi', 'Africa/Dar_es_Salaam', 'Africa/Kigali', 'Africa/Bujumbura',
-	'Indian/Antananarivo', 'Indian/Mauritius', 'Indian/Reunion', 'Indian/Comoro', 'Indian/Mayotte',
-	'Asia/Jakarta', 'Asia/Makassar', 'Asia/Dili',
+	'Pacific/Auckland',
+	'Pacific/Chatham',
+	'Pacific/Fiji',
+	'Pacific/Tahiti',
+	'Pacific/Noumea',
+	'Pacific/Port_Moresby',
+	'Pacific/Apia',
+	'Pacific/Tongatapu',
+	'Pacific/Norfolk',
+	'Pacific/Guadalcanal',
+	'Pacific/Efate',
+	'Pacific/Pago_Pago',
+	'Pacific/Rarotonga',
+	'America/Sao_Paulo',
+	'America/Buenos_Aires',
+	'America/Santiago',
+	'America/Montevideo',
+	'America/Asuncion',
+	'America/La_Paz',
+	'America/Lima',
+	'America/Campo_Grande',
+	'America/Cuiaba',
+	'America/Bahia',
+	'America/Fortaleza',
+	'America/Recife',
+	'America/Maceio',
+	'America/Manaus',
+	'America/Porto_Velho',
+	'America/Rio_Branco',
+	'America/Punta_Arenas',
+	'Africa/Johannesburg',
+	'Africa/Maseru',
+	'Africa/Mbabane',
+	'Africa/Windhoek',
+	'Africa/Gaborone',
+	'Africa/Harare',
+	'Africa/Lusaka',
+	'Africa/Maputo',
+	'Africa/Blantyre',
+	'Africa/Luanda',
+	'Africa/Lubumbashi',
+	'Africa/Dar_es_Salaam',
+	'Africa/Kigali',
+	'Africa/Bujumbura',
+	'Indian/Antananarivo',
+	'Indian/Mauritius',
+	'Indian/Reunion',
+	'Indian/Comoro',
+	'Indian/Mayotte',
+	'Asia/Jakarta',
+	'Asia/Makassar',
+	'Asia/Dili',
 ]);
 
 export const isSouthernHemisphereTimeZone = (timeZone: string) =>
 	SOUTHERN_TIME_ZONES.has(timeZone) || SOUTHERN_TIME_ZONE_PREFIXES.some((prefix) => timeZone.startsWith(prefix));
 
-const OPPOSITE_SEASON: Record<Season, Season> = { spring: 'autumn', summer: 'winter', autumn: 'spring', winter: 'summer' };
+const OPPOSITE_SEASON: Record<Season, Season> = {
+	spring: 'autumn',
+	summer: 'winter',
+	autumn: 'spring',
+	winter: 'summer',
+};
 
 // The season for a date. South of the equator the seasons are the other way around, so a December date is summer.
 export const getSeasonForDate = (date: Date, isSouthern = false): Season => {

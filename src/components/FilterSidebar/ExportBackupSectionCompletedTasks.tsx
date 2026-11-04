@@ -10,9 +10,7 @@ import useExportCompletedTasks from './hooks/useExportCompletedTasks';
 
 const ExportBackupSectionCompletedTasks = () => {
 	const {
-		completedTasksPageSettings: {
-			onlyExportTasksWithNoParent,
-		},
+		completedTasksPageSettings: { onlyExportTasksWithNoParent },
 		handleUpdateUserSettingForPage,
 	} = useUserSettingsContext();
 
@@ -27,11 +25,7 @@ const ExportBackupSectionCompletedTasks = () => {
 				title={
 					<div className="flex items-center gap-1">
 						<h3 className="text-[16px] font-bold">Export & Backup</h3>
-						<Icon
-							name="backup"
-							fill={0}
-							customClass={'text-color-gray-50 !text-[20px] cursor-pointer'}
-						/>
+						<Icon name="backup" fill={0} customClass={'text-color-gray-50 !text-[20px] cursor-pointer'} />
 					</div>
 				}
 				openByDefault={true}
@@ -98,7 +92,8 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 	const { chosenColorObj } = useThemeContext();
 
 	const [copiedToClipboardStatus, setCopiedToClipboardStatus] = useState('none');
-	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedCompletedTasks } = useExportCompletedTasks();
+	const { handleCopyToClipboard, downloadSingleMarkdownFile, downloadZipFolderOfGroupedCompletedTasks } =
+		useExportCompletedTasks();
 
 	const actionFunctions = {
 		handleCopyToClipboard: handleCopyToClipboard,
@@ -106,14 +101,24 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 		downloadZipFolderOfGroupedCompletedTasks: downloadZipFolderOfGroupedCompletedTasks,
 	} as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>;
 
-	const statusLabel = copiedToClipboardStatus === 'copying' ? 'Loading' : copiedToClipboardStatus === 'done' ? 'Done' : copiedToClipboardStatus === 'error' ? 'Error' : '';
+	const statusLabel =
+		copiedToClipboardStatus === 'copying'
+			? 'Loading'
+			: copiedToClipboardStatus === 'done'
+				? 'Done'
+				: copiedToClipboardStatus === 'error'
+					? 'Error'
+					: '';
 
 	return (
 		<button
 			type="button"
 			disabled={copiedToClipboardStatus === 'copying'}
 			aria-busy={copiedToClipboardStatus === 'copying'}
-			className={classNames('flex items-center gap-2 my-2 cursor-pointer disabled:cursor-not-allowed', chosenColorObj.hover.textColor)}
+			className={classNames(
+				'flex items-center gap-2 my-2 cursor-pointer disabled:cursor-not-allowed',
+				chosenColorObj.hover.textColor
+			)}
 			onClick={() => {
 				setCopiedToClipboardStatus('copying');
 
@@ -123,7 +128,13 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 					const result = await actionFunction(...params);
 
 					// Handle clipboard-specific errors
-					if (action === 'handleCopyToClipboard' && result && typeof result === 'object' && 'success' in result && !result.success) {
+					if (
+						action === 'handleCopyToClipboard' &&
+						result &&
+						typeof result === 'object' &&
+						'success' in result &&
+						!result.success
+					) {
 						setCopiedToClipboardStatus('error');
 						console.error('Copy to clipboard failed:', 'error' in result ? result.error : 'Unknown error');
 					} else {
@@ -140,7 +151,13 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 				<Spinner />
 			) : (
 				<Icon
-					name={copiedToClipboardStatus === 'none' ? icon : copiedToClipboardStatus === 'error' ? 'error' : 'check'}
+					name={
+						copiedToClipboardStatus === 'none'
+							? icon
+							: copiedToClipboardStatus === 'error'
+								? 'error'
+								: 'check'
+					}
 					fill={0}
 					customClass={classNames(
 						'!text-[20px] rounded-lg bg-color-gray-300 p-[6px]',
@@ -153,7 +170,11 @@ const CompletedTasksExporter: React.FC<CompletedTasksExporterProps> = ({ text, i
 				/>
 			)}
 			<span>{text}</span>
-			{statusLabel && <span className="sr-only" aria-live="polite">{statusLabel}</span>}
+			{statusLabel && (
+				<span className="sr-only" aria-live="polite">
+					{statusLabel}
+				</span>
+			)}
 		</button>
 	);
 };

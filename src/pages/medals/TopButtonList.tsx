@@ -37,7 +37,12 @@ interface TopButtonProps {
 	isForInterval: boolean;
 }
 
-const TopButton: React.FC<TopButtonProps> = ({ buttonObj, selectedButtonStyle, unselectedButtonStyle, isForInterval }) => {
+const TopButton: React.FC<TopButtonProps> = ({
+	buttonObj,
+	selectedButtonStyle,
+	unselectedButtonStyle,
+	isForInterval,
+}) => {
 	const pageContext = usePageContext();
 	const { type, interval } = pageContext.routeParams;
 

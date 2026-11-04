@@ -163,7 +163,10 @@ export const getSeasonalTree = (treeName: string, startTime: string) => {
 };
 
 // The trees really planted for each project, most common first. This can be more than the one tree assigned to the project, because December records plant the Christmas version.
-export const getPlantedTreeNames = (trees: { projectId: string; startTime: string }[], projectTrees: Record<string, string>) => {
+export const getPlantedTreeNames = (
+	trees: { projectId: string; startTime: string }[],
+	projectTrees: Record<string, string>
+) => {
 	const countsByProject = new Map<string, Map<string, number>>();
 
 	trees.forEach(({ projectId, startTime }) => {
@@ -174,6 +177,9 @@ export const getPlantedTreeNames = (trees: { projectId: string; startTime: strin
 	});
 
 	return new Map(
-		[...countsByProject].map(([projectId, counts]) => [projectId, [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([treeName]) => treeName)])
+		[...countsByProject].map(([projectId, counts]) => [
+			projectId,
+			[...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([treeName]) => treeName),
+		])
 	);
 };

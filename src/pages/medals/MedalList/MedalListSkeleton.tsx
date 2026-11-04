@@ -9,7 +9,10 @@ const MedalCardSkeleton = () => {
 					<Icon name="military_tech" customClass="!text-[120px] text-color-gray-200 animate-pulse" fill={1} />
 				</div>
 			</div>
-			<div className="flex justify-end px-2 h-[24px] sm:h-[30px] bg-color-gray-400 rounded mx-2 mb-2 animate-pulse" style={{ width: '60px', marginLeft: 'auto' }} />
+			<div
+				className="flex justify-end px-2 h-[24px] sm:h-[30px] bg-color-gray-400 rounded mx-2 mb-2 animate-pulse"
+				style={{ width: '60px', marginLeft: 'auto' }}
+			/>
 		</div>
 	);
 };

@@ -40,7 +40,12 @@ export interface ForestView {
 }
 
 // The trees whose pictures reach into the view, with a little room around the edges
-export const getVisibleTrees = (layout: ReturnType<typeof getLayout>, view: ForestView, width: number, height: number) => {
+export const getVisibleTrees = (
+	layout: ReturnType<typeof getLayout>,
+	view: ForestView,
+	width: number,
+	height: number
+) => {
 	const { scale, x: viewX, y: viewY } = view;
 	const visibleLeft = -viewX / scale - TREE_SIZE;
 	const visibleRight = (width - viewX) / scale + TREE_SIZE;
@@ -65,7 +70,16 @@ export const renderForest = (
 		land,
 		selectedTree,
 		visibleTrees: knownVisibleTrees,
-	}: { width: number; height: number; pixelRatio: number; view: ForestView; layout: ReturnType<typeof getLayout>; land: LandColors; selectedTree?: PlacedTree | null; visibleTrees?: PlacedTree[] }
+	}: {
+		width: number;
+		height: number;
+		pixelRatio: number;
+		view: ForestView;
+		layout: ReturnType<typeof getLayout>;
+		land: LandColors;
+		selectedTree?: PlacedTree | null;
+		visibleTrees?: PlacedTree[];
+	}
 ) => {
 	const { scale, x: viewX, y: viewY } = view;
 	const { side } = layout;
@@ -89,7 +103,10 @@ export const renderForest = (
 
 		const { centerX, bottomY, width: footprintWidth } = sprites.footprint;
 		const base = getTreeBase(tree.column, tree.row);
-		const radiusX = Math.min(SHADOW_MAX_RADIUS, Math.max(SHADOW_MIN_RADIUS, (footprintWidth * TREE_SIZE * SHADOW_WIDTH_RATIO) / 2));
+		const radiusX = Math.min(
+			SHADOW_MAX_RADIUS,
+			Math.max(SHADOW_MIN_RADIUS, (footprintWidth * TREE_SIZE * SHADOW_WIDTH_RATIO) / 2)
+		);
 		const radiusY = radiusX * SHADOW_FLATTEN;
 		const shadowX = base.x + (centerX - 0.5) * TREE_SIZE;
 		const shadowY = base.y + (bottomY - TREE_BASE_RATIO) * TREE_SIZE - radiusY * 0.35;
@@ -103,7 +120,13 @@ export const renderForest = (
 		const sprites = spritesByTree.get(tree.treeName);
 		if (sprites) {
 			const base = getTreeBase(tree.column, tree.row);
-			context.drawImage(sprites[spriteKey], base.x - TREE_SIZE / 2, base.y - TREE_SIZE * TREE_BASE_RATIO, TREE_SIZE, TREE_SIZE);
+			context.drawImage(
+				sprites[spriteKey],
+				base.x - TREE_SIZE / 2,
+				base.y - TREE_SIZE * TREE_BASE_RATIO,
+				TREE_SIZE,
+				TREE_SIZE
+			);
 		}
 	}
 
@@ -152,4 +175,3 @@ export const buildForestCache = (layout: ReturnType<typeof getLayout>, land: Lan
 
 	return { canvas, scale, minX, minY, layout, land };
 };
-

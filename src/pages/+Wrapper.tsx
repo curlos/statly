@@ -125,7 +125,10 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 
 	const globalStyle = {
 		// Game UI themes (e.g. Hades) set their own fonts.
-		fontFamily: selectedFontFamilyKey !== 'Default' && (uiTheme === 'default' || uiTheme === 'ink-marker') ? `'${selectedFontFamilyKey}'` : '',
+		fontFamily:
+			selectedFontFamilyKey !== 'Default' && (uiTheme === 'default' || uiTheme === 'ink-marker')
+				? `'${selectedFontFamilyKey}'`
+				: '',
 	};
 
 	return (
@@ -133,7 +136,11 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 			{isGuest && (
 				<div role="status" className="bg-color-gray-300 text-center text-[14px] py-1 px-4">
 					You're in demo mode. Changes to settings only affect your browser.{' '}
-					<button type="button" className="underline font-semibold" onClick={() => handleLogout(dispatch, '/signup')}>
+					<button
+						type="button"
+						className="underline font-semibold"
+						onClick={() => handleLogout(dispatch, '/signup')}
+					>
 						Sign up to connect your own TickTick
 					</button>
 				</div>

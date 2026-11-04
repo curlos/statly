@@ -1,5 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
-import { GRID_FILL_RATIO, LAND_PADDING_CELLS, MIN_GRID_SIDE, getLayout, getSeededRandom, type ForestTree } from './forestLayout';
+import {
+	GRID_FILL_RATIO,
+	LAND_PADDING_CELLS,
+	MIN_GRID_SIDE,
+	getLayout,
+	getSeededRandom,
+	type ForestTree,
+} from './forestLayout';
 
 const makeTrees = (count: number): ForestTree[] =>
 	Array.from({ length: count }, (_, index) => ({
@@ -12,7 +19,8 @@ const makeTrees = (count: number): ForestTree[] =>
 	}));
 
 // The position of a cell in planting order: row by row, each row from the left corner to the top corner.
-const getPlantingOrder = (column: number, row: number, side: number) => (column - LAND_PADDING_CELLS) * side + (side - LAND_PADDING_CELLS - 1 - row);
+const getPlantingOrder = (column: number, row: number, side: number) =>
+	(column - LAND_PADDING_CELLS) * side + (side - LAND_PADDING_CELLS - 1 - row);
 
 describe('getLayout', () => {
 	it('plants exactly one tree per input tree', () => {

@@ -4,9 +4,7 @@ import classNames from 'classnames';
 import CustomImageUpload from '../CustomImageUpload';
 import ExistingCustomImages from '../ExistingCustomImages';
 import { useGetCustomImagesQuery } from '../../services/resources/customImagesApi';
-import {
-	useGetCustomImageFoldersQuery,
-} from '../../services/resources/customImageFoldersApi';
+import { useGetCustomImageFoldersQuery } from '../../services/resources/customImageFoldersApi';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import { useCustomFolderNames } from '../../hooks/useCustomFolderNames';
 import CreateFolderModal from './CreateFolderModal';
@@ -65,7 +63,7 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 	// Filter custom images by selected folder
 	const filteredCustomImages = useMemo(() => {
 		if (!customImages) return [];
-		return customImages.filter(img => img.folder === selectedMedalType);
+		return customImages.filter((img) => img.folder === selectedMedalType);
 	}, [customImages, selectedMedalType]);
 
 	// Pagination logic
@@ -86,15 +84,10 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 					onClick={() => setIsCustomEditMode(!isCustomEditMode)}
 					className={classNames(
 						'cursor-pointer flex items-center justify-center p-1 rounded border border-color-gray-100',
-						isCustomEditMode
-							? `bg-green-500 hover:bg-green-400`
-							: 'bg-color-gray-200 hover:text-blue-500'
+						isCustomEditMode ? `bg-green-500 hover:bg-green-400` : 'bg-color-gray-200 hover:text-blue-500'
 					)}
 				>
-					<Icon
-						name="edit"
-						customClass="!text-[20px]"
-					/>
+					<Icon name="edit" customClass="!text-[20px]" />
 				</button>
 
 				{/* Folder management buttons (only in edit mode) */}
@@ -138,7 +131,11 @@ const CustomImagesSection: React.FC<CustomImagesSectionProps> = ({
 							<button
 								onClick={() => setShowDeleteFolderModal(true)}
 								className="flex items-center justify-center p-1 rounded bg-red-600 hover:bg-red-700 text-white"
-								title={selectedMedalType === 'GENERAL' ? 'Delete images in folder' : 'Delete current folder'}
+								title={
+									selectedMedalType === 'GENERAL'
+										? 'Delete images in folder'
+										: 'Delete current folder'
+								}
 							>
 								<Icon name="delete" customClass="!text-[20px]" />
 							</button>

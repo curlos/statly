@@ -42,7 +42,8 @@ const UiThemeList = () => {
 	return (
 		<div className="flex flex-col items-center gap-4">
 			<p className="text-color-gray-25 text-[14px] text-center">
-				Restyle the whole site after a video game UI. Game themes use their own colors and fonts. Your theme color, font, and color mode come back when you switch to Default.
+				Restyle the whole site after a video game UI. Game themes use their own colors and fonts. Your theme
+				color, font, and color mode come back when you switch to Default.
 			</p>
 			<div className="flex flex-col w-full gap-2">
 				{UI_THEMES.map(({ key, label, icon, emoji }) => (
@@ -52,16 +53,22 @@ const UiThemeList = () => {
 						aria-pressed={uiTheme === key}
 						className={classNames(
 							'flex items-center gap-3 w-full px-4 py-3 text-left rounded-xl cursor-pointer border-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
-							uiTheme === key ? classNames(borderColor, bgColor) : 'border-color-gray-300 bg-color-gray-300'
+							uiTheme === key
+								? classNames(borderColor, bgColor)
+								: 'border-color-gray-300 bg-color-gray-300'
 						)}
 						onClick={() => uiTheme !== key && handleChangeUiTheme(key)}
 					>
 						{icon ? (
 							<img src={icon} alt="" aria-hidden="true" className="w-[40px] h-[40px] object-contain" />
 						) : (
-							<span className="text-2xl" aria-hidden="true">{emoji}</span>
+							<span className="text-2xl" aria-hidden="true">
+								{emoji}
+							</span>
 						)}
-						<span className={classNames('text-[14px] font-bold', uiTheme === key ? '' : 'text-color-gray-25')}>
+						<span
+							className={classNames('text-[14px] font-bold', uiTheme === key ? '' : 'text-color-gray-25')}
+						>
 							{label}
 						</span>
 					</button>

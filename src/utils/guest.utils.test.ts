@@ -1,6 +1,16 @@
 import { beforeAll, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { applySettingsPatch } from './settingsPatch';
-import { GUEST_RINGS_HEADER, addGuestSettingsPatch, applyGuestSettingsPatches, getGuestRequestAction, getGuestRingsHeaderValue, getGuestTooltipPosition, isGuestToken, saveGuestSettingsPatch, withGuestRingsHeader } from './guest.utils';
+import {
+	GUEST_RINGS_HEADER,
+	addGuestSettingsPatch,
+	applyGuestSettingsPatches,
+	getGuestRequestAction,
+	getGuestRingsHeaderValue,
+	getGuestTooltipPosition,
+	isGuestToken,
+	saveGuestSettingsPatch,
+	withGuestRingsHeader,
+} from './guest.utils';
 
 const makeToken = (payload: object) => `header.${btoa(JSON.stringify(payload))}.signature`;
 
@@ -29,7 +39,9 @@ describe('guest settings', () => {
 	beforeAll(() => {
 		(globalThis as unknown as { localStorage: unknown }).localStorage = {
 			getItem: (key: string) => store[key] ?? null,
-			setItem: (key: string, value: string) => { store[key] = value; },
+			setItem: (key: string, value: string) => {
+				store[key] = value;
+			},
 		};
 	});
 
@@ -38,10 +50,18 @@ describe('guest settings', () => {
 		saveGuestSettingsPatch({ 'pages.forest.landStyle': 'desert' });
 		saveGuestSettingsPatch({ theme: { color: 'green-500' } });
 
-		const settings: Record<string, unknown> = { theme: { color: 'red-500' }, autoSyncEnabled: false, pages: { forest: { landStyle: 'grass' } } };
+		const settings: Record<string, unknown> = {
+			theme: { color: 'red-500' },
+			autoSyncEnabled: false,
+			pages: { forest: { landStyle: 'grass' } },
+		};
 		applyGuestSettingsPatches(settings);
 
-		expect(settings).toEqual({ theme: { color: 'green-500' }, autoSyncEnabled: false, pages: { forest: { landStyle: 'desert' } } });
+		expect(settings).toEqual({
+			theme: { color: 'green-500' },
+			autoSyncEnabled: false,
+			pages: { forest: { landStyle: 'desert' } },
+		});
 	});
 });
 
@@ -52,7 +72,9 @@ describe('getGuestRingsHeaderValue', () => {
 	beforeAll(() => {
 		(globalThis as unknown as { localStorage: unknown }).localStorage = {
 			getItem: (k: string) => store[k] ?? null,
-			setItem: (k: string, v: string) => { store[k] = v; },
+			setItem: (k: string, v: string) => {
+				store[k] = v;
+			},
 		};
 	});
 
@@ -64,7 +86,11 @@ describe('getGuestRingsHeaderValue', () => {
 	it('sends the rings from the latest change to the pages', () => {
 		const first = [{ id: 'ring-1', goalSeconds: 3600 }];
 		const second = [{ id: 'ring-1', goalSeconds: 7200 }];
-		store[key] = JSON.stringify([{ pages: { focusHoursGoal: { rings: first } } }, { theme: { color: 'blue-500' } }, { pages: { focusHoursGoal: { rings: second } } }]);
+		store[key] = JSON.stringify([
+			{ pages: { focusHoursGoal: { rings: first } } },
+			{ theme: { color: 'blue-500' } },
+			{ pages: { focusHoursGoal: { rings: second } } },
+		]);
 		expect(JSON.parse(decodeURIComponent(getGuestRingsHeaderValue() as string))).toEqual(second);
 	});
 
@@ -85,7 +111,9 @@ describe('getGuestRequestAction', () => {
 	});
 
 	it('keeps guests settings changes in their own browser', () => {
-		expect(getGuestRequestAction('PUT', '/user-settings/edit', { theme: { color: 'blue-500' } })).toBe('save-locally');
+		expect(getGuestRequestAction('PUT', '/user-settings/edit', { theme: { color: 'blue-500' } })).toBe(
+			'save-locally'
+		);
 	});
 
 	it('stops everything else that would change the shared account', () => {
@@ -94,7 +122,9 @@ describe('getGuestRequestAction', () => {
 		expect(getGuestRequestAction('POST', '/delete/tasks/bulk-delete', { taskIds: ['1'] })).toBe('block');
 		expect(getGuestRequestAction('POST', '/sync/ticktick/all')).toBe('block');
 		expect(getGuestRequestAction('POST', '/import/backup', {})).toBe('block');
-		expect(getGuestRequestAction('POST', '/focus-records/analyze-note-emotions', { recordIds: ['1'] })).toBe('block');
+		expect(getGuestRequestAction('POST', '/focus-records/analyze-note-emotions', { recordIds: ['1'] })).toBe(
+			'block'
+		);
 		expect(getGuestRequestAction('PUT', '/users/update-password', { newPassword: 'x' })).toBe('block');
 		expect(getGuestRequestAction('PUT', '/users/update-profile', {})).toBe('block');
 		expect(getGuestRequestAction('POST', '/custom-images/upload', {})).toBe('block');
@@ -117,7 +147,9 @@ describe('withGuestRingsHeader', () => {
 	beforeAll(() => {
 		(globalThis as unknown as { localStorage: unknown }).localStorage = {
 			getItem: (k: string) => store[k] ?? null,
-			setItem: (k: string, v: string) => { store[k] = v; },
+			setItem: (k: string, v: string) => {
+				store[k] = v;
+			},
 		};
 	});
 
@@ -126,14 +158,20 @@ describe('withGuestRingsHeader', () => {
 	});
 
 	it('adds the guests rings to the streaks requests', () => {
-		const result = withGuestRingsHeader('/streaks/history?timezone=UTC') as { url: string; headers: Record<string, string> };
+		const result = withGuestRingsHeader('/streaks/history?timezone=UTC') as {
+			url: string;
+			headers: Record<string, string>;
+		};
 
 		expect(result.url).toBe('/streaks/history?timezone=UTC');
 		expect(JSON.parse(decodeURIComponent(result.headers[GUEST_RINGS_HEADER]))).toEqual(rings);
 	});
 
 	it('keeps everything else on a request that is already set up', () => {
-		const result = withGuestRingsHeader({ url: '/streaks/today', method: 'GET', headers: { 'x-other': '1' } }) as { method: string; headers: Record<string, string> };
+		const result = withGuestRingsHeader({ url: '/streaks/today', method: 'GET', headers: { 'x-other': '1' } }) as {
+			method: string;
+			headers: Record<string, string>;
+		};
 
 		expect(result.method).toBe('GET');
 		expect(result.headers['x-other']).toBe('1');
@@ -171,7 +209,9 @@ describe('addGuestSettingsPatch', () => {
 	it("keeps one copy of a section however many times it's changed", () => {
 		let patches: Record<string, unknown>[] = [];
 		for (let i = 0; i < 50; i++) {
-			patches = addGuestSettingsPatch(patches, { pages: { focusHoursGoal: { rings: [{ id: 'ring-1', goalSeconds: i }] } } });
+			patches = addGuestSettingsPatch(patches, {
+				pages: { focusHoursGoal: { rings: [{ id: 'ring-1', goalSeconds: i }] } },
+			});
 		}
 
 		expect(patches).toEqual([{ pages: { focusHoursGoal: { rings: [{ id: 'ring-1', goalSeconds: 49 }] } } }]);
@@ -212,8 +252,24 @@ describe('addGuestSettingsPatch', () => {
 	});
 
 	it('always gives the same settings as replaying every change', () => {
-		const keys = ['theme', 'autoSyncEnabled', 'pages', 'pages.forest', 'pages.forest.landStyle', 'pages.forest.hemisphere', 'pages.focusHoursGoal.rings', 'pages.focusHoursGoal.combinedRingsSettings.goalDays'];
-		const makeBase = () => ({ theme: { color: 'red-500' }, autoSyncEnabled: false, pages: { forest: { landStyle: 'grass', hemisphere: 'north' }, focusHoursGoal: { rings: [0], combinedRingsSettings: { goalDays: 7 } } } });
+		const keys = [
+			'theme',
+			'autoSyncEnabled',
+			'pages',
+			'pages.forest',
+			'pages.forest.landStyle',
+			'pages.forest.hemisphere',
+			'pages.focusHoursGoal.rings',
+			'pages.focusHoursGoal.combinedRingsSettings.goalDays',
+		];
+		const makeBase = () => ({
+			theme: { color: 'red-500' },
+			autoSyncEnabled: false,
+			pages: {
+				forest: { landStyle: 'grass', hemisphere: 'north' },
+				focusHoursGoal: { rings: [0], combinedRingsSettings: { goalDays: 7 } },
+			},
+		});
 
 		// A seeded random number generator so a failure can be reproduced
 		let seed = 12345;
@@ -254,35 +310,54 @@ describe('stored guest settings that are damaged', () => {
 	beforeAll(() => {
 		(globalThis as unknown as { localStorage: unknown }).localStorage = {
 			getItem: (k: string) => store[k] ?? null,
-			setItem: (k: string, v: string) => { store[k] = v; },
+			setItem: (k: string, v: string) => {
+				store[k] = v;
+			},
 		};
 	});
 
-	it.each([['null'], ['{"theme":{"color":"red-500"}}'], ['"text"'], ['42'], ['not json at all']])('still loads settings when the storage has %s', (stored) => {
-		store[key] = stored;
-		const settings: Record<string, unknown> = { theme: { color: 'red-500' } };
+	it.each([['null'], ['{"theme":{"color":"red-500"}}'], ['"text"'], ['42'], ['not json at all']])(
+		'still loads settings when the storage has %s',
+		(stored) => {
+			store[key] = stored;
+			const settings: Record<string, unknown> = { theme: { color: 'red-500' } };
 
-		expect(() => applyGuestSettingsPatches(settings)).not.toThrow();
-		expect(settings).toEqual({ theme: { color: 'red-500' } });
-		expect(getGuestRingsHeaderValue()).toBeUndefined();
-	});
+			expect(() => applyGuestSettingsPatches(settings)).not.toThrow();
+			expect(settings).toEqual({ theme: { color: 'red-500' } });
+			expect(getGuestRingsHeaderValue()).toBeUndefined();
+		}
+	);
 
-	it.each([['null'], ['{"theme":{"color":"red-500"}}'], ['not json at all']])('still saves changes when the storage has %s', (stored) => {
-		store[key] = stored;
+	it.each([['null'], ['{"theme":{"color":"red-500"}}'], ['not json at all']])(
+		'still saves changes when the storage has %s',
+		(stored) => {
+			store[key] = stored;
 
-		saveGuestSettingsPatch({ theme: { color: 'blue-500' } });
+			saveGuestSettingsPatch({ theme: { color: 'blue-500' } });
 
-		expect(JSON.parse(store[key])).toEqual([{ theme: { color: 'blue-500' } }]);
-	});
+			expect(JSON.parse(store[key])).toEqual([{ theme: { color: 'blue-500' } }]);
+		}
+	);
 
 	it('keeps the good changes and leaves out the ones that are not changes', () => {
-		store[key] = JSON.stringify([{ theme: { color: 'blue-500' } }, null, 'text', 7, ['list'], { autoSyncEnabled: true }]);
+		store[key] = JSON.stringify([
+			{ theme: { color: 'blue-500' } },
+			null,
+			'text',
+			7,
+			['list'],
+			{ autoSyncEnabled: true },
+		]);
 		const settings: Record<string, unknown> = { theme: { color: 'red-500' }, autoSyncEnabled: false };
 
 		applyGuestSettingsPatches(settings);
 		saveGuestSettingsPatch({ 'pages.forest.landStyle': 'desert' });
 
 		expect(settings).toEqual({ theme: { color: 'blue-500' }, autoSyncEnabled: true });
-		expect(JSON.parse(store[key])).toEqual([{ theme: { color: 'blue-500' } }, { autoSyncEnabled: true }, { 'pages.forest.landStyle': 'desert' }]);
+		expect(JSON.parse(store[key])).toEqual([
+			{ theme: { color: 'blue-500' } },
+			{ autoSyncEnabled: true },
+			{ 'pages.forest.landStyle': 'desert' },
+		]);
 	});
 });

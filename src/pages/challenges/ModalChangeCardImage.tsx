@@ -29,7 +29,13 @@ interface ModalChangeCardImageProps {
 	imageSrc: string;
 }
 
-const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, setShowModal, cardType, page, imageSrc }) => {
+const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({
+	showModal,
+	setShowModal,
+	cardType,
+	page,
+	imageSrc,
+}) => {
 	const { chosenColorObj, nextDarkestColorObj } = useThemeContext();
 
 	// RTK Query - User Settings
@@ -56,9 +62,10 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 	const defaultSelectedCardImage: Record<PageType, string | undefined> = {
 		challenges: cardType !== 'background' ? selectedChallengeCardImage?.[cardType] : '',
 		medals: cardType !== 'background' ? selectedMedalCardImage?.[cardType] : '',
-		'focus-records': cardType === 'background'
-			? focusRecordsPageSettings?.customDisplay?.backgroundImage
-			: focusRecordsPageSettings?.selectedMedalImage,
+		'focus-records':
+			cardType === 'background'
+				? focusRecordsPageSettings?.customDisplay?.backgroundImage
+				: focusRecordsPageSettings?.selectedMedalImage,
 		'completed-tasks': focusRecordsPageSettings?.selectedMedalImage,
 	};
 
@@ -85,8 +92,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 	const getChallengesPagePayload = () => {
 		const restOfPagesKeysAndVals = userSettings?.pages;
 		const restOfChallengesKeysAndVals = userSettings?.pages?.challenges;
-		const restOfSelectedChallengeCardImages =
-			userSettings?.pages?.challenges?.selectedChallengeCardImage;
+		const restOfSelectedChallengeCardImages = userSettings?.pages?.challenges?.selectedChallengeCardImage;
 
 		const payload = {
 			pages: {
@@ -158,41 +164,46 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		return payload;
 	};
 
-	const [selectedGame, setSelectedGame] = useState<string>(page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)');
+	const [selectedGame, setSelectedGame] = useState<string>(
+		page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)'
+	);
 	const [selectedMedalType, setSelectedMedalType] = useState<string>(page === 'challenges' ? 'GENERAL' : 'COMBAT');
 
-	const getGameAndMedalTypeFromImageSrc = useCallback((imageSrc: string) => {
-		if (!imageSrc) {
+	const getGameAndMedalTypeFromImageSrc = useCallback(
+		(imageSrc: string) => {
+			if (!imageSrc) {
+				return {
+					game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
+					medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT',
+				};
+			}
+
+			// O(1) lookup using the module-level map
+			const result = URL_TO_GAME_MEDAL_MAP.get(imageSrc);
+			if (result) {
+				return result;
+			}
+
+			// Check if image is from CUSTOM folder
+			if (customImages) {
+				const customImage = customImages.find((img) => img.imageUrl === imageSrc);
+				if (customImage) {
+					return {
+						game: 'CUSTOM',
+						medalType: customImage.folder,
+					};
+				}
+			}
+
+			// Fallback if not found
 			return {
 				game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
 				medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT',
 			};
-		}
-
-		// O(1) lookup using the module-level map
-		const result = URL_TO_GAME_MEDAL_MAP.get(imageSrc);
-		if (result) {
-			return result;
-		}
-
-		// Check if image is from CUSTOM folder
-		if (customImages) {
-			const customImage = customImages.find(img => img.imageUrl === imageSrc);
-			if (customImage) {
-				return {
-					game: 'CUSTOM',
-					medalType: customImage.folder,
-				};
-			}
-		}
-
-		// Fallback if not found
-		return {
-			game: page === 'challenges' ? 'BO2 (CALLING CARDS)' : 'BF1 (MEDALS)',
-			medalType: page === 'challenges' ? 'GENERAL' : 'COMBAT',
-		};
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [customImages]);
+		[customImages]
+	);
 
 	// Update selectedGame and selectedMedalType when imageSrc changes
 	useEffect(() => {
@@ -224,9 +235,12 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 	const itemsPerPage = 24;
 
 	// Get medal card image sources - use empty array for CUSTOM game (images handled by CustomImagesSection)
-	const medalCardImageSrcs = selectedGame === 'CUSTOM'
-		? []
-		: (MEDALS_GAMES as unknown as Record<string, Record<string, Record<string, unknown[]>>>)[selectedGame]['MEDALS_OBJ'][selectedMedalType];
+	const medalCardImageSrcs =
+		selectedGame === 'CUSTOM'
+			? []
+			: (MEDALS_GAMES as unknown as Record<string, Record<string, Record<string, unknown[]>>>)[selectedGame][
+					'MEDALS_OBJ'
+				][selectedMedalType];
 
 	// Initialize Fuse.js for Pokemon card search
 	const fuse =
@@ -239,12 +253,10 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 
 	// Determine which data to display based on game type and search
 	const allItems =
-		selectedGame === 'POKEMON TCG CARDS' && searchText.trim() !== ''
-			? filteredCardImageSrcs
-			: medalCardImageSrcs;
+		selectedGame === 'POKEMON TCG CARDS' && searchText.trim() !== '' ? filteredCardImageSrcs : medalCardImageSrcs;
 
 	// Calculate pagination for CUSTOM sections
-	const customImagesByFolder = customImages?.filter(img => img.folder === selectedMedalType) || [];
+	const customImagesByFolder = customImages?.filter((img) => img.folder === selectedMedalType) || [];
 	const totalPagesCustom = Math.ceil(customImagesByFolder.length / itemsPerPage);
 
 	// Calculate pagination for game medals
@@ -309,9 +321,10 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		const radios = gridRef.current?.querySelectorAll<HTMLElement>('[role="radio"]');
 		if (!radios?.length) return;
 		const selectedIndex = currentItems.findIndex((obj: unknown) => {
-			const src = selectedGame !== 'POKEMON TCG CARDS'
-				? (obj as string)
-				: ((obj as Record<string, unknown>).imgurImageUrl as string);
+			const src =
+				selectedGame !== 'POKEMON TCG CARDS'
+					? (obj as string)
+					: ((obj as Record<string, unknown>).imgurImageUrl as string);
 			return src === selectedImageSrc;
 		});
 		radios[selectedIndex !== -1 ? selectedIndex : 0]?.focus();
@@ -377,7 +390,9 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 		>
 			<div className="bg-color-gray-600 rounded-lg text-white">
 				<div className="flex items-center justify-between p-5">
-					<h2 id="change-card-image-title" className="font-bold text-[16px]">Change {pageName} Card Image</h2>
+					<h2 id="change-card-image-title" className="font-bold text-[16px]">
+						Change {pageName} Card Image
+					</h2>
 					<button
 						aria-label="Close dialog"
 						className="text-color-gray-100 hover:text-white cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-white rounded p-0"
@@ -393,22 +408,22 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 							selected={selectedGame}
 							setSelected={setSelectedGame}
 							selectedOptions={[
-								"AC7 (MEDALS)",
-								"APPLE FITNESS (AWARDS)",
-								"BF HARDLINE (MEDALS)",
-								"BF1 (MEDALS)",
-								"BF1 (RIBBONS)",
-								"BF3 (MEDALS)",
-								"BF3 (RIBBONS)",
-								"BF4 (MEDALS)",
-								"BF4 (RIBBONS)",
-								"BFV (RIBBONS)",
-								"BO2 (CALLING CARDS)",
-								"BO2 (MEDALS)",
-								"MW2019 (WEAPON CAMOS)",
-								"POKEMON TCG CARDS",
-								"TICKTICK (BADGES)",
-								...(isGuest ? [] : ["CUSTOM"]),
+								'AC7 (MEDALS)',
+								'APPLE FITNESS (AWARDS)',
+								'BF HARDLINE (MEDALS)',
+								'BF1 (MEDALS)',
+								'BF1 (RIBBONS)',
+								'BF3 (MEDALS)',
+								'BF3 (RIBBONS)',
+								'BF4 (MEDALS)',
+								'BF4 (RIBBONS)',
+								'BFV (RIBBONS)',
+								'BO2 (CALLING CARDS)',
+								'BO2 (MEDALS)',
+								'MW2019 (WEAPON CAMOS)',
+								'POKEMON TCG CARDS',
+								'TICKTICK (BADGES)',
+								...(isGuest ? [] : ['CUSTOM']),
 							]}
 							onClick={(selectedOption: string) => {
 								setSelectedGame(selectedOption);
@@ -423,7 +438,9 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 							selectedOptions={
 								selectedGame === 'CUSTOM'
 									? customFolderNames
-									: (MEDALS_GAMES as Record<string, { MEDALS_ORDER: string[] }>)[selectedGame]['MEDALS_ORDER']
+									: (MEDALS_GAMES as Record<string, { MEDALS_ORDER: string[] }>)[selectedGame][
+											'MEDALS_ORDER'
+										]
 							}
 						/>
 					</div>
@@ -466,21 +483,34 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 								{(() => {
 									const hasSelectionInCurrentPage = currentItems.some((obj: unknown) => {
 										const objRecord = obj as Record<string, unknown>;
-										const src = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
+										const src =
+											selectedGame !== 'POKEMON TCG CARDS'
+												? (obj as unknown as string)
+												: (objRecord.imgurImageUrl as string);
 										return src === selectedImageSrc;
 									});
 
 									return currentItems.map((obj: unknown, index: number) => {
 										const objRecord = obj as Record<string, unknown>;
-										const imageSrc = selectedGame !== 'POKEMON TCG CARDS' ? (obj as unknown as string) : (objRecord.imgurImageUrl as string);
+										const imageSrc =
+											selectedGame !== 'POKEMON TCG CARDS'
+												? (obj as unknown as string)
+												: (objRecord.imgurImageUrl as string);
 										const isSelected = imageSrc === selectedImageSrc;
 										const uniqueKey =
-											selectedGame === 'POKEMON TCG CARDS' ? `${objRecord.name}-${imageSrc}` : imageSrc;
+											selectedGame === 'POKEMON TCG CARDS'
+												? `${objRecord.name}-${imageSrc}`
+												: imageSrc;
 										const pageSuffix = currentPage > 1 ? `, Page ${currentPage}` : '';
-										const itemLabel = selectedGame === 'POKEMON TCG CARDS'
-											? `${objRecord.name as string}${pageSuffix}`
-											: `Image ${index + 1}${pageSuffix}, ${selectedGame} ${selectedMedalType}`;
-										const tabIndex = isSelected ? 0 : (index === 0 && !hasSelectionInCurrentPage ? 0 : -1);
+										const itemLabel =
+											selectedGame === 'POKEMON TCG CARDS'
+												? `${objRecord.name as string}${pageSuffix}`
+												: `Image ${index + 1}${pageSuffix}, ${selectedGame} ${selectedMedalType}`;
+										const tabIndex = isSelected
+											? 0
+											: index === 0 && !hasSelectionInCurrentPage
+												? 0
+												: -1;
 
 										return (
 											<div
@@ -490,15 +520,13 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 												aria-label={itemLabel}
 												tabIndex={tabIndex}
 												className={classNames(
-														"cursor-pointer relative rounded focus-visible:outline-none focus-visible:after:content-[''] focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:border-2 focus-visible:after:border-white focus-visible:after:pointer-events-none",
-														isSelected && "after:content-[''] after:absolute after:inset-0 after:border-2 after:border-white after:pointer-events-none"
-													)}
+													"cursor-pointer relative rounded focus-visible:outline-none focus-visible:after:content-[''] focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:border-2 focus-visible:after:border-white focus-visible:after:pointer-events-none",
+													isSelected &&
+														"after:content-[''] after:absolute after:inset-0 after:border-2 after:border-white after:pointer-events-none"
+												)}
 												onClick={() => setSelectedImageSrc(imageSrc)}
 											>
-												<LazyImage
-													src={imageSrc}
-													alt={itemLabel}
-												/>
+												<LazyImage src={imageSrc} alt={itemLabel} />
 
 												{isSelected && (
 													<div className="absolute bottom-[10px] right-[10px] z-10">

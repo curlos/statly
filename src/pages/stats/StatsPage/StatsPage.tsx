@@ -13,7 +13,9 @@ const StatsPage = () => {
 		<div className="flex max-w-screen max-h-[100dvh] overflow-x-hidden">
 			<div className="flex-1 bg-color-gray-700 py-8 h-[100dvh] overflow-scroll gray-scrollbar">
 				<div className="container">
-					<header><TopBar /></header>
+					<header>
+						<TopBar />
+					</header>
 
 					<main id="main-content" tabIndex={-1} className="outline-none">
 						<div className="mt-3 hidden md:block">

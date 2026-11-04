@@ -43,7 +43,7 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 	intervalStartDate,
 	intervalEndDate,
 	byEmotionWithTasks,
-	scrollableContainerRef
+	scrollableContainerRef,
 }) => {
 	// Pagination state for modal view
 	const [currentPage, setCurrentPage] = useState(1);
@@ -66,9 +66,8 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 		// Primary sort: by metric value
 		const valueA = (a[metricKey] as number) || 0;
 		const valueB = (b[metricKey] as number) || 0;
-		const metricDiff = sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least'
-			? valueB - valueA
-			: valueA - valueB;
+		const metricDiff =
+			sortBy === 'Focus Time: Most-Least' || sortBy === 'Tasks: Most-Least' ? valueB - valueA : valueA - valueB;
 
 		// If metrics are equal, sort alphabetically by name
 		if (metricDiff === 0) {
@@ -96,7 +95,9 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 		}
 
 		if (userInitiatedPageChangeRef.current) {
-			const firstFocusable = innerScrollableContainerRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
+			const firstFocusable = innerScrollableContainerRef.current?.querySelector<HTMLElement>(
+				'a[href], button:not([disabled])'
+			);
 			firstFocusable?.focus({ preventScroll: true });
 			userInitiatedPageChangeRef.current = false;
 		}
@@ -113,10 +114,10 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 
 	// Determine if we should show nested view
 	// For emotions, ancestorTasksById is nested inside byEmotionWithTasks
-	const shouldShowNestedView = showNestedProgressBars && aggregationResults && (
-		(dataType === 'Emotion' && byEmotionWithTasks) ||
-		ancestorTasksById
-	);
+	const shouldShowNestedView =
+		showNestedProgressBars &&
+		aggregationResults &&
+		((dataType === 'Emotion' && byEmotionWithTasks) || ancestorTasksById);
 
 	return (
 		<div className="space-y-4 w-full p-2">
@@ -129,109 +130,121 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 			>
 				{/* Special handling for Emotion dataType with nested view */}
 				{dataType === 'Emotion' && shouldShowNestedView && byEmotionWithTasks && aggregationResults ? (
-					sortedData.slice(fromModal ? startIndex : 0, fromModal ? endIndex : maxDataLen).map((emotion: ProgressBarItemData) => {
-						const emotionId = emotion.id;
-						const emotionData = byEmotionWithTasks[emotionId];
-						const aggregationByEmotion = aggregationResults as Record<string, AggregationResults>;
-						const emotionAggregation = aggregationByEmotion[emotionId];
+					sortedData
+						.slice(fromModal ? startIndex : 0, fromModal ? endIndex : maxDataLen)
+						.map((emotion: ProgressBarItemData) => {
+							const emotionId = emotion.id;
+							const emotionData = byEmotionWithTasks[emotionId];
+							const aggregationByEmotion = aggregationResults as Record<string, AggregationResults>;
+							const emotionAggregation = aggregationByEmotion[emotionId];
 
-						if (!emotionData || !emotionAggregation) {
-							return null;
-						}
-
-						// Enrich project data with names and colors
-						const enrichedByProject = emotionData.byProject.map((project: ProgressBarItemData) => {
-							const projectId = project.id;
-							let name = projectsById?.[projectId]?.name;
-
-							// If no projectName, it's from a non-TickTick/Session app - use the app name
-							if (!name || name in sourceToAppName) {
-								name = sourceToAppName[projectId] || projectId;
+							if (!emotionData || !emotionAggregation) {
+								return null;
 							}
 
-							const color = projectsById?.[projectId]?.color || '#808080';
+							// Enrich project data with names and colors
+							const enrichedByProject = emotionData.byProject.map((project: ProgressBarItemData) => {
+								const projectId = project.id;
+								let name = projectsById?.[projectId]?.name;
 
-							return {
-								...project,
-								name,
-								color
-							};
-						});
-
-						return (
-							<li key={emotionId}>
-							<Accordion
-								title={
-									<span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
-										<span
-											className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
-											style={{ backgroundColor: emotion.color }}
-										/>
-										{" "}
-										<span className="hover:underline">
-											<span>{emotion.name}</span>
-											{" "}
-											<span className="text-color-gray-25">
-												({isFocusDuration ? getFormattedDuration(emotion[metricKey] ?? 0, false) : `${emotion[metricKey]} tasks`}, {emotion.percentage}%)
-											</span>
-										</span>
-									</span>
+								// If no projectName, it's from a non-TickTick/Session app - use the app name
+								if (!name || name in sourceToAppName) {
+									name = sourceToAppName[projectId] || projectId;
 								}
-								openByDefault={false}
-								showArrowNextToText={true}
-							>
-								<div className="pl-6">
-									<NestedProgressBars
-										data={enrichedByProject}
-										dataByTasks={emotionData.byTask}
-										dataType="Project"
-										ancestorTasksById={emotionData.ancestorTasksById}
-										aggregationResults={emotionAggregation}
-										emotionId={emotionId}
-										focusDurationForInterval={focusDurationForInterval}
-										fromModal={fromModal}
-										setIsModalOpen={setIsModalOpen}
-										sortBy={sortBy}
-										projectsById={projectsById || {}}
-										sessionCategoriesById={sessionCategoriesById}
-										metricType={metricType}
-										intervalStartDate={intervalStartDate}
-										intervalEndDate={intervalEndDate}
-										showPagination={false}
-										innerScrollableContainerRef={innerScrollableContainerRef}
-									/>
-								</div>
-							</Accordion>
-							</li>
-						);
-					})
+
+								const color = projectsById?.[projectId]?.color || '#808080';
+
+								return {
+									...project,
+									name,
+									color,
+								};
+							});
+
+							return (
+								<li key={emotionId}>
+									<Accordion
+										title={
+											<span className="text-[18px] cursor-pointer font-normal hover:underline break-words w-full">
+												<span
+													className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+													style={{ backgroundColor: emotion.color }}
+												/>{' '}
+												<span className="hover:underline">
+													<span>{emotion.name}</span>{' '}
+													<span className="text-color-gray-25">
+														(
+														{isFocusDuration
+															? getFormattedDuration(emotion[metricKey] ?? 0, false)
+															: `${emotion[metricKey]} tasks`}
+														, {emotion.percentage}%)
+													</span>
+												</span>
+											</span>
+										}
+										openByDefault={false}
+										showArrowNextToText={true}
+									>
+										<div className="pl-6">
+											<NestedProgressBars
+												data={enrichedByProject}
+												dataByTasks={emotionData.byTask}
+												dataType="Project"
+												ancestorTasksById={emotionData.ancestorTasksById}
+												aggregationResults={emotionAggregation}
+												emotionId={emotionId}
+												focusDurationForInterval={focusDurationForInterval}
+												fromModal={fromModal}
+												setIsModalOpen={setIsModalOpen}
+												sortBy={sortBy}
+												projectsById={projectsById || {}}
+												sessionCategoriesById={sessionCategoriesById}
+												metricType={metricType}
+												intervalStartDate={intervalStartDate}
+												intervalEndDate={intervalEndDate}
+												showPagination={false}
+												innerScrollableContainerRef={innerScrollableContainerRef}
+											/>
+										</div>
+									</Accordion>
+								</li>
+							);
+						})
 				) : shouldShowNestedView ? (
 					<li>
-					<NestedProgressBars
-						data={data}
-						dataByTasks={dataByTasks}
-						dataType={dataType}
-						focusDurationForInterval={focusDurationForInterval}
-						fromModal={fromModal}
-						setIsModalOpen={setIsModalOpen}
-						sortBy={sortBy}
-						projectsById={projectsById || {}}
-						sessionCategoriesById={sessionCategoriesById}
-						ancestorTasksById={ancestorTasksById || {}}
-						metricType={metricType}
-						aggregationResults={aggregationResults as AggregationResults}
-						intervalStartDate={intervalStartDate}
-						intervalEndDate={intervalEndDate}
-						showPagination={true}
-						innerScrollableContainerRef={innerScrollableContainerRef}
-					/>
+						<NestedProgressBars
+							data={data}
+							dataByTasks={dataByTasks}
+							dataType={dataType}
+							focusDurationForInterval={focusDurationForInterval}
+							fromModal={fromModal}
+							setIsModalOpen={setIsModalOpen}
+							sortBy={sortBy}
+							projectsById={projectsById || {}}
+							sessionCategoriesById={sessionCategoriesById}
+							ancestorTasksById={ancestorTasksById || {}}
+							metricType={metricType}
+							aggregationResults={aggregationResults as AggregationResults}
+							intervalStartDate={intervalStartDate}
+							intervalEndDate={intervalEndDate}
+							showPagination={true}
+							innerScrollableContainerRef={innerScrollableContainerRef}
+						/>
 					</li>
 				) : (
 					sortedData
 						.slice(fromModal ? startIndex : 0, fromModal ? endIndex : maxDataLen)
 						.map((item: ProgressBarItemData) => (
 							<li key={item.id}>
-								<ProgressBar item={item} projectsById={projectsById || {}} sessionCategoriesById={sessionCategoriesById} metricType={metricType} ancestorTasksById={ancestorTasksById || {}} intervalStartDate={intervalStartDate} intervalEndDate={intervalEndDate} />
+								<ProgressBar
+									item={item}
+									projectsById={projectsById || {}}
+									sessionCategoriesById={sessionCategoriesById}
+									metricType={metricType}
+									ancestorTasksById={ancestorTasksById || {}}
+									intervalStartDate={intervalStartDate}
+									intervalEndDate={intervalEndDate}
+								/>
 							</li>
 						))
 				)}
@@ -242,7 +255,10 @@ const ProgressBarList: React.FC<ProgressBarListProps> = ({
 					<Pagination
 						total={totalPages}
 						currentPage={currentPage}
-						setCurrentPage={(page) => { userInitiatedPageChangeRef.current = true; setCurrentPage(page); }}
+						setCurrentPage={(page) => {
+							userInitiatedPageChangeRef.current = true;
+							setCurrentPage(page);
+						}}
 						totalPages={totalPages}
 						compactView={true}
 					/>

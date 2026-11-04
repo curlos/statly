@@ -1,5 +1,8 @@
 import Modal from '../Modal/Modal';
-import { useRenameCustomImageFolderMutation, type CustomImageFolder } from '../../services/resources/customImageFoldersApi';
+import {
+	useRenameCustomImageFolderMutation,
+	type CustomImageFolder,
+} from '../../services/resources/customImageFoldersApi';
 
 interface RenameFolderModalProps {
 	isOpen: boolean;
@@ -30,7 +33,7 @@ const RenameFolderModal: React.FC<RenameFolderModalProps> = ({
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (renameFolderName.trim()) {
-			const folderId = customFolders?.find(f => f.name === currentFolderName)?._id;
+			const folderId = customFolders?.find((f) => f.name === currentFolderName)?._id;
 			if (folderId) {
 				try {
 					await renameFolder({ id: folderId, name: renameFolderName }).unwrap();
@@ -63,7 +66,9 @@ const RenameFolderModal: React.FC<RenameFolderModalProps> = ({
 						className="w-full px-3 py-2 bg-color-gray-300 rounded mb-2"
 						maxLength={maxLength}
 					/>
-					<div className={`flex justify-end text-sm mb-4 ${isAtMax ? 'text-red-500' : 'text-color-gray-100'}`}>
+					<div
+						className={`flex justify-end text-sm mb-4 ${isAtMax ? 'text-red-500' : 'text-color-gray-100'}`}
+					>
 						{charCount} / {maxLength}
 					</div>
 					<div className="flex gap-3 justify-end">

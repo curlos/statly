@@ -19,7 +19,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 	// Fetch overview stats for total counts (skip today stats and include first data)
 	const { data: overviewStats } = useGetOverviewStatsQuery({
 		skipTodayStats: true,
-		includeFirstData: true
+		includeFirstData: true,
 	});
 
 	const onLogout = () => {
@@ -61,16 +61,21 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 					{getInitials(user.name || '')}
 				</div>
 			)}
-			<h3 className="text-2xl font-bold mb-1 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.name}</h3>
-			<p className="text-color-gray-25 mt-0 mb-0 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">{user.email}</p>
+			<h3 className="text-2xl font-bold mb-1 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">
+				{user.name}
+			</h3>
+			<p className="text-color-gray-25 mt-0 mb-0 max-w-[250px] sm:max-w-[400px] md:max-w-[350px] lg:max-w-[500px] break-words">
+				{user.email}
+			</p>
 
 			{/* Join Date */}
 			{user.createdAt && (
 				<p className="text-color-gray-25 mb-0 mt-0">
-					Joined {new Date(user.createdAt).toLocaleDateString('en-US', {
+					Joined{' '}
+					{new Date(user.createdAt).toLocaleDateString('en-US', {
 						month: 'long',
 						day: 'numeric',
-						year: 'numeric'
+						year: 'numeric',
 					})}
 				</p>
 			)}
@@ -85,7 +90,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 				</div>
 				<div className="text-center">
 					<div className="font-bold text-2xl" style={{ color: themeColor }}>
-						{(getFormattedDuration(overviewStats?.totalFocusDuration || 0, false))}
+						{getFormattedDuration(overviewStats?.totalFocusDuration || 0, false)}
 					</div>
 					<div className="text-color-gray-25">Focus Time</div>
 				</div>
@@ -112,7 +117,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 							{new Date(overviewStats.firstFocusRecordDate).toLocaleDateString('en-US', {
 								month: 'long',
 								day: 'numeric',
-								year: 'numeric'
+								year: 'numeric',
 							})}
 						</p>
 					)}
@@ -122,7 +127,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 							{new Date(overviewStats.firstCompletedTaskDate).toLocaleDateString('en-US', {
 								month: 'long',
 								day: 'numeric',
-								year: 'numeric'
+								year: 'numeric',
 							})}
 						</p>
 					)}

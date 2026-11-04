@@ -17,7 +17,18 @@ interface ModalProps {
 	role?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customClasses, children, contentRef, ariaLabelledBy, ariaLabel, ariaDescribedBy, role }) => {
+const Modal: React.FC<ModalProps> = ({
+	isOpen,
+	onClose,
+	positionClasses,
+	customClasses,
+	children,
+	contentRef,
+	ariaLabelledBy,
+	ariaLabel,
+	ariaDescribedBy,
+	role,
+}) => {
 	const dialogRef = useDialogFocus<HTMLDialogElement>(isOpen, onClose);
 	const shouldReduceMotion = useReducedMotion();
 
@@ -71,7 +82,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, positionClasses, customC
 						exit="hidden"
 						variants={containerVariants}
 						aria-modal="true"
-						className={classNames(containerClasses, customClasses, 'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 border-0 m-0')}
+						className={classNames(
+							containerClasses,
+							customClasses,
+							'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 border-0 m-0'
+						)}
 					>
 						{children}
 					</motion.dialog>

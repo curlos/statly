@@ -34,9 +34,7 @@ const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 		if (!pendingFocusDateRef.current) return;
 		const dateStr = pendingFocusDateRef.current;
 		pendingFocusDateRef.current = null;
-		document.querySelector<HTMLElement>(
-			`[data-day-card-date="${dateStr}"] button[aria-haspopup="menu"]`
-		)?.focus();
+		document.querySelector<HTMLElement>(`[data-day-card-date="${dateStr}"] button[aria-haspopup="menu"]`)?.focus();
 	}, [daysWithCompletedTasks]);
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
 	const { userSettings } = fetchedUserSettings || {};
@@ -51,7 +49,7 @@ const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 	const handleOpenSidebar = () => {
 		dispatch(setModalState({ modalId: 'ModalSidebar', isOpen: true }));
 	};
-	
+
 	return (
 		<div>
 			{isFetching || !daysWithCompletedTasks ? (
@@ -72,7 +70,10 @@ const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 								{/* Show sync button or add cookie button */}
 								<div className="mt-4">
 									{hasCookie ? (
-										<SyncButton showText={true} customClass="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed" />
+										<SyncButton
+											showText={true}
+											customClass="flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+										/>
 									) : (
 										<button
 											onClick={handleOpenSidebar}
@@ -110,7 +111,7 @@ const CompletedTaskList: React.FC<CompletedTaskListProps> = ({
 					isOpen: showFilterSidebar,
 					setIsOpen: setShowFilterSidebar,
 					sortByOptions,
-					page: 'completed-tasks-page'
+					page: 'completed-tasks-page',
 				}}
 			/>
 		</div>

@@ -66,14 +66,21 @@ const CheckboxMultiSelectForUrl: React.FC<CheckboxMultiSelectForUrlProps> = ({
 				<Icon
 					name={isChecked ? 'check_box' : 'check_box_outline_blank'}
 					fill={1}
-					customClass={classNames('!text-[22px]', chosenColorObj.textColor, nextLightestColorObj?.hover.textColor)}
+					customClass={classNames(
+						'!text-[22px]',
+						chosenColorObj.textColor,
+						nextLightestColorObj?.hover.textColor
+					)}
 				/>
 			</span>
 			<span className="flex-1 flex justify-between items-center gap-1">
 				<span>{name}</span>
 				{color && (
 					<span>
-						<span className="block w-[10px] h-[10px] rounded-full mr-[4px]" style={{ backgroundColor: color }} />
+						<span
+							className="block w-[10px] h-[10px] rounded-full mr-[4px]"
+							style={{ backgroundColor: color }}
+						/>
 					</span>
 				)}
 			</span>

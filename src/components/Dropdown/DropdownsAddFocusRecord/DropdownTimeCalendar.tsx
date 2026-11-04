@@ -66,7 +66,14 @@ const DropdownTimeCalendar: React.FC<DropdownTimeCalendarProps> = ({
 			setIsVisible={setIsVisible}
 			customClasses={'w-[250px] p-1 shadow-2xl border border-color-gray-100 rounded-lg select-none'}
 		>
-			<div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Date picker" className="outline-none">
+			<div
+				ref={dialogRef}
+				tabIndex={-1}
+				role="dialog"
+				aria-modal="true"
+				aria-label="Date picker"
+				className="outline-none"
+			>
 				<div className="pt-2">
 					<SelectCalendar
 						{...{
@@ -168,7 +175,9 @@ const SearchDateInput: React.FC<SearchDateInputProps> = ({ setConnectedCurrentDa
 					if (typedInNewDate) {
 						setConnectedCurrentDate(newDate);
 						setDueDate(newDate);
-						setStatusMessage(`Calendar showing ${newDate.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
+						setStatusMessage(
+							`Calendar showing ${newDate.toLocaleString('default', { month: 'long', year: 'numeric' })}`
+						);
 					}
 
 					setIsInvalidDate(false);
@@ -190,11 +199,7 @@ const SearchDateInput: React.FC<SearchDateInputProps> = ({ setConnectedCurrentDa
 	return (
 		<div className="px-2">
 			<div className="flex items-center gap-1 p-1 rounded bg-color-gray-200">
-				<Icon
-					name="search"
-					fill={0}
-					customClass={'text-color-gray-50 !text-[20px]'}
-				/>
+				<Icon name="search" fill={0} customClass={'text-color-gray-50 !text-[20px]'} />
 				<input
 					placeholder="Search Date"
 					aria-label="Search date"
@@ -205,8 +210,14 @@ const SearchDateInput: React.FC<SearchDateInputProps> = ({ setConnectedCurrentDa
 					className="text-[14px] bg-transparent placeholder:text-color-gray-50 mb-0 w-full outline-none resize-none"
 				/>
 			</div>
-			{isInvalidDate && <div role="alert" className="text-red-500 mt-1">Date is invalid</div>}
-		<div role="status" className="sr-only">{statusMessage}</div>
+			{isInvalidDate && (
+				<div role="alert" className="text-red-500 mt-1">
+					Date is invalid
+				</div>
+			)}
+			<div role="status" className="sr-only">
+				{statusMessage}
+			</div>
 		</div>
 	);
 };

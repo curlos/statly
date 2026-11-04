@@ -14,7 +14,13 @@ interface PaginationProps {
 	compactView?: boolean; // If true, shows fewer page numbers (7 max on desktop, 5 on <992px, 3 on <768px)
 }
 
-const Pagination: React.FC<PaginationProps> = ({ total, currentPage, setCurrentPage, totalPages, compactView = false }) => {
+const Pagination: React.FC<PaginationProps> = ({
+	total,
+	currentPage,
+	setCurrentPage,
+	totalPages,
+	compactView = false,
+}) => {
 	const { chosenColorObj } = useThemeContext();
 	const { width } = useWindowSize();
 

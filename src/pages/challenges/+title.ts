@@ -1,1 +1,1 @@
-export default "Challenges - Statly";
+export default 'Challenges - Statly';

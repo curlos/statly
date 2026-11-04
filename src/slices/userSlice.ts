@@ -13,7 +13,7 @@ interface UserState {
 const initialState: UserState = {
 	user: null,
 	token: isFromServer() ? null : localStorage.getItem('token'),
-	isLoggedIn: isFromServer() ? null : (localStorage.getItem('token') ? true : false),
+	isLoggedIn: isFromServer() ? null : localStorage.getItem('token') ? true : false,
 };
 
 const userSlice = createSlice({

@@ -24,13 +24,17 @@ const SortBySection: React.FC<SortBySectionProps> = ({ sortByOptions }) => {
 		return sortBy === sortByOption;
 	};
 
-	const handleSortByChange = useDebouncedCallback((sortByOption: string) => {
-		if (sortByOption === 'Newest') {
-			updateQueryParams({ 'sort-by': '', page: '' });
-		} else {
-			updateQueryParams({ 'sort-by': sortByOption, page: '' });
-		}
-	}, 500, true);
+	const handleSortByChange = useDebouncedCallback(
+		(sortByOption: string) => {
+			if (sortByOption === 'Newest') {
+				updateQueryParams({ 'sort-by': '', page: '' });
+			} else {
+				updateQueryParams({ 'sort-by': sortByOption, page: '' });
+			}
+		},
+		500,
+		true
+	);
 
 	return (
 		<div>

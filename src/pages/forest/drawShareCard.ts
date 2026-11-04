@@ -31,11 +31,19 @@ const fitText = (context: CanvasRenderingContext2D, text: string, maxWidth: numb
 	if (context.measureText(text).width <= maxWidth) return text;
 
 	let shortened = text;
-	while (shortened.length > 1 && context.measureText(`${shortened}...`).width > maxWidth) shortened = shortened.slice(0, -1);
+	while (shortened.length > 1 && context.measureText(`${shortened}...`).width > maxWidth)
+		shortened = shortened.slice(0, -1);
 	return `${shortened.trimEnd()}...`;
 };
 
-const drawRoundedRect = (context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radii: number | number[]) => {
+const drawRoundedRect = (
+	context: CanvasRenderingContext2D,
+	x: number,
+	y: number,
+	width: number,
+	height: number,
+	radii: number | number[]
+) => {
 	context.beginPath();
 	if (context.roundRect) context.roundRect(x, y, width, height, radii);
 	else context.rect(x, y, width, height);
@@ -144,7 +152,11 @@ const drawProjectChart = (context: CanvasRenderingContext2D, slices: ShareSlice[
 			context.font = getFont(600, 17);
 			context.textAlign = 'center';
 			context.textBaseline = 'middle';
-			context.fillText(`${slice.percent}%`, centerX + Math.cos(middleAngle) * labelRadius, centerY + Math.sin(middleAngle) * labelRadius);
+			context.fillText(
+				`${slice.percent}%`,
+				centerX + Math.cos(middleAngle) * labelRadius,
+				centerY + Math.sin(middleAngle) * labelRadius
+			);
 		}
 		startAngle += sweep;
 	});
@@ -191,7 +203,8 @@ const getAxisSteps = (maxHours: number) => {
 	const roughStep = Math.max(maxHours, 0.25) / 4;
 	const magnitude = 10 ** Math.floor(Math.log10(roughStep));
 	const normalized = roughStep / magnitude;
-	const step = (normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 3 ? 3 : normalized <= 5 ? 5 : 10) * magnitude;
+	const step =
+		(normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 3 ? 3 : normalized <= 5 ? 5 : 10) * magnitude;
 	return { step, top: Math.max(Math.ceil(maxHours / step), 1) * step };
 };
 
@@ -250,7 +263,11 @@ const drawTimeChart = (context: CanvasRenderingContext2D, bars: ShareBar[], pane
 };
 
 // Draws one of the three share cards onto a new canvas: just the forest, the forest with a pie chart of projects, or the forest with a bar chart of time.
-export const drawShareCard = (view: ShareView, data: ShareCardData, renderForest: (width: number, height: number) => HTMLCanvasElement) => {
+export const drawShareCard = (
+	view: ShareView,
+	data: ShareCardData,
+	renderForest: (width: number, height: number) => HTMLCanvasElement
+) => {
 	const hasPanel = view !== 'forest';
 	const height = hasPanel ? CHART_VIEW_HEIGHT : FOREST_VIEW_HEIGHT;
 	const canvas = document.createElement('canvas');

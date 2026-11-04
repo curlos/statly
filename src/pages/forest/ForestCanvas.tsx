@@ -2,7 +2,15 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRe
 import Icon from '../../components/Icon';
 import type { LandColors } from './landStyles';
 import type { TreeText } from './forestText';
-import { MIN_GRID_SIDE, TILE_HALF_HEIGHT, TILE_HALF_WIDTH, getLayout, getTreeBase, type ForestTree, type PlacedTree } from './forestLayout';
+import {
+	MIN_GRID_SIDE,
+	TILE_HALF_HEIGHT,
+	TILE_HALF_WIDTH,
+	getLayout,
+	getTreeBase,
+	type ForestTree,
+	type PlacedTree,
+} from './forestLayout';
 import { useForestGestures } from './useForestGestures';
 import { TREE_BASE_RATIO, TREE_SIZE, loadSprites, spritesByTree } from './forestSprites';
 import {
@@ -44,8 +52,10 @@ interface ForestCanvasProps {
 // How "no more trees" is said for each arrow key
 const DIRECTION_WORDS = { left: 'to the left', right: 'to the right', up: 'above', down: 'below' };
 
-
-const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function ForestCanvas({ trees, land, ariaLabel, describeTree, describedById, onOpenTree }, ref) {
+const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function ForestCanvas(
+	{ trees, land, ariaLabel, describeTree, describedById, onOpenTree },
+	ref
+) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const viewRef = useRef({ scale: 1, x: 0, y: 0, fitScale: 1, hasUserMoved: false });
@@ -56,7 +66,10 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 	const [hoveredTree, setHoveredTree] = useState<{ tree: PlacedTree; x: number; y: number } | null>(null);
 
 	const layout = useMemo(() => getLayout(trees), [trees]);
-	const hoveredText = useMemo(() => (hoveredTree ? describeTree(hoveredTree.tree) : null), [hoveredTree, describeTree]);
+	const hoveredText = useMemo(
+		() => (hoveredTree ? describeTree(hoveredTree.tree) : null),
+		[hoveredTree, describeTree]
+	);
 
 	const treeNames = useMemo(() => [...new Set(layout.placedTrees.map((tree) => tree.treeName))], [layout]);
 	const cacheRef = useRef<ForestCache | null>(null);
@@ -80,7 +93,9 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 			drawSharpRef.current = false;
 
 			// The cached picture can only be made once every tree's image has loaded.
-			const canCache = layout.placedTrees.length >= CACHE_MIN_TREES && treeNames.every((treeName) => spritesByTree.has(treeName));
+			const canCache =
+				layout.placedTrees.length >= CACHE_MIN_TREES &&
+				treeNames.every((treeName) => spritesByTree.has(treeName));
 			let visibleTrees: PlacedTree[] | undefined;
 			let useCache = canCache && view.scale * pixelRatio <= getCacheScale(layout);
 			let isPreview = false;
@@ -99,14 +114,28 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 			clearTimeout(sharpRedrawTimerRef.current);
 
 			if (useCache) {
-				if (cacheRef.current?.layout !== layout || cacheRef.current.land !== land) cacheRef.current = buildForestCache(layout, land);
+				if (cacheRef.current?.layout !== layout || cacheRef.current.land !== land)
+					cacheRef.current = buildForestCache(layout, land);
 				const cache = cacheRef.current;
 
 				context.setTransform(1, 0, 0, 1, 0, 0);
 				context.clearRect(0, 0, canvas.width, canvas.height);
-				context.setTransform(pixelRatio * view.scale, 0, 0, pixelRatio * view.scale, pixelRatio * view.x, pixelRatio * view.y);
+				context.setTransform(
+					pixelRatio * view.scale,
+					0,
+					0,
+					pixelRatio * view.scale,
+					pixelRatio * view.x,
+					pixelRatio * view.y
+				);
 				context.imageSmoothingQuality = 'high';
-				context.drawImage(cache.canvas, cache.minX, cache.minY, cache.canvas.width / cache.scale, cache.canvas.height / cache.scale);
+				context.drawImage(
+					cache.canvas,
+					cache.minX,
+					cache.minY,
+					cache.canvas.width / cache.scale,
+					cache.canvas.height / cache.scale
+				);
 				if (selectedTree) drawSelectionRing(context, selectedTree, view.scale);
 
 				if (isPreview) {
@@ -136,7 +165,8 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 		const worldWidth = side * TILE_HALF_WIDTH * 2;
 		const worldHeight = side * TILE_HALF_HEIGHT * 2 + depth + TREE_SIZE;
 		const fullScale = Math.min(container.clientWidth / worldWidth, container.clientHeight / worldHeight) * 0.95;
-		const landWidthRatio = MIN_INITIAL_LAND_WIDTH_RATIO + (side - MIN_GRID_SIDE) * INITIAL_LAND_WIDTH_RATIO_PER_CELL;
+		const landWidthRatio =
+			MIN_INITIAL_LAND_WIDTH_RATIO + (side - MIN_GRID_SIDE) * INITIAL_LAND_WIDTH_RATIO_PER_CELL;
 		const isPhone = container.clientWidth < PHONE_PANEL_MAX_WIDTH;
 		const scale = isPhone ? fullScale : Math.min(fullScale, (container.clientWidth * landWidthRatio) / worldWidth);
 
@@ -182,7 +212,9 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 		selectedTreeRef.current = null;
 		setAnnouncement('');
 		fitToContainer();
-		new Set(trees.map((tree) => tree.treeName)).forEach((treeName) => loadSprites(treeName, () => scheduleDrawRef.current()));
+		new Set(trees.map((tree) => tree.treeName)).forEach((treeName) =>
+			loadSprites(treeName, () => scheduleDrawRef.current())
+		);
 	}, [trees, fitToContainer]);
 
 	useEffect(() => {
@@ -192,7 +224,6 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 			clearTimeout(sharpRedrawTimerRef.current);
 		};
 	}, [scheduleDraw]);
-
 
 	// Converts the cursor to grid cells and checks the trees in front of it first, because tree tops overlap the cells behind them.
 	const findTreeAtPoint = (cursorX: number, cursorY: number) => {
@@ -221,7 +252,9 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 
 				const base = getTreeBase(column, row);
 				const isInsideTree =
-					Math.abs(worldX - base.x) <= treeHalfWidth && worldY >= base.y - treeTop && worldY <= base.y + treeBottom;
+					Math.abs(worldX - base.x) <= treeHalfWidth &&
+					worldY >= base.y - treeTop &&
+					worldY <= base.y + treeBottom;
 				if (isInsideTree) return placedTrees[treeIndex];
 			}
 		}
@@ -229,7 +262,14 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 		return null;
 	};
 
-	const { handlePointerDown, handlePointerMove, handlePointerEnd, resetTap } = useForestGestures({ viewRef, canvasRef, scheduleDraw, findTreeAtPoint, setHoveredTree, onOpenTree });
+	const { handlePointerDown, handlePointerMove, handlePointerEnd, resetTap } = useForestGestures({
+		viewRef,
+		canvasRef,
+		scheduleDraw,
+		findTreeAtPoint,
+		setHoveredTree,
+		onOpenTree,
+	});
 
 	// A new set of trees starts the double-tap over
 	useEffect(resetTap, [trees, resetTap]);
@@ -257,7 +297,9 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 
 	// The trees in time order: the oldest and newest for the Home and End keys, and each tree's place in line so every one sounds different when read out.
 	const { oldestTree, newestTree, treeRanks } = useMemo(() => {
-		const sorted = [...layout.placedTrees].sort((a, b) => (a.startTime < b.startTime ? -1 : a.startTime > b.startTime ? 1 : a.key < b.key ? -1 : 1));
+		const sorted = [...layout.placedTrees].sort((a, b) =>
+			a.startTime < b.startTime ? -1 : a.startTime > b.startTime ? 1 : a.key < b.key ? -1 : 1
+		);
 		return {
 			oldestTree: sorted[0] ?? null,
 			newestTree: sorted[sorted.length - 1] ?? null,
@@ -288,7 +330,12 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 		if (container) {
 			const margin = 60;
 			const point = getTreeScreenPoint(tree);
-			if (point.x < margin || point.x > container.clientWidth - margin || point.y < margin || point.y > container.clientHeight - margin) {
+			if (
+				point.x < margin ||
+				point.x > container.clientWidth - margin ||
+				point.y < margin ||
+				point.y > container.clientHeight - margin
+			) {
 				viewRef.current.x += container.clientWidth / 2 - point.x;
 				viewRef.current.y += container.clientHeight / 2 - point.y;
 				viewRef.current.hasUserMoved = true;
@@ -347,7 +394,12 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLCanvasElement>) => {
 		const selected = selectedTreeRef.current;
-		const directions: Record<string, 'left' | 'right' | 'up' | 'down'> = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' };
+		const directions: Record<string, 'left' | 'right' | 'up' | 'down'> = {
+			ArrowLeft: 'left',
+			ArrowRight: 'right',
+			ArrowUp: 'up',
+			ArrowDown: 'down',
+		};
 
 		if (directions[event.key]) {
 			event.preventDefault();
@@ -355,7 +407,10 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 
 			const neighbor = findNeighborTree(selected, directions[event.key]);
 			if (neighbor) selectTree(neighbor);
-			else setAnnouncement(`No more trees ${DIRECTION_WORDS[directions[event.key]]}. ${describeTree(selected).description}. ${getSpokenPlace(selected)}.`);
+			else
+				setAnnouncement(
+					`No more trees ${DIRECTION_WORDS[directions[event.key]]}. ${describeTree(selected).description}. ${getSpokenPlace(selected)}.`
+				);
 		} else if (event.key === 'Home' || event.key === 'End') {
 			event.preventDefault();
 			selectTree(event.key === 'Home' ? oldestTree : newestTree);
@@ -448,4 +503,3 @@ const ForestCanvas = forwardRef<ForestCanvasHandle, ForestCanvasProps>(function 
 });
 
 export default ForestCanvas;
-

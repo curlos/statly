@@ -9,9 +9,15 @@ import { SEARCH_OPTIONS } from '../../utils/constants/constants.utils';
 const SEARCH_HELP = (
 	<div className="flex flex-col gap-1">
 		<div>Separate multiple terms with commas.</div>
-		<div>• <b>McDonald's, McD's</b> → either term</div>
-		<div>• <b>Bleach, TYBW</b> + Match all terms → both terms</div>
-		<div>• <b>AI</b> + Match case + Whole word → "AI" but not "gain"</div>
+		<div>
+			• <b>McDonald's, McD's</b> → either term
+		</div>
+		<div>
+			• <b>Bleach, TYBW</b> + Match all terms → both terms
+		</div>
+		<div>
+			• <b>AI</b> + Match case + Whole word → "AI" but not "gain"
+		</div>
 		<div>Regex treats the text as a regular expression (commas aren't split).</div>
 	</div>
 );
@@ -71,7 +77,13 @@ const SearchSection = () => {
 
 			<div className="flex flex-col gap-1 mt-2 px-1 text-[14px]">
 				{/* Left-aligned so the tooltip opens to the right and isn't cut off by the sidebar edge */}
-				<Tooltip content={SEARCH_HELP} position="bottom" align="left" className="!w-[260px]" ariaLabel="Search help">
+				<Tooltip
+					content={SEARCH_HELP}
+					position="bottom"
+					align="left"
+					className="!w-[260px]"
+					ariaLabel="Search help"
+				>
 					<div className="flex items-center gap-1 text-color-gray-50 cursor-help">
 						<span>Search options</span>
 						<Icon
@@ -88,7 +100,9 @@ const SearchSection = () => {
 							key={param}
 							name={name}
 							showValue={isChecked}
-							handleCheckboxClick={() => updateQueryParams({ [param]: isChecked ? '' : 'true', page: '' })}
+							handleCheckboxClick={() =>
+								updateQueryParams({ [param]: isChecked ? '' : 'true', page: '' })
+							}
 						/>
 					);
 				})}

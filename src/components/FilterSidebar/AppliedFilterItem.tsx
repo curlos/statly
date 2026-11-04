@@ -22,8 +22,15 @@ const AppliedFilterItem = ({ name, value, onRemove }: AppliedFilterItemProps) =>
 	return (
 		<div className="flex">
 			<div
-				className={classNames('px-2 py-1 text-[14px] rounded-xl', lowerCardOpacity ? bgColorHalfOpacity : bgColor)}
-				style={lowerCardOpacity ? { color: getReadableTextColor(getHalfOpacityFillColor(chosenColorObj.hexColor, colorMode)) } : undefined}
+				className={classNames(
+					'px-2 py-1 text-[14px] rounded-xl',
+					lowerCardOpacity ? bgColorHalfOpacity : bgColor
+				)}
+				style={
+					lowerCardOpacity
+						? { color: getReadableTextColor(getHalfOpacityFillColor(chosenColorObj.hexColor, colorMode)) }
+						: undefined
+				}
 			>
 				<div className="overflow-hidden">
 					{name && <span className="font-bold">{name}: </span>}
@@ -40,7 +47,10 @@ const AppliedFilterItem = ({ name, value, onRemove }: AppliedFilterItemProps) =>
 				<Icon
 					name="close"
 					fill={0}
-					customClass={classNames('rounded-full !text-[14px] p-[2px]', colorMode === 'light' ? 'text-[#ffffff] bg-black' : 'text-black bg-white')}
+					customClass={classNames(
+						'rounded-full !text-[14px] p-[2px]',
+						colorMode === 'light' ? 'text-[#ffffff] bg-black' : 'text-black bg-white'
+					)}
 				/>
 			</button>
 		</div>

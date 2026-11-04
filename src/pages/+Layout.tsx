@@ -13,7 +13,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 		document.getElementById('main-content')?.focus({ preventScroll: true });
 		// Big faded background word used by some game UI themes (e.g. "/focus-records" -> "Focus Records").
 		// Title case; themes whose games use caps uppercase it in CSS.
-		document.body.dataset.watermark = (pageContext.urlPathname.split('/').filter(Boolean)[0] || '').replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+		document.body.dataset.watermark = (pageContext.urlPathname.split('/').filter(Boolean)[0] || '')
+			.replace(/-/g, ' ')
+			.replace(/\b\w/g, (c) => c.toUpperCase());
 	}, [pageContext.urlPathname]);
 
 	return (

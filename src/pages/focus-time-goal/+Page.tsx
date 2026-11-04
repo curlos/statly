@@ -21,7 +21,12 @@ export default function Page() {
 					</div>
 				</div>
 
-				<main id="main-content" tabIndex={-1} className="flex-1 flex justify-center items-center outline-none" style={{ marginBottom: `${headerHeight}px` }}>
+				<main
+					id="main-content"
+					tabIndex={-1}
+					className="flex-1 flex justify-center items-center outline-none"
+					style={{ marginBottom: `${headerHeight}px` }}
+				>
 					<h1 className="sr-only">Focus Time Goal</h1>
 					<DailyHoursFocusGoal />
 				</main>

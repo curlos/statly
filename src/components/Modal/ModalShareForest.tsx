@@ -35,9 +35,12 @@ const ModalShareForest: React.FC<ModalShareForestProps> = ({ isOpen, onClose, da
 	}, [isOpen, view, data, renderForest]);
 
 	const fileName = `statly-forest-${view}-${data.rangeLabel.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.png`;
-	const canShareFiles = typeof navigator !== 'undefined' && !!navigator.canShare?.({ files: [new File([], 'forest.png', { type: 'image/png' })] });
+	const canShareFiles =
+		typeof navigator !== 'undefined' &&
+		!!navigator.canShare?.({ files: [new File([], 'forest.png', { type: 'image/png' })] });
 
-	const getBlob = () => new Promise<Blob | null>((resolve) => (card ? card.toBlob(resolve, 'image/png') : resolve(null)));
+	const getBlob = () =>
+		new Promise<Blob | null>((resolve) => (card ? card.toBlob(resolve, 'image/png') : resolve(null)));
 
 	const handleSave = async () => {
 		const blob = await getBlob();
@@ -49,7 +52,10 @@ const ModalShareForest: React.FC<ModalShareForestProps> = ({ isOpen, onClose, da
 		if (!blob) return;
 
 		try {
-			await navigator.share({ files: [new File([blob], fileName, { type: 'image/png' })], title: `My Statly forest: ${data.rangeLabel}` });
+			await navigator.share({
+				files: [new File([blob], fileName, { type: 'image/png' })],
+				title: `My Statly forest: ${data.rangeLabel}`,
+			});
 		} catch {
 			// Closing the share sheet counts as an error, and there is nothing to do about it.
 		}
@@ -61,8 +67,15 @@ const ModalShareForest: React.FC<ModalShareForestProps> = ({ isOpen, onClose, da
 		<Modal isOpen={isOpen} onClose={onClose} customClasses="!w-[560px]" ariaLabelledBy="modal-share-forest-heading">
 			<div className="bg-color-gray-600 rounded-lg p-4">
 				<div className="flex justify-between items-center mb-3">
-					<h2 id="modal-share-forest-heading" className="font-bold text-[18px]">Share Your Forest</h2>
-					<button type="button" aria-label="Close" className="bg-transparent border-0 p-0 cursor-pointer" onClick={onClose}>
+					<h2 id="modal-share-forest-heading" className="font-bold text-[18px]">
+						Share Your Forest
+					</h2>
+					<button
+						type="button"
+						aria-label="Close"
+						className="bg-transparent border-0 p-0 cursor-pointer"
+						onClick={onClose}
+					>
 						<Icon name="close" customClass="!text-[24px] text-color-gray-50" />
 					</button>
 				</div>
@@ -73,7 +86,12 @@ const ModalShareForest: React.FC<ModalShareForestProps> = ({ isOpen, onClose, da
 							key={id}
 							type="button"
 							aria-pressed={view === id}
-							className={classNames(buttonClasses, view === id ? `${chosenColorObj.bgColor} font-semibold` : 'bg-color-gray-300 text-color-gray-25')}
+							className={classNames(
+								buttonClasses,
+								view === id
+									? `${chosenColorObj.bgColor} font-semibold`
+									: 'bg-color-gray-300 text-color-gray-25'
+							)}
 							onClick={() => setView(id)}
 						>
 							{label}
@@ -90,11 +108,25 @@ const ModalShareForest: React.FC<ModalShareForestProps> = ({ isOpen, onClose, da
 				)}
 
 				<div className="flex gap-2 mt-3">
-					<button type="button" className={classNames(buttonClasses, 'flex-1 bg-color-gray-300 text-color-gray-25 border border-color-gray-50')} onClick={handleSave}>
+					<button
+						type="button"
+						className={classNames(
+							buttonClasses,
+							'flex-1 bg-color-gray-300 text-color-gray-25 border border-color-gray-50'
+						)}
+						onClick={handleSave}
+					>
 						Save
 					</button>
 					{canShareFiles && (
-						<button type="button" className={classNames(buttonClasses, 'flex-1 bg-color-gray-300 text-color-gray-25 border border-color-gray-50')} onClick={handleShare}>
+						<button
+							type="button"
+							className={classNames(
+								buttonClasses,
+								'flex-1 bg-color-gray-300 text-color-gray-25 border border-color-gray-50'
+							)}
+							onClick={handleShare}
+						>
 							Share
 						</button>
 					)}

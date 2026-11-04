@@ -4,10 +4,10 @@ import { EMOTIONS } from './constants/constants.utils';
 import type { FocusRecord, Task, TaskTickTick, Project } from '../types/models';
 
 export const sourceToAppName: Record<string, string> = {
-	'FocusRecordSession': 'Session App',
-	'FocusRecordBeFocused': 'Be Focused App',
-	'FocusRecordForest': 'Forest App',
-	'FocusRecordTide': 'Tide App'
+	FocusRecordSession: 'Session App',
+	FocusRecordBeFocused: 'Be Focused App',
+	FocusRecordForest: 'Forest App',
+	FocusRecordTide: 'Tide App',
 };
 
 /**
@@ -55,7 +55,7 @@ export const serializeFocusRecordToMarkdown = (
 
 			// Format task title with ancestors if available
 			let taskTitle = task.title;
-			const projectName = sourceToAppName[source] || projectsById?.[task?.projectId]?.name
+			const projectName = sourceToAppName[source] || projectsById?.[task?.projectId]?.name;
 
 			if (ancestorTasksById && task.taskId) {
 				const parentTask = ancestorTasksById[task.taskId];

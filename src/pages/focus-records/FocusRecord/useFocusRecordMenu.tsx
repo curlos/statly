@@ -23,11 +23,11 @@ export const useFocusRecordMenu = ({
 	pendingFocusIdRef,
 }: UseFocusRecordMenuParams) => {
 	// Get ancestor tasks for breadcrumbs
-    const { ancestorTasksById } = useFocusRecordsQuery();
+	const { ancestorTasksById } = useFocusRecordsQuery();
 
-    // Get projects for project names
-    const { data: fetchedProjects } = useGetProjectsQuery();
-    const { projectsById } = fetchedProjects || {};
+	// Get projects for project names
+	const { data: fetchedProjects } = useGetProjectsQuery();
+	const { projectsById } = fetchedProjects || {};
 
 	const dispatch = useDispatch();
 
@@ -64,16 +64,19 @@ export const useFocusRecordMenu = ({
 
 	const handleCopyCompletedTasks = () => {
 		if (completedTasksDuringFocusSession.length > 0) {
-			const tasksText = completedTasksDuringFocusSession
-				.map((task) => `- [x] ${task.title}`)
-				.join('\n');
+			const tasksText = completedTasksDuringFocusSession.map((task) => `- [x] ${task.title}`).join('\n');
 			navigator.clipboard.writeText(tasksText);
 			dispatch(showToast('Completed tasks copied to clipboard'));
 		}
 	};
 
 	const handleCopyFocusRecord = () => {
-		const markdown = serializeFocusRecordToMarkdown(focusRecord, showFocusRecordEmotions, ancestorTasksById as Record<string, Task> | undefined, projectsById as Record<string, Project> | undefined);
+		const markdown = serializeFocusRecordToMarkdown(
+			focusRecord,
+			showFocusRecordEmotions,
+			ancestorTasksById as Record<string, Task> | undefined,
+			projectsById as Record<string, Project> | undefined
+		);
 		navigator.clipboard.writeText(markdown);
 		dispatch(showToast('Focus record copied to clipboard'));
 	};

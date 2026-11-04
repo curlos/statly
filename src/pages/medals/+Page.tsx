@@ -76,44 +76,57 @@ const Page = () => {
 				<div ref={topHeaderRef}>
 					<Navbar page="medals-page" />
 					<section aria-labelledby="medals-heading">
-					<div className="container flex justify-between items-center">
-						<div className="flex items-center gap-4">
-							<h1 id="medals-heading" className="text-[28px] font-bold">Medals</h1>
+						<div className="container flex justify-between items-center">
+							<div className="flex items-center gap-4">
+								<h1 id="medals-heading" className="text-[28px] font-bold">
+									Medals
+								</h1>
 
-							<div className="hidden md:block">
-								<AppliedFilterItemList />
+								<div className="hidden md:block">
+									<AppliedFilterItemList />
+								</div>
+							</div>
+
+							<button
+								type="button"
+								aria-label="Open filters"
+								aria-expanded={isFilterSidebarModalOpen}
+								disabled={isLoading}
+								className={classNames(
+									'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors bg-transparent cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
+									chosenColorObj.hover.borderColor,
+									chosenColorObj.hover.textColor
+								)}
+								onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
+							>
+								<span className="hidden sm:block">Filter</span>
+								<Icon name="page_info" fill={0} customClass={'!text-[20px]'} />
+							</button>
+						</div>
+						<div className="container grid grid-cols-12">
+							<div className="flex flex-col lg:flex-row lg:items-center justify-between col-span-8">
+								<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
+								<div className="mr-md-2 mr-xl-3">
+									<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_INTERVALS_OBJ }} />
+								</div>
 							</div>
 						</div>
-
-						<button
-							type="button"
-							aria-label="Open filters"
-							aria-expanded={isFilterSidebarModalOpen}
-							disabled={isLoading}
-							className={classNames(
-								'flex items-center gap-2 rounded-3xl border border-color-gray-100 px-4 py-1 transition-colors bg-transparent cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
-								chosenColorObj.hover.borderColor,
-								chosenColorObj.hover.textColor
-							)}
-							onClick={() => setIsFilterSidebarModalOpen(!isFilterSidebarModalOpen)}
-						>
-							<span className="hidden sm:block">Filter</span>
-							<Icon name="page_info" fill={0} customClass={'!text-[20px]'} />
-						</button>
-					</div>
-					<div className="container grid grid-cols-12">
-						<div className="flex flex-col lg:flex-row lg:items-center justify-between col-span-8">
-							<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_MEDALS_TYPE_OBJ, isForInterval: false }} />
-							<div className="mr-md-2 mr-xl-3">
-								<TopButtonList {...{ BUTTONS_OBJ: BUTTONS_INTERVALS_OBJ }} />
-							</div>
-						</div>
-					</div>
 					</section>
 				</div>
 
 				<main id="main-content" tabIndex={-1} className="container grid grid-cols-12 gap-3 outline-none">
-					<MedalList {...{ maxHeight, chosenMedal, setChosenMedal, setShowChosenMedalModal, medalsData, isLoading, type, interval }} />
+					<MedalList
+						{...{
+							maxHeight,
+							chosenMedal,
+							setChosenMedal,
+							setShowChosenMedalModal,
+							medalsData,
+							isLoading,
+							type,
+							interval,
+						}}
+					/>
 
 					<div className="hidden sm:block col-span-4">
 						{isLoading ? (

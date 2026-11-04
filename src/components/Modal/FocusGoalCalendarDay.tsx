@@ -18,7 +18,7 @@ const isDateInInactivePeriod = (
 		return false;
 	}
 
-	return inactivePeriods.some(period => {
+	return inactivePeriods.some((period) => {
 		const { startDate, endDate } = period;
 
 		// If endDate is null, period is still active (currently paused)
@@ -93,8 +93,12 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 		const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
 		// Ring sizes for concentric circles (largest to smallest)
 		const sizes = isMobile
-			? (ringsData.length === 3 ? [38, 32, 24] : [40, 32])
-			: (ringsData.length === 3 ? [50, 40, 30] : [50, 40]);
+			? ringsData.length === 3
+				? [38, 32, 24]
+				: [40, 32]
+			: ringsData.length === 3
+				? [50, 40, 30]
+				: [50, 40];
 		const baseStrokeWidth = isMobile ? 5 : 7;
 
 		// Multi-ring tooltip content
@@ -103,7 +107,9 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 				{/* Left side: Ring stats */}
 				<div className="space-y-1 flex-shrink-0">
 					{ringsData.map((ring) => {
-						const displayColor = ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor);
+						const displayColor = ring.useThemeColor
+							? chosenColorObj.hexColor
+							: ring.color || chosenColorObj.hexColor;
 						const dayOfWeek = day.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as
 							| 'monday'
 							| 'tuesday'
@@ -117,14 +123,13 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 						const isFreebieDay = !(ring.selectedDaysOfWeek?.[dayOfWeek] ?? true) || isRestDay;
 						return (
 							<div key={ring.ringId} className="whitespace-nowrap">
-								<div className="text-xs font-semibold flex items-center gap-1" style={{ color: displayColor }}>
+								<div
+									className="text-xs font-semibold flex items-center gap-1"
+									style={{ color: displayColor }}
+								>
 									{truncateText(ring.ringName, truncateLength)}
 									{ring.customDailyFocusGoal?.[dateKey] !== undefined && (
-										<Icon
-											name="acute"
-											fill={1}
-											customClass="!text-[14px] text-sky-300"
-										/>
+										<Icon name="acute" fill={1} customClass="!text-[14px] text-sky-300" />
 									)}
 									{isFreebieDay && (
 										<Icon
@@ -138,8 +143,12 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 									)}
 								</div>
 								<div className="text-sm font-bold flex items-baseline gap-1">
-									<span style={{ color: displayColor }}>{getFormattedDuration(ring.duration, false)}</span>
-									<span className="text-xs opacity-60" style={{ color: displayColor }}>/{getFormattedDuration(ring.goal, false)}</span>
+									<span style={{ color: displayColor }}>
+										{getFormattedDuration(ring.duration, false)}
+									</span>
+									<span className="text-xs opacity-60" style={{ color: displayColor }}>
+										/{getFormattedDuration(ring.goal, false)}
+									</span>
 								</div>
 							</div>
 						);
@@ -152,7 +161,9 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 						const visualSizes = ringsData.length === 3 ? [60, 48, 36] : [60, 48];
 						const size = visualSizes[index];
 						const strokeWidth = 7 * (visualSizes[0] / size);
-						const displayColor = ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor);
+						const displayColor = ring.useThemeColor
+							? chosenColorObj.hexColor
+							: ring.color || chosenColorObj.hexColor;
 
 						return (
 							<div
@@ -177,17 +188,30 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 
 		const containerSize = isMobile ? 40 : 50;
 		const dateLabel = day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-		const combinedAriaLabel = `${dateLabel} - ${ringsData.map(r =>
-			`${r.ringName}: ${getFormattedDuration(r.duration, false)} / ${getFormattedDuration(r.goal, false)} (${r.percentage.toFixed(2)}%)`
-		).join(', ')}`;
+		const combinedAriaLabel = `${dateLabel} - ${ringsData
+			.map(
+				(r) =>
+					`${r.ringName}: ${getFormattedDuration(r.duration, false)} / ${getFormattedDuration(r.goal, false)} (${r.percentage.toFixed(2)}%)`
+			)
+			.join(', ')}`;
 
 		return (
-			<Tooltip content={multiRingTooltipContent} position="top" tabIndex={tabIndex ?? -1} ariaLabel={combinedAriaLabel}>
-				<div className="flex items-center justify-center relative" style={{ width: `${containerSize}px`, height: `${containerSize}px` }}>
+			<Tooltip
+				content={multiRingTooltipContent}
+				position="top"
+				tabIndex={tabIndex ?? -1}
+				ariaLabel={combinedAriaLabel}
+			>
+				<div
+					className="flex items-center justify-center relative"
+					style={{ width: `${containerSize}px`, height: `${containerSize}px` }}
+				>
 					{ringsData.map((ring, index) => {
 						const size = sizes[index];
 						const strokeWidth = baseStrokeWidth * (sizes[0] / size);
-						const displayColor = ring.useThemeColor ? chosenColorObj.hexColor : (ring.color || chosenColorObj.hexColor);
+						const displayColor = ring.useThemeColor
+							? chosenColorObj.hexColor
+							: ring.color || chosenColorObj.hexColor;
 
 						return (
 							<div
@@ -206,7 +230,12 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 							</div>
 						);
 					})}
-					<div className={classNames('absolute text-xs', isToday ? 'font-bold text-white' : 'text-color-gray-50')}>
+					<div
+						className={classNames(
+							'absolute text-xs',
+							isToday ? 'font-bold text-white' : 'text-color-gray-50'
+						)}
+					>
 						{day.getDate()}
 					</div>
 				</div>
@@ -223,7 +252,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 	// Use dayData if available, otherwise show 0 progress
 	const totalFocused = dayData?.totalFocusDurationForDay || 0;
 	// Use custom goal if set for this date, otherwise use default (fallback to 3600 seconds = 1 hour)
-	const goalForDay = hasCustomGoal ? customGoalForDay : (dayData?.goalSeconds || defaultGoalSeconds || 3600);
+	const goalForDay = hasCustomGoal ? customGoalForDay : dayData?.goalSeconds || defaultGoalSeconds || 3600;
 	// Recalculate percentage based on the actual goal (custom or default)
 	const percentage = goalForDay > 0 ? (totalFocused / goalForDay) * 100 : 0;
 
@@ -251,15 +280,23 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 		isFreebieDay && 'Freebie Day',
 		isRestDay && 'Rest Day',
 		isInInactivePeriod && 'Inactive Period',
-	].filter(Boolean).join(', ');
+	]
+		.filter(Boolean)
+		.join(', ');
 
 	// Tooltip content
 	const tooltipContent = (
 		<div className="text-base whitespace-nowrap">
 			<div className="text-center font-bold">
-				<span className="text-lg" style={{ color: themeColor }}>{getFormattedDuration(totalFocused, false)}</span>
-				<span className="mx-[2px] opacity-60" style={{ color: themeColor }}>/</span>
-				<span className="text-base opacity-60" style={{ color: themeColor }}>{getFormattedDuration(goalForDay, false)}</span>
+				<span className="text-lg" style={{ color: themeColor }}>
+					{getFormattedDuration(totalFocused, false)}
+				</span>
+				<span className="mx-[2px] opacity-60" style={{ color: themeColor }}>
+					/
+				</span>
+				<span className="text-base opacity-60" style={{ color: themeColor }}>
+					{getFormattedDuration(goalForDay, false)}
+				</span>
 			</div>
 			<div className="text-color-gray-100 text-center">{percentage.toFixed(2)}%</div>
 			{hasCustomGoal && (
@@ -298,7 +335,7 @@ const FocusGoalCalendarDay: React.FC<FocusGoalCalendarDayProps> = ({
 						strokeWidth={10}
 						styles={buildStyles({
 							pathColor: themeColor,
-							trailColor: hexToRgba(themeColor, 0.2)
+							trailColor: hexToRgba(themeColor, 0.2),
 						})}
 						counterClockwise={false}
 					>

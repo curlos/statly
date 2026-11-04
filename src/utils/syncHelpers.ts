@@ -20,15 +20,8 @@ export const isFirstTimeTickTickSync = (syncMetadata: SyncMetadata | undefined):
 	// No metadata means the fetch failed or hasn't loaded (a real first-time user gets `{}`), so don't assume first sync.
 	if (!syncMetadata) return false;
 
-	const requiredSyncTypes = [
-		'tickTickTasks',
-		'tickTickProjects',
-		'tickTickProjectGroups',
-		'tickTickFocusRecords'
-	];
+	const requiredSyncTypes = ['tickTickTasks', 'tickTickProjects', 'tickTickProjectGroups', 'tickTickFocusRecords'];
 
 	// Check if all required sync types exist and have a lastSyncTime
-	return !requiredSyncTypes.every(syncType =>
-		syncMetadata[syncType] && syncMetadata[syncType].lastSyncTime
-	);
+	return !requiredSyncTypes.every((syncType) => syncMetadata[syncType] && syncMetadata[syncType].lastSyncTime);
 };

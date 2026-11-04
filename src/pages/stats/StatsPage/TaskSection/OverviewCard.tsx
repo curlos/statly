@@ -91,8 +91,11 @@ const OverviewCard = () => {
 	});
 
 	// Build query params for previous interval
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const prevIntervalDateRange = useMemo(() => getPrevIntervalDateRange(), [apiStartDate, apiEndDate, selectedInterval]);
+	const prevIntervalDateRange = useMemo(
+		() => getPrevIntervalDateRange(),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[apiStartDate, apiEndDate, selectedInterval]
+	);
 	const prevQueryParams = useStatsQueryParams({
 		'group-by': 'day',
 		'interval-start-date': prevIntervalDateRange.startDate,
@@ -102,8 +105,12 @@ const OverviewCard = () => {
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch current interval stats
-	const { data: currentStats, isLoading, isFetching } = useGetTasksStatsQuery(currentQueryParams, {
-		skip: shouldSkipQuery
+	const {
+		data: currentStats,
+		isLoading,
+		isFetching,
+	} = useGetTasksStatsQuery(currentQueryParams, {
+		skip: shouldSkipQuery,
 	});
 
 	// Fetch previous interval stats (skip if All or Custom interval)
@@ -132,7 +139,9 @@ const OverviewCard = () => {
 		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col" aria-labelledby="task-overview-heading">
 			<div className="flex justify-between items-center mb-4">
 				<div className="flex items-center gap-2">
-					<h2 id="task-overview-heading" className="font-bold text-[16px]">Overview</h2>
+					<h2 id="task-overview-heading" className="font-bold text-[16px]">
+						Overview
+					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 

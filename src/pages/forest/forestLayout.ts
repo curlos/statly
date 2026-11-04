@@ -43,10 +43,8 @@ export const hashString = (text: string) => {
 	return (hash ^ (hash >>> 16)) >>> 0;
 };
 
-
 // Repeatable pseudo-random number from 0 to 1, so the land details never move between redraws.
 export const getSeededRandom = (label: string, index: number) => hashString(`${label}-${index}`) / 4294967296;
-
 
 // Trees are planted in the order of their focus records, like reading rows of text. The first row runs from the left corner of the land to the top corner along the top-left edge, then each next row does the same one step closer to the bottom-right edge. Every position comes from the trees' times and keys, so the same trees always land in the same cells.
 export const getLayout = (trees: ForestTree[]) => {
@@ -74,7 +72,10 @@ export const getLayout = (trees: ForestTree[]) => {
 			const stretchPosition = index + 0.5 + nudge;
 			const wantedCellIndex = Math.floor((stretchPosition * plantableCells.length) / treesByTime.length);
 			// Rounding can put two neighbors on the same cell, so each tree takes the first free cell at or after the one it wants, while leaving enough cells for the trees still to come.
-			const cellIndex = Math.min(Math.max(wantedCellIndex, previousCellIndex + 1), plantableCells.length - (treesByTime.length - index));
+			const cellIndex = Math.min(
+				Math.max(wantedCellIndex, previousCellIndex + 1),
+				plantableCells.length - (treesByTime.length - index)
+			);
 			previousCellIndex = cellIndex;
 			const cell = plantableCells[cellIndex];
 			return { ...tree, column: cell % side, row: Math.floor(cell / side) };
@@ -88,7 +89,6 @@ export const getLayout = (trees: ForestTree[]) => {
 
 	return { side, depth: LAND_DEPTH, placedTrees, cells };
 };
-
 
 export const getTreeBase = (column: number, row: number) => ({
 	x: (column - row) * TILE_HALF_WIDTH,

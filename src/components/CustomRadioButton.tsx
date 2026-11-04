@@ -27,7 +27,12 @@ const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 	customInnerCircleBgColorClasses,
 }) => {
 	return (
-		<label className={classNames('relative flex items-center cursor-pointer rounded has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-inset', customLabelClass)}>
+		<label
+			className={classNames(
+				'relative flex items-center cursor-pointer rounded has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-inset',
+				customLabelClass
+			)}
+		>
 			<input
 				type="radio"
 				name={name}

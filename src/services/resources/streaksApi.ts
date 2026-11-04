@@ -39,8 +39,4 @@ export const streaksApi = baseAPI.injectEndpoints({
 	overrideExisting: false,
 });
 
-export const {
-	useGetStreaksTodayQuery,
-	useGetStreakHistoryQuery,
-	useGetCombinedStreakHistoryQuery
-} = streaksApi;
+export const { useGetStreaksTodayQuery, useGetStreakHistoryQuery, useGetCombinedStreakHistoryQuery } = streaksApi;

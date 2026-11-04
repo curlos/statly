@@ -19,12 +19,7 @@ interface FocusRecordContextMenuProps {
 	onClose: () => void;
 }
 
-const FocusRecordContextMenu: React.FC<FocusRecordContextMenuProps> = ({
-	isVisible,
-	position,
-	menuItems,
-	onClose,
-}) => {
+const FocusRecordContextMenu: React.FC<FocusRecordContextMenuProps> = ({ isVisible, position, menuItems, onClose }) => {
 	const menuRef = useRef<HTMLDivElement>(null);
 	const dummyToggleRef = useRef(null);
 
@@ -48,9 +43,10 @@ const FocusRecordContextMenu: React.FC<FocusRecordContextMenuProps> = ({
 				const items = Array.from(el.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])'));
 				if (!items.length) return;
 				const idx = items.indexOf(document.activeElement as HTMLElement);
-				const next = e.key === 'ArrowDown'
-					? items[(idx + 1) % items.length]
-					: items[(idx - 1 + items.length) % items.length];
+				const next =
+					e.key === 'ArrowDown'
+						? items[(idx + 1) % items.length]
+						: items[(idx - 1 + items.length) % items.length];
 				next?.focus();
 			}
 		};

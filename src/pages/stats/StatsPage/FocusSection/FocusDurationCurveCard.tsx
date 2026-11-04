@@ -39,7 +39,6 @@ const FocusDurationCurveCard = () => {
 		showRecordInterval: true,
 	});
 
-
 	const getAverage = () => {
 		let totalSeconds = 0;
 		let intervalsWithAtLeastOneFocusRecord = 0;
@@ -65,10 +64,15 @@ const FocusDurationCurveCard = () => {
 	const { chosenColorObj } = themeContext;
 
 	return (
-		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px] relative" aria-labelledby="focus-duration-curve-heading">
+		<section
+			className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] text-[14px] sm:text-[16px] relative"
+			aria-labelledby="focus-duration-curve-heading"
+		>
 			<div className="flex justify-between items-center gap-1">
 				<div className="flex items-center gap-2">
-					<h2 id="focus-duration-curve-heading" className="font-bold text-[16px]">Focus Durations Curve</h2>
+					<h2 id="focus-duration-curve-heading" className="font-bold text-[16px]">
+						Focus Durations Curve
+					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -111,8 +115,8 @@ const FocusDurationCurveCard = () => {
 					margin={{
 						top: 10,
 						right: 30,
-						left: (selectedInterval === 'All' || selectedInterval === 'Custom') ? 30 : 15,
-						bottom: (selectedInterval === 'Week' || selectedInterval === 'Custom') ? 20 : 5,
+						left: selectedInterval === 'All' || selectedInterval === 'Custom' ? 30 : 15,
+						bottom: selectedInterval === 'Week' || selectedInterval === 'Custom' ? 20 : 5,
 					}}
 				>
 					<defs>
@@ -150,7 +154,9 @@ const FocusDurationCurveCard = () => {
 								if (selectedGroupedInterval === 'Records') {
 									const lines = (fullName || name).split('\n');
 									return (
-										<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
+										<div
+											className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
+										>
 											{lines.map((line: string, idx: number) => (
 												<div key={idx}>{line}</div>
 											))}

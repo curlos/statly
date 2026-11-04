@@ -31,7 +31,6 @@ const FONT_USED_IN: Record<string, string[]> = {
 };
 
 const FontFamilyList = () => {
-
 	// RTK Query - User Settings
 	const [editUserSettings] = useEditUserSettingsMutation();
 
@@ -82,17 +81,21 @@ const FontFamilyList = () => {
 		'Pokemon DPPt',
 	];
 
-	const handleChangeFontFamily = useDebouncedCallback(async (fontFamilyKey: string) => {
-		const payload = {
-			theme: {
-				...userSettings?.theme,
-				fontFamily: fontFamilyKey,
-			},
-		};
+	const handleChangeFontFamily = useDebouncedCallback(
+		async (fontFamilyKey: string) => {
+			const payload = {
+				theme: {
+					...userSettings?.theme,
+					fontFamily: fontFamilyKey,
+				},
+			};
 
-		await editUserSettings(payload).unwrap();
-		localStorage.setItem('font-family', fontFamilyKey);
-	}, 500, true);
+			await editUserSettings(payload).unwrap();
+			localStorage.setItem('font-family', fontFamilyKey);
+		},
+		500,
+		true
+	);
 
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey } = themeContext;
@@ -107,7 +110,11 @@ const FontFamilyList = () => {
 					<div key={fontFamilyKey} style={{ fontFamily: fontFamilyName ? `'${fontFamilyName}'` : undefined }}>
 						<CustomRadioButton
 							key={fontFamilyKey + 'radio'}
-							label={FONT_USED_IN[fontFamilyKey] ? `${fontFamilyKey} (${FONT_USED_IN[fontFamilyKey].join(', ')})` : fontFamilyKey}
+							label={
+								FONT_USED_IN[fontFamilyKey]
+									? `${fontFamilyKey} (${FONT_USED_IN[fontFamilyKey].join(', ')})`
+									: fontFamilyKey
+							}
 							name="fontFamily"
 							value={fontFamilyKey}
 							checked={selectedFontFamilyKey === fontFamilyKey}

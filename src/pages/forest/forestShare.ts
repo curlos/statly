@@ -27,9 +27,20 @@ type BucketUnit = 'hour' | 'day' | 'month' | 'year';
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 const OTHER_COLOR = '#9a9a9a';
-const FALLBACK_COLORS = ['#7fcfd6', '#e57b63', '#9a8bdc', '#6fb7e8', '#f2a65a', '#8fc66b', '#d68fb8', '#c9b458', '#7aa7a1'];
+const FALLBACK_COLORS = [
+	'#7fcfd6',
+	'#e57b63',
+	'#9a8bdc',
+	'#6fb7e8',
+	'#f2a65a',
+	'#8fc66b',
+	'#d68fb8',
+	'#c9b458',
+	'#7aa7a1',
+];
 
-const formatLongDay = (date: Date) => date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const formatLongDay = (date: Date) =>
+	date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
 // The same way the date picker words it: a day, a week or custom range, a month, a year, or all time.
 export const getRangeLabel = (interval: string, dates: Date[]) => {
@@ -40,7 +51,9 @@ export const getRangeLabel = (interval: string, dates: Date[]) => {
 	if (interval === 'Month') return first.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 	if (interval === 'Year') return String(first.getFullYear());
 
-	return formatLongDay(first) === formatLongDay(last) ? formatLongDay(first) : `${formatLongDay(first)} – ${formatLongDay(last)}`;
+	return formatLongDay(first) === formatLongDay(last)
+		? formatLongDay(first)
+		: `${formatLongDay(first)} – ${formatLongDay(last)}`;
 };
 
 const floorTo = (unit: BucketUnit, date: Date) => {
@@ -84,14 +97,29 @@ export const getBars = (rows: TreeRow[], interval: string, dates: Date[]): Share
 
 	const times = rows.map((row) => new Date(row.startTime).getTime());
 	const start = useRows ? new Date(times.reduce((lowest, time) => Math.min(lowest, time), Infinity)) : dates[0];
-	const end = useRows ? new Date(times.reduce((highest, time) => Math.max(highest, time), -Infinity)) : dates[dates.length - 1];
+	const end = useRows
+		? new Date(times.reduce((highest, time) => Math.max(highest, time), -Infinity))
+		: dates[dates.length - 1];
 
 	const dayCount = Math.round((floorTo('day', end).getTime() - floorTo('day', start).getTime()) / DAY_IN_MS) + 1;
 	const unit: BucketUnit =
-		interval === 'Day' ? 'hour' : interval === 'Week' || interval === 'Month' ? 'day' : interval === 'Year' ? 'month' : dayCount <= 31 ? 'day' : dayCount <= 400 ? 'month' : 'year';
+		interval === 'Day'
+			? 'hour'
+			: interval === 'Week' || interval === 'Month'
+				? 'day'
+				: interval === 'Year'
+					? 'month'
+					: dayCount <= 31
+						? 'day'
+						: dayCount <= 400
+							? 'month'
+							: 'year';
 
 	const firstBucket = unit === 'hour' ? floorTo('day', start) : floorTo(unit, start);
-	const lastBucket = unit === 'hour' ? new Date(firstBucket.getFullYear(), firstBucket.getMonth(), firstBucket.getDate(), 23) : floorTo(unit, end);
+	const lastBucket =
+		unit === 'hour'
+			? new Date(firstBucket.getFullYear(), firstBucket.getMonth(), firstBucket.getDate(), 23)
+			: floorTo(unit, end);
 
 	const buckets: { key: string; date: Date; seconds: number }[] = [];
 	for (let cursor = firstBucket; cursor.getTime() <= lastBucket.getTime(); cursor = getNext(unit, cursor)) {
@@ -116,7 +144,11 @@ export const getSlices = (projects: ProjectRow[], maxSlices = 9): ShareSlice[] =
 	const shown = sorted.length > maxSlices ? sorted.slice(0, maxSlices - 1) : sorted;
 	const otherSeconds = sorted.slice(shown.length).reduce((sum, project) => sum + project.seconds, 0);
 
-	const slices = shown.map((project, index) => ({ name: project.name, color: project.color || FALLBACK_COLORS[index % FALLBACK_COLORS.length], seconds: project.seconds }));
+	const slices = shown.map((project, index) => ({
+		name: project.name,
+		color: project.color || FALLBACK_COLORS[index % FALLBACK_COLORS.length],
+		seconds: project.seconds,
+	}));
 	if (otherSeconds > 0) slices.push({ name: 'Other', color: OTHER_COLOR, seconds: otherSeconds });
 
 	return slices.map((slice) => ({ ...slice, percent: Math.round((slice.seconds / total) * 100) }));

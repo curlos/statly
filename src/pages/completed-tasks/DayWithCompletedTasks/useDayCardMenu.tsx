@@ -57,7 +57,8 @@ export const useDayCardMenu = ({
 }: UseDayCardMenuParams) => {
 	const dispatch = useDispatch();
 	const userSettings = useUserSettingsContext();
-	const taskIdIncludeCompletedTasksFromSubtasks = userSettings?.completedTasksPageSettings?.taskIdIncludeCompletedTasksFromSubtasks ?? true;
+	const taskIdIncludeCompletedTasksFromSubtasks =
+		userSettings?.completedTasksPageSettings?.taskIdIncludeCompletedTasksFromSubtasks ?? true;
 	const onlyExportTasksWithNoParent = userSettings?.completedTasksPageSettings?.onlyExportTasksWithNoParent ?? true;
 
 	// Context menu state (right-click)
@@ -108,8 +109,9 @@ export const useDayCardMenu = ({
 					const fetchedAncestorTasksById = nestedData.ancestorTasksById || {};
 
 					// Get the day data (filter out metadata)
-					const dayEntry = Object.entries(nestedData)
-						.find(([key]) => key !== 'ancestorTasksById' && key !== 'totalTasks');
+					const dayEntry = Object.entries(nestedData).find(
+						([key]) => key !== 'ancestorTasksById' && key !== 'totalTasks'
+					);
 
 					if (dayEntry) {
 						const [, nestedTasks] = dayEntry;
@@ -154,7 +156,7 @@ export const useDayCardMenu = ({
 		}
 
 		try {
-			const taskIds = completedTasksForDay.map(task => task.id);
+			const taskIds = completedTasksForDay.map((task) => task.id);
 			await bulkDeleteTasks(taskIds).unwrap();
 			setDeleteModalOpen(false);
 			dispatch(showToast('Tasks deleted'));

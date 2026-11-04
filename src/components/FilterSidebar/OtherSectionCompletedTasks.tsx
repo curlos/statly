@@ -82,7 +82,8 @@ const OtherSectionCompletedTasks = () => {
 								{...{
 									name: 'Show Indented Tasks',
 									showValue: showIndentedTasks,
-									handleCheckboxClick: () => handleCheckboxClick(showIndentedTasks, 'showIndentedTasks'),
+									handleCheckboxClick: () =>
+										handleCheckboxClick(showIndentedTasks, 'showIndentedTasks'),
 								}}
 							/>
 
@@ -90,7 +91,12 @@ const OtherSectionCompletedTasks = () => {
 								{...{
 									name: 'Limit Text Width',
 									showValue: limitTextWidth,
-									handleCheckboxClick: () => handleUpdateUserSettingForPage('focusRecords', 'limitTextWidth', !limitTextWidth),
+									handleCheckboxClick: () =>
+										handleUpdateUserSettingForPage(
+											'focusRecords',
+											'limitTextWidth',
+											!limitTextWidth
+										),
 								}}
 							/>
 
@@ -114,7 +120,12 @@ const OtherSectionCompletedTasks = () => {
 								{...{
 									name: 'Lower Card Opacity',
 									showValue: lowerCardOpacity,
-									handleCheckboxClick: () => handleUpdateUserSettingForPage('focusRecords', 'lowerCardOpacity', !lowerCardOpacity),
+									handleCheckboxClick: () =>
+										handleUpdateUserSettingForPage(
+											'focusRecords',
+											'lowerCardOpacity',
+											!lowerCardOpacity
+										),
 								}}
 							/>
 

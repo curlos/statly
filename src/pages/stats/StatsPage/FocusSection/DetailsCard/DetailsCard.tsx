@@ -75,7 +75,7 @@ const DetailsCard = () => {
 		'group-by': getGroupBy(),
 		'interval-start-date': apiStartDate ?? undefined,
 		'interval-end-date': apiEndDate ?? undefined,
-		'nested': showNestedProgressBars,
+		nested: showNestedProgressBars,
 	});
 
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
@@ -85,10 +85,14 @@ const DetailsCard = () => {
 	const { projectsById } = fetchedProjects || {};
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams, {
-		skip: shouldSkipQuery
+	const {
+		data: statsData,
+		isLoading,
+		isFetching,
+	} = useGetFocusStatsQuery(queryParams, {
+		skip: shouldSkipQuery,
 	});
-	const { ancestorTasksById } = statsData || {}
+	const { ancestorTasksById } = statsData || {};
 
 	const focusDurationForInterval = statsData?.summary?.totalDuration || 0;
 
@@ -96,11 +100,11 @@ const DetailsCard = () => {
 	const { progressBarData, aggregationResults } = useMemo(() => {
 		let data: ProgressBarItemData[];
 		if (selected === 'Project') {
-			data = (statsData?.byProject && statsData.byProject.length > 0) ? statsData.byProject : noData;
+			data = statsData?.byProject && statsData.byProject.length > 0 ? statsData.byProject : noData;
 		} else if (selected === 'Task') {
-			data = (statsData?.byTask && statsData.byTask.length > 0) ? statsData.byTask : noData;
+			data = statsData?.byTask && statsData.byTask.length > 0 ? statsData.byTask : noData;
 		} else if (selected === 'Emotion') {
-			data = (statsData?.byEmotion && statsData.byEmotion.length > 0) ? statsData.byEmotion : noData;
+			data = statsData?.byEmotion && statsData.byEmotion.length > 0 ? statsData.byEmotion : noData;
 		} else {
 			data = noData;
 		}
@@ -148,7 +152,7 @@ const DetailsCard = () => {
 			const byEmotionWithTasks = statsData.byEmotionWithTasks;
 
 			// Process each emotion's data separately
-			Object.keys(byEmotionWithTasks).forEach(emotionId => {
+			Object.keys(byEmotionWithTasks).forEach((emotionId) => {
 				const emotionData = byEmotionWithTasks[emotionId];
 				const emotionTaskData = emotionData.byTask;
 				const emotionAncestorTasksById = emotionData.ancestorTasksById;
@@ -182,28 +186,30 @@ const DetailsCard = () => {
 					return {
 						...item,
 						name: emotion?.name || item.name,
-						color: emotion?.hex || 'bg-gray-500/70'
+						color: emotion?.hex || 'bg-gray-500/70',
 					};
 				}
 
 				// Handle project/task types
-				const projectId = item.type === 'project' ? item.id : (item.projectId || '');
+				const projectId = item.type === 'project' ? item.id : item.projectId || '';
 
-				let name = item.type === 'project' ? projectsById && (projectsById[projectId]?.name || projectId) : item.name
+				let name =
+					item.type === 'project' ? projectsById && (projectsById[projectId]?.name || projectId) : item.name;
 
 				// If no projectName, it's from a non-TickTick/Session app - use the app name
 				if (name && name in sourceToAppName) {
 					name = sourceToAppName[projectId] || 'Inbox';
 				}
 
-				const color = projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080'
+				const color =
+					projectsById && projectsById[projectId]?.color ? projectsById[projectId].color : '#808080';
 
 				return {
 					...item,
 					name,
-					color
-				}
-			})
+					color,
+				};
+			});
 		}
 
 		return { progressBarData: data, aggregationResults };
@@ -226,18 +232,28 @@ const DetailsCard = () => {
 		const CardTag = fromModal ? 'div' : 'section';
 
 		return (
-			<CardTag className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative" aria-labelledby={fromModal ? undefined : 'details-heading'}>
+			<CardTag
+				className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-full relative"
+				aria-labelledby={fromModal ? undefined : 'details-heading'}
+			>
 				<div className="flex gap-4">
 					<div className="md:flex justify-between items-center gap-2 w-full">
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
-							<h2 id={fromModal ? 'details-modal-heading' : 'details-heading'} className="font-bold text-[16px]">Details</h2>
+							<h2
+								id={fromModal ? 'details-modal-heading' : 'details-heading'}
+								className="font-bold text-[16px]"
+							>
+								Details
+							</h2>
 							{(isLoading || isFetching) && <Spinner size="md" />}
 
 							{fromModal && (
 								<button
 									type="button"
 									aria-label="Close"
-									className={classNames('bg-transparent border-0 p-0 cursor-pointer ml-auto sm:hidden')}
+									className={classNames(
+										'bg-transparent border-0 p-0 cursor-pointer ml-auto sm:hidden'
+									)}
 									onClick={() => setIsModalOpen(false)}
 								>
 									<Icon
@@ -256,7 +272,9 @@ const DetailsCard = () => {
 							<div className="flex items-center gap-2">
 								<button
 									type="button"
-									aria-label={showNestedProgressBars ? 'Switch to flat view' : 'Switch to nested view'}
+									aria-label={
+										showNestedProgressBars ? 'Switch to flat view' : 'Switch to nested view'
+									}
 									className="bg-transparent border-0 p-0 cursor-pointer"
 									onClick={() => setShowNestedProgressBars(!showNestedProgressBars)}
 								>
@@ -272,7 +290,11 @@ const DetailsCard = () => {
 
 								<button
 									type="button"
-									aria-label={sortBy === 'Focus Time: Most-Least' ? 'Sort by least focus time' : 'Sort by most focus time'}
+									aria-label={
+										sortBy === 'Focus Time: Most-Least'
+											? 'Sort by least focus time'
+											: 'Sort by most focus time'
+									}
 									className="bg-transparent border-0 p-0 cursor-pointer"
 									onClick={() =>
 										setSortBy(
@@ -338,7 +360,9 @@ const DetailsCard = () => {
 
 				<div className="flex-1 mt-2 flex flex-col sm:flex-row items-center sm:gap-3 md:gap-10 md:px-4">
 					<div>
-						<p className="sr-only">Pie chart showing focus time breakdown by project, task, or emotion category.</p>
+						<p className="sr-only">
+							Pie chart showing focus time breakdown by project, task, or emotion category.
+						</p>
 						<PieChart width={220} height={220} accessibilityLayer={true}>
 							<Pie
 								data={progressBarData}
@@ -349,14 +373,23 @@ const DetailsCard = () => {
 								paddingAngle={getPieChartPaddingAngle(progressBarData.length)}
 								dataKey="percentage"
 							>
-								{progressBarData.map((entry: { id: string; name?: string; percentage?: number; color?: string }, index: number) => (
-									<Cell
-										key={entry.id ? `${entry.id}-index` : index}
-										fill={entry.color}
-										stroke="none"
-										aria-label={entry.id === 'No Data' ? 'No data' : `${entry.name}: ${entry.percentage}%`}
-									/>
-								))}
+								{progressBarData.map(
+									(
+										entry: { id: string; name?: string; percentage?: number; color?: string },
+										index: number
+									) => (
+										<Cell
+											key={entry.id ? `${entry.id}-index` : index}
+											fill={entry.color}
+											stroke="none"
+											aria-label={
+												entry.id === 'No Data'
+													? 'No data'
+													: `${entry.name}: ${entry.percentage}%`
+											}
+										/>
+									)
+								)}
 
 								<Label
 									position="center"
@@ -436,7 +469,9 @@ const DetailsCard = () => {
 				contentRef={scrollableContainerRef}
 				ariaLabelledBy="details-modal-heading"
 			>
-				<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2">{getCoreDetailsCard(isModalOpen)}</div>
+				<div className="ui-theme-bare rounded-xl shadow-lg bg-color-gray-600 p-2">
+					{getCoreDetailsCard(isModalOpen)}
+				</div>
 			</Modal>
 		</div>
 	);

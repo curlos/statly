@@ -205,7 +205,12 @@ export const hasTopDecor = (decor: LandColors['decor']) => !!decor && !!TOP_BUIL
 export const buildTopDecor = (decor: Decor, side: number) => TOP_BUILDERS[decor]?.(side) ?? [];
 
 // Details on the side walls: lava dripping down the volcano, sandstone strata in the desert, and glints in the space rock.
-export const buildWallDecor = (decor: LandColors['decor'], label: string, side: number, getEdgePoint: EdgePoint): WallShape[] => {
+export const buildWallDecor = (
+	decor: LandColors['decor'],
+	label: string,
+	side: number,
+	getEdgePoint: EdgePoint
+): WallShape[] => {
 	if (decor === 'volcano') {
 		const streaks = new Path2D();
 		const drops = new Path2D();

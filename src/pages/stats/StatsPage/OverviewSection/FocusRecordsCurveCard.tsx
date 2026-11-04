@@ -55,18 +55,22 @@ const FocusRecordsCurveCard = () => {
 			}
 		});
 
-		const averageCount = intervalsWithAtLeastOneFocusRecord === 0
-			? 0
-			: totalCount / intervalsWithAtLeastOneFocusRecord;
+		const averageCount =
+			intervalsWithAtLeastOneFocusRecord === 0 ? 0 : totalCount / intervalsWithAtLeastOneFocusRecord;
 
 		return `Average: ${averageCount.toFixed(2)} records`;
 	};
 
 	return (
-		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] relative" aria-labelledby="focus-records-curve-heading">
+		<section
+			className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[350px] relative"
+			aria-labelledby="focus-records-curve-heading"
+		>
 			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-2">
-					<h2 id="focus-records-curve-heading" className="font-bold text-[16px]">Focus Records Curve</h2>
+					<h2 id="focus-records-curve-heading" className="font-bold text-[16px]">
+						Focus Records Curve
+					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -112,7 +116,7 @@ const FocusRecordsCurveCard = () => {
 						top: 10,
 						right: 30,
 						left: 0,
-						bottom: (selectedInterval === 'Week' || selectedInterval === 'Custom') ? 20 : 5,
+						bottom: selectedInterval === 'Week' || selectedInterval === 'Custom' ? 20 : 5,
 					}}
 				>
 					<defs>
@@ -123,7 +127,10 @@ const FocusRecordsCurveCard = () => {
 					</defs>
 					<CartesianGrid strokeDasharray="5" strokeOpacity={0.3} stroke="var(--color-gray-25)" />
 					<XAxis dataKey="name" dy={7} tick={{ fill: 'var(--color-gray-50)' }} />
-					<YAxis tickFormatter={(value: number) => value.toLocaleString()} tick={{ fill: 'var(--color-gray-50)' }} />
+					<YAxis
+						tickFormatter={(value: number) => value.toLocaleString()}
+						tick={{ fill: 'var(--color-gray-50)' }}
+					/>
 					<Tooltip
 						offset={10}
 						contentStyle={{
@@ -143,7 +150,9 @@ const FocusRecordsCurveCard = () => {
 								return (
 									<div className={classNames(textColor, 'bg-black p-2 rounded-md')}>
 										<div>{nameToUse}</div>
-										<div className="font-bold">{score.toLocaleString()} {unit}</div>
+										<div className="font-bold">
+											{score.toLocaleString()} {unit}
+										</div>
 									</div>
 								);
 							}
@@ -154,7 +163,13 @@ const FocusRecordsCurveCard = () => {
 							return null;
 						}}
 					/>
-					<Area type="monotone" dataKey="score" stroke={hexColor} strokeWidth={getStrokeWidthByDataLength(data.length)} fill="url(#colorPv)" />
+					<Area
+						type="monotone"
+						dataKey="score"
+						stroke={hexColor}
+						strokeWidth={getStrokeWidthByDataLength(data.length)}
+						fill="url(#colorPv)"
+					/>
 				</AreaChart>
 			</ResponsiveContainer>
 

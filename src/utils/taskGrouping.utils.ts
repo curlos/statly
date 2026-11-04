@@ -48,13 +48,13 @@ export function groupTasksByName(
 					[metricKey]: 1,
 					percentage: item.percentage,
 					type: 'task',
-					isGrouped: false // Will be true if we find another instance
+					isGrouped: false, // Will be true if we find another instance
 				};
 			} else {
 				// Subsequent occurrence - increment count and percentage
 				const existing = standaloneTasksByName[taskName]!;
 				existing[metricKey] = (existing[metricKey] ?? 0) + 1;
-				existing.percentage = ((existing[metricKey]!) / totalCount) * 100;
+				existing.percentage = (existing[metricKey]! / totalCount) * 100;
 				existing.isGrouped = true;
 			}
 		} else {
@@ -64,9 +64,9 @@ export function groupTasksByName(
 	});
 
 	// Convert grouped tasks to array and format percentages
-	const groupedStandaloneTasks = Object.values(standaloneTasksByName).map(task => ({
+	const groupedStandaloneTasks = Object.values(standaloneTasksByName).map((task) => ({
 		...task,
-		percentage: Number(task.percentage.toFixed(2))
+		percentage: Number(task.percentage.toFixed(2)),
 	}));
 
 	return [...tasksWithChildren, ...groupedStandaloneTasks];
@@ -103,7 +103,7 @@ export function groupTasksByParent(
 				color: item.color,
 				[metricKey]: 0,
 				percentage: 0,
-				type: 'task'
+				type: 'task',
 			};
 		}
 
@@ -114,7 +114,7 @@ export function groupTasksByParent(
 	// Calculate percentages and convert to array
 	const groupedArray = Object.values(groupedByParent).map((item) => ({
 		...item,
-		percentage: Number((((item[metricKey] ?? 0) / totalCount) * 100).toFixed(2))
+		percentage: Number((((item[metricKey] ?? 0) / totalCount) * 100).toFixed(2)),
 	}));
 
 	// Apply name-based grouping to consolidate daily habit tasks

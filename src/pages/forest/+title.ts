@@ -1,1 +1,1 @@
-export default "Forest - Statly";
+export default 'Forest - Statly';

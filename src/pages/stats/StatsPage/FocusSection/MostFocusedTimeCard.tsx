@@ -44,21 +44,30 @@ const MostFocusedTimeCard = () => {
 	const { shouldSkipQuery } = useApplyDefaultDateRangeContext();
 
 	// Fetch stats from API
-	const { data: statsData, isLoading, isFetching } = useGetFocusStatsQuery(queryParams, {
-		skip: shouldSkipQuery
+	const {
+		data: statsData,
+		isLoading,
+		isFetching,
+	} = useGetFocusStatsQuery(queryParams, {
+		skip: shouldSkipQuery,
 	});
 
 	// Transform API data to chart format
 	const data = (statsData?.byHour || []).map((hourData: StatsByHourItem) => ({
 		name: convertTo12HourFormat(`${hourData.hour.toString().padStart(2, '0')}:00`),
-		seconds: hourData.duration
+		seconds: hourData.duration,
 	}));
 
 	return (
-		<section className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px] relative" aria-labelledby="most-focused-time-heading">
-			<div className={classNames("flex justify-between items-center", selectedInterval === 'All' && 'mb-6')}>
+		<section
+			className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px] relative"
+			aria-labelledby="most-focused-time-heading"
+		>
+			<div className={classNames('flex justify-between items-center', selectedInterval === 'All' && 'mb-6')}>
 				<div className="flex items-center gap-2">
-					<h2 id="most-focused-time-heading" className="font-bold text-[16px]">Most Focused Time</h2>
+					<h2 id="most-focused-time-heading" className="font-bold text-[16px]">
+						Most Focused Time
+					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
@@ -84,64 +93,78 @@ const MostFocusedTimeCard = () => {
 			<div className="sm:hidden">{renderDateRangePicker()}</div>
 
 			<div className="flex-1 min-h-0">
-				<p className="sr-only">Bar chart showing focus duration by hour of day, indicating the most productive times.</p>
+				<p className="sr-only">
+					Bar chart showing focus duration by hour of day, indicating the most productive times.
+				</p>
 				<div ref={ariaLiveRef} role="status" aria-live="assertive" aria-atomic="true" className="sr-only" />
 				<ResponsiveContainer width="100%" height="100%">
-				<BarChart
-					width={500}
-					data={data}
-					accessibilityLayer={true}
-					margin={{
-						top: 5,
-						right: 30,
-						left: 20,
-						bottom: 5,
-					}}
-					barSize={10}
-				>
-					<XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} dy={7} minTickGap={20} tick={{ fill: 'var(--color-gray-50)' }} />
-					<YAxis
-						dataKey="seconds"
-						type="number"
-						domain={['dataMin', 'dataMax']}
-						tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
-						tick={{ fill: 'var(--color-gray-50)' }}
-					/>
-					<Tooltip
-						content={({ payload }) => {
-							// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
-							if (payload && payload[0]) {
-								const { name, seconds } = payload[0].payload;
+					<BarChart
+						width={500}
+						data={data}
+						accessibilityLayer={true}
+						margin={{
+							top: 5,
+							right: 30,
+							left: 20,
+							bottom: 5,
+						}}
+						barSize={10}
+					>
+						<XAxis
+							dataKey="name"
+							scale="point"
+							padding={{ left: 10, right: 10 }}
+							dy={7}
+							minTickGap={20}
+							tick={{ fill: 'var(--color-gray-50)' }}
+						/>
+						<YAxis
+							dataKey="seconds"
+							type="number"
+							domain={['dataMin', 'dataMax']}
+							tickFormatter={(value) => `${getFormattedDuration(value, false)}`}
+							tick={{ fill: 'var(--color-gray-50)' }}
+						/>
+						<Tooltip
+							content={({ payload }) => {
+								// "payload" property is an empty array if the tooltip is not active. Otherwise, if it is active, then it'll show an element in the "payload" array.
+								if (payload && payload[0]) {
+									const { name, seconds } = payload[0].payload;
 
-								if (ariaLiveRef.current) {
-									ariaLiveRef.current.textContent = `${name}: ${getFormattedDuration(seconds, false)}`;
+									if (ariaLiveRef.current) {
+										ariaLiveRef.current.textContent = `${name}: ${getFormattedDuration(seconds, false)}`;
+									}
+
+									return (
+										<div
+											className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}
+										>
+											<div>{name}</div>
+											<div className="font-bold">{getFormattedDuration(seconds, false)}</div>
+										</div>
+									);
 								}
 
-								return (
-									<div className={classNames(chosenColorObj.textColor, 'bg-black p-2 rounded-md')}>
-										<div>{name}</div>
-										<div className="font-bold">{getFormattedDuration(seconds, false)}</div>
-									</div>
-								);
-							}
-
-							if (ariaLiveRef.current) {
-								ariaLiveRef.current.textContent = '';
-							}
-							return null;
-						}}
-					/>
-					<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-					<Bar
-						dataKey="seconds"
-						fill={chosenColorObj.hexColor}
-						background={{ fill: colorMode === 'dark' ? '#3a3a3a' : '#c9c9c9' }}
-						// TODO: Write function to get a slightly lighter color to show on hover/active.
-						activeBar={{ fill: nextLightestColorObj?.hexColor || chosenColorObj.hexColor, cursor: 'pointer' }}
-					/>
-				</BarChart>
-			</ResponsiveContainer>
-		</div>
+								if (ariaLiveRef.current) {
+									ariaLiveRef.current.textContent = '';
+								}
+								return null;
+							}}
+						/>
+						<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+						<Bar
+							dataKey="seconds"
+							fill={chosenColorObj.hexColor}
+							background={{ fill: colorMode === 'dark' ? '#3a3a3a' : '#c9c9c9' }}
+							// TODO: Write function to get a slightly lighter color to show on hover/active.
+							activeBar={{
+								fill: nextLightestColorObj?.hexColor || chosenColorObj.hexColor,
+								cursor: 'pointer',
+							}}
+						/>
+					</BarChart>
+				</ResponsiveContainer>
+			</div>
 
 			{renderCustomDateModal()}
 		</section>

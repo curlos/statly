@@ -33,7 +33,10 @@ export const customImageFoldersApi = baseAPI.injectEndpoints({
 			}),
 			invalidatesTags: invalidateOnSuccess(['CustomImageFolder', 'CustomImage'] as const),
 		}),
-		deleteCustomImageFolder: builder.mutation<{ message: string }, { id: string; strategy?: 'moveToGeneral' | 'deleteImages' }>({
+		deleteCustomImageFolder: builder.mutation<
+			{ message: string },
+			{ id: string; strategy?: 'moveToGeneral' | 'deleteImages' }
+		>({
 			query: (args) => {
 				const { id, strategy } = args;
 				return {

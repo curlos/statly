@@ -28,10 +28,14 @@ describe('describeTree', () => {
 	it('lists every project in a shared record, biggest first, and says the total', () => {
 		const text = describeTree(makeTree({ projectSeconds: { jobs: 1260, health: 1380 } }), getProjectName);
 		expect(text.projectLines).toEqual(['Health · 23m', 'Job Hunt · 21m']);
-		expect(text.description).toBe('Health 23 minutes and Job Hunt 21 minutes, 45 minutes in total, October 8, 2026, Jacaranda Tree');
+		expect(text.description).toBe(
+			'Health 23 minutes and Job Hunt 21 minutes, 45 minutes in total, October 8, 2026, Jacaranda Tree'
+		);
 	});
 
 	it('calls a project it does not know by "No Project", and handles a record with no tasks', () => {
-		expect(describeTree(makeTree({ projectId: 'gone', projectSeconds: {} }), getProjectName).title).toBe('No Project');
+		expect(describeTree(makeTree({ projectId: 'gone', projectSeconds: {} }), getProjectName).title).toBe(
+			'No Project'
+		);
 	});
 });

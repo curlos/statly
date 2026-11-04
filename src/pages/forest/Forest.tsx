@@ -5,9 +5,22 @@ import type { ForestTree } from './forestLayout';
 import type { ForestTreeRow } from '../../types/api';
 import { buildDateRangeParams, getDateRangeKey, parseDateRangeParams } from './forestDates';
 import { getBars, getRangeLabel, getSlices } from './forestShare';
-import { getAssignedTree, getPlantedTreeNames, getSeasonalTree, getTreeImageSrc, getTreeDisplayName } from './forestTrees';
+import {
+	getAssignedTree,
+	getPlantedTreeNames,
+	getSeasonalTree,
+	getTreeImageSrc,
+	getTreeDisplayName,
+} from './forestTrees';
 import { describeTree } from './forestText';
-import { LAND_OPTIONS, LAND_STYLES, getAutoLandForDate, getSeasonForDate, isSouthernHemisphereTimeZone, type LandStyleName } from './landStyles';
+import {
+	LAND_OPTIONS,
+	LAND_STYLES,
+	getAutoLandForDate,
+	getSeasonForDate,
+	isSouthernHemisphereTimeZone,
+	type LandStyleName,
+} from './landStyles';
 import Icon from '../../components/Icon';
 import Spinner from '../../components/Loaders/Spinner';
 import ModalForestTrees from '../../components/Modal/ModalForestTrees';
@@ -33,12 +46,19 @@ const Forest = () => {
 	const canvasRef = useRef<ForestCanvasHandle>(null);
 	const legendId = useId();
 
-	const { forestPageSettings: { landStyle, hemisphere, projectTrees }, isLoadingGetUserSettings } = useUserSettingsContext();
+	const {
+		forestPageSettings: { landStyle, hemisphere, projectTrees },
+		isLoadingGetUserSettings,
+	} = useUserSettingsContext();
 
 	// The date range lives in the URL like on the Focus Records page, and today (the default) has no params. The picker starts on whatever the URL says so there is no flash of today first.
 	const { searchParams, updateQueryParams } = useSearchParamsContext();
 	const urlRange = parseDateRangeParams(
-		{ interval: searchParams.get('date-interval'), start: searchParams.get('start-date'), end: searchParams.get('end-date') },
+		{
+			interval: searchParams.get('date-interval'),
+			start: searchParams.get('start-date'),
+			end: searchParams.get('end-date'),
+		},
 		new Date()
 	);
 
@@ -85,7 +105,10 @@ const Forest = () => {
 			return;
 		}
 
-		const timer = setTimeout(() => updateQueryParams(buildDateRangeParams(selectedInterval, selectedDates, new Date())), 50);
+		const timer = setTimeout(
+			() => updateQueryParams(buildDateRangeParams(selectedInterval, selectedDates, new Date())),
+			50
+		);
 		return () => clearTimeout(timer);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [stateKey, urlKey]);
@@ -117,7 +140,10 @@ const Forest = () => {
 	);
 
 	// The words for a tree's tooltip and announcement, made only for the tree being shown
-	const describeForestTree = useCallback((tree: ForestTree) => describeTree(tree, (projectId) => projectsById?.[projectId]?.name || 'No Project'), [projectsById]);
+	const describeForestTree = useCallback(
+		(tree: ForestTree) => describeTree(tree, (projectId) => projectsById?.[projectId]?.name || 'No Project'),
+		[projectsById]
+	);
 
 	// Each project in this forest with its tree, how many trees it grew and how much task time it had. The time is added up from each task, the same way the stats page does, so a record shared by two projects splits its time between them. Also the text version of the picture for screen readers.
 	const legendRows = useMemo(() => {
@@ -149,12 +175,20 @@ const Forest = () => {
 
 	// Time per record for the bar chart, from the same task time as everything else
 	const timeRows = useMemo(
-		() => treeRows.map(({ startTime, projectSeconds }) => ({ startTime, seconds: Object.values(projectSeconds).reduce((total, seconds) => total + seconds, 0) })),
+		() =>
+			treeRows.map(({ startTime, projectSeconds }) => ({
+				startTime,
+				seconds: Object.values(projectSeconds).reduce((total, seconds) => total + seconds, 0),
+			})),
 		[treeRows]
 	);
 
-	const autoSeasonDate = selectedInterval === 'All' ? new Date() : selectedDates[selectedDates.length - 1] || new Date();
-	const timeZoneIsSouthern = useMemo(() => isSouthernHemisphereTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone), []);
+	const autoSeasonDate =
+		selectedInterval === 'All' ? new Date() : selectedDates[selectedDates.length - 1] || new Date();
+	const timeZoneIsSouthern = useMemo(
+		() => isSouthernHemisphereTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone),
+		[]
+	);
 	const isSouthern = hemisphere === 'auto' ? timeZoneIsSouthern : hemisphere === 'southern';
 	const landStyleName =
 		landStyle === 'auto'
@@ -173,7 +207,10 @@ const Forest = () => {
 		navigate(`/focus-records?${params}`);
 	};
 
-	const renderForest = useCallback((width: number, height: number) => canvasRef.current!.renderImage(width, height), []);
+	const renderForest = useCallback(
+		(width: number, height: number) => canvasRef.current!.renderImage(width, height),
+		[]
+	);
 
 	// Everything the share card shows: the range, the total time, the tree count, and the pie and bar data.
 	const shareData = useMemo(
@@ -244,8 +281,12 @@ const Forest = () => {
 
 			{/* On short screens, like a phone held sideways, the forest shrinks so it fits instead of running off the bottom. */}
 			{forestData?.isTruncated && (
-				<p role="status" className="m-0 mt-2 px-2 py-1 rounded-md bg-color-gray-300 text-color-gray-25 text-[14px]">
-					Showing the newest {forestData.rows.length.toLocaleString()} of {forestData.totalRecords.toLocaleString()} trees. Pick a shorter date range to see the older ones.
+				<p
+					role="status"
+					className="m-0 mt-2 px-2 py-1 rounded-md bg-color-gray-300 text-color-gray-25 text-[14px]"
+				>
+					Showing the newest {forestData.rows.length.toLocaleString()} of{' '}
+					{forestData.totalRecords.toLocaleString()} trees. Pick a shorter date range to see the older ones.
 				</p>
 			)}
 
@@ -269,7 +310,9 @@ const Forest = () => {
 
 			{legendRows.length > 0 && (
 				<details id={legendId} open className="mt-3">
-					<summary className="cursor-pointer text-[14px] font-semibold">Projects in this forest ({legendRows.length})</summary>
+					<summary className="cursor-pointer text-[14px] font-semibold">
+						Projects in this forest ({legendRows.length})
+					</summary>
 					{/* Fills down each column before starting the next, so the most focus is at the top left. The row counts match the number of columns at each screen size. */}
 					<ul
 						className="mt-2 max-h-[200px] overflow-y-auto gray-scrollbar grid grid-flow-col auto-cols-[minmax(0,1fr)] grid-rows-[repeat(var(--rows-1),auto)] sm:grid-rows-[repeat(var(--rows-2),auto)] lg:grid-rows-[repeat(var(--rows-3),auto)] gap-x-4 gap-y-1 list-none p-0 m-0"
@@ -285,11 +328,21 @@ const Forest = () => {
 							<li key={projectId || 'no-project'} className="flex items-center gap-2 text-[14px] min-w-0">
 								<span className="flex shrink-0" title={treeNames.map(getTreeDisplayName).join(', ')}>
 									{treeNames.slice(0, 3).map((treeName) => (
-										<img key={treeName} src={getTreeImageSrc(treeName)} alt="" loading="lazy" className="w-6 h-6 object-contain shrink-0 -mr-1 last:mr-0" />
+										<img
+											key={treeName}
+											src={getTreeImageSrc(treeName)}
+											alt=""
+											loading="lazy"
+											className="w-6 h-6 object-contain shrink-0 -mr-1 last:mr-0"
+										/>
 									))}
 								</span>
 								<span className="sr-only">Trees: {treeNames.map(getTreeDisplayName).join(', ')}.</span>
-								<span aria-hidden="true" className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color || 'transparent' }} />
+								<span
+									aria-hidden="true"
+									className="w-2 h-2 rounded-full shrink-0"
+									style={{ backgroundColor: color || 'transparent' }}
+								/>
 								<span className="truncate flex-1">{name}</span>
 								<span className="text-color-gray-50 whitespace-nowrap">
 									{count > 0 && `${count.toLocaleString()} ${count === 1 ? 'tree' : 'trees'} · `}
@@ -304,7 +357,12 @@ const Forest = () => {
 			{renderCustomDateModal()}
 
 			<ModalForestTrees isOpen={isTreesModalOpen} onClose={() => setIsTreesModalOpen(false)} />
-			<ModalShareForest isOpen={isShareModalOpen} onClose={() => setIsShareModalOpen(false)} data={shareData} renderForest={renderForest} />
+			<ModalShareForest
+				isOpen={isShareModalOpen}
+				onClose={() => setIsShareModalOpen(false)}
+				data={shareData}
+				renderForest={renderForest}
+			/>
 		</div>
 	);
 };
