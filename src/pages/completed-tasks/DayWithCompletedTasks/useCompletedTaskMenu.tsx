@@ -5,6 +5,8 @@ import { serializeTaskToMarkdown } from '../../../utils/completedTasks.utils';
 import { Task } from '../../../types/models';
 import { AncestorTask } from '../../../types/api';
 import { showToast } from '../../../slices/toastSlice';
+import { useSelector } from 'react-redux';
+import { selectIsGuest } from '../../../slices/userSlice';
 
 interface UseCompletedTaskMenuParams {
 	task: Task | AncestorTask;
@@ -18,6 +20,7 @@ export const useCompletedTaskMenu = ({ task }: UseCompletedTaskMenuParams) => {
 	const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
 	// Delete modal state
+	const isGuest = useSelector(selectIsGuest);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [bulkDeleteTasks, { isLoading: isDeleting }] = useBulkDeleteTasksMutation();
 
@@ -58,6 +61,7 @@ export const useCompletedTaskMenu = ({ task }: UseCompletedTaskMenuParams) => {
 			icon: 'delete',
 			label: 'Delete Task',
 			onClick: () => setDeleteModalOpen(true),
+			guestDisabled: isGuest,
 			isDanger: true,
 		},
 	];

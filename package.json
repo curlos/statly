@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "formatAllFilesPrettier": "npx prettier --write '**/*.{ts,tsx}'",
     "test": "jest",
+    "test:watch": "jest --watchAll",
     "start-electron": "electron .",
     "build-electron": "electron-builder",
     "compress-images": "node scripts/compressImgurImages.js"

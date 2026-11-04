@@ -8,6 +8,7 @@ import CookieInstructions from './CookieInstructions';
 import CookieSection from './CookieSection';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Tooltip from '../Tooltip';
+import GuestDisabled from '../GuestDisabled';
 
 interface SyncMetadata {
 	lastSyncTime: string;
@@ -94,7 +95,7 @@ const SyncSection = () => {
 			</div>
 
 			{/* Cookie Input Section */}
-			<CookieSection />
+			<GuestDisabled><CookieSection /></GuestDisabled>
 
 			<div className="mt-4">
 				<Accordion

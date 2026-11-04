@@ -8,6 +8,8 @@ import { getFormattedShortMonthDay } from '../../../utils/date.utils';
 import { showToast } from '../../../slices/toastSlice';
 import type { Task, Project } from '../../../types/models';
 import type { AncestorTask } from '../../../types/api';
+import { useSelector } from 'react-redux';
+import { selectIsGuest } from '../../../slices/userSlice';
 
 // API Response Types
 interface ParentTaskData {
@@ -67,6 +69,7 @@ export const useDayCardMenu = ({
 	const dropdownToggleRef = useRef<HTMLDivElement>(null);
 
 	// Delete modal state
+	const isGuest = useSelector(selectIsGuest);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [bulkDeleteTasks, { isLoading: isDeleting }] = useBulkDeleteTasksMutation();
 
@@ -171,6 +174,7 @@ export const useDayCardMenu = ({
 			icon: 'delete',
 			label: `Delete ${completedTasksForDay.length} Tasks`,
 			onClick: () => setDeleteModalOpen(true),
+			guestDisabled: isGuest,
 			isDanger: true,
 		},
 	];

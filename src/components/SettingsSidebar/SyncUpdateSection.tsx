@@ -4,6 +4,7 @@ import AnalyzeNoteEmotions from '../FilterSidebar/AnalyzeNoteEmotions';
 import RevalidateCrossesMidnight from '../FilterSidebar/RevalidateCrossesMidnight';
 import CheckboxOther from '../FilterSidebar/CheckboxOther';
 import { useUserSettingsContext } from '../../pages/focus-records/useUserSettingsContext';
+import GuestDisabled from '../GuestDisabled';
 
 const SyncUpdateSection = () => {
 	const {
@@ -38,7 +39,7 @@ const SyncUpdateSection = () => {
 				customToggleOpen={undefined}
 				preventOpen={false}
 			>
-				<AnalyzeNoteEmotions />
+				<GuestDisabled><AnalyzeNoteEmotions /></GuestDisabled>
 
 				<div className="mt-4 ml-6">
 					<CheckboxOther
@@ -51,7 +52,7 @@ const SyncUpdateSection = () => {
 				</div>
 
 				<div className="mt-4">
-					<RevalidateCrossesMidnight />
+					<GuestDisabled><RevalidateCrossesMidnight /></GuestDisabled>
 				</div>
 			</Accordion>
 		</div>

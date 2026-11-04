@@ -1,6 +1,8 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { logoutUser } from '../../slices/userSlice';
+import { showToast } from '../../slices/toastSlice';
+import { GUEST_DISABLED_MESSAGE, getGuestRequestAction, isGuestToken, saveGuestSettingsPatch, withGuestRingsHeader } from '../../utils/guest.utils';
 
 interface RootState {
 	user: {
@@ -19,6 +21,7 @@ interface ViteImportMeta {
 const PUBLIC_ENDPOINTS = new Set([
 	'/users/register',
 	'/users/login',
+	'/users/guest',
 ]);
 
 const isPublicEndpoint = (url: string): boolean => {
@@ -57,6 +60,34 @@ export const createAuthenticatedBaseQuery = (): BaseQueryFn<
 
 		if (isPublicEndpoint(url)) {
 			return await baseQuery(args, api, extraOptions);
+		}
+
+		// Guests share one account so nothing they do is ever sent to be saved. Their settings changes are kept in their own browser instead.
+		const isGuest = isGuestToken(token);
+		const method = typeof args === 'string' ? 'GET' : (args.method || 'GET');
+		const body = typeof args === 'string' ? undefined : args.body;
+		const guestAction = isGuest ? getGuestRequestAction(method, url, body) : 'allow';
+
+		if (guestAction === 'save-locally') {
+			saveGuestSettingsPatch(body as Record<string, unknown>);
+			return { data: { guestLocal: true } };
+		}
+
+		if (guestAction === 'block') {
+			api.dispatch(showToast(GUEST_DISABLED_MESSAGE));
+			return {
+				error: {
+					status: 'CUSTOM_ERROR',
+					error: 'Guest mode',
+					data: {
+						message: GUEST_DISABLED_MESSAGE,
+					},
+				} as FetchBaseQueryError,
+			};
+		}
+
+		if (isGuest) {
+			args = withGuestRingsHeader(args);
 		}
 
 		// Allow if: public endpoint OR has token

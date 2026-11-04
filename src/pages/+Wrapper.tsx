@@ -27,12 +27,14 @@ import { SearchParamsProvider } from '../contexts/useSearchParamsContext';
 import { UserSettingsProvider } from './focus-records/useUserSettingsContext';
 import { ApplyDefaultDateRangeProvider } from '../contexts/ApplyDefaultDateRangeContext';
 import { usePageContext } from 'vike-react/usePageContext';
-import { selectUserToken, loginUserSuccess } from '../slices/userSlice';
+import { selectUserToken, selectIsGuest, loginUserSuccess } from '../slices/userSlice';
 import { navigate } from 'vike/client/router';
 import { useAutoSync } from '../hooks/useAutoSync';
+import { handleLogout } from '../utils/logout.utils';
 import { FontLoadingProvider } from '../contexts/useFontLoadingContext';
 import { useGetLoggedInUserQuery } from '../services/resources/usersApi';
 import Toast from '../components/Toast';
+import GuestTooltip from '../components/GuestTooltip';
 import CopicFilterDefs from '../components/CopicFilterDefs';
 import { useEffect } from 'react';
 
@@ -71,7 +73,7 @@ const ProviderList: React.FC<ProviderListProps> = ({ children }) => {
 		}
 	}, [userData, isLoggedIn, dispatch]);
 
-	const isOnLoginOrSignupPage = pageRoute === '/login' || pageRoute === '/signup';
+	const isOnLoginOrSignupPage = pageRoute === '/login' || pageRoute === '/signup' || pageRoute === '/demo';
 
 	if (!isLoggedIn) {
 		// If not on login/signup page, navigate there
@@ -116,6 +118,9 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 	const themeContext = useThemeContext();
 	const { selectedFontFamilyKey, uiTheme } = themeContext;
 
+	const isGuest = useSelector(selectIsGuest);
+	const dispatch = useDispatch();
+
 	useAutoSync();
 
 	const globalStyle = {
@@ -125,6 +130,15 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 
 	return (
 		<div className={globalClasses} style={globalStyle}>
+			{isGuest && (
+				<div role="status" className="bg-color-gray-300 text-center text-[14px] py-1 px-4">
+					You're in demo mode. Changes to settings only affect your browser.{' '}
+					<button type="button" className="underline font-semibold" onClick={() => handleLogout(dispatch, '/signup')}>
+						Sign up to connect your own TickTick
+					</button>
+				</div>
+			)}
+
 			{children}
 
 			{/* Modals */}
@@ -132,6 +146,9 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 
 			{/* Toast notifications */}
 			<Toast />
+
+			{/* Says why something is turned off, when the mouse is over it in demo mode */}
+			{isGuest && <GuestTooltip />}
 
 			{/* Copic marker texture filter for charts in the Ink & Marker UI theme */}
 			{uiTheme === 'ink-marker' && <CopicFilterDefs />}

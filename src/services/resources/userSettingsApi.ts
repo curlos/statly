@@ -1,6 +1,6 @@
 import { baseAPI } from '../api';
-import { invalidateOnSuccess } from '../utils/rtkHelpers';
 import { applySettingsPatch } from '../../utils/settingsPatch';
+import { applyGuestSettingsPatches, isGuestToken } from '../../utils/guest.utils';
 import type { GetUserSettingsResponse, UserSettings } from '../../types/api';
 
 export const userSettingsApi = baseAPI.injectEndpoints({
@@ -12,6 +12,9 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 			providesTags: ['UserSettings'],
 			transformResponse: (response: UserSettings): GetUserSettingsResponse => {
 				const userSettings = response;
+				if (isGuestToken(localStorage.getItem('token'))) {
+					applyGuestSettingsPatches(userSettings as unknown as Record<string, unknown>);
+				}
 				return { userSettings };
 			},
 		}),
@@ -43,7 +46,16 @@ export const userSettingsApi = baseAPI.injectEndpoints({
 					patchResult.undo();
 				}
 			},
-			invalidatesTags: invalidateOnSuccess(['UserSettings', 'TodayFocus', 'StreakHistory', 'CombinedStreakHistory'] as const),
+			invalidatesTags: (result, error) => {
+				if (error) {
+					return [];
+				}
+				// A guest's change only exists in their browser so the settings themselves don't need fetching, but their streaks do
+				if ((result as { guestLocal?: boolean } | undefined)?.guestLocal) {
+					return ['TodayFocus', 'StreakHistory', 'CombinedStreakHistory'];
+				}
+				return ['UserSettings', 'TodayFocus', 'StreakHistory', 'CombinedStreakHistory'];
+			},
 		}),
 		getDocumentCounts: builder.query({
 			query: () => `/user-settings/document-counts`,

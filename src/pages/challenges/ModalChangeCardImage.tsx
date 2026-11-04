@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { useSelector } from 'react-redux';
 import Icon from '../../components/Icon';
 import Modal from '../../components/Modal/Modal';
 import LazyImage from '../../components/LazyImage';
@@ -15,6 +16,7 @@ import { debounce } from '../../utils/helpers.utils';
 import Pagination from '../../components/Pagination';
 import CustomImagesSection from '../../components/CustomImagesSection/CustomImagesSection';
 import { useCustomFolderNames } from '../../hooks/useCustomFolderNames';
+import { selectIsGuest } from '../../slices/userSlice';
 
 type PageType = 'challenges' | 'medals' | 'focus-records' | 'completed-tasks';
 type CardType = 'focus' | 'tasks' | 'background';
@@ -36,11 +38,14 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 
 	const [editUserSettings] = useEditUserSettingsMutation();
 
+	// Guests can't use custom images, so none of that is fetched or shown for them
+	const isGuest = useSelector(selectIsGuest);
+
 	// RTK Query - Custom Images
-	const { data: customImages } = useGetCustomImagesQuery();
+	const { data: customImages } = useGetCustomImagesQuery(undefined, { skip: isGuest });
 
 	// Custom folder names hook
-	const customFolderNames = useCustomFolderNames();
+	const customFolderNames = useCustomFolderNames(isGuest);
 
 	const {
 		challengesPageSettings: { selectedChallengeCardImage },
@@ -403,7 +408,7 @@ const ModalChangeCardImage: React.FC<ModalChangeCardImageProps> = ({ showModal, 
 								"MW2019 (WEAPON CAMOS)",
 								"POKEMON TCG CARDS",
 								"TICKTICK (BADGES)",
-								"CUSTOM",
+								...(isGuest ? [] : ["CUSTOM"]),
 							]}
 							onClick={(selectedOption: string) => {
 								setSelectedGame(selectedOption);

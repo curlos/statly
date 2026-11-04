@@ -257,3 +257,8 @@
   .CircularProgressbar .CircularProgressbar-path {
     stroke-linecap: butt;
   }
+/* The game UI themes give every button, tab and menu item their pointing-hand cursor. Disabled controls (and everything inside a disabled fieldset, like the guest mode ones) should show the not-allowed cursor instead. The extra specificity is what lets this beat the theme rules. */
+[data-ui-theme] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], label, select, input, .cursor-pointer):is(:disabled, [aria-disabled='true']),
+[data-ui-theme] fieldset:disabled * {
+	cursor: not-allowed;
+}

@@ -10,9 +10,9 @@ import type { AppDispatch } from '../types/redux';
  * - Clears user state from Redux (removes token)
  * - Resets all Redux slices
  * - Clears all localStorage and sessionStorage
- * - Reloads the page to ensure complete state cleanup
+ * - Reloads the page to ensure complete state cleanup, ending up on the login page unless told otherwise
  */
-export const handleLogout = (dispatch: AppDispatch) => {
+export const handleLogout = (dispatch: AppDispatch, redirectTo = '/login') => {
 	// 1. Clear the user state/token from Redux
 	dispatch(logoutUser());
 
@@ -28,5 +28,5 @@ export const handleLogout = (dispatch: AppDispatch) => {
 
 	// 4. Reload the page to ensure complete cleanup of all state
 	// This prevents any cached data from persisting between user sessions
-	window.location.href = '/login';
+	window.location.href = redirectTo;
 };

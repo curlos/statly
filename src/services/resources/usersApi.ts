@@ -51,6 +51,21 @@ export const usersApi = baseAPI.injectEndpoints({
 			},
 			invalidatesTags: invalidateOnSuccess(['User'] as const),
 		}),
+		loginAsGuest: builder.mutation<AuthResponse, void>({
+			query: () => ({
+				url: '/users/guest',
+				method: 'POST',
+			}),
+			onQueryStarted: async (_arg, { queryFulfilled, dispatch }) => {
+				try {
+					const { data } = await queryFulfilled;
+					dispatch(loginUserSuccess(data));
+				} catch (error) {
+					console.error('Guest login failed:', error);
+				}
+			},
+			invalidatesTags: invalidateOnSuccess(['User'] as const),
+		}),
 		updateUserProfile: builder.mutation<User, FormData>({
 			query: (formData) => ({
 				url: '/users/update-profile',
@@ -73,6 +88,7 @@ export const {
 	useGetLoggedInUserQuery,
 	useRegisterUserMutation,
 	useLoginUserMutation,
+	useLoginAsGuestMutation,
 	useUpdateUserProfileMutation,
 	useUpdateUserPasswordMutation,
 } = usersApi;

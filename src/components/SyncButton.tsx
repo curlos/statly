@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from './Icon';
 import { useGetSyncMetadataQuery } from '../services/resources/syncApi';
 import { intlFormatDistance } from 'date-fns';
 import Tooltip from './Tooltip';
 import { setShowFirstSyncModal } from '../slices/syncSlice';
+import { selectIsGuest } from '../slices/userSlice';
 import { isFirstTimeTickTickSync, type SyncMetadata } from '../utils/syncHelpers';
 import { useSyncOrchestration } from '../hooks/useSyncOrchestration';
 import { useSyncStatusHelpers } from '../hooks/useSyncStatusHelpers';
@@ -35,6 +36,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 	const { getStatusIcon } = useSyncStatusHelpers();
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
 	const { userSettings } = fetchedUserSettings || {};
+	const isGuest = useSelector(selectIsGuest);
 
 	const [syncMessage, setSyncMessage] = useState('');
 	const prevIsSyncing = useRef(false);
@@ -115,11 +117,14 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 	const buttonContent = (
 		<button
 			type="button"
-			onClick={handleSync}
+			// For a guest it isn't natively disabled so the hover message (GuestTooltip) can show, and clicking it does nothing
+			onClick={isGuest ? undefined : handleSync}
 			disabled={isSyncing || !syncMetadata}
+			aria-disabled={isGuest || undefined}
+			data-guest-disabled={isGuest || undefined}
 			aria-label={showText ? undefined : (isSyncing ? 'Syncing in progress' : 'Sync Now')}
 			aria-busy={isSyncing}
-			className={customClass || 'flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed'}
+			className={`${customClass || 'flex items-center gap-2 px-3 py-2 bg-color-gray-300 hover:bg-color-gray-200 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed'}${isGuest ? ' opacity-50 cursor-not-allowed' : ''}`}
 		>
 			<Icon
 				name="sync"
@@ -134,7 +139,7 @@ const SyncButton = ({ showText = true, customClass = '', showTooltip = false }: 
 	return (
 		<>
 			<span role="status" className="sr-only">{syncMessage}</span>
-			{showTooltip ? (
+			{showTooltip && !isGuest ? (
 				<Tooltip content={getTooltipContent()} position="bottom" tabIndex={-1}>
 					{buttonContent}
 				</Tooltip>

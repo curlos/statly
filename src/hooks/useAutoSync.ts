@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetSyncMetadataQuery } from '../services/resources/syncApi';
 import { setShowFirstSyncModal } from '../slices/syncSlice';
 import { isFirstTimeTickTickSync, type SyncMetadata } from '../utils/syncHelpers';
 import { useSyncOrchestration } from './useSyncOrchestration';
 import { useGetUserSettingsQuery } from '../services/resources/userSettingsApi';
+import { selectIsGuest } from '../slices/userSlice';
 
 export const useAutoSync = () => {
 	const dispatch = useDispatch();
@@ -13,10 +14,11 @@ export const useAutoSync = () => {
 	const hasTriggeredSync = useRef(false);
 	const { data: fetchedUserSettings } = useGetUserSettingsQuery(undefined);
 	const { userSettings } = fetchedUserSettings || {};
+	const isGuest = useSelector(selectIsGuest);
 
 	useEffect(() => {
-		// Early return if auto sync is disabled
-		if (!userSettings?.autoSyncEnabled) {
+		// Early return if auto sync is disabled. Guests can flip the setting but never actually sync.
+		if (!userSettings?.autoSyncEnabled || isGuest) {
 			return;
 		}
 
@@ -56,5 +58,5 @@ export const useAutoSync = () => {
 
 			performSync();
 		}
-	}, [syncTickTickData, isSyncing, syncMetadata, dispatch, isLoadingMetadata, userSettings]);
+	}, [syncTickTickData, isSyncing, syncMetadata, dispatch, isLoadingMetadata, userSettings, isGuest]);
 };

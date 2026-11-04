@@ -7,6 +7,7 @@ import UpdateArchivedProjects from "../../SidebarModal/OtherSection/UpdateArchiv
 import DeleteDataSection from "./DeleteDataSection";
 import CheckboxOther from "../../FilterSidebar/CheckboxOther";
 import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../../../services/resources/userSettingsApi';
+import GuestDisabled from '../../GuestDisabled';
 
 const ManageDataSection = () => {
 	const [activeTab, setActiveTab] = useState<'data-operations' | 'delete-data'>('data-operations');
@@ -70,12 +71,12 @@ const ManageDataSection = () => {
 								handleCheckboxClick={handleAutoSyncToggle}
 							/>
 						</div>
-						<UpdateArchivedProjects />
+						<GuestDisabled><UpdateArchivedProjects /></GuestDisabled>
 						<BackupData />
-						<ImportData />
+						<GuestDisabled><ImportData /></GuestDisabled>
 					</div>
 				)}
-				{activeTab === 'delete-data' && <DeleteDataSection />}
+				{activeTab === 'delete-data' && <GuestDisabled><DeleteDataSection /></GuestDisabled>}
 			</div>
 		</div>
 	);

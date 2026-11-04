@@ -6,6 +6,8 @@ import { useFocusRecordsQuery } from '../useFocusRecordsQuery';
 import { useGetProjectsQuery } from '../../../services/resources/projectsApi';
 import { showToast } from '../../../slices/toastSlice';
 import type { FocusRecord, Task, Project } from '../../../types/models';
+import { useSelector } from 'react-redux';
+import { selectIsGuest } from '../../../slices/userSlice';
 
 interface UseFocusRecordMenuParams {
 	focusRecord: FocusRecord;
@@ -34,6 +36,7 @@ export const useFocusRecordMenu = ({
 	// Context menu state
 	const [contextMenuVisible, setContextMenuVisible] = useState(false);
 	const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+	const isGuest = useSelector(selectIsGuest);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [deleteFocusRecord, { isLoading: isDeleting }] = useDeleteFocusRecordMutation();
 
@@ -118,6 +121,7 @@ export const useFocusRecordMenu = ({
 			icon: 'delete',
 			label: 'Delete Record',
 			onClick: () => setDeleteModalOpen(true),
+			guestDisabled: isGuest,
 			isDanger: true,
 		},
 	];

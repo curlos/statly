@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from '../../slices/userSlice';
+import { selectIsGuest, selectUser } from '../../slices/userSlice';
 import { handleLogout } from '../../utils/logout.utils';
 import { useThemeContext } from '../../contexts/useThemeContext';
 import Icon from '../Icon';
@@ -9,6 +9,7 @@ import ModalUserSettings from '../Modal/ModalUserSettings';
 
 const UserProfileSection = () => {
 	const user = useSelector(selectUser);
+	const isGuest = useSelector(selectIsGuest);
 	const dispatch = useDispatch();
 	const { chosenColorObj } = useThemeContext();
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -128,7 +129,7 @@ const UserProfileSection = () => {
 						onClick={onLogout}
 					>
 						<Icon name="logout" customClass="text-color-gray-50 !text-[20px]" />
-						<span>Log Out</span>
+						<span>{isGuest ? 'Exit Demo / Sign Up' : 'Log Out'}</span>
 					</button>
 				</div>
 			</Dropdown>

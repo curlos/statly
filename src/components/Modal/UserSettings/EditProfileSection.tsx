@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import ProfileTabSection from './ProfileTabSection';
 import PasswordTabSection from './PasswordTabSection';
+import GuestDisabled from '../../GuestDisabled';
 
 const EditProfileSection = () => {
 	const { chosenColorObj } = useThemeContext();
@@ -72,21 +73,25 @@ const EditProfileSection = () => {
 				aria-labelledby={activeTab === 'profile' ? 'edit-profile-tab' : 'edit-password-tab'}
 			>
 				{activeTab === 'profile' && (
-					<ProfileTabSection
-						onSuccess={handleSuccess}
-						onError={handleError}
-						submitError={submitError}
-						submitSuccess={submitSuccess}
-					/>
+					<GuestDisabled>
+						<ProfileTabSection
+							onSuccess={handleSuccess}
+							onError={handleError}
+							submitError={submitError}
+							submitSuccess={submitSuccess}
+						/>
+					</GuestDisabled>
 				)}
 
 				{activeTab === 'password' && (
-					<PasswordTabSection
-						onSuccess={handleSuccess}
-						onError={handleError}
-						submitError={submitError}
-						submitSuccess={submitSuccess}
-					/>
+					<GuestDisabled>
+						<PasswordTabSection
+							onSuccess={handleSuccess}
+							onError={handleError}
+							submitError={submitError}
+							submitSuccess={submitSuccess}
+						/>
+					</GuestDisabled>
 				)}
 			</div>
 		</div>
