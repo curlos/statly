@@ -133,7 +133,7 @@ html:has(dialog[open]) .h-\[100dvh\].overflow-scroll {
 /* Some UI themes give panels a backdrop-filter (e.g. BF1's frosted glass), which makes each panel its
    own stacking layer, so a tooltip or dropdown inside one would slide under the next panel. While a
    panel is showing a tooltip or an open dropdown, lift it above its neighbors. */
-html[data-ui-theme]:not([data-ui-theme='default']) :is(.ui-theme-plate, .ui-theme-card, .ui-theme-tile, .bg-color-gray-600.rounded-lg.p-3):has(.ui-theme-tooltip, .absolute.top-full.z-50) {
+html[data-ui-theme]:not([data-ui-theme='default']) :is(.ui-theme-plate, .ui-theme-card, .ui-theme-tile, .bg-color-gray-600.rounded-lg.p-3):has(.ui-theme-tooltip, .ui-theme-floating-tooltip, .absolute.top-full.z-50) {
   position: relative;
   z-index: 60;
 }

@@ -100,15 +100,15 @@ const RankingsContent = ({
 
 	return (
 		<>
-			<div className="flex justify-between items-center mb-3">
-				<div className="flex items-center gap-2">
+			<div className="flex justify-between items-center gap-2 mb-3">
+				<div className="flex items-center gap-2 min-w-0">
 					<h2 id={headingId} className="font-bold text-[16px]">
 						{selectedInterval}s by {type === 'focus' ? 'Focus Time' : 'Completed Tasks'}
 					</h2>
 					{(isLoading || isFetching) && <Spinner size="md" />}
 				</div>
 
-				<div className="flex items-center gap-1">
+				<div className="flex items-center gap-1 shrink-0">
 					<GeneralSelectButtonAndDropdown
 						selected={selectedSort}
 						setSelected={(value) => {
@@ -199,7 +199,13 @@ const RankingsContent = ({
 };
 
 // Ranks days/weeks/months/years by completed tasks or focus time, with a bigger modal view.
-const IntervalRankingsCard = ({ type }: { type: RankingType }) => {
+const IntervalRankingsCard = ({
+	type,
+	heightClassName = 'h-[380px]',
+}: {
+	type: RankingType;
+	heightClassName?: string;
+}) => {
 	const [cardInterval, setCardInterval] = useState('Day');
 	const [cardSort, setCardSort] = useState(sortOptions[0]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -207,7 +213,10 @@ const IntervalRankingsCard = ({ type }: { type: RankingType }) => {
 	return (
 		<>
 			<section
-				className="bg-color-gray-600 p-3 rounded-lg flex flex-col h-[380px] text-[12px] sm:text-[14px] md:text-[16px]"
+				className={classNames(
+					'bg-color-gray-600 p-3 rounded-lg flex flex-col text-[12px] sm:text-[14px] md:text-[16px]',
+					heightClassName
+				)}
 				aria-labelledby={`interval-rankings-${type}-heading`}
 			>
 				<RankingsContent

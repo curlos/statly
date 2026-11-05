@@ -187,7 +187,9 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 				{ from: 1201, to: 1800, color: colors[3], name: '20m-30m' },
 				{ from: 1801, to: 2400, color: colors[2], name: '30m-40m' },
 				{ from: 2401, to: 3000, color: colors[1], name: '40m-50m' },
-				{ from: 3001, to: 3600, color: colors[0], name: '50m-60m' },
+				// No upper bound: overlapping focus records can push an hour's total past 3600s, and
+				// ApexCharts falls back to its own default (blue) color for any value outside every range.
+				{ from: 3001, to: Infinity, color: colors[0], name: '50m-60m' },
 			];
 		};
 
@@ -405,6 +407,9 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ selectedDates, statsData 
 			)}
 			{tooltipPos && tooltipContent && (
 				<div
+					// Marks this floating tooltip so a themed panel with its own stacking layer (e.g. BF1's
+					// frosted glass) lifts itself above its neighbors instead of hiding the tooltip under them.
+					className="ui-theme-floating-tooltip"
 					style={{
 						position: 'absolute',
 						...(tooltipPos.flipLeft

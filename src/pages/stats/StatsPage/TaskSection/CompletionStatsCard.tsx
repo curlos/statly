@@ -195,7 +195,8 @@ const CompletionStatsCard = () => {
 				aria-labelledby={fromModal ? undefined : 'completion-stats-heading'}
 			>
 				<div className="flex gap-4">
-					<div className="md:flex justify-between items-center w-full">
+					{/* One line everywhere except 992-1199px, where the card is too narrow and the header stacks */}
+					<div className="md:flex min-[992px]:max-[1199px]:flex-col min-[992px]:max-[1199px]:items-start justify-between items-center w-full gap-2">
 						<div className="flex items-center gap-2 mb-3 sm:mb-0">
 							<h2
 								id={fromModal ? 'completion-stats-modal-heading' : 'completion-stats-heading'}

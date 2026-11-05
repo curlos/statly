@@ -79,7 +79,7 @@ const Pagination: React.FC<PaginationProps> = ({
 	const pages = getPages();
 
 	return (
-		<nav aria-label="Pagination" className="flex items-center space-x-1 sm:space-x-2">
+		<nav aria-label="Pagination" className="flex flex-wrap justify-center items-center gap-1 sm:gap-2">
 			<button
 				aria-label="First page"
 				className={classNames(
