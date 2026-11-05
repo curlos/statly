@@ -34,6 +34,8 @@ const GAME_THEME_COLORS: Record<string, string> = {
 	mgs: '#7DFFB0',
 	rdr2: '#C01D1D',
 	bf1: '#EDE8DD',
+	'bf1-blue': '#43B0D8',
+	'bf1-red': '#FF5A3C',
 	warzone: '#F2A93B',
 	hades2: '#6BE3B0',
 	sotn: '#B3202A',

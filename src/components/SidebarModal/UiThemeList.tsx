@@ -18,6 +18,8 @@ const UI_THEMES: { key: string; label: string; icon?: string; emoji?: string }[]
 	{ key: 'mgs', label: 'Metal Gear Solid', icon: iconUrl('mgs.png') },
 	{ key: 'rdr2', label: 'Red Dead Redemption 2', icon: iconUrl('rdr2.png') },
 	{ key: 'bf1', label: 'Battlefield 1', icon: iconUrl('bf1.png') },
+	{ key: 'bf1-blue', label: 'Battlefield 1 (Blue Team)', icon: iconUrl('bf1.png') },
+	{ key: 'bf1-red', label: 'Battlefield 1 (Red Team)', icon: iconUrl('bf1.png') },
 	{ key: 'warzone', label: 'Call of Duty: Warzone', icon: iconUrl('warzone.png') },
 	{ key: 'sotn', label: 'Castlevania: Symphony of the Night', icon: iconUrl('sotn.png') },
 	{ key: 'mario-wonder', label: 'Super Mario Bros. Wonder', icon: iconUrl('mario-wonder.png') },
