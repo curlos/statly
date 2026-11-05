@@ -17,7 +17,19 @@ interface UseDetailsMarkdownParams {
 	ancestorTasksById: Record<string, AncestorTask> | undefined;
 	byEmotionWithTasks: Record<string, EmotionProgressBarData> | undefined;
 	projectsById: Record<string, Project> | undefined;
+	sortBy: string;
 }
+
+// Compares two values in the card's chosen order, most first or least first
+const compareBySort = (sortBy: string, a: number, b: number): number => (sortBy.endsWith('Most-Least') ? b - a : a - b);
+
+// Sorts items by focus time in the card's chosen order, then by name on a tie, like the list on screen
+const sortItems = (items: ProgressBarItemData[], sortBy: string): ProgressBarItemData[] =>
+	[...items].sort(
+		(a, b) =>
+			compareBySort(sortBy, a.duration ?? 0, b.duration ?? 0) ||
+			(a.name || '').toLowerCase().localeCompare((b.name || '').toLowerCase())
+	);
 
 const getIntervalLabel = (selectedInterval: string, apiStartDate: string | null, apiEndDate: string | null): string => {
 	if (selectedInterval === 'All') return 'All Time';
@@ -104,7 +116,8 @@ const renderProjectViewMD = (
 	projects: ProgressBarItemData[],
 	agg: AggregationResults,
 	ancestorLookup: TaskLookup,
-	baseDepth: number
+	baseDepth: number,
+	sortBy: string
 ): string => {
 	const { aggregatedData, totalMetricOnParentTask } = agg;
 
@@ -116,7 +129,7 @@ const renderProjectViewMD = (
 		groupedProjectsAndTasks[projectId].push(item.id);
 	}
 
-	return projects
+	return sortItems(projects, sortBy)
 		.filter((p) => p.id !== 'No Data')
 		.map((project) => {
 			let line = formatLine(
@@ -125,8 +138,8 @@ const renderProjectViewMD = (
 				project.percentage ?? 0,
 				baseDepth
 			);
-			const taskIds = [...(groupedProjectsAndTasks[project.id] || [])].sort(
-				(a, b) => (totalMetricOnParentTask[b]?.value ?? 0) - (totalMetricOnParentTask[a]?.value ?? 0)
+			const taskIds = [...(groupedProjectsAndTasks[project.id] || [])].sort((a, b) =>
+				compareBySort(sortBy, totalMetricOnParentTask[a]?.value ?? 0, totalMetricOnParentTask[b]?.value ?? 0)
 			);
 			const taskLines = taskIds
 				.map((taskId) => renderNestedTaskMD(taskId, baseDepth + 1, agg, ancestorLookup))
@@ -137,7 +150,8 @@ const renderProjectViewMD = (
 		.join('\n');
 };
 
-const buildMarkdown = (params: UseDetailsMarkdownParams): string => {
+// Builds the Markdown the copy button puts on the clipboard, in the same order as the list on screen
+export const buildMarkdown = (params: UseDetailsMarkdownParams): string => {
 	const {
 		selectedInterval,
 		apiStartDate,
@@ -149,6 +163,7 @@ const buildMarkdown = (params: UseDetailsMarkdownParams): string => {
 		ancestorTasksById,
 		byEmotionWithTasks,
 		projectsById,
+		sortBy,
 	} = params;
 
 	const header = `# ${getIntervalLabel(selectedInterval, apiStartDate, apiEndDate)}\n\n`;
@@ -156,7 +171,7 @@ const buildMarkdown = (params: UseDetailsMarkdownParams): string => {
 	if (!showNestedProgressBars || !aggregationResults) {
 		return (
 			header +
-			progressBarData
+			sortItems(progressBarData, sortBy)
 				.filter((item) => item.id !== 'No Data')
 				.map((item) => formatLine(item.name || 'Unknown', item.duration ?? 0, item.percentage ?? 0, 0))
 				.join('\n')
@@ -168,15 +183,18 @@ const buildMarkdown = (params: UseDetailsMarkdownParams): string => {
 	if (selected === 'Project') {
 		const agg = aggregationResults as AggregationResults;
 		if (!agg?.tasksWithNoParent) return '';
-		const sortedProjects = [...progressBarData].sort((a, b) => (b.duration ?? 0) - (a.duration ?? 0));
-		return header + renderProjectViewMD(sortedProjects, agg, ancestorLookup, 0);
+		return header + renderProjectViewMD(progressBarData, agg, ancestorLookup, 0, sortBy);
 	}
 
 	if (selected === 'Task') {
 		const agg = aggregationResults as AggregationResults;
 		if (!agg?.tasksWithNoParent) return '';
-		const sortedTasks = [...agg.tasksWithNoParent].sort(
-			(a, b) => (agg.totalMetricOnParentTask[b]?.value ?? 0) - (agg.totalMetricOnParentTask[a]?.value ?? 0)
+		const sortedTasks = [...agg.tasksWithNoParent].sort((a, b) =>
+			compareBySort(
+				sortBy,
+				agg.totalMetricOnParentTask[a]?.value ?? 0,
+				agg.totalMetricOnParentTask[b]?.value ?? 0
+			)
 		);
 		return (
 			header +
@@ -189,7 +207,7 @@ const buildMarkdown = (params: UseDetailsMarkdownParams): string => {
 
 	if (selected === 'Emotion' && !('tasksWithNoParent' in aggregationResults)) {
 		const byEmotion = aggregationResults as Record<string, AggregationResults>;
-		const body = progressBarData
+		const body = sortItems(progressBarData, sortBy)
 			.filter((e) => e.id !== 'No Data')
 			.map((emotion) => {
 				let line = formatLine(emotion.name || 'Unknown', emotion.duration ?? 0, emotion.percentage ?? 0, 0);
@@ -206,7 +224,8 @@ const buildMarkdown = (params: UseDetailsMarkdownParams): string => {
 							enrichedProjects,
 							emotionAgg,
 							emotionAncestorLookup,
-							1
+							1,
+							sortBy
 						);
 						if (projectLines) line += '\n' + projectLines;
 					}

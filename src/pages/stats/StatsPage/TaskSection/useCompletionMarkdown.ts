@@ -15,7 +15,19 @@ interface UseCompletionMarkdownParams {
 	selected: string;
 	ancestorTasksById: Record<string, AncestorTask> | undefined;
 	projectsById: Record<string, Project> | undefined;
+	sortBy: string;
 }
+
+// Compares two values in the card's chosen order, most first or least first
+const compareBySort = (sortBy: string, a: number, b: number): number => (sortBy.endsWith('Most-Least') ? b - a : a - b);
+
+// Sorts items by task count in the card's chosen order, then by name on a tie, like the list on screen
+const sortItems = (items: ProgressBarItemData[], sortBy: string): ProgressBarItemData[] =>
+	[...items].sort(
+		(a, b) =>
+			compareBySort(sortBy, a.count ?? 0, b.count ?? 0) ||
+			(a.name || '').toLowerCase().localeCompare((b.name || '').toLowerCase())
+	);
 
 const getIntervalLabel = (selectedInterval: string, apiStartDate: string | null, apiEndDate: string | null): string => {
 	if (selectedInterval === 'All') return 'All Time';
@@ -97,7 +109,8 @@ const renderProjectViewMD = (
 	projects: ProgressBarItemData[],
 	agg: AggregationResults,
 	ancestorLookup: TaskLookup,
-	baseDepth: number
+	baseDepth: number,
+	sortBy: string
 ): string => {
 	const { aggregatedData, totalMetricOnParentTask } = agg;
 
@@ -109,12 +122,12 @@ const renderProjectViewMD = (
 		groupedProjectsAndTasks[projectId].push(item.id);
 	}
 
-	return projects
+	return sortItems(projects, sortBy)
 		.filter((p) => p.id !== 'No Data')
 		.map((project) => {
 			let line = formatLine(project.name || project.id, project.count ?? 0, project.percentage ?? 0, baseDepth);
-			const taskIds = [...(groupedProjectsAndTasks[project.id] || [])].sort(
-				(a, b) => (totalMetricOnParentTask[b]?.value ?? 0) - (totalMetricOnParentTask[a]?.value ?? 0)
+			const taskIds = [...(groupedProjectsAndTasks[project.id] || [])].sort((a, b) =>
+				compareBySort(sortBy, totalMetricOnParentTask[a]?.value ?? 0, totalMetricOnParentTask[b]?.value ?? 0)
 			);
 			const taskLines = taskIds
 				.map((taskId) => renderNestedTaskMD(taskId, baseDepth + 1, agg, ancestorLookup))
@@ -125,7 +138,8 @@ const renderProjectViewMD = (
 		.join('\n');
 };
 
-const buildMarkdown = (params: UseCompletionMarkdownParams): string => {
+// Builds the Markdown the copy button puts on the clipboard, in the same order as the list on screen
+export const buildMarkdown = (params: UseCompletionMarkdownParams): string => {
 	const {
 		selectedInterval,
 		apiStartDate,
@@ -135,6 +149,7 @@ const buildMarkdown = (params: UseCompletionMarkdownParams): string => {
 		progressBarData,
 		selected,
 		ancestorTasksById,
+		sortBy,
 	} = params;
 
 	const header = `# ${getIntervalLabel(selectedInterval, apiStartDate, apiEndDate)}\n\n`;
@@ -142,7 +157,7 @@ const buildMarkdown = (params: UseCompletionMarkdownParams): string => {
 	if (!showNestedProgressBars || !aggregationResults) {
 		return (
 			header +
-			progressBarData
+			sortItems(progressBarData, sortBy)
 				.filter((item) => item.id !== 'No Data')
 				.map((item) => formatLine(item.name || 'Unknown', item.count ?? 0, item.percentage ?? 0, 0))
 				.join('\n')
@@ -153,16 +168,17 @@ const buildMarkdown = (params: UseCompletionMarkdownParams): string => {
 
 	if (selected === 'Project') {
 		if (!aggregationResults.tasksWithNoParent) return '';
-		const sortedProjects = [...progressBarData].sort((a, b) => (b.count ?? 0) - (a.count ?? 0));
-		return header + renderProjectViewMD(sortedProjects, aggregationResults, ancestorLookup, 0);
+		return header + renderProjectViewMD(progressBarData, aggregationResults, ancestorLookup, 0, sortBy);
 	}
 
 	if (selected === 'Task') {
 		if (!aggregationResults.tasksWithNoParent) return '';
-		const sortedTasks = [...aggregationResults.tasksWithNoParent].sort(
-			(a, b) =>
-				(aggregationResults.totalMetricOnParentTask[b]?.value ?? 0) -
-				(aggregationResults.totalMetricOnParentTask[a]?.value ?? 0)
+		const sortedTasks = [...aggregationResults.tasksWithNoParent].sort((a, b) =>
+			compareBySort(
+				sortBy,
+				aggregationResults.totalMetricOnParentTask[a]?.value ?? 0,
+				aggregationResults.totalMetricOnParentTask[b]?.value ?? 0
+			)
 		);
 		return (
 			header +

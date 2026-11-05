@@ -183,6 +183,7 @@ const CompletionStatsCard = () => {
 		selected,
 		ancestorTasksById,
 		projectsById,
+		sortBy,
 	});
 
 	const getCoreDetailsCard = (fromModal: boolean) => {

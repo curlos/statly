@@ -226,6 +226,7 @@ const DetailsCard = () => {
 		ancestorTasksById,
 		byEmotionWithTasks: statsData?.byEmotionWithTasks,
 		projectsById,
+		sortBy,
 	});
 
 	const getCoreDetailsCard = (fromModal: boolean) => {
