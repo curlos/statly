@@ -315,7 +315,7 @@ const Forest = () => {
 					</summary>
 					{/* Fills down each column before starting the next, so the most focus is at the top left. The row counts match the number of columns at each screen size. */}
 					<ul
-						className="mt-2 max-h-[200px] overflow-y-auto gray-scrollbar grid grid-flow-col auto-cols-[minmax(0,1fr)] grid-rows-[repeat(var(--rows-1),auto)] sm:grid-rows-[repeat(var(--rows-2),auto)] lg:grid-rows-[repeat(var(--rows-3),auto)] gap-x-4 gap-y-1 list-none p-0 m-0"
+						className="relative mt-2 max-h-[200px] overflow-y-auto gray-scrollbar grid grid-flow-col auto-cols-[minmax(0,1fr)] grid-rows-[repeat(var(--rows-1),auto)] sm:grid-rows-[repeat(var(--rows-2),auto)] lg:grid-rows-[repeat(var(--rows-3),auto)] gap-x-4 gap-y-1 list-none p-0 m-0"
 						style={
 							{
 								'--rows-1': legendRows.length,
