@@ -197,6 +197,11 @@
 	overflow-x: hidden;
 }
 
+/* Tile grids that scroll (Medals, Challenges): room for the hand-drawn rim so it doesn't add scrollbars */
+[data-ui-theme='dk-bananza'] .grid.overflow-auto {
+	padding: 4px;
+}
+
 [data-ui-theme='dk-bananza'] .ui-theme-plate.mt-5 {
 	padding: 10px 14px 12px;
 }
