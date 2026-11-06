@@ -58,5 +58,9 @@ src/assets/fonts/*
 !src/assets/fonts/PokemonDPPT/
 !src/assets/fonts/Nunito/**
 !src/assets/fonts/Nunito/
+!src/assets/fonts/AdLib/**
+!src/assets/fonts/AdLib/
+!src/assets/fonts/ NinDev-RaceFontMoveR/**
+!src/assets/fonts/ NinDev-RaceFontMoveR/
 
 public/cloudinary
