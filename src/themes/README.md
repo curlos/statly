@@ -61,8 +61,7 @@ summarize.
 
 | File | Change |
 | --- | --- |
-| `src/contexts/useThemeContext.tsx` | add `<key>: '<accent hex>'` to `GAME_THEME_COLORS` (forces the accent, dark mode, and the theme's own fonts). Add the key to `LIGHT_GAME_THEMES` if the game's UI is light (like P4). |
-| `src/components/SidebarModal/UiThemeList.tsx` | add `{ key, label, icon: iconUrl('<key>.png') }` in the order the user wants |
+| `src/components/SidebarModal/uiThemes.ts` | add `<key>: '<accent hex>'` to `GAME_THEME_COLORS` (forces the accent, dark mode, and the theme's own fonts), and to `LIGHT_GAME_THEMES` if the game's UI is light (like P4). Add `{ key, label, icon: '<key>.png' }` to its series group in `UI_THEME_GROUPS` (one accordion each; add a group for a new series). `uiThemes.test.ts` checks the CSS and icon files exist. |
 | `src/components/SidebarModal/FontFamilyList.tsx` | add the new font(s) to the list and to `FONT_USED_IN` |
 | `src/themes/<key>.css` | the theme (see below). **Create this file before adding its import.** |
 | `src/pages/+Wrapper.tsx` | `import '../themes/<key>.css';` |

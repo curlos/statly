@@ -316,7 +316,7 @@
 }
 
 /* ---------- Hover feedback on anything selectable ---------- */
-[data-ui-theme='mgs'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover,
+[data-ui-theme='mgs'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile, [aria-selected='true']):hover,
 [data-ui-theme='mgs'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
 [data-ui-theme='mgs'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
 	background-color: var(--mgs-green-faint) !important;

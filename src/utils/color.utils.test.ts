@@ -1,5 +1,27 @@
 import { describe, expect, it } from '@jest/globals';
-import { getHeatmapColors, getHeatmapMaxDarken } from './color.utils';
+import { getAccentOnLightBackground, getHeatmapColors, getHeatmapMaxDarken } from './color.utils';
+
+describe('getAccentOnLightBackground', () => {
+	it('darkens a pale yellow accent so it reads on white', () => {
+		const result = getAccentOnLightBackground('#FFE200');
+		expect(result).not.toBe('#FFE200');
+		// Darker than the input: every channel is at most the original
+		expect(parseInt(result.slice(1, 3), 16)).toBeLessThan(0xff);
+	});
+
+	it('keeps an accent that already has enough contrast', () => {
+		expect(getAccentOnLightBackground('#1E3A8A')).toBe('#1E3A8A');
+	});
+
+	it('returns a value that is not a 6-digit hex unchanged', () => {
+		expect(getAccentOnLightBackground('red')).toBe('red');
+		expect(getAccentOnLightBackground('#fff')).toBe('#fff');
+	});
+
+	it('stops darkening at the contrast limit instead of going to black', () => {
+		expect(getAccentOnLightBackground('#FFFFFF', 1.5)).not.toBe('#000000');
+	});
+});
 
 describe('getHeatmapMaxDarken', () => {
 	it('caps darkening for the near-white Battlefield 1 accent', () => {

@@ -159,3 +159,8 @@ html[data-ui-theme='default'] .ui-theme-sidebar nav a[aria-current='page'] {
   padding: 2px 8px;
   margin-left: -8px;
 }
+
+/* Edit Profile / Log Out: in these themes the button fill matches the modal, so keep a visible outline. */
+html:is([data-ui-theme='p4'], [data-ui-theme='cyberpunk'], [data-ui-theme^='bf1'], [data-ui-theme='hades2'], [data-ui-theme='warzone'], [data-ui-theme='p3r']) dialog button.bg-color-gray-600.rounded-full {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent);
+}

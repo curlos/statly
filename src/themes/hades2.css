@@ -313,7 +313,7 @@
 }
 
 /* ---------- Hover feedback on anything selectable: brighter text + soft mint wash ---------- */
-[data-ui-theme='hades2'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+[data-ui-theme='hades2'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile, [aria-selected='true']):hover {
 	background-color: rgba(107, 227, 176, 0.08) !important;
 	border-color: rgba(107, 227, 176, 0.45);
 	color: #ffffff !important;

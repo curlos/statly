@@ -16,6 +16,7 @@ import '../themes/sotn.css';
 import '../themes/mario-wonder.css';
 import '../themes/pokemon-rse.css';
 import '../themes/pokemon-plat.css';
+import '../themes/dk-bananza.css';
 import '../themes/ink-marker.css';
 import 'material-symbols';
 
@@ -36,6 +37,7 @@ import { useGetLoggedInUserQuery } from '../services/resources/usersApi';
 import Toast from '../components/Toast';
 import GuestTooltip from '../components/GuestTooltip';
 import CopicFilterDefs from '../components/CopicFilterDefs';
+import DkFilterDefs from '../components/DkFilterDefs';
 import { useEffect } from 'react';
 
 const globalClasses = 'text-white select-none';
@@ -159,6 +161,9 @@ const LoggedInBase: React.FC<LoggedInBaseProps> = ({ children }) => {
 
 			{/* Copic marker texture filter for charts in the Ink & Marker UI theme */}
 			{uiTheme === 'ink-marker' && <CopicFilterDefs />}
+
+			{/* Hand-drawn border filter for the Donkey Kong Bananza UI theme */}
+			{uiTheme === 'dk-bananza' && <DkFilterDefs />}
 		</div>
 	);
 };

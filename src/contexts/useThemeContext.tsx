@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useLayoutEffect, useState } from 
 import { useGetUserSettingsQuery, useEditUserSettingsMutation } from '../services/resources/userSettingsApi';
 import { TAILWIND_COLORS_OBJ } from '../utils/TAILWIND_COLORS/TAILWIND_COLORS_OBJ';
 import { lightenHex, darkenHex, hexToRgba, getReadableTextColor } from '../utils/color.utils';
+import { GAME_THEME_COLORS, LIGHT_GAME_THEMES } from '../components/SidebarModal/uiThemes';
 
 const buildCustomColorObj = (hex: string) => ({
 	textColor: 'text-[var(--theme-color)]',
@@ -22,30 +23,6 @@ const buildCustomColorObj = (hex: string) => ({
 		borderColor: 'focus:border-[var(--theme-color)]',
 	},
 });
-
-// Game UI themes ignore the user's theme color and always use their signature accent color.
-const GAME_THEME_COLORS: Record<string, string> = {
-	hades: '#D9B650',
-	p3r: '#3FE3F5',
-	p5: '#E5191C',
-	cyberpunk: '#FF5C57',
-	p4: '#FFE200',
-	ff7r: '#3AA0FF',
-	mgs: '#7DFFB0',
-	rdr2: '#C01D1D',
-	bf1: '#EDE8DD',
-	'bf1-blue': '#43B0D8',
-	'bf1-red': '#FF5A3C',
-	warzone: '#F2A93B',
-	hades2: '#6BE3B0',
-	sotn: '#B3202A',
-	'mario-wonder': '#FAD02C',
-	'pokemon-rse': '#E03030',
-	'pokemon-plat': '#E8702A',
-};
-
-// Game UI themes with a light look (the rest force dark mode).
-const LIGHT_GAME_THEMES = ['p4', 'mario-wonder', 'pokemon-rse', 'pokemon-plat'];
 
 const getInitialColorMode = (): 'dark' | 'light' => {
 	const stored = localStorage.getItem('color-mode');

@@ -275,7 +275,7 @@
 }
 
 /* ---------- Hover feedback on anything selectable ---------- */
-[data-ui-theme='warzone'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+[data-ui-theme='warzone'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile, [aria-selected='true']):hover {
 	background-color: #13202c !important;
 	box-shadow: inset 0 -2px 0 var(--wz-blue);
 	color: #ffffff !important;

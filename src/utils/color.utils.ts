@@ -81,6 +81,17 @@ const getContrastRatio = (hexA: string, hexB: string): number => {
 	return (Math.max(luminanceA, luminanceB) + 0.05) / (Math.min(luminanceA, luminanceB) + 0.05);
 };
 
+// Darkens an accent color until it reads on a white/light background (3:1, enough for large bold text).
+export const getAccentOnLightBackground = (hex: string, minContrast = 3): string => {
+	if (!/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+
+	let color = hex;
+	for (let i = 0; i < 20 && getContrastRatio(color, '#ffffff') < minContrast; i++) {
+		color = darkenHex(color, 0.1);
+	}
+	return color;
+};
+
 export const getMutedTextPercent = (textColor: string, fillColor: string, minContrast = 4.5): number => {
 	const textHex = toHexColor(textColor);
 	const fillHex = toHexColor(fillColor);

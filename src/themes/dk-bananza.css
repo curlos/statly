@@ -1,0 +1,589 @@
+/* =========================================================================
+   DONKEY KONG BANANZA UI THEME
+   Everything here only applies when <html data-ui-theme="dk-bananza">.
+   Inspired by Bananza's menus: black screens over dark cracked rock, a teal glow along the top
+   edge and a magenta glow along the bottom (both with a torn rock edge), and black rows/panels
+   with a thin teal-to-magenta edge that is strongest at the bottom-right.
+   Selection: a solid electric-yellow row with black text and icons (buttons, tabs, sidebar
+   current page, hovered menu rows). Titles are yellow; modals get a rough teal-magenta frame.
+   Font: Ad Lib (the game's own typeface; one weight, so no faux bold), Nunito as fallback; mixed case.
+   ========================================================================= */
+
+[data-ui-theme='dk-bananza'] {
+	--dk-yellow: #fff200;
+	--dk-yellow-faint: rgba(255, 242, 0, 0.12);
+	--dk-teal: #1fc2b0;
+	--dk-magenta: #c02cc8;
+	--dk-black: #0b0b0d;
+	--dk-bg: #050506;
+	--dk-text: #ffffff;
+	/* Thin rim: faint teal at the top-left, full magenta at the bottom-right */
+	--dk-edge: linear-gradient(
+		135deg,
+		rgba(31, 194, 176, 0.35),
+		rgba(31, 194, 176, 0.85) 40%,
+		rgba(120, 90, 200, 0.9) 70%,
+		var(--dk-magenta)
+	);
+	--dk-edge-glow: 3px 3px 10px -4px rgba(192, 44, 200, 0.55);
+
+	/* Re-skin the whole site by overriding the shared gray palette. */
+	--color-primary-text: var(--dk-text);
+	--color-gray: var(--dk-bg);
+	--color-gray-25: #ececf0;
+	--color-gray-50: #c8c8d0;
+	--color-gray-100: #8e8e9a;
+	--color-gray-150: #2a2a32;
+	--color-gray-200: #1a1a1f;
+	--color-gray-300: #121215;
+	--color-gray-600: var(--dk-black);
+	--color-gray-650: #0e0e11;
+	--color-gray-700: var(--dk-bg);
+
+	color-scheme: dark;
+	accent-color: var(--dk-yellow);
+	font-family: 'Ad Lib', 'Nunito', sans-serif;
+	/* Ad Lib has a single weight: don't fake bold or italic */
+	font-synthesis: none;
+	scrollbar-color: var(--dk-teal) transparent;
+}
+
+/* ---------- Background: black with a dark cracked-rock texture ---------- */
+[data-ui-theme='dk-bananza'] body {
+	background:
+		url('../assets/themes/dk-bananza/rock.svg') 0 0 / 360px 360px,
+		var(--dk-bg);
+	background-attachment: fixed;
+	overflow-x: clip;
+}
+
+[data-ui-theme='dk-bananza'] .min-h-screen.bg-color-gray-700,
+[data-ui-theme='dk-bananza'] .flex-1.bg-color-gray-700,
+[data-ui-theme='dk-bananza'] .flex.justify-center.bg-color-gray-700 {
+	background-color: transparent;
+}
+
+/* Slightly see-through so the top teal glow still shows behind the header */
+[data-ui-theme='dk-bananza'] .sticky.bg-color-gray-700 {
+	background-color: rgba(5, 5, 6, 0.84);
+}
+
+/* Teal glow with a torn rock edge along the top of the screen (behind content) */
+[data-ui-theme='dk-bananza']::before {
+	content: '';
+	position: fixed;
+	inset: 0 0 auto;
+	height: 130px;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		url('../assets/themes/dk-bananza/edge-top.svg') 0 0 / 480px 56px repeat-x,
+		linear-gradient(rgba(31, 194, 176, 0.32), rgba(31, 194, 176, 0.1) 45%, transparent);
+}
+
+/* Magenta glow with a torn rock edge along the bottom (the same art, flipped) */
+[data-ui-theme='dk-bananza']::after {
+	content: '';
+	position: fixed;
+	inset: auto 0 0;
+	height: 130px;
+	z-index: -1;
+	pointer-events: none;
+	transform: scaleY(-1);
+	background:
+		url('../assets/themes/dk-bananza/edge-bottom.svg') 120px 0 / 480px 56px repeat-x,
+		linear-gradient(rgba(192, 44, 200, 0.32), rgba(192, 44, 200, 0.1) 45%, transparent);
+}
+
+/* ---------- Typography: yellow bold titles, white body ---------- */
+[data-ui-theme='dk-bananza'] .text-white {
+	color: var(--dk-text);
+}
+
+[data-ui-theme='dk-bananza'] h1,
+[data-ui-theme='dk-bananza'] h1.font-bold {
+	font-family: 'Ad Lib', 'Nunito', sans-serif;
+	font-weight: 800 !important;
+	color: var(--dk-yellow) !important;
+}
+
+[data-ui-theme='dk-bananza'] h2,
+[data-ui-theme='dk-bananza'] h3 {
+	font-family: 'Ad Lib', 'Nunito', sans-serif;
+	font-weight: 800;
+	color: var(--dk-yellow);
+}
+
+/* ---------- Shape: square boxes ---------- */
+[data-ui-theme='dk-bananza'] .rounded,
+[data-ui-theme='dk-bananza'] .rounded-md,
+[data-ui-theme='dk-bananza'] .rounded-lg,
+[data-ui-theme='dk-bananza'] .rounded-xl,
+[data-ui-theme='dk-bananza'] .rounded-2xl {
+	border-radius: 0;
+}
+
+/* ---------- Boxes: black with a thin teal-to-magenta rim ----------
+   Cards, Stats panels, plates, tiles and popups. The rim is a gradient border-image (nothing is
+   clipped, so dropdowns inside cards open fully). */
+[data-ui-theme='dk-bananza'] .ui-theme-card,
+[data-ui-theme='dk-bananza'] .bg-color-gray-600.rounded-lg.p-3,
+[data-ui-theme='dk-bananza'] .ui-theme-plate,
+[data-ui-theme='dk-bananza'] .ui-theme-tile {
+	background: var(--dk-black);
+	border-style: solid !important;
+	border-width: 1px !important;
+	border-color: transparent !important;
+	border-radius: 0;
+	border-image: var(--dk-edge) 1;
+	box-shadow: var(--dk-edge-glow);
+	transition:
+		box-shadow 0.12s ease,
+		filter 0.12s ease;
+}
+
+/* Hover: a brighter magenta glow off the bottom-right */
+[data-ui-theme='dk-bananza'] .ui-theme-card:hover,
+[data-ui-theme='dk-bananza'] .ui-theme-tile:hover {
+	box-shadow:
+		4px 4px 14px -4px rgba(192, 44, 200, 0.8),
+		-2px -2px 10px -6px rgba(31, 194, 176, 0.7);
+}
+
+/* Loading skeleton bars */
+[data-ui-theme='dk-bananza'] .ui-theme-card .animate-pulse {
+	background: rgba(31, 194, 176, 0.14) !important;
+}
+
+/* Icon boxes (export / backup rows and similar): same rim so the square doesn't vanish into the black */
+[data-ui-theme='dk-bananza'] .material-symbols-rounded:is(.bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600) {
+	border: 1px solid transparent;
+	border-image: var(--dk-edge) 1;
+	border-radius: 0;
+}
+
+/* Toggle switch tracks (off state): teal outline so the track doesn't vanish into the black */
+[data-ui-theme='dk-bananza'] span.bg-color-gray-300.rounded-full {
+	border: 1px solid rgba(31, 194, 176, 0.7);
+}
+
+/* Cards inside modals (streaks, goal stats, lists): same rim so they don't blend into the black panel */
+[data-ui-theme='dk-bananza'] dialog .bg-color-gray-600.rounded-lg:is(.p-4, .p-6) {
+	border-style: solid !important;
+	border-width: 1px !important;
+	border-color: transparent !important;
+	border-image: var(--dk-edge) 1;
+	box-shadow: var(--dk-edge-glow);
+}
+
+/* Stats panels: compact padding */
+[data-ui-theme='dk-bananza'] .bg-color-gray-600.rounded-lg.p-3 {
+	padding: 10px;
+}
+
+/* Stats date pickers & summary strip: slim, one line */
+[data-ui-theme='dk-bananza'] .ui-theme-plate.py-2 {
+	padding: 2px 6px;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-plate.p-4 {
+	padding: 10px 12px;
+}
+
+/* The chosen Medal / Challenge panel scrolls: no sideways scrolling, inner padding */
+[data-ui-theme='dk-bananza'] .ui-theme-plate.overflow-auto {
+	overflow-x: hidden;
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-plate.mt-5 {
+	padding: 10px 14px 12px;
+}
+
+/* Chosen medal / challenge title bar */
+[data-ui-theme='dk-bananza'] .ui-theme-plate .sticky.bg-color-gray-200 {
+	background: rgba(11, 11, 13, 0.95);
+	border-bottom: 1px solid rgba(31, 194, 176, 0.5);
+	color: var(--dk-yellow);
+}
+
+/* ---------- Medal & Challenge tiles: selected gets a yellow rim and a yellow label row ---------- */
+[data-ui-theme='dk-bananza'] .ui-theme-tile[aria-checked='true'] {
+	--dk-rim: linear-gradient(var(--dk-yellow), var(--dk-yellow));
+	border-image: linear-gradient(var(--dk-yellow), var(--dk-yellow)) 1;
+	box-shadow: 0 0 14px rgba(255, 242, 0, 0.35);
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-tile .bg-color-gray-150,
+[data-ui-theme='dk-bananza'] .ui-theme-tile > .bg-color-gray-200 {
+	background: #121215;
+	border-left-color: var(--dk-teal) !important;
+	color: var(--dk-text);
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-tile[aria-checked='true'] .bg-color-gray-150,
+[data-ui-theme='dk-bananza'] .ui-theme-tile > .bg-\[var\(--theme-color\)\] {
+	background: var(--dk-yellow);
+	color: var(--dk-black) !important;
+}
+
+/* ---------- Modals: black panel in a rough teal-to-magenta rock frame ---------- */
+[data-ui-theme='dk-bananza'] dialog > .ui-theme-bare,
+[data-ui-theme='dk-bananza'] dialog > .ui-theme-bare.bg-color-gray-600.rounded-xl.shadow-lg {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+	border: 0 !important;
+	border-image: none !important;
+}
+
+[data-ui-theme='dk-bananza'] dialog:not(.ui-theme-sidebar) > div:first-child:not(.ui-theme-bare) {
+	position: relative;
+	background: transparent;
+	border-style: solid !important;
+	border-width: 9px !important;
+	border-color: transparent !important;
+	border-radius: 0;
+	border-image: url('../assets/themes/dk-bananza/frame.svg') 14 fill / 9px round;
+	box-shadow: none;
+}
+
+/* ---------- Sidebars: black with a teal-to-magenta left edge; current page is a yellow row ---------- */
+[data-ui-theme='dk-bananza'] .ui-theme-sidebar {
+	background: var(--dk-black) !important;
+	border-style: solid !important;
+	border-width: 0 0 0 2px !important;
+	border-color: transparent !important;
+	border-image: linear-gradient(180deg, var(--dk-teal), var(--dk-magenta)) 1 !important;
+	box-shadow: -8px 0 24px rgba(0, 0, 0, 0.7);
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-sidebar nav a {
+	color: var(--dk-text);
+	padding: 0 12px;
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-sidebar nav a[aria-current='page'] {
+	background: var(--dk-yellow);
+	color: var(--dk-black) !important;
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-sidebar nav a[aria-current='page'] * {
+	color: var(--dk-black) !important;
+}
+
+[data-ui-theme='dk-bananza'] .ui-theme-sidebar nav a:not([aria-current='page']):hover {
+	background: var(--dk-yellow-faint);
+	color: var(--dk-yellow) !important;
+}
+
+/* ---------- Popups (tooltips, menus, dropdowns, toasts): black box with the teal-magenta rim ---------- */
+[data-ui-theme='dk-bananza'] .ui-theme-tooltip,
+[data-ui-theme='dk-bananza'] .ui-theme-floating-tooltip,
+[data-ui-theme='dk-bananza'] .recharts-tooltip-wrapper .bg-black,
+[data-ui-theme='dk-bananza'] .recharts-tooltip-wrapper .bg-color-gray-600,
+[data-ui-theme='dk-bananza'] .bg-color-gray-600.border-color-gray-150.shadow-xl,
+[data-ui-theme='dk-bananza'] .bg-color-gray-600.rounded-xl.shadow-lg,
+[data-ui-theme='dk-bananza'] .absolute.top-full.z-50.bg-color-gray-600,
+[data-ui-theme='dk-bananza'] .react-tooltip {
+	background: var(--dk-black) !important;
+	border-style: solid !important;
+	border-width: 1px !important;
+	border-color: transparent !important;
+	border-image: var(--dk-edge) 1;
+	box-shadow:
+		var(--dk-edge-glow),
+		0 6px 18px rgba(0, 0, 0, 0.6) !important;
+	color: var(--dk-text) !important;
+	border-radius: 0 !important;
+}
+
+/* Chart tooltips keep the accent text color, like the Year Grids tooltip */
+[data-ui-theme='dk-bananza'] .ui-theme-floating-tooltip,
+[data-ui-theme='dk-bananza'] .recharts-tooltip-wrapper .bg-black {
+	color: var(--dk-yellow) !important;
+}
+
+/* Hovered menu row: solid yellow with black text and icons */
+[data-ui-theme='dk-bananza'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='dk-bananza'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover {
+	background-color: var(--dk-yellow);
+}
+
+[data-ui-theme='dk-bananza'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover,
+[data-ui-theme='dk-bananza'] .absolute.top-full.z-50 .hover\:bg-color-gray-200:hover *,
+[data-ui-theme='dk-bananza'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover,
+[data-ui-theme='dk-bananza'] .bg-color-gray-600.border-color-gray-150.shadow-xl .hover\:bg-color-gray-200:hover * {
+	color: var(--dk-black) !important;
+}
+
+/* ---------- Buttons & tabs: black rows with the rim; selected is a solid yellow row ---------- */
+[data-ui-theme='dk-bananza'] :is(button, a).bg-\[var\(--theme-color\)\],
+[data-ui-theme='dk-bananza'] :is(button, a).bg-color-gray-300,
+[data-ui-theme='dk-bananza'] :is(button, a).bg-color-gray-600,
+[data-ui-theme='dk-bananza'] nav[aria-label='Stats sections'] > *,
+[data-ui-theme='dk-bananza'] [role='tablist'] [role='tab'] {
+	background: var(--dk-black) !important;
+	border-style: solid !important;
+	border-color: transparent !important;
+	border-width: 1px !important;
+	border-radius: 0 !important;
+	border-image: var(--dk-edge) 1;
+	color: var(--dk-text) !important;
+}
+
+/* Selected: solid electric yellow with black text */
+[data-ui-theme='dk-bananza'] :is(button, a).bg-\[var\(--theme-color\)\],
+[data-ui-theme='dk-bananza'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\],
+[data-ui-theme='dk-bananza'] [role='tablist'] [role='tab'][aria-selected='true'] {
+	background: var(--dk-yellow) !important;
+	--dk-rim: linear-gradient(var(--dk-yellow), var(--dk-yellow));
+	border-image: linear-gradient(var(--dk-yellow), var(--dk-yellow)) 1;
+	color: var(--dk-black) !important;
+}
+
+[data-ui-theme='dk-bananza'] :is(button, a).bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='dk-bananza'] nav[aria-label='Stats sections'] > .bg-\[var\(--theme-color\)\] *,
+[data-ui-theme='dk-bananza'] [role='tablist'] [role='tab'][aria-selected='true'] * {
+	color: var(--dk-black) !important;
+}
+
+/* ---------- Hover feedback on anything selectable ---------- */
+[data-ui-theme='dk-bananza']
+	:is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(
+		.bg-color-gray-150,
+		.bg-color-gray-200,
+		.bg-color-gray-300,
+		.bg-color-gray-600,
+		.bg-color-gray-650,
+		.bg-color-gray-700
+	):not(.ui-theme-tile, [aria-selected='true']):hover,
+[data-ui-theme='dk-bananza'] [role='tablist'] [role='tab']:not([aria-selected='true']):hover,
+[data-ui-theme='dk-bananza'] nav[aria-label='Stats sections'] > *:not(.bg-\[var\(--theme-color\)\]):hover {
+	background-color: #1a1a10 !important;
+	color: var(--dk-yellow) !important;
+}
+
+[data-ui-theme='dk-bananza'] :is(a, button).bg-\[var\(--theme-color\)\]:not(.ui-theme-card):hover {
+	filter: brightness(1.08);
+}
+
+[data-ui-theme='dk-bananza'] :is(a:not([class*='bg-']), button.bg-transparent):hover {
+	color: var(--dk-yellow) !important;
+}
+
+/* ---------- Inputs ---------- */
+[data-ui-theme='dk-bananza'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.bg-transparent),
+[data-ui-theme='dk-bananza'] textarea:not(.bg-transparent),
+[data-ui-theme='dk-bananza'] select {
+	background-color: var(--dk-black);
+	border: 1px solid rgba(31, 194, 176, 0.5);
+	border-radius: 0;
+	color: var(--dk-text);
+}
+
+[data-ui-theme='dk-bananza'] input:not(.bg-transparent):focus,
+[data-ui-theme='dk-bananza'] textarea:not(.bg-transparent):focus,
+[data-ui-theme='dk-bananza'] select:focus {
+	outline: none;
+	border-color: var(--dk-yellow);
+	box-shadow: 0 0 8px rgba(255, 242, 0, 0.35);
+}
+
+/* ---------- Dividers: 1px teal-to-magenta line ---------- */
+[data-ui-theme='dk-bananza'] hr {
+	height: 0;
+	border: 0;
+	border-top: 1px solid var(--dk-teal);
+	border-image: linear-gradient(90deg, var(--dk-teal), var(--dk-magenta)) 1;
+}
+
+/* ---------- Scrollbar ---------- */
+[data-ui-theme='dk-bananza'] ::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+[data-ui-theme='dk-bananza'] ::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+[data-ui-theme='dk-bananza'] ::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, var(--dk-teal), var(--dk-magenta));
+}
+
+[data-ui-theme='dk-bananza'] ::selection {
+	background: var(--dk-yellow);
+	color: var(--dk-black);
+}
+
+/* ---------- Mouse cursor: yellow arrow; yellow pointing hand on hover ---------- */
+[data-ui-theme='dk-bananza'],
+[data-ui-theme='dk-bananza'] body {
+	cursor:
+		url('../assets/themes/cursors/dk-bananza.svg') 3 2,
+		auto;
+}
+
+[data-ui-theme='dk-bananza'] a,
+[data-ui-theme='dk-bananza'] button,
+[data-ui-theme='dk-bananza'] [role='button'],
+[data-ui-theme='dk-bananza'] [role='tab'],
+[data-ui-theme='dk-bananza'] [role='menuitem'],
+[data-ui-theme='dk-bananza'] [role='radio'],
+[data-ui-theme='dk-bananza'] label,
+[data-ui-theme='dk-bananza'] select,
+[data-ui-theme='dk-bananza'] .cursor-pointer {
+	cursor:
+		url('../assets/themes/cursors/dk-bananza-pointer.svg') 12 2,
+		pointer;
+}
+
+/* Chart "empty" areas: dark rock gray (colored in JS; CSS fill overrides it) */
+[data-ui-theme='dk-bananza'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
+	fill: #18181d;
+}
+
+[data-ui-theme='dk-bananza'] .recharts-bar-background-rectangle {
+	fill: #16161b;
+}
+
+/* Anything on a yellow (theme-colored) fill, e.g. the Applied Filter pills: black text */
+/* (Focus Record / Completed Tasks cards also carry the theme-color class but are black panels here) */
+[data-ui-theme='dk-bananza'] :is(.bg-\[var\(--theme-color\)\], .bg-\[var\(--theme-color-half\)\]):not(.ui-theme-card),
+[data-ui-theme='dk-bananza']
+	:is(.bg-\[var\(--theme-color\)\], .bg-\[var\(--theme-color-half\)\]):not(.ui-theme-card)
+	* {
+	color: var(--dk-black) !important;
+}
+
+/* ---------- Hand-drawn rims ----------
+   Every box that has the teal-to-magenta rim (cards, panels, tiles, popups, buttons, tabs, icon boxes)
+   gets it drawn as a thin layer (::after) bent by the #dk-hand filter (src/components/DkFilterDefs.tsx),
+   so the line is smooth but uneven, like drawn by hand. Selected states set --dk-rim to yellow.
+   Scrolling or clipping boxes (overflow) keep the straight border-image rim from the rules above. */
+[data-ui-theme='dk-bananza']
+	:is(
+		.ui-theme-card,
+		.bg-color-gray-600.rounded-lg.p-3,
+		.ui-theme-plate,
+		.ui-theme-tile,
+		dialog .bg-color-gray-600.rounded-lg:is(.p-4, .p-6),
+		.material-symbols-rounded:is(.bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600),
+		.ui-theme-tooltip,
+		.ui-theme-floating-tooltip,
+		.recharts-tooltip-wrapper .bg-black,
+		.recharts-tooltip-wrapper .bg-color-gray-600,
+		.bg-color-gray-600.border-color-gray-150.shadow-xl,
+		.bg-color-gray-600.rounded-xl.shadow-lg,
+		.absolute.top-full.z-50.bg-color-gray-600,
+		.react-tooltip,
+		:is(button, a).bg-\[var\(--theme-color\)\],
+		:is(button, a).bg-color-gray-300,
+		:is(button, a).bg-color-gray-600,
+		nav[aria-label='Stats sections'] > *,
+		[role='tablist'] [role='tab']
+	):not(
+		.overflow-hidden,
+		.overflow-x-hidden,
+		.overflow-y-hidden,
+		.overflow-auto,
+		.overflow-x-auto,
+		.overflow-y-auto,
+		.overflow-scroll,
+		.overflow-y-scroll
+	) {
+	border-image: none !important;
+}
+
+/* The layer needs a positioned parent; boxes that are already positioned keep their own position */
+[data-ui-theme='dk-bananza']
+	:is(
+		.ui-theme-card,
+		.bg-color-gray-600.rounded-lg.p-3,
+		.ui-theme-plate,
+		.ui-theme-tile,
+		dialog .bg-color-gray-600.rounded-lg:is(.p-4, .p-6),
+		.material-symbols-rounded:is(.bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600),
+		.ui-theme-tooltip,
+		.ui-theme-floating-tooltip,
+		.recharts-tooltip-wrapper .bg-black,
+		.recharts-tooltip-wrapper .bg-color-gray-600,
+		.bg-color-gray-600.border-color-gray-150.shadow-xl,
+		.bg-color-gray-600.rounded-xl.shadow-lg,
+		.absolute.top-full.z-50.bg-color-gray-600,
+		.react-tooltip,
+		:is(button, a).bg-\[var\(--theme-color\)\],
+		:is(button, a).bg-color-gray-300,
+		:is(button, a).bg-color-gray-600,
+		nav[aria-label='Stats sections'] > *,
+		[role='tablist'] [role='tab']
+	):not(
+		.overflow-hidden,
+		.overflow-x-hidden,
+		.overflow-y-hidden,
+		.overflow-auto,
+		.overflow-x-auto,
+		.overflow-y-auto,
+		.overflow-scroll,
+		.overflow-y-scroll,
+		.absolute,
+		.fixed,
+		.sticky,
+		.relative
+	) {
+	position: relative;
+}
+
+[data-ui-theme='dk-bananza']
+	:is(
+		.ui-theme-card,
+		.bg-color-gray-600.rounded-lg.p-3,
+		.ui-theme-plate,
+		.ui-theme-tile,
+		dialog .bg-color-gray-600.rounded-lg:is(.p-4, .p-6),
+		.material-symbols-rounded:is(.bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600),
+		.ui-theme-tooltip,
+		.ui-theme-floating-tooltip,
+		.recharts-tooltip-wrapper .bg-black,
+		.recharts-tooltip-wrapper .bg-color-gray-600,
+		.bg-color-gray-600.border-color-gray-150.shadow-xl,
+		.bg-color-gray-600.rounded-xl.shadow-lg,
+		.absolute.top-full.z-50.bg-color-gray-600,
+		.react-tooltip,
+		:is(button, a).bg-\[var\(--theme-color\)\],
+		:is(button, a).bg-color-gray-300,
+		:is(button, a).bg-color-gray-600,
+		nav[aria-label='Stats sections'] > *,
+		[role='tablist'] [role='tab']
+	):not(
+		.overflow-hidden,
+		.overflow-x-hidden,
+		.overflow-y-hidden,
+		.overflow-auto,
+		.overflow-x-auto,
+		.overflow-y-auto,
+		.overflow-scroll,
+		.overflow-y-scroll
+	)::after {
+	content: '';
+	position: absolute;
+	inset: -2px;
+	padding: 2.3px;
+	pointer-events: none;
+	border-radius: 0;
+	background: var(--dk-rim, var(--dk-edge));
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask-composite: exclude;
+	filter: url(#dk-hand);
+}
+
+/* Accessibility: Ad Lib's x-height (~0.51) is at the default system font's (~0.51-0.525);
+   0.53 keeps it, titles included, at least as large as the default. */
+html[data-ui-theme='dk-bananza'] {
+	font-size-adjust: 0.53;
+}

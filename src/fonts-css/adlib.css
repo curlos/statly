@@ -1,0 +1,8 @@
+/* === Ad Lib (Donkey Kong Bananza UI theme; rebuilt as a web font from the local adlib.ttf) === */
+@font-face {
+  font-family: 'Ad Lib';
+  src: url('../assets/fonts/AdLib/adlib-web.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

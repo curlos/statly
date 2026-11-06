@@ -4,6 +4,7 @@ import { handleLogout } from '../../../utils/logout.utils';
 import { useThemeContext } from '../../../contexts/useThemeContext';
 import { useGetOverviewStatsQuery } from '../../../services/resources/statsApi';
 import { getFormattedDuration } from '../../../utils/helpers.utils';
+import { getAccentOnLightBackground } from '../../../utils/color.utils';
 
 interface ProfileSectionProps {
 	onClose: () => void;
@@ -14,7 +15,7 @@ interface ProfileSectionProps {
 const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile, editProfileButtonRef }) => {
 	const user = useSelector(selectUser);
 	const dispatch = useDispatch();
-	const { chosenColorObj } = useThemeContext();
+	const { chosenColorObj, colorMode } = useThemeContext();
 
 	// Fetch overview stats for total counts (skip today stats and include first data)
 	const { data: overviewStats } = useGetOverviewStatsQuery({
@@ -37,6 +38,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 	};
 
 	const themeColor = chosenColorObj?.hexColor || '#3b82f6';
+	// A light accent (e.g. yellow) is hard to read on light themes, so darken it there
+	const statColor = colorMode === 'light' ? getAccentOnLightBackground(themeColor) : themeColor;
 	const profilePicUrl = user?.profilePic || null;
 
 	if (!user) {
@@ -83,25 +86,25 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onClose, onEditProfile,
 			{/* Stats Grid */}
 			<div className="grid grid-cols-2 gap-3 my-6 max-w-md">
 				<div className="text-center">
-					<div className="font-bold text-2xl" style={{ color: themeColor }}>
+					<div className="font-bold text-2xl" style={{ color: statColor }}>
 						{(overviewStats?.totalFocusRecordCount ?? 0).toLocaleString()}
 					</div>
 					<div className="text-color-gray-25">Focus Records</div>
 				</div>
 				<div className="text-center">
-					<div className="font-bold text-2xl" style={{ color: themeColor }}>
+					<div className="font-bold text-2xl" style={{ color: statColor }}>
 						{getFormattedDuration(overviewStats?.totalFocusDuration || 0, false)}
 					</div>
 					<div className="text-color-gray-25">Focus Time</div>
 				</div>
 				<div className="text-center">
-					<div className="font-bold text-2xl" style={{ color: themeColor }}>
+					<div className="font-bold text-2xl" style={{ color: statColor }}>
 						{(overviewStats?.totalCompletedTasksCount ?? 0).toLocaleString()}
 					</div>
 					<div className="text-color-gray-25">Completed Tasks</div>
 				</div>
 				<div className="text-center">
-					<div className="font-bold text-2xl" style={{ color: themeColor }}>
+					<div className="font-bold text-2xl" style={{ color: statColor }}>
 						{(overviewStats?.totalProjectsCount ?? 0).toLocaleString()}
 					</div>
 					<div className="text-color-gray-25">Projects</div>

@@ -301,7 +301,7 @@
 }
 
 /* ---------- Hover feedback on anything selectable: translucent bar + white left edge ---------- */
-[data-ui-theme^='bf1'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover {
+[data-ui-theme^='bf1'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-300, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile, [aria-selected='true']):hover {
 	background-color: var(--bf1-wash) !important;
 	box-shadow: inset 2px 0 0 var(--bf1-edge);
 	color: #ffffff !important;

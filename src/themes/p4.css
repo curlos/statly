@@ -354,7 +354,7 @@ html[data-ui-theme='p4'] {
 /* ---------- Hover feedback on anything selectable ----------
    Unselected controls get the black selection band; orange pills lighten; selected bands turn
    orange-edged; plain text links / icon buttons turn dark orange. */
-[data-ui-theme='p4'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover,
+[data-ui-theme='p4'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile, [aria-selected='true']):hover,
 [data-ui-theme='p4'] [role='tablist'] [role='tab']:hover,
 [data-ui-theme='p4'] nav[aria-label='Stats sections'] > *:hover {
 	background-color: var(--p4-ink) !important;
@@ -447,7 +447,7 @@ html[data-ui-theme='p4'] {
 
 /* Inside a hovered black selection band, all text/icons turn yellow too (child labels have their
    own text colors, which light mode forces to black, e.g. the TickTick "Cookie configured" row). */
-[data-ui-theme='p4'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile):hover *:not(.text-green-500):not([class*='text-green']),
+[data-ui-theme='p4'] :is(a, button, [role='button'], [role='tab'], [role='radio'], [role='menuitem'], .cursor-pointer):is(.bg-color-gray-150, .bg-color-gray-200, .bg-color-gray-600, .bg-color-gray-650, .bg-color-gray-700):not(.ui-theme-tile, [aria-selected='true']):hover *:not(.text-green-500):not([class*='text-green']),
 [data-ui-theme='p4'] [role='tablist'] [role='tab']:hover *,
 [data-ui-theme='p4'] nav[aria-label='Stats sections'] > *:hover * {
 	color: var(--p4-yellow-bright) !important;

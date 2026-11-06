@@ -18,6 +18,10 @@ import './fonts-css/unifrakturmaguntia.css';
 import './fonts-css/fredoka.css';
 import './fonts-css/pokemon-emerald.css';
 import './fonts-css/pokemon-dppt.css';
+// Donkey Kong Bananza UI theme font (OFL, bundled locally)
+import './fonts-css/nunito.css';
+// Donkey Kong Bananza UI theme font (Ad Lib, commercial: local file only, see src/assets/fonts/AdLib)
+import './fonts-css/adlib.css';
 
 // Font Family options (Fontsource, self-hosted npm packages)
 import '@fontsource/mozilla-headline/200.css';
