@@ -8,7 +8,7 @@
 
 Transform your TickTick productivity data into meaningful insights
 
-[Live Demo](https://statly-pi.vercel.app/signup) | [Features](#features) | [Tech Stack](#tech-stack)
+[Live Demo](https://statly-pi.vercel.app/demo) | [Features](#features) | [Tech Stack](#tech-stack)
 </div>
 
 ---
