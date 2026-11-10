@@ -60,7 +60,7 @@ Beautiful, interactive visualizations that reveal your productivity trends over 
 
 Powered by ApexCharts and Recharts for smooth, responsive data visualization.
 
-<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (2)" src="https://github.com/user-attachments/assets/7bf1e2d2-91c0-46da-921c-f2232bbd19e5" />
+<img width="2560" height="1600" alt="Image" src="https://github.com/user-attachments/assets/2eb6ee8a-ef30-4969-adfc-4f6216143126" />
 
 ---
 
@@ -86,7 +86,7 @@ Track your daily focus time goals with an Apple Watch-inspired rings interface. 
 
 Stay accountable with clear, visual progress tracking that motivates consistent productivity.
 
-<img width="2560" height="1600" alt="localhost_5173_stats_focus(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/387602cb-3019-4a20-879f-625264c085ce" />
+<img width="2560" height="1600" alt="Image" src="https://github.com/user-attachments/assets/f7ec31a9-f247-4f4f-b8d1-51849b7c79c9" />
 
 ---
 
@@ -99,7 +99,7 @@ View all your focus sessions in one comprehensive timeline. Filter and sort by d
 
 Perfect for analyzing your work patterns and identifying peak productivity hours.
 
-<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max)" src="https://github.com/user-attachments/assets/972c12b7-3bfc-4c94-ac93-2781a44a6f1d" />
+<img width="2560" height="1600" alt="Image" src="https://github.com/user-attachments/assets/d60cc742-fc08-412a-a6e3-b5828bd57438" />
 
 ---
 
@@ -114,7 +114,7 @@ View all tasks you've completed, organized by day. See your daily accomplishment
 
 Perfect for reviewing your task completion history and understanding your daily productivity patterns.
 
-<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/341cda9a-ed82-4609-aa25-1817a02b1c22" />
+<img width="2560" height="1600" alt="Image" src="https://github.com/user-attachments/assets/4b7b2aea-537d-407f-addf-a4d395117db6" />
 
 ---
 
@@ -140,7 +140,7 @@ Features include:
 
 Build a visual collection of your productivity journey and celebrate each milestone you achieve.
 
-<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (3)" src="https://github.com/user-attachments/assets/75cd37a4-e289-4482-af25-9dd3765a3658" />
+<img width="2560" height="1600" alt="Image" src="https://github.com/user-attachments/assets/3fde0efe-5a8b-425a-89fb-6c96b22c19b3" />
 
 ---
 
@@ -161,7 +161,7 @@ Features include:
 These lifetime achievements provide long-term goals to work toward throughout your productivity journey.
 
 
-<img width="2560" height="1600" alt="statly-pi vercel app_focus-records(Nest Hub Max) (4)" src="https://github.com/user-attachments/assets/67cd26da-4cbe-4388-9853-01f5f5c92d69" />
+<img width="2560" height="1600" alt="Image" src="https://github.com/user-attachments/assets/21febaed-0813-4a21-a8e3-f78ab2245722" />
 
 ---
 
@@ -174,6 +174,7 @@ Personalize your Statly experience with:
 Make Statly truly yours with extensive customization options.
 
 ---
+
 
 ## Tech Stack
 
