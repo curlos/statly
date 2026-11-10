@@ -339,24 +339,6 @@
 	color: #ffffff;
 }
 
-/* ---------- Mouse cursor: amber arrow; pointing hand on hover ---------- */
-[data-ui-theme='warzone'],
-[data-ui-theme='warzone'] body {
-	cursor: url('../assets/themes/cursors/warzone.svg') 3 2, auto;
-}
-
-[data-ui-theme='warzone'] a,
-[data-ui-theme='warzone'] button,
-[data-ui-theme='warzone'] [role='button'],
-[data-ui-theme='warzone'] [role='tab'],
-[data-ui-theme='warzone'] [role='menuitem'],
-[data-ui-theme='warzone'] [role='radio'],
-[data-ui-theme='warzone'] label,
-[data-ui-theme='warzone'] select,
-[data-ui-theme='warzone'] .cursor-pointer {
-	cursor: url('../assets/themes/cursors/warzone-pointer.svg') 12 2, pointer;
-}
-
 /* Chart "empty" areas: steel gray (colored in JS; CSS fill overrides it) */
 [data-ui-theme='warzone'] .apexcharts-heatmap-rect[fill='#2f2f2f' i] {
 	fill: #262c32;

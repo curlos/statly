@@ -38,7 +38,7 @@ const useTheme = () => {
 
 	const [colorMode, setColorMode] = useState<'dark' | 'light'>(getInitialColorMode);
 
-	const uiTheme = userSettings?.theme?.uiTheme || localStorage.getItem('ui-theme') || 'default';
+	const uiTheme = userSettings?.theme?.uiTheme || localStorage.getItem('ui-theme') || 'warzone';
 	const gameThemeColor = GAME_THEME_COLORS[uiTheme];
 	const isGameTheme = !!gameThemeColor;
 	// Ink & Marker keeps the user's own theme color and color mode, but uses its own fonts.

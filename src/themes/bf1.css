@@ -364,24 +364,6 @@
 	color: var(--bf1-select-ink);
 }
 
-/* ---------- Mouse cursor: off-white arrow; pointing hand on hover ---------- */
-[data-ui-theme^='bf1'],
-[data-ui-theme^='bf1'] body {
-	cursor: url('../assets/themes/cursors/bf1.svg') 3 2, auto;
-}
-
-[data-ui-theme^='bf1'] a,
-[data-ui-theme^='bf1'] button,
-[data-ui-theme^='bf1'] [role='button'],
-[data-ui-theme^='bf1'] [role='tab'],
-[data-ui-theme^='bf1'] [role='menuitem'],
-[data-ui-theme^='bf1'] [role='radio'],
-[data-ui-theme^='bf1'] label,
-[data-ui-theme^='bf1'] select,
-[data-ui-theme^='bf1'] .cursor-pointer {
-	cursor: url('../assets/themes/cursors/bf1-pointer.svg') 12 2, pointer;
-}
-
 /* Off-white icons/text would vanish on the off-white selection bars: use dark ink there */
 [data-ui-theme^='bf1'] :is(button, a).bg-\[var\(--theme-color\)\]:not(.ui-theme-card) [style*='rgb(237, 232, 221)'],
 [data-ui-theme^='bf1'] .ui-theme-sidebar nav a[aria-current='page'] .text-\[var\(--theme-color\)\] {
