@@ -38,9 +38,17 @@ const UiThemeList = () => {
 			onClick={() => uiTheme !== key && handleChangeUiTheme(key)}
 		>
 			{icon ? (
-				<img src={iconUrl(icon)} alt="" aria-hidden="true" className="w-[40px] h-[40px] object-contain" />
+				<img
+					src={iconUrl(icon)}
+					alt=""
+					aria-hidden="true"
+					className={classNames(
+						'w-[40px] h-[40px] object-contain',
+						uiTheme === key && 'icon-outline-on-theme'
+					)}
+				/>
 			) : (
-				<span className="text-2xl" aria-hidden="true">
+				<span className={classNames('text-2xl', uiTheme === key && 'icon-outline-on-theme')} aria-hidden="true">
 					{emoji}
 				</span>
 			)}

@@ -40,6 +40,13 @@ input[type="search"]::-webkit-search-cancel-button {
   color: var(--theme-on-color, #ffffff);
 }
 
+/* Sharp 1px outline in the theme's contrast color, so an icon never blends into the theme color behind it */
+.icon-outline-on-theme {
+  --outline: var(--theme-on-color, #ffffff);
+  filter: drop-shadow(1px 0 0 var(--outline)) drop-shadow(-1px 0 0 var(--outline))
+    drop-shadow(0 1px 0 var(--outline)) drop-shadow(0 -1px 0 var(--outline));
+}
+
 .text-muted-inherit {
   color: color-mix(in srgb, currentColor var(--muted-text-percent, 75%), transparent);
 }
