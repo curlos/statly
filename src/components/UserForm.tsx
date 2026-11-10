@@ -134,7 +134,7 @@ const UserForm: React.FC<UserFormProps> = ({ mode }) => {
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className="flex flex-col gap-4 w-full sm:max-w-[400px] bg-color-gray-300 p-10 rounded-xl"
+			className="ui-theme-auth-form flex flex-col gap-4 w-full sm:max-w-[400px] bg-color-gray-300 p-10 rounded-xl"
 		>
 			<div className="flex justify-center">
 				<img src="/checklist-icon.svg" alt="Statly logo" className="w-[80px] h-[80px]" />

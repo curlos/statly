@@ -185,6 +185,14 @@
 	letter-spacing: 0.04em;
 }
 
+/* ---------- Login / signup form: dark panel with an amber top line so it stands out from the page ---------- */
+[data-ui-theme='warzone'] .ui-theme-auth-form {
+	background: rgba(18, 21, 25, 0.97);
+	border: 1px solid rgba(200, 212, 222, 0.32);
+	border-top: 3px solid var(--wz-amber);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 12px 48px rgba(0, 0, 0, 0.75);
+}
+
 /* ---------- Sidebars ---------- */
 [data-ui-theme='warzone'] .ui-theme-sidebar {
 	background: rgba(17, 20, 23, 0.97) !important;
