@@ -60,7 +60,7 @@ Beautiful, interactive visualizations that reveal your productivity trends over 
 
 Powered by ApexCharts and Recharts for smooth, responsive data visualization.
 
-<img width="2560" height="1600" alt="Image" src="https://github.com/user-attachments/assets/2eb6ee8a-ef30-4969-adfc-4f6216143126" />
+<img width="2560" height="1600" alt="statly-pi vercel app_stats_focus(Nest Hub Max) (1)" src="https://github.com/user-attachments/assets/16d13693-33f1-4223-8787-bfcb751f1ebc" />
 
 ---
 
